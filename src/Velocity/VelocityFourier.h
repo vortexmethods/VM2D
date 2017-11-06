@@ -12,7 +12,7 @@
 #ifndef VELOCITYFOURIER_H
 #define VELOCITYFOURIER_H
 
-#include "Ext_Lib/unsupported/Eigen/FFT"
+#include "unsupported/Eigen/FFT"
 
 #include "Velocity.h"
 

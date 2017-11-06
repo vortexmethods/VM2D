@@ -1,7 +1,7 @@
 # This will run on Travis' 'new' container-based infrastructure
 sudo: false
 
-# Blacklist
+# Blacklist 
 branches:
   only:
     - master
@@ -12,20 +12,25 @@ addons:
     packages:
       - doxygen
       - doxygen-doc
-      - doxygen-latex
+#      - doxygen-latex
       - doxygen-gui
       - graphviz
  
 # Build your code e.g. by calling make
 script:
-  - touch .nojekyll 
+  - cd doc
+#  - touch .nojekyll 
   - doxygen Doxyfile 2>&1 | tee doxygen.log
-
+#  - echo $TRAVIS_BUILD_DIR 
+#  - cd $TRAVIS_BUILD_DIR
+#  - pwd 
+#  - ls   
+  
 # Deploy using travis builtin GitHub Pages support
 deploy:
   provider: pages
   skip_cleanup: true
-  local_dir: $TRAVIS_BUILD_DIR
+  local_dir: $TRAVIS_BUILD_DIR/doc/html
   github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
   on:
     branch: master

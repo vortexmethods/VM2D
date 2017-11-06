@@ -16,7 +16,7 @@
 #include <fstream>
 #include <string>
 
-#include "Ext_Lib/Eigen/Dense"
+#include "Eigen/Dense"
 
 #include "Point2D.h"
 
