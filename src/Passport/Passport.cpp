@@ -8,12 +8,7 @@
 \date 1 декабря 2017 г.
 */
 
-
 #include "Passport.h"
-
-#include <iostream>
-#include <fstream>
-
 
 //Конструктор
 Passport::Passport(const std::string& _dir, const std::string& _filePassport, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars)
@@ -56,7 +51,8 @@ void Passport::GetAllParamsFromParser
 		
 	//считываем общие парамеры
 	parser->get("rho", physicalProperties.rho);
-	parser->get("vinf", physicalProperties.V0);
+	parser->get("vInf", physicalProperties.vInf);
+	parser->get("timeAccel", physicalProperties.timeAccel, &defaults::defaultTimeAccel);
 	parser->get("nu", physicalProperties.nu);
 
 	parser->get("timeStart", timeDiscretizationProperties.timeStart, &defaults::defaultTimeStart);
@@ -67,8 +63,10 @@ void Passport::GetAllParamsFromParser
 
 
 	parser->get("eps", wakeDiscretizationProperties.eps);
+	wakeDiscretizationProperties.eps2 = wakeDiscretizationProperties.eps* wakeDiscretizationProperties.eps;
 	parser->get("epscol", wakeDiscretizationProperties.epscol);
-	parser->get("distKill", wakeDiscretizationProperties.distKill);
+	parser->get("distKill", wakeDiscretizationProperties.distKill, &defaults::defaultDistKill);
+	parser->get("delta", wakeDiscretizationProperties.delta, &defaults::defaultDelta);
 	
 	parser->get("linearSystemSolver", numericalSchemes.linearSystemSolver);
 	parser->get("velocityComputation", numericalSchemes.velocityComputation);
@@ -108,6 +106,7 @@ void Passport::GetAllParamsFromParser
 		parserAirfoil->get("angle", prm.angle, &defaults::defaultAngle);
 		parserAirfoil->get("panelsType", prm.panelsType, &defaults::defaultPanelsType);
 		parserAirfoil->get("boundaryConditionSatisfaction", prm.boundaryCondition, &defaults::defaultBoundaryCondition);
+		parserAirfoil->get("mechnicalSystem", prm.mechanicalSystem, &defaults::defaultMechanicalSystem);
 
 		//отправляем считанные параметры профиля в структуру данных паспорта 
 		airfoilParams.push_back(prm);
@@ -123,7 +122,7 @@ void Passport::PrintAllParams()
 	std::ostream& out = *(defaults::defaultPinfo);
 
 	out << str << "rho = " << physicalProperties.rho << std::endl;
-	out << str << "v0 = " << physicalProperties.V0 << std::endl;
+	out << str << "vInf = " << physicalProperties.vInf << std::endl;
 	out << str << "nu = " << physicalProperties.nu << std::endl;
 	out << str << "timeStart = " << timeDiscretizationProperties.timeStart << std::endl;
 	out << str << "timeStop = " << timeDiscretizationProperties.timeStop << std::endl;
@@ -131,8 +130,10 @@ void Passport::PrintAllParams()
 	out << str << "deltacntText = " << timeDiscretizationProperties.deltacntText << std::endl;
 	out << str << "deltacntBinary = " << timeDiscretizationProperties.deltacntBinary << std::endl;
 	out << str << "eps = " << wakeDiscretizationProperties.eps << std::endl;
+	out << str << "eps2 = " << wakeDiscretizationProperties.eps2 << std::endl;
 	out << str << "epscol = " << wakeDiscretizationProperties.epscol << std::endl;
 	out << str << "distKill = " << wakeDiscretizationProperties.distKill << std::endl;
+	out << str << "delta = " << wakeDiscretizationProperties.delta << std::endl;
 	out << str << "linearSystemSolver = " << numericalSchemes.linearSystemSolver << std::endl;
 	out << str << "velocityComputation = " << numericalSchemes.velocityComputation << std::endl;
 	out << str << "wakeMotionIntegrator = " << numericalSchemes.wakeMotionIntegrator << std::endl;
@@ -146,6 +147,7 @@ void Passport::PrintAllParams()
 		out << str << "airfoil[" << q << "]_angle = " << airfoilParams[q].angle << std::endl;
 		out << str << "airfoil[" << q << "]_panelType = " << airfoilParams[q].panelsType << std::endl;
 		out << str << "airfoil[" << q << "]_boundaryCondition = " << airfoilParams[q].boundaryCondition << std::endl;
+		out << str << "airfoil[" << q << "]_mechanicalSystem = " << airfoilParams[q].mechanicalSystem << std::endl;
 	}
 
 	out << str << "fileWake = " << wakeDiscretizationProperties.fileWake << std::endl;

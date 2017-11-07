@@ -11,10 +11,14 @@
 #ifndef WORLD2D_H
 #define WORLD2D_H
 
+#include "BoundaryMDV.h"
 #include "BoundaryVortColl.h"
 #include "BoundaryConstLayerAver.h"
 
-#include "VelocityDirect.h"
+
+#include "MechanicsRigidImmovable.h"
+
+#include "VelocityBiotSavart.h"
 #include "VelocityFourier.h"
 
 #include "AirfoilRect.h"
@@ -47,6 +51,9 @@ private:
 	/// Список умных указателей на формирователи граничных условий на профилях
 	std::vector<std::unique_ptr<Boundary>> boundary;
 
+	/// Список умных указателей на типы механической системы для каждого профиля
+	std::vector<std::unique_ptr<Mechanics>> mechanics;
+
 	/// Вихревой след
 	Wake wake;
 
@@ -62,10 +69,28 @@ private:
 	/// Умный укзатель на объект, определяющий методику вычисления скоростей
 	std::unique_ptr<Velocity> velocity;
 
-	/// \brief Функция, возвраящающая константную ссылку на паспорт конкретного расчета
+	/// \brief Заполнение матрицы системы для всех профилей
 	///
-	/// \return константная ссылка на паспорт задачи
-	const Passport& Passport() const;
+	/// Вызывается в Step()
+	void FillMatrixAndRhs();
+
+	/// \brief Вычисляем размер матрицы и резервируем память под нее и под правую часть
+	///
+	/// Вызывается в Step()
+	void ReserveMemoryForMatrixAndRhs();
+	
+	/// \brief Вычисляем скорости вихрей (в пелене и виртуальных)
+	///
+	/// Вызывается в Step()
+	/// \param[in] dt шаг по времени
+	void CalcVortexVelo(double dt);
+
+	/// \brief Вычисляем новые положения вихрей (в пелене и виртуальных)
+	///
+	/// Вызывается в Step()
+	/// \param[in] dt шаг по времени
+	/// \param[in] newPos новые позиции вихрей
+	void MoveVortexes(double dt, std::vector<Point2D>& newPos);
 
 public:
 	/// \brief Конструктор
@@ -77,8 +102,10 @@ public:
 	/// Деструктор
 	~World2D() { };
 
-	/// Текущее время в решаемой задаче
-	double currentTime; 
+	/// \brief Функция, возвраящающая константную ссылку на паспорт конкретного расчета
+	///
+	/// \return константная ссылка на паспорт задачи
+	const Passport& Passport() const;
 
 	/// Текущий номер шага в решаемой задаче
 	int currentStep; 
@@ -94,7 +121,7 @@ public:
 	bool isFinished() const;      
 
 	/// Основная функция выполнения одного шага по времени
-	void Step(); 
+	void Step();
 };
 
 #endif

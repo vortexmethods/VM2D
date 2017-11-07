@@ -67,11 +67,12 @@ private:
 public:
 	/// \brief Конструктор
 	/// 
-	/// \param[in] afl_ константная ссылка на указатель на профиль
-	/// \param[in] wake_ константная ссылка на вихревой след
-	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения
-	BoundaryConstLayerAver(const std::unique_ptr<Airfoil>& afl_, const Wake& wake_, const Parallel& parallel_) :
-		Boundary(afl_, 1, wake_, parallel_)
+	/// \param[in] afl_ константная ссылка на профиль;
+	/// \param[in] allBoundry_ константная ссылка на вектор из указателей на все граничные условия
+	/// \param[in] wake_ константная ссылка на вихревой след;
+	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
+	BoundaryConstLayerAver(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, const Wake& wake_, const Parallel& parallel_) :
+		Boundary(passport_, afl_, allBoundary_, 1, wake_, parallel_)
 	{ };
 
 	/// Деструктор
@@ -79,13 +80,11 @@ public:
 
 	//далее -- реализации виртуальных функций
 	virtual void FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol);
-	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs);
+	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs);
 	virtual int GetUnknownsSize() const;
-	virtual void SolutionToFreeVortexSheet(const Eigen::VectorXd& sol);
-		
-	/// \warning функции GetWakeInfluence и GetWakeVelocity пока не реализованы
-	virtual void GetWakeInfluence(std::vector<double>& wakeVelo) const {};
-	virtual void GetWakeVelocity(std::vector<Point2D>& wakeVelo, double dt = 1.0) const {};
+	virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol);
+	virtual void GetWakeInfluence(std::vector<double>& wakeVelo) const;
+	virtual void GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const;
 };
  
 #endif

@@ -12,9 +12,13 @@
 #include "Boundary.h"
 
 
+
 //Конструктор
-Boundary::Boundary(const std::unique_ptr<Airfoil>& afl_, int sheetDim_, const Wake& wake_, const Parallel& parallel_)
-	: afl(afl_), sheetDim(sheetDim_), wake(wake_), parallel(parallel_), CC(afl->r)
+Boundary::Boundary(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, int sheetDim_, const Wake& wake_, const Parallel& parallel_)
+	: passport(passport_ ), afl(afl_), allBoundary(allBoundary_), sheetDim(sheetDim_), wake(wake_), parallel(parallel_), CC(afl.r)
 {
-	sheets.SetLayersDim(afl->np, sheetDim);
+	sheets.SetLayersDim(afl.np, sheetDim);
+	virtualWake.resize(0);
 }//Boundary(...)
+
+

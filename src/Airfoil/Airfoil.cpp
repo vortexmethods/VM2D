@@ -8,14 +8,11 @@
 \date 1 декабря 2017 г.
 */
 
-
 #include "Airfoil.h"
-#include "StreamParser.h"
-
 
 // Конструктор
-Airfoil::Airfoil()
-	:np(0)
+Airfoil::Airfoil(const Parallel& parallel_)
+:np(0), parallel(parallel_)
 { }
 
 
@@ -38,6 +35,11 @@ void Airfoil::CalcNrmTauLen()
 		tau[i] = rpan.unit();
 		nrm[i] = { tau[i][1], -tau[i][0] };
 	}
+
+	//"закольцовываем"
+	nrm.push_back(nrm[0]);
+	tau.push_back(tau[0]);
+	len.push_back(len[0]);
 }//CalcNrmTauLen()
 
 
@@ -114,3 +116,4 @@ bool Airfoil::isOutsideGabarits(const Point2D& r) const
 {
 	return (r[0] > upRight[0] || (r[0] < lowLeft[0] || r[1] < lowLeft[1] || r[1] > upRight[1]));
 }//isOutsideGabarits(...)
+

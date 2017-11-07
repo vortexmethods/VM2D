@@ -18,13 +18,9 @@
 \version 1.0
 */
 
-#include <iostream>
-
-#include "mpi.h"
+/// \defgroup Parallel Параллельные функции
 
 #include "Queue.h"
-#include "World2D.h"
-
 
 void CreateMpiTypes()
 {

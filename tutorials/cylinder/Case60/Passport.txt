@@ -1,0 +1,30 @@
+//Physical Properties
+rho = 1.0
+vInf = {1.0, 0.0}
+nu = 0.001
+
+//Time Discretization Properties
+//timeStart = 0.0      //by default=0.0
+timeStop = 1001.0
+dt = 0.01
+timeAccel = 1.0		//by default=0.0
+deltacntText = 10     //by default=1
+deltacntBinary = 0   //by default=0
+
+//Wake Discretization Properties
+eps = 0.02
+epscol = 0.01
+distKill = 20.0		//by default=10.0
+delta = 1.e-5		//by default=1.e-5
+
+//Numerical Schemes
+linearSystemSolver = 0
+velocityComputation = velocityBiotSavart                      // velocityBiotSavart,  velocityFourier,  velocityBarnesHut
+wakeMotionIntegrator = 0
+
+//Files and parameters
+//airfoil = {}
+airfoil = { Circle60.txt(basePoint = {0.0, 0.0}, panelsType = panelsRectilinear, boundaryConditionSatisfaction = boundaryConstantLayerAverage) } //boundaryVorticesCollocation//boundaryConstantLayerAverage, mechnicalSystem = mechanicsRigidImmovable
+//fileWake = { Test_wake.txt }
+//fileWake = { OblakoV1000.txt }                              //by default={}
+ 

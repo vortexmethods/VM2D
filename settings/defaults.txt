@@ -1,0 +1,7 @@
+angle = 0.0
+scale = 1.0
+basePoint = {3.0, 5.0}
+panelsType = panelsRectilinear                              //panelsRectilinear, panelsCurvilinear
+boundaryConditionSatisfaction = boundaryVorticesCollocation //boundaryVorticesCollocation, boundaryConstantLayerAverage
+mechnicalSystem = mechanicsRigidImmovable
+np = 1

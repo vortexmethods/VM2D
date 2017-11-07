@@ -10,10 +10,6 @@
 
 #include "Queue.h"
 
-#include <ostream>
-
-#include "mpi.h"
-
 
 //Конструктор
 Queue::Queue(int& argc, char**& argv, std::ostream& _timeFile, void (*_CreateMpiTypes)())
@@ -29,6 +25,15 @@ Queue::Queue(int& argc, char**& argv, std::ostream& _timeFile, void (*_CreateMpi
 	//(выполняется на глобальном нулевом процессоре)
 	if (myidAll == 0)
 	{
+		//TODO: Переделать вывод в файл (вывод силы)
+		std::ofstream forcesFile("Forces.txt");
+		forcesFile << "currentStep	currentTime	Fx	Fy\n";
+		forcesFile.close();
+
+		//TODO: Переделать вывод в файл (вывод силы)
+		std::ofstream stressFile("Stresses.txt");
+		stressFile.close();
+
 		//Устанавливаем флаг занятости в состояние "свободен" всем процессорам, 	
 		procState.resize(nProcAll, MPI_UNDEFINED);
 		procStateVar.resize(nProcAll, MPI_UNDEFINED);
@@ -290,7 +295,7 @@ void Queue::TaskSplit()
 			world2D.reset(new World2D(*this, *(defaults::defaultPtele)));
 
 		//Синхронизация параметров
-		MPI_Bcast(&world2D->currentTime, 1, MPI_DOUBLE, 0, parallel.commWork);
+		MPI_Bcast(&(world2D->Passport().physicalProperties.currTime), 1, MPI_DOUBLE, 0, parallel.commWork);
 
 		//TODO
 		//Синхронизация паспортов
@@ -366,7 +371,7 @@ void Queue::TaskUpdate()//Обновление состояния задач и 
 		//(в этом случае sizeCommSolving как раз будет на 1 больше, чем taskSolving, см. выше)
 		//если же нулевой процесс занят решением задачи, то смещения нет,
 		//поскольку в этом случае sizeCommSolving и taskSolving равны
-		for (unsigned int i = 0; i < numberOfTask.solving; i++)
+		for (int i = 0; i < numberOfTask.solving; i++)
 		if (flagFinish[i + sizeCommSolving - numberOfTask.solving] == 1)
 			task[taskList[i]].state = TaskState::finishing;
 	} //if myid==0
@@ -401,7 +406,7 @@ void Queue::TaskUpdate()//Обновление состояния задач и 
 
 		//определяем, надо ли еще выделять квант времени или можно заканчивать работу
 		//путем сравнения числа отсчитанных задач с общим числом задач
-		nextKvant = (numberOfTask.finished < task.size()) ? 1 : 0;
+		nextKvant = (numberOfTask.finished < static_cast<int>(task.size())) ? 1 : 0;
 	}//if (myid == 0)
 
 	MPI_Bcast(&nextKvant, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -495,6 +500,8 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 	
 	for (size_t q = 0; q < taskFolder.size(); ++q)
 	{
+		*defaults::defaultPinfo << "----- Problem #" << q << " is being loaded -----" << std::endl;
+		
 		//считываем параметры задачи, если они есть
 		std::vector<std::string> taskLine;
 		std::string dir = taskFolder[q];
@@ -512,6 +519,9 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 		
 		Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, taskLine);
 		AddTask(np, psp);
+
+		*defaults::defaultPinfo << "-------- Problem #" << q << " is loaded --------" << std::endl;
+		*defaults::defaultPinfo << std::endl;
 	}
 	tasksFile.close();
 	tasksFile.clear();

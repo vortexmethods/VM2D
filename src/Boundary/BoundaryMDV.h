@@ -8,8 +8,8 @@
 \date 1 декабря 2017 г.
 */
 
-#ifndef BOUNDARYVORTCOLL_H
-#define BOUNDARYVORTCOLL_H
+#ifndef BOUNDARYMDV_H
+#define BOUNDARYMDV_H
 
 #include "Boundary.h"
 
@@ -17,8 +17,8 @@
 \brief Класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле
 
 Способ удовлетворения граничного условия:
-- рождение вихрей в центрах панелей;
-- условие коллокации в центрах панелей для касательной составляющей скорости.
+- рождение вихрей на концах панелей;
+- условие коллокации в центрах панелей для нормальной составляющей скорости.
 
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
@@ -27,7 +27,9 @@
 \version 1.0
 \date 1 декабря 2017 г.
 */
-class BoundaryVortColl : public Boundary
+
+class BoundaryMDV :
+	public Boundary
 {
 private:
 	/// Контрольные точки (устанавливаются в центры панелей)
@@ -41,7 +43,7 @@ private:
 	/// \param[in] R точка наблюдения
 	/// \param[in] X точка, где находится вихрь
 	/// \return вектор скорости
-	Point2D Skos(const Point2D& R, const Point2D& X);
+	Point2D Skos(const Point2D& R, const Point2D& X); 
 
 public:
 	/// \brief Конструктор
@@ -50,10 +52,10 @@ public:
 	/// \param[in] allBoundry_ константная ссылка на вектор из указателей на все граничные условия
 	/// \param[in] wake_ константная ссылка на вихревой след;
 	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
-	BoundaryVortColl(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, const Wake& wake_, const Parallel& parallel_);
-	
+	BoundaryMDV(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, const Wake& wake_, const Parallel& parallel_);
+
 	/// Деструктор
-	virtual ~BoundaryVortColl() { };
+	virtual ~BoundaryMDV() { };
 
 	//далее -- реализации виртуальных функций
 	virtual void FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol);

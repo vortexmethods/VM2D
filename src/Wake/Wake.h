@@ -12,7 +12,6 @@
 #define WAKE_H
 
 #include "Airfoil.h"
-#include "Parallel.h"
 
 /*!
 \brief Класс, опеделяющий вихревой след (пелену)
@@ -24,25 +23,29 @@
 */
 class Wake
 {
+private:
+	/// Вектор потенциальных соседей для будущего коллапса
+	std::vector<int> neighb;
+
 public:
 	/// Список вихревых элементов
 	std::vector<Vortex2D> vtx;
 	
-	/// Количество вихрей в пелене
-	int nv;	
-
 	/// Константная ссылка на параметры дискретизации вихревого следа
 	const WakeDiscretizationProperties& param;
 	
 	/// Константная ссылка на параметры исполнения в параллельном режиме
 	const Parallel& parallel;
+
+	/// Константная ссылка на список умных казателей на обтекаемые профили
+	const std::vector<std::unique_ptr<Airfoil>>& airfoils;
 	
 	/// \brief Конструктор инициализации
 	///
 	/// \param[in] param_ константная ссылка на параметры дискретизации вихревого следа
 	/// \param[in] parallel_ константная ссылка на параметры исполнения в параллельном режиме
-	Wake(const WakeDiscretizationProperties& param_, const Parallel& parallel_) 
-		: param(param_), nv(0), parallel(parallel_) { };
+	Wake(const WakeDiscretizationProperties& param_, const Parallel& parallel_, const std::vector<std::unique_ptr<Airfoil>>& airfoils_)
+		: param(param_), parallel(parallel_), airfoils(airfoils_) { };
 	
 	/// Деструктор
 	~Wake(){ };
@@ -63,17 +66,59 @@ public:
 	/// \todo В целях оптимизации можно подумать над .reserve()
 	///
 	/// Рассылка следа на все процессоры локальной группы процессоров, занятых решением данной задачи
-	void WakeSinchronize();  
+	void WakeSynchronize();  
 
 	/// \brief Проверка пересечения вихрями следа профиля при перемещении
 	///
 	/// Исполняется сразу для всех вихрей в пелене, осуществляет проверку для отдельного профиля
+	/// \n Вихри, попавшие внутрь профиля, получают нулевую циркуляцию, а их "бывшая" циркуляция передается в вектор gammaThrough в структуру данных профиля
 	/// 
-	/// \param[in] newPos константная ссылка на вектор из новых положени	й вихрей в вихревом следе
-	/// \param[in] afl константная ссылка на контролируемый профиль
+	/// \param[in] newPos константная ссылка на вектор из новых положений вихрей в вихревом следе
+	/// \param[in,out] afl ссылка на контролируемый профиль (происходит изменение afl->gammaThrough)
 	/// \return вектор, длина которого равна числу панелей на профиле, и который содержит циркуляции, проникшие в профиль через соответствующие панели
 	/// \warning Использует OMP, MPI
-	std::vector<double> Inside(const std::vector<Point2D>& newPos, const Airfoil& afl);
+	/// \ingroup Parallel
+	void Inside(const std::vector<Point2D>& newPos, Airfoil& afl);
+
+	/// \brief Реструктуризация вихревого следа
+	///
+	/// Исполняется сразу для всех вихрей в пелене
+	/// \n Вихри, находящиеся далеко от профилей, удаляются
+	/// \n Вихри, которые сильно сблизились, коллапсируются
+	void Restruct();
+
+	/// \brief Зануление далеко улетевших вихрей
+	/// \return число вихрей в дальнем следе, которые занулены
+	int KillFar();
+
+	/// \brief Исключение нулевых и мелких вихрей
+	/// \return число исключенных вихрей
+	int RemoveZero();
+
+	/// \brief Проверка проникновения точки через границу профиля
+	/// 
+	/// \param[in] newPos константная ссылка на смещенное (новое) положение
+	/// \param[in] oldPos константная ссылка на несмещенное (старое) положение
+	/// \param[in] afl константная ссылка на контролируемый профиль
+	/// \param[out] panThrough номер "протыкаемой" панели
+	/// return признак пересечения профиля
+	bool MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, int& panThrough);
+
+	/// \brief Поиск ближайшего соседа
+	/// \param[in] type тип коллапса: 
+	/// - 0 --- без приоритета знаков
+	/// - 1 --- коллапсировать только вихри разных знаков
+	/// - 2 --- коллапсировать только вихри одного знака
+	void GetPairs(int type);
+
+	/// \brief Коллапс вихрей
+	/// \param[in] type тип коллапса: 
+	/// - 0 --- без приоритета знаков
+	/// - 1 --- коллапсировать только вихри разных знаков
+	/// - 2 --- коллапсировать только вихри одного знака
+	/// \param[in] times число проходов алгоритма коллапса
+	/// \return число зануленных вихрей
+	int Collaps(int type, int times);
 };
 
 #endif

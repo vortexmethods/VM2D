@@ -26,12 +26,27 @@
 class Boundary
 {
 protected:
-	
-	/// Константная ссылка на указатель на профиль
-	const std::unique_ptr<Airfoil>& afl;
+	/// Константная ссылка на паспорт
+	const Passport& passport;
+
+	/// Константная ссылка на профиль
+	const Airfoil& afl;
 
 	/// Константная ссылка на вихревой след
 	const Wake& wake;
+
+	/// Константная ссылка на список указателей на все граничные условия
+	const std::vector<std::unique_ptr<Boundary>>& allBoundary;
+
+	/// Константная ссылка на параметры исполнения в параллельном режиме
+	const Parallel& parallel;
+
+	/// Константная ссылка на вектор из начал (и концов) панелей
+	const std::vector<Point2D>& CC;
+
+public:	
+	/// Виртуальный вихревой след конкретного профиля
+	std::vector<Vortex2D> virtualWake;
 
 	/// \brief Размерность параметров каждого из слоев на каждой из панелей
 	///
@@ -43,20 +58,15 @@ protected:
 	/// Слои на профиле
 	Sheet sheets;
 
-	/// Константная ссылка на параметры исполнения в параллельном режиме
-	const Parallel& parallel;
 
-	/// Константная ссылка на вектор из начал (и концов) панелей
-	const std::vector<Point2D>& CC;
-
-public:
 	/// \brief Конструктор
 	/// 
-	/// \param[in] afl_ константная ссылка на указатель на профиль;
+	/// \param[in] afl_ константная ссылка на профиль;
+	/// \param[in] allBoundry_ константная ссылка на вектор из указателей на все граничные условия
 	/// \param[in] sheetDim_ размерность параметра слоя на каждой панели профиля (сколько чисел используется, чтобы описать слой на каждой панели);
 	/// \param[in] wake_ константная ссылка на вихревой след;
 	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
-	Boundary(const std::unique_ptr<Airfoil>& afl_, int sheetDim_, const Wake& wake_, const Parallel& parallel_);
+	Boundary(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, int sheetDim_, const Wake& wake_, const Parallel& parallel_);
 	
 	/// Деструктор
 	virtual ~Boundary() { };
@@ -79,24 +89,30 @@ public:
 	/// 
 	/// \param[out] wakeVelo ссылка на вектор влияния вихревого следа на профиль
 	/// \warning Использует OMP, MPI
+	/// \ingroup Parallel
 	virtual void GetWakeInfluence(std::vector<double>& wakeVelo) const = 0;
 	
-	/// \brief Вычисление скоростей вихрей в вихревом следе, вызываемых наличием завихренности и источников на профиле
+	/// \brief Вычисление конвективных скоростей в наборе точек, вызываемых наличием завихренности и источников на профиле
 	///
-	/// Вычисляет скорости всех вихрей, уже имеющихся в вихревом следе, которые вызваны влиянием завихренности и источников на профиле 
+	/// Вычисляет конвективные скорости в наборе точек, которые вызваны влиянием завихренности и источников на профиле 
 	/// 
-	/// \param[out] wakeVelo ссылка на вектор скоростей, которые приобретают вихри в вихревом следе из-за влияния завихренности и источников на профиле
-	/// \param[in] dt шаг по времени (по умолчанию 1.0), на который нужно домножить скорость, чтобы вычислить не скорости, а перемещения вихрей
+	/// \param[in] points константная ссылка на набор точек, в которых вычисляются скорости
+	/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния завихренности и источников на профиле
+	/// 
+	/// \warning velo --- накапливается!
 	/// \warning Использует OMP, MPI
-	virtual void GetWakeVelocity(std::vector<Point2D>& wakeVelo, double dt = 1.0) const = 0;
-
+	/// \ingroup Parallel
+	virtual void GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const = 0;
+	
 	/// \brief Заполнение правой части
 	///
 	/// Заполняет блок правой части матрицы СЛАУ, обеспечивающей удовлетворение граничного условия, соответствующий данному профилю.
 	/// 	
 	/// \param[in] V0 константная ссылка на вектор набегающего потока
 	/// \param[out] rhs ссылка на блок вектора правой части
-	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs) = 0;
+	/// \param[out] lastRhs указатель на последний элемент вектора правой части
+	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs) = 0;
+
 
 	/// \brief Возврат размерности вектора решения 
 	///
@@ -105,15 +121,16 @@ public:
 	/// \return размерность вектора решения
 	virtual int GetUnknownsSize() const = 0;
 
-	/// \brief Пересчет решения на интенсивность вихревого слоя
+	/// \brief Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле
 	///
-	/// Приводит решение к интенсивности вихревого слоя и записывает его в sheets.freeVortexSheet:
+	/// 1) Приводит решение к интенсивности вихревого слоя и записывает его в sheets.freeVortexSheet:
 	///
 	/// - если неизвестное --- интенсивность вихря, то он "размазывается" по панели;
 	/// - если неизвестное --- интенсивность слоя, то она передается непостредственно.
 	///
+	/// 2) Приводит интенсивность вихревого слоя к рождаемым вихрям, а также вычисляет их положения
 	/// \param[in] sol вектор решения СЛАУ
-	virtual void SolutionToFreeVortexSheet(const Eigen::VectorXd& sol) = 0;
+	virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol) = 0;
 };
 
 #endif

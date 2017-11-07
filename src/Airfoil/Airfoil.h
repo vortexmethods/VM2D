@@ -12,6 +12,7 @@
 #define AIRFOIL_H
 
 #include "Passport.h"
+#include "Parallel.h"
 
 /*!
 \brief Абстрактный класс, определяющий обтекаемый профиль
@@ -54,7 +55,10 @@ public:
 	std::vector<Point2D> tau;
 
 	/// Длины панелей профиля
-	std::vector<double> len;  
+	std::vector<double> len; 
+
+	/// Касательные напряжения на панелях профиля
+	std::vector<double> viscousStress;
 
 	Point2D lowLeft; ///< Левый нижний угол габаритного прямоугольника профиля
 	Point2D upRight; ///< Правый верхний угол габаритного прямоугольника профиля
@@ -67,8 +71,16 @@ public:
 	/// \warning при чтении из файла зашивается нулями
 	std::vector<Point2D> v;
 
+	///\brief Суммарные циркуляции вихрей, пересекших панели профиля на прошлом шаге 
+	///
+	/// Используются в правой части системы, чтобы компенсировать вихри, проникшие в профиль
+	std::vector<double> gammaThrough;
+
+	/// Константная ссылка на параметры исполнения в параллельном режиме
+	const Parallel& parallel;
+
 	/// Конструктор
-	Airfoil();
+	Airfoil(const Parallel& parallel_);
 
 	/// Деструктор
 	virtual ~Airfoil() { };
@@ -130,6 +142,20 @@ public:
 	/// \param[in] dir константная ссылка на строку --- имя каталога, где лежит cчитываемый файл
 	/// \param[in] param константная ссылка на объект, хранящий параметры профиля
 	virtual void ReadFromFile(const std::string& dir, const AirfoilParams& param) = 0;
+
+	/// \brief Вычисление диффузионных скоростей в наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения
+	///
+	/// Вычисляет диффузионные скорости в наборе точек, которые обусловленных геометрией профиля.ю и вычисляет вязкое трение
+	/// 
+	/// \param[in] points константная ссылка на набор точек, в которых вычисляются скорости
+	/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния геометрии профиля
+	/// \param[in] domainRadius ссылка на радиусы вихрей
+	/// 
+	/// \warning velo --- накапливается!
+	/// \warning Использует OMP, MPI
+	/// \ingroup Parallel
+	virtual void GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<Point2D>& velo, double epscol) = 0;
+
 };
 
 #endif

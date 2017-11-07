@@ -1,6 +1,6 @@
 /*!
 \file
-\brief Заголовочный файл с описанием класса VelocityDirect
+\brief Заголовочный файл с описанием класса VelocityBiotSavart
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
@@ -8,8 +8,8 @@
 \date 1 декабря 2017 г.
 */
 
-#ifndef VELOCITYDIRECT_H
-#define VELOCITYDIRECT_H
+#ifndef VELOCITYBIOTSAVART_H
+#define VELOCITYBIOTSAVART_H
 
 #include "Velocity.h"
 
@@ -26,22 +26,24 @@
 \version 1.0
 \date 1 декабря 2017 г.
 */
-class VelocityDirect : public Velocity
+class VelocityBiotSavart : public Velocity
 {
 public:
 	/// \brief Конструктор
 	/// 
 	/// \param[in] parallel_ константная ссылка на параметры исполнения задачи в параллельном MPI-режиме
 	/// \param[in] wake_ константная ссылка на вихревой след	
-	VelocityDirect(const Parallel& parallel_, const Wake& wake_) :
-		Velocity(parallel_, wake_)
+	/// \param[in] boundary_ константная ссылка на вектор указателей на граничные условия 	
+	VelocityBiotSavart(const Parallel& parallel_, const Wake& wake_, const std::vector<std::unique_ptr<Boundary>>& boundary_) :
+		Velocity(parallel_, wake_, boundary_)
 	{ };
 
 	/// Деструктор
-	virtual ~VelocityDirect(){};
+	virtual ~VelocityBiotSavart(){};
 
 	//реализация виртуальной функции
-	virtual void CalcConvVelo(double dt = 1.0);	
+	virtual void CalcConvVeloToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo, std::vector<double>& domainRadius);
+	virtual void CalcDiffVeloToSetOfPoints(const std::vector<Vortex2D>& points, const std::vector<double>& domainRadius, const std::vector<Vortex2D>& vortices, std::vector<Point2D>& velo);
 };
 
 #endif

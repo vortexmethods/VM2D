@@ -37,12 +37,21 @@ namespace defaults
 {
 	/// Начало расчета
 	const double defaultTimeStart = 0.0;
+
+	/// Время разгона
+	const double defaultTimeAccel = 0.0;
 	
 	/// Шаг сохранения в текстовый файл
 	const int defaultDeltacntText = 1;
 
 	/// Шаг сохранения в бинарный файл
 	const int defaultDeltacntBinary = 0;
+
+	/// Радиус убивания дальнего следа
+	const double defaultDistKill = 10.0;
+
+	/// Расстояние, на которое рождаемый вихрь отодвигается от профиля
+	const double defaultDelta = 1.e-5;
 
 	/// Список профилей
 	const std::vector<std::string> defaultFileAirfoil({});
@@ -68,6 +77,9 @@ namespace defaults
 	/// Способ удовлетворения граничного условия
 	const int defaultBoundaryCondition = 0;
 
+	/// Тип механической системы
+	const int defaultMechanicalSystem = 0;
+
 	/// Имя файла с паспортом задачи
 	const std::string defaultPspFile = "passport.txt";
 	
@@ -80,7 +92,7 @@ namespace defaults
 	/// Поток вывода ошибок
 	static std::ostream* defaultPerr = &std::cout;
 
-	/// ПОток вывода телеметрии
+	/// Поток вывода телеметрии
 	static std::ostream* defaultPtele = &std::cout;
 	
 } //namespace defaults

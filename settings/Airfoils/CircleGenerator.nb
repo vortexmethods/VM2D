@@ -1,0 +1,203 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      6644,        195]
+NotebookOptionsPosition[      6073,        171]
+NotebookOutlinePosition[      6450,        187]
+CellTagsIndexPosition[      6407,        184]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6985581287243233`*^9, 3.698558131911826*^9}, {
+  3.6985581760212774`*^9, 3.69855819486506*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"n", "=", "30"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698558199927571*^9, 3.698558205286953*^9}, {
+  3.7009888361222906`*^9, 3.7009888365863533`*^9}, {3.703401356131008*^9, 
+  3.7034013569460545`*^9}, {3.716762710825674*^9, 3.7167627112977*^9}, {
+  3.7167643408223395`*^9, 3.716764341254362*^9}, {3.7183579891528206`*^9, 
+  3.7183579935904922`*^9}, {3.7183581935036516`*^9, 3.7183581935661535`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Pts", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"N", "[", 
+      RowBox[{
+       FractionBox["1", "2"], 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Cos", "[", 
+          RowBox[{
+           FractionBox[
+            RowBox[{"2", "\[Pi]"}], "n"], 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}], "]"}], ",", 
+         RowBox[{"Sin", "[", 
+          RowBox[{
+           FractionBox[
+            RowBox[{"2", "\[Pi]"}], "n"], 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}], "]"}]}], "}"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "1", ",", "n"}], "}"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6985581248024397`*^9, 3.6985581255993166`*^9}, {
+  3.698558506202363*^9, 3.6985585964056444`*^9}, {3.703401347872534*^9, 
+  3.7034013484195647`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"Pts", ",", 
+   RowBox[{"AspectRatio", "\[Rule]", "Automatic"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.698558598733775*^9, 3.698558616811929*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[{{}, {{}, 
+    {RGBColor[0.368417, 0.506779, 0.709798], PointSize[0.012833333333333334`],
+      AbsoluteThickness[1.6], PointBox[CompressedData["
+1:eJxTTMoPSmViYGCQA2IQDQEP7GGsBoYqoz8+9+2/RjituTlnl/3U+v/rDlvf
+tb8gxab4k/2U/Yov02eXP75pHxdVyqJ8/pL9De5H01oyr9of2me84vrx61Bz
+Ltiv8ol4UbXttn3AS33z98cO2/8PcRHmy79nnx1uMzvh0Cr7Y+k/pshfvg/j
+74fxoer3w9RDzdsPMw9q336YfVD37Ie5B+re/TD3Qv2zH+YfqH/3o/kXJr8f
+Tf9+NPP3o9m/H819+9Hcvx/Nf/vR/L8fLXz2o4XffrTw3Y8W/vvR4mc/Wvzt
+BwBcZPEe
+      "]]}, {}}, {}, {}, {{}, {}}},
+  Axes->{True, True},
+  AxesLabel->{None, None},
+  AxesOrigin->{0, 0},
+  DisplayFunction->Identity,
+  Frame->{{False, False}, {False, False}},
+  FrameLabel->{{None, None}, {None, None}},
+  FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+  GridLines->{None, None},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  ImagePadding->All,
+  Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+         Part[#, 1]], 
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+         Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+         Part[#, 1]], 
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+         Part[#, 2]]}& )}},
+  PlotRange->{{-0.5, 0.5}, {-0.49726094768413664`, 0.49726094768413664`}},
+  PlotRangeClipping->True,
+  PlotRangePadding->{{
+     Scaled[0.02], 
+     Scaled[0.02]}, {
+     Scaled[0.05], 
+     Scaled[0.05]}},
+  Ticks->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{{3.703401323354126*^9, 3.703401357864107*^9}, 
+   3.716762714432878*^9, 3.716764342175419*^9, 3.7183579956686993`*^9, 
+   3.71835819511309*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"\"\<Circle\>\"", "<>", 
+    RowBox[{"ToString", "[", "n", "]"}], "<>", "\"\<.txt\>\""}], ",", 
+   RowBox[{
+    RowBox[{
+    "{", "\"\<#This is a textfile with points on circular airfoil with radius \
+1\>\"", "}"}], "~", "Join", "~", 
+    RowBox[{"{", 
+     RowBox[{"\"\<np = \>\"", "<>", 
+      RowBox[{"ToString", "[", "n", "]"}]}], "}"}], "~", "Join", "~", 
+    RowBox[{"{", "\"\<r = { \\\\\>\"", "}"}], "~", "Join", "~", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"ToString", "[", "#", "]"}], "<>", "\"\<, \\\\\>\""}], ")"}],
+        "&"}], "/@", 
+      RowBox[{"(", 
+       RowBox[{"Pts", "[", 
+        RowBox[{"[", 
+         RowBox[{"1", ";;", 
+          RowBox[{"-", "2"}]}], "]"}], "]"}], ")"}]}], ")"}], "~", "Join", 
+    "~", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"ToString", "[", "#", "]"}], "<>", "\"\< \\\\\>\""}], ")"}], 
+       "&"}], "/@", 
+      RowBox[{"(", 
+       RowBox[{"Pts", "[", 
+        RowBox[{"[", 
+         RowBox[{"{", 
+          RowBox[{"-", "1"}], "}"}], "]"}], "]"}], ")"}]}], ")"}], "~", 
+    "Join", "~", 
+    RowBox[{"{", "\"\< }\>\"", "}"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.7009828467851925`*^9, 3.7009829906270227`*^9}, {
+  3.7009831179059362`*^9, 3.7009831718431034`*^9}, {3.7009888431781025`*^9, 
+  3.7009888511358657`*^9}}],
+
+Cell[BoxData["\<\"Circle30.txt\"\>"], "Output",
+ CellChangeTimes->{
+  3.700982848194384*^9, {3.7009828808012466`*^9, 3.700982896170069*^9}, {
+   3.700982937888596*^9, 3.70098299096957*^9}, {3.7009831557023277`*^9, 
+   3.700983172599207*^9}, {3.700988851943983*^9, 3.700988855843833*^9}, {
+   3.70340132341013*^9, 3.70340135791011*^9}, 3.7167627147338886`*^9, 
+   3.716764342237423*^9, 3.718357995715576*^9, 3.7183581951599674`*^9}]
+}, Open  ]]
+},
+WindowSize->{1904, 997},
+WindowMargins->{{-8, Automatic}, {Automatic, 0}},
+Magnification:>1.9 Inherited,
+FrontEndVersion->"11.0 for Microsoft Windows (64-bit) (September 21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 241, 5, 86, "Input"],
+Cell[802, 27, 436, 7, 57, "Input"],
+Cell[1241, 36, 878, 26, 113, "Input"],
+Cell[CellGroupData[{
+Cell[2144, 66, 200, 4, 86, "Input"],
+Cell[2347, 72, 1778, 41, 753, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4162, 118, 1461, 42, 290, "Input"],
+Cell[5626, 162, 431, 6, 57, "Output"]
+}, Open  ]]
+}
+]
+*)
+

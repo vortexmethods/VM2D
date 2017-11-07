@@ -62,8 +62,13 @@ private:
 	}
 
 public:
-	VelocityFourier(const Parallel& parallel_, const Wake& wake_) :
-		Velocity(parallel_, wake_)
+	/// \brief Конструктор
+	/// 
+	/// \param[in] parallel_ константная ссылка на параметры исполнения задачи в параллельном MPI-режиме
+	/// \param[in] wake_ константная ссылка на вихревой след	
+	/// \param[in] boundary_ константная ссылка на вектор указателей на граничные условия 	
+	VelocityFourier(const Parallel& parallel_, const Wake& wake_, const std::vector<std::unique_ptr<Boundary>>& boundary_) :
+		Velocity(parallel_, wake_, boundary_)
 	{
 		nNode = { 16, 16 };
 		L = { 1.0, 1.0 };
@@ -77,8 +82,9 @@ public:
 
 	virtual ~VelocityFourier() {};
 
-	virtual void CalcConvVelo(double dt = 1.0);
-
+	/// \todo Реализовать 
+	virtual void CalcConvVeloToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo, std::vector<double>& domainRadius) {};
+	virtual void CalcDiffVeloToSetOfPoints(const std::vector<Vortex2D>& points, const std::vector<double>& domainRadius, const std::vector<Vortex2D>& vortices, std::vector<Point2D>& velo) {};
 	
 };
 

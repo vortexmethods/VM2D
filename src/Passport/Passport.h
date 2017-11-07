@@ -36,14 +36,50 @@
 */
 struct PhysicalProperties
 {
+// TODO: После реализации синхронизации паспортов сделать его private
+public: 
+	/// Текущее время
+	mutable double currTime;
+
+public:
 	/// Плотность потока
-	double rho;          
-	
-	/// Скоростью набегающего потока 
-	Point2D V0;
+	double rho;     
+
+	/// Скоростью набегающего потока	
+	Point2D vInf;
+
+	/// Время разгона
+	double timeAccel;
+
+	/// Функция скорости набегающего потока с учетом разгона
+	Point2D V0() const
+	{
+		return (currTime < timeAccel) ? (vInf * (currTime / timeAccel)) : vInf;
+	};
 
 	/// Коэффициент кинематической вязкости среды
-	double nu;           
+	double nu;
+
+	/// Возвращает текуще время
+	double getCurrTime() const
+	{
+		return currTime;
+	}
+
+	/// Установка текущего времени
+	void setCurrTime(double t_) const
+	{
+		currTime = t_;
+	}
+
+	/// Добавление шага к текущему времени
+	void addCurrTime(double dt_) const
+	{
+		currTime += dt_;
+	}
+
+
+
 };//PhysicalProperties
 
 
@@ -65,7 +101,7 @@ struct TimeDiscretizationProperties
 	double timeStop;
 	
 	/// Шаг по времени
-	double dt;      
+	double dt;    
 	
 	/// Шаг сохранения кадров в текстовые файлы
 	int deltacntText;
@@ -90,13 +126,19 @@ struct WakeDiscretizationProperties
 	std::string fileWake;
 	
 	/// Радиус вихря
-	double eps;      
+	double eps;   
+
+	/// Квадрат радиуса вихря
+	double eps2;
 	
 	/// Радиус коллапса
 	double epscol;   
 	
-	/// Расстояние от центра самого подветренного (левого) профиля, на котором вихри уничтожаются
+	/// Расстояние от центра самого подветренного (правого) профиля, на котором вихри уничтожаются
 	double distKill; 
+
+	/// Расстояние, на которое рождаемый вихрь отодвигается от профиля
+	double delta;
 };//WakeDiscretizationProperties
 
 
@@ -149,7 +191,10 @@ struct AirfoilParams
 	int panelsType;	
 		
 	/// Метод аппроксимации граничных условий
-	int boundaryCondition;      
+	int boundaryCondition;    
+
+	/// Тип механической системы
+	int mechanicalSystem;
 };//AirfoilParams
 
 

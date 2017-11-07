@@ -269,13 +269,11 @@ public:
 	/// \tparam T тип данных
 	/// \tparam n длина вектора	
 	/// \param[in] newlen новая длина вектора (по умолчанию 1.0)
-	///
-	/// \return ссылка на самого себя после нормирования на заданную длину (по умолчанию 1.0)
-	numvector<T, n>& normalize(double newlen = 1.0) 
+	void normalize(double newlen = 1.0) 
 	{
 		double ilen = newlen / this->length();
 		*this *= ilen;
-		return (*this);
+		//return (*this);
 	}//normalize()
 
 

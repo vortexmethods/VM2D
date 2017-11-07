@@ -15,11 +15,12 @@
 //Установка pазмерностей всех векторов и их обнуление
 void Sheet::SetLayersDim(size_t np, size_t layerDim)
 {
-	freeVortexSheet.resize(np);
-	attachedVortexSheet.resize(np);
-	attachedSourceSheet.resize(np);
+	//+1 для удобства, последний равен нулевому
+	freeVortexSheet.resize(np+1);
+	attachedVortexSheet.resize(np+1);
+	attachedSourceSheet.resize(np+1);
 
-	for (size_t j = 0; j < np; ++j)
+	for (size_t j = 0; j < np+1; ++j)
 	{
 		freeVortexSheet[j].resize(layerDim, 0.0);
 		attachedVortexSheet[j].resize(layerDim, 0.0);

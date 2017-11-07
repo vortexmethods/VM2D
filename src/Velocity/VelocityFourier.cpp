@@ -11,6 +11,8 @@
 
 #include "VelocityFourier.h"
 
+ // TODO проверить resize
+
 //пересчет глобального номера ячейки по "локальным координатам" ячейки
 inline int VelocityFourier::cellIj(int i, int j) const
 { 
@@ -27,7 +29,7 @@ inline int VelocityFourier::cellIj(int i, int j) const
 void VelocityFourier::FillVic()
 {
 	vic.resize(nCell[0] * nCell[1]);
-	for (int q = 0; q < wake.nv; ++q)
+	for (size_t q = 0; q < wake.vtx.size(); ++q)
 	{
 		const Point2D& pos = wake.vtx[q].r();
 		int i = static_cast<int>((pos[0] - corner[0]) / h[0]);
@@ -66,7 +68,7 @@ double VelocityFourier::w(int i, int j) const
 }
 
 
-
+/*
 void VelocityFourier::CalcConvVelo(double dt)
 {
 	/// \todo Доделать OMP, MPI
@@ -233,3 +235,6 @@ void VelocityFourier::CalcConvVelo(double dt)
 
 	//MPI_Gatherv(locConvVelo.data(), len[id], Point2D::mpiPoint2D, convVelo.data(), len.data(), disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
 }
+
+
+*/
