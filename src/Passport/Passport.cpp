@@ -8,7 +8,10 @@
 \date 1 декабря 2017 г.
 */
 
+//#include <stringstream>
+
 #include "Passport.h"
+#include "CommentsParser.h"
 
 //Конструктор
 Passport::Passport(const std::string& _dir, const std::string& _filePassport, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars)
@@ -22,13 +25,15 @@ Passport::Passport(const std::string& _dir, const std::string& _filePassport, co
 		&& fileExistTest(defaultsFileFullName, *(defaults::defaultPinfo), *(defaults::defaultPerr), "defaults")
 		&& fileExistTest(switchersFileFullName, *(defaults::defaultPinfo), *(defaults::defaultPerr), "switchers"))
 	{
-		std::ifstream mainStream(fileFullName);		
-		std::ifstream defaultStream(defaultsFileFullName);
-		std::ifstream switchersStream(switchersFileFullName);
 		std::stringstream varsStream(StreamParser::VectorStringToString(vars));
 
-		GetAllParamsFromParser(mainStream, defaultStream, switchersStream, varsStream);
-		
+		GetAllParamsFromParser(
+			CommentsParser(fileFullName).resultStream, 
+			CommentsParser(defaultsFileFullName).resultStream, 
+			CommentsParser(switchersFileFullName).resultStream, 
+			varsStream
+			);
+
 		PrintAllParams();
 	}	
 }//Passport(...)

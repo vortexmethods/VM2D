@@ -25,6 +25,12 @@
 class Airfoil
 {
 public:	
+	/// Константная ссылка на паспорт
+	const Passport& passport;
+
+	/// Номер профиля в паспорте
+	const int numberInPassport;
+
 	/// Положение центра масс профиля
 	Point2D rcm;  
 	
@@ -80,7 +86,7 @@ public:
 	const Parallel& parallel;
 
 	/// Конструктор
-	Airfoil(const Parallel& parallel_);
+	Airfoil(const Passport& passport_, const int numberInPassport_, const Parallel& parallel_);
 
 	/// Деструктор
 	virtual ~Airfoil() { };
@@ -140,8 +146,7 @@ public:
 	/// \warning Сейчас масса, момент инерции и скорости вершин зануляются.
 	///
 	/// \param[in] dir константная ссылка на строку --- имя каталога, где лежит cчитываемый файл
-	/// \param[in] param константная ссылка на объект, хранящий параметры профиля
-	virtual void ReadFromFile(const std::string& dir, const AirfoilParams& param) = 0;
+	virtual void ReadFromFile(const std::string& dir) = 0;
 
 	/// \brief Вычисление диффузионных скоростей в наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения
 	///

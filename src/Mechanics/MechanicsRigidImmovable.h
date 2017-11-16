@@ -45,7 +45,7 @@ public:
 	~MechanicsRigidImmovable() {};
 
 	/// Вычисление гидродинамической силы, действующей на профиль
-	virtual void GetHydroDynamForce();
+	virtual void GetHydroDynamForce(timePeriod& time);
 
 	///
 };

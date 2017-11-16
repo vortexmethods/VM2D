@@ -119,9 +119,8 @@ void BoundaryMDV::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& poin
 	Point2D velI;
 	Point2D tempVel;
 	double dst2 = 0.0;
-	double cft = IDPI;
 
-#pragma omp parallel for default(none) shared(locVelo, id, cft, points) private(velI, tempVel, dst2)
+#pragma omp parallel for default(none) shared(locVelo, id, IDPI, points) private(velI, tempVel, dst2)
 	for (int i = 0; i < parallel.len[id]; ++i)
 	{
 		velI = { 0.0, 0.0 };
@@ -139,7 +138,7 @@ void BoundaryMDV::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& poin
 			velI += tempVel;
 		}
 
-		velI *= cft;
+		velI *= IDPI;
 		locVelo[i] = velI;
 	}
 

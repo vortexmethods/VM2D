@@ -11,6 +11,9 @@
 
 #include "Wake.h"
 
+#if !defined(__linux__)
+#include <direct.h>
+#endif
 
 //Считывание вихревого следа из файла 
 void Wake::ReadFromFile(const std::string& dir)
@@ -34,9 +37,11 @@ void Wake::ReadFromFile(const std::string& dir)
 
 
 //Сохранение вихревого следа в файл
-void Wake::SaveKadr(const std::string& dir, int step) const
+void Wake::SaveKadr(const std::string& dir, int step, timePeriod& time) const
 {
-	std::string fname = dir+"/Kadr";
+	time.first = clock();
+
+	std::string fname = "Kadr";
 	if (step < 10) fname += "0";
 	if (step < 100) fname += "0";
 	if (step < 1000) fname += "0";
@@ -57,9 +62,20 @@ void Wake::SaveKadr(const std::string& dir, int step) const
 			numberNonZero++;
 	}
 
-	outfile.open(fname);
-	//outfile << vtx.size() << std::endl; //Сохранение числа вихрей в пелене
-	outfile << numberNonZero << std::endl; //Сохранение числа вихрей в пелене
+#if !defined(__linux__)
+	_mkdir((dir + "Kadrs").c_str());
+#else
+	mkdir(dir + "Kadr", S_IRWXU | S_IRGRP | S_IROTH);
+#endif
+
+	outfile.open(dir + "Kadrs/" + fname);
+//	PrintLogoToTextFile(outfile, dir + "Kadrs/" + fname, "Positions and circulations of vortices in the wake");
+
+//	PrintHeaderToTextFile(outfile, "Number of vortices");
+	outfile << vtx.size() << std::endl; //Сохранение числа вихрей в пелене
+//	outfile << std::endl << "// " << numberNonZero << std::endl; //Сохранение числа вихрей в пелене
+
+//	PrintHeaderToTextFile(outfile, "x_i     y_i     G_i");
 
 	for (size_t i = 0; i < vtx.size(); i++)
 	{
@@ -70,10 +86,15 @@ void Wake::SaveKadr(const std::string& dir, int step) const
 		double gi = vtx[i].g();
 
 		if (gi != 0.0)
+		{
 			outfile << (int)(i) << " " << (double)(param.eps) << " " << xi << " " << yi << " " << "0.0" << " " << "0.0" << " " << "0.0" << " " << gi << std::endl;
-		//нули пишутся для совместимости с трехмерной программой и обработчиком ConMDV	
+			//нули пишутся для совместимости с трехмерной программой и обработчиком ConMDV	
+			//outfile << std::endl << xi << " " << yi << " " << gi;
+		}
 	}//for i	
 	outfile.close();
+
+	time.second = clock();
 }//SaveKadr(...)
 
 
@@ -211,7 +232,7 @@ void Wake::GetPairs(int type)
 	parallel.SplitMPI(vtx.size());
 
 	/// \todo Временно для профилей из 60 панелей
-	const double max_g = 0.1;		//максимальная циркуляция вихря, получаемого на первом шаге расчета
+	const double max_g = 0.001;		//максимальная циркуляция вихря, получаемого на первом шаге расчета
 	const double coeff_max_g = 0.2; // коэффициент, определяющий максимально возможную циркуляцию вихря при коллапсе
 
 	std::vector<int> locNeighb; //локальный массив соседей (для данного процессора)
@@ -404,10 +425,15 @@ int Wake::RemoveZero()
 
 
 //Реструктуризация вихревого следа
-void Wake::Restruct()
+void Wake::Restruct(timePeriod& time)
 {
+	time.first = clock();
+
+	WakeSynchronize();
 	Collaps(1, 1);
 	Collaps(2, 1);
 	KillFar();
 	RemoveZero();
+
+	time.second = clock();
 }//Restruct()

@@ -262,7 +262,7 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPoints(const std::vector<Vort
 			const Point2D& posJ1 = afl.r[j + 1];
 			const Point2D& tau = afl.tau[j];
 
-			double gamJ =  sheets.freeVortexSheet[j][0] * afl.len[j];
+			double gamJ = sheets.freeVortexSheet[j][0];
 
 			Point2D s = posI - posJ0;
 			Point2D p = posI - posJ1;
@@ -270,10 +270,11 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPoints(const std::vector<Vort
 			double alpha = Alpha(p, s);
 			double lambda = Lambda(p, s);
 
-			tempVel = -alpha* tau.kcross() + lambda*tau;
+//			tempVel = -alpha* tau.kcross() + lambda*tau;
+			tempVel = alpha* tau + lambda * tau.kcross();
 			tempVel *= gamJ;
 			velI += tempVel;
-		}
+		} //for j
 
 		velI *= IDPI;
 		locVelo[i] = velI;

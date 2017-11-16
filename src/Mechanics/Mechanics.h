@@ -61,8 +61,39 @@ public:
 
 	/// \brief Вычисление гидродинамической силы, действующей на профиль
 	///
-	/// \param[in] dt шаг по времени
-	virtual void GetHydroDynamForce() = 0;
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	virtual void GetHydroDynamForce(timePeriod& time) = 0;
+
+
+	/// Генерация заголовка файла нагрузок
+	/// \param[in] airfoilNumber номер профиля, для которого сохраняются силы
+	void GenerateForcesHeader(int airfoilNumber)
+	{
+		std::stringstream forceFileName;
+		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber << ".txt";
+
+		std::ofstream newForcesFile(forceFileName.str());
+		PrintLogoToTextFile(newForcesFile, forceFileName.str(), "Hydrodynamic loads for the airfoil " + passport.airfoilParams[airfoilNumber].fileAirfoil);
+
+		PrintHeaderToTextFile(newForcesFile, "currentStep     currentTime     Fx     Fy");
+
+		newForcesFile.close();
+		newForcesFile.clear();
+	}//GenerateForcesHeader(...)
+
+
+	/// Сохранение строки со статистикой в файл нагрузок
+	/// \param[in] currentStep номер текущего шага
+	/// \param[in] airfoilNumber номер профиля, для которого сохраняются силы
+	void GenerateForcesString(int currentStep, int airfoilNumber)
+	{
+		std::stringstream forceFileName;
+		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber << ".txt";
+
+		std::ofstream forcesFile(forceFileName.str(), std::ios::app);
+		forcesFile << std::endl << currentStep << "	" << passport.physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1];
+		forcesFile.close();
+	}//GenerateForcesString(...)
 
 };
 

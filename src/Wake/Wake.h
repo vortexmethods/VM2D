@@ -44,6 +44,7 @@ public:
 	///
 	/// \param[in] param_ константная ссылка на параметры дискретизации вихревого следа
 	/// \param[in] parallel_ константная ссылка на параметры исполнения в параллельном режиме
+	/// \param[in] airfoils_ константная ссылка на вектор указателей на профили
 	Wake(const WakeDiscretizationProperties& param_, const Parallel& parallel_, const std::vector<std::unique_ptr<Airfoil>>& airfoils_)
 		: param(param_), parallel(parallel_), airfoils(airfoils_) { };
 	
@@ -59,14 +60,17 @@ public:
 	/// 
 	/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
 	/// \param[in] step номер кадра для сохранения
-	void SaveKadr(const std::string& dir, int step) const;
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void SaveKadr(const std::string& dir, int step, timePeriod& time) const;
 
 	/// \brief MPI-синхронизация вихревого следа
 	///
 	/// \todo В целях оптимизации можно подумать над .reserve()
 	///
 	/// Рассылка следа на все процессоры локальной группы процессоров, занятых решением данной задачи
-	void WakeSynchronize();  
+	/// \warning Использует OMP, MPI
+	/// \ingroup Parallel
+	void WakeSynchronize();
 
 	/// \brief Проверка пересечения вихрями следа профиля при перемещении
 	///
@@ -85,7 +89,8 @@ public:
 	/// Исполняется сразу для всех вихрей в пелене
 	/// \n Вихри, находящиеся далеко от профилей, удаляются
 	/// \n Вихри, которые сильно сблизились, коллапсируются
-	void Restruct();
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void Restruct(timePeriod& time);
 
 	/// \brief Зануление далеко улетевших вихрей
 	/// \return число вихрей в дальнем следе, которые занулены

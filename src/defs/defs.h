@@ -15,11 +15,14 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <ctime>
 
 #include "Eigen/Dense"
 
 #include "Point2D.h"
 
+/// Тип для хранения начала и конца промежутка времени
+typedef std::pair<std::clock_t, std::clock_t> timePeriod;
 
 /// Число \f$ \pi \f$
 const double   PI = 3.1415926535897932384626433832795;
@@ -96,6 +99,25 @@ namespace defaults
 	static std::ostream* defaultPtele = &std::cout;
 	
 } //namespace defaults
+
+
+/// \brief Формирование заголовка файла программы VM2D
+///
+/// Печатает в шапку файла заголовок программы VM2D
+///
+/// \param[out] str ссылка на файл для вывода, должен быть открыт
+/// \param[in] fileName константная ссылка на строку с именем файла
+/// \param[in] descr константная ссылка на строку с описанием файла
+void PrintLogoToTextFile(std::ofstream& str, const std::string& fileName, const std::string& descr);
+
+
+/// \brief Формирование подзаголовка в текстовом файле вывода программы VM2D
+///
+/// Печатает в файл вывода программы VM2D подзаголовок и подчеркивает его
+///
+/// \param[out] str ссылка на файл для вывода, должен быть открыт
+/// \param[in] header константная ссылка на строку с заголовком
+void PrintHeaderToTextFile(std::ofstream& str, const std::string& header);
 
 
 /// \brief Переопределение оператора "<<" для вывода в поток вектора std::vector

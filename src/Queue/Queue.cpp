@@ -9,6 +9,7 @@
 */
 
 #include "Queue.h"
+#include "CommentsParser.h"
 
 
 //Конструктор
@@ -25,12 +26,7 @@ Queue::Queue(int& argc, char**& argv, std::ostream& _timeFile, void (*_CreateMpi
 	//(выполняется на глобальном нулевом процессоре)
 	if (myidAll == 0)
 	{
-		//TODO: Переделать вывод в файл (вывод силы)
-		std::ofstream forcesFile("Forces.txt");
-		forcesFile << "currentStep	currentTime	Fx	Fy\n";
-		forcesFile.close();
-
-		//TODO: Переделать вывод в файл (вывод силы)
+			//TODO: Переделать вывод в файл (вывод касательных напряжений)
 		std::ofstream stressFile("Stresses.txt");
 		stressFile.close();
 
@@ -297,6 +293,15 @@ void Queue::TaskSplit()
 		//Синхронизация параметров
 		MPI_Bcast(&(world2D->Passport().physicalProperties.currTime), 1, MPI_DOUBLE, 0, parallel.commWork);
 
+		//Создание файлов для записи сил
+		if ((parallel.myidWork == 0) && (world2D->currentStep == 0))
+		for (size_t q = 0; q < world2D->Passport().airfoilParams.size(); ++q)
+			world2D->GenerateMechanicsHeader(q);
+
+		//Создание файла для записи временной статистики
+		if ((parallel.myidWork == 0) && (world2D->currentStep == 0))
+			world2D->timestat.GenerateStatHeader();
+
 		//TODO
 		//Синхронизация паспортов
 		//MPI_Bcast(...)
@@ -460,7 +465,7 @@ void Queue::RunConveyer()
 		do
 		{
 			if (!world2D->isFinished())
-				world2D->Step();
+				world2D->Step(world2D->timestat.timeWholeStep);
 			
 			if (parallel.myidWork == 0)
 				deltaWallTime = MPI_Wtime() - kvantStartWallTime;
@@ -489,9 +494,9 @@ void Queue::AddTask(int _nProc, const Passport& _passport)
 //Загрузка списка задач
 void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _defaultsFile, const std::string& _switchersFile)
 {
-	std::ifstream tasksFile(_tasksFile);
-	std::ifstream defaultsFile(_defaultsFile);
-	std::ifstream switchersFile(_switchersFile);
+	std::stringstream tasksFile = CommentsParser(_tasksFile).resultStream;
+	std::stringstream defaultsFile = CommentsParser(_defaultsFile).resultStream;
+	std::stringstream switchersFile = CommentsParser(_switchersFile).resultStream;
 	std::vector<std::string> taskFolder;
 		
 	//создаем парсер и связываем его с нужными потоками, на выход получаем список папок с задачами
@@ -523,12 +528,12 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 		*defaults::defaultPinfo << "-------- Problem #" << q << " is loaded --------" << std::endl;
 		*defaults::defaultPinfo << std::endl;
 	}
-	tasksFile.close();
+	//tasksFile.close();
 	tasksFile.clear();
 	
-	defaultsFile.close();
+	//defaultsFile.close();
 	defaultsFile.clear();
 
-	switchersFile.close();
+	//switchersFile.close();
 	switchersFile.clear();
 }//Queue::LoadTasks()

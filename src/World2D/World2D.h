@@ -23,6 +23,8 @@
 
 #include "AirfoilRect.h"
 
+#include "Times.h"
+
 class Queue; //дальнее описание
 
 /*!
@@ -69,28 +71,45 @@ private:
 	/// Умный укзатель на объект, определяющий методику вычисления скоростей
 	std::unique_ptr<Velocity> velocity;
 
+	/// \brief Решение системы линейных алгебраических уравнений
+	///
+	/// Вызывается в Step()
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void World2D::SolveLinearSystem(timePeriod& time);
+
 	/// \brief Заполнение матрицы системы для всех профилей
 	///
 	/// Вызывается в Step()
-	void FillMatrixAndRhs();
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void FillMatrixAndRhs(timePeriod& time);
 
 	/// \brief Вычисляем размер матрицы и резервируем память под нее и под правую часть
 	///
 	/// Вызывается в Step()
-	void ReserveMemoryForMatrixAndRhs();
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void ReserveMemoryForMatrixAndRhs(timePeriod& time);
 	
 	/// \brief Вычисляем скорости вихрей (в пелене и виртуальных)
 	///
 	/// Вызывается в Step()
 	/// \param[in] dt шаг по времени
-	void CalcVortexVelo(double dt);
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void CalcVortexVelo(double dt, timePeriod& time);
 
 	/// \brief Вычисляем новые положения вихрей (в пелене и виртуальных)
 	///
 	/// Вызывается в Step()
 	/// \param[in] dt шаг по времени
+	/// \param[out] newPos новые позиции вихрей
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void MoveVortexes(double dt, std::vector<Point2D>& newPos, timePeriod& time);
+
+	/// \brief Проверка проникновения вихрей внутрь профиля
+	///
+	/// Вызывается в Step()
 	/// \param[in] newPos новые позиции вихрей
-	void MoveVortexes(double dt, std::vector<Point2D>& newPos);
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void World2D::CheckInside(std::vector<Point2D>& newPos, timePeriod& time);
 
 public:
 	/// \brief Конструктор
@@ -120,8 +139,19 @@ public:
 	/// true, если задача решена и выполнен признак останова; false если требуется еще выполнять шаги по времени
 	bool isFinished() const;      
 
+	/// Сведения о временах выполнения основных операций
+	Times timestat;
+
 	/// Основная функция выполнения одного шага по времени
-	void Step();
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void Step(timePeriod& time);
+
+	/// Метод-обертка для вызова метода генерации заголовка файла нагрузок
+	/// \param mechanicsNumber номер профиля, для которого генерируется заголовок файла
+	void GenerateMechanicsHeader(int mechanicsNumber)
+	{
+		mechanics[mechanicsNumber]->GenerateForcesHeader(mechanicsNumber);
+	}
 };
 
 #endif

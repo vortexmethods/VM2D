@@ -1,8 +1,10 @@
 #include "MechanicsRigidImmovable.h"
 
 //Вычисление гидродинамической силы, действующей на профиль
-void MechanicsRigidImmovable::GetHydroDynamForce()
+void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
 {
+	time.first = clock();
+
 	hydroDynamForce = { 0.0, 0.0 };
 
 	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
@@ -20,4 +22,6 @@ void MechanicsRigidImmovable::GetHydroDynamForce()
 	}
 
 	hydroDynamForce = hDFGam + (1.0 / passport.timeDiscretizationProperties.dt) * hDFdelta;
+
+	time.second = clock();
 }

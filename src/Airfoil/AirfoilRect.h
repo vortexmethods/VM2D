@@ -32,15 +32,15 @@ class AirfoilRect
 public:
 
 	/// Конструктор
-	AirfoilRect(const Parallel& parallel)
-		:Airfoil(parallel)
+	AirfoilRect(const Passport& passport_, const int numberInPassport_, const Parallel& parallel_)
+		:Airfoil(passport_, numberInPassport_, parallel_)
 	{ };
 
 	/// Деструктор
 	virtual ~AirfoilRect() { };
 
 	//далее -- реализация виртуальной функции
-	virtual void ReadFromFile(const std::string& dir, const AirfoilParams& param);
+	virtual void ReadFromFile(const std::string& dir);
 
 	virtual void GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<Point2D>& velo, double epscol);
 };

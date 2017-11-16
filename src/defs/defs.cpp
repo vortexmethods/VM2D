@@ -8,8 +8,66 @@
 \date 1 декабря 2017 г.
 */
 
+#include <ctime>
+#include <iomanip>
+
 #include "defs.h"
 
+//Формирование заголовка файла программы VM2D
+void PrintLogoToTextFile(std::ofstream& str, const std::string& fileName, const std::string& descr)
+{
+	str <<
+		"/*--------------------------------*- C++ -*------------------*---------------*\\" << '\n' << \
+		"| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |" << '\n' << \
+		"| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |" << '\n' << \
+		"| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*" << '\n' << \
+		"|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |" << '\n' << \
+		"|   ##   ##   ## ###### #####   |  http://www.github.com/vortexmethods/VM2D   |" << '\n' << \
+		"|                                                                             |" << '\n' << \
+		"| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |" << '\n' << \
+		"*-----------------------------------------------------------------------------*" << '\n';
+
+	str <<
+		"| File name: " << fileName;
+	for (int q = 0; q < 65 - fileName.length(); ++q)
+		str << " ";
+	str <<
+		"|"  << '\n';
+
+	str <<
+		"| Info: " << descr;
+	for (int q = 0; q < 70 - descr.length(); ++q)
+		str << " ";
+	str <<
+		"|" << '\n';
+
+	std::time_t t = std::time(nullptr);
+	std::tm tm = *std::localtime(&t);
+	std::stringstream dateTimeStringStream;
+	dateTimeStringStream << "| This file was created automatically " << std::put_time(&tm, "%d %B %Y") << " at " << std::put_time(&tm, "%H:%M:%S");
+	//std::string dateTimeString;
+	//dateTimeStringStream >> dateTimeString;
+
+	str << dateTimeStringStream.str();		
+	for (int q = 0; q < 78 - dateTimeStringStream.str().length(); ++q)
+		str << " ";
+	str <<
+		"|" << '\n';
+
+	str <<
+		"\\*---------------------------------------------------------------------------*/" << '\n';
+}//PrintLogoToTextFile(...)
+
+
+//Формирование подзаголовка в текстовом файле вывода программы VM2D
+void PrintHeaderToTextFile(std::ofstream& str, const std::string& header)
+{
+	str << '\n';
+	str << "// " << header << '\n';
+	str << "//";
+	for (size_t q = 0; q < header.length()+1; ++q)
+		str << '-';
+}
 
 //Сохранение матрицы в поток
 void SaveToStream(const Eigen::MatrixXd& matr, std::ostream& str)

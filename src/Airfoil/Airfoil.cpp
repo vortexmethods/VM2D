@@ -11,8 +11,8 @@
 #include "Airfoil.h"
 
 // Конструктор
-Airfoil::Airfoil(const Parallel& parallel_)
-:np(0), parallel(parallel_)
+Airfoil::Airfoil(const Passport& passport_, const int numberInPassport_, const Parallel& parallel_)
+	: np(0), passport(passport_), numberInPassport(numberInPassport_), parallel(parallel_)
 { }
 
 
