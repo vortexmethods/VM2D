@@ -40,37 +40,36 @@ private:
 	/// \brief Данные считываемые из основного файла-паспорта расчета
 	///
 	/// Неупорядоченный ассоциативный контейнер, хранящий данные из паспорта расчета
-	/// \n По умолчанию данные берутся из файла passport.txt, но это имя может быть изменено ключом pspFile в строке параметров задачи 
+	/// \n По умолчанию данные берутся из файла passport, но это имя может быть изменено ключом pspFile в строке параметров задачи 
 	std::unordered_map<std::string, std::vector<std::string>> database;
 	
 	/// \brief Данные считываемые из списка умолчаний
 	///
 	/// Неупорядоченный ассоциативный контейнер, хранящий данные из файла со списком значений по умолчанию
-	/// \n По умолчанию данные берутся из файла defaults.txt
+	/// \n По умолчанию данные берутся из файла defaults
 	std::unordered_map<std::string, std::vector<std::string>> defaults;
 
 	/// \brief Данные считываемые из параметров конкретной задачи
 	///
-	/// Неупорядоченный ассоциативный контейнер, хранящий данные из строки --- перечня параметров конкретной задачи в файле tasks.txt. 
+	/// Неупорядоченный ассоциативный контейнер, хранящий данные из строки --- перечня параметров конкретной задачи в файле problems. 
 	/// \n Здесь же определяются переменные, которые затем могут использоваться методом разыменовывания в файлах-паспортах конкретных задач
 	std::unordered_map<std::string, std::vector<std::string>> vars;
 
 	/// \brief Данные считываемые из перечня параметров-переключателей
 	///
 	/// Неупорядоченный ассоциативный контейнер, хранящий значения параметров-переключателей 
-	/// \n По умолчанию данные берутся из файла switchers.txt. 	
+	/// \n По умолчанию данные берутся из файла switcher. 	
 	std::unordered_map<std::string, std::vector<std::string>> switchers;
 
 	/// \brief Парсинг заданного потока 
 	///
 	/// Разбирает поток вида key = value   или   key = { value1, value2, ..., valueN }
-	/// \n Возвращает базу данных и список ключей в порядке появления, указывается тип скобок, по умолчанию --- круглые
+	/// \n Возвращает базу данных, указывается тип скобок, по умолчанию --- круглые
 	/// \param[in] stream ссылка на поток, который требуется распарсить
 	/// \param[out] database ссылка на заполняемую базу данных (unordered_map)
-	/// \param[out] vekKey ссылка на список ключей в порядке появления
 	/// \param[in] openBracket тип открывающейся скобки (по умолчанию --- "(" )
 	/// \param[in] closeBracket тип закрывающейся скобки (по умолчанию --- ")" )
-	void ParseStream(std::istream& stream, std::unordered_map<std::string, std::vector<std::string>>& database, std::vector<std::string>& vekKey, char openBracket = '(', char closeBracket = ')');
+	void ParseStream(std::istream& stream, std::unordered_map<std::string, std::vector<std::string>>& database, char openBracket = '(', char closeBracket = ')');
 
 public:
 	/// \brief Конструктор, принимающий четыре потока
@@ -92,25 +91,16 @@ public:
 	/// \param[in] mainStream ссылка на основной поток параметров
 	/// \param[in] defaultsStream ссылка на поток по умолчанию
 	StreamParser(std::istream& mainStream, std::istream& defaultsStream);
-
-	/// \brief Конструктор, принимающий два потока и возвращающий список ключей
-	/// 
-	/// Заполняет 2 базы данных --- database, defaults; базы данных switchers и vars остаются пустыми; 
-	/// возвращает список ключей в порядке их появления
-	/// \n Используется для обработки списка задач
-	///
-	/// \param[in] mainStream ссылка на основной поток параметров
-	/// \param[in] defaultsStream ссылка на поток по умолчанию
-	/// \param[out] vekKeys ссылка на список ключей в порядке их появления
-	StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::vector<std::string>& vekKeys);
-		
+	
 	/// \brief Конструктор, принимающий один поток
 	/// 
 	/// Заполняет 1 базу данных --- database; базы данных defaults, switchers и vars остаются пустыми
-	/// \n Используется для считывания профиля и следа
+	/// \n Используется для считывания профиля, следа, списка задач
 	///
 	/// \param[in] mainStream ссылка на основной поток параметров
-	StreamParser(std::istream& mainStream);
+	/// \param[in] openBracket тип открывающейся скобки (по умолчанию --- "{" )
+	/// \param[in] closeBracket тип закрывающейся скобки (по умолчанию --- "}" )
+	StreamParser(std::istream& mainStream, char openBracket = '{', char closeBracket = '}');
 
 	/// Деструктор
 	~StreamParser() { };
@@ -275,6 +265,11 @@ public:
 					std::stringstream ss(s);
 					T elem;
 					ss >> elem;
+					if (typeid(elem).name() == typeid(std::string("TestString")).name())
+					{
+						std::string* str = reinterpret_cast<std::string*>(&elem);
+						str->erase(remove(str->begin(), str->end(), '\"'), str->end());
+					}
 					res.push_back(elem);
 				}
 				else
@@ -316,6 +311,11 @@ public:
 					std::stringstream ss(search_it->second[0]);
 					T elem;
 					ss >> elem;
+					if (typeid(elem).name() == typeid(std::string("TestString")).name())
+					{
+						std::string* str = reinterpret_cast<std::string*>(&elem);
+						str->erase(remove(str->begin(), str->end(), '\"'), str->end());
+					}
 					res = elem;
 				}
 				
@@ -326,6 +326,11 @@ public:
 					std::stringstream ss(s);
 					T elem;
 					ss >> elem;
+					if (typeid(elem).name() == typeid(std::string("TestString")).name())
+					{
+						std::string* str = reinterpret_cast<std::string*>(&elem);
+						str->erase(remove(str->begin(), str->end(), '\"'), str->end());
+					}
 					res = elem;
 				}
 				else
@@ -338,6 +343,11 @@ public:
 						std::stringstream ss(search_var->second[0]);
 						T elem;
 						ss >> elem;
+						if (typeid(elem).name() == typeid(std::string("TestString")).name())
+						{
+							std::string* str = reinterpret_cast<std::string*>(&elem);
+							str->erase(remove(str->begin(), str->end(), '\"'), str->end());
+						}
 						res = elem;
 					}
 					else

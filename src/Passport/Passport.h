@@ -22,6 +22,7 @@
 
 #include <memory>
 
+#include "Preprocessor.h"
 #include "StreamParser.h"
 
 
@@ -231,6 +232,12 @@ private:
 public:
 	/// Рабочий каталог задачи
 	std::string dir;
+
+	/// Каталог с файлами профилей
+	std::string airfoilsDir;
+
+	/// Каталог с файлами вихревых следов
+	std::string wakesDir;
 
 	/// Список структур с параметрами профилей 
 	std::vector<AirfoilParams> airfoilParams;

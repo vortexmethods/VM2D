@@ -1,6 +1,0 @@
-//List of problems to be solved
-//CaseFFT = {}
-//Case1000 = {} //all the parameters are default
-//Case60 = {} //all the parameters are default
-Case200 = {} //all the parameters are default
-//Case80 = {pspfile = passport.txt, np = 1, px = 874, py = 0.23, lssolver = 90, alpha = 100, vx = -10, vy = -11, ts = 10}

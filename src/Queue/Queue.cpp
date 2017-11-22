@@ -8,8 +8,13 @@
 \date 1 декабря 2017 г.
 */
 
+#if !defined(__linux__)
+#include <direct.h>
+#endif
+
+#include <fstream>
+
 #include "Queue.h"
-#include "CommentsParser.h"
 
 
 //Конструктор
@@ -26,8 +31,8 @@ Queue::Queue(int& argc, char**& argv, std::ostream& _timeFile, void (*_CreateMpi
 	//(выполняется на глобальном нулевом процессоре)
 	if (myidAll == 0)
 	{
-			//TODO: Переделать вывод в файл (вывод касательных напряжений)
-		std::ofstream stressFile("Stresses.txt");
+		//TODO: Переделать вывод в файл (вывод касательных напряжений)
+		std::ofstream stressFile("Stresses");
 		stressFile.close();
 
 		//Устанавливаем флаг занятости в состояние "свободен" всем процессорам, 	
@@ -494,40 +499,85 @@ void Queue::AddTask(int _nProc, const Passport& _passport)
 //Загрузка списка задач
 void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _defaultsFile, const std::string& _switchersFile)
 {
-	std::stringstream tasksFile = CommentsParser(_tasksFile).resultStream;
-	std::stringstream defaultsFile = CommentsParser(_defaultsFile).resultStream;
-	std::stringstream switchersFile = CommentsParser(_switchersFile).resultStream;
+	std::stringstream tasksFile = Preprocessor(_tasksFile).resultStream;
+	std::stringstream defaultsFile = Preprocessor(_defaultsFile).resultStream;
+	std::stringstream switchersFile = Preprocessor(_switchersFile).resultStream;
 	std::vector<std::string> taskFolder;
 		
-	//создаем парсер и связываем его с нужными потоками, на выход получаем список папок с задачами
-	std::unique_ptr<StreamParser> parserTask;
-	parserTask.reset(new StreamParser(tasksFile, defaultsFile, taskFolder));
-	
-	for (size_t q = 0; q < taskFolder.size(); ++q)
+	std::unique_ptr<StreamParser> parserTaskList;
+	parserTaskList.reset(new StreamParser(tasksFile, '(', ')'));
+
+	std::vector<std::string> alltasks;
+	parserTaskList->get("problems", alltasks);
+
+	size_t nTasks = alltasks.size();
+
+	for (size_t i = 0; i < nTasks; ++i)
 	{
-		*defaults::defaultPinfo << "----- Problem #" << q << " is being loaded -----" << std::endl;
-		
-		//считываем параметры задачи, если они есть
-		std::vector<std::string> taskLine;
-		std::string dir = taskFolder[q];
-		parserTask->get(dir, taskLine);
+		if (alltasks[i].length() > 0)
+		{
+			//делим имя файла + выражение в скобках на 2 подстроки
+			std::pair<std::string, std::string> taskLine = StreamParser::SplitString(alltasks[i]);
 
-		std::string pspFile;
-		int np;
-		
-		std::unique_ptr<StreamParser> parserOneTask;
-		std::stringstream paramStream(StreamParser::VectorStringToString(taskLine));
-		parserOneTask.reset(new StreamParser(paramStream, defaultsFile));
-		
-		parserOneTask->get("pspfile", pspFile, &defaults::defaultPspFile);
-		parserOneTask->get("np", np, &defaults::defaultNp);
-		
-		Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, taskLine);
-		AddTask(np, psp);
+			std::string dir = taskLine.first;
 
-		*defaults::defaultPinfo << "-------- Problem #" << q << " is loaded --------" << std::endl;
-		*defaults::defaultPinfo << std::endl;
-	}
+			//вторую подстроку разделяем на вектор из строк по запятым, стоящим вне фигурных скобок		
+			std::vector<std::string> vecTaskLineSecond = StreamParser::StringToVector(taskLine.second, '{', '}');
+
+			//создаем парсер и связываем его с параметрами профиля
+			std::stringstream tskStream(StreamParser::VectorStringToString(vecTaskLineSecond));
+			std::unique_ptr<StreamParser> parserTask;
+
+			parserTask.reset(new StreamParser(tskStream, defaultsFile));
+
+			std::string pspFile;
+			int np;
+			//считываем нужные параметры с учетом default-значений
+			parserTask->get("pspfile", pspFile, &defaults::defaultPspFile);
+			parserTask->get("np", np, &defaults::defaultNp);
+			
+			std::string copyPspFile;
+			parserTask->get("copyPspFile", copyPspFile, &defaults::defaultCopyPspFile);
+			if (copyPspFile.length() > 0)
+			{
+#if !defined(__linux__)
+				_mkdir(dir.c_str());
+#else
+				mkdir(dir, S_IRWXU | S_IRGRP | S_IROTH);
+#endif
+
+				std::ofstream outPassportFile;
+				outPassportFile.open("./" + dir + "/" + pspFile);
+				PrintLogoToTextFile(outPassportFile, "./" + dir + "/" + pspFile, "Copy of the existing passport ./" + copyPspFile);
+				
+				std::stringstream ss(Preprocessor(copyPspFile).resultStream);
+
+				std::string readline;
+
+				while (ss.good())
+				{
+					getline(ss, readline);
+
+					readline.erase(remove(readline.begin(), readline.end(), ' '), readline.end());
+					readline.erase(remove(readline.begin(), readline.end(), '\t'), readline.end());
+
+					if (readline.length() > 0)
+						outPassportFile << readline << ";" << std::endl;
+				}
+				
+				
+				
+				outPassportFile.close();
+			}
+
+			Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, vecTaskLineSecond);
+			AddTask(np, psp);
+			
+			*defaults::defaultPinfo << "-------- Problem #" << i << " is loaded --------" << std::endl;
+			*defaults::defaultPinfo << std::endl;
+		} //for i
+	} 
+
 	//tasksFile.close();
 	tasksFile.clear();
 	

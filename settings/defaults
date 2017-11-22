@@ -1,0 +1,23 @@
+/*--------------------------------*- C++ -*------------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  http://www.github.com/vortexmethods/VM2D   |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: defaults.txt                                                     |
+| Info: Default values for various parameters                                 |
+\*---------------------------------------------------------------------------*/
+
+angle = 0.0;
+scale = 1.0;
+basePoint = {3.0, 5.0};
+panelsType = panelsRectilinear;                              //panelsRectilinear, panelsCurvilinear
+boundaryConditionSatisfaction = boundaryVorticesCollocation; //boundaryVorticesCollocation, boundaryConstantLayerAverage
+mechnicalSystem = mechanicsRigidImmovable;
+np = 1;
+
+airfoilsDir = "../settings/airfoils/";
+wakesDir = "../settings/wakes/";

@@ -21,13 +21,64 @@ int BoundaryConstLayerAver::GetUnknownsSize() const
 //Пересчет решения на интенсивность вихревого слоя
 void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol)
 {
+	//TODO: Пока нет слоев, сразу сбрасываются вихри
+
+	Vortex2D virtVort;
+	Point2D midNorm;
+
+	double delta = passport.wakeDiscretizationProperties.delta;
+
+	//Сбрасываем с начала 1-й панели:
+	//TODO: Убрали среднюю нормаль
+	//midNorm = (afl.nrm[0] + afl.nrm[afl.np - 1]).unit(delta);
+	//midNorm = afl.nrm[0] * delta;
+	//virtVort.r() = afl.r[0] + midNorm;
+
+	//TODO: Переделала сброс на сброс с конца панели
+	//virtVort.g() = 0.5*(sol(0)*afl.len[0] + sol(afl.np - 1)*afl.len[afl.np - 1]);
+	//virtualWake.push_back(virtVort);
+
+	//for (size_t i = 1; i < afl.np; ++i)
+	//{
+	//	//TODO: Убрали среднюю нормаль
+	//	//midNorm = (afl.nrm[i] + afl.nrm[i - 1]).unit(delta);
+	//	midNorm = afl.nrm[i] * delta;
+	//	virtVort.r() = afl.r[i] + midNorm;
+
+	//	/// \todo сделать формирование присоединенных вихрей и источников
+	//	virtVort.g() = 0.5*(sol(i)*afl.len[i] + sol(i - 1)*afl.len[i - 1]);;
+
+	//	virtualWake.push_back(virtVort);
+	//}
+
+	
+	for (size_t i = 0; i < afl.np - 1; ++i)
+	{
+		//POLARA
+		//Убрали среднюю нормаль
+		//midNorm = (afl.nrm[i] + afl.nrm[i - 1]).unit(delta);
+		midNorm = afl.nrm[i] * delta;
+		virtVort.r() = afl.r[i + 1] + midNorm;
+
+		/// \todo сделать формирование присоединенных вихрей и источников
+		virtVort.g() = 0.5*(sol(i)*afl.len[i] + sol(i + 1)*afl.len[i + 1]);;
+
+		virtualWake.push_back(virtVort);
+	}
+
+	midNorm = afl.nrm[afl.np - 1] * delta;
+	virtVort.r() = afl.r[0] + midNorm;
+	virtVort.g() = 0.5*(sol(0)*afl.len[0] + sol(afl.np - 1)*afl.len[afl.np - 1]);
+	virtualWake.push_back(virtVort);
+
+
 	for (size_t j = 0; j < afl.np; ++j)
-		sheets.freeVortexSheet[j][0] = sol(j);
+		sheets.freeVortexSheet[j][0] = 0.0;
 
 	//"закольцовываем"
 	sheets.freeVortexSheet.push_back(sheets.freeVortexSheet[0]);
 
-
+/*
 	Vortex2D virtVort;
 	Point2D midNorm;
 
@@ -51,8 +102,8 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 		virtVort.g() = 0.5*(sol(i)*afl.len[i] + sol(i - 1)*afl.len[i - 1]);;
 
 		virtualWake.push_back(virtVort);
-	}
-
+	}*/
+	
 }//SolutionToFreeVortexSheetAndVirtualVortex(...)
 
 
@@ -160,8 +211,7 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 			double alpha = Alpha(p, s);
 			double lambda = Lambda(p, s);
 
-			tempVel = tau * (alpha * tau + lambda * tau.kcross());
-			tempVel *= gamJ;
+			tempVel = gamJ * alpha;
 			velI -= tempVel;
 		}
 

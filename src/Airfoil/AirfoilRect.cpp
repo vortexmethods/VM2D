@@ -50,7 +50,7 @@ void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка про
 }//ReadFromFile(...)
 
 //Вычисление диффузионных скоростей в наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения
-void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<Point2D>& velo, double epscol)
+void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<Point2D>& velo)
 {
 	std::vector<Point2D> selfVelo;
 
@@ -81,9 +81,9 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 	double vs, i0;
 	double iDDomRad, expon;
 
-	double iDPIepscol2 = 1.0 / (PI * sqr(epscol));
+	double iDPIepscol2 = 1.0 / (PI * sqr(passport.wakeDiscretizationProperties.epscol));
 
-
+//pragma не работает!!!
 //	#pragma omp parallel for \
 		default(none) \
 		shared(locDiffVelo, domainRadius, points, id, epscol, iDDomRad, iDPIepscol2) \
@@ -107,10 +107,13 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 
 			s = q * vec;
 
-			if (fabs(s) > 0.5 * len[j])
+			//POLARA
+			//Сделала расстояние до центра, а не до конца панели
+			/*if (fabs(s) > 0.5 * len[j])
 				d = sqrt(sqr(fabs(q*vec) - 0.5*len[j]) + sqr(q*nrm[j]));
 			else
-				d = fabs(q*nrm[j]);
+				d = fabs(q*nrm[j]);*/
+			d = q.length();
 
 			if (d < 50.0 * len[j])	//Почему зависит от длины панели???
 			{
@@ -127,7 +130,7 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 					I3 += mn;
 					viscousStress[j] += points[i].g() * expon * iDPIepscol2;
 				}
-				else if ((d <= 5.0 * len[j]) && (d >= 0.001 * len[j]))
+				else if ((d <= 5.0 * len[j]) && (d >= 0.1 * len[j]))
 				{
 					vs = 0.0;
 					new_n = (int)(ceil(10.0 * len[j] / d)) + 1;
@@ -147,7 +150,7 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 					}//for m
 					viscousStress[j] += vs / new_n * iDPIepscol2;
 				}
-				else if (d <= 0.001 * len[j])
+				else if (d <= 0.1 * len[j])
 				{
 					i0 = PI * sqr(domainRadius[i]);
 					if (fabs(s) > 0.5 * len[j])

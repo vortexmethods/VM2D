@@ -42,7 +42,7 @@ public:
 	//далее -- реализация виртуальной функции
 	virtual void ReadFromFile(const std::string& dir);
 
-	virtual void GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<Point2D>& velo, double epscol);
+	virtual void GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<Point2D>& velo);
 };
 
 #endif

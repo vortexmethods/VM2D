@@ -11,7 +11,6 @@
 //#include <stringstream>
 
 #include "Passport.h"
-#include "CommentsParser.h"
 
 //Конструктор
 Passport::Passport(const std::string& _dir, const std::string& _filePassport, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars)
@@ -28,9 +27,9 @@ Passport::Passport(const std::string& _dir, const std::string& _filePassport, co
 		std::stringstream varsStream(StreamParser::VectorStringToString(vars));
 
 		GetAllParamsFromParser(
-			CommentsParser(fileFullName).resultStream, 
-			CommentsParser(defaultsFileFullName).resultStream, 
-			CommentsParser(switchersFileFullName).resultStream, 
+			Preprocessor(fileFullName).resultStream, 
+			Preprocessor(defaultsFileFullName).resultStream,
+			Preprocessor(switchersFileFullName).resultStream,
 			varsStream
 			);
 
@@ -77,6 +76,9 @@ void Passport::GetAllParamsFromParser
 	parser->get("velocityComputation", numericalSchemes.velocityComputation);
 	parser->get("wakeMotionIntegrator", numericalSchemes.wakeMotionIntegrator);
 	
+	parser->get("airfoilsDir", airfoilsDir, &defaults::defaultAirfoilsDir);
+	parser->get("wakesDir",    wakesDir,    &defaults::defaultWakesDir);
+
 	parser->get("fileWake", wakeDiscretizationProperties.fileWake, &defaults::defaultFileWake);
 
 	std::vector<std::string> airfoil;
@@ -143,6 +145,9 @@ void Passport::PrintAllParams()
 	out << str << "velocityComputation = " << numericalSchemes.velocityComputation << std::endl;
 	out << str << "wakeMotionIntegrator = " << numericalSchemes.wakeMotionIntegrator << std::endl;
 	
+	out << str << "airfoilsDir = " << airfoilsDir << std::endl;
+	out << str << "wakesDir = " << wakesDir << std::endl;
+
 	out << str << "number of airfoils = " << airfoilParams.size() << std::endl;
 	for (size_t q = 0; q < airfoilParams.size(); ++q)
 	{

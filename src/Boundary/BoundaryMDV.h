@@ -48,10 +48,11 @@ private:
 public:
 	/// \brief Конструктор
 	/// 
-	/// \param[in] afl_ константная ссылка на профиль;
-	/// \param[in] allBoundry_ константная ссылка на вектор из указателей на все граничные условия
-	/// \param[in] wake_ константная ссылка на вихревой след;
-	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
+	/// \param[in] passport_ константная ссылка на паспорт расчета
+	/// \param[in] afl_ константная ссылка на профиль
+	/// \param[in] allBoundary_ константная ссылка на вектор из указателей на все граничные условия
+	/// \param[in] wake_ константная ссылка на вихревой след
+	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения
 	BoundaryMDV(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, const Wake& wake_, const Parallel& parallel_);
 
 	/// Деструктор

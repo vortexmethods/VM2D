@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*------------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  http://www.github.com/vortexmethods/VM2D   |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: passport.txt                                                     |
+| Info: Parameters of the problem to be solved                                |
+\*---------------------------------------------------------------------------*/
+
+//Physical Properties
+rho = 1.0;
+vInf = {1.0, 0.0};
+nu = 0.01;
+
+//Time Discretization Properties
+//timeStart = 0.0;    //by default=0.0
+timeStop = 1001.0;
+dt = 0.004;
+timeAccel = 0.00;		//by default=0.0
+deltacntText = 1;     //by default=1
+deltacntBinary = 0;   //by default=0
+
+//Wake Discretization Properties
+eps = 0.001;
+epscol = 0.00133333333333333;
+distKill = 20.0;		//by default=10.0
+//delta = 5.e-6;		//by default=1.e-5
+delta = 0.000001;
+
+//Numerical Schemes
+linearSystemSolver = 0;
+velocityComputation = velocityBiotSavart;                      // velocityBiotSavart,  velocityFourier,  velocityBarnesHut
+wakeMotionIntegrator = 0;
+
+//Files and parameters
+//airfoil = {};
+airfoil = { "Blasius528"(basePoint = {0.0, 0.0}, 
+                         panelsType = panelsRectilinear, 
+                         boundaryConditionSatisfaction = boundaryConstantLayerAverage) };
+					   //boundaryVorticesCollocation //boundaryConstantLayerAverage //mechnicalSystem = mechanicsRigidImmovable
+//fileWake = { "Test_wake" };
+//fileWake = { "OblakoV1000" };                              //by default={}

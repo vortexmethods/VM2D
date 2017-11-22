@@ -166,7 +166,6 @@ void VelocityBiotSavart::CalcDiffVeloToSetOfPoints(const std::vector<Vortex2D>& 
 
 	//std::ostringstream sss;
 	//sss << "velo_";
-	//sss << ".txt";
 	//std::ofstream veloFile(sss.str());
 	//for (int i = 0; i < domainRadius.size(); ++i)
 	//	veloFile << domainRadius[i] << std::endl;

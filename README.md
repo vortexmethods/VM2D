@@ -1,15 +1,18 @@
-#VM2D
+VM2D
+====
 
-Open-Source Code for 2D Flow Simulation by Using Meshless Lagrangian Vortex Methods
-
-    \      /  /|   /|    VM2D: Vortex Method
-     \    /  / |  / |    for 2D Flow Simulation:
-      \  /  /  | /  |    Open Source Code
-       \/  /   |/   |        
-
-    Copyright (C) 2017 Ilia K. Marchevsky
-    Copyright (C) 2017 Kseniia S. Kuzmina
-    Copyright (C) 2017 Evgenia P. Ryatina				 
+/*--------------------------------*- C++ -*------------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  http://www.github.com/vortexmethods/VM2D   |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: README.md                                                        |
+| Info: 2D Flow Simulation by Using Meshless Lagrangian Vortex Methods        |
+\*---------------------------------------------------------------------------*/
 
 License
 -------

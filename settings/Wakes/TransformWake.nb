@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      4544,        152]
-NotebookOptionsPosition[      3904,        125]
-NotebookOutlinePosition[      4251,        140]
-CellTagsIndexPosition[      4208,        137]
+NotebookDataLength[      4566,        152]
+NotebookOptionsPosition[      3926,        125]
+NotebookOutlinePosition[      4273,        140]
+CellTagsIndexPosition[      4230,        137]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -33,10 +33,10 @@ Cell[BoxData["\<\"E:\\\\VM2D\\\\Wakes\"\>"], "Output",
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"filename", "=", "\"\<FFT_wake.txt\>\""}], ";"}]], "Input",
+  RowBox[{"filename", "=", "\"\<FFT_wake\>\""}], ";"}]], "Input",
  CellChangeTimes->{{3.7021883123206425`*^9, 3.70218831955503*^9}, {
-  3.7021884726959786`*^9, 3.702188474102233*^9}, {3.702203393583752*^9, 
-  3.702203396927944*^9}}],
+   3.7021884726959786`*^9, 3.702188474102233*^9}, {3.702203393583752*^9, 
+   3.702203396927944*^9}, 3.7203349986801453`*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -140,19 +140,19 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 172, 3, 47, "Input"],
+Cell[580, 22, 172, 3, 30, "Input"],
 Cell[755, 27, 196, 3, 30, "Output"]
 }, Open  ]],
-Cell[966, 33, 260, 5, 30, "Input"],
-Cell[1229, 40, 312, 8, 47, "Input"],
+Cell[966, 33, 282, 5, 30, "Input"],
+Cell[1251, 40, 312, 8, 30, "Input"],
 Cell[CellGroupData[{
-Cell[1566, 52, 200, 5, 30, "Input"],
-Cell[1769, 59, 199, 3, 30, "Output"]
+Cell[1588, 52, 200, 5, 30, "Input"],
+Cell[1791, 59, 199, 3, 30, "Output"]
 }, Open  ]],
-Cell[1983, 65, 216, 6, 30, "Input"],
+Cell[2005, 65, 216, 6, 30, "Input"],
 Cell[CellGroupData[{
-Cell[2224, 75, 1572, 44, 84, "Input"],
-Cell[3799, 121, 89, 1, 30, "Output"]
+Cell[2246, 75, 1572, 44, 50, "Input"],
+Cell[3821, 121, 89, 1, 30, "Output"]
 }, Open  ]]
 }
 ]

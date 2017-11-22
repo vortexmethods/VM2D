@@ -18,44 +18,28 @@ std::ostream* StreamParser::perr = defaults::defaultPerr;
 //Конструктор, принимающий четыре потока
 StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream)
 {
-	std::vector<std::string> tempVekKeys;
-	ParseStream(mainStream, database, tempVekKeys);
-	ParseStream(defaultsStream, defaults, tempVekKeys);
-	ParseStream(switchersStream, switchers, tempVekKeys);
-	ParseStream(varsStream, vars, tempVekKeys);
+	ParseStream(mainStream, database);
+	ParseStream(defaultsStream, defaults);
+	ParseStream(switchersStream, switchers);
+	ParseStream(varsStream, vars);
 }//StreamParser(...)
 
 
 //Конструктор, принимающий два потока
 StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream)
 {
-	std::vector<std::string> tempVekKeys;
-	ParseStream(mainStream, database, tempVekKeys);
-	ParseStream(defaultsStream, defaults, tempVekKeys);
+	ParseStream(mainStream, database);
+	ParseStream(defaultsStream, defaults);
 
-	switchers.clear();
-	vars.clear();
-}//StreamParser(...)
-
-
-//Конструктор, принимающий два потока и возвращающий список ключей
-StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::vector<std::string>& vekKeys)
-{
-	ParseStream(mainStream, database, vekKeys);
-
-	std::vector<std::string> tempVekKeys;
-	ParseStream(defaultsStream, defaults, tempVekKeys);
-	
 	switchers.clear();
 	vars.clear();
 }//StreamParser(...)
 
 
 //Конструктор, принимающий один поток
-StreamParser::StreamParser(std::istream& mainStream)
+StreamParser::StreamParser(std::istream& mainStream, char openBracket, char closeBracket)
 {
-	std::vector<std::string> tempVekKeys;
-	ParseStream(mainStream, database, tempVekKeys, '{', '}');
+	ParseStream(mainStream, database, openBracket, closeBracket);
 		
 	defaults.clear();
 	switchers.clear();
@@ -133,7 +117,7 @@ std::pair<std::string, std::string> StreamParser::SplitString(std::string line)
 
 
 //Парсинг заданного потока
-void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std::string, std::vector<std::string>>& database, std::vector<std::string>& vekKey, char openBracket, char closeBracket)
+void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std::string, std::vector<std::string>>& database, char openBracket, char closeBracket)
 {
 	std::string line, readline;
 
@@ -169,7 +153,6 @@ void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std:
 
 			if (search_it == database.end())
 			{
-				vekKey.push_back(key);
 				std::string value = line.substr(posEqual + 1, line.length());
 				database.insert(make_pair(key, StringToVector(value, openBracket, closeBracket)));
 			}

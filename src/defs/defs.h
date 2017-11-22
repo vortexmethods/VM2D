@@ -35,7 +35,7 @@ const double  DPI = 6.2831853071795864769252867665590;
 
 /// \brief Глобальные параметры по умолчанию
 ///
-/// Они могут не указываться ни в параметрах задач, ни в файле defaults.txt
+/// Они могут не указываться ни в параметрах задач, ни в файле defaults
 namespace defaults
 {
 	/// Начало расчета
@@ -55,6 +55,12 @@ namespace defaults
 
 	/// Расстояние, на которое рождаемый вихрь отодвигается от профиля
 	const double defaultDelta = 1.e-5;
+
+	/// Каталог с файлами профилей
+	const std::string defaultAirfoilsDir = "./airfoils/";
+
+	/// Каталог с файлами вихревых следов
+	const std::string defaultWakesDir = "./wakes/";
 
 	/// Список профилей
 	const std::vector<std::string> defaultFileAirfoil({});
@@ -84,10 +90,13 @@ namespace defaults
 	const int defaultMechanicalSystem = 0;
 
 	/// Имя файла с паспортом задачи
-	const std::string defaultPspFile = "passport.txt";
+	const std::string defaultPspFile = "passport";
 	
 	/// Необходимое число процессоров для решения задачи
 	const int defaultNp = 1;
+
+	/// Имя файла с паспортом задачи для копирования в новые каталоги
+	const std::string defaultCopyPspFile = "";
 
 	/// Поток вывода логов
 	static std::ostream* defaultPinfo = &std::cout;

@@ -8,7 +8,6 @@
 \date 1 декабря 2017 г.
 */
 
-#include <ctime>
 #include <iomanip>
 
 #include "defs.h"
@@ -29,27 +28,32 @@ void PrintLogoToTextFile(std::ofstream& str, const std::string& fileName, const 
 
 	str <<
 		"| File name: " << fileName;
-	for (int q = 0; q < 65 - fileName.length(); ++q)
+	for (size_t q = 0; q < 65 - fileName.length(); ++q)
 		str << " ";
 	str <<
 		"|"  << '\n';
 
 	str <<
 		"| Info: " << descr;
-	for (int q = 0; q < 70 - descr.length(); ++q)
+	for (size_t q = 0; q < 70 - descr.length(); ++q)
 		str << " ";
 	str <<
 		"|" << '\n';
 
 	std::time_t t = std::time(nullptr);
+
+#pragma warning(push)
+#pragma warning(disable : 4996) //_CRT_SECURE_NO_WARNINGS
 	std::tm tm = *std::localtime(&t);
+#pragma warning(pop)
+
 	std::stringstream dateTimeStringStream;
 	dateTimeStringStream << "| This file was created automatically " << std::put_time(&tm, "%d %B %Y") << " at " << std::put_time(&tm, "%H:%M:%S");
 	//std::string dateTimeString;
 	//dateTimeStringStream >> dateTimeString;
 
 	str << dateTimeStringStream.str();		
-	for (int q = 0; q < 78 - dateTimeStringStream.str().length(); ++q)
+	for (size_t q = 0; q < 78 - dateTimeStringStream.str().length(); ++q)
 		str << " ";
 	str <<
 		"|" << '\n';

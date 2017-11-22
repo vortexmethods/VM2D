@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 	
 	Queue queue(argc, argv, std::cout, CreateMpiTypes); //третий аргумент - timeFile
 
-	queue.LoadTasksList("tasks.txt", "defaults.txt", "switchers.txt");
+	queue.LoadTasksList("problems", "defaults", "switchers");
 
 	do
 	{

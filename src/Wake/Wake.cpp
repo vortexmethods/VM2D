@@ -63,13 +63,13 @@ void Wake::SaveKadr(const std::string& dir, int step, timePeriod& time) const
 	}
 
 #if !defined(__linux__)
-	_mkdir((dir + "Kadrs").c_str());
+	_mkdir((dir + "snapshots").c_str());
 #else
-	mkdir(dir + "Kadr", S_IRWXU | S_IRGRP | S_IROTH);
+	mkdir(dir + "snapshots", S_IRWXU | S_IRGRP | S_IROTH);
 #endif
 
-	outfile.open(dir + "Kadrs/" + fname);
-//	PrintLogoToTextFile(outfile, dir + "Kadrs/" + fname, "Positions and circulations of vortices in the wake");
+	outfile.open(dir + "snapshots/" + fname);
+//	PrintLogoToTextFile(outfile, dir + "snapshots/" + fname, "Positions and circulations of vortices in the wake");
 
 //	PrintHeaderToTextFile(outfile, "Number of vortices");
 	outfile << vtx.size() << std::endl; //Сохранение числа вихрей в пелене
@@ -213,7 +213,6 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
 
 	//std::ostringstream sss;
 	//sss << "through_";
-	//sss << ".txt";
 	//std::ofstream throughFile(sss.str());
 	//for (size_t i = 0; i < gamma.size(); ++i)
 	//	throughFile << gamma[i] << std::endl;
@@ -232,7 +231,7 @@ void Wake::GetPairs(int type)
 	parallel.SplitMPI(vtx.size());
 
 	/// \todo Временно для профилей из 60 панелей
-	const double max_g = 0.001;		//максимальная циркуляция вихря, получаемого на первом шаге расчета
+	const double max_g = 0.0001;		//максимальная циркуляция вихря, получаемого на первом шаге расчета
 	const double coeff_max_g = 0.2; // коэффициент, определяющий максимально возможную циркуляцию вихря при коллапсе
 
 	std::vector<int> locNeighb; //локальный массив соседей (для данного процессора)

@@ -119,11 +119,11 @@ void VelocityFourier::CalcConvVelo(double dt)
 	if (id == 0)
 		convVelo.resize(wake.nv);
 
-	std::ofstream strOmega("matrOmega.txt");
+	std::ofstream strOmega("matrOmega");
 	SaveToStream(omega, strOmega);
 	strOmega.close();
 
-	std::ofstream strB("matrB.txt");
+	std::ofstream strB("matrB");
 	SaveToStream(bkx, strB);
 	strB.close();
 
@@ -176,11 +176,11 @@ void VelocityFourier::CalcConvVelo(double dt)
 		fBky.col(k) = tmpBky;
 	}
 
-	std::ofstream strFOmega("matrFOmega.txt");
+	std::ofstream strFOmega("matrFOmega");
 	SaveToStream(fOmega, strFOmega);
 	strFOmega.close();
 
-	std::ofstream strFB("matrFB.txt");
+	std::ofstream strFB("matrFB");
 	SaveToStream(fBky, strFB);
 	strFB.close();
 
@@ -229,7 +229,7 @@ void VelocityFourier::CalcConvVelo(double dt)
 		for (int j = 0; j < nNode[1]; ++j)
 			uxy.push_back(1.0 / (sqrt(nNode[0] * nNode[1] * (nNode[0] - 2) * (nNode[1] - 2))) * Point2D({ ux(i, j).real(), uy(i, j).real() }));
 
-	std::ofstream strU("matrU.txt");
+	std::ofstream strU("matrU");
 	SaveToStream(uxy, strU);
 	strU.close();
 

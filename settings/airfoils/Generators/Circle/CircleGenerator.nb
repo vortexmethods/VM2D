@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      6644,        195]
-NotebookOptionsPosition[      6073,        171]
-NotebookOutlinePosition[      6450,        187]
-CellTagsIndexPosition[      6407,        184]
+NotebookDataLength[      6645,        195]
+NotebookOptionsPosition[      6075,        171]
+NotebookOutlinePosition[      6452,        187]
+CellTagsIndexPosition[      6409,        184]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -120,7 +120,7 @@ Cell[BoxData[
  RowBox[{"Export", "[", 
   RowBox[{
    RowBox[{"\"\<Circle\>\"", "<>", 
-    RowBox[{"ToString", "[", "n", "]"}], "<>", "\"\<.txt\>\""}], ",", 
+    RowBox[{"ToString", "[", "n", "]"}]}], ",", 
    RowBox[{
     RowBox[{
     "{", "\"\<#This is a textfile with points on circular airfoil with radius \
@@ -157,8 +157,8 @@ Cell[BoxData[
     "Join", "~", 
     RowBox[{"{", "\"\< }\>\"", "}"}]}]}], "]"}]], "Input",
  CellChangeTimes->{{3.7009828467851925`*^9, 3.7009829906270227`*^9}, {
-  3.7009831179059362`*^9, 3.7009831718431034`*^9}, {3.7009888431781025`*^9, 
-  3.7009888511358657`*^9}}],
+   3.7009831179059362`*^9, 3.7009831718431034`*^9}, {3.7009888431781025`*^9, 
+   3.7009888511358657`*^9}, 3.720334961267371*^9}],
 
 Cell[BoxData["\<\"Circle30.txt\"\>"], "Output",
  CellChangeTimes->{
@@ -186,16 +186,16 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 241, 5, 86, "Input"],
+Cell[558, 20, 241, 5, 57, "Input"],
 Cell[802, 27, 436, 7, 57, "Input"],
-Cell[1241, 36, 878, 26, 113, "Input"],
+Cell[1241, 36, 878, 26, 85, "Input"],
 Cell[CellGroupData[{
-Cell[2144, 66, 200, 4, 86, "Input"],
+Cell[2144, 66, 200, 4, 57, "Input"],
 Cell[2347, 72, 1778, 41, 753, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[4162, 118, 1461, 42, 290, "Input"],
-Cell[5626, 162, 431, 6, 57, "Output"]
+Cell[4162, 118, 1463, 42, 132, "Input"],
+Cell[5628, 162, 431, 6, 57, "Output"]
 }, Open  ]]
 }
 ]

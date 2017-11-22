@@ -103,10 +103,8 @@ public:
 	///
 	/// Вызывает 4 раза функцию CalcDiffVeloToSetOfPoints
 	///
-	/// \param[in] nu кинематическая вязкость среды
-	///
 	/// \warning скорости приплюсовываются к уже имеющимся
-	void CalcDiffVelo(double nu);
+	void CalcDiffVelo();
 
 	/// Деструктор
 	virtual ~Velocity() { };

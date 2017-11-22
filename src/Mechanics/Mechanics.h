@@ -70,7 +70,7 @@ public:
 	void GenerateForcesHeader(int airfoilNumber)
 	{
 		std::stringstream forceFileName;
-		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber << ".txt";
+		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber;
 
 		std::ofstream newForcesFile(forceFileName.str());
 		PrintLogoToTextFile(newForcesFile, forceFileName.str(), "Hydrodynamic loads for the airfoil " + passport.airfoilParams[airfoilNumber].fileAirfoil);
@@ -88,7 +88,7 @@ public:
 	void GenerateForcesString(int currentStep, int airfoilNumber)
 	{
 		std::stringstream forceFileName;
-		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber << ".txt";
+		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber;
 
 		std::ofstream forcesFile(forceFileName.str(), std::ios::app);
 		forcesFile << std::endl << currentStep << "	" << passport.physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1];

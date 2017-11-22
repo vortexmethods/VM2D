@@ -61,11 +61,12 @@ public:
 
 	/// \brief Конструктор
 	/// 
-	/// \param[in] afl_ константная ссылка на профиль;
-	/// \param[in] allBoundry_ константная ссылка на вектор из указателей на все граничные условия
+	/// \param[in] passport_ константная ссылка на паспорт расчета
+	/// \param[in] afl_ константная ссылка на профиль
+	/// \param[in] allBoundary_ константная ссылка на вектор из указателей на все граничные условия
 	/// \param[in] sheetDim_ размерность параметра слоя на каждой панели профиля (сколько чисел используется, чтобы описать слой на каждой панели);
-	/// \param[in] wake_ константная ссылка на вихревой след;
-	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
+	/// \param[in] wake_ константная ссылка на вихревой след
+	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения
 	Boundary(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, int sheetDim_, const Wake& wake_, const Parallel& parallel_);
 	
 	/// Деструктор

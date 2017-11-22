@@ -153,13 +153,13 @@ public:
 	/// Вычисляет диффузионные скорости в наборе точек, которые обусловленных геометрией профиля.ю и вычисляет вязкое трение
 	/// 
 	/// \param[in] points константная ссылка на набор точек, в которых вычисляются скорости
-	/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния геометрии профиля
 	/// \param[in] domainRadius ссылка на радиусы вихрей
+	/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния геометрии профиля
 	/// 
 	/// \warning velo --- накапливается!
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
-	virtual void GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<Point2D>& velo, double epscol) = 0;
+	virtual void GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<Point2D>& velo) = 0;
 
 };
 
