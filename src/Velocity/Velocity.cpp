@@ -14,19 +14,35 @@
 //Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе
 void Velocity::CalcConvVelo()
 {
+	/*
+	if (parallel.myidWork == 0)
+	{
+		std::ostringstream ss1;
+		ss1 << "wakeFile";
+		std::ofstream wakefile(ss1.str());
+		for (int i = 0; i < wake.vtx.size(); i++)
+			wakefile << wake.vtx[i].r()[0] << " " << wake.vtx[i].r()[1] << " " << wake.vtx[i].g() << std::endl;
+		wakefile.close();
+	}
+	*/
+
 	CalcConvVeloToSetOfPoints(wake.vtx, wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake);
 
-	//std::ostringstream sss;
-	//sss << "velo_";
-	//std::ofstream veloFile(sss.str());
-	//for (int i = 0; i < epsastWake.size(); ++i)
-	//	veloFile << epsastWake[i] << std::endl;
-	//veloFile.close();
 
-	//TODO пока только один профиль	
-	if (boundary.size() > 0)
+	/*
+	if (parallel.myidWork == 0)
 	{
-		CalcConvVeloToSetOfPoints(boundary[0]->virtualWake, virtualVortexesParams[0].convVelo, virtualVortexesParams[0].epsastWake);
+		std::ostringstream ss;
+		ss << "bouVeloNew";
+		std::ofstream bouVeloNewFile(ss.str());
+		bouVeloNewFile << wakeVortexesParams.convVelo << std::endl;
+		bouVeloNewFile.close();
+	}
+	*/
+	
+	for (size_t bou = 0; bou < boundary.size(); ++bou)
+	{
+		CalcConvVeloToSetOfPoints(boundary[bou]->virtualWake, virtualVortexesParams[bou].convVelo, virtualVortexesParams[bou].epsastWake);
 		/*std::ostringstream sss;
 		sss << "virtVelo_";
 		std::ofstream virtVeloFile(sss.str());
@@ -34,21 +50,31 @@ void Velocity::CalcConvVelo()
 			virtVeloFile << convVirtualVelo[0][i] << std::endl;
 		virtVeloFile.close();*/
 	}
+
 }//CalcConvVelo()
 
 
 //Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе
 void Velocity::CalcDiffVelo()
-{
+{	
 	CalcDiffVeloToSetOfPoints(wake.vtx, wakeVortexesParams.epsastWake, wake.vtx, wakeVortexesParams.diffVelo);
 
-	//TODO пока только один профиль	
-	if (boundary.size() > 0)
+	for (size_t bou = 0; bou < boundary.size(); ++bou)
 	{
-		CalcDiffVeloToSetOfPoints(wake.vtx, wakeVortexesParams.epsastWake, boundary[0]->virtualWake, wakeVortexesParams.diffVelo);
+		int lenVirtWake = (int)(boundary[bou]->virtualWake.size());
+		MPI_Bcast(&lenVirtWake, 1, MPI_INT, 0, parallel.commWork);
+		if (parallel.myidWork != 0)
+			boundary[bou]->virtualWake.resize(lenVirtWake);
+		MPI_Bcast(boundary[bou]->virtualWake.data(), lenVirtWake, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+		
 
-		CalcDiffVeloToSetOfPoints(boundary[0]->virtualWake, virtualVortexesParams[0].epsastWake, boundary[0]->virtualWake, virtualVortexesParams[0].diffVelo);
+		CalcDiffVeloToSetOfPoints(wake.vtx, wakeVortexesParams.epsastWake, boundary[bou]->virtualWake, wakeVortexesParams.diffVelo);
 
-		CalcDiffVeloToSetOfPoints(boundary[0]->virtualWake, virtualVortexesParams[0].epsastWake, wake.vtx, virtualVortexesParams[0].diffVelo);
+		for (size_t targetBou = 0; targetBou < boundary.size(); ++targetBou)
+		{
+			CalcDiffVeloToSetOfPoints(boundary[targetBou]->virtualWake, virtualVortexesParams[targetBou].epsastWake, boundary[bou]->virtualWake, virtualVortexesParams[targetBou].diffVelo);
+			CalcDiffVeloToSetOfPoints(boundary[targetBou]->virtualWake, virtualVortexesParams[targetBou].epsastWake, wake.vtx, virtualVortexesParams[targetBou].diffVelo);
+		}
 	}
+
 }//CalcDiffVelo()

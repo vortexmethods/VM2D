@@ -18,11 +18,24 @@ void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка про
 	const AirfoilParams& param = passport.airfoilParams[numberInPassport];
 	std::string filename = dir + param.fileAirfoil;
 	std::ifstream airfoilFile;
-	if (fileExistTest(filename, *(defaults::defaultPinfo), *(defaults::defaultPerr), "airfoil"))
+
+	std::ostream *Pinfo, *Perr;
+	if (parallel.myidWork == 0)
 	{
-		airfoilFile.open(filename);
+		Pinfo = defaults::defaultPinfo;
+		Perr = defaults::defaultPerr;
+	}
+	else
+	{
+		Pinfo = nullptr;
+		Perr = nullptr;
+	}
+
+	if (fileExistTest(filename, Pinfo, Perr, "airfoil"))
+	{
+		std::stringstream airfoilFile(Preprocessor(filename).resultString);
+
 		StreamParser airfoilParser(airfoilFile);
-		airfoilFile.close();
 
 		rcm = param.basePoint;
 		m = 0.0; //TODO
@@ -61,8 +74,14 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 
 	parallel.SplitMPI(points.size());
 
+	std::vector<Vortex2D> locPoints;
+	locPoints.resize(parallel.myLen);
+
+	MPI_Scatterv(points.data(), parallel.len.data(), parallel.disp.data(), Vortex2D::mpiVortex2D, \
+		locPoints.data(), parallel.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+
 	std::vector<Point2D> locDiffVelo;
-	locDiffVelo.resize(parallel.len[id]);
+	locDiffVelo.resize(parallel.myLen);
 
 	//Локальные переменные для цикла
 	double I0;
@@ -83,26 +102,22 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 
 	double iDPIepscol2 = 1.0 / (PI * sqr(passport.wakeDiscretizationProperties.epscol));
 
-//pragma не работает!!!
-//	#pragma omp parallel for \
+	#pragma omp parallel for \
 		default(none) \
-		shared(locDiffVelo, domainRadius, points, id, epscol, iDDomRad, iDPIepscol2) \
-		private(I0, i0, I3, xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon) schedule(dynamic,1)
-	for (int k = 0; k < parallel.len[id]; ++k)
+		shared(locDiffVelo, domainRadius, locPoints, id, iDPIepscol2) \
+		private(I0, i0, I3, xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, iDDomRad) schedule(dynamic, 1)
+	for (int i = 0; i < parallel.myLen; ++i)
 	{
-		int i = k + parallel.disp[id];
-
 		I0 = 0.0;
 		I3 = { 0.0, 0.0 };
 
 		i0 = 0.0;
 
-		iDDomRad = 1.0 / domainRadius[i];
+		iDDomRad = 1.0 / domainRadius[i+parallel.myDisp];
 
-		//TODO пока профиль строго 1
 		for (size_t j = 0; j < r.size() - 1; j++)
 		{
-			q = points[i].r() - 0.5 * (r[j] + r[j + 1]);
+			q = locPoints[i].r() - 0.5 * (r[j] + r[j + 1]);
 			vec = tau[j];
 
 			s = q * vec;
@@ -128,7 +143,7 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 					mn = len[j] * nrm[j] * expon;
 					I0 += xi * mn * (lxi + 1.0) / xi.length2();
 					I3 += mn;
-					viscousStress[j] += points[i].g() * expon * iDPIepscol2;
+					viscousStress[j] += locPoints[i].g() * expon * iDPIepscol2;
 				}
 				else if ((d <= 5.0 * len[j]) && (d >= 0.1 * len[j]))
 				{
@@ -138,7 +153,7 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 
 					for (int m = 0; m < new_n; m++)
 					{
-						xi_m = (points[i].r() - (r[j] + h * (m + 0.5))) * iDDomRad;
+						xi_m = (locPoints[i].r() - (r[j] + h * (m + 0.5))) * iDDomRad;
 						lxi_m = xi_m.length();
 
 						expon = exp(-lxi_m);
@@ -146,26 +161,26 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 						mn = lenj_m *nrm[j] * expon;
 						I0 += xi_m*  mn * (lxi_m + 1.0) / xi_m.length2();
 						I3 += mn;
-						vs += points[i].g() * expon;
+						vs += locPoints[i].g() * expon;
 					}//for m
 					viscousStress[j] += vs / new_n * iDPIepscol2;
 				}
 				else if (d <= 0.1 * len[j])
 				{
-					i0 = PI * sqr(domainRadius[i]);
+					i0 = PI * sqr(domainRadius[i+parallel.myDisp]);
 					if (fabs(s) > 0.5 * len[j])
 					{						
-						I3 += 2.0 * nrm[j] * domainRadius[i] * (exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0));
-						//	viscousStress[j] += points[i].g() * (mn.kcross() * tau[j]) / (PI * sqr(epscol));
-						//	viscousStress[j] += points[i].g() * (2.0 * nrm[j] * domainRadius[i] * (1.0 - exp(-0.5 * len[j] / domainRadius[i]))).kcross() * tau[j] / (PI * sqr(epscol) *len[j]);
-						//viscousStress[j] += points[i].g()*(exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0))  * iDDomRad / len[j]; //points[i].g() *(2.0 *  epscol* (1.0 - exp(-0.5 * len[j] / epscol))) / (PI * sqr(epscol) *len[j]);
-						viscousStress[j] += 2.0 * points[i].g()*(exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0))  * iDDomRad / (PI * len[j]); 
+						I3 += 2.0 * nrm[j] * domainRadius[i + parallel.myDisp] * (exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0));
+						//	viscousStress[j] += locPoints[i].g() * (mn.kcross() * tau[j]) / (PI * sqr(epscol));
+						//	viscousStress[j] += locPoints[i].g() * (2.0 * nrm[j] * domainRadius[i+parallel.myDisp] * (1.0 - exp(-0.5 * len[j] / domainRadius[i+parallel.myDisp]))).kcross() * tau[j] / (PI * sqr(epscol) *len[j]);
+						//viscousStress[j] += locPoints[i].g()*(exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0))  * iDDomRad / len[j]; //locPoints[i].g() *(2.0 *  epscol* (1.0 - exp(-0.5 * len[j] / epscol))) / (PI * sqr(epscol) *len[j]);
+						viscousStress[j] += 2.0 * locPoints[i].g()*(exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0))  * iDDomRad / (PI * len[j]); 
 					}
 					else
 					{
-						I3 += 2.0 * nrm[j] * domainRadius[i] * (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
+						I3 += 2.0 * nrm[j] * domainRadius[i + parallel.myDisp] * (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
 						//viscousStress[j] += points[i].g()* (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s)  * iDDomRad))  * iDDomRad / len[j]; // points[i].g()*(2.0 *  epscol* (1.0 - exp(-0.5 * len[j] / epscol))) / (PI * sqr(epscol) *len[j]);
-						viscousStress[j] += 2.0 * points[i].g()* (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s)  * iDDomRad))  * iDDomRad / (PI * len[j]);
+						viscousStress[j] += 2.0 * locPoints[i].g()* (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s)  * iDDomRad))  * iDDomRad / (PI * len[j]);
 					}
 				}
 			}//if d<50 len 
@@ -175,16 +190,17 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 			I0 = i0;
 		else
 		{
-			I0 *= domainRadius[i];
-			I0 += 2.0 * PI * sqr(domainRadius[i]);
+			I0 *= domainRadius[i + parallel.myDisp];
+			I0 += 2.0 * PI * sqr(domainRadius[i + parallel.myDisp]);
 		}
-		locDiffVelo[k] = I3 * (1.0 / I0);
+		locDiffVelo[i] = I3 * (1.0 / I0);
 	}//for k
 
 	if (id == 0)
 		selfVelo.resize(points.size());
 
-	MPI_Gatherv(locDiffVelo.data(), parallel.len[id], Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+	MPI_Gatherv(locDiffVelo.data(), parallel.myLen, Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+	
 	if (id == 0)
 	for (size_t i = 0; i < velo.size(); ++i)
 		velo[i] += selfVelo[i];

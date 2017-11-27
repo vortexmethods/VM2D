@@ -22,7 +22,7 @@
 #include "Point2D.h"
 
 /// Тип для хранения начала и конца промежутка времени
-typedef std::pair<std::clock_t, std::clock_t> timePeriod;
+typedef std::pair<double, double> timePeriod;
 
 /// Число \f$ \pi \f$
 const double   PI = 3.1415926535897932384626433832795;
@@ -156,23 +156,26 @@ std::ostream& operator<< (std::ostream& _stream, const std::vector<T>& _vec)
 /// \brief Проверка существования файла
 ///
 /// \param[in] fileName константная ссылка на имя проверяемого файла
-/// \param[in] _info ссылка на поток вывода логов
-/// \param[in] _err ссылка на поток вывода ошибок
+/// \param[in, out] Pinfo указатель на поток вывода логов
+/// \param[in, out] Perr указатель на поток вывода ошибок
 /// \param[in] _str константная ссылка на текстовую метку, которая выводится в потоки
 /// \return true, если файл существует; false если файл отсутствует
-inline bool fileExistTest(const std::string& fileName, std::ostream& _info, std::ostream& _err, const std::string& _str)
+inline bool fileExistTest(const std::string& fileName, std::ostream *Pinfo, std::ostream *Perr, const std::string& _str)
 {
 	std::ifstream f(fileName.c_str());
 	if (f.good())
 	{
 		f.close();
 		f.clear();
-		_info << _str << " info: FILE " << fileName << " IS FOUND" << std::endl;
+
+		if (Pinfo != nullptr)
+			*Pinfo << _str << " info: FILE " << fileName << " IS FOUND" << std::endl;
 		return true;
 	}
 	else
 	{
-		_err << _str << " error: FILE " << fileName << " IS NOT FOUND" << std::endl;
+		if (Perr != nullptr)
+			*Perr << _str << " error: FILE " << fileName << " IS NOT FOUND" << std::endl;
 		exit(-1);
 		return false;
 	}

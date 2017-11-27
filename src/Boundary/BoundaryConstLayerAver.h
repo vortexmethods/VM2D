@@ -81,11 +81,13 @@ public:
 
 	//далее -- реализации виртуальных функций
 	virtual void FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol);
+	virtual void FillMatrixFromOther(const Boundary& otherBoundary, Eigen::MatrixXd& matr);
 	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs);
 	virtual int GetUnknownsSize() const;
 	virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol);
 	virtual void GetWakeInfluence(std::vector<double>& wakeVelo) const;
 	virtual void GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const;
+	virtual void GetConvVelocityToSetOfPointsFromVirtualVortexes(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const;
 };
  
 #endif

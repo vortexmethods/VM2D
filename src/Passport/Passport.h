@@ -55,7 +55,7 @@ public:
 	/// Функция скорости набегающего потока с учетом разгона
 	Point2D V0() const
 	{
-		return (currTime < timeAccel) ? (vInf * (currTime / timeAccel)) : vInf;
+		return (currTime < timeAccel) ? static_cast<Point2D>(vInf * (currTime / timeAccel)) : vInf;
 	};
 
 	/// Коэффициент кинематической вязкости среды
@@ -219,13 +219,16 @@ private:
 	/// \param[in] switcherStream ссылка на поток со значениями параметров-переключателей
 	/// \param[in] varsStream ссылка на поток с параметрами конкретной задачи и переменными
 	void GetAllParamsFromParser
-	(
-		std::istream& mainStream, 
-		std::istream& defaultStream, 
+		(
+		std::istream& mainStream,
+		std::istream& defaultStream,
 		std::istream& switcherStream,
 		std::istream& varsStream
 	);
 	
+	/// Признак вывода в поток логов и ошибок
+	bool print;
+
 	/// Печать всех параметров расчета в поток логов
 	void PrintAllParams();
 
@@ -263,13 +266,16 @@ public:
 	/// \param[in] _defaults константная ссылка на имя файла (с путем) с параметрами по умолчанию
 	/// \param[in] _switchers константная ссылка на имя файла (с путем) со значениями параметров-переключателей
 	/// \param[in] vars константная ссылка на список переменных, заданных в виде строк
+	/// \param[in] print признак вывода в поток логов и ошибок
 	Passport
 	(
 		const std::string& _dir, 
 		const std::string& _filePassport, 
 		const std::string& _defaults, 
 		const std::string& _switchers,
-		const std::vector<std::string>& vars);
+		const std::vector<std::string>& vars,
+		bool _print
+	);
 
 	/// Деструктор
 	virtual ~Passport(){ };			

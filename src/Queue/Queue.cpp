@@ -13,6 +13,8 @@
 #endif
 
 #include <fstream>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include "Queue.h"
 
@@ -32,8 +34,8 @@ Queue::Queue(int& argc, char**& argv, std::ostream& _timeFile, void (*_CreateMpi
 	if (myidAll == 0)
 	{
 		//TODO: Переделать вывод в файл (вывод касательных напряжений)
-		std::ofstream stressFile("Stresses");
-		stressFile.close();
+		//std::ofstream stressFile("Stresses");
+		//stressFile.close();
 
 		//Устанавливаем флаг занятости в состояние "свободен" всем процессорам, 	
 		procState.resize(nProcAll, MPI_UNDEFINED);
@@ -499,9 +501,9 @@ void Queue::AddTask(int _nProc, const Passport& _passport)
 //Загрузка списка задач
 void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _defaultsFile, const std::string& _switchersFile)
 {
-	std::stringstream tasksFile = Preprocessor(_tasksFile).resultStream;
-	std::stringstream defaultsFile = Preprocessor(_defaultsFile).resultStream;
-	std::stringstream switchersFile = Preprocessor(_switchersFile).resultStream;
+	std::stringstream tasksFile(Preprocessor(_tasksFile).resultString);
+	std::stringstream defaultsFile(Preprocessor(_defaultsFile).resultString);
+	std::stringstream switchersFile(Preprocessor(_switchersFile).resultString);
 	std::vector<std::string> taskFolder;
 		
 	std::unique_ptr<StreamParser> parserTaskList;
@@ -535,7 +537,7 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 			//считываем нужные параметры с учетом default-значений
 			parserTask->get("pspfile", pspFile, &defaults::defaultPspFile);
 			parserTask->get("np", np, &defaults::defaultNp);
-			
+
 			std::string copyPspFile;
 			parserTask->get("copyPspFile", copyPspFile, &defaults::defaultCopyPspFile);
 			if (copyPspFile.length() > 0)
@@ -543,14 +545,14 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 #if !defined(__linux__)
 				_mkdir(dir.c_str());
 #else
-				mkdir(dir, S_IRWXU | S_IRGRP | S_IROTH);
+				mkdir(dir.c_str(), S_IRWXU | S_IRGRP | S_IROTH);
 #endif
 
 				std::ofstream outPassportFile;
 				outPassportFile.open("./" + dir + "/" + pspFile);
 				PrintLogoToTextFile(outPassportFile, "./" + dir + "/" + pspFile, "Copy of the existing passport ./" + copyPspFile);
-				
-				std::stringstream ss(Preprocessor(copyPspFile).resultStream);
+
+				std::stringstream ss(Preprocessor(copyPspFile).resultString);
 
 				std::string readline;
 
@@ -564,17 +566,20 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 					if (readline.length() > 0)
 						outPassportFile << readline << ";" << std::endl;
 				}
-				
-				
-				
+
+
+
 				outPassportFile.close();
 			}
 
-			Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, vecTaskLineSecond);
+			Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, vecTaskLineSecond, parallel.myidWork==0);
 			AddTask(np, psp);
-			
-			*defaults::defaultPinfo << "-------- Problem #" << i << " is loaded --------" << std::endl;
-			*defaults::defaultPinfo << std::endl;
+
+			if (parallel.myidWork == 0)
+			{
+				*defaults::defaultPinfo << "-------- Problem #" << i << " is loaded --------" << std::endl;
+				*defaults::defaultPinfo << std::endl;
+			}
 		} //for i
 	} 
 
@@ -586,4 +591,7 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 
 	//switchersFile.close();
 	switchersFile.clear();
+
+	
+
 }//Queue::LoadTasks()

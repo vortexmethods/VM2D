@@ -13,25 +13,41 @@
 #include "Passport.h"
 
 //Конструктор
-Passport::Passport(const std::string& _dir, const std::string& _filePassport, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars)
-: dir(_dir)
+Passport::Passport(const std::string& _dir, const std::string& _filePassport, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars, bool _print)
+: dir(_dir), print(_print)
 {	
 	std::string fileFullName = dir + _filePassport;
 	std::string defaultsFileFullName = _defaults;
 	std::string switchersFileFullName = _switchers;
 
-	if (fileExistTest(fileFullName, *(defaults::defaultPinfo), *(defaults::defaultPerr), "passport") 
-		&& fileExistTest(defaultsFileFullName, *(defaults::defaultPinfo), *(defaults::defaultPerr), "defaults")
-		&& fileExistTest(switchersFileFullName, *(defaults::defaultPinfo), *(defaults::defaultPerr), "switchers"))
+	std::ostream *Pinfo, *Perr;
+	if (print)
+	{
+		Pinfo = defaults::defaultPinfo;
+		Perr = defaults::defaultPerr;
+	}
+	else
+	{
+		Pinfo = nullptr;
+		Perr = nullptr;
+	}
+
+	if (fileExistTest(fileFullName, Pinfo, Perr, "passport") 
+		&& fileExistTest(defaultsFileFullName, Pinfo, Perr, "defaults")
+		&& fileExistTest(switchersFileFullName, Pinfo, Perr, "switchers"))
 	{
 		std::stringstream varsStream(StreamParser::VectorStringToString(vars));
+		
+		std::stringstream mainStream;
+		mainStream << Preprocessor(fileFullName).resultString;
+		
+		std::stringstream defaultsStream;
+ 		defaultsStream << Preprocessor(defaultsFileFullName).resultString;
+		
+		std::stringstream switchersStream;
+		switchersStream << Preprocessor(switchersFileFullName).resultString;
 
-		GetAllParamsFromParser(
-			Preprocessor(fileFullName).resultStream, 
-			Preprocessor(defaultsFileFullName).resultStream,
-			Preprocessor(switchersFileFullName).resultStream,
-			varsStream
-			);
+		GetAllParamsFromParser(mainStream, defaultsStream, switchersStream, varsStream);
 
 		PrintAllParams();
 	}	
@@ -47,7 +63,8 @@ void Passport::GetAllParamsFromParser
 	std::istream& varsStream
 )
 {
-	// 1. Разбор паспорта в целом
+
+// 1. Разбор паспорта в целом
 	
 	//создаем парсер и связываем его с нужным потоком
 	std::unique_ptr<StreamParser> parser;

@@ -11,6 +11,8 @@
 #ifndef POINT2D_H_
 #define POINT2D_H_
 
+#include <cmath>
+
 #include "mpi.h"
 
 #include "numvector.h"

@@ -62,6 +62,9 @@ private:
 	/// Матрица системы
 	Eigen::MatrixXd matr;
 
+	/// Обратная матрица
+	Eigen::MatrixXd invMatr;
+
 	/// Правая часть системы
 	Eigen::VectorXd rhs; 
 	
@@ -75,7 +78,7 @@ private:
 	///
 	/// Вызывается в Step()
 	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-	void World2D::SolveLinearSystem(timePeriod& time);
+	void SolveLinearSystem(timePeriod& time);
 
 	/// \brief Заполнение матрицы системы для всех профилей
 	///
@@ -109,7 +112,7 @@ private:
 	/// Вызывается в Step()
 	/// \param[in] newPos новые позиции вихрей
 	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-	void World2D::CheckInside(std::vector<Point2D>& newPos, timePeriod& time);
+	void CheckInside(std::vector<Point2D>& newPos, timePeriod& time);
 
 public:
 	/// \brief Конструктор

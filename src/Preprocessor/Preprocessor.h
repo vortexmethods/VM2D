@@ -45,7 +45,7 @@ private:
 
 	/// Признак встречи звездочки внутри многострочного комментария (после '/*')
 	bool inMultilineLastStar;
-	
+
 	/// Опредедение currentParser как указателя на функцию-члена класса
 	void(Preprocessor::*currentParser)(char ch, std::string& str);
 	
@@ -120,8 +120,7 @@ public:
 	/// Строка, содержащая результат промежуточной обработки файла
 	std::string intermediateOutput;
 
-	/// Поток, содержащий окончательный результат обработки файла
-	std::stringstream resultStream;
+
 
 	/// \brief Конструктор, принимающий на вход имя обрабатываемого файла
 	///
@@ -130,9 +129,14 @@ public:
 	/// окончательный поток вывода resultStream
 	/// \param[in] fileName константная ссылка на строку --- имя обрабатываемого файла
 	Preprocessor(const std::string& fileName);
-	 
+
 	/// Деструктор
 	~Preprocessor(){ };
+
+	/// Строка, содержащая окончательный результат обработки файла
+	std::string resultString;
+	std::stringstream resultStream;
+
 };
 
 #endif

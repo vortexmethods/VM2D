@@ -21,8 +21,7 @@ Preprocessor::Preprocessor(const std::string& fileName)
 	inMultilineLastStar(false),
 	currentParser(&Preprocessor::normalParser)
 {
-	FILE * inputFile;
-	fopen_s(&inputFile, fileName.c_str(), "r");
+	FILE * inputFile = fopen(fileName.c_str(), "r");
 
 	int symbol;
 
@@ -47,6 +46,8 @@ Preprocessor::Preprocessor(const std::string& fileName)
 
 		resultStream << readline << std::endl;
 	}
+
+	resultString = resultStream.str();
 }//Preprocessor(...)
 
 

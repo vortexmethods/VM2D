@@ -3,6 +3,17 @@ project(VM2D)
 
 set(CMAKE_CONFIGURATION_TYPE "Debug;Release")
 
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+        message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
 set(SRC_LIST src/VM2D/VM2D.cpp)
@@ -39,8 +50,14 @@ SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${dirlist})
 
 #EIGEN
+if(WIN32)
 set(PATH_TO_EIGEN "C:/Program files (x86)/Eigen3/include/eigen3")
 include_directories(${PATH_TO_EIGEN})
+else()
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
+endif()
 
 #OpenMP
 find_package(OpenMP)
@@ -56,7 +73,7 @@ endif()
 
 
 # Require MPI for this project:
-#if(WIN32)
+if(WIN32)
    #This is for finding MS-MPI.
    #set(_MPI_PREFIX_PATH)
    #list(APPEND _MPI_PREFIX_PATH "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\MPI;Path]/..")
@@ -79,9 +96,9 @@ endif()
   
    include_directories(${MPI_CXX_INCLUDE_PATH})
    target_link_libraries(${PROJECT_NAME} ${MPI_CXX_LIBRARIES})
-# else()
-#    find_package(MPI REQUIRED)
-#endif()
+else()
+    find_package(MPI REQUIRED)
+endif()
 
 #MPI
 #find_package(MPI REQUIRED)

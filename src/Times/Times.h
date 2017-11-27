@@ -136,7 +136,7 @@ public:
 	/// \return разницу в секундах
 	static double dT(const timePeriod& t)
 	{
-		return (double)(t.second - t.first) / CLOCKS_PER_SEC;
+		return (t.second - t.first);
 	}//dT(...)
 };
 

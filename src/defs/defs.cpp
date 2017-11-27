@@ -8,9 +8,9 @@
 \date 1 декабря 2017 г.
 */
 
-#include <iomanip>
-
 #include "defs.h"
+
+std::string Months[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
 //Формирование заголовка файла программы VM2D
 void PrintLogoToTextFile(std::ofstream& str, const std::string& fileName, const std::string& descr)
@@ -48,7 +48,34 @@ void PrintLogoToTextFile(std::ofstream& str, const std::string& fileName, const 
 #pragma warning(pop)
 
 	std::stringstream dateTimeStringStream;
-	dateTimeStringStream << "| This file was created automatically " << std::put_time(&tm, "%d %B %Y") << " at " << std::put_time(&tm, "%H:%M:%S");
+	//dateTimeStringStream << "| This file was created automatically " << std::put_time(&tm, "%d %B %Y") << " at " << std::put_time(&tm, "%H:%M:%S");
+	
+	std::stringstream st_day, st_hour, st_min, st_sec;
+	if (tm.tm_mday < 10)
+		st_day << "0" << tm.tm_mday;
+	else
+		st_day << tm.tm_mday;
+
+	if (tm.tm_hour < 10)
+		st_hour << "0" << tm.tm_hour;
+	else
+		st_hour << tm.tm_hour;
+
+	if (tm.tm_min < 10)
+		st_min << "0" << tm.tm_min;
+	else
+		st_min << tm.tm_min;
+
+	if (tm.tm_sec < 10)
+		st_sec << "0" << tm.tm_sec;
+	else
+		st_sec << tm.tm_sec;
+	
+	dateTimeStringStream << "| This file was created automatically " \
+		<< st_day.str() << " " << Months[tm.tm_mon] << " " << 1900+tm.tm_year \
+		<< " at " \
+		<< st_hour.str() << ":" << st_min.str() << ":" << st_sec.str();
+	
 	//std::string dateTimeString;
 	//dateTimeStringStream >> dateTimeString;
 

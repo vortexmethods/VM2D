@@ -21,23 +21,29 @@ void VelocityBiotSavart::CalcConvVeloToSetOfPoints(const std::vector<Vortex2D>& 
 
 	parallel.SplitMPI(points.size());
 
+	std::vector<Vortex2D> locPoints;
+	locPoints.resize(parallel.myLen);
+
 	//Заполнение "своей" части массива скоростей
+	MPI_Scatterv(points.data(), parallel.len.data(), parallel.disp.data(), Vortex2D::mpiVortex2D, \
+		         locPoints.data(), parallel.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+
 	double cft = IDPI;
 
 	std::vector<Point2D> locConvVelo;
-	locConvVelo.resize(parallel.len[id]);
+	locConvVelo.resize(parallel.myLen);
 
 	std::vector<double> locDomRadius;
-	locDomRadius.resize(parallel.len[id]);
+	locDomRadius.resize(parallel.myLen);
 
 	//Локальные переменные для цикла
 	Point2D velI;
 	Point2D tempVel;
-	double dst2eps, dst2;
+	double dst2eps, dst2;	
+
 	
-	
-#pragma omp parallel for default(none) shared(locConvVelo, locDomRadius, points, id, cft) private(velI, tempVel, dst2, dst2eps)
-	for (int i = 0; i < parallel.len[id]; ++i)
+#pragma omp parallel for default(none) shared(locConvVelo, locDomRadius, locPoints, id, cft) private(velI, tempVel, dst2, dst2eps)
+	for (int i = 0; i < parallel.myLen; ++i)
 	{
 		double ee2[3] = { 10000.0, 10000.0, 10000.0 };
 		if (wake.vtx.size() == 0)
@@ -49,7 +55,7 @@ void VelocityBiotSavart::CalcConvVeloToSetOfPoints(const std::vector<Vortex2D>& 
 		
 		velI = { 0.0, 0.0 };
 		
-		const Point2D& posI = points[parallel.disp[id] + i].r();
+		const Point2D& posI = locPoints[i].r();
 
 		for (size_t j = 0; j < wake.vtx.size(); ++j)
 		{
@@ -97,32 +103,40 @@ void VelocityBiotSavart::CalcConvVeloToSetOfPoints(const std::vector<Vortex2D>& 
 
 	if (id == 0)
 		selfVelo.resize(points.size());
+
+
+	//if (id == 0)
+	//это нужно всем, т.к. ниже стоит Allgatherv
+	domainRadius.resize(parallel.totalLen);
+
+	MPI_Gatherv(locConvVelo.data(), parallel.myLen, Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
 	
-
-	domainRadius.resize(points.size());
-
-	MPI_Gatherv(locConvVelo.data(), parallel.len[id], Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
-	MPI_Allgatherv(locDomRadius.data(), parallel.len[id], MPI_DOUBLE, domainRadius.data(), parallel.len.data(), parallel.disp.data(), MPI_DOUBLE, parallel.commWork);
+	parallel.BCastAllLenDisp();
+	MPI_Allgatherv(locDomRadius.data(), parallel.myLen, MPI_DOUBLE, domainRadius.data(), parallel.len.data(), parallel.disp.data(), MPI_DOUBLE, parallel.commWork);
 
 	if (id == 0)
 	for (size_t i = 0; i < velo.size(); ++i)
 		velo[i] += selfVelo[i];
-	
 }//CalcConvVeloToSetOfPoints(...)
 
 
 //Вычисление диффузионных скоростей в заданном наборе точек
 void VelocityBiotSavart::CalcDiffVeloToSetOfPoints(const std::vector<Vortex2D>& points, const std::vector<double>& domainRadius, const std::vector<Vortex2D>& vortices, std::vector<Point2D>& velo)
 {
-
 	std::vector<Point2D> selfVelo;
 
 	const int& id = parallel.myidWork;
 
 	parallel.SplitMPI(points.size());
 
+	std::vector<Vortex2D> locPoints;
+	locPoints.resize(parallel.myLen);
+
+	MPI_Scatterv(points.data(), parallel.len.data(), parallel.disp.data(), Vortex2D::mpiVortex2D, \
+		locPoints.data(), parallel.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+
 	std::vector<Point2D> locDiffVelo;
-	locDiffVelo.resize(parallel.len[id]);
+	locDiffVelo.resize(parallel.myLen);
 
 	//Локальные переменные для цикла
 	Point2D velI;
@@ -132,11 +146,10 @@ void VelocityBiotSavart::CalcDiffVeloToSetOfPoints(const std::vector<Vortex2D>& 
 
 
 
-#pragma omp parallel for default(none) shared(locDiffVelo, domainRadius, points, vortices, id) private(velI, I1, I2, Rij, rij, expr)
-	for (int r = 0; r < parallel.len[id]; ++r)
+#pragma omp parallel for default(none) shared(locDiffVelo, domainRadius, locPoints, vortices, id) private(velI, I1, I2, Rij, rij, expr)
+	for (int i = 0; i < parallel.myLen; ++i)
 	{
-		int i = r + parallel.disp[id];
-		const Vortex2D& vtxI = points[i];
+		const Vortex2D& vtxI = locPoints[i];
 		velI = { 0.0, 0.0 };
 
 		I2 = { 0.0, 0.0 };
@@ -151,17 +164,16 @@ void VelocityBiotSavart::CalcDiffVeloToSetOfPoints(const std::vector<Vortex2D>& 
 
 			if (rij > 1e-10)
 			{
-				expr = exp(-rij / domainRadius[i]);
+				expr = exp(-rij / domainRadius[i + parallel.myDisp]);
 				I2 += (vtxJ.g()* expr / rij) * Rij;
 				I1 += vtxJ.g()*expr;
 			}//if (rij>1e-6)
 		}//for j
 
 		if (fabs(I1) > 1e-10)
-			velI = I2* (1.0 / (I1 * domainRadius[i]));
+			velI = I2* (1.0 / (I1 * domainRadius[i + parallel.myDisp]));
 
-		locDiffVelo[r] = velI;
-
+		locDiffVelo[i] = velI;
 	} // for r
 
 	//std::ostringstream sss;
@@ -174,7 +186,7 @@ void VelocityBiotSavart::CalcDiffVeloToSetOfPoints(const std::vector<Vortex2D>& 
 	if (id == 0)
 		selfVelo.resize(points.size(), { 0.0, 0.0 });
 
-	MPI_Gatherv(locDiffVelo.data(), parallel.len[id], Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+	MPI_Gatherv(locDiffVelo.data(), parallel.myLen, Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
 
 
 	if (id == 0)

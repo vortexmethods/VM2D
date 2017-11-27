@@ -3,7 +3,7 @@
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
 {
-	time.first = clock();
+	time.first = omp_get_wtime();
 
 	hydroDynamForce = { 0.0, 0.0 };
 
@@ -23,5 +23,5 @@ void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
 
 	hydroDynamForce = hDFGam + (1.0 / passport.timeDiscretizationProperties.dt) * hDFdelta;
 
-	time.second = clock();
+	time.second = omp_get_wtime();
 }

@@ -175,10 +175,14 @@ void BoundaryVortColl::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* 
 	}
 
 	*lastRhs = 0.0;
-	for each (double g in afl.gammaThrough)
+	
+	for (size_t q = 0; q < afl.gammaThrough.size(); ++q)
+		//for each (double g in afl.gammaThrough)
 	{
-		*lastRhs += g;
+		*lastRhs += afl.gammaThrough[q];
+		//*lastRhs += g;
 	}
+
 }//FillRhs(...)
 
 

@@ -73,7 +73,7 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 
 
 	for (size_t j = 0; j < afl.np; ++j)
-		sheets.freeVortexSheet[j][0] = 0.0;
+		sheets.freeVortexSheet[j][0] = sol(j);
 
 	//"закольцовываем"
 	sheets.freeVortexSheet.push_back(sheets.freeVortexSheet[0]);
@@ -176,6 +176,70 @@ void BoundaryConstLayerAver::FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::Vector
 }//FillMatrixSelf(...)
 
 
+
+
+//Генерация блока матрицы влияния от другого профиля того же типа
+void BoundaryConstLayerAver::FillMatrixFromOther(const Boundary& otherBoundary, Eigen::MatrixXd& matr)
+{
+	size_t np = afl.np;
+	size_t npOther = otherBoundary.afl.np;
+
+	//Panel vectors
+	std::vector<Point2D> dd;
+	for (size_t i = 0; i < np; ++i)
+		dd.push_back(afl.tau[i] * afl.len[i]);
+
+	std::vector<Point2D> ddOther;
+	for (size_t j = 0; j < npOther; ++j)
+		ddOther.push_back(otherBoundary.afl.tau[j] * otherBoundary.afl.len[j]);
+
+	//auxillary scalars
+	numvector<double, 3> alpha, lambda;
+
+	//auxillary vectors
+	Point2D p1, s1, p2, s2, i00;
+	numvector<Point2D, 3> v;
+
+	for (size_t i = 0; i < np; ++i)
+	for (size_t j = 0; j < npOther; ++j)
+	{
+		const Point2D& di = dd[i];
+		const Point2D& dj = ddOther[j];
+
+		const Point2D& taui = afl.tau[i];
+		const Point2D& tauj = otherBoundary.afl.tau[j];
+
+		p1 = CC[i + 1] - otherBoundary.CC[j + 1];
+		s1 = CC[i + 1] - otherBoundary.CC[j];
+		p2 = CC[i] - otherBoundary.CC[j + 1];
+		s2 = CC[i] - otherBoundary.CC[j];
+
+		alpha = { \
+			Alpha(s2, s1), \
+			Alpha(s2, p1), \
+			Alpha(p1, p2) \
+		};
+
+		lambda = { \
+			Lambda(s2, s1), \
+			Lambda(s2, p1), \
+			Lambda(p1, p2) \
+		};
+
+		v = { Omega(s1, taui, tauj), -Omega(di, taui, tauj), Omega(p2, taui, tauj) };
+
+		i00 = IDPI / afl.len[i] * ((alpha[0] * v[0] + alpha[1] * v[1] + alpha[2] * v[2]) + (lambda[0] * v[0] + lambda[1] * v[1] + lambda[2] * v[2]).kcross());
+
+		//i00 = IDPI / afl.len[i] * (-(alpha[0] * v[0] + alpha[1] * v[1] + alpha[2] * v[2]).kcross() + (lambda[0] * v[0] + lambda[1] * v[1] + lambda[2] * v[2]));
+
+
+		matr(i, j) = i00 * afl.tau[i];
+	}
+
+}//FillMatrixFromOther(...)
+
+
+
 //Генерация вектора влияния вихревого следа на профиль
 void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) const
 {
@@ -185,20 +249,20 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 	parallel.SplitMPI(np);
 
 	std::vector<double> locVeloWake;
-	locVeloWake.resize(parallel.len[id]);
+	locVeloWake.resize(parallel.myLen);
 
 	//локальные переменные для цикла
 	double velI = 0.0;
 	double tempVel = 0.0;
 
 #pragma omp parallel for default(none) shared(locVeloWake, id) private(velI, tempVel)
-	for (int i = 0; i < parallel.len[id]; ++i)
+	for (int i = 0; i < parallel.myLen; ++i)
 	{
 		velI = 0.0;
 
-		const Point2D& posI0 = CC[parallel.disp[id] + i];
-		const Point2D& posI1 = CC[parallel.disp[id] + i + 1];
-		const Point2D& tau = afl.tau[parallel.disp[id] + i];
+		const Point2D& posI0 = CC[parallel.myDisp + i];
+		const Point2D& posI1 = CC[parallel.myDisp + i + 1];
+		const Point2D& tau = afl.tau[parallel.myDisp + i];
 
 		for (size_t j = 0; j < wake.vtx.size(); ++j)
 		{
@@ -215,15 +279,14 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 			velI -= tempVel;
 		}
 
-		velI *= IDPI / afl.len[parallel.disp[id] + i];
+		velI *= IDPI / afl.len[parallel.myDisp + i];
 		locVeloWake[i] = velI;
 	}
 
 	if (id == 0)
 		wakeVelo.resize(np);
 
-
-	MPI_Gatherv(locVeloWake.data(), parallel.len[id], MPI_DOUBLE, wakeVelo.data(), parallel.len.data(), parallel.disp.data(), MPI_DOUBLE, 0, parallel.commWork);
+	MPI_Gatherv(locVeloWake.data(), parallel.myLen, MPI_DOUBLE, wakeVelo.data(), parallel.len.data(), parallel.disp.data(), MPI_DOUBLE, 0, parallel.commWork);
 }//GetWakeInfluence(...)
 
 //Переделанная в соответствии с дисс. Моревой
@@ -292,19 +355,25 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPoints(const std::vector<Vort
 
 	parallel.SplitMPI(points.size());
 
+	std::vector<Vortex2D> locPoints;
+	locPoints.resize(parallel.myLen);
+
+	MPI_Scatterv(points.data(), parallel.len.data(), parallel.disp.data(), Vortex2D::mpiVortex2D, \
+		locPoints.data(), parallel.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+
 	std::vector<Point2D> locVelo;
-	locVelo.resize(parallel.len[id]);
+	locVelo.resize(parallel.myLen);
 
 	//Локальные переменные для цикла
 	Point2D velI;
 	Point2D tempVel;
 
-#pragma omp parallel for default(none) shared(locVelo, id, points) private(velI, tempVel)
-	for (int i = 0; i < parallel.len[id]; ++i)
+#pragma omp parallel for default(none) shared(locVelo, id, locPoints) private(velI, tempVel)
+	for (int i = 0; i < parallel.myLen; ++i)
 	{
 		velI = { 0.0, 0.0 };
 
-		const Point2D& posI = points[parallel.disp[id] + i].r();
+		const Point2D& posI = locPoints[i].r();
 
 		for (size_t j = 0; j < afl.np; ++j)
 		{
@@ -320,7 +389,6 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPoints(const std::vector<Vort
 			double alpha = Alpha(p, s);
 			double lambda = Lambda(p, s);
 
-//			tempVel = -alpha* tau.kcross() + lambda*tau;
 			tempVel = alpha* tau + lambda * tau.kcross();
 			tempVel *= gamJ;
 			velI += tempVel;
@@ -333,32 +401,101 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPoints(const std::vector<Vort
 	if (id == 0)
 		selfVelo.resize(points.size());
 
-	MPI_Gatherv(locVelo.data(), parallel.len[id], Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+	MPI_Gatherv(locVelo.data(), parallel.myLen, Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
 
 	if (id == 0)
 	for (size_t i = 0; i < velo.size(); ++i)
 		velo[i] += selfVelo[i];
 }//GetVelocityToSetOfPoints(...)
 
+
+//Вычисление скоростей в наборе точек, вызываемых наличием завихренности и источников на профиле как от виртуальных вихрей
+void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const
+{
+	std::vector<Point2D> selfVelo;
+
+	size_t np = afl.np;
+
+	int id = parallel.myidWork;
+
+	parallel.SplitMPI(points.size());
+
+	std::vector<Vortex2D> locPoints;
+	locPoints.resize(parallel.myLen);
+
+	MPI_Scatterv(points.data(), parallel.len.data(), parallel.disp.data(), Vortex2D::mpiVortex2D, \
+		locPoints.data(), parallel.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+
+	double cft = IDPI;
+
+	std::vector<Point2D> locConvVelo;
+	locConvVelo.resize(parallel.myLen);
+	
+	//Локальные переменные для цикла
+	Point2D velI;
+	Point2D tempVel;
+	double dst2eps, dst2;
+
+
+#pragma omp parallel for default(none) shared(locConvVelo, locPoints, id, cft) private(velI, tempVel, dst2, dst2eps)
+	for (int i = 0; i < parallel.myLen; ++i)
+	{
+		velI = { 0.0, 0.0 };
+
+		const Point2D& posI = locPoints[i].r();
+
+		for (size_t j = 0; j < virtualWake.size(); ++j)
+		{
+			const Point2D& posJ = virtualWake[j].r();
+			const double& gamJ = virtualWake[j].g();
+
+			tempVel = { 0.0, 0.0 };
+
+			dst2 = dist2(posI, posJ);
+
+			dst2eps = std::max(dst2, wake.param.eps2);
+			tempVel = { -posI[1] + posJ[1], posI[0] - posJ[0] };
+			tempVel *= (gamJ / dst2eps);
+			velI += tempVel;
+		}
+
+		velI *= cft;
+		locConvVelo[i] = velI;
+	}
+
+	if (id == 0)
+		selfVelo.resize(points.size());
+
+	MPI_Gatherv(locConvVelo.data(), parallel.myLen, Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+
+	parallel.BCastAllLenDisp();
+
+	if (id == 0)
+	for (size_t i = 0; i < velo.size(); ++i)
+		velo[i] += selfVelo[i];
+}//GetVelocityToSetOfPointsFromVirtualVortexes(...)
+
 //Заполнение правой части
 void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs)
 {
-	size_t np = afl.np;
-
 	std::vector<double> wakeVelo;
-
 	GetWakeInfluence(wakeVelo);
 
-	for (size_t i = 0; i < np; ++i)
+	if (parallel.myidWork == 0)
+	for (size_t i = 0; i < afl.np; ++i)
 		rhs(i) = -(V0*afl.tau[i]) - wakeVelo[i];
 	
-
-	*lastRhs = 0.0;
-	for each (double g in afl.gammaThrough)
+	if (parallel.myidWork == 0)
 	{
-		*lastRhs += g;
+		*lastRhs = 0.0;
+		
+		for (size_t q = 0; q < afl.gammaThrough.size(); ++q)
+			//for each (double g in afl.gammaThrough)
+		{
+			*lastRhs += afl.gammaThrough[q];
+			//*lastRhs += g;
+		}
 	}
-
 }//FillRhs(...)
 
 

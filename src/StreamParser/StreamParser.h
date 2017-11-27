@@ -275,8 +275,29 @@ public:
 				else
 				{
 					//если подстановка
-					*perr << "parser error: VECTOR SUBSTITUTIONS ARE NOT PERMITED!" << std::endl;
-					exit(-1);
+					std::string svar = s.substr(1, s.length() - 1);
+					auto search_var = vars.find(svar);
+					if ((search_var != vars.end()) && ((search_var->second).size() > 0))
+					{
+						std::stringstream ss(search_var->second[0]);
+						T elem;
+						ss >> elem;
+						if (typeid(elem).name() == typeid(std::string("TestString")).name())
+						{
+							std::string* str = reinterpret_cast<std::string*>(&elem);
+							str->erase(remove(str->begin(), str->end(), '\"'), str->end());
+						}
+						res.push_back(elem);
+					}
+					else
+					{
+						*perr << "parser error: SUBSTITUTION $" << svar << " IS UNDEFINED" << std::endl;
+						exit(1);
+					}
+					
+					
+					//*perr << "parser error: VECTOR SUBSTITUTIONS ARE NOT PERMITED!" << std::endl;
+					//exit(-1);
 				}
 			}
 		}
