@@ -1,3 +1,31 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: AirfoilRect.cpp                                                  |
+| Info: Source code of VM2D                                                   |
+|                                                                             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
+| under the terms of the GNU General Public License as published by           |
+| the Free Software Foundation, either version 3 of the License, or           |
+| (at your option) any later version.	                                      |
+|                                                                             |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
+| FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
+| for more details.	                                                          |
+|                                                                             |
+| You should have received a copy of the GNU General Public License           |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+\*---------------------------------------------------------------------------*/
+
+
 /*!
 \file
 \brief Файл кода с описанием класса AirfoilRect
@@ -72,16 +100,16 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 
 	const int& id = parallel.myidWork;
 
-	parallel.SplitMPI(points.size());
+	parProp par = parallel.SplitMPI(points.size());
 
 	std::vector<Vortex2D> locPoints;
-	locPoints.resize(parallel.myLen);
+	locPoints.resize(par.myLen);
 
-	MPI_Scatterv(points.data(), parallel.len.data(), parallel.disp.data(), Vortex2D::mpiVortex2D, \
-		locPoints.data(), parallel.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+	MPI_Scatterv(const_cast<std::vector<Vortex2D>&>(points).data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, \
+		locPoints.data(), par.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
 
 	std::vector<Point2D> locDiffVelo;
-	locDiffVelo.resize(parallel.myLen);
+	locDiffVelo.resize(par.myLen);
 
 	//Локальные переменные для цикла
 	double I0;
@@ -102,18 +130,18 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 
 	double iDPIepscol2 = 1.0 / (PI * sqr(passport.wakeDiscretizationProperties.epscol));
 
-	#pragma omp parallel for \
-		default(none) \
-		shared(locDiffVelo, domainRadius, locPoints, id, iDPIepscol2) \
-		private(I0, i0, I3, xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, iDDomRad) schedule(dynamic, 1)
-	for (int i = 0; i < parallel.myLen; ++i)
+//	#pragma omp parallel for \
+//		default(none) \
+//		shared(locDiffVelo, domainRadius, locPoints, id, iDPIepscol2) \
+//		private(I0, i0OC, I3, xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, iDDomRad) schedule(dynamic, 1)
+	for (int i = 0; i < par.myLen; ++i)
 	{
 		I0 = 0.0;
 		I3 = { 0.0, 0.0 };
 
 		i0 = 0.0;
 
-		iDDomRad = 1.0 / domainRadius[i+parallel.myDisp];
+		iDDomRad = 1.0 / domainRadius[i+par.myDisp];
 
 		for (size_t j = 0; j < r.size() - 1; j++)
 		{
@@ -167,10 +195,10 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 				}
 				else if (d <= 0.1 * len[j])
 				{
-					i0 = PI * sqr(domainRadius[i+parallel.myDisp]);
+					i0 = PI * sqr(domainRadius[i+par.myDisp]);
 					if (fabs(s) > 0.5 * len[j])
 					{						
-						I3 += 2.0 * nrm[j] * domainRadius[i + parallel.myDisp] * (exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0));
+						I3 += 2.0 * nrm[j] * domainRadius[i + par.myDisp] * (exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0));
 						//	viscousStress[j] += locPoints[i].g() * (mn.kcross() * tau[j]) / (PI * sqr(epscol));
 						//	viscousStress[j] += locPoints[i].g() * (2.0 * nrm[j] * domainRadius[i+parallel.myDisp] * (1.0 - exp(-0.5 * len[j] / domainRadius[i+parallel.myDisp]))).kcross() * tau[j] / (PI * sqr(epscol) *len[j]);
 						//viscousStress[j] += locPoints[i].g()*(exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0))  * iDDomRad / len[j]; //locPoints[i].g() *(2.0 *  epscol* (1.0 - exp(-0.5 * len[j] / epscol))) / (PI * sqr(epscol) *len[j]);
@@ -178,7 +206,7 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 					}
 					else
 					{
-						I3 += 2.0 * nrm[j] * domainRadius[i + parallel.myDisp] * (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
+						I3 += 2.0 * nrm[j] * domainRadius[i + par.myDisp] * (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
 						//viscousStress[j] += points[i].g()* (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s)  * iDDomRad))  * iDDomRad / len[j]; // points[i].g()*(2.0 *  epscol* (1.0 - exp(-0.5 * len[j] / epscol))) / (PI * sqr(epscol) *len[j]);
 						viscousStress[j] += 2.0 * locPoints[i].g()* (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s)  * iDDomRad))  * iDDomRad / (PI * len[j]);
 					}
@@ -187,19 +215,22 @@ void AirfoilRect::GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vect
 		}//for j
 
 		if (i0 != 0.0) 
+		{
 			I0 = i0;
+		}
 		else
 		{
-			I0 *= domainRadius[i + parallel.myDisp];
-			I0 += 2.0 * PI * sqr(domainRadius[i + parallel.myDisp]);
+			I0 *= domainRadius[i + par.myDisp];
+			I0 += 2.0 * PI * sqr(domainRadius[i + par.myDisp]);
 		}
+		
 		locDiffVelo[i] = I3 * (1.0 / I0);
 	}//for k
 
 	if (id == 0)
 		selfVelo.resize(points.size());
 
-	MPI_Gatherv(locDiffVelo.data(), parallel.myLen, Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+	MPI_Gatherv(locDiffVelo.data(), par.myLen, Point2D::mpiPoint2D, selfVelo.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
 	
 	if (id == 0)
 	for (size_t i = 0; i < velo.size(); ++i)

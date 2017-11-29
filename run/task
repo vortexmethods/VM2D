@@ -1,0 +1,11 @@
+#!/bin/bash
+#PBS -N VM2D
+#PBS -S /bin/bash
+#PBS -l walltime=48:00:00
+#PBS -l nodes=2:ppn=12
+#PBS -d /unicluster/home/i.marchevsky/VM2D/build
+#PBS -q bl220
+
+mpirun -machinefile $PBS_NODEFILE -np 2 VM2D
+
+#mpirun -np 3 -map-by slot:pe=4 VM2D

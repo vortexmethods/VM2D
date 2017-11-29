@@ -128,6 +128,7 @@ void Passport::GetAllParamsFromParser
 		parserAirfoil->get("basePoint", prm.basePoint, &defaults::defaultBasePoint);
 		parserAirfoil->get("scale", prm.scale, &defaults::defaultScale);
 		parserAirfoil->get("angle", prm.angle, &defaults::defaultAngle);
+		prm.angle *= PI / 180.0;
 		parserAirfoil->get("panelsType", prm.panelsType, &defaults::defaultPanelsType);
 		parserAirfoil->get("boundaryConditionSatisfaction", prm.boundaryCondition, &defaults::defaultBoundaryCondition);
 		parserAirfoil->get("mechnicalSystem", prm.mechanicalSystem, &defaults::defaultMechanicalSystem);

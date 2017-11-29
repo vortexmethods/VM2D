@@ -1,3 +1,31 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: BoundaryConstLayerAver.cpp                                       |
+| Info: Source code of VM2D                                                   |
+|                                                                             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
+| under the terms of the GNU General Public License as published by           |
+| the Free Software Foundation, either version 3 of the License, or           |
+| (at your option) any later version.	                                      |
+|                                                                             |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
+| FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
+| for more details.	                                                          |
+|                                                                             |
+| You should have received a copy of the GNU General Public License           |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+\*---------------------------------------------------------------------------*/
+
+
 /*!
 \file
 \brief Файл кода с описанием класса BoundaryConstLayerAver
@@ -245,24 +273,23 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 {
 	size_t np = afl.np;
 	int id = parallel.myidWork;
-
-	parallel.SplitMPI(np);
+	parProp par = parallel.SplitMPI(np);
 
 	std::vector<double> locVeloWake;
-	locVeloWake.resize(parallel.myLen);
+	locVeloWake.resize(par.myLen);
 
 	//локальные переменные для цикла
 	double velI = 0.0;
 	double tempVel = 0.0;
 
-#pragma omp parallel for default(none) shared(locVeloWake, id) private(velI, tempVel)
-	for (int i = 0; i < parallel.myLen; ++i)
+#pragma omp parallel for default(none) shared(locVeloWake, par) private(velI, tempVel)
+	for (int i = 0; i < par.myLen; ++i)
 	{
 		velI = 0.0;
 
-		const Point2D& posI0 = CC[parallel.myDisp + i];
-		const Point2D& posI1 = CC[parallel.myDisp + i + 1];
-		const Point2D& tau = afl.tau[parallel.myDisp + i];
+		const Point2D& posI0 = CC[par.myDisp + i];
+		const Point2D& posI1 = CC[par.myDisp + i + 1];
+		const Point2D& tau = afl.tau[par.myDisp + i];
 
 		for (size_t j = 0; j < wake.vtx.size(); ++j)
 		{
@@ -279,14 +306,14 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 			velI -= tempVel;
 		}
 
-		velI *= IDPI / afl.len[parallel.myDisp + i];
+		velI *= IDPI / afl.len[par.myDisp + i];
 		locVeloWake[i] = velI;
 	}
 
 	if (id == 0)
 		wakeVelo.resize(np);
 
-	MPI_Gatherv(locVeloWake.data(), parallel.myLen, MPI_DOUBLE, wakeVelo.data(), parallel.len.data(), parallel.disp.data(), MPI_DOUBLE, 0, parallel.commWork);
+	MPI_Gatherv(locVeloWake.data(), par.myLen, MPI_DOUBLE, wakeVelo.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, parallel.commWork);
 }//GetWakeInfluence(...)
 
 //Переделанная в соответствии с дисс. Моревой
@@ -295,24 +322,24 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 //	size_t np = afl.np;
 //	int id = parallel.myidWork;
 //
-//	parallel.SplitMPI(np);
+//	parProp par = parallel.SplitMPI(np);
 //
 //	std::vector<double> locVeloWake;
-//	locVeloWake.resize(parallel.len[id]);
+//	locVeloWake.resize(par.myLen);
 //
 //	//локальные переменные для цикла
 //	double velI = 0.0;
 //	double tempVel = 0.0;
 //
-//#pragma omp parallel for default(none) shared(locVeloWake, id) private(velI, tempVel)
-//	for (int i = 0; i < parallel.len[id]; ++i)
+//#pragma omp parallel for default(none) shared(locVeloWake, id, par) private(velI, tempVel)
+//	for (int i = 0; i < par.myLen; ++i)
 //	{
 //		velI = 0.0;
 //
-//		const Point2D& posI0 = CC[parallel.disp[id] + i];
-//		const Point2D& posI1 = CC[parallel.disp[id] + i + 1];
-//		const Point2D& tau = afl.tau[parallel.disp[id] + i];
-//		Point2D d = CC[parallel.disp[id] + i + 1] - CC[parallel.disp[id] + i];
+//		const Point2D& posI0 = CC[par.myDisp + i];
+//		const Point2D& posI1 = CC[par.myDisp + i + 1];
+//		const Point2D& tau = afl.tau[par.myDisp + i];
+//		Point2D d = CC[par.myDisp + i + 1] - CC[par.myDisp + i];
 //
 //		for (size_t j = 0; j < wake.vtx.size(); ++j)
 //		{
@@ -333,7 +360,7 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 //			velI -= tempVel;
 //		}
 //
-//		velI *= IDPI / (afl.len[parallel.disp[id] + i] * afl.len[parallel.disp[id] + i]);
+//		velI *= IDPI / (afl.len[par.myDisp + i] * afl.len[par.myDisp + i]);
 //		locVeloWake[i] = velI;
 //	}
 //
@@ -341,7 +368,7 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 //		wakeVelo.resize(np);
 //
 //
-//	MPI_Gatherv(locVeloWake.data(), parallel.len[id], MPI_DOUBLE, wakeVelo.data(), parallel.len.data(), parallel.disp.data(), MPI_DOUBLE, 0, parallel.commWork);
+//	MPI_Gatherv(locVeloWake.data(), par.myLen, MPI_DOUBLE, wakeVelo.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, parallel.commWork);
 //}//GetWakeInfluence(...)
 
 //Вычисление скоростей в наборе точек, вызываемых наличием завихренности и источников на профиле
@@ -353,25 +380,25 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPoints(const std::vector<Vort
 
 	int id = parallel.myidWork;
 
-	parallel.SplitMPI(points.size());
+	parProp par = parallel.SplitMPI(points.size());
 
 	std::vector<Vortex2D> locPoints;
-	locPoints.resize(parallel.myLen);
+	locPoints.resize(par.myLen);
 
-	MPI_Scatterv(points.data(), parallel.len.data(), parallel.disp.data(), Vortex2D::mpiVortex2D, \
-		locPoints.data(), parallel.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+	MPI_Scatterv(const_cast<std::vector<Vortex2D>&>(points).data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, \
+		locPoints.data(), par.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
 
 	std::vector<Point2D> locVelo;
-	locVelo.resize(parallel.myLen);
+	locVelo.resize(par.myLen);
 
 	//Локальные переменные для цикла
 	Point2D velI;
 	Point2D tempVel;
 
-#pragma omp parallel for default(none) shared(locVelo, id, locPoints) private(velI, tempVel)
-	for (int i = 0; i < parallel.myLen; ++i)
+#pragma omp parallel for default(none) shared(locVelo, locPoints, par) private(velI, tempVel)
+	for (int i = 0; i < par.myLen; ++i)
 	{
-		velI = { 0.0, 0.0 };
+		velI.toZero();
 
 		const Point2D& posI = locPoints[i].r();
 
@@ -382,13 +409,14 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPoints(const std::vector<Vort
 			const Point2D& tau = afl.tau[j];
 
 			double gamJ = sheets.freeVortexSheet[j][0];
-
+			
 			Point2D s = posI - posJ0;
 			Point2D p = posI - posJ1;
 
 			double alpha = Alpha(p, s);
+			
 			double lambda = Lambda(p, s);
-
+			
 			tempVel = alpha* tau + lambda * tau.kcross();
 			tempVel *= gamJ;
 			velI += tempVel;
@@ -401,7 +429,7 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPoints(const std::vector<Vort
 	if (id == 0)
 		selfVelo.resize(points.size());
 
-	MPI_Gatherv(locVelo.data(), parallel.myLen, Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+	MPI_Gatherv(locVelo.data(), par.myLen, Point2D::mpiPoint2D, selfVelo.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
 
 	if (id == 0)
 	for (size_t i = 0; i < velo.size(); ++i)
@@ -418,18 +446,18 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 
 	int id = parallel.myidWork;
 
-	parallel.SplitMPI(points.size());
+	parProp par = parallel.SplitMPI(points.size());
 
 	std::vector<Vortex2D> locPoints;
-	locPoints.resize(parallel.myLen);
+	locPoints.resize(par.myLen);
 
-	MPI_Scatterv(points.data(), parallel.len.data(), parallel.disp.data(), Vortex2D::mpiVortex2D, \
-		locPoints.data(), parallel.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+	MPI_Scatterv(const_cast<std::vector<Vortex2D>&>(points).data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, \
+		locPoints.data(), par.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
 
 	double cft = IDPI;
 
 	std::vector<Point2D> locConvVelo;
-	locConvVelo.resize(parallel.myLen);
+	locConvVelo.resize(par.myLen);
 	
 	//Локальные переменные для цикла
 	Point2D velI;
@@ -437,10 +465,10 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 	double dst2eps, dst2;
 
 
-#pragma omp parallel for default(none) shared(locConvVelo, locPoints, id, cft) private(velI, tempVel, dst2, dst2eps)
-	for (int i = 0; i < parallel.myLen; ++i)
+#pragma omp parallel for default(none) shared(locConvVelo, locPoints, cft, par) private(velI, tempVel, dst2, dst2eps)
+	for (int i = 0; i < par.myLen; ++i)
 	{
-		velI = { 0.0, 0.0 };
+		velI.toZero();
 
 		const Point2D& posI = locPoints[i].r();
 
@@ -449,7 +477,7 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 			const Point2D& posJ = virtualWake[j].r();
 			const double& gamJ = virtualWake[j].g();
 
-			tempVel = { 0.0, 0.0 };
+			tempVel.toZero();
 
 			dst2 = dist2(posI, posJ);
 
@@ -466,9 +494,7 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 	if (id == 0)
 		selfVelo.resize(points.size());
 
-	MPI_Gatherv(locConvVelo.data(), parallel.myLen, Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
-
-	parallel.BCastAllLenDisp();
+	MPI_Gatherv(locConvVelo.data(), par.myLen, Point2D::mpiPoint2D, selfVelo.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
 
 	if (id == 0)
 	for (size_t i = 0; i < velo.size(); ++i)
@@ -479,11 +505,14 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs)
 {
 	std::vector<double> wakeVelo;
+	
 	GetWakeInfluence(wakeVelo);
 
 	if (parallel.myidWork == 0)
 	for (size_t i = 0; i < afl.np; ++i)
+	{
 		rhs(i) = -(V0*afl.tau[i]) - wakeVelo[i];
+	}
 	
 	if (parallel.myidWork == 0)
 	{

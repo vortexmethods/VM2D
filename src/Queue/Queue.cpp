@@ -1,3 +1,31 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: Queue.cpp                                                        |
+| Info: Source code of VM2D                                                   |
+|                                                                             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
+| under the terms of the GNU General Public License as published by           |
+| the Free Software Foundation, either version 3 of the License, or           |
+| (at your option) any later version.	                                      |
+|                                                                             |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
+| FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
+| for more details.	                                                          |
+|                                                                             |
+| You should have received a copy of the GNU General Public License           |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+\*---------------------------------------------------------------------------*/
+
+
 /*!
 \file
 \brief Файл кода с описанием класса Queue
@@ -298,11 +326,11 @@ void Queue::TaskSplit()
 			world2D.reset(new World2D(*this, *(defaults::defaultPtele)));
 
 		//Синхронизация параметров
-		MPI_Bcast(&(world2D->Passport().physicalProperties.currTime), 1, MPI_DOUBLE, 0, parallel.commWork);
+		MPI_Bcast(&(world2D->GetPassport().physicalProperties.currTime), 1, MPI_DOUBLE, 0, parallel.commWork);
 
 		//Создание файлов для записи сил
 		if ((parallel.myidWork == 0) && (world2D->currentStep == 0))
-		for (size_t q = 0; q < world2D->Passport().airfoilParams.size(); ++q)
+		for (size_t q = 0; q < world2D->GetPassport().airfoilParams.size(); ++q)
 			world2D->GenerateMechanicsHeader(q);
 
 		//Создание файла для записи временной статистики
@@ -501,97 +529,111 @@ void Queue::AddTask(int _nProc, const Passport& _passport)
 //Загрузка списка задач
 void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _defaultsFile, const std::string& _switchersFile)
 {
-	std::stringstream tasksFile(Preprocessor(_tasksFile).resultString);
-	std::stringstream defaultsFile(Preprocessor(_defaultsFile).resultString);
-	std::stringstream switchersFile(Preprocessor(_switchersFile).resultString);
-	std::vector<std::string> taskFolder;
-		
-	std::unique_ptr<StreamParser> parserTaskList;
-	parserTaskList.reset(new StreamParser(tasksFile, '(', ')'));
-
-	std::vector<std::string> alltasks;
-	parserTaskList->get("problems", alltasks);
-
-	size_t nTasks = alltasks.size();
-
-	for (size_t i = 0; i < nTasks; ++i)
+	std::ostream *Pinfo, *Perr;
 	{
-		if (alltasks[i].length() > 0)
+		Pinfo = defaults::defaultPinfo;
+		Perr = defaults::defaultPerr;
+	}
+	
+	if (
+	fileExistTest(_tasksFile, Pinfo, Perr, "problems")&& 
+	fileExistTest(_defaultsFile, Pinfo, Perr, "defaults")&&
+	fileExistTest(_switchersFile, Pinfo, Perr, "switchers") 
+	)
+	{
+		std::stringstream tasksFile(Preprocessor(_tasksFile).resultString);
+		std::stringstream defaultsFile(Preprocessor(_defaultsFile).resultString);
+		std::stringstream switchersFile(Preprocessor(_switchersFile).resultString);
+		std::vector<std::string> taskFolder;
+
+		std::unique_ptr<StreamParser> parserTaskList;
+		parserTaskList.reset(new StreamParser(tasksFile, '(', ')'));
+
+		std::vector<std::string> alltasks;
+		parserTaskList->get("problems", alltasks);
+
+		size_t nTasks = alltasks.size();
+
+		for (size_t i = 0; i < nTasks; ++i)
 		{
-			//делим имя файла + выражение в скобках на 2 подстроки
-			std::pair<std::string, std::string> taskLine = StreamParser::SplitString(alltasks[i]);
-
-			std::string dir = taskLine.first;
-
-			//вторую подстроку разделяем на вектор из строк по запятым, стоящим вне фигурных скобок		
-			std::vector<std::string> vecTaskLineSecond = StreamParser::StringToVector(taskLine.second, '{', '}');
-
-			//создаем парсер и связываем его с параметрами профиля
-			std::stringstream tskStream(StreamParser::VectorStringToString(vecTaskLineSecond));
-			std::unique_ptr<StreamParser> parserTask;
-
-			parserTask.reset(new StreamParser(tskStream, defaultsFile));
-
-			std::string pspFile;
-			int np;
-			//считываем нужные параметры с учетом default-значений
-			parserTask->get("pspfile", pspFile, &defaults::defaultPspFile);
-			parserTask->get("np", np, &defaults::defaultNp);
-
-			std::string copyPspFile;
-			parserTask->get("copyPspFile", copyPspFile, &defaults::defaultCopyPspFile);
-			if (copyPspFile.length() > 0)
+			if (alltasks[i].length() > 0)
 			{
+				//делим имя файла + выражение в скобках на 2 подстроки
+				std::pair<std::string, std::string> taskLine = StreamParser::SplitString(alltasks[i]);
+
+				std::string dir = taskLine.first;
+
+				//вторую подстроку разделяем на вектор из строк по запятым, стоящим вне фигурных скобок		
+				std::vector<std::string> vecTaskLineSecond = StreamParser::StringToVector(taskLine.second, '{', '}');
+
+				//создаем парсер и связываем его с параметрами профиля
+				std::stringstream tskStream(StreamParser::VectorStringToString(vecTaskLineSecond));
+				std::unique_ptr<StreamParser> parserTask;
+
+				parserTask.reset(new StreamParser(tskStream, defaultsFile));
+
+				std::string pspFile;
+				int np;
+				//считываем нужные параметры с учетом default-значений
+				parserTask->get("pspfile", pspFile, &defaults::defaultPspFile);
+				parserTask->get("np", np, &defaults::defaultNp);
+
+				std::string copyPspFile;
+				parserTask->get("copyPspFile", copyPspFile, &defaults::defaultCopyPspFile);
+				if (copyPspFile.length() > 0)
+				{
 #if !defined(__linux__)
-				_mkdir(dir.c_str());
+					_mkdir(dir.c_str());
 #else
-				mkdir(dir.c_str(), S_IRWXU | S_IRGRP | S_IROTH);
+					mkdir(dir.c_str(), S_IRWXU | S_IRGRP | S_IROTH);
 #endif
 
-				std::ofstream outPassportFile;
-				outPassportFile.open("./" + dir + "/" + pspFile);
-				PrintLogoToTextFile(outPassportFile, "./" + dir + "/" + pspFile, "Copy of the existing passport ./" + copyPspFile);
+					std::ofstream outPassportFile;
+					outPassportFile.open("./" + dir + "/" + pspFile);
+					PrintLogoToTextFile(outPassportFile, "./" + dir + "/" + pspFile, "Copy of the existing passport ./" + copyPspFile);
 
-				std::stringstream ss(Preprocessor(copyPspFile).resultString);
+					std::stringstream ss(Preprocessor(copyPspFile).resultString);
 
-				std::string readline;
+					std::string readline;
 
-				while (ss.good())
-				{
-					getline(ss, readline);
+					while (ss.good())
+					{
+						getline(ss, readline);
 
-					readline.erase(remove(readline.begin(), readline.end(), ' '), readline.end());
-					readline.erase(remove(readline.begin(), readline.end(), '\t'), readline.end());
+						readline.erase(remove(readline.begin(), readline.end(), ' '), readline.end());
+						readline.erase(remove(readline.begin(), readline.end(), '\t'), readline.end());
 
-					if (readline.length() > 0)
-						outPassportFile << readline << ";" << std::endl;
+						if (readline.length() > 0)
+							outPassportFile << readline << ";" << std::endl;
+					}
+
+					outPassportFile.close();
 				}
 
+				Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, 	vecTaskLineSecond, parallel.myidWork==0);
+				AddTask(np, psp);
 
+				if (parallel.myidWork == 0)
+				{
+					*defaults::defaultPinfo << "-------- Problem #" << i << " is loaded --------" << std::endl;
+					*defaults::defaultPinfo << std::endl;
+				}
+			} //for i
+		} 
 
-				outPassportFile.close();
-			}
-
-			Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, vecTaskLineSecond, parallel.myidWork==0);
-			AddTask(np, psp);
-
-			if (parallel.myidWork == 0)
-			{
-				*defaults::defaultPinfo << "-------- Problem #" << i << " is loaded --------" << std::endl;
-				*defaults::defaultPinfo << std::endl;
-			}
-		} //for i
-	} 
-
-	//tasksFile.close();
-	tasksFile.clear();
+		//tasksFile.close();
+		tasksFile.clear();
 	
-	//defaultsFile.close();
-	defaultsFile.clear();
+		//defaultsFile.close();
+		defaultsFile.clear();
 
-	//switchersFile.close();
-	switchersFile.clear();
+		//switchersFile.close();
+		switchersFile.clear();
 
-	
+	}
+	else
+	{
+		exit(1);
+	}
 
 }//Queue::LoadTasks()

@@ -1,0 +1,45 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: passport                                                         |
+| Info: Parameters of the problem to be solved                                |
+\*---------------------------------------------------------------------------*/
+
+//Physical Properties
+rho = 1.0;
+vInf = {1.0, 0.0};
+nu = 0.005;
+
+//Time Discretization Properties
+//timeStart = 0.0;    //by default=0.0
+timeStop = 1001.0;
+dt = 0.005;
+timeAccel = 1.0;	//by default=0.0
+deltacntText = 0;     //by default=1
+deltacntBinary = 10;   //by default=0
+
+//Wake Discretization Properties
+eps = 0.0075;
+epscol = 0.0050;
+distKill = 20.0;		//by default=10.0
+delta = 5.e-6;		//by default=1.e-5
+
+//Numerical Schemes
+linearSystemSolver = 0;
+velocityComputation = velocityBiotSavart;                      // velocityBiotSavart,  velocityFourier,  velocityBarnesHut
+wakeMotionIntegrator = 0;
+
+//Files and parameters
+//airfoil = {};
+airfoil = { "square240"(basePoint = {0.0, 0.0}, angle = 45.0,
+                        panelsType = panelsRectilinear, 
+                        boundaryConditionSatisfaction = boundaryConstantLayerAverage) };
+						//boundaryVorticesCollocation //boundaryConstantLayerAverage //mechnicalSystem = mechanicsRigidImmovable
+//fileWake = { "Test_wake" };
+//fileWake = { "OblakoV1000" };                              //by default={}

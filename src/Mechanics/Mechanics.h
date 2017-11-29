@@ -1,3 +1,31 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: Mechanics.h                                                      |
+| Info: Source code of VM2D                                                   |
+|                                                                             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
+| under the terms of the GNU General Public License as published by           |
+| the Free Software Foundation, either version 3 of the License, or           |
+| (at your option) any later version.	                                      |
+|                                                                             |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
+| FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
+| for more details.	                                                          |
+|                                                                             |
+| You should have received a copy of the GNU General Public License           |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+\*---------------------------------------------------------------------------*/
+
+
 /*!
 \file
 \brief Заголовочный файл с описанием класса Mechanics
@@ -69,16 +97,25 @@ public:
 	/// \param[in] airfoilNumber номер профиля, для которого сохраняются силы
 	void GenerateForcesHeader(int airfoilNumber)
 	{
-		std::stringstream forceFileName;
+		std::stringstream forceFileName, forceFileNameCsv;
 		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber;
+		forceFileNameCsv << passport.dir << "forces-airfoil-" << airfoilNumber << ".csv";
 
 		std::ofstream newForcesFile(forceFileName.str());
+		std::ofstream newForcesFileCsv(forceFileNameCsv.str());		
+
 		PrintLogoToTextFile(newForcesFile, forceFileName.str(), "Hydrodynamic loads for the airfoil " + passport.airfoilParams[airfoilNumber].fileAirfoil);
 
 		PrintHeaderToTextFile(newForcesFile, "currentStep     currentTime     Fx     Fy");
+		
+		newForcesFileCsv << "t,Fx,Fy";
 
 		newForcesFile.close();
 		newForcesFile.clear();
+		
+		newForcesFileCsv.close();
+		newForcesFileCsv.clear();
+
 	}//GenerateForcesHeader(...)
 
 
@@ -87,12 +124,21 @@ public:
 	/// \param[in] airfoilNumber номер профиля, для которого сохраняются силы
 	void GenerateForcesString(int currentStep, int airfoilNumber)
 	{
-		std::stringstream forceFileName;
-		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber;
+		std::stringstream forceFileName, forceFileNameCsv;
+		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber ;
+		forceFileNameCsv << passport.dir << "forces-airfoil-" << airfoilNumber << ".csv";
+
 
 		std::ofstream forcesFile(forceFileName.str(), std::ios::app);
 		forcesFile << std::endl << currentStep << "	" << passport.physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1];
 		forcesFile.close();
+		
+		std::ofstream forcesFileCsv(forceFileNameCsv.str(), std::ios::app);
+		forcesFileCsv << std::endl << passport.physicalProperties.getCurrTime() << "," << hydroDynamForce[0] << "," << hydroDynamForce[1];
+		forcesFileCsv.close();
+		
+		
+
 	}//GenerateForcesString(...)
 
 };

@@ -1,0 +1,23 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: problems                                                         |
+| Info: Problems to be solved by using VM2D                                   |
+\*---------------------------------------------------------------------------*/
+
+problems = 
+{
+//wing240(),
+//square240(),
+//twoCylinders(),
+//blasius(),
+circle1000(np = 1), //all the parameters are default
+//circle60(), //all the parameters are default
+//circle200(np=1), //all the parameters are default
+}

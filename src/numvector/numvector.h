@@ -1,3 +1,31 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: numvector.h                                                      |
+| Info: Source code of VM2D                                                   |
+|                                                                             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
+| under the terms of the GNU General Public License as published by           |
+| the Free Software Foundation, either version 3 of the License, or           |
+| (at your option) any later version.	                                      |
+|                                                                             |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
+| FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
+| for more details.	                                                          |
+|                                                                             |
+| You should have received a copy of the GNU General Public License           |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+\*---------------------------------------------------------------------------*/
+
+
 /*!
 \file
 \brief Описание класса numvector
@@ -297,7 +325,7 @@ public:
 	/// \return множество типа std::set, состоящее из тех же элементов, что исходный вектор
 	std::set<T> toSet() const
 	{
-		set<T> newset;
+		std::set<T> newset;
 		for (size_t i = 0; i < n; ++i)
 			newset.insert(r[i]);
 		return newset;
@@ -313,6 +341,7 @@ public:
 	/// \param[in] k количество позиций, на которые производится "вращение"
 	///
 	/// \return вектор, полученный "вращением" исходного на k позиций влево
+
 	numvector<T, n> rotateLeft(size_t k) const
 	{
 		numvector<T, n> res;
@@ -335,6 +364,20 @@ public:
 		return { -r[1], r[0] };
 	}//kcross()
 
+
+	/// Установка всех компонент вектора в константу (по умолчанию --- нуль)
+	/// \tparam T тип данных
+	/// \tparam n длина вектора	
+	///
+	/// \param[in] val константа, значению которой приравниваются все компоненты вектора (по умолчанию 0.0)
+	/// \return ссылка на сам вектор	
+	numvector<T, n>& toZero(double val = 0.0)
+	{
+	    for (int i = 0; i < n; ++i)
+		r[i] = val;
+		return *this;
+	}
+	
 	
 	/// Пустой конструктор
 	numvector()	{ };
@@ -516,11 +559,12 @@ template<typename T, int n, int p>
 numvector<T, p> toOtherLength(const numvector<T, n>& r)
 {
 	numvector<T, p> res;
-	for (int i = 0; i < min(p, n); ++i)
+	int minPN = (p<n) ? p : n;
+	for (int i = 0; i < minPN; ++i)
 		res[i] = r[i];
-	for (int i = min(p, n); i < p; ++i)
+	for (int i = minPN; i < p; ++i)
 		res[i] = 0;
-
+	
 	return res;
 }//toOtherLength(...)
 

@@ -9,12 +9,12 @@ CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
 if(COMPILER_SUPPORTS_CXX11)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 elseif(COMPILER_SUPPORTS_CXX0X)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")	
 else()
         message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
 set(SRC_LIST src/VM2D/VM2D.cpp)
 
@@ -50,14 +50,15 @@ SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${dirlist})
 
 #EIGEN
-if(WIN32)
-set(PATH_TO_EIGEN "C:/Program files (x86)/Eigen3/include/eigen3")
-include_directories(${PATH_TO_EIGEN})
-else()
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
-find_package(Eigen3 REQUIRED)
+#if(WIN32)
+#set(PATH_TO_EIGEN "C:/Program files (x86)/Eigen3/include/eigen3")
+#include_directories(${PATH_TO_EIGEN})
+#else()
+#set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
+#find_package(Eigen3 REQUIRED)
+set(EIGEN3_INCLUDE_DIR "./include")
 include_directories(${EIGEN3_INCLUDE_DIR})
-endif()
+#endif()
 
 #OpenMP
 find_package(OpenMP)
@@ -69,15 +70,12 @@ endif()
 
 
 
-
-
-
 # Require MPI for this project:
 if(WIN32)
    #This is for finding MS-MPI.
    #set(_MPI_PREFIX_PATH)
    #list(APPEND _MPI_PREFIX_PATH "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\MPI;Path]/..")
-   set(MPIEXEC "C:/Program Files/Microsoft MPI/Bin/mpiexec.exe")
+   set(MPIEXEC "C:/Program Files (x86)/Microsoft MPI/Bin/mpiexec.exe")
    # For building MPI programs the selected Visual Studio compiler is used, namely cl.exe.
    # So there is no need to set a specific MPI compiler.
    #set(MPI_CXX_COMPILER "${CMAKE_CXX_COMPILER}")

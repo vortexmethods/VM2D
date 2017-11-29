@@ -1,3 +1,31 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: BoundaryVortColl.cpp                                             |
+| Info: Source code of VM2D                                                   |
+|                                                                             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
+| under the terms of the GNU General Public License as published by           |
+| the Free Software Foundation, either version 3 of the License, or           |
+| (at your option) any later version.	                                      |
+|                                                                             |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
+| FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
+| for more details.	                                                          |
+|                                                                             |
+| You should have received a copy of the GNU General Public License           |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+\*---------------------------------------------------------------------------*/
+
+
 /*!
 \file
 \brief Файл кода с описанием класса BoundaryVortColl
@@ -64,23 +92,23 @@ void BoundaryVortColl::GetWakeInfluence(std::vector<double>& wakeVelo) const
 	size_t np = afl.np;
 	int id = parallel.myidWork;
 
-	parallel.SplitMPI(np);
+	parProp par = parallel.SplitMPI(np);
 
 	std::vector<double> locVeloWake;
-	locVeloWake.resize(parallel.len[id]);
+	locVeloWake.resize(par.myLen);
 
 	//локальные переменные для цикла
 	double velI = 0.0;
 	double tempVel = 0.0;
 	double dst2 = 0.0;
 
-#pragma omp parallel for default(none) shared(locVeloWake, id) private(velI, tempVel, dst2)
-	for (int i = 0; i < parallel.len[id]; ++i)
+#pragma omp parallel for default(none) shared(locVeloWake, par) private(velI, tempVel, dst2)
+	for (int i = 0; i < par.myLen; ++i)
 	{
 		velI = 0.0;
 
-		const Point2D& posI = KK[parallel.disp[id] + i];
-		const Point2D& nrm = afl.nrm[parallel.disp[id] + i];
+		const Point2D& posI = KK[par.myDisp + i];
+		const Point2D& nrm = afl.nrm[par.myDisp + i];
 
 		for (size_t j = 0; j < wake.vtx.size(); ++j)
 		{
@@ -100,7 +128,7 @@ void BoundaryVortColl::GetWakeInfluence(std::vector<double>& wakeVelo) const
 	if (id == 0)
 		wakeVelo.resize(np); 
 
-	MPI_Gatherv(locVeloWake.data(), parallel.len[id], MPI_DOUBLE, wakeVelo.data(), parallel.len.data(), parallel.disp.data(), MPI_DOUBLE, 0, parallel.commWork);
+	MPI_Gatherv(locVeloWake.data(), par.myLen, MPI_DOUBLE, wakeVelo.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, parallel.commWork);
 }//GetWakeInfluence(...)
 
 
@@ -113,10 +141,10 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 		
 	int id = parallel.myidWork;
 
-	parallel.SplitMPI(points.size());
+	parProp par = parallel.SplitMPI(points.size());
 
 	std::vector<Point2D> locVelo;
-	locVelo.resize(parallel.len[id]);
+	locVelo.resize(par.myLen);
 
 	//Локальные переменные для цикла
 	Point2D velI;
@@ -124,12 +152,12 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 	double dst2 = 0.0;
 	double cft = IDPI;
 	
-#pragma omp parallel for default(none) shared(locVelo, id, cft, points) private(velI, tempVel, dst2)
-	for (int i = 0; i < parallel.len[id]; ++i)
+#pragma omp parallel for default(none) shared(locVelo, cft, points, par) private(velI, tempVel, dst2)
+	for (int i = 0; i < par.myLen; ++i)
 	{	
-		velI = { 0.0, 0.0 }; 
+		velI.toZero(); 
 
-		const Point2D& posI = points[parallel.disp[id] + i].r();
+		const Point2D& posI = points[par.myDisp + i].r();
 		
 		for (size_t j = 0; j < afl.np; ++j)
 		{
@@ -151,7 +179,7 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 		selfVelo.resize(points.size());
 	}
 
-	MPI_Gatherv(locVelo.data(), parallel.len[id], Point2D::mpiPoint2D, selfVelo.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+	MPI_Gatherv(locVelo.data(), par.myLen, Point2D::mpiPoint2D, selfVelo.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
 
 	if (id == 0)
 		for (size_t i = 0; i < velo.size(); ++i)

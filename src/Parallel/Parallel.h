@@ -1,6 +1,34 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: Parallel.h                                                       |
+| Info: Source code of VM2D                                                   |
+|                                                                             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
+| under the terms of the GNU General Public License as published by           |
+| the Free Software Foundation, either version 3 of the License, or           |
+| (at your option) any later version.	                                      |
+|                                                                             |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
+| FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
+| for more details.	                                                          |
+|                                                                             |
+| You should have received a copy of the GNU General Public License           |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+\*---------------------------------------------------------------------------*/
+
+
 /*!
 \file
-\brief Заголовочный файл с описанием класса Parallel
+\brief Заголовочный файл с описанием класса Parallel и структуры parProp
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
@@ -14,6 +42,34 @@
 #include <vector>
 
 #include "mpi.h"
+
+/*!
+\brief Стрктура, содержащая параметры исполнения задачи в параллельном MPI-режиме
+
+\author Марчевский Илья Константинович
+\author Кузьмина Ксения Сергеевна
+\author Рятина Евгения Павловна
+\version 1.0
+\date 1 декабря 2017 г.
+*/
+struct parProp
+{
+	/// Список из чисел витков циклов, предназначенных для каждого процессора
+	std::vector<int> len;
+	
+	/// Список, определяющий номер витка цикла, с которого должен начинать работу данный процессор
+	std::vector<int> disp;
+
+	/// Число витков, предназначенное текущему процессору
+	int myLen;
+
+	/// Индекс первого витка из числа витков, предназначенных текущему процессору
+	int myDisp;
+
+	/// Общее число витков, разделенное между всеми процессорами
+	int totalLen;
+};
+
 
 /*!
 \brief Класс, опеделяющий параметры исполнения задачи в параллельном MPI-режиме
@@ -36,48 +92,12 @@ public:
 	/// Число процессоров, решающих конкретную задачу
 	int nProcWork;    
 
-	/// \brief Список из чисел витков циклов, предназначенных для каждого процессора
-	///
-	/// Заполняется при вызове функции SplitMPI
-	/// \warning Актуален до следующего вызова SplitMPI с другим параметром общего числа витков цикла
-	mutable std::vector<int> len;
-	
-	/// \brief Число витков, предназначенное текущему процессору
-	///
-	/// Заполняется при вызове функции SplitMPI
-	/// \warning Актуально до следующего вызова SplitMPI с другим параметром общего числа витков цикла
-	mutable int myLen;
-
-	/// \brief Индекс первого витка из числа витков, предназначенных текущему процессору
-	///
-	/// Заполняется при вызове функции SplitMPI
-	/// \warning Актуально до следующего вызова SplitMPI с другим параметром общего числа витков цикла
-	mutable int myDisp;
-
-	/// \brief Общее число витков, разделенное между всеми процессорами
-	///
-	/// Заполняется при вызове функции SplitMPI
-	/// \warning Актуально до следующего вызова SplitMPI с другим параметром общего числа витков цикла
-	mutable int totalLen;
-
-	/// \brief Список, определяющий номер витка цикла, с которого должен начинать работу данный процессор
-	///
-	/// Заполняется при вызове функции SplitMPI
-	/// \warning Актуален до следующего вызова SplitMPI с другим параметром общего числа витков цикла
-	mutable std::vector<int> disp;
-
 	/// \brief Распределение задач по процессорам
 	///
-	/// Заполняет следующие списки (они оформлены как mutable, поэтому могут быть изменены):
-	/// - len --- сколько витков цикла должен сделать каждый процессор
-	/// - disp --- с какого витка цикла должен начинать работу каждый процессор
-	///
 	/// \param[in] n число распределяемых витков цикла
-	void SplitMPI(int n) const;	
-
-	/// Рассылка всего массива распределения витков цикла по всем процессорам
-	void BCastAllLenDisp() const;
-
+	/// \paran[in] bcastAll признак рассылки всей информации всем процессорам (по умолчанию false)
+	/// \return структуру типа parProp, заполненную для текущего процессора
+	parProp SplitMPI(int n, bool bcastAll = false) const;	
 };
  
 #endif

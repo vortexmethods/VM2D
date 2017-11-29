@@ -1,3 +1,31 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+*-----------------------------------------------------------------------------*
+| File name: Wake.cpp                                                         |
+| Info: Source code of VM2D                                                   |
+|                                                                             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
+| under the terms of the GNU General Public License as published by           |
+| the Free Software Foundation, either version 3 of the License, or           |
+| (at your option) any later version.	                                      |
+|                                                                             |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
+| FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
+| for more details.	                                                          |
+|                                                                             |
+| You should have received a copy of the GNU General Public License           |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+\*---------------------------------------------------------------------------*/
+
+
 /*!
 \file
 \brief Файл кода с описанием класса Wake
@@ -116,6 +144,88 @@ void Wake::SaveKadr(const std::string& dir, int step, timePeriod& time) const
 }//SaveKadr(...)
 
 
+
+void Wake::SaveKadrVtk(const std::string& dir, int step, timePeriod& time) const
+{
+	time.first = omp_get_wtime();
+
+	std::string fname = "Kadr";
+	if (step < 10) fname += "0";
+	if (step < 100) fname += "0";
+	if (step < 1000) fname += "0";
+	if (step < 10000) fname += "0";
+	
+	std::ostringstream ss;
+	ss << step;
+	fname += ss.str();
+	fname += ".vtk";
+
+	std::ofstream outfile;
+
+
+	int numberNonZero = 0;
+	
+	for (size_t q = 0; q < vtx.size(); ++q)
+	{
+		if (vtx[q].g() != 0.0)
+			numberNonZero++;
+	}
+
+#if !defined(__linux__)
+	_mkdir((dir + "snapshots").c_str());
+#else
+	mkdir((dir + "snapshots").c_str(), S_IRWXU | S_IRGRP | S_IROTH);
+#endif
+
+	outfile.open(dir + "snapshots/" + fname);
+	
+	outfile << "# vtk DataFile Version 2.0" << std::endl;
+	outfile << (dir + "snapshots/" + fname).c_str() << std::endl;
+	outfile << "ASCII" << std::endl;
+	outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
+	outfile << "POINTS " << numberNonZero << " float" << std::endl;
+	
+	
+	for (size_t i = 0; i < vtx.size(); i++)
+	{
+		Point2D rrr = vtx[i].r();
+		
+		double xi = (vtx[i].r())[0];
+		double yi = (vtx[i].r())[1];
+		double gi = vtx[i].g();
+
+		if (gi != 0.0)
+		{
+			outfile << xi << " " << yi << " " << "0.0"  << std::endl;
+		}
+	}//for i
+	
+	outfile << "CELLS " << numberNonZero << " " << 2*numberNonZero << std::endl;
+	for (int i=0; i<numberNonZero; ++i)
+	    outfile << "1 " << i << std::endl;
+	    
+	outfile << "CELL_TYPES " << numberNonZero << std::endl;
+	for (int i=0; i<numberNonZero; ++i)
+	    outfile << "1" << std::endl;
+	
+	outfile << std::endl;
+	outfile << "POINT_DATA " << numberNonZero << std::endl;
+	outfile << "SCALARS Gamma float 1" << std::endl;
+	outfile << "LOOKUP_TABLE default" << std::endl;
+	
+	for (size_t i = 0; i < vtx.size(); i++)
+	{
+	    outfile << vtx[i].g() << std::endl;
+	}//for i
+	
+	
+	outfile.close();
+
+	time.second = omp_get_wtime();
+}//SaveKadr(...)
+
+
+
 //MPI-синхронизация вихревого следа
 void Wake::WakeSynchronize()
 {
@@ -133,6 +243,7 @@ void Wake::WakeSynchronize()
 
 bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, int& panThrough)
 {
+
 	const double porog_r = 1e-12;
 	
 	double minDist = 1.0E+10; //расстояние до пробиваемой панели
@@ -179,6 +290,8 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 		if (r2*r3 > 0)
 			continue;
 
+		//std::cout << A << " " << B << " " << D << " " << r0 << " " << r1 << " " <<  r2 << " " << r3  << std::endl;
+		
 		hit = true;// пробила!
 		double d2 = (oldPos[0] - (B*D1 - D*B1) / (A*B1 - B*A1))*(oldPos[0] - (B*D1 - D*B1) / (A*B1 - B*A1)) + \
 			(oldPos[1] - (A1*D - D1*A) / (A*B1 - B*A1))*(oldPos[1] - (A1*D - D1*A) / (A*B1 - B*A1));
@@ -200,10 +313,10 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
 
 	WakeSynchronize();
 
-	parallel.SplitMPI(vtx.size());
+	parProp par = parallel.SplitMPI(vtx.size());
 
 	std::vector<Point2D> locNewPos;
-	locNewPos.resize(parallel.myLen);
+	locNewPos.resize(par.myLen);
 	
 	std::vector<double> gamma;
 	gamma.resize(afl.np, 0.0);
@@ -213,34 +326,32 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
 
 	std::vector<int> through;
 	if (parallel.myidWork == 0)
-		through.resize(parallel.totalLen);
+		through.resize(par.totalLen);
 
 	std::vector<int> locThrough;
-	locThrough.resize(parallel.myLen, 0);
-	
-	MPI_Scatterv(newPos.data(), parallel.len.data(), parallel.disp.data(), Point2D::mpiPoint2D, locNewPos.data(), parallel.myLen, Point2D::mpiPoint2D, 0, parallel.commWork);
+	locThrough.resize(par.myLen, 0);
 
-#pragma omp parallel for default(none) shared(locGamma, locNewPos, locThrough, afl, id, std::cout) 
-	for (int locI = 0; locI < parallel.myLen; ++locI)
+	MPI_Scatterv(const_cast<std::vector<Point2D> &>(newPos).data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, locNewPos.data(), par.myLen, Point2D::mpiPoint2D, 0, parallel.commWork);
+
+#pragma omp parallel for default(none) shared(locGamma, locNewPos, locThrough, afl, par) 
+	for (int locI = 0; locI < par.myLen; ++locI)
 	{
-		int i = parallel.myDisp + locI;
+		int i = par.myDisp + locI;
 		int minN;
 		if (MoveInside(locNewPos[locI], vtx[i].r(), afl, minN))
 		{
-			//std::cout << "Inside " << i << std::endl;
 #pragma omp atomic
 			locGamma[minN] += vtx[i].g();
 			
 			//vtx[i].g() = 0.0;
 			locThrough[locI] = 1;
-
-			//cout << "i = " << i << " hit! " << endl;
 		}
 	}//for locI
 
+
 	MPI_Reduce(locGamma.data(), gamma.data(), afl.np, MPI_DOUBLE, MPI_SUM, 0, parallel.commWork);
 
-	MPI_Gatherv(locThrough.data(), parallel.myLen, MPI_INT, through.data(), parallel.len.data(), parallel.disp.data(), MPI_INT, 0, parallel.commWork);
+	MPI_Gatherv(locThrough.data(), par.myLen, MPI_INT, through.data(), par.len.data(), par.disp.data(), MPI_INT, 0, parallel.commWork);
 
 	//std::ostringstream sss;
 	//sss << "through_";
@@ -258,6 +369,7 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
 		if (through[q])
 			vtx[q].g() = 0.0;
 	}
+
 }//Inside(...)
 
 
@@ -265,21 +377,21 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
 void Wake::GetPairs(int type)
 {
 	int id = parallel.myidWork;
-	parallel.SplitMPI(vtx.size());
+	parProp par = parallel.SplitMPI(vtx.size());
 
 	/// \todo Временно для профиля из 1000 панелей
-	const double max_g = 0.006;		//максимальная циркуляция вихря, получаемого на первом шаге расчета
-	const double coeff_max_g = 0.5; // коэффициент, определяющий максимально возможную циркуляцию вихря при коллапсе
+	const double max_g = 0.03;		//максимальная циркуляция вихря, получаемого на первом шаге расчета
+	const double coeff_max_g = 0.25; // коэффициент, определяющий максимально возможную циркуляцию вихря при коллапсе
 
 	std::vector<int> locNeighb; //локальный массив соседей (для данного процессора)
-	locNeighb.resize(parallel.myLen);
+	locNeighb.resize(par.myLen);
 
 	Point2D Ri, Rk;
 
-#pragma omp parallel for default(none) shared(type, locNeighb, id)
-	for (int locI = 0; locI < parallel.myLen; ++locI)
+#pragma omp parallel for default(none) shared(type, locNeighb, par)
+	for (int locI = 0; locI < par.myLen; ++locI)
 	{
-		size_t s = locI + parallel.myDisp;
+		size_t s = locI + par.myDisp;
 		const Vortex2D& vtxI = vtx[s];
 		
 		locNeighb[locI] = 0;//по умолчанию
@@ -326,7 +438,7 @@ void Wake::GetPairs(int type)
 	if (id == 0)
 		neighb.resize(vtx.size());
 
-	MPI_Gatherv(locNeighb.data(), parallel.myLen, MPI_INT, neighb.data(), parallel.len.data(), parallel.disp.data(), MPI_INT, 0, parallel.commWork);
+	MPI_Gatherv(locNeighb.data(), par.myLen, MPI_INT, neighb.data(), par.len.data(), par.disp.data(), MPI_INT, 0, parallel.commWork);
 
 }//GetPairs(...)
 
@@ -421,7 +533,7 @@ int Wake::KillFar()
 	double distKill2 = sqr(param.distKill);
 	///TODO Пока профиль 1, расстояние от его центра
 	Point2D zerovec = { 0.0, 0.0 };
-#pragma omp parallel for default(none) shared(distKill2,zerovec) reduction(+:nFar)
+#pragma omp parallel for default(none) shared(distKill2, zerovec) reduction(+:nFar)
 	for (int i = 0; i <static_cast<int>(vtx.size()); ++i)
 	{
 

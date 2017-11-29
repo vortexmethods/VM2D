@@ -1,32 +1,94 @@
 VM2D
 ====
 
-/*--------------------------------*- C++ -*------------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
-| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
-|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
-|   ##   ##   ## ###### #####   |  http://www.github.com/vortexmethods/VM2D   |
-|                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
-*-----------------------------------------------------------------------------*
-| File name: README.md                                                        |
-| Info: 2D Flow Simulation by Using Meshless Lagrangian Vortex Methods        |
-\*---------------------------------------------------------------------------*/
+<p align="center"><img src="https://vortexmethods.github.io/VM2D/LOGO.png"></p>
 
-License
--------
+[![Build Status](https://img.shields.io/travis/vortexmethods/VM2D.svg)](http://travis-ci.org/vortexmethods/VM2D)
+![Repo Size](https://img.shields.io/github/repo-size/vortexmethods/VM2D.svg)
+![License](https://img.shields.io/github/license/vortexmethods/VM2D.svg)
+
+
+Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina
+
+Программная реализация (с открытым исходным кодом) вихревых методов вычислительной гидродинамики для моделирования течений вязкой несжимаемой среды. 
+
+ЛИЦЕНЗИЯ
+--------
+
+Программа распространяется на условиях свободной лицензии [GNU GPLv3](https://www.gnu.org/licenses/gpl.txt)
    
-This file is part of VM2D.
-VM2D is free software: you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.	
+   
+ИСПОЛЬЗУЕМЫЕ МЕТОДЫ
+-------------------
+   
+Настоящая программная реализация основана на: 
 
-VM2D is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-for more details.	
-    
-You should have received a copy of the GNU General Public License
-along with VM2D.  If not, see <http://www.gnu.org/licenses/>.
+* [методе вязких вихревых доменов, МВВД](http://en.wikipedia.org/wiki/Viscous_vortex_domains_method), разработанном под руководством д.ф.-м.н. [Г.Я. Дынниковой](https://ru.wikipedia.org/wiki/Дынникова,_Галина_Яковлевна) в НИИ Механики МГУ им. М.В. Ломоносова,
+
+* методе дискретных вихрей, МДВ, разработанном и развиваемом в научной школе, созданной д.т.н, проф. [С.М. Белоцерковским](https://ru.wikipedia.org/wiki/Белоцерковский,_Сергей_Михайлович),
+	 
+* результатах исследований многих авторов, опубликованных ими в монографиях, научной периодике, трудах конференций и семинаров,
+	 
+* собственных разработках авторов.
+
+	 
+УСТАНОВКА
+---------
+
+Для установки программы VM2D на комьютере необходимо загрузить исходные коды программы.
+Если на Вашем компьютере установлен "Git", достаточно исполнить команду 
+
+      git clone https://github.com/vortexmethods/VM2D.git
+
+Подготовка к компияции исходных кодов предполагает создание папки "build" в каталоге с загруженными исходными кодами, переход в эту папку и выполнение команды 
+
+      cmake ..
+	  
+При необходимости следует указать необходимые ключи для настройки используемых компиляторов, указания опций компиляции и т.п., возможно, потребуется также некоторая модификация файла "CMakeLists.txt", содержащего параметры настройки CMake.
+
+Дальнейшая компиляция кода зависимт от используемой операционной системы. В Windows, как правило, при помощи CMake будет создан проект для его поледующего открытия и компиляции средствами MS Visual Studio, в Linux достаточно исполнения из созданной папки команды
+
+      make
+	
+Запуск программы осуществляется из той папки, в которой хранится описание решаемой (решаемых) задач вызовом команды
+
+      VM2D
+
+(при необходимости -- с указанием полного пути к скомпилированному исполняемому файлу; этот путь можно указать в системной переменной "PATH")	
+
+
+НЕОБХОДИМОЕ ПО
+--------------
+
+Для компиляции требуется наличие установленных: 
+
+* компилятора с языка C++, поддерживающего технологию OpenMP и стандарт С++11,
+* реализации MPI,
+* библиотеки [Eigen](http://eigen.tuxfamily.org) (не обязательно, исходные коды находятся в папке "include"). 
+
+
+ДОКУМЕНТАЦИЯ К КОДУ
+-------------------
+
+[Документация разработчика](http://vortexmethods.github.io/VM2D), генерируемая автоматически средствами [doxygen](http://www.doxygen.org) доступна по ссылке
+
+      http://vortexmethods.github.io/VM2D
+
+Документация пользователя будет подготовлена и сделана общедоступной через некоторое время
+
+
+ВОПРОСЫ, ПРЕДЛОЖЕНИЯ И ЗАМЕЧАНИЯ
+--------------------------------
+
+На [странице Issues](https://github.com/vortexmethods/VM2D/issues) мы будем рады ответить на Ваши вопросы, с благодарностью выслушаем предложения и замечания по коду.
+
+Мы открыты для любого конструктивного взаимодействия!
+
+
+---
+С глубоким уважением,
+разработчики
+
+* Марчевский Илья Константинович,
+* Кузьмина Ксения Сергеевна,
+* Рятина Евгения Павловна
