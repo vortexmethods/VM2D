@@ -66,7 +66,7 @@ public:
 	/// \param[in] virtVortParams_ константная ссылка на параметры виртуального вихревого следа для профиля;
 	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
 	MechanicsRigidImmovable(const Passport& passport_, Airfoil& afl_, const Boundary& boundary_, const VortexesParams& virtVortParams_, const Parallel& parallel_) :
-		Mechanics(passport_, afl_, boundary_, virtVortParams_, parallel_)
+		Mechanics(passport_, afl_, boundary_, virtVortParams_, parallel_, 0, false, false)
 	{};
 
 	/// Деструктор
@@ -76,6 +76,24 @@ public:
 	virtual void GetHydroDynamForce(timePeriod& time);
 
 	///
+
+	virtual Point2D VeloOfAirfoilRcm(double currTime)
+	{
+		return{ 0.0, 0.0 };
+	};
+
+	/// Вычисление скоростей начал панелей
+	/// \param[in] currTime текущее время
+	virtual void VeloOfAirfoilPanels(double currTime)
+	{
+		Point2D veloRcm = VeloOfAirfoilRcm(currTime);
+		for (size_t i = 0; i < afl.v.size(); ++i)
+			afl.v[i] = veloRcm;
+	};
+
+	virtual void FillMechanicsRowsAndCols(Eigen::MatrixXd& row, Eigen::MatrixXd& col) { };
+
+	virtual void FillMechanicsRhs(std::vector<double>& rhs) { };
 };
 
 #endif

@@ -115,6 +115,22 @@ public:
 	/// Конструктор
 	Airfoil(const Passport& passport_, const int numberInPassport_, const Parallel& parallel_);
 
+	/// Конструктор копирования
+	Airfoil(const Airfoil& afl) : np(0), passport(afl.passport), numberInPassport(afl.numberInPassport), parallel(afl.parallel)
+	{
+		rcm = afl.rcm;
+		np = afl.np;
+		r.insert(r.begin(), afl.r.begin(), afl.r.end());
+		nrm.insert(nrm.begin(), afl.nrm.begin(), afl.nrm.end());
+		tau.insert(tau.begin(), afl.tau.begin(), afl.tau.end());
+		len.insert(len.begin(), afl.len.begin(), afl.len.end());
+		viscousStress = afl.viscousStress;
+		lowLeft = afl.lowLeft;
+		upRight = afl.upRight;
+		v = afl.v;
+		gammaThrough.insert(gammaThrough.begin(), afl.gammaThrough.begin(), afl.gammaThrough.end());
+	};
+	
 	/// Деструктор
 	virtual ~Airfoil() { };
 	

@@ -502,7 +502,7 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 }//GetVelocityToSetOfPointsFromVirtualVortexes(...)
 
 //Заполнение правой части
-void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs)
+void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform)
 {
 	std::vector<double> wakeVelo;
 	
@@ -511,7 +511,45 @@ void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, do
 	if (parallel.myidWork == 0)
 	for (size_t i = 0; i < afl.np; ++i)
 	{
-		rhs(i) = -(V0*afl.tau[i]) - wakeVelo[i];
+		rhs(i) = -afl.tau[i] * (V0 -afl.v[i] ) - wakeVelo[i];
+
+		if (move || deform)
+		for (size_t j = 0; j < afl.np; j++)
+		{
+			if (i != j)
+			{
+				Point2D di = afl.r[i + 1] - afl.r[i];
+				Point2D dj = afl.r[j + 1] - afl.r[j];
+				Point2D s1 = afl.r[i + 1] - afl.r[j];
+				Point2D s2 = afl.r[i] - afl.r[j];
+				Point2D p1 = afl.r[i + 1] - afl.r[j + 1];
+				Point2D p2 = afl.r[i] - afl.r[j + 1];
+
+				double a1 = Alpha(s2, s1);
+				double a2 = Alpha(s2, p1);
+				double a3 = Alpha(p1, p2);
+
+				double lambda1 = Lambda(s1, s2);
+				double lambda2 = Lambda(p1, s2);
+				double lambda3 = Lambda(p2, p1);
+
+				Point2D v1 = Omega(s1, afl.tau[i], afl.tau[j]);
+				Point2D v2 = -Omega(di, afl.tau[i], afl.tau[j]);
+				Point2D v3 = Omega(p2, afl.tau[i], afl.tau[j]);
+
+				if ((i == j + 1) || ((i == 0) && (j == afl.np-1)))
+				{
+					a3 = 0.0; lambda3 = 0.0;
+				}
+				else if ((j == i + 1) || ((j == 0) && (i == afl.np - 1)))
+				{
+					a1 = 0.0; lambda1 = 0.0;
+				}
+
+				rhs(i) += -afl.tau[i] * (sheets.attachedVortexSheet[j][0] / (2 * PI) * ((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3).kcross());
+				rhs(i) += -afl.tau[i] * (sheets.attachedSourceSheet[j][0] / (2 * PI) * ((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3));
+			}
+		}
 	}
 	
 	if (parallel.myidWork == 0)
@@ -526,5 +564,15 @@ void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, do
 		}
 	}
 }//FillRhs(...)
+
+//Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников
+void BoundaryConstLayerAver::ComputeAttachedSheetsIntensity()
+{
+	for (size_t i = 0; i < sheets.attachedVortexSheet.size(); ++i)
+	{
+		sheets.attachedVortexSheet[i][0] = afl.v[i] * afl.tau[i];
+		sheets.attachedSourceSheet[i][0] = afl.v[i] * afl.nrm[i];
+	}
+}//ComputeAttachedSheetsIntensity()
 
 

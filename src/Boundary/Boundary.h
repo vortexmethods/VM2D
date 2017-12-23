@@ -163,7 +163,9 @@ public:
 	/// \param[in] V0 константная ссылка на вектор набегающего потока
 	/// \param[out] rhs ссылка на блок вектора правой части
 	/// \param[out] lastRhs указатель на последний элемент вектора правой части
-	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs) = 0;
+	/// \param[in] move является ли профиль подвижным
+	/// \param[in] deform является ли профиль деформируемым
+	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform) = 0;
 
 
 	/// \brief Возврат размерности вектора решения 
@@ -183,6 +185,9 @@ public:
 	/// 2) Приводит интенсивность вихревого слоя к рождаемым вихрям, а также вычисляет их положения
 	/// \param[in] sol вектор решения СЛАУ
 	virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol) = 0;
+
+	/// \brief Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников
+	virtual void ComputeAttachedSheetsIntensity() = 0;
 };
 
 #endif

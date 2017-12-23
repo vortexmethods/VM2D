@@ -7,7 +7,7 @@
 |                                                                             |
 | Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
 *-----------------------------------------------------------------------------*
-| File name: MechanicsRigidImmovable.cpp                                      |
+| File name: MechanicsRigidGivenLaw.h                                         |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,39 +28,69 @@
 
 /*!
 \file
-\brief Р¤Р°Р№Р» РєРѕРґР° СЃ РѕРїРёСЃР°РЅРёРµРј РєР»Р°СЃСЃР° MechanicsRigidImmovable
-\author РњР°СЂС‡РµРІСЃРєРёР№ РР»СЊСЏ РљРѕРЅСЃС‚Р°РЅС‚РёРЅРѕРІРёС‡
-\author РљСѓР·СЊРјРёРЅР° РљСЃРµРЅРёСЏ РЎРµСЂРіРµРµРІРЅР°
-\author Р СЏС‚РёРЅР° Р•РІРіРµРЅРёСЏ РџР°РІР»РѕРІРЅР°
+\brief Заголовочный файл с описанием класса MechanicsRigidGivenLaw
+\author Марчевский Илья Константинович
+\author Кузьмина Ксения Сергеевна
+\author Рятина Евгения Павловна
 \version 1.0
-\date 1 РґРµРєР°Р±СЂСЏ 2017 Рі.
+\date 1 декабря 2017 г.
 */
 
-#include "MechanicsRigidImmovable.h"
+#ifndef MECHANICSRIGIDGIVENLAW_H
+#define MECHANICSRIGIDGIVENLAW_H
 
-//Р’С‹С‡РёСЃР»РµРЅРёРµ РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРѕР№ СЃРёР»С‹, РґРµР№СЃС‚РІСѓСЋС‰РµР№ РЅР° РїСЂРѕС„РёР»СЊ
-void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
+#include "Mechanics.h"
+
+/*!
+\brief Класс, определяющий вид механической системы
+
+Жесткое тело, движущееся по заданному закону
+
+\author Марчевский Илья Константинович
+\author Кузьмина Ксения Сергеевна
+\author Рятина Евгения Павловна
+
+\version 1.0
+\date 1 декабря 2017 г.
+*/
+
+class MechanicsRigidGivenLaw :
+	public Mechanics
 {
-	time.first = omp_get_wtime();
+public:
+	/// \brief Конструктор
+	/// 
+	/// \param[in] passport_ константная ссылка на паспорт
+	/// \param[in] afl_ ссылка на профиль;
+	/// \param[in] boundary_ константная ссылка на граничное условие;
+	/// \param[in] virtVortParams_ константная ссылка на параметры виртуального вихревого следа для профиля;
+	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
+	MechanicsRigidGivenLaw(const Passport& passport_, Airfoil& afl_, const Boundary& boundary_, const VortexesParams& virtVortParams_, const Parallel& parallel_) :
+		Mechanics(passport_, afl_, boundary_, virtVortParams_, parallel_, 0, true, false)
+	{};
 
-	hydroDynamForce = { 0.0, 0.0 };
 
-	Point2D hDFGam = { 0.0, 0.0 };	//РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРёРµ СЃРёР»С‹, РѕР±СѓСЃР»РѕРІР»РµРЅРЅС‹Рµ Gamma_k
-	Point2D hDFdelta = { 0.0, 0.0 };	//РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРёРµ СЃРёР»С‹, РѕР±СѓСЃР»РѕРІР»РµРЅРЅС‹Рµ delta_k
+	/// Деструктор
+	~MechanicsRigidGivenLaw() { };
 
-	for (size_t i = 0; i < afl.np; ++i)
+	//TODO: Пока не реализована
+	/// Вычисление гидродинамической силы, действующей на профиль
+	virtual void GetHydroDynamForce(timePeriod& time);
+
+	Point2D VeloOfAirfoilRcm(double currTime);
+
+	/// Вычисление скоростей начал панелей
+	/// \param[in] currTime текущее время
+	virtual void VeloOfAirfoilPanels(double currTime)
 	{
-		double GamK = boundary.virtualWake[i].g();
-		double deltaK =  boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i];  		 //afl.gammaThrough[i];
-		Point2D VelK = virtVortParams.convVelo[i] /* + virtVortParams.diffVelo[i]*/ + passport.physicalProperties.V0();
-		Point2D rK =  0.5 * (afl.r[i + 1] + afl.r[i]);	//boundary.virtualWake[i].r();		
+		Point2D veloRcm = VeloOfAirfoilRcm(currTime);
+		for (size_t i = 0; i < afl.v.size(); ++i)
+			afl.v[i] = veloRcm;
+	};
 
-		hDFGam += GamK * Point2D({ VelK[1], -VelK[0] });
-		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
-	}
+	virtual void FillMechanicsRowsAndCols(Eigen::MatrixXd& row, Eigen::MatrixXd& col) {};
 
-	hydroDynamForce = hDFGam + (1.0 / passport.timeDiscretizationProperties.dt) * hDFdelta;
+	virtual void FillMechanicsRhs(std::vector<double>& rhs) {};
+};
 
-	time.second = omp_get_wtime();
-}
-
+#endif

@@ -95,9 +95,18 @@ private:
 	/// \n Возвращает базу данных, указывается тип скобок, по умолчанию --- круглые
 	/// \param[in] stream ссылка на поток, который требуется распарсить
 	/// \param[out] database ссылка на заполняемую базу данных (unordered_map)
+	/// \param[in] replaceVars признак замены переменных из базы vars (по умолчанию false)
 	/// \param[in] openBracket тип открывающейся скобки (по умолчанию --- "(" )
 	/// \param[in] closeBracket тип закрывающейся скобки (по умолчанию --- ")" )
-	void ParseStream(std::istream& stream, std::unordered_map<std::string, std::vector<std::string>>& database, char openBracket = '(', char closeBracket = ')');
+	void ParseStream(std::istream& stream, std::unordered_map<std::string, std::vector<std::string>>& database, bool replaceVars = false, char openBracket = '(', char closeBracket = ')');
+
+	/// \brief Замена переменных в строке их значениями
+	///
+	/// Находит в строке все переменные, имена которых начинаются с символа $,
+	/// и заменяет их на значения, извлекаемые из базы данных vars
+	/// \param[in] st строка, которая подлежит обработке
+	void ReplaceVarsInString(std::string& st);
+
 
 public:
 	/// \brief Конструктор, принимающий четыре потока
@@ -196,30 +205,19 @@ public:
 			for (size_t i = 0; i < (search_it->second).size(); ++i)
 			{
 				std::string s = (search_it->second)[i];
-				//проверка на подстановку
-				if (s[0] != '$')
-				{
-					//если не подстановка
-					//stringstream ss(s);
-					Point2D elem;
-					//ss >> elem;
-					int pos = s.find(',', 1);
-					std::stringstream(s.substr(1, pos)) >> elem[0];
-					std::stringstream(s.substr(pos+1, s.length()-pos)) >> elem[1];
-					res.push_back(elem);
-				}
-				else
-				{
-					//если подстановка
-					*perr << "parser error: VECTOR SUBSTITUTIONS ARE NOT PERMITED (FOR TPOINT2D TOO)!" << std::endl;
-					exit(-1);
-				}
+
+				Point2D elem;
+				int pos = s.find(',', 1);
+				std::stringstream(s.substr(1, pos)) >> elem[0];
+				std::stringstream(s.substr(pos + 1, s.length() - pos)) >> elem[1];
+				res.push_back(elem);
 			}
 		}
 		//else
 		//	SetDefault(name, res, defValue);
 	};
 		
+
 	/// \brief Считывание вектора из вихрей из базы данных
 	/// 
 	/// Переопределение метода get() для ситывания вектора из вихрей (Vortex2D) из базы данных
@@ -238,28 +236,18 @@ public:
 			for (size_t i = 0; i < (search_it->second).size(); ++i)
 			{
 				std::string s = (search_it->second)[i];
-				//проверка на подстановку
-				if (s[0] != '$')
-				{
-					//если не подстановка
-					Point2D r;
-					double g;
-					int pos1 = s.find(',', 1);
-					int pos2 = s.find(',', pos1 + 1);
-					std::stringstream(s.substr(1, pos1)) >> r[0];
-					std::stringstream(s.substr(pos1 + 1, s.length() - pos1)) >> r[1];
-					std::stringstream(s.substr(pos2 + 1, s.length() - pos2)) >> g;
 
-					Vortex2D elem(r, g);
+				Point2D r;
+				double g;
+				int pos1 = s.find(',', 1);
+				int pos2 = s.find(',', pos1 + 1);
+				std::stringstream(s.substr(1, pos1)) >> r[0];
+				std::stringstream(s.substr(pos1 + 1, s.length() - pos1)) >> r[1];
+				std::stringstream(s.substr(pos2 + 1, s.length() - pos2)) >> g;
 
-					res.push_back(elem);
-				}
-				else
-				{
-					//если подстановка
-					*perr << "parser error: VECTOR SUBSTITUTIONS ARE NOT PERMITED (FOR TVORTEX2D TOO)!" << std::endl;
-					exit(-1);
-				}
+				Vortex2D elem(r, g);
+
+				res.push_back(elem);
 			}
 		}
 		//else
@@ -286,47 +274,16 @@ public:
 			for (size_t i = 0; i < (search_it->second).size(); ++i)
 			{
 				std::string s = (search_it->second)[i];
-				//проверка на подстановку
-				if (s[0] != '$')
+
+				std::stringstream ss(s);
+				T elem;
+				ss >> elem;
+				if (typeid(elem).name() == typeid(std::string("TestString")).name())
 				{
-					//если не подстановка
-					std::stringstream ss(s);
-					T elem;
-					ss >> elem;
-					if (typeid(elem).name() == typeid(std::string("TestString")).name())
-					{
-						std::string* str = reinterpret_cast<std::string*>(&elem);
-						str->erase(remove(str->begin(), str->end(), '\"'), str->end());
-					}
-					res.push_back(elem);
+					std::string* str = reinterpret_cast<std::string*>(&elem);
+					str->erase(remove(str->begin(), str->end(), '\"'), str->end());
 				}
-				else
-				{
-					//если подстановка
-					std::string svar = s.substr(1, s.length() - 1);
-					auto search_var = vars.find(svar);
-					if ((search_var != vars.end()) && ((search_var->second).size() > 0))
-					{
-						std::stringstream ss(search_var->second[0]);
-						T elem;
-						ss >> elem;
-						if (typeid(elem).name() == typeid(std::string("TestString")).name())
-						{
-							std::string* str = reinterpret_cast<std::string*>(&elem);
-							str->erase(remove(str->begin(), str->end(), '\"'), str->end());
-						}
-						res.push_back(elem);
-					}
-					else
-					{
-						*perr << "parser error: SUBSTITUTION $" << svar << " IS UNDEFINED" << std::endl;
-						exit(1);
-					}
-					
-					
-					//*perr << "parser error: VECTOR SUBSTITUTIONS ARE NOT PERMITED!" << std::endl;
-					//exit(-1);
-				}
+				res.push_back(elem);
 			}
 		}
 		else
@@ -352,9 +309,9 @@ public:
 			if ((search_it->second).size() == 1)
 			{
 				std::string s = (search_it->second)[0];
-				
+
 				//проверка на значение-переключатель
-				if ( ((search_it = switchers.find(s)) != switchers.end()) && ((search_it->second).size() > 0) )
+				if (((search_it = switchers.find(s)) != switchers.end()) && ((search_it->second).size() > 0))
 				{
 					//если переключатель
 					std::stringstream ss(search_it->second[0]);
@@ -367,11 +324,8 @@ public:
 					}
 					res = elem;
 				}
-				
-				//проверка на подстановку
-				else if (s[0] != '$')
+				else
 				{
-					//если не подстановка
 					std::stringstream ss(s);
 					T elem;
 					ss >> elem;
@@ -381,29 +335,6 @@ public:
 						str->erase(remove(str->begin(), str->end(), '\"'), str->end());
 					}
 					res = elem;
-				}
-				else
-				{
-					//если подстановка
-					std::string svar = s.substr(1, s.length() - 1);
-					auto search_var = vars.find(svar);
-					if ((search_var != vars.end()) && ((search_var->second).size() > 0))
-					{
-						std::stringstream ss(search_var->second[0]);
-						T elem;
-						ss >> elem;
-						if (typeid(elem).name() == typeid(std::string("TestString")).name())
-						{
-							std::string* str = reinterpret_cast<std::string*>(&elem);
-							str->erase(remove(str->begin(), str->end(), '\"'), str->end());
-						}
-						res = elem;
-					}
-					else
-					{
-						*perr << "parser error: SUBSTITUTION $" << svar << " IS UNDEFINED" << std::endl;
-						exit(1);
-					}
 				}
 			}
 			else
@@ -435,33 +366,11 @@ public:
 				for (size_t i = 0; i < (search_it->second).size(); ++i)
 				{
 					std::string s = (search_it->second)[i];
-					//проверка на подстановку
-					if (s[0] != '$')
-					{
-						//если не подстановка
-						std::stringstream ss(s);
-						double elem;
-						ss >> elem;
-						res[i] = elem;
-					}
-					else
-					{
-						//если подстановка
-						std::string svar = s.substr(1, s.length() - 1);
-						auto search_var = vars.find(svar);
-						if ((search_var != vars.end()) && ((search_var->second).size() > 0))
-						{
-							std::stringstream ss(search_var->second[0]);
-							double elem;
-							ss >> elem;
-							res[i] = elem;
-						}
-						else
-						{
-							*perr << "parser error: SUBSTITUTION $" << svar << " IS UNDEFINED" << std::endl;
-							exit(-1);
-						}
-					}
+
+					std::stringstream ss(s);
+					double elem;
+					ss >> elem;
+					res[i] = elem;
 				}
 			}
 			else
@@ -474,7 +383,6 @@ public:
 		else
 			SetDefault(name, res, defValue);
 	}
-
 
 };
 

@@ -83,6 +83,8 @@ void Airfoil::Move(const Point2D& dr)	//перемещение профиля к
 {
 	for (size_t i = 0; i < np + 1; i++)
 		r[i] += dr;
+	rcm += dr;
+	CalcNrmTauLen();
 	GetGabarits();
 }//Move(...)
 

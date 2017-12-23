@@ -7,7 +7,7 @@
 |                                                                             |
 | Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
 *-----------------------------------------------------------------------------*
-| File name: MechanicsRigidImmovable.cpp                                      |
+| File name: MechanicsRigidGivenLaw.cpp                                       |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,32 +28,33 @@
 
 /*!
 \file
-\brief Р¤Р°Р№Р» РєРѕРґР° СЃ РѕРїРёСЃР°РЅРёРµРј РєР»Р°СЃСЃР° MechanicsRigidImmovable
-\author РњР°СЂС‡РµРІСЃРєРёР№ РР»СЊСЏ РљРѕРЅСЃС‚Р°РЅС‚РёРЅРѕРІРёС‡
-\author РљСѓР·СЊРјРёРЅР° РљСЃРµРЅРёСЏ РЎРµСЂРіРµРµРІРЅР°
-\author Р СЏС‚РёРЅР° Р•РІРіРµРЅРёСЏ РџР°РІР»РѕРІРЅР°
+\brief Файл кода с описанием класса MechanicsRigidGivenLaw
+\author Марчевский Илья Константинович
+\author Кузьмина Ксения Сергеевна
+\author Рятина Евгения Павловна
 \version 1.0
-\date 1 РґРµРєР°Р±СЂСЏ 2017 Рі.
+\date 1 декабря 2017 г.
 */
 
-#include "MechanicsRigidImmovable.h"
+#include "MechanicsRigidGivenLaw.h"
 
-//Р’С‹С‡РёСЃР»РµРЅРёРµ РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРѕР№ СЃРёР»С‹, РґРµР№СЃС‚РІСѓСЋС‰РµР№ РЅР° РїСЂРѕС„РёР»СЊ
-void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
+
+//Вычисление гидродинамической силы, действующей на профиль
+void MechanicsRigidGivenLaw::GetHydroDynamForce(timePeriod& time)
 {
 	time.first = omp_get_wtime();
 
 	hydroDynamForce = { 0.0, 0.0 };
 
-	Point2D hDFGam = { 0.0, 0.0 };	//РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРёРµ СЃРёР»С‹, РѕР±СѓСЃР»РѕРІР»РµРЅРЅС‹Рµ Gamma_k
-	Point2D hDFdelta = { 0.0, 0.0 };	//РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРёРµ СЃРёР»С‹, РѕР±СѓСЃР»РѕРІР»РµРЅРЅС‹Рµ delta_k
+	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
+	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные delta_k
 
 	for (size_t i = 0; i < afl.np; ++i)
 	{
 		double GamK = boundary.virtualWake[i].g();
-		double deltaK =  boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i];  		 //afl.gammaThrough[i];
+		double deltaK = boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i];  		 //afl.gammaThrough[i];
 		Point2D VelK = virtVortParams.convVelo[i] /* + virtVortParams.diffVelo[i]*/ + passport.physicalProperties.V0();
-		Point2D rK =  0.5 * (afl.r[i + 1] + afl.r[i]);	//boundary.virtualWake[i].r();		
+		Point2D rK = 0.5 * (afl.r[i + 1] + afl.r[i]);	//boundary.virtualWake[i].r();		
 
 		hDFGam += GamK * Point2D({ VelK[1], -VelK[0] });
 		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
@@ -64,3 +65,7 @@ void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
 	time.second = omp_get_wtime();
 }
 
+Point2D MechanicsRigidGivenLaw::VeloOfAirfoilRcm(double currTime)
+{
+	return { sin(PI * currTime / 8.0), 0.0};
+}

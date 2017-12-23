@@ -114,7 +114,6 @@ public:
 	/// 
 	/// \param[in] newPos константная ссылка на вектор из новых положений вихрей в вихревом следе
 	/// \param[in,out] afl ссылка на контролируемый профиль (происходит изменение afl->gammaThrough)
-	/// \return вектор, длина которого равна числу панелей на профиле, и который содержит циркуляции, проникшие в профиль через соответствующие панели
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
 	void Inside(const std::vector<Point2D>& newPos, Airfoil& afl);
@@ -144,6 +143,16 @@ public:
 	/// return признак пересечения профиля
 	bool MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, int& panThrough);
 
+	/// \brief Проверка проникновения точки через границу профиля
+	/// 
+	/// \param[in] newPos константная ссылка на смещенное (новое) положение вихря
+	/// \param[in] oldPos константная ссылка на несмещенное (старое) положение вихря
+	/// \param[in] oldAfl константная ссылка на состояние контролируемого профиля до перемещения
+	/// \param[in] afl константная ссылка на контролируемый профиль
+	/// \param[out] panThrough номер "протыкаемой" панели
+	/// return признак пересечения профиля
+	bool MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, int& panThrough);
+
 	/// \brief Поиск ближайшего соседа
 	/// \param[in] type тип коллапса: 
 	/// - 0 --- без приоритета знаков
@@ -159,6 +168,20 @@ public:
 	/// \param[in] times число проходов алгоритма коллапса
 	/// \return число зануленных вихрей
 	int Collaps(int type, int times);
-};
+
+
+	/// \brief Проверка пересечения вихрями следа профиля при подвижном профиле
+	///
+	/// Исполняется сразу для всех вихрей в пелене, осуществляет проверку для отдельного профиля
+	/// \n Вихри, попавшие внутрь профиля, получают нулевую циркуляцию, а их "бывшая" циркуляция передается в вектор gammaThrough в структуру данных профиля
+	/// 
+	/// \param[in] newPos константная ссылка на вектор из новых положений вихрей в вихревом следе
+	/// \param[in] oldAfl константная ссылка контролируемый профиль до перемещения
+	/// \param[in,out] afl ссылка на контролируемый профиль (происходит изменение afl->gammaThrough)
+	/// \warning Использует OMP, MPI
+	/// \ingroup Parallel
+	void InsideMovingBoundary(const std::vector<Point2D>& newPos, const Airfoil& oldAfl, Airfoil& afl);
+
+	};
 
 #endif

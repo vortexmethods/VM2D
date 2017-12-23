@@ -241,6 +241,7 @@ void Wake::WakeSynchronize()
 }//WakeSinchronize()
 
 
+
 bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, int& panThrough)
 {
 
@@ -304,7 +305,89 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 	}//for j
 
 	return hit;
-}
+}//MoveInside(...)
+
+bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, int& panThrough)
+{
+
+	const double porog_r = 1.e-12;
+
+	Point2D x1 = newPos;//конечное положение
+	Point2D x20 = oldPos;//начальное положение
+
+	Point2D x2;
+
+	double minDist = 1.0E+10; //расстояние до пробиваемой панели
+	panThrough = -1;
+
+	//проверка габ. прямоугольника
+	if (afl.isOutsideGabarits(newPos) && afl.isOutsideGabarits(oldPos))
+		return false;
+
+	//если внутри габ. прямоугольника - проводим контроль
+	bool hit = false;
+	double hiteps = 0.99;
+
+	//Проверка на пересечение
+	for (size_t j = 0; j < afl.np; ++j)
+	{
+		Point2D drpan;
+		drpan = x20 - 0.5 * (oldAfl.r[j] + oldAfl.r[j+1]);
+
+		double cftnrm, cfttau;
+		cftnrm = (1.0 / oldAfl.len[j]) * drpan * oldAfl.nrm[j];
+		cfttau = (1.0 / oldAfl.len[j]) * drpan * oldAfl.tau[j];
+
+		x2 = 0.5 * (afl.r[j] + afl.r[j + 1]) + hiteps * afl.len[j] * (cftnrm * afl.nrm[j] + cfttau * afl.tau[j]);
+
+		// Определение прямой : Ax + By + D = 0 - перемещение вихря
+		double A = x2[1] - x1[1];
+		double B = x1[0] - x2[0];
+		double D = x1[1] * x2[0] - x1[0] * x2[1];
+
+		double A1, B1, D1;
+
+		//Проверка на пересечение
+		double r0 = 0.0, r1 = 0.0, r2 = 0.0, r3 = 0.0;
+		bool hitt = false;
+
+		r0 = A * afl.r[j][0] + B * afl.r[j][1] + D;
+		r1 = A * afl.r[j + 1][0] + B * afl.r[j + 1][1] + D;
+		if (fabs(r0)<porog_r) r0 = 0.0;
+		if (fabs(r1)<porog_r) r1 = 0.0;
+		hitt = false;
+		if (r0*r1 <= 0)
+			hitt = true;
+		if (hitt)
+		{
+			A1 = afl.r[j + 1][1] - afl.r[j][1];
+			B1 = afl.r[j][0] - afl.r[j + 1][0];
+			D1 = afl.r[j][1] * afl.r[j+1][0] - afl.r[j][0] * afl.r[j+1][1];
+			
+			r2 = A1 * x1[0] + B1 * x1[1] + D1;
+			r3 = A1 * x2[0] + B1 * x2[1] + D1;
+
+			if (fabs(r2)<porog_r) r2 = 0.0;
+			if (fabs(r3)<porog_r) r3 = 0.0;
+
+			if (r2*r3 <= 0)
+			{
+				hit = true;// пробила!
+				double d2 = (x2[0] - (B*D1 - D*B1) / (A*B1 - B*A1))*(x2[0] - (B*D1 - D*B1) / (A*B1 - B*A1)) + (x2[1] - (A1*D - D1*A) / (A*B1 - B*A1))*(x2[1] - (A1*D - D1*A) / (A*B1 - B*A1));
+				if (d2<minDist)
+				{
+					minDist = d2;
+					panThrough = j;
+				}//if d2
+			}//if r2*r3
+		}//if hitt         
+
+	}//for j
+
+	return hit;
+}//MoveInsideMovingBoundary(...)
+
+
 
 //Проверка пересечения вихрями следа профиля при перемещении
 void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
@@ -371,6 +454,73 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
 	}
 
 }//Inside(...)
+
+
+//Проверка пересечения вихрями следа профиля при подвижном профиле
+void Wake::InsideMovingBoundary(const std::vector<Point2D>& newPos, const Airfoil& oldAfl, Airfoil& afl)
+{
+	int id = parallel.myidWork;
+
+	WakeSynchronize();
+
+	parProp par = parallel.SplitMPI(vtx.size());
+
+	std::vector<Point2D> locNewPos;
+	locNewPos.resize(par.myLen);
+
+	std::vector<double> gamma;
+	gamma.resize(afl.np, 0.0);
+
+	std::vector<double> locGamma;
+	locGamma.resize(afl.np, 0.0);
+
+	std::vector<int> through;
+	if (parallel.myidWork == 0)
+		through.resize(par.totalLen);
+
+	std::vector<int> locThrough;
+	locThrough.resize(par.myLen, 0);
+
+	MPI_Scatterv(const_cast<std::vector<Point2D> &>(newPos).data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, locNewPos.data(), par.myLen, Point2D::mpiPoint2D, 0, parallel.commWork);
+
+//#pragma omp parallel for default(none) shared(locGamma, locNewPos, locThrough, oldAfl, afl, par) 
+	for (int locI = 0; locI < par.myLen; ++locI)
+	{
+		int i = par.myDisp + locI;
+		int minN;
+		if (MoveInsideMovingBoundary(locNewPos[locI], vtx[i].r(), oldAfl, afl, minN))
+		{
+//#pragma omp atomic
+			locGamma[minN] += vtx[i].g();
+
+			//vtx[i].g() = 0.0;
+			locThrough[locI] = 1;
+		}
+	}//for locI
+
+
+	MPI_Reduce(locGamma.data(), gamma.data(), afl.np, MPI_DOUBLE, MPI_SUM, 0, parallel.commWork);
+
+	MPI_Gatherv(locThrough.data(), par.myLen, MPI_INT, through.data(), par.len.data(), par.disp.data(), MPI_INT, 0, parallel.commWork);
+
+	//std::ostringstream sss;
+	//sss << "through_";
+	//std::ofstream throughFile(sss.str());
+	//for (size_t i = 0; i < gamma.size(); ++i)
+	//	throughFile << gamma[i] << std::endl;
+	//throughFile.close();
+
+	/// \todo Только нулевой процессор или все?
+	if (parallel.myidWork == 0)
+	{
+		afl.gammaThrough = gamma;
+
+		for (size_t q = 0; q < through.size(); ++q)
+		if (through[q])
+			vtx[q].g() = 0.0;
+	}
+
+}//InsideMovingBoundary(...)
 
 
 //Поиск ближайшего соседа
@@ -587,3 +737,27 @@ void Wake::Restruct(timePeriod& time)
 
 	time.second = omp_get_wtime();
 }//Restruct()
+
+//bool Wake::isPointInsideAirfoil(const Point2D& pos, const Airfoil& afl)
+//{
+//	Point2D posFar = { 100.0, 100.0 };
+//
+//	Point2D r1, r2;
+//
+//	int nIntersec = 0;
+//
+//	for (int i = 0; i < afl.np; ++i)
+//	{
+//		r1 = afl.r[i];
+//		r2 = afl.r[i+1];
+//
+//		if ((area(pos, posFar, r1) * area(pos, posFar, r2) <= -1.e-10) && (area(r1, r2, pos) * area(r1, r2, posFar) <= -1.e-10))
+//			nIntersec++;
+//	}
+//	return nIntersec % 2;
+//}
+//
+//double Wake::area(Point2D p1, Point2D p2, Point2D p3)
+//{
+//	return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]);
+//}

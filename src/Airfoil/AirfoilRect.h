@@ -64,6 +64,8 @@ public:
 		:Airfoil(passport_, numberInPassport_, parallel_)
 	{ };
 
+	AirfoilRect(const Airfoil& afl) : Airfoil(afl){};
+
 	/// Деструктор
 	virtual ~AirfoilRect() { };
 

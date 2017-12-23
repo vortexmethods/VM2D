@@ -187,7 +187,7 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 }//GetVelocityToSetOfPoints(...)
 
 //Заполнение правой части
-void BoundaryVortColl::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs)
+void BoundaryVortColl::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform)
 {
 	size_t np = afl.np;
 	int id = parallel.myidWork;
@@ -199,7 +199,7 @@ void BoundaryVortColl::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* 
 	if (id == 0)
 	{
 		for (size_t i = 0; i < np; ++i)
-			rhs(i) = -(V0*afl.tau[i]) - wakeVelo[i];
+			rhs(i) = -(V0*afl.tau[i] - afl.v[i] * afl.tau[i]) - wakeVelo[i];
 	}
 
 	*lastRhs = 0.0;
@@ -256,3 +256,12 @@ void BoundaryVortColl::SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::Ve
 		virtualWake.push_back(virtVort);
 	}
 }//SolutionToFreeVortexSheetAndVirtualVortex(...)
+
+void BoundaryVortColl::ComputeAttachedSheetsIntensity()
+{
+	for (size_t i = 0; i < sheets.attachedVortexSheet.size(); ++i)
+	{
+		sheets.attachedVortexSheet[i][0] = afl.v[i] * afl.tau[i];
+		sheets.attachedSourceSheet[i][0] = afl.v[i] * afl.nrm[i];
+	}
+}//ComputeAttachedSheetsIntensity()

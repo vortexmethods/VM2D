@@ -182,7 +182,7 @@ void BoundaryMDV::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& poin
 
 
 //Заполнение правой части
-void BoundaryMDV::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs)
+void BoundaryMDV::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform)
 {
 	size_t np = afl.np;
 	int id = parallel.myidWork;
@@ -194,7 +194,7 @@ void BoundaryMDV::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastR
 	if (id == 0)
 	{
 		for (size_t i = 0; i < np; ++i)
-			rhs(i) = -(V0*afl.nrm[i]) - wakeVelo[i];
+			rhs(i) = -(V0*afl.nrm[i] - afl.v[i] * afl.nrm[i]) - wakeVelo[i];
 	}
 
 	*lastRhs = 0.0;
@@ -252,6 +252,17 @@ void BoundaryMDV::SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorX
 		virtualWake.push_back(virtVort);
 	}
 }//SolutionToFreeVortexSheetAndVirtualVortex(...)
+
+//Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников
+void BoundaryMDV::ComputeAttachedSheetsIntensity()
+{
+	for (size_t i = 0; i < sheets.attachedVortexSheet.size(); ++i)
+	{
+		sheets.attachedVortexSheet[i][0] = afl.v[i] * afl.tau[i];
+		sheets.attachedSourceSheet[i][0] = afl.v[i] * afl.nrm[i];
+	}
+}//ComputeAttachedSheetsIntensity()
+
 
 
 

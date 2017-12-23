@@ -71,6 +71,15 @@ protected:
 	const VortexesParams& virtVortParams;
 
 public:
+	/// Переменная, отвечающая за то, двигается профиль или нет
+	const bool isMoves;
+
+	/// Переменная, отвечающая за то, деформируется профиль или нет
+	const bool isDeform;
+
+	/// Количество степеней свободы
+	const int degOfFreedom;
+
 	/// Вектор гидродинамической силы, действующей на профиль
 	Point2D hydroDynamForce;
 
@@ -81,8 +90,11 @@ public:
 	/// \param[in] boundary_ константная ссылка на граничное условие;
 	/// \param[in] virtVortParams_ константная ссылка на параметры виртуального вихревого следа для профиля;
 	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
-	Mechanics(const Passport& passport_, Airfoil& afl_, const Boundary& boundary_, const VortexesParams& virtVortParams_, const Parallel& parallel_)
-		: passport(passport_), afl(afl_), boundary(boundary_), parallel(parallel_), virtVortParams(virtVortParams_) {};
+	/// \param[in] degOfFreedom_ количество степеней свободы.
+	/// \param[in] isMoves_ является ли профиль подвижным (1 - является, 0 - не является).
+	/// \param[in] isDeform_ является ли профиль деформируемым (1 - является, 0 - не является).
+	Mechanics(const Passport& passport_, Airfoil& afl_, const Boundary& boundary_, const VortexesParams& virtVortParams_, const Parallel& parallel_, int degOfFreedom_, bool isMoves_, bool isDeform_)
+		: passport(passport_), afl(afl_), boundary(boundary_), parallel(parallel_), virtVortParams(virtVortParams_), degOfFreedom(degOfFreedom_), isMoves(isMoves_), isDeform(isDeform_) { };
 
 	/// Деструктор
 	virtual ~Mechanics() { };
@@ -141,6 +153,17 @@ public:
 
 	}//GenerateForcesString(...)
 
+	/// Вычисление скорости центра масс профиля
+	/// \param[in] currTime текущее время
+	virtual Point2D VeloOfAirfoilRcm(double currTime) = 0;
+
+	/// Вычисление скоростей начал панелей
+	/// \param[in] currTime текущее время
+	virtual void VeloOfAirfoilPanels(double currTime) = 0;
+
+	virtual void FillMechanicsRowsAndCols(Eigen::MatrixXd& row, Eigen::MatrixXd& col) = 0;
+
+	virtual void FillMechanicsRhs(std::vector<double>& rhs) = 0;
 };
 
 #endif

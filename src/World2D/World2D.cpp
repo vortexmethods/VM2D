@@ -125,6 +125,9 @@ World2D::World2D(const Queue& _queue, std::ostream& _telefile) :
 		case 0:
 			mechanics.emplace_back(new MechanicsRigidImmovable(GetPassport(), *(airfoil[i]), *(boundary[i]), velocity->virtualVortexesParams[i], parallel));
 			break;
+		case 1:
+			mechanics.emplace_back(new MechanicsRigidGivenLaw (GetPassport(), *(airfoil[i]), *(boundary[i]), velocity->virtualVortexesParams[i], parallel));
+			break;
 		}
 	}
 
@@ -165,6 +168,14 @@ void World2D::Step(timePeriod& time)
 	time.first = omp_get_wtime();
 	
 	const double& dt = GetPassport().timeDiscretizationProperties.dt;	
+
+	//вычисляем скорости панелей
+	for (size_t i = 0; i < airfoil.size(); ++i)
+		mechanics[i]->VeloOfAirfoilPanels(currentStep * dt);
+
+	//вычисляем интенсивности присоединенных слоев
+	for (size_t i = 0; i < airfoil.size(); ++i)
+		boundary[i]->ComputeAttachedSheetsIntensity();
 	
 	if (airfoil.size() > 0)
 	{
@@ -181,7 +192,7 @@ void World2D::Step(timePeriod& time)
 		if (parallel.myidWork == 0)
 		{
 			int currentRow = 0;
-			for (int bou = 0; bou < boundary.size(); ++bou)
+			for (size_t bou = 0; bou < boundary.size(); ++bou)
 			{
 				int nVars = boundary[bou]->GetUnknownsSize();
 				Eigen::VectorXd locSol;
@@ -190,7 +201,7 @@ void World2D::Step(timePeriod& time)
 					locSol(i) = sol(currentRow + i);
 
 				boundary[bou]->SolutionToFreeVortexSheetAndVirtualVortex(locSol);
-				currentRow += nVars;
+				currentRow += nVars + 1 + mechanics[bou]->degOfFreedom;
 			}
 			
 			/*
@@ -310,6 +321,29 @@ void World2D::Step(timePeriod& time)
 
 	MoveVortexes(dt, newPos, timestat.timeMoveVortexes);
 
+
+	
+	for (size_t afl = 0; afl < airfoil.size(); ++afl)
+	{
+		switch (GetPassport().airfoilParams[afl].panelsType)
+		{
+		case 0:
+			oldAirfoil.emplace_back(new AirfoilRect(*airfoil[afl]));
+			break;
+		case 1:
+			
+			//airfoil.emplace_back(new AirfoilCurv(GetPassport(), i, parallel));
+			
+			teleFile << "AirfoilCurv is not implemented now! " << std::endl;
+			exit(1);
+			break;
+		}
+
+		Point2D airfoilVelo = mechanics[afl]->VeloOfAirfoilRcm(GetPassport().physicalProperties.currTime);
+		airfoil[afl]->Move(dt * airfoilVelo);
+	}//for
+
+
 	/*
 	std::cout << "newpos.size = " << newPos.size() << std::endl;
 	for (size_t q = 0; q < newPos.size(); ++q)
@@ -331,7 +365,7 @@ void World2D::Step(timePeriod& time)
 	}
 	*/
 
-	for (int bou = 0; bou < boundary.size(); ++bou)
+	for (size_t bou = 0; bou < boundary.size(); ++bou)
 	{
 		boundary[bou]->virtualWake.clear();
 		boundary[bou]->virtualWake.resize(0);
@@ -345,6 +379,7 @@ void World2D::Step(timePeriod& time)
 	}
 	*/
 	
+
 	CheckInside(newPos, timestat.timeCheckInside);
 
 	//передача новых положений вихрей в пелену
@@ -381,6 +416,8 @@ void World2D::Step(timePeriod& time)
 	
 	GetPassport().physicalProperties.addCurrTime(dt);
 	currentStep++;
+	oldAirfoil.clear();
+	oldAirfoil.resize(0);
 }//Step()
 
 
@@ -391,7 +428,27 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, timePeriod& time)
 		
 	for (size_t afl = 0; afl < airfoil.size(); ++afl)
 	{		
-		wake.Inside(newPos, *airfoil[afl]);
+		switch (GetPassport().airfoilParams[afl].mechanicalSystem)
+		{
+		case 0:
+			wake.Inside(newPos, *airfoil[afl]);
+			break;
+		case 1:
+			wake.InsideMovingBoundary(newPos, *oldAirfoil[afl], *airfoil[afl]);
+			break;
+		}
+	}
+	time.second = omp_get_wtime();
+}
+
+//Проверка проникновения вихрей внутрь профиля
+void World2D::CheckInsideMovingBoundary(std::vector<Point2D>& newPos, timePeriod& time)
+{
+	time.first = omp_get_wtime();
+
+	for (size_t afl = 0; afl < airfoil.size(); ++afl)
+	{
+		wake.InsideMovingBoundary(newPos, *oldAirfoil[afl] , * airfoil[afl]);
 	}
 	time.second = omp_get_wtime();
 }
@@ -419,8 +476,14 @@ void World2D::FillMatrixAndRhs(timePeriod& time)
 	Eigen::MatrixXd otherMatr;
 	Eigen::VectorXd locLastLine, locLastCol;
 	Eigen::VectorXd locRhs;
+	std::vector <Eigen::MatrixXd> mechRows;	//строки с уравнениями для аэроупругой системы
+	std::vector <Eigen::MatrixXd> mechCols;	//столбцы с уравнениями для аэроупругой системы
+	std::vector <std::vector<double>> mechRhs;	//компоненты правой части уравнений для аэроупругой системы
+
+
 	double locLastRhs = 0.0;
 
+	//обнуляем матрицу на первом шаге расчета
 	if (currentStep == 0)
 	{
 		for (int i = 0; i < matr.rows(); ++i)
@@ -428,7 +491,25 @@ void World2D::FillMatrixAndRhs(timePeriod& time)
 			matr(i, j) = 0.0;
 	}
 
-	int totalSolVars = matr.rows() - boundary.size();
+	mechRows.resize(mechanics.size());
+	mechCols.resize(mechanics.size());
+	mechRhs.resize(mechanics.size());
+
+	for (size_t mech = 0; mech < boundary.size(); ++mech)
+	{
+		mechRows[mech].resize(mechanics[mech]->degOfFreedom, matr.cols());
+		for (int i = 0; i < mechRows[mech].rows(); ++i)
+		for (int j = 0; j < mechRows[mech].cols(); ++j)
+			mechRows[mech](i, j) = 0.0;
+
+		mechCols[mech].resize(matr.rows(), mechanics[mech]->degOfFreedom);
+		for (int i = 0; i < mechCols[mech].rows(); ++i)
+		for (int j = 0; j < mechCols[mech].cols(); ++j)
+			mechCols[mech](i, j) = 0.0;
+			
+		mechRhs[mech].resize(mechanics[mech]->degOfFreedom);
+	}
+
 	int currentRow = 0;
 
 	for (size_t bou = 0; bou < boundary.size(); ++bou)
@@ -448,35 +529,48 @@ void World2D::FillMatrixAndRhs(timePeriod& time)
 			locRhs.resize(nVars);
 		}
 		
-		if (currentStep == 0)
+		if (currentStep == 0 || mechanics[bou]->isDeform)
 		if (parallel.myidWork == 0)
 			boundary[bou]->FillMatrixSelf(locMatr, locLastLine, locLastCol);
 
-		boundary[bou]->FillRhs(GetPassport().physicalProperties.V0(), locRhs, &locLastRhs);
+		boundary[bou]->FillRhs(GetPassport().physicalProperties.V0(), locRhs, &locLastRhs, mechanics[bou]->isMoves, mechanics[bou]->isDeform);
+
+		mechanics[bou]->FillMechanicsRowsAndCols(mechRows[bou], mechCols[bou]);
+		mechanics[bou]->FillMechanicsRhs(mechRhs[bou]);
 
 		//размазываем матрицу
 		if (parallel.myidWork == 0)
 		{
 			for (int i = 0; i < nVars; ++i)
 			{
-				if (currentStep == 0)
+				if (currentStep == 0 || mechanics[bou]->isDeform)
 				{
 					for (int j = 0; j < nVars; ++j)
 						matr(i + currentRow, j + currentRow) = locMatr(i, j);
-					matr(totalSolVars + bou, i + currentRow) = locLastLine(i);
-					matr(i + currentRow, totalSolVars + bou) = locLastCol(i);
+					matr(currentRow + nVars, i + currentRow) = locLastLine(i);
+					matr(i + currentRow, currentRow + nVars) = locLastCol(i);
 				}
 
 				rhs(i + currentRow) = locRhs(i);
 			}
-			rhs(totalSolVars + bou) = locLastRhs;
+			rhs(currentRow + nVars) = locLastRhs;
 
-			if (currentStep == 0)
+			for (int i = 0; i < mechanics[bou]->degOfFreedom; ++i)
 			{
-				int currentCol = 0;
-				for (size_t oth = 0; oth < boundary.size(); ++oth)
+				for (int j = 0; j < matr.cols(); ++j)
 				{
-					int nVarsOther = boundary[oth]->GetUnknownsSize();
+					matr(currentStep + nVars + 1 + i, j) = mechRows[bou](i, j);
+					matr(j, currentStep + nVars + 1 + i) = mechCols[bou](j, i);
+				}
+				rhs(currentStep + nVars + 1 + i) = mechRhs[bou][i];
+			}
+
+			int currentCol = 0;
+			for (size_t oth = 0; oth < boundary.size(); ++oth)
+			{
+				int nVarsOther = boundary[oth]->GetUnknownsSize();
+				if (currentStep == 0 || mechanics[oth]->isMoves)
+				{
 					if (bou != oth)
 					{
 						otherMatr.resize(nVars, nVarsOther);
@@ -488,18 +582,20 @@ void World2D::FillMatrixAndRhs(timePeriod& time)
 							for (int j = 0; j < nVarsOther; ++j)
 								matr(i + currentRow, j + currentCol) = otherMatr(i, j);
 						}
-					}
+					}// if (bou != oth)
+				}// if (currentStep == 0 || mechanics[oth]->isMoves)
 
-					currentCol += nVarsOther;
-				}
-			}
-			currentRow += nVars;
-		}
-	}
+				currentCol += nVarsOther + 1 + mechanics[oth]->degOfFreedom;
+			}// for oth
+
+			currentRow += nVars + 1 + mechanics[bou]->degOfFreedom;
+
+		}// if (parallel.myidWork == 0)
+	}// for bou
 
 
-	/*
-	std::ostringstream ss;
+	
+/*	std::ostringstream ss;
 	ss << "matrix_";
 	ss << currentStep;
 	std::ofstream matrFile(ss.str());
@@ -507,14 +603,14 @@ void World2D::FillMatrixAndRhs(timePeriod& time)
 	matrFile.close();
 	*/
 	
-	/*
-	std::ostringstream sss;
+	
+/*	std::ostringstream sss;
 	sss << "rhs_";
 	sss << currentStep;
 	std::ofstream rhsFile(sss.str());
 	SaveToStream(rhs, rhsFile);
 	rhsFile.close();
-	*/
+*/	
 	
 	time.second = omp_get_wtime();
 }//FillMatrixAndRhs(...)
@@ -530,6 +626,10 @@ void World2D::ReserveMemoryForMatrixAndRhs(timePeriod& time)
 
 		for (auto it = boundary.begin(); it != boundary.end(); ++it)
 			matrSize += (*it)->GetUnknownsSize();
+
+		//добавляем уравнения (их количество совпадает с количеством степеней свободы для профилей) для решения механической системы
+		for (auto it = mechanics.begin(); it != mechanics.end(); ++it)
+			matrSize += (*it)->degOfFreedom;
 
 		matr.resize(matrSize, matrSize);
 		matr.setZero();

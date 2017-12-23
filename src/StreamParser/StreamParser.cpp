@@ -46,10 +46,13 @@ std::ostream* StreamParser::perr = defaults::defaultPerr;
 //Конструктор, принимающий четыре потока
 StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream)
 {
-	ParseStream(mainStream, database);
+	ParseStream(varsStream, vars);
+
 	ParseStream(defaultsStream, defaults);
 	ParseStream(switchersStream, switchers);
-	ParseStream(varsStream, vars);
+	ParseStream(mainStream, database, true);
+
+	//ReplaceVarsInDataBaseValues(database);
 }//StreamParser(...)
 
 
@@ -67,7 +70,7 @@ StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStrea
 //Конструктор, принимающий один поток
 StreamParser::StreamParser(std::istream& mainStream, char openBracket, char closeBracket)
 {
-	ParseStream(mainStream, database, openBracket, closeBracket);
+	ParseStream(mainStream, database, false, openBracket, closeBracket);
 		
 	defaults.clear();
 	switchers.clear();
@@ -145,7 +148,7 @@ std::pair<std::string, std::string> StreamParser::SplitString(std::string line)
 
 
 //Парсинг заданного потока
-void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std::string, std::vector<std::string>>& database, char openBracket, char closeBracket)
+void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std::string, std::vector<std::string>>& database, bool replaceVars, char openBracket, char closeBracket)
 {
 	std::string line, readline;
 
@@ -182,6 +185,8 @@ void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std:
 			if (search_it == database.end())
 			{
 				std::string value = line.substr(posEqual + 1, line.length());
+				if (replaceVars)
+					ReplaceVarsInString(value);
 				database.insert(make_pair(key, StringToVector(value, openBracket, closeBracket)));
 			}
 			else
@@ -195,3 +200,63 @@ void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std:
 	//Указатель возвращаем в начало потока
 	streamName.clear(); streamName.seekg(0, std::ios::beg);
 }//ParseStream(...)
+
+
+// Замена переменных в строке их значениями
+void StreamParser::ReplaceVarsInString(std::string& st)
+{
+	while (st.find("$") != -1)
+	{
+		size_t startVar = st.find('$');
+
+		size_t endVar = -1 + std::min({
+			st.find(" ", startVar + 1),
+			st.find("$", startVar + 1),
+			st.find("(", startVar + 1),
+			st.find("{", startVar + 1),
+			st.find("\n", startVar + 1),
+			st.length()
+		});
+
+		std::string var = st.substr(startVar + 1, endVar - startVar);
+
+		auto search_var = vars.find(var);
+		if ((search_var != vars.end()) && ((search_var->second).size() > 0))
+		{
+			std::vector<std::string> findString = search_var->second;
+
+			std::stringstream ss;
+
+			ss << st.substr(0, startVar);
+			
+			if (findString.size() == 1)
+			{
+				ss << findString[0];
+			}
+			else
+			{
+				ss << "{" << findString[0];
+				if (findString.size() > 0)
+				{
+					for (size_t sz = 1; sz < findString.size(); ++sz)
+						ss << "," << findString[sz];
+				}
+				ss << "}";
+			}
+
+
+			int startP = endVar - startVar + 2;
+			int endP = st.length() - 1;
+
+			if (startP <= endP)
+				ss << st.substr(startP, endP);
+
+			st = ss.str();
+		}
+		else
+		{
+			*perr << "parser error: SUBSTITUTION $" << var << " IS UNDEFINED" << std::endl;
+			exit(1);
+		}
+	}
+}//ReplaceVarsInDataBaseValues(...)

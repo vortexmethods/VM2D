@@ -45,6 +45,7 @@
 
 
 #include "MechanicsRigidImmovable.h"
+#include "MechanicsRigidGivenLaw.h"
 
 #include "VelocityBiotSavart.h"
 #include "VelocityFourier.h"
@@ -77,6 +78,9 @@ private:
 
 	/// Список умных казателей на обтекаемые профили
 	std::vector<std::unique_ptr<Airfoil>> airfoil;
+
+	/// Список умных казателей на обтекаемые профили для сохранения старого положения
+	std::vector<std::unique_ptr<Airfoil>> oldAirfoil;
 
 	/// Список умных указателей на формирователи граничных условий на профилях
 	std::vector<std::unique_ptr<Boundary>> boundary;
@@ -141,6 +145,14 @@ private:
 	/// \param[in] newPos новые позиции вихрей
 	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
 	void CheckInside(std::vector<Point2D>& newPos, timePeriod& time);
+
+	/// \brief Проверка проникновения вихрей внутрь профиля для движущегося профиля
+	///
+	/// Вызывается в Step()
+	/// \param[in] newPos новые позиции вихрей
+	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+	void CheckInsideMovingBoundary(std::vector<Point2D>& newPos, timePeriod& time);
+
 
 public:
 	/// \brief Конструктор

@@ -88,9 +88,10 @@ public:
 	virtual void FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol);
 	virtual void GetWakeInfluence(std::vector<double>& wakeVelo) const;
 	virtual void GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const;
-	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs);
+	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform);
 	virtual int GetUnknownsSize() const;
 	virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol);
+	virtual void ComputeAttachedSheetsIntensity();
 };
 
 #endif
