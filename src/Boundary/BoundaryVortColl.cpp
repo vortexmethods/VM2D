@@ -110,10 +110,13 @@ void BoundaryVortColl::GetWakeInfluence(std::vector<double>& wakeVelo) const
 		const Point2D& posI = KK[par.myDisp + i];
 		const Point2D& nrm = afl.nrm[par.myDisp + i];
 
+		Point2D posJ;
+		double gamJ;
+
 		for (size_t j = 0; j < wake.vtx.size(); ++j)
 		{
-			const Point2D& posJ = wake.vtx[j].r();
-			const double& gamJ = wake.vtx[j].g();
+			posJ = wake.vtx[j].r();
+			gamJ = wake.vtx[j].g();
 
 			dst2 = std::max(dist2(posI, posJ), wake.param.eps2); //Сглаживание
 			tempVel = nrm * (posI - posJ);
@@ -158,11 +161,14 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 		velI.toZero(); 
 
 		const Point2D& posI = points[par.myDisp + i].r();
+
+		Point2D posJ;
+		double gamJ;
 		
 		for (size_t j = 0; j < afl.np; ++j)
 		{
-			const Point2D& posJ = KK[j];
-			double gamJ = sheets.freeVortexSheet[j][0] * afl.len[j];
+			posJ = KK[j];
+			gamJ = sheets.freeVortexSheet[j][0] * afl.len[j];
 
 			dst2 = std::max(dist2(posI, posJ), wake.param.eps2); //Сглаживать надо!!!
 			tempVel = { -posI[1] + posJ[1], posI[0] - posJ[0] };
@@ -186,7 +192,7 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 			velo[i] += selfVelo[i];
 }//GetVelocityToSetOfPoints(...)
 
-//Заполнение правой части
+//Заполнение в правой части влияния набегающего потока, следа и присоединенных слоев, действующих от самого себя
 void BoundaryVortColl::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform)
 {
 	size_t np = afl.np;
@@ -196,11 +202,28 @@ void BoundaryVortColl::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* 
 
 	GetWakeInfluence(wakeVelo);
 
+	Point2D r, xi, dr;
+	double drdr;
+
 	if (id == 0)
 	{
 		for (size_t i = 0; i < np; ++i)
+		{
 			rhs(i) = -(V0*afl.tau[i] - afl.v[i] * afl.tau[i]) - wakeVelo[i];
-	}
+			for (size_t j = 0; j < np; ++j)
+			if (i != j)
+			{
+				r = 0.5 * (afl.r[i] + afl.r[i + 1]);
+				xi = 0.5 * (afl.r[j] + afl.r[j + 1]);
+				dr = r - xi;
+				drdr = dr.length2();
+
+				rhs(i) += -afl.tau[i] * (IDPI * sheets.attachedVortexSheet[j][0] * afl.len[j] * Skos(r, xi));
+				rhs(i) += -afl.tau[i] * (IDPI * sheets.attachedSourceSheet[j][0] * afl.len[j] / drdr * dr);
+			}//if (i != j)
+			rhs(i) += -0.5 * sheets.attachedVortexSheet[i][0];
+		}//for i
+	}// if (id == 0)
 
 	*lastRhs = 0.0;
 	
@@ -212,6 +235,27 @@ void BoundaryVortColl::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* 
 	}
 
 }//FillRhs(...)
+
+//Заполнение в правой части влияния присоединенных слоев, действующих на один профиль от другого
+void BoundaryVortColl::FillRhsFromOther(const Airfoil& otherAirfoil, Eigen::VectorXd& rhs)
+{
+	Point2D r, xi, dr;
+	double drdr;
+
+	for (size_t i = 0; i < afl.np; ++i)
+	{
+		for (size_t j = 0; j < otherAirfoil.np; j++)
+		{
+			r = 0.5 * (afl.r[i] + afl.r[i + 1]);
+			xi = 0.5 * (otherAirfoil.r[j] + otherAirfoil.r[j + 1]);
+			dr = r - xi;
+			drdr = dr.length2();
+
+			rhs(i) += -afl.tau[i] * (IDPI * sheets.attachedVortexSheet[j][0] * otherAirfoil.len[j] * Skos(r, xi));
+			rhs(i) += -afl.tau[i] * (IDPI * sheets.attachedSourceSheet[j][0] * otherAirfoil.len[j] / drdr * dr);
+		}//for j
+	}//for i
+}//FillRhsFromOther(...)
 
 
 //Возврат размерности вектора решения 

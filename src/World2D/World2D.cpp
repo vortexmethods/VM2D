@@ -534,6 +534,12 @@ void World2D::FillMatrixAndRhs(timePeriod& time)
 			boundary[bou]->FillMatrixSelf(locMatr, locLastLine, locLastCol);
 
 		boundary[bou]->FillRhs(GetPassport().physicalProperties.V0(), locRhs, &locLastRhs, mechanics[bou]->isMoves, mechanics[bou]->isDeform);
+		for (size_t i = 0; i < airfoil.size(); ++i)
+		{
+			if (i != bou)
+			if (mechanics[i]->isDeform || mechanics[i]->isMoves)
+				boundary[bou]->FillRhsFromOther(*airfoil[i], locRhs);
+		}
 
 		mechanics[bou]->FillMechanicsRowsAndCols(mechRows[bou], mechCols[bou]);
 		mechanics[bou]->FillMechanicsRhs(mechRhs[bou]);

@@ -72,28 +72,15 @@ public:
 	/// Деструктор
 	~MechanicsRigidImmovable() {};
 
-	/// Вычисление гидродинамической силы, действующей на профиль
+
+	//далее -- реализации виртуальных функций
 	virtual void GetHydroDynamForce(timePeriod& time);
+	virtual Point2D VeloOfAirfoilRcm(double currTime);
+	virtual void VeloOfAirfoilPanels(double currTime);
 
-	///
-
-	virtual Point2D VeloOfAirfoilRcm(double currTime)
-	{
-		return{ 0.0, 0.0 };
-	};
-
-	/// Вычисление скоростей начал панелей
-	/// \param[in] currTime текущее время
-	virtual void VeloOfAirfoilPanels(double currTime)
-	{
-		Point2D veloRcm = VeloOfAirfoilRcm(currTime);
-		for (size_t i = 0; i < afl.v.size(); ++i)
-			afl.v[i] = veloRcm;
-	};
-
-	virtual void FillMechanicsRowsAndCols(Eigen::MatrixXd& row, Eigen::MatrixXd& col) { };
-
-	virtual void FillMechanicsRhs(std::vector<double>& rhs) { };
+	//TODO реализовать
+	virtual void FillMechanicsRowsAndCols(Eigen::MatrixXd& row, Eigen::MatrixXd& col) {};
+	virtual void FillMechanicsRhs(std::vector<double>& rhs) {};
 };
 
 #endif

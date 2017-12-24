@@ -38,6 +38,21 @@
 
 #include "MechanicsRigidImmovable.h"
 
+
+//Вычисление скорости центра масс профиля
+Point2D MechanicsRigidImmovable::VeloOfAirfoilRcm(double currTime)
+{
+	return{ 0.0, 0.0 };
+}//VeloOfAirfoilRcm(...)
+
+// Вычисление скоростей начал панелей
+void MechanicsRigidImmovable::VeloOfAirfoilPanels(double currTime)
+{
+	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
+	for (size_t i = 0; i < afl.v.size(); ++i)
+		afl.v[i] = veloRcm;
+}//VeloOfAirfoilPanels(...)
+
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
 {
@@ -62,5 +77,5 @@ void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
 	hydroDynamForce = hDFGam + (1.0 / passport.timeDiscretizationProperties.dt) * hDFdelta;
 
 	time.second = omp_get_wtime();
-}
+}//GetHydroDynamForce(...)
 

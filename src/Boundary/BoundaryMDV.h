@@ -94,6 +94,7 @@ public:
 	virtual int GetUnknownsSize() const;
 	virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol);
 	virtual void ComputeAttachedSheetsIntensity();
+	virtual void FillRhsFromOther(const Airfoil& otherAirfoil, Eigen::VectorXd& rhs);
 };
 
 #endif

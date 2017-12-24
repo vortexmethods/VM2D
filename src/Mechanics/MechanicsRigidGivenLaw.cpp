@@ -63,9 +63,18 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce(timePeriod& time)
 	hydroDynamForce = hDFGam + (1.0 / passport.timeDiscretizationProperties.dt) * hDFdelta;
 
 	time.second = omp_get_wtime();
-}
+}// GetHydroDynamForce(...)
 
+// Вычисление скорости центра масс
 Point2D MechanicsRigidGivenLaw::VeloOfAirfoilRcm(double currTime)
 {
 	return { sin(PI * currTime / 8.0), 0.0};
-}
+}//VeloOfAirfoilRcm(...)
+
+// Вычисление скоростей начал панелей
+void MechanicsRigidGivenLaw::VeloOfAirfoilPanels(double currTime)
+{
+	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
+	for (size_t i = 0; i < afl.v.size(); ++i)
+		afl.v[i] = veloRcm;
+}//VeloOfAirfoilPanels(...)

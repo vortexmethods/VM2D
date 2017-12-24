@@ -501,7 +501,7 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 		velo[i] += selfVelo[i];
 }//GetVelocityToSetOfPointsFromVirtualVortexes(...)
 
-//Заполнение правой части
+//Заполнение в правой части влияния набегающего потока, следа и присоединенных слоев, действующих от самого себя
 void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform)
 {
 	std::vector<double> wakeVelo;
@@ -513,6 +513,8 @@ void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, do
 	{
 		rhs(i) = -afl.tau[i] * (V0 -afl.v[i] ) - wakeVelo[i];
 
+
+		//влияние присоединенных слоев от самого себя
 		if (move || deform)
 		for (size_t j = 0; j < afl.np; j++)
 		{
@@ -545,12 +547,15 @@ void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, do
 				{
 					a1 = 0.0; lambda1 = 0.0;
 				}
+				
+				rhs(i) += -IDPI / afl.len[i] * sheets.attachedVortexSheet[j][0] * afl.tau[i] * (((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3).kcross());
+				rhs(i) += -IDPI / afl.len[i] * sheets.attachedSourceSheet[j][0] * afl.tau[i] * (((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3));
+				
+			}//if (i != j)
+		}//for j
+		rhs(i) += -0.5 * sheets.attachedVortexSheet[i][0];
 
-				rhs(i) += -afl.tau[i] * (sheets.attachedVortexSheet[j][0] / (2 * PI) * ((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3).kcross());
-				rhs(i) += -afl.tau[i] * (sheets.attachedSourceSheet[j][0] / (2 * PI) * ((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3));
-			}
-		}
-	}
+	}//for i
 	
 	if (parallel.myidWork == 0)
 	{
@@ -564,6 +569,39 @@ void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, do
 		}
 	}
 }//FillRhs(...)
+
+//Заполнение в правой части влияния присоединенных слоев, действующих на один профиль от другого
+void BoundaryConstLayerAver::FillRhsFromOther(const Airfoil& otherAirfoil, Eigen::VectorXd& rhs)
+{
+	for (size_t i = 0; i < afl.np; ++i)
+	{
+		for (size_t j = 0; j < otherAirfoil.np; j++)
+		{
+			Point2D di = afl.r[i + 1] - afl.r[i];
+			Point2D dj = otherAirfoil.r[j + 1] - otherAirfoil.r[j];
+			Point2D s1 = afl.r[i + 1] - otherAirfoil.r[j];
+			Point2D s2 = afl.r[i] - otherAirfoil.r[j];
+			Point2D p1 = afl.r[i + 1] - otherAirfoil.r[j + 1];
+			Point2D p2 = afl.r[i] - otherAirfoil.r[j + 1];
+
+			double a1 = Alpha(s2, s1);
+			double a2 = Alpha(s2, p1);
+			double a3 = Alpha(p1, p2);
+
+			double lambda1 = Lambda(s1, s2);
+			double lambda2 = Lambda(p1, s2);
+			double lambda3 = Lambda(p2, p1);
+
+			Point2D v1 = Omega(s1, afl.tau[i], otherAirfoil.tau[j]);
+			Point2D v2 = -Omega(di, afl.tau[i], otherAirfoil.tau[j]);
+			Point2D v3 = Omega(p2, afl.tau[i], otherAirfoil.tau[j]);
+
+			rhs(i) += -IDPI / afl.len[i] * sheets.attachedVortexSheet[j][0] * afl.tau[i] * (((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3).kcross());
+			rhs(i) += -IDPI / afl.len[i] * sheets.attachedSourceSheet[j][0] * afl.tau[i] * (((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3));
+		}//for j
+	}//for i
+}//FillRhsFromOther(...)
+
 
 //Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников
 void BoundaryConstLayerAver::ComputeAttachedSheetsIntensity()

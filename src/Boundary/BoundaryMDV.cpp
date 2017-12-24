@@ -181,7 +181,7 @@ void BoundaryMDV::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& poin
 }//GetVelocityToSetOfPoints(...)
 
 
-//Заполнение правой части
+//Заполнение в правой части влияния набегающего потока, следа и присоединенных слоев, действующих от самого себя
 void BoundaryMDV::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform)
 {
 	size_t np = afl.np;
@@ -194,8 +194,25 @@ void BoundaryMDV::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastR
 	if (id == 0)
 	{
 		for (size_t i = 0; i < np; ++i)
+		{
 			rhs(i) = -(V0*afl.nrm[i] - afl.v[i] * afl.nrm[i]) - wakeVelo[i];
-	}
+			if (move || deform)
+			for (size_t j = 0; j < afl.np; j++)
+			{
+				if (i != j)
+				{
+					Point2D r = 0.5 * (afl.r[i] + afl.r[i + 1]);
+					Point2D xi = 0.5 * (afl.r[j] + afl.r[j + 1]);
+					Point2D dr = r - xi;
+					double drdr = dr.length2();
+
+					rhs(i) += -afl.nrm[i] * (IDPI * sheets.attachedVortexSheet[j][0] * afl.len[j] * Skos(r, xi));
+					rhs(i) += -afl.nrm[i] * (IDPI * sheets.attachedSourceSheet[j][0] * afl.len[j] / drdr * dr);
+				}//if (i != j)
+			}//for j
+			rhs(i) += -0.5 * sheets.attachedSourceSheet[i][0];
+		}//for i
+	}//if (id == 0)
 
 	*lastRhs = 0.0;
 
@@ -206,6 +223,24 @@ void BoundaryMDV::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastR
 		//*lastRhs += g;
 	}
 }//FillRhs(...)
+
+//Заполнение в правой части влияния присоединенных слоев, действующих на один профиль от другого
+void BoundaryMDV::FillRhsFromOther(const Airfoil& otherAirfoil, Eigen::VectorXd& rhs)
+{
+	for (size_t i = 0; i < afl.np; ++i)
+	{
+		for (size_t j = 0; j < otherAirfoil.np; j++)
+		{
+			Point2D r = 0.5 * (afl.r[i] + afl.r[i + 1]);
+			Point2D xi = 0.5 * (otherAirfoil.r[j] + otherAirfoil.r[j + 1]);
+			Point2D dr = r - xi;
+			double drdr = dr.length2();
+
+			rhs(i) += -afl.nrm[i] * (IDPI * sheets.attachedVortexSheet[j][0] * otherAirfoil.len[j] * Skos(r, xi));
+			rhs(i) += -afl.nrm[i] * (IDPI * sheets.attachedSourceSheet[j][0] * otherAirfoil.len[j] / drdr * dr);
+		}//for j
+	}//for i
+}//FillRhsFromOther(...)
 
 
 //Возврат размерности вектора решения 
