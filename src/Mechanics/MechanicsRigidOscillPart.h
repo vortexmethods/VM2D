@@ -14,7 +14,7 @@
 | VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
-| (at your option) any later version.	                                      |
+| (at your option) any later version.                                         |
 |                                                                             |
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
@@ -81,7 +81,7 @@ public:
 	/// \param[in] virtVortParams_ константная ссылка на параметры виртуального вихревого следа для профиля;
 	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
 	MechanicsRigidOscillPart(const Passport& passport_, Airfoil& afl_, const Boundary& boundary_, const VortexesParams& virtVortParams_, const Parallel& parallel_) :
-		Mechanics(passport_, afl_, boundary_, virtVortParams_, parallel_, 0, true, false), u0(0.0), y0(0.0), m(39.75), b(0.731), k(39.75 * 4.0 * PI * PI * 0.22 * 0.22)
+		Mechanics(passport_, afl_, boundary_, virtVortParams_, parallel_, 0, true, false), u0(0.0), y0(0.0), m(39.15), b(0.731), k(39.15 * 4.0 * PI * PI * passport_.param * passport_.param * 3.0 * 3.0)
 	{
 		u = u0;
 		y = y0;

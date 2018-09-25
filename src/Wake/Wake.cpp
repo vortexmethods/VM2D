@@ -14,7 +14,7 @@
 | VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
-| (at your option) any later version.	                                      |
+| (at your option) any later version.                                         |
 |                                                                             |
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
@@ -586,7 +586,7 @@ int Wake::Collaps(int type, int times)
 	{
 	
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_PAIRS))	
-		std::cout << "nvtx (" << parallel.myidWork << ") = " << vtx.size() << std::endl;
+		//std::cout << "nvtx (" << parallel.myidWork << ") = " << vtx.size() << std::endl;
 		
 		cuda.RefreshWake();
 		cuda.ExpGetPairs(type, neighb);

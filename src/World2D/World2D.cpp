@@ -14,7 +14,7 @@
 | VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
-| (at your option) any later version.	                                      |
+| (at your option) any later version.                                         |
 |                                                                             |
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
@@ -165,7 +165,7 @@ bool World2D::isFinished() const  //Проверка условия, что сч
 
 //Основная функция выполнения одного шага по времени
 void World2D::Step(timePeriod& time)
-{ 			
+{ 	
 	//Очистка статистики
 	timestat.ToZero();
 	
@@ -230,7 +230,6 @@ void World2D::Step(timePeriod& time)
 	{
 		boundary[bou]->VirtualWakeSynchronize();
 	}
-
 	
 	//Вычисление скоростей вихрей: для тех, которые в следе, и виртуальных
 	CalcVortexVelo(dt, timestat.timeCalcVortexConvVelo, timestat.timeCalcVortexDiffVelo);

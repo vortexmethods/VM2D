@@ -14,7 +14,7 @@
 | VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
-| (at your option) any later version.	                                      |
+| (at your option) any later version.                                         |
 |                                                                             |
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
@@ -353,7 +353,7 @@ void gpu::ExpCalcConvVeloToSetOfPoints
 
 	tCUDAEND = omp_get_wtime();
 
-	std::cout << "CONV_GPU(" << parallel.myidWork << "): " << (tCUDAEND - tCUDASTART) << std::endl;
+	//std::cout << "CONV_GPU(" << parallel.myidWork << "): " << (tCUDAEND - tCUDASTART) << std::endl;
 }//ExpCalcConvVeloToSetOfPoints(...)
 
 
@@ -390,7 +390,7 @@ void gpu::ExpGetConvVelocityToSetOfPointsFromVirtualVortexes(
 
 	tCUDAEND = omp_get_wtime();
 
-	std::cout << "CONV_VIRT_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
+	//std::cout << "CONV_VIRT_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
 }
 
 
@@ -443,7 +443,7 @@ void gpu::ExpCalcDiffVeloI1I2ToSetOfPoints(
 		}
 	}
 	tCUDAEND = omp_get_wtime();
-	std::cout << "DIFF_GPU(" << id << ", " << par.myLen << "): " << (tCUDAEND - tCUDASTART) << " " << (tCUDAENDCALC - tCUDASTART) << std::endl;
+	//std::cout << "DIFF_GPU(" << id << ", " << par.myLen << "): " << (tCUDAEND - tCUDASTART) << " " << (tCUDAENDCALC - tCUDASTART) << std::endl;
 }//ExpCalcDiffVeloI1I2ToSetOfPoints(...)
 
 
@@ -490,7 +490,7 @@ void gpu::ExpGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(
 
 	tCUDAEND = omp_get_wtime();
 
-	std::cout << "DIFF_SURF_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
+	//std::cout << "DIFF_SURF_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
 }//ExpGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(...)
 
 
@@ -526,7 +526,7 @@ void gpu::ExpGetWakeInfluence(
 			rhs[q] = newRhs[q];
 	}
 	tCUDAEND = omp_get_wtime();
-	std::cout << "RHS_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
+	//std::cout << "RHS_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
 }//ExpGetWakeInfluence(...)
 
 
@@ -565,7 +565,7 @@ void gpu::ExpGetPairs(int type, std::vector<int>& NEIB)
 	
 	tCUDAEND = omp_get_wtime();
 
-	std::cout << "GPU_Pairs: " << (tCUDAEND - tCUDASTART) << std::endl;
+	//std::cout << "GPU_Pairs: " << (tCUDAEND - tCUDASTART) << std::endl;
 }
 
 #endif

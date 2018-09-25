@@ -14,7 +14,7 @@
 | VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
-| (at your option) any later version.	                                      |
+| (at your option) any later version.                                         |
 |                                                                             |
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
@@ -138,6 +138,12 @@ void Queue::TaskSplit()
 				j++;
 			} while (p < task[taskFol].nProc);
 
+			std::cout << "ProcState: " << std::endl;
+			for (int i = 0; i < nProcAll; i++)
+			{
+				std::cout << "proc[" << i << "].state = " << procState[i] << std::endl;
+			}
+
 			//состояние задачи устанавливаем в режим "стартует"
 			task[taskFol].state = TaskState::starting;
 
@@ -161,6 +167,11 @@ void Queue::TaskSplit()
 	//Пересылаем информацию о состоянии процессоров на все компьютеры
 	MPI_Scatter(procState.data(), 1, MPI_INT, &myProcState, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
+	//Синхронизируем информацию
+	MPI_Bcast(&numberOfTask.solving, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	MPI_Bcast(&numberOfTask.prepared, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	MPI_Bcast(&numberOfTask.finished, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	
 	//список головных процессоров на тех задачах, 
 	//которые только что поставлены на счет:
 	std::vector<int> prepList;
@@ -182,7 +193,7 @@ void Queue::TaskSplit()
 			//состояние задачи вереводим в "считает"
 			task[i].state = TaskState::running;
 		}
-	}//if myid==0
+	}//if myidAll==0
 		
 
 	//Рассылаем количество стартующих задач в данном кванте на все машины
@@ -212,8 +223,7 @@ void Queue::TaskSplit()
 			int myidStarting;
 			MPI_Comm_rank(commStarting, &myidStarting);
 			
-			//TODO
-			//<Тут будет подготовка стартующих задач>
+			//подготовка стартующих задач
 			world2D.reset(new World2D(*this, std::cout));
 
 			//Коммуникатор головных процессоров стартующих задач
@@ -251,9 +261,10 @@ void Queue::TaskSplit()
 		flagFinish.clear();
 		flagFinish.resize(solvList.size());
 
-		if (myidAll == 0)
-		for (size_t q = 0; q < solvList.size(); q++)
-			std::cout << "solvList[" << q << "] = " << solvList[q] << std::endl;
+		//if (myidAll == 0)
+		//for (size_t q = 0; q < solvList.size(); q++)
+		//	std::cout << "solvList[" << q << "] = " << solvList[q] << std::endl;
+	
 	}//if myidAll==0
 
 
@@ -283,15 +294,15 @@ void Queue::TaskSplit()
 		//с прошлого кванта оказались в тех же группах, что и раньше
 		ConstructProcStateVar();	
 
-		if (myidAll == 0)
-		for (int q = 0; q < nProcAll; q++)
-			std::cout << "procStateVar[" << q << "] = " << procStateVar[q] << std::endl;
+		//if (myidAll == 0)
+		//for (int q = 0; q < nProcAll; q++)
+		//	std::cout << "procStateVar[" << q << "] = " << procStateVar[q] << std::endl;
 	}
 		
 	//Пересылаем информацию о состоянии процессоров на все компьютеры
 	MPI_Scatter(procStateVar.data(), 1, MPI_INT, &myProcStateVar, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-	std::cout << "id = " << myidAll << ", myProcStateVar = " << myProcStateVar << std::endl;
+	//std::cout << "id = " << myidAll << ", myProcStateVar = " << myProcStateVar << std::endl;
 
 	//Расщепляем весь комммуникатор MPI_COMM_WORLD (т.е. вообще все процессоры) 
 	//на коммуникаторы решаемых задач
@@ -310,11 +321,11 @@ void Queue::TaskSplit()
 	//следующий код выполняется процессорами, участвующими в решении задач, 
 	//следовательно, входящими в коммуникаторы comm_work
 	
-	std::cout << "myid = " << myidAll << std::endl;
+	//std::cout << "myid = " << myidAll << std::endl;
 	
 	if (parallel.commWork != MPI_COMM_NULL)
 	{
-		std::cout << "inside_myid = " << myidAll << std::endl;
+		//std::cout << "inside_myid = " << myidAll << std::endl;
 		//оперделяем "локальный" номер данного процессора в коммуникаторе commWork и число процессов в нем
 		MPI_Comm_size(parallel.commWork, &parallel.nProcWork);
 		MPI_Comm_rank(parallel.commWork, &parallel.myidWork);
@@ -349,6 +360,51 @@ void Queue::TaskSplit()
 //Процедура обновления состояния задач и процессоров
 void Queue::TaskUpdate()//Обновление состояния задач и процессоров
 {
+	if (myidAll == 0)
+	{
+		std::cout << "------ Kvant finished ------" << std::endl;
+	}
+	
+	//Код только для головных процессов, которые входят в коммуникатор commSolving
+	//т.е. выполняется только на головных процессорах, решающих задачи.
+	//Кажется, что можно было бы с тем же эфектом написать здесь if (myidWork==0),
+	//но это не так, поскольку нужно включить в себя еще нулевой процессор,
+	//который в любом случае присоединен к коммуникатору comm_solving,
+	//даже если он не решает задачу (а если решает - то он всегда головной)
+	if (commSolving != MPI_COMM_NULL)
+	{		
+		//определяем номер процессора в данном коммуникаторе - 
+		// - вдруг потребуется на будущее!
+		int myidSolving;
+		MPI_Comm_rank(commSolving, &myidSolving);
+			
+		//Алгоритм возвращения результатов расчета конкретной задачи		
+		//Если срабатывает признак того, что решение задачи можно прекращать
+		//или не решается ни одна задача (а в комуникатор входит
+		//только 0-й процессор, присоединеннй туда насильно)
+		int stopSignal = ( (parallel.commWork == MPI_COMM_NULL) || (world2D->isFinished())) ? 1 : 0;
+		
+		//пересылаем признаки прекращения решения задач на нулевой процессор 
+		//коммуникатора comm_solving - т.е. на глобальный процессор с номером 0 ---
+		// --- вот для чего его насильно присоединяли к этому коммуникатору
+		//если сам по себе он туда не входил		
+		MPI_Gather(&stopSignal, 1, MPI_INT, flagFinish.data(), 1, MPI_INT, 0, commSolving);
+				
+		//if (myidSolving == 0)
+		//{
+		//	for (int q = 0; q < flagFinish.size(); ++q)
+		//		std::cout << "FlagFinish[" << q << "] = " << flagFinish[q] << std::endl;
+		//}
+
+		//после пересылки информации коммуникатор comm_solving уничтожается
+		MPI_Comm_free(&commSolving);
+		
+	} //if(comm_solving != MPI_COMM_NULL)
+
+	//и соотвествующая ему группа тоже удаляется
+	MPI_Group_free(&groupSolving);
+
+
 	if (parallel.commWork != MPI_COMM_NULL)
 	{
 		//К этому месту все процессоры, решающие задачи, приходят уже выполнив все расчеты
@@ -357,40 +413,9 @@ void Queue::TaskUpdate()//Обновление состояния задач и 
 		MPI_Comm_free(&parallel.commWork);
 	}
 
-	std::cout << "id = " << myidAll << ", commWork cleared!" << std::endl;
+	//std::cout << "id = " << myidAll << ", commWork cleared!" << std::endl;
 
-	//Код только для головных процессов, которые входят в коммуникатор commSolving
-	//т.е. выполняется только на головных процессорах, решающих задачи.
-	//Кажется, что можно было бы с тем же эфектом написать здесь if (myidWork==0),
-	//но это не так, поскольку нужно включить в себя еще нулевой процессор,
-	//который в любом случае присоединен к коммуникатору comm_solving,
-	//даже если он не решает задачу (а если решает - то он всегда головной)
-	if (commSolving != MPI_COMM_NULL)
-	{
-		//определяем номер процессора в данном коммуникаторе - 
-		// - вдруг потребуется на будущее!
-		int myidSolving;
-		MPI_Comm_rank(commSolving, &myidSolving);
 
-		//Алгоритм возвращения результатов расчета конкретной задачи		
-		//Если срабатывает признак того, что решение задачи можно прекращать
-		//или не решается ни одна задача (а в комуникатор входит
-		//только 0-й процессор, присоединеннй туда насильно)
-		int stopSignal = ((numberOfTask.solving == 0) || (world2D->isFinished())) ? 1 : 0;
-
-		//пересылаем признаки прекращения решения задач на нулевой процессор 
-		//коммуникатора comm_solving - т.е. на глобальный процессор с номером 0 ---
-		// --- вот для чего его насильно присоединяли к этому коммуникатору
-		//если сам по себе он туда не входил		
-		MPI_Gather(&stopSignal, 1, MPI_INT, flagFinish.data(), 1, MPI_INT, 0, commSolving);
-		
-		//после пересылки информации коммуникатор comm_solving уничтожается
-		MPI_Comm_free(&commSolving);
-
-	} //if(comm_solving != MPI_COMM_NULL)
-
-	//и соотвествующая ему группа тоже удаляется
-	MPI_Group_free(&groupSolving);
 
 	//Обновление состояния задач и высвобождение процессоров из отсчитавших задач
 	//(выполняется на глобальном нулевом процессоре)
@@ -451,6 +476,7 @@ void Queue::TaskUpdate()//Обновление состояния задач и 
 		nextKvant = (numberOfTask.finished < static_cast<int>(task.size())) ? 1 : 0;
 	}//if (myid == 0)
 
+
 	MPI_Bcast(&nextKvant, 1, MPI_INT, 0, MPI_COMM_WORLD);
 }//TaskUpdate()
 
@@ -488,7 +514,7 @@ void Queue::ConstructProcStateVar()
 
 // Запуск вычислительного конвейера (в рамках кванта времени)
 void Queue::RunConveyer()
-{
+{	
 	if (parallel.commWork != MPI_COMM_NULL)
 	{
 		double kvantStartWallTime; //Время на главном процессоре, когда начался очередной квант
@@ -496,22 +522,21 @@ void Queue::RunConveyer()
 
 		if (parallel.myidWork == 0)
 			kvantStartWallTime = MPI_Wtime();
-
-		std::cout << "id = " << myidAll << " - conv. started!" << std::endl;
-
+		
 		do
 		{
 			if (!world2D->isFinished())
 				world2D->Step(world2D->timestat.timeWholeStep);
-			
+					
 			if (parallel.myidWork == 0)
 				deltaWallTime = MPI_Wtime() - kvantStartWallTime;
-			MPI_Bcast(&deltaWallTime, 1, MPI_DOUBLE, 0, parallel.commWork);
+			MPI_Bcast(&deltaWallTime, 1, MPI_DOUBLE, 0, parallel.commWork);		
 		}
+
 		//Проверка окончания кванта по времени (или завершения задачи)
 		while (deltaWallTime < kvantTime);
 
-		std::cout << "id = " << myidAll << " - conv. finished!" << std::endl;
+		//std::cout << "id = " << myidAll << " - conv. finished!" << std::endl;
 	}//if (commWork != MPI_COMM_NULL)
 }//RunConveyer()
 
@@ -584,35 +609,45 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 				parserTask->get("copyPspFile", copyPspFile, &defaults::defaultCopyPspFile);
 				if (copyPspFile.length() > 0)
 				{
+					//Копировать паспорт поручаем только одному процессу
+					if (myidAll == 0)
+					{
 #if !defined(__linux__)
-					_mkdir(dir.c_str());
+						_mkdir(dir.c_str());
 #else
-					mkdir(dir.c_str(), S_IRWXU | S_IRGRP | S_IROTH);
+						mkdir(dir.c_str(), S_IRWXU | S_IRGRP | S_IROTH);
 #endif
 
-					std::ofstream outPassportFile;
-					outPassportFile.open("./" + dir + "/" + pspFile);
-					PrintLogoToTextFile(outPassportFile, "./" + dir + "/" + pspFile, "Copy of the existing passport ./" + copyPspFile);
+						std::ofstream outPassportFile;
+						outPassportFile.open("./" + dir + "/" + pspFile);
+						PrintLogoToTextFile(outPassportFile, "./" + dir + "/" + pspFile, "Copy of the existing passport ./" + copyPspFile);
 
-					std::stringstream ss(Preprocessor(copyPspFile).resultString);
+						std::stringstream ss(Preprocessor(copyPspFile).resultString);
 
-					std::string readline;
+						std::string readline;
 
-					while (ss.good())
-					{
-						getline(ss, readline);
+						while (ss.good())
+						{
+							getline(ss, readline);
 
-						readline.erase(remove(readline.begin(), readline.end(), ' '), readline.end());
-						readline.erase(remove(readline.begin(), readline.end(), '\t'), readline.end());
+							readline.erase(remove(readline.begin(), readline.end(), ' '), readline.end());
+							readline.erase(remove(readline.begin(), readline.end(), '\t'), readline.end());
 
-						if (readline.length() > 0)
-							outPassportFile << readline << ";" << std::endl;
+							if (readline.length() > 0)
+							{
+								outPassportFile << readline << ";" << std::endl;
+								outPassportFile.flush();
+							}
+						}
+
+						outPassportFile.close();
 					}
-
-					outPassportFile.close();
 				}
 
-				Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, 	vecTaskLineSecond, parallel.myidWork==0);
+				MPI_Barrier(MPI_COMM_WORLD);
+
+
+				Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, 	vecTaskLineSecond, myidAll == 0);
 				AddTask(np, psp);
 
 				if (parallel.myidWork == 0)
@@ -620,8 +655,8 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 					*defaults::defaultPinfo << "-------- Problem #" << i << " is loaded --------" << std::endl;
 					*defaults::defaultPinfo << std::endl;
 				}
-			} //for i
-		} 
+			} 
+		} //for i
 
 		//tasksFile.close();
 		tasksFile.clear();
