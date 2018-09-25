@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #if !defined(__linux__)
@@ -41,9 +41,11 @@
 #endif
 
 #include <fstream>
+#include <sstream>
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include "Preprocessor.h"
 #include "Queue.h"
 
 
@@ -125,7 +127,7 @@ void Queue::TaskSplit()
 				if (procState[j] == MPI_UNDEFINED)
 				{
 					//состояние процессора устанавливаем в "занят текущей задачей"
-					procState[j] = (int)taskFol;
+					procState[j] = static_cast<int>(taskFol);
 
 					//номер процессора посылаем в перечень процессоров, решающих текущую задачу
 					task[taskFol].proc[p] = j;
@@ -224,7 +226,7 @@ void Queue::TaskSplit()
 			MPI_Comm_rank(commStarting, &myidStarting);
 			
 			//подготовка стартующих задач
-			world2D.reset(new World2D(*this, std::cout));
+			world2D.reset(new World2D(task[myProcState].passport, parallel, *(defaults::defaultPtele)));
 
 			//Коммуникатор головных процессоров стартующих задач
 			//выполнил свое черное дело и будет удален
@@ -256,7 +258,7 @@ void Queue::TaskSplit()
 		if ((procState[s] != MPI_UNDEFINED) && (task[procState[s]].state == TaskState::running) && (task[procState[s]].proc[0] == s))
 			solvList.push_back(s);
 
-		sizeCommSolving = (int)solvList.size();
+		sizeCommSolving = static_cast<int>(solvList.size());
 
 		flagFinish.clear();
 		flagFinish.resize(solvList.size());
@@ -334,21 +336,21 @@ void Queue::TaskSplit()
 		//в этом случае он создан только на главном процессоре группы;
 		//на остальных происходит его создание
 		if (world2D == nullptr)
-			world2D.reset(new World2D(*this, *(defaults::defaultPtele)));
+			world2D.reset(new World2D(task[myProcState].passport, parallel, *(defaults::defaultPtele)));
 
 		//Синхронизация параметров
-		MPI_Bcast(&(world2D->GetPassport().physicalProperties.currTime), 1, MPI_DOUBLE, 0, parallel.commWork);
+		MPI_Bcast(&(world2D->getPassport().physicalProperties.currTime), 1, MPI_DOUBLE, 0, parallel.commWork);
 
 		//Создание файлов для записи сил
-		if ((parallel.myidWork == 0) && (world2D->currentStep == 0))
-		for (size_t q = 0; q < world2D->GetPassport().airfoilParams.size(); ++q)
+		if ((parallel.myidWork == 0) && (world2D->getCurrentStep() == 0))
+		for (size_t q = 0; q < world2D->getPassport().airfoilParams.size(); ++q)
 		{
 			world2D->GenerateMechanicsHeader(q);
 		}
 
 		//Создание файла для записи временной статистики
-		if ((parallel.myidWork == 0) && (world2D->currentStep == 0))
-			world2D->timestat.GenerateStatHeader();
+		if ((parallel.myidWork == 0) && (world2D->getCurrentStep() == 0))
+			world2D->getTimestat().GenerateStatHeader();
 
 		//TODO
 		//Синхронизация паспортов
@@ -526,7 +528,7 @@ void Queue::RunConveyer()
 		do
 		{
 			if (!world2D->isFinished())
-				world2D->Step(world2D->timestat.timeWholeStep);
+				world2D->Step();
 					
 			if (parallel.myidWork == 0)
 				deltaWallTime = MPI_Wtime() - kvantStartWallTime;
@@ -554,7 +556,7 @@ void Queue::AddTask(int _nProc, const Passport& _passport)
 
 
 //Загрузка списка задач
-void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _defaultsFile, const std::string& _switchersFile)
+void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mechanicsFile, const std::string& _defaultsFile, const std::string& _switchersFile)
 {
 	std::ostream *Pinfo, *Perr;
 	{
@@ -586,7 +588,7 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 			if (alltasks[i].length() > 0)
 			{
 				//делим имя файла + выражение в скобках на 2 подстроки
-				std::pair<std::string, std::string> taskLine = StreamParser::SplitString(alltasks[i]);
+				std::pair<std::string, std::string> taskLine = StreamParser::SplitString(alltasks[i], false);
 
 				std::string dir = taskLine.first;
 
@@ -597,7 +599,7 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 				std::stringstream tskStream(StreamParser::VectorStringToString(vecTaskLineSecond));
 				std::unique_ptr<StreamParser> parserTask;
 
-				parserTask.reset(new StreamParser(tskStream, defaultsFile));
+				parserTask.reset(new StreamParser(tskStream, defaultsFile, {"pspfile", "np", "copyPspFile"}));
 
 				std::string pspFile;
 				int np;
@@ -647,7 +649,7 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _def
 				MPI_Barrier(MPI_COMM_WORLD);
 
 
-				Passport psp("./" + dir + "/", pspFile, _defaultsFile, _switchersFile, 	vecTaskLineSecond, myidAll == 0);
+				Passport psp("./" + dir + "/", pspFile, _mechanicsFile, _defaultsFile, _switchersFile, vecTaskLineSecond, myidAll == 0);
 				AddTask(np, psp);
 
 				if (parallel.myidWork == 0)

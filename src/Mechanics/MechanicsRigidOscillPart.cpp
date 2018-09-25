@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -28,58 +28,67 @@
 
 /*!
 \file
-\brief Файл кода с описанием класса MechanicsRigidOscillPart
-\author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
-\author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\brief Р¤Р°Р№Р» РєРѕРґР° СЃ РѕРїРёСЃР°РЅРёРµРј РєР»Р°СЃСЃР° MechanicsRigidOscillPart
+\author РњР°СЂС‡РµРІСЃРєРёР№ РР»СЊСЏ РљРѕРЅСЃС‚Р°РЅС‚РёРЅРѕРІРёС‡
+\author РљСѓР·СЊРјРёРЅР° РљСЃРµРЅРёСЏ РЎРµСЂРіРµРµРІРЅР°
+\author Р СЏС‚РёРЅР° Р•РІРіРµРЅРёСЏ РџР°РІР»РѕРІРЅР°
+\version 1.2
+\date 14 РёСЋРЅСЏ 2018 Рі.
 */
 
+#include "mpi.h"
+
 #include "MechanicsRigidOscillPart.h"
+#include "World2D.h"
 
-
-//Вычисление гидродинамической силы, действующей на профиль
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРѕР№ СЃРёР»С‹, РґРµР№СЃС‚РІСѓСЋС‰РµР№ РЅР° РїСЂРѕС„РёР»СЊ
 void MechanicsRigidOscillPart::GetHydroDynamForce(timePeriod& time)
 {
 	time.first = omp_get_wtime();
 
-	hydroDynamForce = { 0.0, 0.0 };
+	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
-	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
-	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные delta_k
+	hydroDynamForce = { 0.0, 0.0 };
+	hydroDynamMoment = 0.0;
+
+	Point2D hDFGam = { 0.0, 0.0 };	//РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРёРµ СЃРёР»С‹, РѕР±СѓСЃР»РѕРІР»РµРЅРЅС‹Рµ Gamma_k
+	Point2D hDFdelta = { 0.0, 0.0 };	//РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРёРµ СЃРёР»С‹, РѕР±СѓСЃР»РѕРІР»РµРЅРЅС‹Рµ delta_k
+	double hDMdelta = 0.0;
+
+
+	Point2D deltaVstep = { 0.0, u - uOld };
 
 	for (size_t i = 0; i < afl.np; ++i)
 	{
-		double GamK = boundary.virtualWake[i].g();
-		double deltaK = boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i];  		 //afl.gammaThrough[i];
-		Point2D VelK = virtVortParams.convVelo[i] + passport.physicalProperties.V0();
-		Point2D rK = 0.5 * (afl.r[i + 1] + afl.r[i]);	//boundary.virtualWake[i].r();		
 
-		hDFGam += GamK * Point2D({ VelK[1], -VelK[0] });
+		double deltaK = boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i] + deltaVstep * afl.tau[i] * afl.len[i];
+		Point2D rK = 0.5 * (afl.r[i + 1] + afl.r[i]) - afl.rcm;
+
 		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
+		hDMdelta += 0.5 * deltaK * (rK * rK);
 	}
 
-	hydroDynamForce = hDFGam + (1.0 / passport.timeDiscretizationProperties.dt) * hDFdelta;
+	hydroDynamForce = hDFdelta * (1.0 / dt);
+	hydroDynamMoment = hDMdelta / dt;
 
 	time.second = omp_get_wtime();
 }// GetHydroDynamForce(...)
 
-// Вычисление скорости центра масс
+// Р’С‹С‡РёСЃР»РµРЅРёРµ СЃРєРѕСЂРѕСЃС‚Рё С†РµРЅС‚СЂР° РјР°СЃСЃ
 Point2D MechanicsRigidOscillPart::VeloOfAirfoilRcm(double currTime)
 {
 	return {0.0, u};
 	//return{ 0.0, 0.0 };
 }//VeloOfAirfoilRcm(...)
 
-// Вычисление положения центра масс
+// Р’С‹С‡РёСЃР»РµРЅРёРµ РїРѕР»РѕР¶РµРЅРёСЏ С†РµРЅС‚СЂР° РјР°СЃСЃ
 Point2D MechanicsRigidOscillPart::PositionOfAirfoilRcm(double currTime)
 {
 	return{ 0.0, y };
 	//return{ 0.0, 0.0 };
 }//PositionOfAirfoilRcm(...)
 
-// Вычисление скоростей начал панелей
+// Р’С‹С‡РёСЃР»РµРЅРёРµ СЃРєРѕСЂРѕСЃС‚РµР№ РЅР°С‡Р°Р» РїР°РЅРµР»РµР№
 void MechanicsRigidOscillPart::VeloOfAirfoilPanels(double currTime)
 {
 	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
@@ -91,27 +100,52 @@ void MechanicsRigidOscillPart::VeloOfAirfoilPanels(double currTime)
 
 void MechanicsRigidOscillPart::Move()
 {
+	uOld = u;
+	yOld = y;
 	
-	double step = passport.timeDiscretizationProperties.dt;
 	double dy, du;
-	numvector<double, 2> kk[4];
-	kk[0] = { u, (hydroDynamForce[1]-b*u-k*y)/m};
-	kk[1] = { u + 0.5*step*kk[0][1], (hydroDynamForce[1] - b*(u + 0.5*step*kk[0][1]) - k*(y + 0.5*step*kk[0][0])) / m };
-	kk[2] = { u + 0.5*step*kk[1][1], (hydroDynamForce[1] - b*(u + 0.5*step*kk[1][1]) - k*(y + 0.5*step*kk[1][0])) / m };
-	kk[3] = { u + step*kk[2][1], (hydroDynamForce[1] - b*(u + step*kk[2][1]) - k*(y + step*kk[2][0])) / m };
-	
-	dy = step * (kk[0][0] + 2. * kk[1][0] + 2. * kk[2][0] + kk[3][0]) / 6.0;
-	du = step * (kk[0][1] + 2. * kk[1][1] + 2. * kk[2][1] + kk[3][1]) / 6.0;
-	
-	//afl.Move({0.0, 0.0});
+
+	std::cout << "k = " << k << std::endl;
+
+	if (W.getParallel().myidWork == 0)
+	{
+		double dt = W.getPassport().timeDiscretizationProperties.dt;		
+		numvector<double, 2> kk[4];
+		kk[0] = { u, (hydroDynamForce[1] - b*u - k*y) / m };
+		kk[1] = { u + 0.5*dt*kk[0][1], (hydroDynamForce[1] - b*(u + 0.5*dt*kk[0][1]) - k*(y + 0.5*dt*kk[0][0])) / m };
+		kk[2] = { u + 0.5*dt*kk[1][1], (hydroDynamForce[1] - b*(u + 0.5*dt*kk[1][1]) - k*(y + 0.5*dt*kk[1][0])) / m };
+		kk[3] = { u + dt*kk[2][1], (hydroDynamForce[1] - b*(u + dt*kk[2][1]) - k*(y + dt*kk[2][0])) / m };
+
+		dy = dt * (kk[0][0] + 2. * kk[1][0] + 2. * kk[2][0] + kk[3][0]) / 6.0;
+		du = dt * (kk[0][1] + 2. * kk[1][1] + 2. * kk[2][1] + kk[3][1]) / 6.0;
+	}
+
+	MPI_Bcast(&dy, 1, MPI_DOUBLE, 0, W.getParallel().commWork);
+	MPI_Bcast(&du, 1, MPI_DOUBLE, 0, W.getParallel().commWork);
+
 	afl.Move({ 0.0, dy });
-
-	//y += step*0.0;
-	//u = 0.0;
-
+		
 	y += dy;
-	u += du;
-
-	//std::cout << "du = " << du << ", dy = " << dy << std::endl;
+	u += du;	
 }//Move()
 
+
+void MechanicsRigidOscillPart::ReadSpecificParametersFromDictionary()
+{
+	mechParamsParser->get("m", m);
+	
+	std::cout << "m = " << m << std::endl;
+		
+	std::vector<double> sh;
+	mechParamsParser->get("sh", sh);
+	
+	k = m * 4.0 * PI * PI * sh[1] * sh[1] * W.getPassport().physicalProperties.vInf.length2();
+
+	std::cout << "constr k = " << k << std::endl;
+}
+
+void MechanicsRigidOscillPart::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
+{
+	for (int i = 0; i < afl.np; ++i)
+		rhs(i, 0) = /*12*/ afl.v[i] * afl.tau[i];
+}

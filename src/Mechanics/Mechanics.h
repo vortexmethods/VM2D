@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,14 +32,26 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef MECHANICS_H
 #define MECHANICS_H
 
+#include <memory>
+#include <vector>
+#include "Eigen/Dense"
+
+#include "defs.h"
+#include "Airfoil.h"
+#include "Boundary.h"
+#include "Point2D.h"
+#include "StreamParser.h"
+#include "Times.h"
 #include "Velocity.h"
+
+class World2D;
 
 /*!
 \brief Абстрактный класс, определяющий вид механической системы
@@ -48,27 +60,56 @@
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
 
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 class Mechanics
 {
-protected:
-	/// Константная ссылка на Passport
-	const Passport& passport;
+private:
+	/// \brief Парсинг списка параметров механической системы
+	void ReadParametersFromDictionary();
 
-	/// Ссылка на профиль
+protected:
+	/// Константная ссылка на решаемую задачу
+	const World2D& W;
+
+	/// Номер профиля в паспорте
+	const size_t numberInPassport;
+
+	/// Константная ссылка на профиль
+	/// \n инициализируется автоматом в конструкторе, при помощи const_cast
+	/// \warning использует const_cast для получения неконстантной ссылки
 	Airfoil& afl;
 
 	/// Константная ссылка на граничное условие
+	/// \n инициализируется автоматом в конструкторе
 	const Boundary& boundary;
-
-	/// Константная ссылка на параметры исполнения в параллельном режиме
-	const Parallel& parallel;
-
+		
 	/// Константная ссылка на структуру с параметрами виртуального вихревого слоя для профиля
+	/// \n инициализируется автоматом в конструкторе
 	const VortexesParams& virtVortParams;
+	
+	/// Умный указатель на парсер параметров механической системы
+	std::unique_ptr<StreamParser> mechParamsParser;
+
+	///начальная скорость центра и угловая скорость
+	const Point2D Vcm0;	const double Wcm0;
+
+	///начальное положение профиля
+	const Point2D Rcm0; double Phi0;
+	
+	///текущие скорость центра и угловая скорость
+	Point2D Vcm; double Wcm;
+
+	///текущие положение профиля
+	Point2D Rcm; double Phi;
+
+	///скорость и отклонение с предыдущего шага
+	Point2D VcmOld;	double WcmOld;
+
+	///текущие положение профиля
+	Point2D RcmOld;	double PhiOld;
 
 public:
 	/// Переменная, отвечающая за то, двигается профиль или нет
@@ -77,25 +118,31 @@ public:
 	/// Переменная, отвечающая за то, деформируется профиль или нет
 	const bool isDeform;
 
+	/// Переменная, отвечающая за то, может профиль вращаться или нет
+	const bool isRotate;
+
 	/// Количество степеней свободы
 	const size_t degOfFreedom;
 
-	/// Вектор гидродинамической силы, действующей на профиль
+	/// Вектор гидродинамической силы и момент, действующие на профиль
 	Point2D hydroDynamForce;
+	double hydroDynamMoment;
+
+
+	/// \brief Чтение параметров конкретной механической системы
+	///
+	virtual void ReadSpecificParametersFromDictionary() = 0;
 
 	/// \brief Конструктор
 	/// 
-	/// \param[in] passport_ константная ссылка на паспорт
-	/// \param[in] afl_ ссылка на профиль;
-	/// \param[in] boundary_ константная ссылка на граничное условие;
-	/// \param[in] virtVortParams_ константная ссылка на параметры виртуального вихревого следа для профиля;
-	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
+	/// \param[in] W_ константная ссылка на решаемую задачу
+	/// \param[in] numberInPassport_ номер профиля в паспорте задачи
 	/// \param[in] degOfFreedom_ количество степеней свободы.
 	/// \param[in] isMoves_ является ли профиль подвижным (1 - является, 0 - не является).
 	/// \param[in] isDeform_ является ли профиль деформируемым (1 - является, 0 - не является).
-	Mechanics(const Passport& passport_, Airfoil& afl_, const Boundary& boundary_, const VortexesParams& virtVortParams_, const Parallel& parallel_, int degOfFreedom_, bool isMoves_, bool isDeform_)
-		: passport(passport_), afl(afl_), boundary(boundary_), parallel(parallel_), virtVortParams(virtVortParams_), degOfFreedom(degOfFreedom_), isMoves(isMoves_), isDeform(isDeform_) { };
-
+	Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_, Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_);
+		
+	
 	/// Деструктор
 	virtual ~Mechanics() { };
 
@@ -106,100 +153,17 @@ public:
 
 
 	/// Генерация заголовка файла нагрузок
-	/// \param[in] airfoilNumber номер профиля, для которого сохраняются силы
-	void GenerateForcesHeader(size_t airfoilNumber)
-	{
-		std::stringstream forceFileName, forceFileNameCsv;
-		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber;
-		forceFileNameCsv << passport.dir << "forces-airfoil-" << airfoilNumber << ".csv";
-
-		std::ofstream newForcesFile(forceFileName.str());
-		std::ofstream newForcesFileCsv(forceFileNameCsv.str());		
-
-		PrintLogoToTextFile(newForcesFile, forceFileName.str(), "Hydrodynamic loads for the airfoil " + passport.airfoilParams[airfoilNumber].fileAirfoil);
-
-		PrintHeaderToTextFile(newForcesFile, "currentStep     currentTime     Fx     Fy");
-		
-		newForcesFileCsv << "t,Fx,Fy";
-
-		newForcesFile.close();
-		newForcesFile.clear();
-		
-		newForcesFileCsv.close();
-		newForcesFileCsv.clear();
-
-	}//GenerateForcesHeader(...)
-
-
+	void GenerateForcesHeader();
+	
 	/// Генерация заголовка файла положения профиля
-	/// \param[in] airfoilNumber номер профиля, для которого сохраняется положение
-	void GeneratePositionHeader(size_t airfoilNumber)
-	{
-		if (isMoves)
-		{
-			std::stringstream positionFileName, positionFileNameCsv;
-			positionFileName << passport.dir << "position-airfoil-" << airfoilNumber;
-			positionFileNameCsv << passport.dir << "position-airfoil-" << airfoilNumber << ".csv";
-
-			std::ofstream newPositionFile(positionFileName.str());
-			std::ofstream newPositionFileCsv(positionFileNameCsv.str());
-
-			PrintLogoToTextFile(newPositionFile, positionFileName.str(), "Position of the airfoil " + passport.airfoilParams[airfoilNumber].fileAirfoil);
-
-			PrintHeaderToTextFile(newPositionFile, "currentStep     currentTime     x     y");
-
-			newPositionFileCsv << "t,x,y";
-
-			newPositionFile.close();
-			newPositionFile.clear();
-
-			newPositionFileCsv.close();
-			newPositionFileCsv.clear();
-		}
-	}//GeneratePositionHeader(...)
-
-
+	void GeneratePositionHeader();
+	
 	/// Сохранение строки со статистикой в файл нагрузок
-	/// \param[in] currentStep номер текущего шага
-	/// \param[in] airfoilNumber номер профиля, для которого сохраняются силы
-	void GenerateForcesString(size_t currentStep, size_t airfoilNumber)
-	{
-		std::stringstream forceFileName, forceFileNameCsv;
-		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber;
-		forceFileNameCsv << passport.dir << "forces-airfoil-" << airfoilNumber << ".csv";
-
-		std::ofstream forcesFile(forceFileName.str(), std::ios::app);
-		forcesFile << std::endl << currentStep << "	" << passport.physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1];
-		forcesFile.close();
-
-		std::ofstream forcesFileCsv(forceFileNameCsv.str(), std::ios::app);
-		forcesFileCsv << std::endl << passport.physicalProperties.getCurrTime() << "," << hydroDynamForce[0] << "," << hydroDynamForce[1];
-		forcesFileCsv.close();
-	}//GenerateForcesString(...)
-
-
+	void GenerateForcesString();
+	
 	/// Сохранение строки со статистикой в файл нагрузок
-	/// \param[in] currentStep номер текущего шага
-	/// \param[in] airfoilNumber номер профиля, для которого сохраняется положение
-	void GeneratePositionString(size_t currentStep, size_t airfoilNumber)
-	{
-		if (isMoves)
-		{
-			std::stringstream positionFileName, positionFileNameCsv;
-			positionFileName << passport.dir << "position-airfoil-" << airfoilNumber;
-			positionFileNameCsv << passport.dir << "position-airfoil-" << airfoilNumber << ".csv";
-
-			std::ofstream forcesFile(positionFileName.str(), std::ios::app);
-			forcesFile << std::endl << currentStep << "	" << passport.physicalProperties.getCurrTime() << "	" << afl.rcm[0] << " " << afl.rcm[1];
-			forcesFile.close();
-
-			std::ofstream forcesFileCsv(positionFileNameCsv.str(), std::ios::app);
-			forcesFileCsv << std::endl << passport.physicalProperties.getCurrTime() << "," << afl.rcm[0] << "," << afl.rcm[1];
-			forcesFileCsv.close();
-		}
-	}//GeneratePositionString(...)
-
-
+	void GeneratePositionString();
+	
 
 	/// \brief Вычисление скорости центра масс профиля
 	///
@@ -215,16 +179,27 @@ public:
 	/// \param[in] currTime текущее время
 	virtual void VeloOfAirfoilPanels(double currTime) = 0;
 
-	/// \brief Заполнение строк и столбцов в матрице, соответствующих механической системе
+	/// \brief Заполнение строк в матрице, соответствующих механической системе. А также пересечений строк и столбцов, соответствующих мех. системе
 	///
-	/// \param[in] row строки (количество строк = количество степеней свободы, количество элементов в строках = количество неизвестных в большой матрице)
-	/// \param[in] col строки (количество столбцов = количество степеней свободы, количество элементов в столбцах = количество неизвестных в большой матрице)
-	virtual void FillMechanicsRowsAndCols(Eigen::MatrixXd& row, Eigen::MatrixXd& col) = 0;
+	/// \param[in] row строки (количество строк = количество степеней свободы, количество элементов в строках = количество неизвестных в локальной матрице)
+	/// \param[in] cross пересечения (количество столбцов = количество степеней свободы, количество элементов в столбцах = количество степеней свободы)
+	virtual void FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Eigen::MatrixXd& cross) = 0;
 
 	/// \brief Заполнение правых частей, соответствующих механической системе
 	///
 	/// \param[in] rhs вектор правой части для механики одного профиля (количество элементов = количеству степеней свободы)
 	virtual void FillMechanicsRhs(std::vector<double>& rhs) = 0;
+
+	/// \brief Заполнение правых частей (расщепленная схема) либо коэффициентов в матрице при скорости (монолитный подход),
+	///			соответствующих присоединенным слоям
+	///
+	/// \param[in] rhs вектор правой части для механики одного профиля (количество элементов = количеству степеней свободы)
+	virtual void FillAtt(Eigen::MatrixXd& row, Eigen::MatrixXd& rhs) = 0;
+
+	/// \brief Извлечение из системы параметров механической системы
+	///
+	/// \param[in] col
+	virtual void SolutionToMechanicalSystem(Eigen::VectorXd& col) = 0;
 
 	/// \brief Перемещение профиля в соответствии с законом
 	///

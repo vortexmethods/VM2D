@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,55 +32,60 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef WORLD2D_H
 #define WORLD2D_H
 
+#include <iostream>
+#include <memory>
+#include <vector>
+#include "Eigen/Dense"
+
+#include "defs.h"
 #include "gpu.h"
 
+#include "Airfoil.h"
+#include "AirfoilRect.h"
+
+#include "Boundary.h"
 #include "BoundaryMDV.h"
 #include "BoundaryVortColl.h"
 #include "BoundaryConstLayerAver.h"
 
+#include "Mechanics.h"
 #include "MechanicsRigidImmovable.h"
 #include "MechanicsRigidGivenLaw.h"
 #include "MechanicsRigidOscillPart.h"
+#include "MechanicsRigidOscillStronglyCoupled.h"
+#include "MechanicsRigidRotateStronglyCoupled.h"
 
+#include "Velocity.h"
 #include "VelocityBiotSavart.h"
 #include "VelocityFourier.h"
 
-#include "AirfoilRect.h"
-
+#include "Parallel.h"
+#include "Passport.h"
+#include "Point2D.h"
 #include "Times.h"
-
-class Queue; //дальнее описание
+#include "Wake.h"
 
 /*!
 \brief Класс, опеделяющий текущую решаемую задачу
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 class World2D
 {
 private:
-	/// Константная ссылка на очередь задачи
-	const Queue& queue;
-
-	/// Константная ссылка на параметры исполнения задачи в параллельном MPI-режиме
-	const Parallel& parallel;
-
 	/// Ссылка на поток для вывода временной статистики
 	std::ostream& teleFile;
-
-	/// Объект, управляющий графическим ускорителем
-	gpu cuda;
-
+	
 	/// Список умных казателей на обтекаемые профили
 	std::vector<std::unique_ptr<Airfoil>> airfoil;
 
@@ -93,6 +98,9 @@ private:
 	/// Список умных указателей на типы механической системы для каждого профиля
 	std::vector<std::unique_ptr<Mechanics>> mechanics;
 
+	/// Умный укзатель на объект, определяющий методику вычисления скоростей
+	std::unique_ptr<Velocity> velocity;
+
 	/// Вихревой след
 	Wake wake;
 
@@ -103,13 +111,68 @@ private:
 	Eigen::MatrixXd invMatr;
 
 	/// Правая часть системы
-	Eigen::VectorXd rhs; 
-	
+	Eigen::VectorXd rhs;
+
 	/// Решение системы
 	Eigen::VectorXd sol;
+
+	/// Константная ссылка на паспорт конкретного расчета
+	const Passport& passport;
+
+	/// Константная ссылка на параметры исполнения задачи в параллельном MPI-режиме
+	const Parallel& parallel;
+
+	/// Объект, управляющий графическим ускорителем
+	gpu cuda;
+
+	/// Текущий номер шага в решаемой задаче
+	size_t currentStep;
+
+	/// Сведения о временах выполнения основных операций
+	Times timestat;
 	
-	/// Умный укзатель на объект, определяющий методику вычисления скоростей
-	std::unique_ptr<Velocity> velocity;
+public:	
+
+	/// \todo откомментировать
+	const Airfoil& getAirfoil(size_t i) const { return *airfoil[i]; };
+	
+	/// \todo откомментировать
+	Airfoil& getNonConstAirfoil(size_t i) const { return *airfoil[i]; };
+	
+	/// \todo откомментировать
+	size_t getNumberOfAirfoil() const { return airfoil.size(); };
+	
+
+	/// \todo откомментировать
+	const Boundary& getBoundary(size_t i) const { return *boundary[i]; };
+	
+	/// \todo откомментировать
+	Boundary& getNonConstBoundary(size_t i) const { return *boundary[i]; };
+	
+	/// \todo откомментировать
+	size_t getNumberOfBoundary() const { return boundary.size(); };
+
+
+	/// \todo откомментировать
+	const Wake& getWake() const { return wake; };
+
+	/// \todo откомментировать
+	const Velocity& getVelocity() const { return *velocity; };
+
+	/// \todo откомментировать
+	const Passport& getPassport() const { return passport; };
+	
+	/// \todo откомментировать
+	const Parallel& getParallel() const { return parallel; };
+
+	/// \todo откомментировать
+	const gpu& getCuda() const { return cuda; };	
+
+	/// \todo откомментировать
+	size_t getCurrentStep() const { return currentStep; };
+
+	/// \todo откомментировать
+	const Times& getTimestat() const { return timestat; };
 
 	/// \brief Решение системы линейных алгебраических уравнений
 	///
@@ -145,62 +208,37 @@ private:
 	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
 	void MoveVortexes(double dt, std::vector<Point2D>& newPos, timePeriod& time);
 
-	/// \brief Проверка проникновения вихрей внутрь профиля
+	/// \brief Проверка проникновения вихрей внутрь  профиля
 	///
 	/// Вызывается в Step()
 	/// \param[in] newPos новые позиции вихрей
 	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
 	void CheckInside(std::vector<Point2D>& newPos, timePeriod& time);
-
-	/// \brief Проверка проникновения вихрей внутрь профиля для движущегося профиля
-	///
-	/// Вызывается в Step()
-	/// \param[in] newPos новые позиции вихрей
-	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-	void CheckInsideMovingBoundary(std::vector<Point2D>& newPos, timePeriod& time);
-
-
-public:
+	
 	/// \brief Конструктор
 	///
-	/// \param[in] _queue константная ссылка на очередь задач
-	/// \param[in,out] _telefile ссылка на поток для вывода временной статистики 
-	World2D(const Queue& _queue, std::ostream& _telefile);
+	/// \param[in] passport_ константная ссылка на паспорт расчета
+	/// \param[in] parallel_ коенстантная ссылка на параметры исполнения задачи в параллельном MPI-режиме
+	/// \param[in,out] telefile_ ссылка на поток для вывода временной статистики 
+	World2D(const Passport& passport_, const Parallel& parallel_, std::ostream& telefile_);
 	
 	/// Деструктор
 	~World2D() { };
-
-	/// \brief Функция, возвраящающая константную ссылку на паспорт конкретного расчета
-	///
-	/// \return константная ссылка на паспорт задачи
-	const Passport& GetPassport() const;
-
-	/// Текущий номер шага в решаемой задаче
-	size_t currentStep;
-
-	/// \brief Функция, возвращающая номер текущей решаемой задачи (для справки)
-	///
-	/// \return номер решаемой задачи
-	size_t problemNumber() const;
 
 	/// \brief Функция, возвращающая признак завершения счета в решаемой задаче
 	///
 	/// true, если задача решена и выполнен признак останова; false если требуется еще выполнять шаги по времени
 	bool isFinished() const;      
 
-	/// Сведения о временах выполнения основных операций
-	Times timestat;
-
-	/// Основная функция выполнения одного шага по времени
-	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-	void Step(timePeriod& time);
+	/// Основная функция выполнения одного шага по времени	
+	void Step();
 
 	/// Метод-обертка для вызова метода генерации заголовка файла нагрузок и заголовка файла положения (последнее --- если профиль движется) 
 	/// \param[in] mechanicsNumber номер профиля, для которого генерируется заголовок файла
 	void GenerateMechanicsHeader(size_t mechanicsNumber)
 	{
-		mechanics[mechanicsNumber]->GenerateForcesHeader(mechanicsNumber);
-		mechanics[mechanicsNumber]->GeneratePositionHeader(mechanicsNumber);
+		mechanics[mechanicsNumber]->GenerateForcesHeader();
+		mechanics[mechanicsNumber]->GeneratePositionHeader();
 	}
 };
 

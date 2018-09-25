@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,12 +32,53 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 
 #include "Parallel.h"
+
+// Распределение задач по процессорам
+parProp Parallel::SplitMPIone(size_t n, bool bcastAll) const
+{
+	parProp par;
+
+	par.totalLen = static_cast<int>(n);
+	MPI_Bcast(&par.totalLen, 1, MPI_INT, 0, commWork);
+
+	if (myidWork == 0)
+	{
+		par.len.clear();
+		par.disp.clear();
+
+		par.len.push_back(static_cast<int>(n));
+		par.disp.push_back(0);
+		
+		for (int s = 1; s < nProcWork; ++s)
+		{
+			par.len.push_back(0);
+			par.disp.push_back(static_cast<int>(n-1));
+		}
+	}
+
+	MPI_Scatter(par.len.data(), 1, MPI_INT, &par.myLen, 1, MPI_INT, 0, commWork);
+	MPI_Scatter(par.disp.data(), 1, MPI_INT, &par.myDisp, 1, MPI_INT, 0, commWork);
+
+	if (bcastAll)
+	{
+		if (myidWork != 0)
+		{
+			par.len.resize(nProcWork);
+			par.disp.resize(nProcWork);
+		}
+		MPI_Bcast(par.len.data(), nProcWork, MPI_INT, 0, commWork);
+		MPI_Bcast(par.disp.data(), nProcWork, MPI_INT, 0, commWork);
+	}
+
+	return par;
+
+}//SplitMPIone(...)
 
 
 // Распределение задач по процессорам
@@ -45,7 +86,7 @@ parProp Parallel::SplitMPI(size_t n, bool bcastAll) const
 {	
 	parProp par;
 	
-	par.totalLen = (int)n;
+	par.totalLen = static_cast<int>(n);
 	MPI_Bcast(&par.totalLen, 1, MPI_INT, 0, commWork);
 	
 	if (myidWork == 0)
@@ -53,7 +94,7 @@ parProp Parallel::SplitMPI(size_t n, bool bcastAll) const
 		par.len.clear();
 		par.disp.clear();
 
-		int nPerP = (int)(n / nProcWork);
+		int nPerP = static_cast<int>(n / nProcWork);
 
 		for (int s = 0; s < nProcWork - 1; ++s)
 		{
@@ -61,7 +102,7 @@ parProp Parallel::SplitMPI(size_t n, bool bcastAll) const
 			par.disp.push_back(s*nPerP);
 		}
 		
-		par.len.push_back((int)n - nPerP * (nProcWork - 1));
+		par.len.push_back(static_cast<int>(n) - nPerP * (nProcWork - 1));
 		par.disp.push_back(nPerP * (nProcWork - 1));
 	}
 

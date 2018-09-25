@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef STREAMPARSER_H
@@ -41,11 +41,15 @@
 
 //#define VARNAME(var) #var
 
-#include <unordered_map>
-#include <sstream>
 #include <algorithm>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "defs.h"
+#include "Point2D.h"
 #include "Vortex2D.h"
 
 /*!
@@ -53,8 +57,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 class StreamParser
 {
@@ -95,10 +99,11 @@ private:
 	/// \n Возвращает базу данных, указывается тип скобок, по умолчанию --- круглые
 	/// \param[in] stream ссылка на поток, который требуется распарсить
 	/// \param[out] database ссылка на заполняемую базу данных (unordered_map)
+	/// \param[in] specificKey поиск только ключей из данного списка (по умолчанию --- пустой список, что означает разбор всех ключей)
 	/// \param[in] replaceVars признак замены переменных из базы vars (по умолчанию false)
 	/// \param[in] openBracket тип открывающейся скобки (по умолчанию --- "(" )
-	/// \param[in] closeBracket тип закрывающейся скобки (по умолчанию --- ")" )
-	void ParseStream(std::istream& stream, std::unordered_map<std::string, std::vector<std::string>>& database, bool replaceVars = false, char openBracket = '(', char closeBracket = ')');
+	/// \param[in] closeBracket тип закрывающейся скобки (по умолчанию --- ")" )	
+	void ParseStream(std::istream& stream, std::unordered_map<std::string, std::vector<std::string>>& database, std::vector<std::string> specificKey = {}, bool replaceVars = false, char openBracket = '(', char closeBracket = ')');
 
 	/// \brief Замена переменных в строке их значениями
 	///
@@ -118,7 +123,8 @@ public:
 	/// \param[in] defaultsStream ссылка на поток по умолчанию
 	/// \param[in] switchersStream ссылка на поток параметров-переключателей
 	/// \param[in] varsStream ссылка на поток переменных
-	StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream);
+	/// \param[in] specificKey поиск только ключей из данного списка (по умолчанию --- пустой список, что означает разбор всех ключей)
+	StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream, std::vector<std::string> specificKey = {});
 		
 	/// \brief Конструктор, принимающий два потока
 	/// 
@@ -127,7 +133,8 @@ public:
 	///
 	/// \param[in] mainStream ссылка на основной поток параметров
 	/// \param[in] defaultsStream ссылка на поток по умолчанию
-	StreamParser(std::istream& mainStream, std::istream& defaultsStream);
+	/// \param[in] specificKey поиск только ключей из данного списка (по умолчанию --- пустой список, что означает разбор всех ключей)
+	StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::vector<std::string> specificKey = {});
 	
 	/// \brief Конструктор, принимающий один поток
 	/// 
@@ -141,6 +148,12 @@ public:
 
 	/// Деструктор
 	~StreamParser() { };
+	
+	/// \brief Перевод строки в верхний регистр
+	///
+	/// \param[in] line константная ссылка на обрабатываемую строку
+	/// \return строка в верхнем регистре
+	static std::string UpperCase(const std::string& line);
 	
 	/// \brief Pазбор строки, содержащей запятые, на отдельные строки
 	///
@@ -162,8 +175,9 @@ public:
 	///
 	/// Разбирает строку вида xxx(yyy) на пару подстрок xxx и yyy
 	/// \param[in] line разбираемая строка вида xxx(ууу)
+	/// \param[in] upcase признак перевода ключа в верхний регистр
 	/// \return пара строк <xxx, yyy>
-	static std::pair<std::string, std::string> SplitString(std::string line);
+	static std::pair<std::string, std::string> SplitString(std::string line, bool upcase = true);
 
 	/// \brief Установка значения параметра по умолчанию
     ///
@@ -199,8 +213,8 @@ public:
 		std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
 		//поиск ключа в базе и, если нет, то в базе умолчаний
-		if (((search_it = database.find(name)) != database.end()) ||
-			((search_it = defaults.find(name)) != defaults.end()))
+		if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			((search_it = defaults.find(UpperCase(name))) != defaults.end()))
 		{
 			for (size_t i = 0; i < (search_it->second).size(); ++i)
 			{
@@ -230,8 +244,8 @@ public:
 		std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
 		//поиск ключа в базе и, если нет, то в базе умолчаний
-		if (((search_it = database.find(name)) != database.end()) ||
-			((search_it = defaults.find(name)) != defaults.end()))
+		if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			((search_it = defaults.find(UpperCase(name))) != defaults.end()))
 		{
 			for (size_t i = 0; i < (search_it->second).size(); ++i)
 			{
@@ -268,8 +282,8 @@ public:
 		std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
 		//поиск ключа в базе и, если нет, то в базе умолчаний
-		if ( ((search_it = database.find(name)) != database.end()) ||
-			 ((search_it = defaults.find(name)) != defaults.end()))
+		if ( ((search_it = database.find(UpperCase(name))) != database.end()) ||
+			 ((search_it = defaults.find(UpperCase(name))) != defaults.end()))
 		{
 			for (size_t i = 0; i < (search_it->second).size(); ++i)
 			{
@@ -303,39 +317,26 @@ public:
 		std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
 		//поиск ключа в базе и, если нет, то в базе умолчаний
-		if ( (( (search_it = database.find(name))  != database.end()) && ((search_it->second).size() > 0)) ||
-			 (( (search_it = defaults.find(name))  != defaults.end()) && ((search_it->second).size() > 0))  )
+		if ( (( (search_it = database.find(UpperCase(name)))  != database.end()) && ((search_it->second).size() > 0)) ||
+			 (( (search_it = defaults.find(UpperCase(name)))  != defaults.end()) && ((search_it->second).size() > 0))  )
 		{
 			if ((search_it->second).size() == 1)
 			{
 				std::string s = (search_it->second)[0];
 
 				//проверка на значение-переключатель
-				if (((search_it = switchers.find(s)) != switchers.end()) && ((search_it->second).size() > 0))
+				if (((search_it = switchers.find(UpperCase(s))) != switchers.end()) && ((search_it->second).size() > 0))
+					s = search_it->second[0];
+												
+				std::stringstream ss(s);
+				T elem;
+				ss >> elem;
+				if (typeid(elem).name() == typeid(std::string("TestString")).name())
 				{
-					//если переключатель
-					std::stringstream ss(search_it->second[0]);
-					T elem;
-					ss >> elem;
-					if (typeid(elem).name() == typeid(std::string("TestString")).name())
-					{
-						std::string* str = reinterpret_cast<std::string*>(&elem);
-						str->erase(remove(str->begin(), str->end(), '\"'), str->end());
-					}
-					res = elem;
+					std::string* str = reinterpret_cast<std::string*>(&elem);
+					str->erase(remove(str->begin(), str->end(), '\"'), str->end());
 				}
-				else
-				{
-					std::stringstream ss(s);
-					T elem;
-					ss >> elem;
-					if (typeid(elem).name() == typeid(std::string("TestString")).name())
-					{
-						std::string* str = reinterpret_cast<std::string*>(&elem);
-						str->erase(remove(str->begin(), str->end(), '\"'), str->end());
-					}
-					res = elem;
-				}
+				res = elem;				
 			}
 			else
 			{
@@ -358,8 +359,8 @@ public:
 		std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
 		//поиск ключа в базе и, если нет, то в базе умолчаний
-		if ( ((search_it = database.find(name)) != database.end()) ||
-			 ((search_it = defaults.find(name)) != defaults.end()) )
+		if ( ((search_it = database.find(UpperCase(name))) != database.end()) ||
+			 ((search_it = defaults.find(UpperCase(name))) != defaults.end()) )
 		{
 			if ((search_it->second).size() == res.size())
 			{

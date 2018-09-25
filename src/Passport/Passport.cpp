@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,19 +32,21 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
-//#include <stringstream>
-
+#include "defs.h"
 #include "Passport.h"
+#include "Preprocessor.h"
+#include "StreamParser.h"
 
 //Конструктор
-Passport::Passport(const std::string& _dir, const std::string& _filePassport, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars, bool _print)
+Passport::Passport(const std::string& _dir, const std::string& _filePassport, const std::string& _mechanics, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars, bool _print)
 : dir(_dir), print(_print)
 {	
 	std::string fileFullName = dir + _filePassport;
+	std::string mechanicsFileFullName = _mechanics;
 	std::string defaultsFileFullName = _defaults;
 	std::string switchersFileFullName = _switchers;
 
@@ -62,20 +64,25 @@ Passport::Passport(const std::string& _dir, const std::string& _filePassport, co
 
 	if (fileExistTest(fileFullName, Pinfo, Perr, "passport") 
 		&& fileExistTest(defaultsFileFullName, Pinfo, Perr, "defaults")
-		&& fileExistTest(switchersFileFullName, Pinfo, Perr, "switchers"))
+		&& fileExistTest(switchersFileFullName, Pinfo, Perr, "switchers")
+		&& fileExistTest(mechanicsFileFullName, Pinfo, Perr, "mechanics"))
 	{
-		std::stringstream varsStream(StreamParser::VectorStringToString(vars));
+		std::string str = StreamParser::VectorStringToString(vars);
+		std::stringstream varsStream(str);
 		
 		std::stringstream mainStream;
 		mainStream << Preprocessor(fileFullName).resultString;
 		
+		std::stringstream mechanicsStream;
+		mechanicsStream << Preprocessor(mechanicsFileFullName).resultString;
+
 		std::stringstream defaultsStream;
  		defaultsStream << Preprocessor(defaultsFileFullName).resultString;
 		
 		std::stringstream switchersStream;
 		switchersStream << Preprocessor(switchersFileFullName).resultString;
 
-		GetAllParamsFromParser(mainStream, defaultsStream, switchersStream, varsStream);
+		GetAllParamsFromParser(mainStream, mechanicsStream, defaultsStream, switchersStream, varsStream);
 
 		PrintAllParams();
 	}	
@@ -86,6 +93,7 @@ Passport::Passport(const std::string& _dir, const std::string& _filePassport, co
 void Passport::GetAllParamsFromParser
 (
 	std::istream& mainStream, 
+	std::istream& mechanicsStream,
 	std::istream& defaultStream, 
 	std::istream& switcherStream, 
 	std::istream& varsStream
@@ -129,9 +137,6 @@ void Passport::GetAllParamsFromParser
 	std::vector<std::string> airfoil;
 	parser->get("airfoil", airfoil, &defaults::defaultAirfoil);
 
-	//считываем произвольно варьируемый параметр
-	parser->get("param", param);
-
 	// 2. Разбор параметров профилей
 
 	//определяем число профилей и организуем цикл по ним
@@ -140,7 +145,7 @@ void Passport::GetAllParamsFromParser
 	for (size_t i = 0; i < nAirfoil; ++i) 
 	{
 		//делим имя файла + выражение в скобках на 2 подстроки
-		std::pair<std::string, std::string> airfoilLine = StreamParser::SplitString(airfoil[i]);
+		std::pair<std::string, std::string> airfoilLine = StreamParser::SplitString(airfoil[i], false);
 
 		AirfoilParams prm;
 		//первая подстрока - имя файла
@@ -164,10 +169,40 @@ void Passport::GetAllParamsFromParser
 		parserAirfoil->get("boundaryConditionSatisfaction", prm.boundaryCondition, &defaults::defaultBoundaryCondition);
 		parserAirfoil->get("mechanicalSystem", prm.mechanicalSystem, &defaults::defaultMechanicalSystem);
 
+		if (prm.mechanicalSystem == defaults::defaultMechanicalSystem)
+		{
+			prm.mechanicalSystemType = 0;
+			prm.mechanicalSystemParameters = "";
+		}
+		else
+		{
+			std::unique_ptr<StreamParser> parserMechanicsList;
+			std::unique_ptr<StreamParser> parserSwitchers;
+			parserMechanicsList.reset(new StreamParser(mechanicsStream, defaultStream, switcherStream, varsStream, { prm.mechanicalSystem }));
+			parserSwitchers.reset(new StreamParser(switcherStream));
+
+			std::string mechString;
+
+			parserMechanicsList->get(prm.mechanicalSystem, mechString);
+			
+			//делим тип мех.системы + выражение в скобках (ее параметры) на 2 подстроки
+			std::pair<std::string, std::string> mechanicsLine = StreamParser::SplitString(mechString);
+
+			std::string mechTypeAlias = mechanicsLine.first;
+			parserSwitchers->get(mechTypeAlias, prm.mechanicalSystemType);
+
+			//вторую подстроку разделяем на вектор из строк по запятым, стоящим вне фигурных скобок		
+			std::vector<std::string> vecMechLineSecond = StreamParser::StringToVector(mechanicsLine.second, '{', '}');
+			prm.mechanicalSystemParameters = StreamParser::VectorStringToString(vecMechLineSecond);
+		}
+
 		//отправляем считанные параметры профиля в структуру данных паспорта 
 		airfoilParams.push_back(prm);
 
 	} //for i
+
+
+
 }//GetAllParamsFromParser(...)
 
 
@@ -196,8 +231,6 @@ void Passport::PrintAllParams()
 	
 	out << str << "airfoilsDir = " << airfoilsDir << std::endl;
 	out << str << "wakesDir = " << wakesDir << std::endl;
-
-	out << str << "param = " << param << std::endl;
 
 	out << str << "number of airfoils = " << airfoilParams.size() << std::endl;
 	for (size_t q = 0; q < airfoilParams.size(); ++q)

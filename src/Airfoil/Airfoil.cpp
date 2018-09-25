@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,15 +32,18 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
+
+#include <algorithm>
 
 #include "Airfoil.h"
 
+
 // Конструктор
-Airfoil::Airfoil(const Passport& passport_, const size_t numberInPassport_, const Parallel& parallel_)
-	: np(0), passport(passport_), numberInPassport(numberInPassport_), parallel(parallel_)
+Airfoil::Airfoil(const World2D& W_, const size_t numberInPassport_)
+	: np(0), W(W_), numberInPassport(numberInPassport_)
 { }
 
 
@@ -94,6 +97,7 @@ void Airfoil::Move(const Point2D& dr)	//перемещение профиля к
 //Поворот профиля 
 void Airfoil::Rotate(double alpha)	//поворот профиля на угол alpha вокруг центра масс
 {
+	phiAfl += alpha;
 	numvector<numvector<double, 2>, 2> rotMatrix = { { cos(alpha), -sin(alpha) }, { sin(alpha), cos(alpha) } };
 
 	for (size_t i = 0; i < np + 1; i++)

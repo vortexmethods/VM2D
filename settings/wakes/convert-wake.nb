@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     19062,        522]
-NotebookOptionsPosition[     18347,        492]
-NotebookOutlinePosition[     18720,        508]
-CellTagsIndexPosition[     18677,        505]
+NotebookDataLength[     20200,        541]
+NotebookOptionsPosition[     18986,        511]
+NotebookOutlinePosition[     19359,        527]
+CellTagsIndexPosition[     19316,        524]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -23,12 +23,16 @@ Cell[CellGroupData[{
 Cell[BoxData[
  RowBox[{"SetDirectory", "[", 
   RowBox[{"NotebookDirectory", "[", "]"}], "]"}]], "Input",
- CellChangeTimes->{{3.731550053511201*^9, 3.7315500659912233`*^9}}],
+ CellChangeTimes->{{3.731550053511201*^9, 
+  3.7315500659912233`*^9}},ExpressionUUID->"b7954852-704c-4f4e-8062-\
+726519b6accc"],
 
 Cell[BoxData["\<\"C:\\\\CUDA\\\\VM2Dcu6\\\\build\\\\circle1000-4-wake\"\>"], \
 "Output",
  CellChangeTimes->{3.731550066506024*^9, 3.7315502782661963`*^9, 
-  3.731550427477266*^9, 3.731556476510402*^9}]
+  3.731550427477266*^9, 
+  3.731556476510402*^9},ExpressionUUID->"82f1a021-89e0-40dc-82ad-\
+07bb0b346113"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -45,7 +49,9 @@ Cell[BoxData[
       RowBox[{"3", ",", "4", ",", 
        RowBox[{"-", "1"}]}], "}"}]}], "]"}], "]"}]}]], "Input",
  CellChangeTimes->{{3.73155025174615*^9, 3.7315503081838565`*^9}, {
-  3.731556473047196*^9, 3.7315564755588007`*^9}}],
+  3.731556473047196*^9, 
+  3.7315564755588007`*^9}},ExpressionUUID->"bca670be-6398-4853-8b16-\
+85449331e494"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -89,7 +95,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource[
                 "FEStrings", "sizeBriefExplanation"], StandardForm],
-               ImageSizeCache->{189., {7., 27.}}],
+               ImageSizeCache->{223., {9., 31.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarCategory",
              StripOnInput->False],
@@ -111,7 +117,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
                 StandardForm],
-               ImageSizeCache->{171., {1., 27.}}],
+               ImageSizeCache->{182., {1., 31.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -119,7 +125,8 @@ Cell[BoxData[
              StyleBox[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
-                StandardForm]],
+                StandardForm],
+               ImageSizeCache->{182., {1., 31.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControlActive",
              StripOnInput->False]}, Dynamic[
@@ -141,7 +148,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowMore"], 
                 StandardForm],
-               ImageSizeCache->{194., {1., 27.}}],
+               ImageSizeCache->{213., {1., 31.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -171,7 +178,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowAll"], 
                 StandardForm],
-               ImageSizeCache->{146., {1., 27.}}],
+               ImageSizeCache->{158., {1., 31.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -201,7 +208,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeChangeLimit"], 
                 StandardForm],
-               ImageSizeCache->{256., {1., 27.}}],
+               ImageSizeCache->{273., {1., 31.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -259,7 +266,9 @@ Cell[BoxData[
    DefaultBaseStyle->"Deploy"],
   Out[37]]], "Output",
  CellChangeTimes->{{3.731550275676592*^9, 3.7315503090886583`*^9}, 
-   3.7315504278516665`*^9, 3.731556479209207*^9}]
+   3.7315504278516665`*^9, 
+   3.731556479209207*^9},ExpressionUUID->"4914c8d5-fbc3-4e12-8aa5-\
+6433809b5639"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -267,11 +276,14 @@ Cell[CellGroupData[{
 Cell[BoxData[
  RowBox[{"n", "=", 
   RowBox[{"Length", "[", "wake", "]"}]}]], "Input",
- CellChangeTimes->{{3.7315503322702985`*^9, 3.73155033847911*^9}}],
+ CellChangeTimes->{{3.7315503322702985`*^9, 
+  3.73155033847911*^9}},ExpressionUUID->"687e80ba-0446-4e13-8c80-\
+85716af3b144"],
 
 Cell[BoxData["80775"], "Output",
  CellChangeTimes->{3.7315503388379097`*^9, 3.7315504278672667`*^9, 
-  3.731556480410409*^9}]
+  3.731556480410409*^9},ExpressionUUID->"b04acb25-5656-42d9-87cb-\
+33e8ecc45f5c"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -286,8 +298,8 @@ Cell[BoxData[
      RowBox[{
      "\"\</*--------------------------------*- VM2D \
 -*-----------------*---------------*\\\\\n| ##  ## ##   ##  ####  #####   |   \
-                         | Version 1.1    |\n| ##  ## ### ### ##  ## ##  ##  \
-|  VM2D: Vortex Method       | 2018/04/02     |\n| ##  ## ## # ##    ##  ##  \
+                         | Version 1.2    |\n| ##  ## ### ### ##  ## ##  ##  \
+|  VM2D: Vortex Method       | 2018/06/14     |\n| ##  ## ## # ##    ##  ##  \
 ##  |  for 2D Flow Simulation    *----------------*\n|  ####  ##   ##   ##   \
 ##  ##  |  Open Source Code                           |\n|   ##   ##   ## \
 ###### #####   |  https://www.github.com/vortexmethods/VM2D  |\n|             \
@@ -479,21 +491,28 @@ Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |\
   3.7315505743847237`*^9, 3.7315506300144215`*^9}, {3.731550737763811*^9, 
   3.731550864560834*^9}, {3.7315564902228265`*^9, 3.731556491907629*^9}, {
   3.731556632479476*^9, 3.7315566446786976`*^9}, {3.731556921692501*^9, 
-  3.731557003495845*^9}, {3.731557050002327*^9, 3.731557057833541*^9}}],
+  3.731557003495845*^9}, {3.731557050002327*^9, 3.731557057833541*^9}, {
+  3.737962158815973*^9, 
+  3.7379621635309734`*^9}},ExpressionUUID->"f0de31c3-7040-41c8-9a61-\
+47ab9da338dc"],
 
 Cell[BoxData["\<\"wake80775\"\>"], "Output",
  CellChangeTimes->{3.7315504286170683`*^9, 3.7315508126283426`*^9, 
   3.731550848399205*^9, 3.7315566308570733`*^9, 3.7315566768771544`*^9, 
-  3.7315569938706284`*^9, 3.7315570323898964`*^9, 3.731557088159994*^9}]
+  3.7315569938706284`*^9, 3.7315570323898964`*^9, 
+  3.731557088159994*^9},ExpressionUUID->"7dad7f17-e706-4ae1-be82-\
+efcd746dfec4"]
 }, Open  ]],
 
 Cell[BoxData["5"], "Input",
- CellChangeTimes->{3.7315566280646687`*^9}]
+ CellChangeTimes->{
+  3.7315566280646687`*^9},ExpressionUUID->"79ade436-afde-4978-a6ba-\
+c949ad100c17"]
 },
 WindowSize->{1920, 988},
 WindowMargins->{{-4, Automatic}, {Automatic, -4}},
 Magnification:>2.3 Inherited,
-FrontEndVersion->"11.0 for Microsoft Windows (64-bit) (July 28, 2016)",
+FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -508,22 +527,22 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 172, 3, 99, "Input"],
-Cell[755, 27, 201, 3, 99, "Output"]
+Cell[580, 22, 232, 5, 66, "Input",ExpressionUUID->"b7954852-704c-4f4e-8062-726519b6accc"],
+Cell[815, 29, 261, 5, 76, "Output",ExpressionUUID->"82f1a021-89e0-40dc-82ad-07bb0b346113"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[993, 35, 446, 12, 99, "Input"],
-Cell[1442, 49, 8286, 212, 293, "Output"]
+Cell[1113, 39, 506, 14, 66, "Input",ExpressionUUID->"bca670be-6398-4853-8b16-85449331e494"],
+Cell[1622, 55, 8397, 215, 257, "Output",ExpressionUUID->"4914c8d5-fbc3-4e12-8aa5-6433809b5639"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[9765, 266, 152, 3, 99, "Input"],
-Cell[9920, 271, 125, 2, 99, "Output"]
+Cell[10056, 275, 212, 5, 66, "Input",ExpressionUUID->"687e80ba-0446-4e13-8c80-85716af3b144"],
+Cell[10271, 282, 182, 3, 76, "Output",ExpressionUUID->"b04acb25-5656-42d9-87cb-33e8ecc45f5c"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[10082, 278, 7914, 203, 1495, "Input"],
-Cell[17999, 483, 258, 3, 99, "Output"]
+Cell[10490, 290, 8025, 206, 1462, "Input",ExpressionUUID->"f0de31c3-7040-41c8-9a61-47ab9da338dc"],
+Cell[18518, 498, 318, 5, 76, "Output",ExpressionUUID->"7dad7f17-e706-4ae1-be82-efcd746dfec4"]
 }, Open  ]],
-Cell[18272, 489, 71, 1, 70, "Input"]
+Cell[18851, 506, 131, 3, 66, "Input",ExpressionUUID->"79ade436-afde-4978-a6ba-c949ad100c17"]
 }
 ]
 *)

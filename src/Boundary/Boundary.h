@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,53 +32,53 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef BOUNDARY_H
 #define BOUNDARY_H
 
+#include <vector>
+#include "Eigen/Dense"
+
+#include "Airfoil.h"
+#include "Point2D.h"
 #include "Sheet.h"
-#include "Wake.h"
-#include "gpu.h"
+#include "Vortex2D.h"
+#include "WakeDataBase.h"
+
+class World2D;
 
 /*!
 \brief Абстрактный класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 class Boundary
 {
 protected:
-	/// Константная ссылка на паспорт
-	const Passport& passport;
+	/// Константная ссылка на решаемую задачу
+	const World2D& W;
 
-	/// Константная ссылка на вихревой след
-	const Wake& wake;
-
-	/// Константная ссылка на список указателей на все граничные условия
-	const std::vector<std::unique_ptr<Boundary>>& allBoundary;
-
-	/// Константная ссылка на параметры исполнения в параллельном режиме
-	const Parallel& parallel;
-
-	/// Ссылка на объект, управляющий графическим ускорителем
-	gpu& cuda;
+	/// Номер профиля в паспорте
+	const size_t numberInPassport;	
 
 public:	
-	/// Константная ссылка на профиль
+
+	/// Константная ссылка на профиль 
+	/// \n инициализируется автоматом в конструкторе
 	const Airfoil& afl;
 
 	/// Константная ссылка на вектор из начал (и концов) панелей
 	const std::vector<Point2D>& CC;
 
 	/// Виртуальный вихревой след конкретного профиля
-	std::vector<Vortex2D> virtualWake;
+	WakeDataBase virtualWake;
 
 	/// \brief MPI-синхронизация виртуального вихревого следа
 	///
@@ -99,17 +99,12 @@ public:
 	/// Слои на профиле
 	Sheet sheets;
 
-
 	/// \brief Конструктор
 	/// 
-	/// \param[in] passport_ константная ссылка на паспорт расчета
-	/// \param[in] afl_ константная ссылка на профиль
-	/// \param[in] allBoundary_ константная ссылка на вектор из указателей на все граничные условия
+	/// \param[in] W_ константная ссылка на решаемую задачу
+	/// \param[in] numberInPassport_ номер профиля в паспорте задачи
 	/// \param[in] sheetDim_ размерность параметра слоя на каждой панели профиля (сколько чисел используется, чтобы описать слой на каждой панели);
-	/// \param[in] wake_ константная ссылка на вихревой след
-	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения
-	/// \param[in] cuda_ ссылка на объект, управляющий графическим ускорителем
-	Boundary(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, int sheetDim_, const Wake& wake_, const Parallel& parallel_, gpu& cuda_);
+	Boundary(const World2D& W_, size_t numberInPassport_, int sheetDim_);
 	
 	/// Деструктор
 	virtual ~Boundary() { };
@@ -143,7 +138,10 @@ public:
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
 	virtual void GetWakeInfluence(std::vector<double>& wakeVelo) const = 0;
-	
+#if defined(USE_CUDA)
+	virtual void GPUGetWakeInfluence(std::vector<double>& wakeVelo) const = 0;
+#endif
+
 	/// \brief Вычисление конвективных скоростей в наборе точек, вызываемых наличием завихренности и источников на профиле как от слоев
 	///
 	/// Вычисляет конвективные скорости в наборе точек, которые вызваны влиянием завихренности и источников на профиле как от слоев
@@ -160,14 +158,16 @@ public:
 	///
 	/// Вычисляет конвективные скорости в наборе точек, которые вызваны влиянием завихренности и источников на профиле как виртуальных вихрей
 	/// 
-	/// \param[in] points константная ссылка на набор точек, в которых вычисляются скорости
+	/// \param[in] pointsDb константная ссылка на базу данных вихрей, в точках которых вычисляются скорости
 	/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния завихренности и источников на профиле
 	/// 
 	/// \warning velo --- накапливается!
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
-	virtual void GetConvVelocityToSetOfPointsFromVirtualVortexes(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const = 0;
-
+	virtual void GetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const = 0;
+#if defined(USE_CUDA)
+	virtual void GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const = 0;
+#endif
 
 	/// \brief Заполнение в правой части влияния набегающего потока, следа и присоединенных слоев, действующих от самого себя
 	///

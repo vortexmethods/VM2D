@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -33,11 +33,12 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #include "VelocityFourier.h"
+#include "World2D.h"
 
  // TODO проверить resize
 
@@ -57,9 +58,9 @@ inline size_t VelocityFourier::cellIj(int i, int j) const
 void VelocityFourier::FillVic()
 {
 	vic.resize(nCell[0] * nCell[1]);
-	for (size_t q = 0; q < wake.vtx.size(); ++q)
+	for (size_t q = 0; q < W.getWake().vtx.size(); ++q)
 	{
-		const Point2D& pos = wake.vtx[q].r();
+		const Point2D& pos = W.getWake().vtx[q].r();
 		int i = static_cast<int>((pos[0] - corner[0]) / h[0]);
 		int j = static_cast<int>((pos[1] - corner[1]) / h[1]);
 
@@ -87,7 +88,7 @@ double VelocityFourier::w(int i, int j) const
 		for (size_t q = 0; q < vic[cell].size(); ++q)
 		{
 			const size_t& globQ = vic[cell][q];
-			const Vortex2D& v = wake.vtx[globQ];
+			const Vortex2D& v = W.getWake().vtx[globQ];
 			
 			res += Kernel((v.r()[0] - posNode[0]) / h[0]) * Kernel((v.r()[1] - posNode[1]) / h[1]);
 		}

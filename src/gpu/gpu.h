@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 
@@ -41,36 +41,27 @@
 #define CUDA_CUH
 
 #include <memory>
-#include <vector>
 
-
-#include "defs.h"
-#include "Vortex2D.h"
-#include "Parallel.h"
-#include "Boundary.h"
 #include "cuLib.cuh"
+#include "gpudefs.h"
+
+class World2D;
 
 /*!
-\brief Класс, обеспечиваюий возможность выполнения вычислений на GPU по технологии Nvidia CUDA
+\brief Класс, обеспечивающий возможность выполнения вычислений на GPU по технологии Nvidia CUDA
 
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 class gpu
 {
 private:
-	/// Константная ссылка на список умных казателей на граничные условия
-	const std::vector<std::unique_ptr<Boundary>>& boundary;
+	/// Константная ссылка на решаемую задачу
+	const World2D& W;
 
-	/// Константная ссылка на вихревой след
-	const Wake& wake;
-
-	/// Константная ссылка на параметры исполнения в параллельном режиме
-	const Parallel& parallel;
-	
 public:
 	
 #if defined(__CUDACC__) || defined(USE_CUDA)
@@ -86,7 +77,7 @@ public:
 	/// \param[out] new_n ссылка на длину (внешнюю размерность) массива, под который выделена память
 	/// \return адрес на графической карте - указатель на начало массива
 	template<typename T, size_t dim>
-	T* ReserveDevMem(size_t n, size_t& new_n)
+	T* ReserveDevMem(size_t n, size_t& new_n) 
 	{
 		size_t nBlocks = n / CUBLOCK;
 		if (n % CUBLOCK)
@@ -131,74 +122,20 @@ public:
 	/// \param[in] dev_ptr адрес на графической карте - указатель на начало массива
 	/// \param[in] host_ptr адрес на хосте, куда требуется скопировать массив
 	template<typename T, size_t dim>
-	void CopyMemFromDev(size_t n, T* dev_ptr, T* host_ptr)
+	void CopyMemFromDev(size_t n, T* dev_ptr, T* host_ptr) const
 	{
 		cuCopyMemFromDev((void*)host_ptr, (void*)dev_ptr, sizeof(T) * n * dim);
 	};//CopyMemFromDev(...)
 
 
-	/// Синхронизация состояния следа с гафической картой
+	/// Синхронизация состояния следа с графической картой
 	void RefreshWake();
 	
 	
 	/// Синхронизация состояния профилей с гафической картой
 	void RefreshAfls();
 	
-	/// Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек
-	void ExpCalcDiffVeloI1I2ToSetOfPoints(
-		const size_t npt, double* dev_ptr_pt,
-		double* dev_ptr_dr,
-		const size_t nvt, double* dev_ptr_vt,
-		std::vector<double>& I1, std::vector<Point2D>& I2,
-		std::vector<double>& loci1, std::vector<Point2D>& loci2,
-		double* dev_ptr_i1, double* dev_ptr_i2,
-		bool useMesh);
-
-	/// Вычисление влияния вихревого следа в заданном наборе точек - расчет правых частей системы
-	void ExpGetWakeInfluence(
-		const size_t npt, double* dev_ptr_pt, 
-		const size_t nvt, double* dev_ptr_vt, 
-		std::vector<double>& rhs, std::vector<double>& locrhs, double* dev_ptr_rhs);
-
-	/// Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек
-	void ExpGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(
-		const size_t npt, double* dev_ptr_pt, double* dev_ptr_rad,
-		const size_t nr, double* dev_ptr_r,
-		std::vector<double>& I0, std::vector<Point2D>& I3,
-		std::vector<double>& loci0, std::vector<Point2D>& loci3,
-		double* dev_ptr_i0, double* dev_ptr_i3);
-
-	/// Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек
-	void ExpCalcConvVeloToSetOfPoints(
-		const size_t npt, double* dev_ptr_pt,
-		const size_t nvt, double* dev_ptr_vt,
-		const size_t nbou, size_t* dev_nPanels, double** dev_ptr_ptr_pnl,
-		std::vector<Point2D>& Vel, std::vector<double>& Rad,
-		std::vector<Point2D>& locvel, std::vector<double>& locrad,
-		double* dev_ptr_vel, double* dev_ptr_rad,
-		double minRad, double eps2);
-
-	/// Вычисление конвективных скоростей вихревых доменов в заданном наборе точек		
-	void ExpGetConvVelocityToSetOfPointsFromVirtualVortexes(
-		const size_t npt, double* dev_ptr_pt,
-		const size_t nvt, double* dev_ptr_vt,
-		std::vector<Point2D>& Vel, std::vector<Point2D>& locvel, double* dev_ptr_vel,
-		double eps2);
-	
-	/// Поиск соседних вихревых элементов
-	void ExpGetPairs(int type, std::vector<int>& NEIB);
-	
-	// Данные для вычисления скоростей
-	std::vector<double*> host_ptr_ptr_pnl;
-	std::vector<double*> host_ptr_ptr_r;
-	std::vector<double*> host_ptr_ptr_i0;
-	std::vector<double*> host_ptr_ptr_i1;
-	std::vector<double*> host_ptr_ptr_i2;
-	std::vector<double*> host_ptr_ptr_i3;
-	std::vector<double*> host_ptr_ptr_rad;
-	std::vector<double*> host_ptr_ptr_vel;
-	std::vector<double*> host_ptr_ptr_rhs;
-
+	// Данные для вычисления скоростей	
 	size_t* dev_nPanels;
 	double** dev_ptr_ptr_pnl;
 	double** dev_ptr_ptr_r;
@@ -209,14 +146,6 @@ public:
 	double** dev_ptr_ptr_rad;
 	double** dev_ptr_ptr_vel;
 	double** dev_ptr_ptr_rhs;
-
-	//double* dev_ptr_wake;
-	double* dev_ptr_vel;
-	double* dev_ptr_rad;
-	double* dev_ptr_i0;
-	double* dev_ptr_i1;
-	double* dev_ptr_i2;
-	double* dev_ptr_i3;
 
 	size_t n_CUDA_afls;
 	std::vector<size_t> n_CUDA_pnls;
@@ -229,47 +158,24 @@ public:
 	std::vector<size_t> n_CUDA_vels;
 	std::vector<size_t> n_CUDA_rhss;
 
-	//size_t n_CUDA_wake;
+
 	size_t n_CUDA_vel;
 	size_t n_CUDA_rad;
 	size_t n_CUDA_i0;
 	size_t n_CUDA_i1;
 	size_t n_CUDA_i2;
 	size_t n_CUDA_i3;
-
-	std::vector<Point2D> vels;
-	std::vector<double> rads;
-	std::vector<double> i0;
-	std::vector<double> i1;
-	std::vector<Point2D> i2;
-	std::vector<Point2D> i3;
-	std::vector<int> nei;
-
-	std::vector<std::vector<Point2D>> virtvels;
-	std::vector<std::vector<double>> virtrads;
-	std::vector<std::vector<double>> virti0;
-	std::vector<std::vector<double>> virti1;
-	std::vector<std::vector<Point2D>> virti2;
-	std::vector<std::vector<Point2D>> virti3;
-	std::vector<std::vector<double>> virtrhs;
-
-	//Данные для коллапса
-	int* dev_ptr_mesh;
-	int* dev_ptr_nei;
-
+		
+	
 	size_t n_CUDA_mesh;
-	size_t n_CUDA_nei;
-
-	//std::vector<numvector<int, 2>> mesh;
+	size_t n_CUDA_nei;	
 
 #endif
 
 	/// \brief Конструктор
 	/// 
-	/// \param[in] boundary_ константная ссылка на вектор из указателей на все граничные условия
-	/// \param[in] wake_ константная ссылка на вихревой след
-	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения
-	gpu(const std::vector<std::unique_ptr<Boundary>>& boundary_, const Wake& wake_, const Parallel& parallel_);
+	/// \param[in] W_ константная ссылка на решаемую задачу	
+	gpu(const World2D& W_);
 
 	//// \brief Деструктор
 	~gpu();

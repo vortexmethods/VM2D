@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #include "StreamParser.h"
@@ -44,22 +44,19 @@ std::ostream* StreamParser::perr = defaults::defaultPerr;
 
 
 //Конструктор, принимающий четыре потока
-StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream)
+StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream, std::vector<std::string> specificKey)
 {
 	ParseStream(varsStream, vars);
-
 	ParseStream(defaultsStream, defaults);
 	ParseStream(switchersStream, switchers);
-	ParseStream(mainStream, database, true);
-
-	//ReplaceVarsInDataBaseValues(database);
+	ParseStream(mainStream, database, specificKey, true);
 }//StreamParser(...)
 
 
 //Конструктор, принимающий два потока
-StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream)
+StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::vector<std::string> specificKey)
 {
-	ParseStream(mainStream, database);
+	ParseStream(mainStream, database, specificKey);
 	ParseStream(defaultsStream, defaults);
 
 	switchers.clear();
@@ -70,12 +67,30 @@ StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStrea
 //Конструктор, принимающий один поток
 StreamParser::StreamParser(std::istream& mainStream, char openBracket, char closeBracket)
 {
-	ParseStream(mainStream, database, false, openBracket, closeBracket);
+	ParseStream(mainStream, database, {}, false, openBracket, closeBracket);
 		
 	defaults.clear();
 	switchers.clear();
 	vars.clear();
 }//StreamParser(...)
+
+//Перевод строки в верхний регистр
+std::string StreamParser::UpperCase(const std::string& line)
+{
+	std::string str(line);	
+	bool flag = true;
+	
+	for (auto & c : str)
+	{
+		if (c == '"') 
+			flag = !flag;
+		if (flag)
+			c = toupper(c);
+	}
+
+	//std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+	return str;
+};//UpperCase(...)
 
 
 //Pазбор строки, содержащей запятые, на отдельные строки
@@ -98,7 +113,7 @@ std::vector<std::string> StreamParser::StringToVector(std::string line, char ope
 			std::vector<std::string> vecLine;
 			size_t pos;
 			while ( ((pos = line.find(',', 0)) < line.find(openBracket, 1)) ||
-				    ((pos = line.find(',', std::max(1, (int)line.find(closeBracket, 1)))) != std::string::npos) ||
+				( (pos = line.find(',', std::max(1, static_cast<int>(line.find(closeBracket, 1)) ))) != std::string::npos) ||
 			      	(pos = line.length()-1)  )
 			{
 				std::string subline = line.substr(1, pos - 1);
@@ -133,7 +148,7 @@ std::string StreamParser::VectorStringToString(const std::vector<std::string>& _
 
 
 //Разбор строки на пару ключ-значение
-std::pair<std::string, std::string> StreamParser::SplitString(std::string line)
+std::pair<std::string, std::string> StreamParser::SplitString(std::string line, bool upcase)
 {
 	size_t posBegin = line.find('(', 0);
 	size_t posEnd = line.find(')', 0);
@@ -143,22 +158,25 @@ std::pair<std::string, std::string> StreamParser::SplitString(std::string line)
 		exit(-1);
 	}
 	else
-		return std::pair<std::string, std::string>(line.substr(0, posBegin), "{" + line.substr(posBegin + 1, posEnd - posBegin - 1) + "}");
+	{
+		std::string sub = line.substr(0, posBegin);
+		return std::pair<std::string, std::string>(upcase ? UpperCase(sub) : sub, "{" + line.substr(posBegin + 1, posEnd - posBegin - 1) + "}");
+	}
 }//SplitString(...)
 
 
 //Парсинг заданного потока
-void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std::string, std::vector<std::string>>& database, bool replaceVars, char openBracket, char closeBracket)
+void StreamParser::ParseStream(std::istream& stream, std::unordered_map<std::string, std::vector<std::string>>& database, std::vector<std::string> specificKey, bool replaceVars, char openBracket, char closeBracket)
 {
 	std::string line, readline;
-
-	while (streamName.good())
+		
+	while (stream.good())
 	{
 		line = "";
 
 		do
 		{
-			getline(streamName, readline);
+			getline(stream, readline);
 
 			size_t posComment = std::min(readline.find('#'), readline.find("//"));
 			//min, так как если не найдено -- то find возвращает string::npos, которое равно (-1), но приводится к большому положительному size_t
@@ -170,7 +188,7 @@ void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std:
 			readline.erase(remove(readline.begin(), readline.end(), ' '), readline.end());
 			readline.erase(remove(readline.begin(), readline.end(), '\t'), readline.end());
 
-		} while ( (readline.size()>0) && (readline[readline.size() - 1] == '\\') && (streamName.good()));
+		} while ( (readline.size()>0) && (readline[readline.size() - 1] == '\\') && (stream.good()));
 
 		line.erase(remove(line.begin(), line.end(), '\\'), line.end());
 		line.erase(remove(line.begin(), line.end(), ' '), line.end());
@@ -180,14 +198,17 @@ void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std:
 		if (posEqual != -1)
 		{
 			std::string key = line.substr(0, posEqual);
-			auto search_it = database.find(key);
+			auto search_it = database.find(UpperCase(key));
 
 			if (search_it == database.end())
 			{
-				std::string value = line.substr(posEqual + 1, line.length());
-				if (replaceVars)
-					ReplaceVarsInString(value);
-				database.insert(make_pair(key, StringToVector(value, openBracket, closeBracket)));
+				if ((specificKey.size() == 0) || (std::find(specificKey.begin(),specificKey.end(),key) != specificKey.end()) )
+				{
+					std::string value = line.substr(posEqual + 1, line.length());
+					if (replaceVars)
+						ReplaceVarsInString(value);
+					database.insert(make_pair(UpperCase(key), StringToVector(value, openBracket, closeBracket)));
+				}
 			}
 			else
 			{
@@ -198,7 +219,8 @@ void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std:
 	}//while (streamName.good())
 
 	//Указатель возвращаем в начало потока
-	streamName.clear(); streamName.seekg(0, std::ios::beg);
+	stream.clear(); 
+	stream.seekg(0, std::ios::beg);
 }//ParseStream(...)
 
 
@@ -211,16 +233,20 @@ void StreamParser::ReplaceVarsInString(std::string& st)
 
 		size_t endVar = -1 + std::min({
 			st.find(" ", startVar + 1),
+			st.find(",", startVar + 1),
+			st.find(";", startVar + 1),
 			st.find("$", startVar + 1),
 			st.find("(", startVar + 1),
+			st.find(")", startVar + 1),
 			st.find("{", startVar + 1),
+			st.find("}", startVar + 1),
 			st.find("\n", startVar + 1),
 			st.length()
 		});
 
 		std::string var = st.substr(startVar + 1, endVar - startVar);
 
-		auto search_var = vars.find(var);
+		auto search_var = vars.find(UpperCase(var));
 		if ((search_var != vars.end()) && ((search_var->second).size() > 0))
 		{
 			std::vector<std::string> findString = search_var->second;
@@ -245,7 +271,7 @@ void StreamParser::ReplaceVarsInString(std::string& st)
 			}
 
 
-			size_t startP = endVar - startVar + 2;
+			size_t startP = endVar+1;
 			size_t endP = st.length() - 1;
 
 			if (startP <= endP)

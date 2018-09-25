@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,14 +32,16 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef MECHANICSRIGIDIMMOVABLE_H
 #define MECHANICSRIGIDIMMOVABLE_H
 
 #include "Mechanics.h"
+
+class World2D;
 
 /*!
 \brief Класс, определяющий вид механической системы
@@ -50,8 +52,8 @@
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
 
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 class MechanicsRigidImmovable :
@@ -60,14 +62,13 @@ class MechanicsRigidImmovable :
 public:
 	/// \brief Конструктор
 	/// 
-	/// \param[in] passport_ константная ссылка на паспорт
-	/// \param[in] afl_ ссылка на профиль;
-	/// \param[in] boundary_ константная ссылка на граничное условие;
-	/// \param[in] virtVortParams_ константная ссылка на параметры виртуального вихревого следа для профиля;
-	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
-	MechanicsRigidImmovable(const Passport& passport_, Airfoil& afl_, const Boundary& boundary_, const VortexesParams& virtVortParams_, const Parallel& parallel_) :
-		Mechanics(passport_, afl_, boundary_, virtVortParams_, parallel_, 0, false, false)
-	{};
+	/// \param[in] W_ константная ссылка на решаемую задачу
+	/// \param[in] numberInPassport_ номер профиля в паспорте задачи	
+	MechanicsRigidImmovable(const World2D& W_, size_t numberInPassport_) 
+		: Mechanics(W_, numberInPassport_, 0, false, false, false, { 0.0, 0.0 }, { 0.0, 0.0 }, 0.0, 0.0)
+	{
+		ReadSpecificParametersFromDictionary();
+	};
 
 	/// Деструктор
 	~MechanicsRigidImmovable() {};
@@ -78,11 +79,14 @@ public:
 	virtual Point2D VeloOfAirfoilRcm(double currTime);
 	virtual Point2D PositionOfAirfoilRcm(double currTime);
 	virtual void VeloOfAirfoilPanels(double currTime);
+	virtual void ReadSpecificParametersFromDictionary() {};
 
-	//TODO реализовать
-	virtual void FillMechanicsRowsAndCols(Eigen::MatrixXd& row, Eigen::MatrixXd& col) {};
+	/// \todo реализовать
+	virtual void FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Eigen::MatrixXd& cross) {};
 	virtual void FillMechanicsRhs(std::vector<double>& rhs) {};
+	virtual void FillAtt(Eigen::MatrixXd& row, Eigen::MatrixXd& rhs);
 	virtual void ComputeDisplacementRcm() {};
+	virtual void SolutionToMechanicalSystem(Eigen::VectorXd& col) {};
 	virtual void Move() {};
 };
 

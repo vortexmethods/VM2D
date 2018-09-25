@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,11 +32,12 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #include "MechanicsRigidImmovable.h"
+#include "World2D.h"
 
 
 //Вычисление скорости центра масс профиля
@@ -64,24 +65,33 @@ void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
 {
 	time.first = omp_get_wtime();
 
+	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
+
 	hydroDynamForce = { 0.0, 0.0 };
+	hydroDynamMoment = 0.0;
 
 	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
 	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные delta_k
+	double hDMdelta = 0.0;
 
 	for (size_t i = 0; i < afl.np; ++i)
 	{
-		double GamK = boundary.virtualWake[i].g();
-		double deltaK =  boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i];  		 //afl.gammaThrough[i];
-		Point2D VelK = virtVortParams.convVelo[i] /* + virtVortParams.diffVelo[i]*/ + passport.physicalProperties.V0();
-		Point2D rK =  0.5 * (afl.r[i + 1] + afl.r[i]);	//boundary.virtualWake[i].r();		
+		double deltaK =  boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i];
+		Point2D rK = 0.5 * (afl.r[i + 1] + afl.r[i]) - afl.rcm;
 
-		hDFGam += GamK * Point2D({ VelK[1], -VelK[0] });
 		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
+		hDMdelta += 0.5 * deltaK * (rK * rK);	
 	}
 
-	hydroDynamForce = hDFGam + (1.0 / passport.timeDiscretizationProperties.dt) * hDFdelta;
+	hydroDynamForce =  hDFdelta * (1.0 / dt);
+	hydroDynamMoment = hDMdelta / dt;
+		
 
 	time.second = omp_get_wtime();
 }//GetHydroDynamForce(...)
 
+void MechanicsRigidImmovable::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
+{
+	for (int i = 0; i < afl.np; ++i)
+		rhs(i, 0) = /*12*/0.5 * 0.5 * (afl.v[i] + afl.v[i + 1])*afl.tau[i];
+}

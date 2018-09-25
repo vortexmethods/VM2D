@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,14 +32,16 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef AIRFOILRECT_H
 #define AIRFOILRECT_H
 
 #include "Airfoil.h"
+
+class World2D;
 
 /*!
 \brief Класс, определяющий тип обтекаемого профиля
@@ -51,8 +53,8 @@
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
 
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 class AirfoilRect 
 	: public Airfoil
@@ -60,8 +62,8 @@ class AirfoilRect
 public:
 
 	/// Конструктор
-	AirfoilRect(const Passport& passport_, const size_t numberInPassport_, const Parallel& parallel_)
-		:Airfoil(passport_, numberInPassport_, parallel_)
+	AirfoilRect(const World2D& W_, const size_t numberInPassport_)
+		:Airfoil(W_, numberInPassport_)
 	{ };
 
 	AirfoilRect(const Airfoil& afl) : Airfoil(afl){};
@@ -72,7 +74,10 @@ public:
 	//далее -- реализация виртуальной функции
 	virtual void ReadFromFile(const std::string& dir);
 
-	virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
+	virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
+#if defined(USE_CUDA)
+	virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
+#endif
 };
 
 #endif

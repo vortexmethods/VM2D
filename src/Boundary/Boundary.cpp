@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,21 +32,23 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
-
 #include "Boundary.h"
-
-
+#include "World2D.h"
 
 //Конструктор
-Boundary::Boundary(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, int sheetDim_, const Wake& wake_, const Parallel& parallel_, gpu& cuda_)
-	: passport(passport_ ), afl(afl_), allBoundary(allBoundary_), sheetDim(sheetDim_), wake(wake_), parallel(parallel_), cuda(cuda_), CC(afl.r)
+Boundary::Boundary(const World2D& W_, size_t numberInPassport_, int sheetDim_) : 
+	W(W_ ), 
+	numberInPassport(numberInPassport_),
+	sheetDim(sheetDim_), 
+	afl(W_.getAirfoil(numberInPassport_)),
+	CC(W_.getAirfoil(numberInPassport_).r)
 {
 	sheets.SetLayersDim(afl.np, sheetDim);
-	virtualWake.resize(0);
+	virtualWake.vtx.resize(0);
 }//Boundary(...)
 
 
@@ -54,12 +56,12 @@ Boundary::Boundary(const Passport& passport_, const Airfoil& afl_, const std::ve
 void Boundary::VirtualWakeSynchronize()
 {
 	int nV;
-	if (parallel.myidWork == 0)
-		nV = (int)virtualWake.size();
-	MPI_Bcast(&nV, 1, MPI_INT, 0, parallel.commWork);
+	if (W.getParallel().myidWork == 0)
+		nV = static_cast<int>(virtualWake.vtx.size());
+	MPI_Bcast(&nV, 1, MPI_INT, 0, W.getParallel().commWork);
 
-	if (parallel.myidWork > 0)
-		virtualWake.resize(nV);
+	if (W.getParallel().myidWork > 0)
+		virtualWake.vtx.resize(nV);
 
-	MPI_Bcast(virtualWake.data(), nV, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+	MPI_Bcast(virtualWake.vtx.data(), nV, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
 }//VirtualWakeSinchronize()

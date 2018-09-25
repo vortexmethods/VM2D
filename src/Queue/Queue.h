@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,15 +32,23 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include "World2D.h"
+#include <iostream>
+#include <memory>
+#include <vector>
+#include "mpi.h"
+
+#include "Parallel.h"
+#include "Passport.h"
 #include "Task.h"
+#include "World2D.h"
+
 
 /*!
 \brief Класс, опеделяющий список решаемых задач и очередь их прохождения
@@ -50,8 +58,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 class Queue
 {
@@ -229,9 +237,10 @@ public:
 	/// \brief Загрузка списка задач
 	///
 	/// \param[in] _tasksFile константная ссылка на имя файла с описанием очереди задач
+	/// \param[in] _mechanicsFile константная ссылка на имя файла со словарем механических систем
 	/// \param[in] _defaultsFile константная ссылка на имя файла с описанием параметров по умолчанию
 	/// \param[in] _switchersFile константная ссылка на имя файла со значениями параметров-переключателей
-	void LoadTasksList(const std::string& _tasksFile, const std::string& _defaultsFile, const std::string& _switchersFile);
+	void LoadTasksList(const std::string& _tasksFile, const std::string& _mechanicsFile, const std::string& _defaultsFile, const std::string& _switchersFile);
 };
 
 #endif

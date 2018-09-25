@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -40,18 +40,20 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 
 #ifndef PASSPORT_H
 #define PASSPORT_H
 
+#include <iostream>
 #include <memory>
+#include <string>
+#include <vector>
 
-#include "Preprocessor.h"
-#include "StreamParser.h"
+#include "Point2D.h"
 
 
 /*!
@@ -60,8 +62,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 struct PhysicalProperties
 {
@@ -118,8 +120,8 @@ public:
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 struct TimeDiscretizationProperties
 {
@@ -146,8 +148,8 @@ struct TimeDiscretizationProperties
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 struct WakeDiscretizationProperties
 {	
@@ -177,8 +179,8 @@ struct WakeDiscretizationProperties
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 struct NumericalSchemes
 {
@@ -199,8 +201,8 @@ struct NumericalSchemes
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 struct AirfoilParams
 {
@@ -223,7 +225,10 @@ struct AirfoilParams
 	int boundaryCondition;    
 
 	/// Тип механической системы
-	int mechanicalSystem;
+	int mechanicalSystemType;
+	std::string mechanicalSystem;
+	std::string mechanicalSystemParameters;
+
 };//AirfoilParams
 
 
@@ -234,8 +239,8 @@ struct AirfoilParams
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 class Passport
 {
@@ -243,12 +248,14 @@ private:
 	/// \brief Считывание всех параметров расчета из соответствующих потоков
 	/// 
 	/// \param[in] mainStream ссылка на основной поток
+	/// \param[in] mechanicsStream ссылка на поток со словарем механических систем
 	/// \param[in] defaultStream ссылка на поток с параметрами по умолчанию
 	/// \param[in] switcherStream ссылка на поток со значениями параметров-переключателей
 	/// \param[in] varsStream ссылка на поток с параметрами конкретной задачи и переменными
 	void GetAllParamsFromParser
 		(
 		std::istream& mainStream,
+		std::istream& mechanicsStream,
 		std::istream& defaultStream,
 		std::istream& switcherStream,
 		std::istream& varsStream
@@ -285,23 +292,22 @@ public:
 	/// Структура с используемыми численными схемами
 	NumericalSchemes numericalSchemes;
 
-	/// Произвольно варьируемый параметр
-	double param;
-
 	/// \brief Конструктор
 	///
 	/// Осуществляет чтение всех данных из соответствующих потоков, полностью инициализирует паспорт
 	///
 	/// \param[in] _dir константная ссылка на рабочий каталог задачи
 	/// \param[in] _filePassport константная ссылка на файл (без пути) с паспортом задачи
+	/// \param[in] _mechanics константная ссылка на файл (c путем) со словарем механических систем
 	/// \param[in] _defaults константная ссылка на имя файла (с путем) с параметрами по умолчанию
 	/// \param[in] _switchers константная ссылка на имя файла (с путем) со значениями параметров-переключателей
 	/// \param[in] vars константная ссылка на список переменных, заданных в виде строк
 	/// \param[in] _print признак вывода в поток логов и ошибок
 	Passport
 	(
-		const std::string& _dir, 
-		const std::string& _filePassport, 
+		const std::string& _dir,
+		const std::string& _filePassport,
+		const std::string& _mechanics,
 		const std::string& _defaults, 
 		const std::string& _switchers,
 		const std::vector<std::string>& vars,

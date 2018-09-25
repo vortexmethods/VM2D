@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,24 +32,30 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef VELOCITY_H
 #define VELOCITY_H
 
-#include "Boundary.h"
-#include "gpu.h"
+#include <vector>
 
+#include "Point2D.h"
+#include "WakeDataBase.h"
+
+//#include "Boundary.h"
+//#include "gpu.h"
+
+class World2D;
 
 /*!
 \brief Структура, определяющая параметры виртуальных вихрей для отдельного профиля
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 struct VortexesParams
 {
@@ -80,26 +86,15 @@ struct VortexesParams
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 class Velocity
 {
 protected:
-	/// Константная ссылка на вихревой след
-	const Wake& wake;
-
-	/// Константная ссылка на параметры исполнения задачи в параллельном MPI-режиме
-	const Parallel& parallel;	
-
-	/// Ссылка на объект, управляющий графическим ускорителем
-	gpu& cuda;
-
-	/// Константная ссылка на вектор указателей на граничные условия
-	const std::vector<std::unique_ptr<Boundary>>& boundary;
-
-
-
+	/// Константная ссылка на решаемую задачу
+	const World2D& W;	
+	
 public:
 	/// Струтура, определяющая параметры вихрей в следе
 	VortexesParams wakeVortexesParams;
@@ -110,24 +105,24 @@ public:
 
 	/// \brief Конструктор
 	/// 
-	/// \param[in] parallel_ константная ссылка на параметры исполнения задачи в параллельном MPI-режиме
-	/// \param[in] cuda_ ссылка на объект, управляющий графическим ускорителем
-	/// \param[in] wake_ константная ссылка на вихревой след	
-	/// \param[in] boundary_ константная ссылка на вектор указателей на граничные условия 	
-	Velocity(const Parallel& parallel_, gpu& cuda_, const Wake& wake_, const std::vector<std::unique_ptr<Boundary>>& boundary_) :
-		wake(wake_), parallel(parallel_), cuda(cuda_), boundary(boundary_)
+	/// \param[in] W_ константная ссылка на решаемую задачу 	
+	Velocity(const World2D& W_) :
+		W(W_)
 	{			
 		virtualVortexesParams.resize(0);
 	};
 	
 	/// \brief Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек
 	///
-	/// \param[in] points константная ссылка на вектор из вихрей, в которых надо сосчитать конвективные скорости
+	/// \param[in] pointsDb константная ссылка на базу данных пелены из вихрей, в которых надо сосчитать конвективные скорости
 	/// \param[out] velo ссылка на вектор скоростей в требуемых точках
 	/// \param[out] domainRadius ссылка на вектор радиусов вихревых доменов
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
-	virtual void CalcConvVeloToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo,  std::vector<double>& domainRadius) = 0;
+	virtual void CalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo,  std::vector<double>& domainRadius) = 0;
+#if defined(USE_CUDA)	
+	virtual void GPUCalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius) = 0;
+#endif
 
 	/// \brief Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе
 	///
@@ -138,14 +133,17 @@ public:
 
 	/// \brief Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек
 	///
-	/// \param[in] points константная ссылка на вектор из вихрей, в которых надо сосчитать диффузионные скорости
+	/// \param[in] pointsDb константная ссылка на базу данных пелены из вихрей, в которых надо сосчитать диффузионные скорости
 	/// \param[in] domainRadius константная ссылка на вектор радиусов вихревых доменов
-	/// \param[in] vortices константная ссылка на вектор из вихрей, от которых надо сосчитать влияния на points
+	/// \param[in] vorticesDb константная ссылка на на базу данных пелены из вихрей,от которых надо сосчитать влияния на points
 	/// \param[out] I1 ссылка на вектор величин I1 (знаменателей в диффузионных скоростях) в требуемых точках
 	/// \param[out] I2 ссылка на вектор величин I2 (числителей в диффузионных скоростях) в требуемых точках
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
-	virtual void CalcDiffVeloI1I2ToSetOfPoints(const std::vector<Vortex2D>& points, const std::vector<double>& domainRadius, const std::vector<Vortex2D>& vortices, std::vector<double>& I1, std::vector<Point2D>& I2) = 0;
+	virtual void CalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2) = 0;
+#if defined(USE_CUDA)
+	virtual void GPUCalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false) = 0;
+#endif
 
 	/// \brief Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе
 	///

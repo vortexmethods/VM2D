@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,16 +32,16 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #include "BoundaryVortColl.h"
-
+#include "World2D.h"
 
 //Конструктор
-BoundaryVortColl::BoundaryVortColl(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, const Wake& wake_, const Parallel& parallel_, gpu& cuda_)
-: Boundary(passport_, afl_, allBoundary_, 1, wake_, parallel_, cuda_)
+BoundaryVortColl::BoundaryVortColl(const World2D& W_, size_t numberInPassport_)
+: Boundary(W_, numberInPassport_, 1)
 {
 	size_t np = afl.np;
 	const std::vector<Point2D>& CC = afl.r;
@@ -91,9 +91,9 @@ void BoundaryVortColl::FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& la
 void BoundaryVortColl::GetWakeInfluence(std::vector<double>& wakeVelo) const
 {
 	size_t np = afl.np;
-	int id = parallel.myidWork;
+	int id = W.getParallel().myidWork;
 
-	parProp par = parallel.SplitMPI(np);
+	parProp par = W.getParallel().SplitMPI(np);
 
 	std::vector<double> locVeloWake;
 	locVeloWake.resize(par.myLen);
@@ -114,12 +114,12 @@ void BoundaryVortColl::GetWakeInfluence(std::vector<double>& wakeVelo) const
 		Point2D posJ;
 		double gamJ;
 
-		for (size_t j = 0; j < wake.vtx.size(); ++j)
+		for (size_t j = 0; j < W.getWake().vtx.size(); ++j)
 		{
-			posJ = wake.vtx[j].r();
-			gamJ = wake.vtx[j].g();
+			posJ = W.getWake().vtx[j].r();
+			gamJ = W.getWake().vtx[j].g();
 
-			dst2 = std::max(dist2(posI, posJ), wake.param.eps2); //Сглаживание
+			dst2 = std::max(dist2(posI, posJ), W.getPassport().wakeDiscretizationProperties.eps2); //Сглаживание
 			tempVel = nrm * (posI - posJ);
 			tempVel *= (gamJ / dst2);
 			velI += tempVel;
@@ -132,9 +132,18 @@ void BoundaryVortColl::GetWakeInfluence(std::vector<double>& wakeVelo) const
 	if (id == 0)
 		wakeVelo.resize(np); 
 
-	MPI_Gatherv(locVeloWake.data(), par.myLen, MPI_DOUBLE, wakeVelo.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, parallel.commWork);
+	MPI_Gatherv(locVeloWake.data(), par.myLen, MPI_DOUBLE, wakeVelo.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
 }//GetWakeInfluence(...)
 
+
+//Генерация вектора влияния вихревого следа на профиль
+#if defined(USE_CUDA)
+void BoundaryVortColl::GPUGetWakeInfluence(std::vector<double>& wakeVelo) const
+{
+	std::cout << "GPU-computing is not implemented now! CPU-computing is active" << std::endl;
+	GetWakeInfluence(wakeVelo);
+}
+#endif
 
 //Вычисление скоростей в наборе точек, вызываемых наличием завихренности и источников на профиле
 void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const
@@ -143,9 +152,9 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 
 	size_t np = afl.np;
 		
-	int id = parallel.myidWork;
+	int id = W.getParallel().myidWork;
 
-	parProp par = parallel.SplitMPI(points.size());
+	parProp par = W.getParallel().SplitMPI(points.size());
 
 	std::vector<Point2D> locVelo;
 	locVelo.resize(par.myLen);
@@ -171,7 +180,7 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 			posJ = KK[j];
 			gamJ = sheets.freeVortexSheet[j][0] * afl.len[j];
 
-			dst2 = std::max(dist2(posI, posJ), wake.param.eps2); //Сглаживать надо!!!
+			dst2 = std::max(dist2(posI, posJ), W.getPassport().wakeDiscretizationProperties.eps2); //Сглаживать надо!!!
 			tempVel = { -posI[1] + posJ[1], posI[0] - posJ[0] };
 			tempVel *= (gamJ / dst2);
 			velI += tempVel;
@@ -186,7 +195,7 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 		selfVelo.resize(points.size());
 	}
 
-	MPI_Gatherv(locVelo.data(), par.myLen, Point2D::mpiPoint2D, selfVelo.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+	MPI_Gatherv(locVelo.data(), par.myLen, Point2D::mpiPoint2D, selfVelo.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
 
 	if (id == 0)
 		for (size_t i = 0; i < velo.size(); ++i)
@@ -197,7 +206,7 @@ void BoundaryVortColl::GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>&
 void BoundaryVortColl::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform)
 {
 	size_t np = afl.np;
-	int id = parallel.myidWork;
+	int id = W.getParallel().myidWork;
 
 	std::vector<double> wakeVelo;
 
@@ -281,8 +290,7 @@ void BoundaryVortColl::SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::Ve
 	Vortex2D virtVort;
 	Point2D midNorm;
 
-	/// \todo delta в паспорт
-	double delta = passport.wakeDiscretizationProperties.delta;
+	double delta = W.getPassport().wakeDiscretizationProperties.delta;
 	//double delta = 0.5;
 
 	
@@ -290,7 +298,7 @@ void BoundaryVortColl::SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::Ve
 	midNorm = (afl.nrm[0] + afl.nrm[afl.np - 1]).unit(delta);
 	virtVort.r() = afl.r[0] + midNorm;
 	virtVort.g() = 0.5 * (sheets.freeVortexSheet[0][0] * afl.len[0] + sheets.freeVortexSheet[afl.np - 1][0] * afl.len[afl.np - 1]);
-	virtualWake.push_back(virtVort);
+	virtualWake.vtx.push_back(virtVort);
 
 	for (size_t i = 1; i < afl.np; ++i)
 	{
@@ -300,7 +308,7 @@ void BoundaryVortColl::SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::Ve
 		/// \todo сделать формирование присоединенных вихрей и источников
 		virtVort.g() = 0.5 * (sheets.freeVortexSheet[i][0] * afl.len[i] + sheets.freeVortexSheet[i-1][0] * afl.len[i-1]);
 
-		virtualWake.push_back(virtVort);
+		virtualWake.vtx.push_back(virtVort);
 	}
 }//SolutionToFreeVortexSheetAndVirtualVortex(...)
 

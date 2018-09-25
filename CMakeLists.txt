@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(VM2D)
 
-enable_language(CUDA)
+#enable_language(CUDA)
 set (CMAKE_CUDA_FLAGS "-arch=sm_35")
 #set (CMAKE_CUDA_COMPILER "/usr/local/cuda/bin/nvcc")
 

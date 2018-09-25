@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,25 +32,30 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */ 
 
 #ifndef TIMES_H
 #define TIMES_H
+
+#include "defs.h"
+
+class World2D;
 
 /*!
 \brief Класс для сбора статистики времени исполнения основных шагов алгоритма и вывода ее в файл
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 class Times
 {
 private:
-	const Passport& passport;
+	/// Константная ссылка на решаемую задачу
+	const World2D& W;
 
 	/// Обнуление одного временного периода 
 	/// \param[out] period промежуток времени, начало и конец которого будут обнулены
@@ -72,16 +77,12 @@ public:
 
 	/// Начало и конец процесса решения системы линейных алгебраических уравнений
 	timePeriod timeSolveLinearSystem;
-
-
-
+	
 	/// Начало и конец процесса вычисления конвективных скоростей вихрей
 	timePeriod timeCalcVortexConvVelo;
 
 	/// Начало и конец процесса вычисления диффузионных скоростей вихрей
 	timePeriod timeCalcVortexDiffVelo;
-
-
 
 	/// Начало и конец процесса вычисления нагрузок
 	timePeriod timeGetHydroDynamForce;
@@ -102,76 +103,20 @@ public:
 	timePeriod timeSaveKadr;
 	
 	/// Конструктор
-	Times(const Passport& passport_)
-		: passport(passport_) {};
+	Times(const World2D& W_)
+		: W(W_) {};
 
 	/// Деструктор
 	~Times() {};
 	
 	/// Генерация заголовка файла временной статистики
-	void GenerateStatHeader()
-	{
-		std::stringstream timeStatFileName;
-		timeStatFileName << passport.dir << "timestat";
-
-		std::ofstream timeStatFile(timeStatFileName.str());
-		PrintLogoToTextFile(timeStatFile, timeStatFileName.str(), "Time statistics");
-
-		PrintHeaderToTextFile(timeStatFile, "step Time N tStep tMem tMatRhs tSolve tConvVelo tDiffVelo tForce tMove tInside tRestr tWakeSort tSave");
-
-		timeStatFile.close();
-		timeStatFile.clear();
-	}//GenerateStatHeader()
-
-
+	void GenerateStatHeader() const;
 
 	/// Сохранение строки со статистикой в файл временной статистики
-	/// \param[in] currentStep номер текущего шага
-	/// \param[in] N число вихрей в пелене
-	void GenerateStatString(size_t currentStep, size_t N)
-	{
-		std::ofstream timestatFile(passport.dir + "timestat", std::ios::app);
-		
-		timestatFile << std::endl
-			<< currentStep << "\t"
-			<< passport.physicalProperties.getCurrTime() << "\t"
-			<< N << "\t"
-			<< dT(timeWholeStep) << "\t"
-			<< dT(timeReserveMemoryForMatrixAndRhs) << "\t"
-			<< dT(timeFillMatrixAndRhs) << "\t"
-			<< dT(timeSolveLinearSystem) << "\t"
-			<< dT(timeCalcVortexConvVelo) << "\t"
-			<< dT(timeCalcVortexDiffVelo) << "\t"			
-			<< dT(timeGetHydroDynamForce) << "\t"
-			<< dT(timeMoveVortexes) << "\t"
-			<< dT(timeCheckInside) << "\t"					
-			<< dT(timeRestruct) << "\t"
-			<< dT(timeWakeSort) << "\t"
-			<< dT(timeSaveKadr);
-
-
-
-		timestatFile.close();
-	}//GenerateStatString(...)
-
-
+	void GenerateStatString() const;
+	
 	/// Обнуление состояния временной статистики
-	void ToZero()
-	{
-		ToZero(timeWholeStep);
-		ToZero(timeReserveMemoryForMatrixAndRhs);
-		ToZero(timeFillMatrixAndRhs);
-		ToZero(timeSolveLinearSystem);
-		ToZero(timeCalcVortexConvVelo);
-		ToZero(timeCalcVortexDiffVelo);
-		ToZero(timeGetHydroDynamForce);
-		ToZero(timeMoveVortexes);
-		ToZero(timeCheckInside);
-		ToZero(timeRestruct);
-		ToZero(timeWakeSort);
-		ToZero(timeSaveKadr);		
-	}
-
+	void ToZero();
 
 	/// Вычисление разницы во времени для пары засечек в секундах
 	/// \param[in] t константная ссылка на пару засечек времени

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,66 +32,46 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef WAKE_H
 #define WAKE_H
 
+#include <string>
+#include <vector>
+
+#include "defs.h"
 #include "Airfoil.h"
-#include "gpudefs.h"
+#include "Vortex2D.h"
 
-
-#include <array>
-
-class Boundary;
-class gpu;
+class World2D;
 
 /*!
 \brief Класс, опеделяющий вихревой след (пелену)
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
-class Wake
+class Wake : public WakeDataBase
 {
 private:
 	/// Вектор потенциальных соседей для будущего коллапса
 	std::vector<int> neighb;
 
 public:
-	/// Список вихревых элементов
-	std::vector<Vortex2D> vtx;
-	IFCUDA(mutable double* devWakePtr);
-	IFCUDA(mutable size_t devNWake);
 
-	/// Константная ссылка на параметры дискретизации вихревого следа
-	const WakeDiscretizationProperties& param;
+	/// Константная ссылка на решаемую задачу
+	const World2D& W;
 	
-	/// Константная ссылка на параметры исполнения в параллельном режиме
-	const Parallel& parallel;
-
-	/// Ссылка на объект, управляющий графическим ускорителем
-	gpu& cuda;
-
-	/// Константная ссылка на список умных казателей на обтекаемые профили
-	const std::vector<std::unique_ptr<Airfoil>>& airfoils;
-	
-	/// Константная ссылка на список умных казателей на граничные условия
-	const std::vector<std::unique_ptr<Boundary>>& boundary;
-
 	/// \brief Конструктор инициализации
 	///
-	/// \param[in] param_ константная ссылка на параметры дискретизации вихревого следа
-	/// \param[in] parallel_ константная ссылка на параметры исполнения в параллельном режиме
-	/// \param[in] cuda_ ссылка на объект, управляющий графическим ускорителем
-	/// \param[in] airfoils_ константная ссылка на вектор указателей на профили
-	/// \param[in] boundary_ константная ссылка на вектор указателей на грфничные условия
-	Wake(const WakeDiscretizationProperties& param_, const Parallel& parallel_, gpu& cuda_, const std::vector<std::unique_ptr<Airfoil>>& airfoils_, const std::vector<std::unique_ptr<Boundary>>& boundary_)
-		: param(param_), parallel(parallel_), cuda(cuda_), airfoils(airfoils_), boundary(boundary_) { };
+	/// \param[in] W_ константная ссылка на решаемую задачу	
+	Wake(const World2D& W_)
+		: W(W_) { };
 	
 	/// Деструктор
 	~Wake(){ };
@@ -131,10 +111,12 @@ public:
 	/// \n Вихри, попавшие внутрь профиля, получают нулевую циркуляцию, а их "бывшая" циркуляция передается в вектор gammaThrough в структуру данных профиля
 	/// 
 	/// \param[in] newPos константная ссылка на вектор из новых положений вихрей в вихревом следе
+	/// \param[in] isMoves признак того, что профиль подвижный
+	/// \param[in] oldAfl константная ссылка контролируемый профиль до перемещения (используется, если у профиля стоит признак того, что он движется)
 	/// \param[in,out] afl ссылка на контролируемый профиль (происходит изменение afl->gammaThrough)
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
-	void Inside(const std::vector<Point2D>& newPos, Airfoil& afl);
+	void Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves, const Airfoil& oldAfl);
 
 	/// \brief Реструктуризация вихревого следа
 	///
@@ -178,6 +160,10 @@ public:
 	/// - 2 --- коллапсировать только вихри одного знака
 	void GetPairs(int type);
 
+#if defined(USE_CUDA)
+	void GPUGetPairs(int type);
+#endif
+
 	/// \brief Коллапс вихрей
 	/// \param[in] type тип коллапса: 
 	/// - 0 --- без приоритета знаков
@@ -186,20 +172,7 @@ public:
 	/// \param[in] times число проходов алгоритма коллапса
 	/// \return число зануленных вихрей
 	int Collaps(int type, int times);
-
-
-	/// \brief Проверка пересечения вихрями следа профиля при подвижном профиле
-	///
-	/// Исполняется сразу для всех вихрей в пелене, осуществляет проверку для отдельного профиля
-	/// \n Вихри, попавшие внутрь профиля, получают нулевую циркуляцию, а их "бывшая" циркуляция передается в вектор gammaThrough в структуру данных профиля
-	/// 
-	/// \param[in] newPos константная ссылка на вектор из новых положений вихрей в вихревом следе
-	/// \param[in] oldAfl константная ссылка контролируемый профиль до перемещения
-	/// \param[in,out] afl ссылка на контролируемый профиль (происходит изменение afl->gammaThrough)
-	/// \warning Использует OMP, MPI
-	/// \ingroup Parallel
-	void InsideMovingBoundary(const std::vector<Point2D>& newPos, const Airfoil& oldAfl, Airfoil& afl);
-
+	
 	};
 
 #endif

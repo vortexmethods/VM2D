@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,23 +32,24 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
-
 #include "AirfoilRect.h"
+#include "Preprocessor.h"
+#include "World2D.h"
 
 
 //Считывание профиля из файла
 void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка профиля из файла, его поворот и масштабирование
 {
-	const AirfoilParams& param = passport.airfoilParams[numberInPassport];
+	const AirfoilParams& param = W.getPassport().airfoilParams[numberInPassport];
 	std::string filename = dir + param.fileAirfoil;
 	std::ifstream airfoilFile;
 
 	std::ostream *Pinfo, *Perr;
-	if (parallel.myidWork == 0)
+	if (W.getParallel().myidWork == 0)
 	{
 		Pinfo = defaults::defaultPinfo;
 		Perr = defaults::defaultPerr;
@@ -91,7 +92,7 @@ void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка про
 }//ReadFromFile(...)
 
 //Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения
-void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3)
+void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3)
 {
 	std::vector<double> selfI0;
 	std::vector<Point2D> selfI3;
@@ -99,15 +100,15 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::
 	viscousStress.clear();
 	viscousStress.resize(np, 0.0);
 
-	const int& id = parallel.myidWork;
+	const int& id = W.getParallel().myidWork;
 
-	parProp par = parallel.SplitMPI(points.size());
+	parProp par = W.getParallel().SplitMPI(pointsDb.vtx.size());
 
 	std::vector<Vortex2D> locPoints;
 	locPoints.resize(par.myLen);
 
-	MPI_Scatterv(const_cast<std::vector<Vortex2D>&>(points).data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, \
-		locPoints.data(), par.myLen, Vortex2D::mpiVortex2D, 0, parallel.commWork);
+	MPI_Scatterv(const_cast<std::vector<Vortex2D>&>(pointsDb.vtx).data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, \
+		locPoints.data(), par.myLen, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
 
 	std::vector<double> locI0(par.myLen, 0.0);
 	std::vector<Point2D> locI3(par.myLen, {0.0, 0.0});
@@ -130,7 +131,7 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::
 	double iDDomRad, expon;
 #pragma warning (pop)
 
-	double iDPIepscol2 = 1.0 / (PI * sqr(passport.wakeDiscretizationProperties.epscol));
+	double iDPIepscol2 = 1.0 / (PI * sqr(W.getPassport().wakeDiscretizationProperties.epscol));
 
 #pragma omp parallel for \
 	default(none) \
@@ -178,7 +179,7 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::
 				else if ((d <= 5.0 * len[j]) && (d >= 0.1 * len[j]))
 				{
 					vs = 0.0;
-					new_n = (int)(ceil(5.0 * len[j] / d));
+					new_n = static_cast<int>(ceil(5.0 * len[j] / d));
 					//new_n = 100;
 					h = v0 * (1.0 / new_n);
 
@@ -228,12 +229,12 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::
 
 	if (id == 0)
 	{
-		selfI0.resize(points.size(), 0.0);
-		selfI3.resize(points.size(), {0.0, 0.0});
+		selfI0.resize(pointsDb.vtx.size(), 0.0);
+		selfI3.resize(pointsDb.vtx.size(), {0.0, 0.0});
 	}
 
-	MPI_Gatherv(locI0.data(), par.myLen, MPI_DOUBLE,          selfI0.data(), par.len.data(), par.disp.data(), MPI_DOUBLE,          0, parallel.commWork);
-	MPI_Gatherv(locI3.data(), par.myLen, Point2D::mpiPoint2D, selfI3.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, parallel.commWork);
+	MPI_Gatherv(locI0.data(), par.myLen, MPI_DOUBLE,          selfI0.data(), par.len.data(), par.disp.data(), MPI_DOUBLE,          0, W.getParallel().commWork);
+	MPI_Gatherv(locI3.data(), par.myLen, Point2D::mpiPoint2D, selfI3.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
 	
 	if (id == 0)
 	for (size_t i = 0; i < I0.size(); ++i)
@@ -252,4 +253,57 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::
 			}
 		}
 	}
-};
+}; //GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(...)
+
+#if defined(USE_CUDA)
+void AirfoilRect::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3)
+{
+	const size_t npt = pointsDb.vtx.size();
+	double*& dev_ptr_pt = pointsDb.devWakePtr;
+	double*& dev_ptr_rad = pointsDb.devRadsPtr;
+	const size_t nr = r.size();
+	double*& dev_ptr_r = devR; 
+	std::vector<double>& loci0 = pointsDb.tmpI0;
+	std::vector<Point2D>& loci3 = pointsDb.tmpI3;
+	double* dev_ptr_i0 = pointsDb.devI0Ptr;
+	double* dev_ptr_i3 = pointsDb.devI3Ptr;
+
+	const int& id = W.getParallel().myidWork;
+	parProp par = W.getParallel().SplitMPI(npt, true);
+
+	double tCUDASTART = 0.0, tCUDAEND = 0.0;
+
+	tCUDASTART = omp_get_wtime();
+
+	if ((npt > 0) && (nr > 0))
+	{
+		cuCalculateSurfDiffVeloWake(par.myDisp, par.myLen, dev_ptr_pt, nr, dev_ptr_r, dev_ptr_i0, dev_ptr_i3, dev_ptr_rad);
+		W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_i3, (double*)&loci3[0]);
+		W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_i0, &loci0[0]);
+
+		std::vector<Point2D> newI3;
+		std::vector<double> newI0;
+		if (id == 0)
+		{
+			newI3.resize(I3.size());
+			newI0.resize(I0.size());
+		}
+
+		MPI_Gatherv(loci3.data(), par.myLen, Point2D::mpiPoint2D, newI3.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
+		MPI_Gatherv(loci0.data(), par.myLen, MPI_DOUBLE, newI0.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
+
+		if (id == 0)
+			for (size_t q = 0; q < I3.size(); ++q)
+			{
+				I0[q] += newI0[q];
+				I3[q] += newI3[q];
+			}
+	}
+
+	tCUDAEND = omp_get_wtime();
+
+	//std::cout << "DIFF_SURF_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
+	
+
+}//GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses
+#endif

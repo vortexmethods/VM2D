@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,35 +32,34 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 
 #ifndef DEFS_H
 #define DEFS_H
 
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <ctime>
+#include <fstream>
+#include <iostream>
+#include <string>
 
 #include "Eigen/Dense"
 
-#include "gpudefs.h"
 #include "Point2D.h"
    
 /// Тип для хранения начала и конца промежутка времени
 typedef std::pair<double, double> timePeriod;
 
 /// Число \f$ \pi \f$
-const double   PI = 3.1415926535897932384626433832795;
+const double PI = 3.1415926535897932384626433832795;
 
 /// Число \f$ \frac{1}{2\pi} \f$
 const double IDPI = 0.1591549430918953357688837633725;
 
 /// Число \f$ 2\pi \f$
-const double  DPI = 6.2831853071795864769252867665590;
+const double DPI = 6.2831853071795864769252867665590;
 
 /// \brief Глобальные параметры по умолчанию
 ///
@@ -116,7 +115,8 @@ namespace defaults
 	const int defaultBoundaryCondition = 0;
 
 	/// Тип механической системы
-	const int defaultMechanicalSystem = 0;
+	const int defaultMechanicalSystemType = 0;
+	const std::string defaultMechanicalSystem = "";
 
 	/// Имя файла с паспортом задачи
 	const std::string defaultPspFile = "passport";

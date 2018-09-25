@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,35 +32,43 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 
 #ifndef AIRFOIL_H
 #define AIRFOIL_H
 
-#include "Passport.h"
-#include "Parallel.h"
+#include <string>
+#include <vector>
+
+#include "Point2D.h"
+#include "WakeDataBase.h"
+
+class World2D;
 
 /*!
 \brief Абстрактный класс, определяющий обтекаемый профиль
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.1
-\date 2 апреля 2018 г.
+\version 1.2
+\date 14 июня 2018 г.
 */
 class Airfoil
 {
 public:	
-	/// Константная ссылка на паспорт
-	const Passport& passport;
+	/// Константная ссылка на решаемую задачу
+	const World2D& W;
 
 	/// Номер профиля в паспорте
 	const size_t numberInPassport;
 
 	/// Положение центра масс профиля
-	Point2D rcm;  
+	Point2D rcm;
+
+	/// Поворот профиля
+	double phiAfl;
 	
 	/// Масса профиля
 	double m;     
@@ -77,6 +85,9 @@ public:
 	/// \n вектор r содержит (np+1) элемент, где np --- число панелей.
 	/// \n Это позволяет удобно обращаться к r[i] и r[i+1] как к началу и концу i-й панели
 	std::vector<Point2D> r;
+	IFCUDA(mutable double* devR);
+	IFCUDA(mutable double* devRhs);
+	IFCUDA(mutable std::vector<double> tmpRhs);
 	
 	/// \brief Нормали к панелям профиля
 	///
@@ -109,18 +120,19 @@ public:
 	///
 	/// Используются в правой части системы, чтобы компенсировать вихри, проникшие в профиль
 	std::vector<double> gammaThrough;
-
-	/// Константная ссылка на параметры исполнения в параллельном режиме
-	const Parallel& parallel;
-
+	
 	/// Конструктор
-	Airfoil(const Passport& passport_, const size_t numberInPassport_, const Parallel& parallel_);
+	/// \param[in] W_ константная ссылка на решаемую задачу
+	/// \param[in] numberInPassport_ номер профиля в паспорте задачи
+	Airfoil(const World2D& W_, const size_t numberInPassport_);
 
 	/// Конструктор копирования
-	Airfoil(const Airfoil& afl) : np(0), passport(afl.passport), numberInPassport(afl.numberInPassport), parallel(afl.parallel)
-	{
+	/// \todo откомментировать	
+	Airfoil(const Airfoil& afl) : np(0), W(afl.W), numberInPassport(afl.numberInPassport)
+	{	
 		rcm = afl.rcm;
 		np = afl.np;
+		phiAfl = afl.phiAfl;
 		r.insert(r.begin(), afl.r.begin(), afl.r.end());
 		nrm.insert(nrm.begin(), afl.nrm.begin(), afl.nrm.end());
 		tau.insert(tau.begin(), afl.tau.begin(), afl.tau.end());
@@ -194,9 +206,9 @@ public:
 
 	/// \brief Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения
 	///
-	/// Вычисляет диффузионные скорости в наборе точек, которые обусловленных геометрией профиля.ю и вычисляет вязкое трение
+	/// Вычисляет диффузионные скорости в наборе точек, которые обусловленных геометрией профиля, и вычисляет вязкое трение
 	/// 
-	/// \param[in] points константная ссылка на набор точек, в которых вычисляются скорости
+	/// \param[in] pointsDb константная ссылка на базу данных вихрей, в которых вычисляются скорости
 	/// \param[in] domainRadius ссылка на радиусы вихрей
 	/// \param[out] I0 ссылка на вектор знаменателей диффузионных скоростей, которые приобретают точки из-за влияния геометрии профиля
 	/// \param[out] I3 ссылка на вектор числителей диффузионных скоростей, которые приобретают точки из-за влияния геометрии профиля
@@ -204,8 +216,10 @@ public:
 	/// \warning Векторы I0, I3 --- накапливаются!
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
-	virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
-
+	virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
+#if defined(USE_CUDA)
+	virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
+#endif
 };
 
 #endif
