@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: BoundaryConstLayerAver.h                                         |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -33,8 +33,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #ifndef BOUNDARYCONSTLAYERAVER_H
@@ -53,8 +53,8 @@
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
 
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 class BoundaryConstLayerAver : public Boundary
 {
@@ -100,8 +100,9 @@ public:
 	/// \param[in] allBoundary_ константная ссылка на вектор из указателей на все граничные условия
 	/// \param[in] wake_ константная ссылка на вихревой след
 	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения
-	BoundaryConstLayerAver(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, const Wake& wake_, const Parallel& parallel_) :
-		Boundary(passport_, afl_, allBoundary_, 1, wake_, parallel_)
+	/// \param[in] cuda_ ссылка на объект, управляющий графическим ускорителем
+	BoundaryConstLayerAver(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, const Wake& wake_, const Parallel& parallel_, gpu& cuda_) :
+		Boundary(passport_, afl_, allBoundary_, 1, wake_, parallel_, cuda_)
 	{ };
 
 	/// Деструктор
@@ -111,7 +112,7 @@ public:
 	virtual void FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol);
 	virtual void FillMatrixFromOther(const Boundary& otherBoundary, Eigen::MatrixXd& matr);
 	virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform);
-	virtual int GetUnknownsSize() const;
+	virtual size_t GetUnknownsSize() const;
 	virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol);
 	virtual void GetWakeInfluence(std::vector<double>& wakeVelo) const;
 	virtual void GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const;

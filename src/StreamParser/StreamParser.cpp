@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: StreamParser.cpp                                                 |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #include "StreamParser.h"
@@ -135,8 +135,8 @@ std::string StreamParser::VectorStringToString(const std::vector<std::string>& _
 //Разбор строки на пару ключ-значение
 std::pair<std::string, std::string> StreamParser::SplitString(std::string line)
 {
-	int posBegin = line.find('(', 0);
-	int posEnd = line.find(')', 0);
+	size_t posBegin = line.find('(', 0);
+	size_t posEnd = line.find(')', 0);
 	if ((posBegin != -1) && (posEnd == -1))
 	{
 		*perr << "parser error: ERROR WHILE PARSING LINE " << line << std::endl;
@@ -176,7 +176,7 @@ void StreamParser::ParseStream(std::istream& streamName, std::unordered_map<std:
 		line.erase(remove(line.begin(), line.end(), ' '), line.end());
 		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
 
-		int posEqual = line.find('=');
+		size_t posEqual = line.find('=');
 		if (posEqual != -1)
 		{
 			std::string key = line.substr(0, posEqual);
@@ -245,8 +245,8 @@ void StreamParser::ReplaceVarsInString(std::string& st)
 			}
 
 
-			int startP = endVar - startVar + 2;
-			int endP = st.length() - 1;
+			size_t startP = endVar - startVar + 2;
+			size_t endP = st.length() - 1;
 
 			if (startP <= endP)
 				ss << st.substr(startP, endP);

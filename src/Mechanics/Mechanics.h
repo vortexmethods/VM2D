@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics.h                                                      |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #ifndef MECHANICS_H
@@ -48,8 +48,8 @@
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
 
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 class Mechanics
@@ -78,7 +78,7 @@ public:
 	const bool isDeform;
 
 	/// Количество степеней свободы
-	const int degOfFreedom;
+	const size_t degOfFreedom;
 
 	/// Вектор гидродинамической силы, действующей на профиль
 	Point2D hydroDynamForce;
@@ -107,7 +107,7 @@ public:
 
 	/// Генерация заголовка файла нагрузок
 	/// \param[in] airfoilNumber номер профиля, для которого сохраняются силы
-	void GenerateForcesHeader(int airfoilNumber)
+	void GenerateForcesHeader(size_t airfoilNumber)
 	{
 		std::stringstream forceFileName, forceFileNameCsv;
 		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber;
@@ -131,32 +131,85 @@ public:
 	}//GenerateForcesHeader(...)
 
 
+	/// Генерация заголовка файла положения профиля
+	/// \param[in] airfoilNumber номер профиля, для которого сохраняется положение
+	void GeneratePositionHeader(size_t airfoilNumber)
+	{
+		if (isMoves)
+		{
+			std::stringstream positionFileName, positionFileNameCsv;
+			positionFileName << passport.dir << "position-airfoil-" << airfoilNumber;
+			positionFileNameCsv << passport.dir << "position-airfoil-" << airfoilNumber << ".csv";
+
+			std::ofstream newPositionFile(positionFileName.str());
+			std::ofstream newPositionFileCsv(positionFileNameCsv.str());
+
+			PrintLogoToTextFile(newPositionFile, positionFileName.str(), "Position of the airfoil " + passport.airfoilParams[airfoilNumber].fileAirfoil);
+
+			PrintHeaderToTextFile(newPositionFile, "currentStep     currentTime     x     y");
+
+			newPositionFileCsv << "t,x,y";
+
+			newPositionFile.close();
+			newPositionFile.clear();
+
+			newPositionFileCsv.close();
+			newPositionFileCsv.clear();
+		}
+	}//GeneratePositionHeader(...)
+
+
 	/// Сохранение строки со статистикой в файл нагрузок
 	/// \param[in] currentStep номер текущего шага
 	/// \param[in] airfoilNumber номер профиля, для которого сохраняются силы
-	void GenerateForcesString(int currentStep, int airfoilNumber)
+	void GenerateForcesString(size_t currentStep, size_t airfoilNumber)
 	{
 		std::stringstream forceFileName, forceFileNameCsv;
-		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber ;
+		forceFileName << passport.dir << "forces-airfoil-" << airfoilNumber;
 		forceFileNameCsv << passport.dir << "forces-airfoil-" << airfoilNumber << ".csv";
-
 
 		std::ofstream forcesFile(forceFileName.str(), std::ios::app);
 		forcesFile << std::endl << currentStep << "	" << passport.physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1];
 		forcesFile.close();
-		
+
 		std::ofstream forcesFileCsv(forceFileNameCsv.str(), std::ios::app);
 		forcesFileCsv << std::endl << passport.physicalProperties.getCurrTime() << "," << hydroDynamForce[0] << "," << hydroDynamForce[1];
 		forcesFileCsv.close();
-		
-		
-
 	}//GenerateForcesString(...)
+
+
+	/// Сохранение строки со статистикой в файл нагрузок
+	/// \param[in] currentStep номер текущего шага
+	/// \param[in] airfoilNumber номер профиля, для которого сохраняется положение
+	void GeneratePositionString(size_t currentStep, size_t airfoilNumber)
+	{
+		if (isMoves)
+		{
+			std::stringstream positionFileName, positionFileNameCsv;
+			positionFileName << passport.dir << "position-airfoil-" << airfoilNumber;
+			positionFileNameCsv << passport.dir << "position-airfoil-" << airfoilNumber << ".csv";
+
+			std::ofstream forcesFile(positionFileName.str(), std::ios::app);
+			forcesFile << std::endl << currentStep << "	" << passport.physicalProperties.getCurrTime() << "	" << afl.rcm[0] << " " << afl.rcm[1];
+			forcesFile.close();
+
+			std::ofstream forcesFileCsv(positionFileNameCsv.str(), std::ios::app);
+			forcesFileCsv << std::endl << passport.physicalProperties.getCurrTime() << "," << afl.rcm[0] << "," << afl.rcm[1];
+			forcesFileCsv.close();
+		}
+	}//GeneratePositionString(...)
+
+
 
 	/// \brief Вычисление скорости центра масс профиля
 	///
 	/// \param[in] currTime текущее время
 	virtual Point2D VeloOfAirfoilRcm(double currTime) = 0;
+
+	/// \brief Вычисление положения центра масс профиля
+	///
+	/// \param[in] currTime текущее время
+	virtual Point2D PositionOfAirfoilRcm(double currTime) = 0;
 
 	/// \brief Вычисление скоростей начал панелей
 	/// \param[in] currTime текущее время
@@ -172,6 +225,10 @@ public:
 	///
 	/// \param[in] rhs вектор правой части для механики одного профиля (количество элементов = количеству степеней свободы)
 	virtual void FillMechanicsRhs(std::vector<double>& rhs) = 0;
+
+	/// \brief Перемещение профиля в соответствии с законом
+	///
+	virtual void Move() = 0;
 };
 
 #endif

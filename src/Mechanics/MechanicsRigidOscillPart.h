@@ -7,7 +7,7 @@
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: AirfoilRect.h                                                    |
+| File name: MechanicsRigidOscillPart.h                                       |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,7 +28,7 @@
 
 /*!
 \file
-\brief Заголовочный файл с описанием класса AirfoilRect
+\brief Заголовочный файл с описанием класса MechanicsRigidOscillPart
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
@@ -36,16 +36,15 @@
 \date 2 апреля 2018 г.
 */
 
-#ifndef AIRFOILRECT_H
-#define AIRFOILRECT_H
+#ifndef MECHANICSRIGIDOSCILLPART_H
+#define MECHANICSRIGIDOSCILLPART_H
 
-#include "Airfoil.h"
+#include "Mechanics.h"
 
 /*!
-\brief Класс, определяющий тип обтекаемого профиля
+\brief Класс, определяющий вид механической системы
 
-Тип профиля:
-- профиль с прямолинейными панелями.
+Упруго закрепленное тело, метод расщепления
 
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
@@ -54,25 +53,55 @@
 \version 1.1
 \date 2 апреля 2018 г.
 */
-class AirfoilRect 
-	: public Airfoil
+
+class MechanicsRigidOscillPart :
+	public Mechanics
 {
+private:
+	//начальная скорость и отклонение
+	const double u0;
+	const double y0;
+
+	//плотность и площадь круга (радиус 0.5) для вычисления массы
+//	const double rhoAfl = 30.0;
+//	const double SAfl = 0.7853981633974483;
+	const double m;
+	const double b;
+	const double k;
+
+	//текущие скорость и отклонение
+	double u, y;
 public:
 
-	/// Конструктор
-	AirfoilRect(const Passport& passport_, const size_t numberInPassport_, const Parallel& parallel_)
-		:Airfoil(passport_, numberInPassport_, parallel_)
-	{ };
-
-	AirfoilRect(const Airfoil& afl) : Airfoil(afl){};
+	/// \brief Конструктор
+	/// 
+	/// \param[in] passport_ константная ссылка на паспорт
+	/// \param[in] afl_ ссылка на профиль;
+	/// \param[in] boundary_ константная ссылка на граничное условие;
+	/// \param[in] virtVortParams_ константная ссылка на параметры виртуального вихревого следа для профиля;
+	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
+	MechanicsRigidOscillPart(const Passport& passport_, Airfoil& afl_, const Boundary& boundary_, const VortexesParams& virtVortParams_, const Parallel& parallel_) :
+		Mechanics(passport_, afl_, boundary_, virtVortParams_, parallel_, 0, true, false), u0(0.0), y0(0.0), m(39.75), b(0.731), k(39.75 * 4.0 * PI * PI * 0.22 * 0.22)
+	{
+		u = u0;
+		y = y0;
+	};
 
 	/// Деструктор
-	virtual ~AirfoilRect() { };
+	~MechanicsRigidOscillPart() {};
 
-	//далее -- реализация виртуальной функции
-	virtual void ReadFromFile(const std::string& dir);
+	
+	//далее -- реализации виртуальных функций
+	virtual void GetHydroDynamForce(timePeriod& time);
+	virtual Point2D VeloOfAirfoilRcm(double currTime);
+	virtual Point2D PositionOfAirfoilRcm(double currTime);
+	virtual void VeloOfAirfoilPanels(double currTime);
 
-	virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
+	//TODO реализовать
+	virtual void FillMechanicsRowsAndCols(Eigen::MatrixXd& row, Eigen::MatrixXd& col) {};
+	virtual void FillMechanicsRhs(std::vector<double>& rhs) {};
+	virtual void Move();
+	
 };
 
 #endif

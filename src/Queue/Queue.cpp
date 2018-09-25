@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Queue.cpp                                                        |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #if !defined(__linux__)
@@ -125,7 +125,7 @@ void Queue::TaskSplit()
 				if (procState[j] == MPI_UNDEFINED)
 				{
 					//состояние процессора устанавливаем в "занят текущей задачей"
-					procState[j] = taskFol;
+					procState[j] = (int)taskFol;
 
 					//номер процессора посылаем в перечень процессоров, решающих текущую задачу
 					task[taskFol].proc[p] = j;
@@ -246,7 +246,7 @@ void Queue::TaskSplit()
 		if ((procState[s] != MPI_UNDEFINED) && (task[procState[s]].state == TaskState::running) && (task[procState[s]].proc[0] == s))
 			solvList.push_back(s);
 
-		sizeCommSolving = solvList.size();
+		sizeCommSolving = (int)solvList.size();
 
 		flagFinish.clear();
 		flagFinish.resize(solvList.size());
@@ -331,7 +331,9 @@ void Queue::TaskSplit()
 		//Создание файлов для записи сил
 		if ((parallel.myidWork == 0) && (world2D->currentStep == 0))
 		for (size_t q = 0; q < world2D->GetPassport().airfoilParams.size(); ++q)
+		{
 			world2D->GenerateMechanicsHeader(q);
+		}
 
 		//Создание файла для записи временной статистики
 		if ((parallel.myidWork == 0) && (world2D->currentStep == 0))

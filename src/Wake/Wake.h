@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Wake.h                                                           |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,22 +32,29 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #ifndef WAKE_H
 #define WAKE_H
 
 #include "Airfoil.h"
+#include "gpudefs.h"
+
+
+#include <array>
+
+class Boundary;
+class gpu;
 
 /*!
 \brief Класс, опеделяющий вихревой след (пелену)
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 class Wake
 {
@@ -58,23 +65,33 @@ private:
 public:
 	/// Список вихревых элементов
 	std::vector<Vortex2D> vtx;
-	
+	IFCUDA(mutable double* devWakePtr);
+	IFCUDA(mutable size_t devNWake);
+
 	/// Константная ссылка на параметры дискретизации вихревого следа
 	const WakeDiscretizationProperties& param;
 	
 	/// Константная ссылка на параметры исполнения в параллельном режиме
 	const Parallel& parallel;
 
+	/// Ссылка на объект, управляющий графическим ускорителем
+	gpu& cuda;
+
 	/// Константная ссылка на список умных казателей на обтекаемые профили
 	const std::vector<std::unique_ptr<Airfoil>>& airfoils;
 	
+	/// Константная ссылка на список умных казателей на граничные условия
+	const std::vector<std::unique_ptr<Boundary>>& boundary;
+
 	/// \brief Конструктор инициализации
 	///
 	/// \param[in] param_ константная ссылка на параметры дискретизации вихревого следа
 	/// \param[in] parallel_ константная ссылка на параметры исполнения в параллельном режиме
+	/// \param[in] cuda_ ссылка на объект, управляющий графическим ускорителем
 	/// \param[in] airfoils_ константная ссылка на вектор указателей на профили
-	Wake(const WakeDiscretizationProperties& param_, const Parallel& parallel_, const std::vector<std::unique_ptr<Airfoil>>& airfoils_)
-		: param(param_), parallel(parallel_), airfoils(airfoils_) { };
+	/// \param[in] boundary_ константная ссылка на вектор указателей на грфничные условия
+	Wake(const WakeDiscretizationProperties& param_, const Parallel& parallel_, gpu& cuda_, const std::vector<std::unique_ptr<Airfoil>>& airfoils_, const std::vector<std::unique_ptr<Boundary>>& boundary_)
+		: param(param_), parallel(parallel_), cuda(cuda_), airfoils(airfoils_), boundary(boundary_) { };
 	
 	/// Деструктор
 	~Wake(){ };
@@ -86,17 +103,18 @@ public:
 	
 	/// \brief Сохранение вихревого следа в файл 
 	/// 
+	/// \param[in] outVtx константная ссылка на вектор вихрей, которые нужно вывести в файл
 	/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
 	/// \param[in] step номер кадра для сохранения
 	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-	void SaveKadr(const std::string& dir, int step, timePeriod& time) const;
+	void SaveKadr(const std::vector<Vortex2D>& outVtx, const std::string& dir, size_t step, timePeriod& time) const;
 
 	/// \brief Сохранение вихревого следа в файл .vtk
 	/// 
 	/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
 	/// \param[in] step номер кадра для сохранения
 	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-	void SaveKadrVtk(const std::string& dir, int step, timePeriod& time) const;
+	void SaveKadrVtk(const std::string& dir, size_t step, timePeriod& time) const;
 
 	/// \brief MPI-синхронизация вихревого следа
 	///
@@ -132,7 +150,7 @@ public:
 
 	/// \brief Исключение нулевых и мелких вихрей
 	/// \return число исключенных вихрей
-	int RemoveZero();
+	size_t RemoveZero();
 
 	/// \brief Проверка проникновения точки через границу профиля
 	/// 
@@ -141,7 +159,7 @@ public:
 	/// \param[in] afl константная ссылка на контролируемый профиль
 	/// \param[out] panThrough номер "протыкаемой" панели
 	/// return признак пересечения профиля
-	bool MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, int& panThrough);
+	bool MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough);
 
 	/// \brief Проверка проникновения точки через границу профиля
 	/// 
@@ -151,7 +169,7 @@ public:
 	/// \param[in] afl константная ссылка на контролируемый профиль
 	/// \param[out] panThrough номер "протыкаемой" панели
 	/// return признак пересечения профиля
-	bool MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, int& panThrough);
+	bool MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, size_t& panThrough);
 
 	/// \brief Поиск ближайшего соседа
 	/// \param[in] type тип коллапса: 

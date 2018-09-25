@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: VelocityFourier.cpp                                              |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -33,8 +33,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #include "VelocityFourier.h"
@@ -42,7 +42,7 @@
  // TODO проверить resize
 
 //пересчет глобального номера ячейки по "локальным координатам" ячейки
-inline int VelocityFourier::cellIj(int i, int j) const
+inline size_t VelocityFourier::cellIj(int i, int j) const
 { 
 	return j*nCell[0] + i; 
 }
@@ -83,10 +83,10 @@ double VelocityFourier::w(int i, int j) const
 	for (int j = downCell; j < upCell; ++j)
 	{
 
-		int cell = cellIj(i, j);
+		size_t cell = cellIj(i, j);
 		for (size_t q = 0; q < vic[cell].size(); ++q)
 		{
-			const int& globQ = vic[cell][q];
+			const size_t& globQ = vic[cell][q];
 			const Vortex2D& v = wake.vtx[globQ];
 			
 			res += Kernel((v.r()[0] - posNode[0]) / h[0]) * Kernel((v.r()[1] - posNode[1]) / h[1]);

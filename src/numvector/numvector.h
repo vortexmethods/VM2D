@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: numvector.h                                                      |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #ifndef NUMVECTOR_H_
@@ -46,17 +46,20 @@
 \brief Шаблонный класс, определяющий вектор фиксированной длины
 \n Фактически представляет собой массив, для которого определено большое количество различных операций.
 \n Для доступа к элементам массива используется оператор []
+
 \tparam T тип элементов вектора
 \tparam n длина вектора
+
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 
-template<typename T, int n>
+template<typename T, size_t n>
 class numvector
 {
 protected:
@@ -70,7 +73,7 @@ public:
 	/// \tparam T тип данных
 	/// \param[in] j номер элемента, к которому происходит обращение
 	/// \return Ссылка на элемент
-	T& operator[](int j) { return r[j]; }
+	T& operator[](size_t j) { return r[j]; }
 
 
 	/// \brief Перегрузка оператора "[]" доступа к элементу
@@ -78,7 +81,7 @@ public:
 	/// \tparam T тип данных
 	/// \param[in] j номер элемента, к которому происходит обращение
 	/// \return Константная ссылка на элемент
-	const T& operator[](int j) const { return r[j]; }
+	const T& operator[](size_t j) const { return r[j]; }
 
 
 	/// \brief Перегрузка оператора "=" присваивания
@@ -89,7 +92,7 @@ public:
 	/// \return ссылка на самого себя
 	numvector<T, n>& operator=(const numvector<T, n>& vec) 
 	{
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			r[i] = vec.r[i];
 		return *this;
 	}//operator=
@@ -104,12 +107,13 @@ public:
 	double operator* (const numvector<T, n>& y) const 
 	{
 		T res = 0;
-		for (int j = 0; j < n; ++j)
+		for (size_t j = 0; j < n; ++j)
 			res += r[j] * y[j];
 		return res;
 	}//operator*
 
 
+#if !defined(__CUDACC__)
 	/// \brief Перегрузка оператора "^" векторного произведения 
 	///
 	/// Определен только для трехмерных векторов
@@ -121,7 +125,7 @@ public:
 	{
 		return{ r[1] * y[2] - r[2] * y[1], r[2] * y[0] - r[0] * y[2], r[0] * y[1] - r[1] * y[0] };
 	}//operator^
-	
+#endif	
 
 	/// \brief Перегрузка оператора "^" вычисления третьей компоненты векторного произведения
 	///
@@ -144,7 +148,7 @@ public:
 	/// \return ссылка на самого себя после домножения на число
 	numvector<T, n>& operator*=(const double m)
 	{		
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			r[i] *= m;
 		return *this;
 	}//operator*=
@@ -158,7 +162,7 @@ public:
 	/// \return ссылка на самого себя после деления на число
 	numvector<T, n>& operator/=(const double m)
 	{
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			r[i] /= m;
 		return *this;
 	}//operator/=
@@ -172,7 +176,7 @@ public:
 	/// \return ссылка на самого себя после сложения с другим вектором
 	numvector<T, n>& operator+=(const numvector<T, n>& y)
 	{
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			r[i] += y[i];
 		return *this;
 	}//operator+=
@@ -186,7 +190,7 @@ public:
 	/// \return ссылка на самого себя после вычитания другого вектора
 	numvector<T, n>& operator-=(const numvector<T, n>& y)
 	{
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			r[i] -= y[i];
 		return *this;
 	}//operator-=
@@ -201,7 +205,7 @@ public:
 	numvector<T, n> operator+(const numvector<T, n>& y) const
 	{
 		numvector<T, n> res(*this);
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			res[i] += y[i];
 		return res;
 	}//operator+
@@ -216,7 +220,7 @@ public:
 	numvector<T, n> operator-(const numvector<T, n>& y) const
 	{
 		numvector<T, n> res(*this);
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			res[i] -= y[i];
 		return res;
 	}//operator-
@@ -244,7 +248,7 @@ public:
 	numvector<T, n> operator-() const
 	{
 		numvector<T, n> res(0);
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			res[i] = -(*this)[i];
 		return res;
 	}//operator*
@@ -253,7 +257,7 @@ public:
 	/// \brief Вычисление размерности вектора (числа элементов в нем)
 	///
 	/// \return размерность вектора (число элементов в нем)
-	int size() const { return n; }
+	size_t size() const { return n; }
 
 
 	/// \brief Вычисление нормы (длины) вектора
@@ -312,11 +316,11 @@ public:
 	/// \return позиция первого вхождения элемента s; если не входит --- возвращает (-1), приведенный к типу size_t
 	size_t member(T s)
 	{
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 		if (r[i] == s)
 			return i;
 
-		return (-1);
+		return (size_t)(-1);
 	}//member(...)
 
 
@@ -345,12 +349,13 @@ public:
 	numvector<T, n> rotateLeft(size_t k) const
 	{
 		numvector<T, n> res;
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			res[i] = r[(i + k) % n];
 		return res;
 	}//rotateLeft(...)
 
 	
+#if !defined(__CUDACC__)
 	/// \brief Геометрический поворот двумерного вектора на 90 градусов
 	///
 	/// Исходный вектор при этом не изменяется
@@ -363,7 +368,7 @@ public:
 	{
 		return { -r[1], r[0] };
 	}//kcross()
-
+#endif
 
 	/// Установка всех компонент вектора в константу (по умолчанию --- нуль)
 	/// \tparam T тип данных
@@ -373,7 +378,7 @@ public:
 	/// \return ссылка на сам вектор	
 	numvector<T, n>& toZero(double val = 0.0)
 	{
-	    for (int i = 0; i < n; ++i)
+	    for (size_t i = 0; i < n; ++i)
 		r[i] = val;
 		return *this;
 	}
@@ -389,7 +394,7 @@ public:
 	/// \param[in] z значение, которым инициализируются все компоненты вектора
 	numvector(const T z)
 	{
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			r[i] = z;
 	}//numvector(...)
 	
@@ -401,11 +406,12 @@ public:
 	/// \param[in] vec константная ссылка на копируемый вектор
 	numvector(const numvector<T, n>& vec)
 	{
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < n; ++i)
 			r[i] = vec.r[i];
 	}//numvector(...)
 
 
+#if !defined(__CUDACC__)
 	/// \brief Конструктор инициализации списком
 	///
 	/// \tparam T тип данных
@@ -422,6 +428,7 @@ public:
 		for (size_t i = 0; i < n; ++i)
 			r[i] = *(z.begin() + i);
 	}//numvector(...)
+#endif 
 
 }; //class numvector
 
@@ -433,7 +440,7 @@ public:
 /// \param[in] m число-множитель, которое приводится к типу double
 /// \param[in] x константная ссылка на умножаемый вектор
 /// \return результат умножения вектора на число
-template<typename T, int n>
+template<typename T, size_t n>
 inline numvector<T, n> operator*(const double m, const numvector<T, n>& x)
 {
 	numvector<T, n> res(x);
@@ -449,18 +456,18 @@ inline numvector<T, n> operator*(const double m, const numvector<T, n>& x)
 /// \param[in] A константная ссылка на матрицу
 /// \param[in] x константная ссылка на вектор
 /// \return вектор --- результат умножения матрицы на вектор
-template<typename T, int n>
+template<typename T, size_t n>
 inline numvector<T, n> dot(const numvector<numvector<T, n>, n>& A, const numvector<T, n>& x)
 {
 	numvector<T, n> res;
 
-	for (int i = 0; i < n; ++i)
+	for (size_t i = 0; i < n; ++i)
 		res[i] = A[i] * x;
 	
 	return res;
 }//dot(...)
 
-
+#if !defined(__CUDACC__)
 /// \brief Быстрое вычисление векторного произведения
 ///
 /// Определено только для трехмерных векторов
@@ -475,7 +482,7 @@ inline void cross(const numvector<T, 3>& x, const numvector<T, 3>& y, numvector<
 {
 	z = { x[1] * y[2] - x[2] * y[1], x[2] * y[0] - x[0] * y[2], x[0] * y[1] - x[1] * y[0] };
 }//cross(...)
-
+#endif
 
 /// \brief Вычисление третьей компоненты векторного произведения 
 ///
@@ -486,7 +493,7 @@ inline void cross(const numvector<T, 3>& x, const numvector<T, 3>& y, numvector<
 /// \param[in] x константная ссылка на первый множитель
 /// \param[in] y константная ссылка на второй множитель
 /// \return третья компонента вектороного произведения
-template<typename T, int n>
+template<typename T, size_t n>
 inline double cross3(const numvector<T, n>& x, const numvector<T, n>& y)
 {
 	return (x[0] * y[1] - x[1] * y[0]);
@@ -500,11 +507,11 @@ inline double cross3(const numvector<T, n>& x, const numvector<T, n>& y)
 /// \param[in] x константная ссылка на радиус-вектор первой точки
 /// \param[in] y константная ссылка на радиус-вектор второй точки
 /// \return квадрат расстояния между точками
-template<typename T, int n>
+template<typename T, size_t n>
 inline double dist2(const numvector<T, n>& x, const numvector<T, n>& y) 
 {
 	T res = 0;
-	for (int j = 0; j < n; ++j)
+	for (size_t j = 0; j < n; ++j)
 		res += (x[j] - y[j])*(x[j] - y[j]);
 	return res;	
 }//dist2(...)
@@ -517,7 +524,7 @@ inline double dist2(const numvector<T, n>& x, const numvector<T, n>& y)
 /// \param[in] x константная ссылка на радиус-вектор первой точки
 /// \param[in] y константная ссылка на радиус-вектор второй точки
 /// \return расстояние между точками
-template<typename T, int n>
+template<typename T, size_t n>
 inline double dist(const numvector<T, n>& x, const numvector<T, n>& y) 
 {
 	return sqrt(dist2(x, y));	
@@ -533,11 +540,11 @@ inline double dist(const numvector<T, n>& x, const numvector<T, n>& y)
 /// \param[in,out] str ссылка на поток вывода
 /// \param[in] x константная ссылка на вектор
 /// \return ссылка на поток вывода
-template<typename T, int n>
+template<typename T, size_t n>
 std::ostream& operator<< (std::ostream& str, const numvector<T,n>& x)
 {
 	str << "{ ";
-	for (int j = 0; j < n - 1; ++j)
+	for (size_t j = 0; j < n - 1; ++j)
 		str << x[j] << ", ";
 	str << x[n - 1];
 	str << " }";
@@ -555,14 +562,14 @@ std::ostream& operator<< (std::ostream& str, const numvector<T,n>& x)
 /// \tparam p размерность нового вектора
 /// \param[in] r константная ссылка на исходный вектор
 /// \return вектор новой размерности
-template<typename T, int n, int p>
+template<typename T, size_t n, size_t p>
 numvector<T, p> toOtherLength(const numvector<T, n>& r)
 {
 	numvector<T, p> res;
-	int minPN = (p<n) ? p : n;
-	for (int i = 0; i < minPN; ++i)
+	size_t minPN = (p<n) ? p : n;
+	for (size_t i = 0; i < minPN; ++i)
 		res[i] = r[i];
-	for (int i = minPN; i < p; ++i)
+	for (size_t i = minPN; i < p; ++i)
 		res[i] = 0;
 	
 	return res;

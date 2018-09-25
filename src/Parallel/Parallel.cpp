@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Parallel.cpp                                                     |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 
@@ -41,11 +41,11 @@
 
 
 // Распределение задач по процессорам
-parProp Parallel::SplitMPI(int n, bool bcastAll) const
+parProp Parallel::SplitMPI(size_t n, bool bcastAll) const
 {	
 	parProp par;
 	
-	par.totalLen = n;
+	par.totalLen = (int)n;
 	MPI_Bcast(&par.totalLen, 1, MPI_INT, 0, commWork);
 	
 	if (myidWork == 0)
@@ -53,7 +53,7 @@ parProp Parallel::SplitMPI(int n, bool bcastAll) const
 		par.len.clear();
 		par.disp.clear();
 
-		int nPerP = n / nProcWork;
+		int nPerP = (int)(n / nProcWork);
 
 		for (int s = 0; s < nProcWork - 1; ++s)
 		{
@@ -61,7 +61,7 @@ parProp Parallel::SplitMPI(int n, bool bcastAll) const
 			par.disp.push_back(s*nPerP);
 		}
 		
-		par.len.push_back(n - nPerP * (nProcWork - 1));
+		par.len.push_back((int)n - nPerP * (nProcWork - 1));
 		par.disp.push_back(nPerP * (nProcWork - 1));
 	}
 

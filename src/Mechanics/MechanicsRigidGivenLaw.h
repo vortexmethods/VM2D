@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: MechanicsRigidGivenLaw.h                                         |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -28,12 +28,12 @@
 
 /*!
 \file
-\brief Заголовочный файл с описанием класса MechanicsRigidGivenLaw
-\author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
-\author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\brief Р—Р°РіРѕР»РѕРІРѕС‡РЅС‹Р№ С„Р°Р№Р» СЃ РѕРїРёСЃР°РЅРёРµРј РєР»Р°СЃСЃР° MechanicsRigidGivenLaw
+\author РњР°СЂС‡РµРІСЃРєРёР№ РР»СЊСЏ РљРѕРЅСЃС‚Р°РЅС‚РёРЅРѕРІРёС‡
+\author РљСѓР·СЊРјРёРЅР° РљСЃРµРЅРёСЏ РЎРµСЂРіРµРµРІРЅР°
+\author Р СЏС‚РёРЅР° Р•РІРіРµРЅРёСЏ РџР°РІР»РѕРІРЅР°
+\version 1.1
+\date 2 Р°РїСЂРµР»СЏ 2018 Рі.
 */
 
 #ifndef MECHANICSRIGIDGIVENLAW_H
@@ -42,45 +42,47 @@
 #include "Mechanics.h"
 
 /*!
-\brief Класс, определяющий вид механической системы
+\brief РљР»Р°СЃСЃ, РѕРїСЂРµРґРµР»СЏСЋС‰РёР№ РІРёРґ РјРµС…Р°РЅРёС‡РµСЃРєРѕР№ СЃРёСЃС‚РµРјС‹
 
-Жесткое тело, движущееся по заданному закону
+Р–РµСЃС‚РєРѕРµ С‚РµР»Рѕ, РґРІРёР¶СѓС‰РµРµСЃСЏ РїРѕ Р·Р°РґР°РЅРЅРѕРјСѓ Р·Р°РєРѕРЅСѓ
 
-\author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
-\author Рятина Евгения Павловна
+\author РњР°СЂС‡РµРІСЃРєРёР№ РР»СЊСЏ РљРѕРЅСЃС‚Р°РЅС‚РёРЅРѕРІРёС‡
+\author РљСѓР·СЊРјРёРЅР° РљСЃРµРЅРёСЏ РЎРµСЂРіРµРµРІРЅР°
+\author Р СЏС‚РёРЅР° Р•РІРіРµРЅРёСЏ РџР°РІР»РѕРІРЅР°
 
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 Р°РїСЂРµР»СЏ 2018 Рі.
 */
 
 class MechanicsRigidGivenLaw :
 	public Mechanics
 {
 public:
-	/// \brief Конструктор
+	/// \brief РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
 	/// 
-	/// \param[in] passport_ константная ссылка на паспорт
-	/// \param[in] afl_ ссылка на профиль;
-	/// \param[in] boundary_ константная ссылка на граничное условие;
-	/// \param[in] virtVortParams_ константная ссылка на параметры виртуального вихревого следа для профиля;
-	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения.
+	/// \param[in] passport_ РєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ СЃСЃС‹Р»РєР° РЅР° РїР°СЃРїРѕСЂС‚
+	/// \param[in] afl_ СЃСЃС‹Р»РєР° РЅР° РїСЂРѕС„РёР»СЊ;
+	/// \param[in] boundary_ РєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ СЃСЃС‹Р»РєР° РЅР° РіСЂР°РЅРёС‡РЅРѕРµ СѓСЃР»РѕРІРёРµ;
+	/// \param[in] virtVortParams_ РєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ СЃСЃС‹Р»РєР° РЅР° РїР°СЂР°РјРµС‚СЂС‹ РІРёСЂС‚СѓР°Р»СЊРЅРѕРіРѕ РІРёС…СЂРµРІРѕРіРѕ СЃР»РµРґР° РґР»СЏ РїСЂРѕС„РёР»СЏ;
+	/// \param[in] parallel_ РєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ СЃСЃС‹Р»РєР° РЅР° РїР°СЂР°РјРµС‚СЂС‹ РїР°СЂР°Р»Р»РµР»СЊРЅРѕРіРѕ РёСЃРїРѕР»РЅРµРЅРёСЏ.
 	MechanicsRigidGivenLaw(const Passport& passport_, Airfoil& afl_, const Boundary& boundary_, const VortexesParams& virtVortParams_, const Parallel& parallel_) :
 		Mechanics(passport_, afl_, boundary_, virtVortParams_, parallel_, 0, true, false)
 	{};
 
 
-	/// Деструктор
+	/// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 	~MechanicsRigidGivenLaw() { };
 
-	//далее -- реализации виртуальных функций
+	//РґР°Р»РµРµ -- СЂРµР°Р»РёР·Р°С†РёРё РІРёСЂС‚СѓР°Р»СЊРЅС‹С… С„СѓРЅРєС†РёР№
 	virtual void GetHydroDynamForce(timePeriod& time);
 	virtual Point2D VeloOfAirfoilRcm(double currTime);
+	virtual Point2D PositionOfAirfoilRcm(double currTime);
 	virtual void VeloOfAirfoilPanels(double currTime);
 
-	//TODO реализовать
+	//TODO СЂРµР°Р»РёР·РѕРІР°С‚СЊ
 	virtual void FillMechanicsRowsAndCols(Eigen::MatrixXd& row, Eigen::MatrixXd& col) {};
 	virtual void FillMechanicsRhs(std::vector<double>& rhs) {};
+	virtual void Move();
 };
 
 #endif

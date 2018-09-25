@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Times.h                                                          |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */ 
 
 #ifndef TIMES_H
@@ -44,8 +44,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 class Times
 {
@@ -73,8 +73,15 @@ public:
 	/// Начало и конец процесса решения системы линейных алгебраических уравнений
 	timePeriod timeSolveLinearSystem;
 
-	/// Начало и конец процесса вычисления скоростей вихрей
-	timePeriod timeCalcVortexVelo;
+
+
+	/// Начало и конец процесса вычисления конвективных скоростей вихрей
+	timePeriod timeCalcVortexConvVelo;
+
+	/// Начало и конец процесса вычисления диффузионных скоростей вихрей
+	timePeriod timeCalcVortexDiffVelo;
+
+
 
 	/// Начало и конец процесса вычисления нагрузок
 	timePeriod timeGetHydroDynamForce;
@@ -87,6 +94,9 @@ public:
 
 	/// Начало и конец процесса реструктуризации пелены
 	timePeriod timeRestruct;
+
+	/// Начало и конец процесса сортировки вихревого следа
+	timePeriod timeWakeSort;
 
 	/// Начало и конец процесса сохранения кадра в файл
 	timePeriod timeSaveKadr;
@@ -107,7 +117,7 @@ public:
 		std::ofstream timeStatFile(timeStatFileName.str());
 		PrintLogoToTextFile(timeStatFile, timeStatFileName.str(), "Time statistics");
 
-		PrintHeaderToTextFile(timeStatFile, "step Time N tStep tMem tMatRhs tSolve tVelo tForce tMove tInside tRestr tSave");
+		PrintHeaderToTextFile(timeStatFile, "step Time N tStep tMem tMatRhs tSolve tConvVelo tDiffVelo tForce tMove tInside tRestr tWakeSort tSave");
 
 		timeStatFile.close();
 		timeStatFile.clear();
@@ -118,7 +128,7 @@ public:
 	/// Сохранение строки со статистикой в файл временной статистики
 	/// \param[in] currentStep номер текущего шага
 	/// \param[in] N число вихрей в пелене
-	void GenerateStatString(int currentStep, int N)
+	void GenerateStatString(size_t currentStep, size_t N)
 	{
 		std::ofstream timestatFile(passport.dir + "timestat", std::ios::app);
 		
@@ -129,12 +139,14 @@ public:
 			<< dT(timeWholeStep) << "\t"
 			<< dT(timeReserveMemoryForMatrixAndRhs) << "\t"
 			<< dT(timeFillMatrixAndRhs) << "\t"
-			<< dT(timeSolveLinearSystem) << "\t"			
-			<< dT(timeCalcVortexVelo) << "\t"
+			<< dT(timeSolveLinearSystem) << "\t"
+			<< dT(timeCalcVortexConvVelo) << "\t"
+			<< dT(timeCalcVortexDiffVelo) << "\t"			
 			<< dT(timeGetHydroDynamForce) << "\t"
 			<< dT(timeMoveVortexes) << "\t"
 			<< dT(timeCheckInside) << "\t"					
 			<< dT(timeRestruct) << "\t"
+			<< dT(timeWakeSort) << "\t"
 			<< dT(timeSaveKadr);
 
 
@@ -150,11 +162,13 @@ public:
 		ToZero(timeReserveMemoryForMatrixAndRhs);
 		ToZero(timeFillMatrixAndRhs);
 		ToZero(timeSolveLinearSystem);
-		ToZero(timeCalcVortexVelo);
+		ToZero(timeCalcVortexConvVelo);
+		ToZero(timeCalcVortexDiffVelo);
 		ToZero(timeGetHydroDynamForce);
 		ToZero(timeMoveVortexes);
 		ToZero(timeCheckInside);
 		ToZero(timeRestruct);
+		ToZero(timeWakeSort);
 		ToZero(timeSaveKadr);		
 	}
 

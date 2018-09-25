@@ -7,7 +7,7 @@
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: MechanicsRigidImmovable.cpp                                      |
+| File name: gpudefs.h                                                        |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,7 +28,7 @@
 
 /*!
 \file
-\brief Файл кода с описанием класса MechanicsRigidImmovable
+\brief Описание констант и параметров для взаимодействия с графическим ускорителем
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
@@ -36,52 +36,34 @@
 \date 2 апреля 2018 г.
 */
 
-#include "MechanicsRigidImmovable.h"
+#ifndef GPUDEFS_H
+#define GPUDEFS_H
+
+#define USE_CUDA
+
+#define CUDA_ENABLE(a) a
+#define CUDA_DISABLE(a)
+
+#if defined(USE_CUDA)
+#define CUDAdef CUDA_ENABLE
+#else
+#define CUDAdef CUDA_DISABLE
+#endif
+
+#define IFCUDA_(e, a) e(a)
+#define IFCUDA(...) IFCUDA_(CUDAdef, __VA_ARGS__)
 
 
-//Вычисление скорости центра масс профиля
-Point2D MechanicsRigidImmovable::VeloOfAirfoilRcm(double currTime)
-{
-	return{ 0.0, 0.0 };
-}//VeloOfAirfoilRcm(...)
+#define CUBLOCK (128)
+#define INC_VORT_DEV (1024)
 
-//Вычисление положения центра масс профиля
-Point2D MechanicsRigidImmovable::PositionOfAirfoilRcm(double currTime)
-{
-	return afl.rcm;
-}//PositionOfAirfoilRcm(...)
+#define CU_I1I2
+#define CU_RHS
+#define CU_I0I3
+#define CU_CONV_TOWAKE
+#define CU_CONV_TOBOU
+#define CU_CONVVIRT
+#define CU_PAIRS   
 
-// Вычисление скоростей начал панелей
-void MechanicsRigidImmovable::VeloOfAirfoilPanels(double currTime)
-{
-	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
-	for (size_t i = 0; i < afl.v.size(); ++i)
-		afl.v[i] = veloRcm;
-}//VeloOfAirfoilPanels(...)
 
-//Вычисление гидродинамической силы, действующей на профиль
-void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
-{
-	time.first = omp_get_wtime();
-
-	hydroDynamForce = { 0.0, 0.0 };
-
-	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
-	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные delta_k
-
-	for (size_t i = 0; i < afl.np; ++i)
-	{
-		double GamK = boundary.virtualWake[i].g();
-		double deltaK =  boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i];  		 //afl.gammaThrough[i];
-		Point2D VelK = virtVortParams.convVelo[i] /* + virtVortParams.diffVelo[i]*/ + passport.physicalProperties.V0();
-		Point2D rK =  0.5 * (afl.r[i + 1] + afl.r[i]);	//boundary.virtualWake[i].r();		
-
-		hDFGam += GamK * Point2D({ VelK[1], -VelK[0] });
-		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
-	}
-
-	hydroDynamForce = hDFGam + (1.0 / passport.timeDiscretizationProperties.dt) * hDFdelta;
-
-	time.second = omp_get_wtime();
-}//GetHydroDynamForce(...)
-
+#endif

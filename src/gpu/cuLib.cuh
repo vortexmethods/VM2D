@@ -7,7 +7,7 @@
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: MechanicsRigidImmovable.cpp                                      |
+| File name: cuLib.cuh                                                        |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,7 +28,7 @@
 
 /*!
 \file
-\brief Файл кода с описанием класса MechanicsRigidImmovable
+\brief Заголовочный файл с описанием функций библиотеки cuLib для работы с CUDA
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
@@ -36,52 +36,38 @@
 \date 2 апреля 2018 г.
 */
 
-#include "MechanicsRigidImmovable.h"
+#ifndef CUVELOCITYBIOTSAVART_CUH
+#define CUVELOCITYBIOTSAVART_CUH
+
+#if defined(__CUDACC__) || defined(USE_CUDA)
+
+#include "/usr/include/linux/cuda.h"
+//#include <cuda.h>
+
+#include "Vortex2D.h"
+
+void cuSetConstants(size_t pos_, size_t posR_, size_t posG_);
+
+void cuReserveDevMem(void*& ptr, size_t nBytes);
+void cuClearWakeMem(size_t new_n, double* dev_ptr);
+void cuCopyWakeToDev(size_t n, const Vortex2D* host_src, double* dev_ptr);
+void cuCopyRsToDev(size_t n, const Point2D* host_src, double* dev_ptr);
+void cuCopyFixedArray(void* dev_ptr, void* host_src, size_t nBytes);
+void cuCopyMemFromDev(void* host_ptr, void* dev_ptr, size_t nBytes);
+void cuDeleteFromDev(void* devPtr);
+
+////////////////////////////////////////////////////////////////
+void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nAfls, size_t* nPnls, double** ptrPnls, double* vel, double* rd, double minRd, double eps2);
+void cuCalculateConvVeloWakeFromVirtual(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* vel, double eps2);
+void cuCalculateDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd);
+void cuCalculateDiffVeloWakeMesh(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, int* mesh, double meshStep, double* i1, double* i2, double* rd);
+void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd);
+void cuCalculateRhs(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* rhs);	
 
 
-//Вычисление скорости центра масс профиля
-Point2D MechanicsRigidImmovable::VeloOfAirfoilRcm(double currTime)
-{
-	return{ 0.0, 0.0 };
-}//VeloOfAirfoilRcm(...)
+void cuCalculatePairs(size_t myDisp, size_t myLen, size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 
-//Вычисление положения центра масс профиля
-Point2D MechanicsRigidImmovable::PositionOfAirfoilRcm(double currTime)
-{
-	return afl.rcm;
-}//PositionOfAirfoilRcm(...)
 
-// Вычисление скоростей начал панелей
-void MechanicsRigidImmovable::VeloOfAirfoilPanels(double currTime)
-{
-	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
-	for (size_t i = 0; i < afl.v.size(); ++i)
-		afl.v[i] = veloRcm;
-}//VeloOfAirfoilPanels(...)
+#endif
 
-//Вычисление гидродинамической силы, действующей на профиль
-void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
-{
-	time.first = omp_get_wtime();
-
-	hydroDynamForce = { 0.0, 0.0 };
-
-	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
-	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные delta_k
-
-	for (size_t i = 0; i < afl.np; ++i)
-	{
-		double GamK = boundary.virtualWake[i].g();
-		double deltaK =  boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i];  		 //afl.gammaThrough[i];
-		Point2D VelK = virtVortParams.convVelo[i] /* + virtVortParams.diffVelo[i]*/ + passport.physicalProperties.V0();
-		Point2D rK =  0.5 * (afl.r[i + 1] + afl.r[i]);	//boundary.virtualWake[i].r();		
-
-		hDFGam += GamK * Point2D({ VelK[1], -VelK[0] });
-		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
-	}
-
-	hydroDynamForce = hDFGam + (1.0 / passport.timeDiscretizationProperties.dt) * hDFdelta;
-
-	time.second = omp_get_wtime();
-}//GetHydroDynamForce(...)
-
+#endif

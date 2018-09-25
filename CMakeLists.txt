@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 project(VM2D)
 
+enable_language(CUDA)
+set (CMAKE_CUDA_FLAGS "-arch=sm_35")
+#set (CMAKE_CUDA_COMPILER "/usr/local/cuda/bin/nvcc")
+
 set(CMAKE_CONFIGURATION_TYPE "Debug;Release")
 
 include(CheckCXXCompilerFlag)
@@ -21,8 +25,12 @@ set(SRC_LIST src/VM2D/VM2D.cpp)
 FILE(GLOB ALLFILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/*.cu
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cuh
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cu
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cuh
   )
 
 add_executable(${PROJECT_NAME} ${ALLFILES})
@@ -48,6 +56,8 @@ SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR}/src)
 #MESSAGE( STATUS "variable is: " ${CMAKE_CONFIGURATION_TYPE} )
 
 include_directories(${dirlist})
+
+include_directories(/opt/openmpi/intel/eth/include)
 
 #EIGEN
 #if(WIN32)
@@ -75,7 +85,7 @@ if(WIN32)
    #This is for finding MS-MPI.
    #set(_MPI_PREFIX_PATH)
    #list(APPEND _MPI_PREFIX_PATH "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\MPI;Path]/..")
-   set(MPIEXEC "C:/Program Files (x86)/Microsoft MPI/Bin/mpiexec.exe")
+   set(MPIEXEC "C:/Program Files/Microsoft MPI/Bin/mpiexec.exe")
    # For building MPI programs the selected Visual Studio compiler is used, namely cl.exe.
    # So there is no need to set a specific MPI compiler.
    #set(MPI_CXX_COMPILER "${CMAKE_CXX_COMPILER}")

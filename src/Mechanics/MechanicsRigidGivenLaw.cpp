@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: MechanicsRigidGivenLaw.cpp                                       |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -28,26 +28,26 @@
 
 /*!
 \file
-\brief Файл кода с описанием класса MechanicsRigidGivenLaw
-\author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
-\author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\brief Р¤Р°Р№Р» РєРѕРґР° СЃ РѕРїРёСЃР°РЅРёРµРј РєР»Р°СЃСЃР° MechanicsRigidGivenLaw
+\author РњР°СЂС‡РµРІСЃРєРёР№ РР»СЊСЏ РљРѕРЅСЃС‚Р°РЅС‚РёРЅРѕРІРёС‡
+\author РљСѓР·СЊРјРёРЅР° РљСЃРµРЅРёСЏ РЎРµСЂРіРµРµРІРЅР°
+\author Р СЏС‚РёРЅР° Р•РІРіРµРЅРёСЏ РџР°РІР»РѕРІРЅР°
+\version 1.1
+\date 2 Р°РїСЂРµР»СЏ 2018 Рі.
 */
 
 #include "MechanicsRigidGivenLaw.h"
 
 
-//Вычисление гидродинамической силы, действующей на профиль
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРѕР№ СЃРёР»С‹, РґРµР№СЃС‚РІСѓСЋС‰РµР№ РЅР° РїСЂРѕС„РёР»СЊ
 void MechanicsRigidGivenLaw::GetHydroDynamForce(timePeriod& time)
 {
 	time.first = omp_get_wtime();
 
 	hydroDynamForce = { 0.0, 0.0 };
 
-	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
-	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные delta_k
+	Point2D hDFGam = { 0.0, 0.0 };	//РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРёРµ СЃРёР»С‹, РѕР±СѓСЃР»РѕРІР»РµРЅРЅС‹Рµ Gamma_k
+	Point2D hDFdelta = { 0.0, 0.0 };	//РіРёРґСЂРѕРґРёРЅР°РјРёС‡РµСЃРєРёРµ СЃРёР»С‹, РѕР±СѓСЃР»РѕРІР»РµРЅРЅС‹Рµ delta_k
 
 	for (size_t i = 0; i < afl.np; ++i)
 	{
@@ -65,16 +65,33 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce(timePeriod& time)
 	time.second = omp_get_wtime();
 }// GetHydroDynamForce(...)
 
-// Вычисление скорости центра масс
+// Р’С‹С‡РёСЃР»РµРЅРёРµ СЃРєРѕСЂРѕСЃС‚Рё С†РµРЅС‚СЂР° РјР°СЃСЃ
 Point2D MechanicsRigidGivenLaw::VeloOfAirfoilRcm(double currTime)
 {
-	return { sin(PI * currTime / 8.0), 0.0};
+	if (currTime < 10.0)
+		return { -currTime / 10.0, 0.0 };
+	else return { -1.0, 0.0};
 }//VeloOfAirfoilRcm(...)
 
-// Вычисление скоростей начал панелей
+// Р’С‹С‡РёСЃР»РµРЅРёРµ РїРѕР»РѕР¶РµРЅРёСЏ С†РµРЅС‚СЂР° РјР°СЃСЃ
+Point2D MechanicsRigidGivenLaw::PositionOfAirfoilRcm(double currTime)
+{
+	if (currTime < 10.0)
+		return { -currTime / 10.0 * currTime * 0.5, 0.0 };
+	else return { -5.0 - (currTime - 10.0), 0.0 };
+}//PositionOfAirfoilRcm(...)
+
+// Р’С‹С‡РёСЃР»РµРЅРёРµ СЃРєРѕСЂРѕСЃС‚РµР№ РЅР°С‡Р°Р» РїР°РЅРµР»РµР№
 void MechanicsRigidGivenLaw::VeloOfAirfoilPanels(double currTime)
 {
 	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
 	for (size_t i = 0; i < afl.v.size(); ++i)
 		afl.v[i] = veloRcm;
 }//VeloOfAirfoilPanels(...)
+
+void MechanicsRigidGivenLaw::Move()
+{
+	Point2D airfoilVelo = VeloOfAirfoilRcm(passport.physicalProperties.currTime);
+	Point2D aflRcmOld = afl.rcm;
+	afl.Move(PositionOfAirfoilRcm(passport.physicalProperties.currTime) - aflRcmOld);
+}

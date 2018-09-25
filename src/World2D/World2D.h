@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: World2D.h                                                        |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,20 +32,22 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #ifndef WORLD2D_H
 #define WORLD2D_H
 
+#include "gpu.h"
+
 #include "BoundaryMDV.h"
 #include "BoundaryVortColl.h"
 #include "BoundaryConstLayerAver.h"
 
-
 #include "MechanicsRigidImmovable.h"
 #include "MechanicsRigidGivenLaw.h"
+#include "MechanicsRigidOscillPart.h"
 
 #include "VelocityBiotSavart.h"
 #include "VelocityFourier.h"
@@ -61,8 +63,8 @@ class Queue; //дальнее описание
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 class World2D
 {
@@ -73,8 +75,11 @@ private:
 	/// Константная ссылка на параметры исполнения задачи в параллельном MPI-режиме
 	const Parallel& parallel;
 
-	// Ссылка на поток для вывода временной статистики
+	/// Ссылка на поток для вывода временной статистики
 	std::ostream& teleFile;
+
+	/// Объект, управляющий графическим ускорителем
+	gpu cuda;
 
 	/// Список умных казателей на обтекаемые профили
 	std::vector<std::unique_ptr<Airfoil>> airfoil;
@@ -128,8 +133,9 @@ private:
 	///
 	/// Вызывается в Step()
 	/// \param[in] dt шаг по времени
-	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-	void CalcVortexVelo(double dt, timePeriod& time);
+	/// \param[out] convTime ссылка на промежуток времени для вычисления конвективных скоростей --- пару чисел (время начала и время конца операции)
+	/// \param[out] diffTime ссылка на промежуток времени для вычисления диффузионных скоростей --- пару чисел (время начала и время конца операции)
+	void CalcVortexVelo(double dt, timePeriod& convTime, timePeriod& diffTime);
 
 	/// \brief Вычисляем новые положения вихрей (в пелене и виртуальных)
 	///
@@ -170,12 +176,12 @@ public:
 	const Passport& GetPassport() const;
 
 	/// Текущий номер шага в решаемой задаче
-	int currentStep; 
+	size_t currentStep;
 
 	/// \brief Функция, возвращающая номер текущей решаемой задачи (для справки)
 	///
 	/// \return номер решаемой задачи
-	int problemNumber() const;    
+	size_t problemNumber() const;
 
 	/// \brief Функция, возвращающая признак завершения счета в решаемой задаче
 	///
@@ -189,11 +195,12 @@ public:
 	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
 	void Step(timePeriod& time);
 
-	/// Метод-обертка для вызова метода генерации заголовка файла нагрузок
-	/// \param mechanicsNumber номер профиля, для которого генерируется заголовок файла
-	void GenerateMechanicsHeader(int mechanicsNumber)
+	/// Метод-обертка для вызова метода генерации заголовка файла нагрузок и заголовка файла положения (последнее --- если профиль движется) 
+	/// \param[in] mechanicsNumber номер профиля, для которого генерируется заголовок файла
+	void GenerateMechanicsHeader(size_t mechanicsNumber)
 	{
 		mechanics[mechanicsNumber]->GenerateForcesHeader(mechanicsNumber);
+		mechanics[mechanicsNumber]->GeneratePositionHeader(mechanicsNumber);
 	}
 };
 

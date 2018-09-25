@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: BoundaryVortColl.cpp                                             |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,16 +32,16 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #include "BoundaryVortColl.h"
 
 
 //Конструктор
-BoundaryVortColl::BoundaryVortColl(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, const Wake& wake_, const Parallel& parallel_)
-: Boundary(passport_, afl_, allBoundary_, 1, wake_, parallel_)
+BoundaryVortColl::BoundaryVortColl(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, const Wake& wake_, const Parallel& parallel_, gpu& cuda_)
+: Boundary(passport_, afl_, allBoundary_, 1, wake_, parallel_, cuda_)
 {
 	size_t np = afl.np;
 	const std::vector<Point2D>& CC = afl.r;
@@ -81,7 +81,8 @@ void BoundaryVortColl::FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& la
 
 	for (size_t i = 0; i < np; ++i)
 	{
-		matr(i, i) = -0.5 / afl.len[i];
+		//(afl.tau[i] ^ afl.nrm[i]) для учета внешней нормали
+		matr(i, i) = (0.5 * (afl.tau[i] ^ afl.nrm[i]) )/ afl.len[i];
 	}	
 }//FillMatrixSelf(...)
 
@@ -221,7 +222,9 @@ void BoundaryVortColl::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* 
 				rhs(i) += -afl.tau[i] * (IDPI * sheets.attachedVortexSheet[j][0] * afl.len[j] * Skos(r, xi));
 				rhs(i) += -afl.tau[i] * (IDPI * sheets.attachedSourceSheet[j][0] * afl.len[j] / drdr * dr);
 			}//if (i != j)
-			rhs(i) += -0.5 * sheets.attachedVortexSheet[i][0];
+			/// \todo 0.5 или 1.0???
+			//	(afl.tau[i] ^ afl.nrm[i]) чтобы учесть внешнюю нормаль
+			rhs(i) += -0.5 * sheets.attachedVortexSheet[i][0] * (afl.tau[i] ^ afl.nrm[i]);
 		}//for i
 	}// if (id == 0)
 
@@ -259,7 +262,7 @@ void BoundaryVortColl::FillRhsFromOther(const Airfoil& otherAirfoil, Eigen::Vect
 
 
 //Возврат размерности вектора решения 
-int BoundaryVortColl::GetUnknownsSize() const
+size_t BoundaryVortColl::GetUnknownsSize() const
 {
 	return afl.np;
 }//GetUnknownsSize()

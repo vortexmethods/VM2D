@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil.cpp                                                      |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,14 +32,14 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #include "Airfoil.h"
 
 // Конструктор
-Airfoil::Airfoil(const Passport& passport_, const int numberInPassport_, const Parallel& parallel_)
+Airfoil::Airfoil(const Passport& passport_, const size_t numberInPassport_, const Parallel& parallel_)
 	: np(0), passport(passport_), numberInPassport(numberInPassport_), parallel(parallel_)
 { }
 
@@ -61,6 +61,8 @@ void Airfoil::CalcNrmTauLen()
 		rpan = (r[i + 1] - r[i]);
 		len[i] = rpan.length();
 		tau[i] = rpan.unit();
+		
+		/// \todo Приделать в паспорт выбор напавления обхода!
 		nrm[i] = { tau[i][1], -tau[i][0] };
 	}
 
@@ -72,7 +74,7 @@ void Airfoil::CalcNrmTauLen()
 
 
 //Проверка, идет ли вершина i следом за вершиной j
-bool Airfoil::isAfter(int i, int j) const
+bool Airfoil::isAfter(size_t i, size_t j) const
 {
 	return ((i == j + 1) || (i == 0 && j == np - 1));
 }//isAfter(...)

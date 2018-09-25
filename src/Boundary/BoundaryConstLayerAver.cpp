@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: BoundaryConstLayerAver.cpp                                       |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,15 +32,15 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #include "BoundaryConstLayerAver.h"
 
 
 //Возврат размерности вектора решения 
-int BoundaryConstLayerAver::GetUnknownsSize() const
+size_t BoundaryConstLayerAver::GetUnknownsSize() const
 {
 	return afl.np;
 }//GetUnknownsSize()
@@ -83,6 +83,7 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 	for (size_t i = 0; i < afl.np - 1; ++i)
 	{
 		//POLARA
+		/// \todo Вернуть среднюю нормаль
 		//Убрали среднюю нормаль
 		//midNorm = (afl.nrm[i] + afl.nrm[i - 1]).unit(delta);
 		midNorm = afl.nrm[i] * delta;
@@ -199,7 +200,8 @@ void BoundaryConstLayerAver::FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::Vector
 
 	for (size_t i = 0; i < np; ++i)
 	{
-		matr(i, i) = -0.5;
+		// (afl.tau[i] ^ afl.nrm[i]) для учета внешней нормали
+		matr(i, i) = 0.5 * (afl.tau[i] ^ afl.nrm[i]);
 	}	
 }//FillMatrixSelf(...)
 
@@ -300,7 +302,7 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 			Point2D p = posJ - posI1;
 
 			double alpha = Alpha(p, s);
-			double lambda = Lambda(p, s);
+			//double lambda = Lambda(p, s); //не нужна для касательной
 
 			tempVel = gamJ * alpha;
 			velI -= tempVel;
@@ -458,12 +460,14 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 
 	std::vector<Point2D> locConvVelo;
 	locConvVelo.resize(par.myLen);
-	
+	 
+#pragma warning (push)
+#pragma warning (disable: 4101)
 	//Локальные переменные для цикла
 	Point2D velI;
 	Point2D tempVel;
 	double dst2eps, dst2;
-
+#pragma warning (pop)
 
 #pragma omp parallel for default(none) shared(locConvVelo, locPoints, cft, par) private(velI, tempVel, dst2, dst2eps)
 	for (int i = 0; i < par.myLen; ++i)
@@ -487,6 +491,27 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 			velI += tempVel;
 		}
 
+		//*
+		/// \todo Тут надо разобраться, как должно быть...
+		/// \todo сделать  if(move || deform)
+		for (size_t j = 0; j < sheets.attachedVortexSheet.size(); j++)
+		{
+			Point2D dj = afl.r[j + 1] - afl.r[j];
+			Point2D tauj = dj.unit();
+
+			Point2D s = posI - afl.r[j];
+			Point2D p = posI - afl.r[j + 1];
+
+			double a = Alpha(p, s);
+
+			double lambda = Lambda(s, p);
+
+			velI +=  (sheets.attachedVortexSheet[j][0] * (- a * tauj.kcross() + lambda * tauj)).kcross();
+			velI +=  (sheets.attachedSourceSheet[j][0] * (- a * tauj.kcross() + lambda * tauj));
+		}//for j
+
+		//*/		
+
 		velI *= cft;
 		locConvVelo[i] = velI;
 	}
@@ -506,14 +531,18 @@ void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, do
 {
 	std::vector<double> wakeVelo;
 	
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_RHS))
+	cuda.ExpGetWakeInfluence(afl.np, cuda.host_ptr_ptr_r[afl.numberInPassport], wake.vtx.size(), wake.devWakePtr, wakeVelo, cuda.virtrhs[afl.numberInPassport], cuda.host_ptr_ptr_rhs[afl.numberInPassport]);
+#else
 	GetWakeInfluence(wakeVelo);
+#endif
 
 	if (parallel.myidWork == 0)
 	for (size_t i = 0; i < afl.np; ++i)
 	{
 		rhs(i) = -afl.tau[i] * (V0 -afl.v[i] ) - wakeVelo[i];
 
-
+		/*
 		//влияние присоединенных слоев от самого себя
 		if (move || deform)
 		for (size_t j = 0; j < afl.np; j++)
@@ -553,8 +582,11 @@ void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, do
 				
 			}//if (i != j)
 		}//for j
-		rhs(i) += -0.5 * sheets.attachedVortexSheet[i][0];
-
+		// * (afl.tau[i] ^ afl.nrm[i]) для учета внешней нормали
+		/// \todo 0.5 или 1.0 ???
+		rhs(i) += 0.5 *  sheets.attachedVortexSheet[i][0] * (afl.tau[i] ^ afl.nrm[i]);
+		
+		*/
 	}//for i
 	
 	if (parallel.myidWork == 0)

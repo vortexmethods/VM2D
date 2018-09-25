@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Wake.cpp                                                         |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,12 +32,13 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 
 #include "Wake.h"
+#include "gpu.h"
 
 #if !defined(__linux__)
 #include <direct.h>
@@ -65,24 +66,23 @@ void Wake::ReadFromFile(const std::string& dir)
 		Perr = nullptr;
 	}
 
+	
 	if (fileExistTest(filename, Pinfo, Perr, "wake"))
 	{
-		wakeFile.open(filename);
-		std::vector<std::string> vekKeys;
+		std::stringstream wakeFile(Preprocessor(filename).resultString);
+		
 		StreamParser wakeParser(wakeFile);
 		
 		int nv;
 		wakeParser.get("nv", nv);
 
 		wakeParser.get("vtx", vtx);
-
-		wakeFile.close();
 	}
 }//ReadFromFile(...)
 
 
 //Сохранение вихревого следа в файл
-void Wake::SaveKadr(const std::string& dir, int step, timePeriod& time) const
+void Wake::SaveKadr(const std::vector<Vortex2D>& outVtx, const std::string& dir, size_t step, timePeriod& time) const
 {
 	time.first = omp_get_wtime();
 
@@ -100,11 +100,11 @@ void Wake::SaveKadr(const std::string& dir, int step, timePeriod& time) const
 	std::ofstream outfile;
 
 
-	int numberNonZero = 0;
+	size_t numberNonZero = 0;
 	
-	for (size_t q = 0; q < vtx.size(); ++q)
+	for (size_t q = 0; q < outVtx.size(); ++q)
 	{
-		if (vtx[q].g() != 0.0)
+		if (outVtx[q].g() != 0.0)
 			numberNonZero++;
 	}
 
@@ -118,18 +118,18 @@ void Wake::SaveKadr(const std::string& dir, int step, timePeriod& time) const
 //	PrintLogoToTextFile(outfile, dir + "snapshots/" + fname, "Positions and circulations of vortices in the wake");
 
 //	PrintHeaderToTextFile(outfile, "Number of vortices");
-	outfile << vtx.size() << std::endl; //Сохранение числа вихрей в пелене
+	outfile << outVtx.size() << std::endl; //Сохранение числа вихрей в пелене
 //	outfile << std::endl << "// " << numberNonZero << std::endl; //Сохранение числа вихрей в пелене
 
 //	PrintHeaderToTextFile(outfile, "x_i     y_i     G_i");
 
-	for (size_t i = 0; i < vtx.size(); i++)
+	for (size_t i = 0; i < outVtx.size(); i++)
 	{
-		Point2D rrr = vtx[i].r();
+		Point2D rrr = outVtx[i].r();
 		
-		double xi = (vtx[i].r())[0];
-		double yi = (vtx[i].r())[1];
-		double gi = vtx[i].g();
+		double xi = (outVtx[i].r())[0];
+		double yi = (outVtx[i].r())[1];
+		double gi = outVtx[i].g();
 
 		if (gi != 0.0)
 		{
@@ -145,7 +145,7 @@ void Wake::SaveKadr(const std::string& dir, int step, timePeriod& time) const
 
 
 
-void Wake::SaveKadrVtk(const std::string& dir, int step, timePeriod& time) const
+void Wake::SaveKadrVtk(const std::string& dir, size_t step, timePeriod& time) const
 {
 	time.first = omp_get_wtime();
 
@@ -163,7 +163,7 @@ void Wake::SaveKadrVtk(const std::string& dir, int step, timePeriod& time) const
 	std::ofstream outfile;
 
 
-	int numberNonZero = 0;
+	size_t numberNonZero = 0;
 	
 	for (size_t q = 0; q < vtx.size(); ++q)
 	{
@@ -201,11 +201,11 @@ void Wake::SaveKadrVtk(const std::string& dir, int step, timePeriod& time) const
 	}//for i
 	
 	outfile << "CELLS " << numberNonZero << " " << 2*numberNonZero << std::endl;
-	for (int i=0; i<numberNonZero; ++i)
+	for (size_t i=0; i<numberNonZero; ++i)
 	    outfile << "1 " << i << std::endl;
 	    
 	outfile << "CELL_TYPES " << numberNonZero << std::endl;
-	for (int i=0; i<numberNonZero; ++i)
+	for (size_t i=0; i<numberNonZero; ++i)
 	    outfile << "1" << std::endl;
 	
 	outfile << std::endl;
@@ -231,7 +231,7 @@ void Wake::WakeSynchronize()
 {
 	int nV;
 	if (parallel.myidWork == 0)
-		nV = vtx.size();
+		nV = (int)vtx.size();
 	MPI_Bcast(&nV, 1, MPI_INT, 0, parallel.commWork);
 
 	if (parallel.myidWork > 0)
@@ -242,7 +242,7 @@ void Wake::WakeSynchronize()
 
 
 
-bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, int& panThrough)
+bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough)
 {
 
 	const double porog_r = 1e-12;
@@ -307,82 +307,47 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 	return hit;
 }//MoveInside(...)
 
-bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, int& panThrough)
+bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, size_t& panThrough)
 {
-
-	const double porog_r = 1.e-12;
-
-	Point2D x1 = newPos;//конечное положение
-	Point2D x20 = oldPos;//начальное положение
-
-	Point2D x2;
-
-	double minDist = 1.0E+10; //расстояние до пробиваемой панели
 	panThrough = -1;
+
+	/// \todo сравнить производительности двух inside-ов
+
 
 	//проверка габ. прямоугольника
 	if (afl.isOutsideGabarits(newPos) && afl.isOutsideGabarits(oldPos))
 		return false;
 
-	//если внутри габ. прямоугольника - проводим контроль
 	bool hit = false;
-	double hiteps = 0.99;
 
-	//Проверка на пересечение
-	for (size_t j = 0; j < afl.np; ++j)
+	double angle = 0;
+	double cs, sn;
+
+	double dist2 = 1000000000.0;
+
+	for (int i = 0; i<afl.np; i++)
 	{
-		Point2D drpan;
-		drpan = x20 - 0.5 * (oldAfl.r[j] + oldAfl.r[j+1]);
+		Point2D v1, v2, vv;
+		v1 = afl.r[i] - newPos;
+						
+		v2 = afl.r[i + 1] - newPos;
+						
+		vv = afl.r[i + 1] - afl.r[i];
 
-		double cftnrm, cfttau;
-		cftnrm = (1.0 / oldAfl.len[j]) * drpan * oldAfl.nrm[j];
-		cfttau = (1.0 / oldAfl.len[j]) * drpan * oldAfl.tau[j];
-
-		x2 = 0.5 * (afl.r[j] + afl.r[j + 1]) + hiteps * afl.len[j] * (cftnrm * afl.nrm[j] + cfttau * afl.tau[j]);
-
-		// Определение прямой : Ax + By + D = 0 - перемещение вихря
-		double A = x2[1] - x1[1];
-		double B = x1[0] - x2[0];
-		double D = x1[1] * x2[0] - x1[0] * x2[1];
-
-		double A1, B1, D1;
-
-		//Проверка на пересечение
-		double r0 = 0.0, r1 = 0.0, r2 = 0.0, r3 = 0.0;
-		bool hitt = false;
-
-		r0 = A * afl.r[j][0] + B * afl.r[j][1] + D;
-		r1 = A * afl.r[j + 1][0] + B * afl.r[j + 1][1] + D;
-		if (fabs(r0)<porog_r) r0 = 0.0;
-		if (fabs(r1)<porog_r) r1 = 0.0;
-		hitt = false;
-		if (r0*r1 <= 0)
-			hitt = true;
-		if (hitt)
+		double dst = v1.length2() + v2.length2();
+		if (dst < dist2)
 		{
-			A1 = afl.r[j + 1][1] - afl.r[j][1];
-			B1 = afl.r[j][0] - afl.r[j + 1][0];
-			D1 = afl.r[j][1] * afl.r[j+1][0] - afl.r[j][0] * afl.r[j+1][1];
-			
-			r2 = A1 * x1[0] + B1 * x1[1] + D1;
-			r3 = A1 * x2[0] + B1 * x2[1] + D1;
+			dist2 = dst;
+			panThrough = i;
+		}
 
-			if (fabs(r2)<porog_r) r2 = 0.0;
-			if (fabs(r3)<porog_r) r3 = 0.0;
+		cs = v1 * v2;
+		sn = v1 ^ v2;
+		
+		angle += atan2(sn, cs);
+	}//for i
 
-			if (r2*r3 <= 0)
-			{
-				hit = true;// пробила!
-				double d2 = (x2[0] - (B*D1 - D*B1) / (A*B1 - B*A1))*(x2[0] - (B*D1 - D*B1) / (A*B1 - B*A1)) + (x2[1] - (A1*D - D1*A) / (A*B1 - B*A1))*(x2[1] - (A1*D - D1*A) / (A*B1 - B*A1));
-				if (d2<minDist)
-				{
-					minDist = d2;
-					panThrough = j;
-				}//if d2
-			}//if r2*r3
-		}//if hitt         
-
-	}//for j
+	hit = ((angle > 3.00) || (angle < -3.00));
 
 	return hit;
 }//MoveInsideMovingBoundary(...)
@@ -420,9 +385,16 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
 	for (int locI = 0; locI < par.myLen; ++locI)
 	{
 		int i = par.myDisp + locI;
-		int minN;
+		size_t minN;
+		
 		if (MoveInside(locNewPos[locI], vtx[i].r(), afl, minN))
+		//bool crit = (locNewPos[locI].length2() < 0.25);
+		//if (crit)
 		{
+			//minN = floor((atan2(locNewPos[locI][1], locNewPos[locI][0]) + 3.1415926535) / (6.283185307179586476925286766559) * afl.np + 0.5);
+			//if (minN == locGamma.size())
+			//	minN = 0;
+			
 #pragma omp atomic
 			locGamma[minN] += vtx[i].g();
 			
@@ -431,8 +403,7 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
 		}
 	}//for locI
 
-
-	MPI_Reduce(locGamma.data(), gamma.data(), afl.np, MPI_DOUBLE, MPI_SUM, 0, parallel.commWork);
+	MPI_Reduce(locGamma.data(), gamma.data(), (int)afl.np, MPI_DOUBLE, MPI_SUM, 0, parallel.commWork);
 
 	MPI_Gatherv(locThrough.data(), par.myLen, MPI_INT, through.data(), par.len.data(), par.disp.data(), MPI_INT, 0, parallel.commWork);
 
@@ -452,6 +423,16 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl)
 		if (through[q])
 			vtx[q].g() = 0.0;
 	}
+
+	locNewPos.clear();
+
+	gamma.clear();
+
+	locGamma.clear();
+
+	through.clear();
+
+	locThrough.clear();
 
 }//Inside(...)
 
@@ -483,14 +464,14 @@ void Wake::InsideMovingBoundary(const std::vector<Point2D>& newPos, const Airfoi
 
 	MPI_Scatterv(const_cast<std::vector<Point2D> &>(newPos).data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, locNewPos.data(), par.myLen, Point2D::mpiPoint2D, 0, parallel.commWork);
 
-//#pragma omp parallel for default(none) shared(locGamma, locNewPos, locThrough, oldAfl, afl, par) 
+#pragma omp parallel for default(none) shared(locGamma, locNewPos, locThrough, oldAfl, afl, par) 
 	for (int locI = 0; locI < par.myLen; ++locI)
 	{
 		int i = par.myDisp + locI;
-		int minN;
+		size_t minN;
 		if (MoveInsideMovingBoundary(locNewPos[locI], vtx[i].r(), oldAfl, afl, minN))
 		{
-//#pragma omp atomic
+#pragma omp atomic
 			locGamma[minN] += vtx[i].g();
 
 			//vtx[i].g() = 0.0;
@@ -499,7 +480,7 @@ void Wake::InsideMovingBoundary(const std::vector<Point2D>& newPos, const Airfoi
 	}//for locI
 
 
-	MPI_Reduce(locGamma.data(), gamma.data(), afl.np, MPI_DOUBLE, MPI_SUM, 0, parallel.commWork);
+	MPI_Reduce(locGamma.data(), gamma.data(), (int)afl.np, MPI_DOUBLE, MPI_SUM, 0, parallel.commWork);
 
 	MPI_Gatherv(locThrough.data(), par.myLen, MPI_INT, through.data(), par.len.data(), par.disp.data(), MPI_INT, 0, parallel.commWork);
 
@@ -541,7 +522,7 @@ void Wake::GetPairs(int type)
 #pragma omp parallel for default(none) shared(type, locNeighb, par)
 	for (int locI = 0; locI < par.myLen; ++locI)
 	{
-		size_t s = locI + par.myDisp;
+		int s = locI + par.myDisp;
 		const Vortex2D& vtxI = vtx[s];
 		
 		locNeighb[locI] = 0;//по умолчанию
@@ -601,10 +582,18 @@ int Wake::Collaps(int type, int times)
 	//int loc_hlop = 0; //
 
 	std::vector<bool> flag;	//как только вихрь сколлапсировался  flag = 1
-
 	for (int z = 0; z < times; ++z)
 	{
+	
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_PAIRS))	
+		std::cout << "nvtx (" << parallel.myidWork << ") = " << vtx.size() << std::endl;
+		
+		cuda.RefreshWake();
+		cuda.ExpGetPairs(type, neighb);
+#else
 		GetPairs(type);
+#endif		
+		
 		if (parallel.myidWork == 0)
 		{
 			//loc_hlop = 0;//число схлопнутых вихрей
@@ -649,7 +638,7 @@ int Wake::Collaps(int type, int times)
 
 						bool fl_hit = true;
 						//double Ch1[2];
-						int hitpan = -1;
+						size_t hitpan = -1;
 
 						for(size_t afl = 0; afl < airfoils.size(); afl++)
 						{
@@ -681,7 +670,7 @@ int Wake::KillFar()
 {
 	int nFar = 0;
 	double distKill2 = sqr(param.distKill);
-	///TODO Пока профиль 1, расстояние от его центра
+	/// \todo Пока профиль 1, расстояние от его центра
 	Point2D zerovec = { 0.0, 0.0 };
 #pragma omp parallel for default(none) shared(distKill2, zerovec) reduction(+:nFar)
 	for (int i = 0; i <static_cast<int>(vtx.size()); ++i)
@@ -698,12 +687,12 @@ int Wake::KillFar()
 
 	WakeSynchronize();
 	return nFar;
-}
+}//KillFar()
 
 
-int Wake::RemoveZero()
+size_t Wake::RemoveZero()
 {
-	const double porog_g = 1e-12;
+	const double porog_g = 1e-15;
 
 	std::vector<Vortex2D> newWake;
 
@@ -713,14 +702,14 @@ int Wake::RemoveZero()
 	if (fabs(vtx[q].g()) > porog_g)
 		newWake.push_back(vtx[q]);
 
-	int delta = vtx.size() - newWake.size();
+	size_t delta = vtx.size() - newWake.size();
 
 	newWake.swap(vtx);
 
 	WakeSynchronize();
 
 	return delta;
-}
+}//RemoveZero()
 
 
 //Реструктуризация вихревого следа
@@ -732,11 +721,13 @@ void Wake::Restruct(timePeriod& time)
 
 	Collaps(1, 1);
 	Collaps(2, 1);
+
 	KillFar();
 	RemoveZero();
 
 	time.second = omp_get_wtime();
-}//Restruct()
+}//Restruct(...)
+
 
 //bool Wake::isPointInsideAirfoil(const Point2D& pos, const Airfoil& afl)
 //{

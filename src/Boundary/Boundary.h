@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Boundary.h                                                       |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #ifndef BOUNDARY_H
@@ -41,14 +41,15 @@
 
 #include "Sheet.h"
 #include "Wake.h"
+#include "gpu.h"
 
 /*!
 \brief Абстрактный класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 class Boundary
@@ -66,6 +67,9 @@ protected:
 	/// Константная ссылка на параметры исполнения в параллельном режиме
 	const Parallel& parallel;
 
+	/// Ссылка на объект, управляющий графическим ускорителем
+	gpu& cuda;
+
 public:	
 	/// Константная ссылка на профиль
 	const Airfoil& afl;
@@ -76,12 +80,21 @@ public:
 	/// Виртуальный вихревой след конкретного профиля
 	std::vector<Vortex2D> virtualWake;
 
+	/// \brief MPI-синхронизация виртуального вихревого следа
+	///
+	/// \todo В целях оптимизации можно подумать над .reserve()
+	///
+	/// Рассылка следа на все процессоры локальной группы процессоров, занятых решением данной задачи
+	/// \warning Использует OMP, MPI
+	/// \ingroup Parallel
+	void VirtualWakeSynchronize();
+
 	/// \brief Размерность параметров каждого из слоев на каждой из панелей
 	///
 	/// Указывает, сколькими числами задается интенсивность каждого из слоев на каждой панели:
 	/// - 1 --- одно число --- задается только среднее значение;
 	/// - 2 --- два числа --- задается среднее значение и "наклон".
-	int sheetDim;
+	size_t sheetDim;
 
 	/// Слои на профиле
 	Sheet sheets;
@@ -95,7 +108,8 @@ public:
 	/// \param[in] sheetDim_ размерность параметра слоя на каждой панели профиля (сколько чисел используется, чтобы описать слой на каждой панели);
 	/// \param[in] wake_ константная ссылка на вихревой след
 	/// \param[in] parallel_ константная ссылка на параметры параллельного исполнения
-	Boundary(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, int sheetDim_, const Wake& wake_, const Parallel& parallel_);
+	/// \param[in] cuda_ ссылка на объект, управляющий графическим ускорителем
+	Boundary(const Passport& passport_, const Airfoil& afl_, const std::vector<std::unique_ptr<Boundary>>& allBoundary_, int sheetDim_, const Wake& wake_, const Parallel& parallel_, gpu& cuda_);
 	
 	/// Деструктор
 	virtual ~Boundary() { };
@@ -154,7 +168,7 @@ public:
 	/// \ingroup Parallel
 	virtual void GetConvVelocityToSetOfPointsFromVirtualVortexes(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const = 0;
 
-	
+
 	/// \brief Заполнение в правой части влияния набегающего потока, следа и присоединенных слоев, действующих от самого себя
 	///
 	/// Заполняет блок правой части матрицы СЛАУ, обеспечивающей удовлетворение граничного условия, соответствующий данному профилю.
@@ -172,6 +186,7 @@ public:
 	/// Заполняет блок правой части матрицы СЛАУ, обеспечивающий удовлетворение граничного условия, .
 	/// Учитывается влияние присоединенных слоев от другого профиля
 	/// 	
+	/// \param[out] otherAirfoil константная ссылка профиль, вклад от которого в правую часть требуется вычислить
 	/// \param[out] rhs ссылка на блок вектора правой части, соответствующего профилю, на который учитывается влияние
 	///
 	/// \todo Пока считается, что граничные условия одинаковые
@@ -184,7 +199,7 @@ public:
 	/// (без учета регуляризирующей переменной)
 	///
 	/// \return размерность вектора решения
-	virtual int GetUnknownsSize() const = 0;
+	virtual size_t GetUnknownsSize() const = 0;
 
 	/// \brief Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле
 	///

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: defs.h                                                           |
 | Info: Source code of VM2D                                                   |
@@ -19,7 +19,7 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 
@@ -47,8 +47,9 @@
 
 #include "Eigen/Dense"
 
+#include "gpudefs.h"
 #include "Point2D.h"
-
+   
 /// Тип для хранения начала и конца промежутка времени
 typedef std::pair<double, double> timePeriod;
 
@@ -168,12 +169,11 @@ void PrintHeaderToTextFile(std::ofstream& str, const std::string& header);
 template <typename T>
 std::ostream& operator<< (std::ostream& _stream, const std::vector<T>& _vec)
 {
-	int n = _vec.size();
+	size_t n = _vec.size();
 	_stream << "{ ";
 	if (n > 0)
-	{
-		
-		for (int j = 0; j < n - 1; ++j)
+	{		
+		for (size_t j = 0; j < n - 1; ++j)
 			_stream << _vec[j] << ", ";
 		_stream << _vec[n - 1];
 	}

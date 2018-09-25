@@ -2,10 +2,9 @@
 #PBS -N VM2D
 #PBS -S /bin/bash
 #PBS -l walltime=48:00:00
-#PBS -l nodes=2:ppn=12
-#PBS -d /unicluster/home/i.marchevsky/VM2D/build
-#PBS -q bl220
+#PBS -l nodes=4:ppn=4
+#PBS -d /home/VM/VM2D/build
 
-mpirun -machinefile $PBS_NODEFILE -np 2 VM2D
+#mpirun -machinefile $PBS_NODEFILE -np 4 VM2D
 
-#mpirun -np 3 -map-by slot:pe=4 VM2D
+mpirun -machinefile $PBS_NODEFILE -np 4 -map-by slot:pe=4 VM2D

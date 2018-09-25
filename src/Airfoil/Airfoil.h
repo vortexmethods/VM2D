@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.1    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/04/02     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil.h                                                        |
 | Info: Source code of VM2D                                                   |
@@ -19,11 +19,12 @@
 | VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
-| for more details.	                                                          |
+| for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
 | along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
 \*---------------------------------------------------------------------------*/
+
 
 /*!
 \file
@@ -31,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 
 #ifndef AIRFOIL_H
@@ -46,8 +47,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.0
-\date 1 декабря 2017 г.
+\version 1.1
+\date 2 апреля 2018 г.
 */
 class Airfoil
 {
@@ -56,7 +57,7 @@ public:
 	const Passport& passport;
 
 	/// Номер профиля в паспорте
-	const int numberInPassport;
+	const size_t numberInPassport;
 
 	/// Положение центра масс профиля
 	Point2D rcm;  
@@ -113,7 +114,7 @@ public:
 	const Parallel& parallel;
 
 	/// Конструктор
-	Airfoil(const Passport& passport_, const int numberInPassport_, const Parallel& parallel_);
+	Airfoil(const Passport& passport_, const size_t numberInPassport_, const Parallel& parallel_);
 
 	/// Конструктор копирования
 	Airfoil(const Airfoil& afl) : np(0), passport(afl.passport), numberInPassport(afl.numberInPassport), parallel(afl.parallel)
@@ -142,7 +143,7 @@ public:
 	/// \param[in] i проверяемая вершина
 	/// \param[in] j контрольная вершина
 	/// \return true, если i-я вершина следует зп j-й в порядке обхода профиля
-	bool isAfter(int i, int j) const;
+	bool isAfter(size_t i, size_t j) const;
 	
 	/// \brief Поворот профиля 
 	///
@@ -191,18 +192,19 @@ public:
 	/// \param[in] dir константная ссылка на строку --- имя каталога, где лежит cчитываемый файл
 	virtual void ReadFromFile(const std::string& dir) = 0;
 
-	/// \brief Вычисление диффузионных скоростей в наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения
+	/// \brief Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения
 	///
 	/// Вычисляет диффузионные скорости в наборе точек, которые обусловленных геометрией профиля.ю и вычисляет вязкое трение
 	/// 
 	/// \param[in] points константная ссылка на набор точек, в которых вычисляются скорости
 	/// \param[in] domainRadius ссылка на радиусы вихрей
-	/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния геометрии профиля
+	/// \param[out] I0 ссылка на вектор знаменателей диффузионных скоростей, которые приобретают точки из-за влияния геометрии профиля
+	/// \param[out] I3 ссылка на вектор числителей диффузионных скоростей, которые приобретают точки из-за влияния геометрии профиля
 	/// 
-	/// \warning velo --- накапливается!
+	/// \warning Векторы I0, I3 --- накапливаются!
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
-	virtual void GetDiffVelocityToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<Point2D>& velo) = 0;
+	virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const std::vector<Vortex2D>& points, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
 
 };
 
