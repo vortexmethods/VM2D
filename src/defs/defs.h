@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 
@@ -48,6 +48,9 @@
 #include "Eigen/Dense"
 
 #include "Point2D.h"
+
+/// включатель отладочной печати
+#define DEB
    
 /// Тип для хранения начала и конца промежутка времени
 typedef std::pair<double, double> timePeriod;
@@ -78,11 +81,17 @@ namespace defaults
 	/// Шаг сохранения в бинарный файл
 	const int defaultDeltacntBinary = 0;
 
+	/// Шаг подсчета поля скорости и давления
+	const int deltacntVelocityPressure = 0;
+
 	/// Радиус убивания дальнего следа
 	const double defaultDistKill = 10.0;
 
 	/// Расстояние, на которое рождаемый вихрь отодвигается от профиля
 	const double defaultDelta = 1.e-5;
+
+	/// Число вихрей, рождаемых на одной панели
+	const int defaultVortexPerPanel = 1;
 
 	/// Каталог с файлами профилей
 	const std::string defaultAirfoilsDir = "./airfoils/";

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 
@@ -50,7 +50,7 @@ void Times::GenerateStatHeader() const
 	std::ofstream timeStatFile(timeStatFileName.str());
 	PrintLogoToTextFile(timeStatFile, timeStatFileName.str(), "Time statistics");
 
-	PrintHeaderToTextFile(timeStatFile, "step Time N tStep tMem tMatRhs tSolve tConvVelo tDiffVelo tForce tMove tInside tRestr tWakeSort tSave");
+	PrintHeaderToTextFile(timeStatFile, "step Time N tStep tMem tMatRhs tSolve tConvVelo tDiffVelo tForce tVelPres tMove tInside tRestr tWakeSort tSave");
 
 	timeStatFile.close();
 	timeStatFile.clear();
@@ -74,6 +74,7 @@ void Times::GenerateStatString() const
 		<< dT(timeCalcVortexConvVelo) << "\t"
 		<< dT(timeCalcVortexDiffVelo) << "\t"
 		<< dT(timeGetHydroDynamForce) << "\t"
+		<< dT(timeVelocityPressure) << "\t"
 		<< dT(timeMoveVortexes) << "\t"
 		<< dT(timeCheckInside) << "\t"
 		<< dT(timeRestruct) << "\t"
@@ -94,6 +95,7 @@ void Times::ToZero()
 	ToZero(timeCalcVortexConvVelo);
 	ToZero(timeCalcVortexDiffVelo);
 	ToZero(timeGetHydroDynamForce);
+	ToZero(timeVelocityPressure);
 	ToZero(timeMoveVortexes);
 	ToZero(timeCheckInside);
 	ToZero(timeRestruct);

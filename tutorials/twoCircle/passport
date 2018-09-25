@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.0    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2017/12/01     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina       |
+| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: passport                                                         |
 | Info: Parameters of the problem to be solved                                |
@@ -17,33 +17,33 @@ vInf = {1.0, 0.0};
 nu = 0.005;
 
 //Time Discretization Properties
-//timeStart = 0.0;    //by default=0.0
-timeStop = 1001.0;
+//timeStart = 0.0;             //by default = 0.0
+timeStop = 500.0001;
 dt = 0.005;
-timeAccel = 1.0;	//by default=0.0
-deltacntText = 1;     //by default=1
-deltacntBinary = 10;   //by default=0
+timeAccel = 1.0;               //by default = 0.0
+deltacntText = 0;              //by default = 1
+deltacntBinary = 10;           //by default = 0
+deltacntVelocityPressure = 10; //by default = 0
 
 //Wake Discretization Properties
 eps = 0.0075;
 epscol = 0.0050;
-distKill = 20.0;		//by default=10.0
-delta = 5.e-6;		//by default=1.e-5
+distKill = 20.0;                //by default = 10.0
+delta = 5.e-6;                  //by default = 1.e-5
+vortexPerPanel = 1;             //by default = 1
 
 //Numerical Schemes
-linearSystemSolver = 0;
-velocityComputation = velocityBiotSavart;                      // velocityBiotSavart,  velocityFourier,  velocityBarnesHut
-wakeMotionIntegrator = 0;
+linearSystemSolver = 0;                     //0 is only available now 
+velocityComputation = velocityBiotSavart;   //velocityBiotSavart is only available now
+wakeMotionIntegrator = 0;                   //0 is only available now
 
 //Files and parameters
-//airfoil = {};
-airfoil = { 
-            "circle200"(basePoint = {0.0, 0.0}, 
+airfoil = { "circle200"(basePoint = {0.0, 0.0}, 
                         panelsType = panelsRectilinear, 
-                        boundaryConditionSatisfaction = boundaryConstantLayerAverage),
-            "circle200"(basePoint = {2.0, 1.0}, 
+                        boundaryConditionSatisfaction = boundaryConstantLayerAverage,
+                        mechanicalSystem=mech1),
+            "circle200"(basePoint = {-2.0, -1.0}, 
                         panelsType = panelsRectilinear, 
-                        boundaryConditionSatisfaction = boundaryConstantLayerAverage)			
-		   };
-//fileWake = { "Test_wake" };
-//fileWake = { "OblakoV1000" };                              //by default={}
+                        boundaryConditionSatisfaction = boundaryConstantLayerAverage,
+                        mechanicalSystem=mech1) };
+//fileWake = { "OblakoV1000" };              //by default={}

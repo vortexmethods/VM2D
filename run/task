@@ -2,11 +2,10 @@
 #PBS -N VM2D_Marchevsky
 #PBS -S /bin/bash
 #PBS -l walltime=48:00:00
-#PBS -l nodes=2:ppn=4
-#PBS -d /home/marchevsky/VM2D/VM2D-v1.2_mod/build
-
-#mpirun -machinefile $PBS_NODEFILE -np 1 VM2D
+#PBS -l nodes=2:ppn=12
+#PBS -q bl220
+#PBS -d /unicluster/home/guest13/VortTest/run
 
 cat $PBS_NODEFILE
 
-mpirun -machinefile $PBS_NODEFILE -np 2 -map-by slot:pe=4 VM2D > log.log
+mpirun -machinefile $PBS_NODEFILE -np 2 -map-by slot:pe=12 VM2D > log.log

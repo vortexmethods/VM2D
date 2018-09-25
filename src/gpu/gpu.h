@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 
@@ -53,8 +53,8 @@ class World2D;
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 class gpu
 {
@@ -93,7 +93,7 @@ public:
 	} //ReserveDevMem(...)
 
 	
-	/// \brief Резервирование видеопамяти на графической карте
+	/// \brief Резервирование видеопамяти на графической карте и копирование туда данных
 	///
 	/// Резервирует на видеокарте память под хранение массива фиксированной длины и копирует туда этот массив
 	/// \n Не производится округление длины массива
@@ -132,32 +132,37 @@ public:
 	void RefreshWake();
 	
 	
-	/// Синхронизация состояния профилей с гафической картой
+	/// Синхронизация состояния профилей с графической картой
 	void RefreshAfls();
 	
 	// Данные для вычисления скоростей	
+	size_t n_CUDA_afls;
+
 	size_t* dev_nPanels;
-	double** dev_ptr_ptr_pnl;
-	double** dev_ptr_ptr_r;
+	size_t* dev_nVortices;
+	
+
+	double** dev_ptr_ptr_vtx;
 	double** dev_ptr_ptr_i0;
 	double** dev_ptr_ptr_i1;
 	double** dev_ptr_ptr_i2;
 	double** dev_ptr_ptr_i3;
 	double** dev_ptr_ptr_rad;
 	double** dev_ptr_ptr_vel;
+	
+	double** dev_ptr_ptr_r;
 	double** dev_ptr_ptr_rhs;
 
-	size_t n_CUDA_afls;
-	std::vector<size_t> n_CUDA_pnls;
-	std::vector<size_t> n_CUDA_rs;
+	std::vector<size_t> n_CUDA_vtxs;
 	std::vector<size_t> n_CUDA_i0s;
 	std::vector<size_t> n_CUDA_i1s;
 	std::vector<size_t> n_CUDA_i2s;
 	std::vector<size_t> n_CUDA_i3s;
 	std::vector<size_t> n_CUDA_rads;
 	std::vector<size_t> n_CUDA_vels;
-	std::vector<size_t> n_CUDA_rhss;
 
+	std::vector<size_t> n_CUDA_rs;
+	std::vector<size_t> n_CUDA_rhss;
 
 	size_t n_CUDA_vel;
 	size_t n_CUDA_rad;
@@ -166,7 +171,6 @@ public:
 	size_t n_CUDA_i2;
 	size_t n_CUDA_i3;
 		
-	
 	size_t n_CUDA_mesh;
 	size_t n_CUDA_nei;	
 

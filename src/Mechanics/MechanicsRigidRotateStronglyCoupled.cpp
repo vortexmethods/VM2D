@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #include "mpi.h"
@@ -118,6 +118,8 @@ void MechanicsRigidRotateStronglyCoupled::Move()
 	PhiOld = Phi;
 
 	double dphi = Wcm * W.getPassport().timeDiscretizationProperties.dt;
+	MPI_Bcast(&dphi, 1, MPI_DOUBLE, 0, W.getParallel().commWork);
+
 	Phi += dphi;
 	afl.Rotate(dphi);
 }//Move()

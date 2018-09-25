@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #if !defined(__linux__)
@@ -142,7 +142,7 @@ void Wake::SaveKadr(const std::vector<Vortex2D>& outVtx, const std::string& dir,
 
 
 
-void Wake::SaveKadrVtk(const std::string& dir, size_t step, timePeriod& time) const
+void Wake::SaveKadrVtk(const std::vector<Vortex2D>& outVtx, const std::string& dir, size_t step, timePeriod& time) const
 {
 	time.first = omp_get_wtime();
 
@@ -162,9 +162,9 @@ void Wake::SaveKadrVtk(const std::string& dir, size_t step, timePeriod& time) co
 
 	size_t numberNonZero = 0;
 	
-	for (size_t q = 0; q < vtx.size(); ++q)
+	for (size_t q = 0; q < outVtx.size(); ++q)
 	{
-		if (vtx[q].g() != 0.0)
+		//if (outVtx[q].g() != 0.0)
 			numberNonZero++;
 	}
 
@@ -183,15 +183,15 @@ void Wake::SaveKadrVtk(const std::string& dir, size_t step, timePeriod& time) co
 	outfile << "POINTS " << numberNonZero << " float" << std::endl;
 	
 	
-	for (size_t i = 0; i < vtx.size(); i++)
+	for (size_t i = 0; i < outVtx.size(); i++)
 	{
-		Point2D rrr = vtx[i].r();
+		Point2D rrr = outVtx[i].r();
 		
-		double xi = (vtx[i].r())[0];
-		double yi = (vtx[i].r())[1];
-		double gi = vtx[i].g();
+		double xi = (outVtx[i].r())[0];
+		double yi = (outVtx[i].r())[1];
+		double gi =outVtx[i].g();
 
-		if (gi != 0.0)
+		//if (gi != 0.0)
 		{
 			outfile << xi << " " << yi << " " << "0.0"  << std::endl;
 		}
@@ -210,16 +210,16 @@ void Wake::SaveKadrVtk(const std::string& dir, size_t step, timePeriod& time) co
 	outfile << "SCALARS Gamma float 1" << std::endl;
 	outfile << "LOOKUP_TABLE default" << std::endl;
 	
-	for (size_t i = 0; i < vtx.size(); i++)
+	for (size_t i = 0; i < outVtx.size(); i++)
 	{
-	    outfile << vtx[i].g() << std::endl;
+	    outfile << outVtx[i].g() << std::endl;
 	}//for i
 	
 	
 	outfile.close();
 
 	time.second = omp_get_wtime();
-}//SaveKadr(...)
+}//SaveKadrVtk(...)
 
 
 
@@ -505,7 +505,7 @@ void Wake::GPUGetPairs(int type)
 	if (npt > 0)
 	{
 		cuCalculatePairs(par.myDisp, par.myLen, npt, devWakePtr, devMeshPtr, devNeiPtr, 2.0*W.getPassport().wakeDiscretizationProperties.epscol, sqr(W.getPassport().wakeDiscretizationProperties.epscol), type);
-
+		
 		W.getCuda().CopyMemFromDev<int, 1>(par.myLen, devNeiPtr, &tmpNei[0]);
 
 		std::vector<int> newNei;
@@ -541,7 +541,6 @@ int Wake::Collaps(int type, int times)
 	
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_PAIRS))	
 		//std::cout << "nvtx (" << parallel.myidWork << ") = " << vtx.size() << std::endl;
-		
 		const_cast<gpu&>(W.getCuda()).RefreshWake();
 		GPUGetPairs(type);
 #else

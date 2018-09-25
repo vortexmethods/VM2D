@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #ifndef MECHANICS_H
@@ -60,8 +60,8 @@ class World2D;
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
 
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 class Mechanics
@@ -133,13 +133,20 @@ public:
 	///
 	virtual void ReadSpecificParametersFromDictionary() = 0;
 
+	/// \todo Проверить описание последних параметров конструктора Mechanics
+
 	/// \brief Конструктор
 	/// 
 	/// \param[in] W_ константная ссылка на решаемую задачу
 	/// \param[in] numberInPassport_ номер профиля в паспорте задачи
-	/// \param[in] degOfFreedom_ количество степеней свободы.
-	/// \param[in] isMoves_ является ли профиль подвижным (1 - является, 0 - не является).
-	/// \param[in] isDeform_ является ли профиль деформируемым (1 - является, 0 - не является).
+	/// \param[in] degOfFreedom_ количество степеней свободы
+	/// \param[in] isMoves_ является ли профиль подвижным (1 - является, 0 - не является)
+	/// \param[in] isDeform_ является ли профиль деформируемым (1 - является, 0 - не является)
+	/// \param[in] isRotate_ является ли профиль вращающимся (1 - является, 0 - не является)
+	/// \param[in] Vcm0_ - скорость центра масс
+	/// \param[in] Rcm0_ - положение центра масс
+	/// \param[in] Wcm0_ - угловая скорость центра масс 
+	/// \param[in] Wcm0_ - ???
 	Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_, Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_);
 		
 	
@@ -193,6 +200,7 @@ public:
 	/// \brief Заполнение правых частей (расщепленная схема) либо коэффициентов в матрице при скорости (монолитный подход),
 	///			соответствующих присоединенным слоям
 	///
+	/// \param[in] row строки (количество строк = количество степеней свободы, количество элементов в строках = количество неизвестных в локальной матрице)
 	/// \param[in] rhs вектор правой части для механики одного профиля (количество элементов = количеству степеней свободы)
 	virtual void FillAtt(Eigen::MatrixXd& row, Eigen::MatrixXd& rhs) = 0;
 

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #ifndef AIRFOIL_H
@@ -52,8 +52,8 @@ class World2D;
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 class Airfoil
 {
@@ -193,7 +193,13 @@ public:
 	///
 	/// \param[in] r константная ссылка на текущее положение точки
 	/// \return true, если точка вне габаритного прямоугольника
-	bool isOutsideGabarits(const Point2D& r) const; 
+	bool isOutsideGabarits(const Point2D& r) const;
+
+	/// \brief Определяет, находится ли точка с радиус-вектором \f$ \vec r \f$ внутри профиля
+	///
+	/// \param[in] point константная ссылка на текущее положение точки
+	/// \return true, если точка внутри профиля
+	virtual bool IsPointInAirfoil(const Point2D& point) const = 0;
 
 	/// \brief Считывание профиля из файла
 	///

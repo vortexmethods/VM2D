@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #include "BoundaryConstLayerAver.h"
@@ -80,9 +80,26 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 	//	virtualWake.vtx.push_back(virtVort);
 	//}
 
+	virtualWakeVelocity.clear();
+	virtualWakeVelocity.resize(0);
+
+	int nVortPerPan = W.getPassport().wakeDiscretizationProperties.vortexPerPanel;
 	
-	for (size_t i = 0; i < afl.np - 1; ++i)
+	for (size_t i = 0; i < afl.np ; ++i)
 	{
+		midNorm = afl.nrm[i] * delta;
+		Point2D dr = 1.0 / nVortPerPan * (afl.r[i + 1] - afl.r[i]);
+
+		for (int j = 0; j < nVortPerPan; j++)
+		{
+			virtVort.r() = afl.r[i] + dr * (j * 1.0 + 0.5) + midNorm;
+			virtVort.g() = sol(i) * afl.len[i] / nVortPerPan;
+			virtualWake.vtx.push_back(virtVort);
+
+			virtualWakeVelocity.push_back(0.5 * sol(i)  * afl.tau[i]);
+		}
+
+	/*
 		//POLARA
 		/// \todo Вернуть среднюю нормаль
 		//Убрали среднюю нормаль
@@ -94,12 +111,13 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 		virtVort.g() = 0.5*(sol(i)*afl.len[i] + sol(i + 1)*afl.len[i + 1]);;
 
 		virtualWake.vtx.push_back(virtVort);
+		*/
 	}
 
-	midNorm = afl.nrm[afl.np - 1] * delta;
+	/*midNorm = afl.nrm[afl.np - 1] * delta;
 	virtVort.r() = afl.r[0] + midNorm;
 	virtVort.g() = 0.5*(sol(0)*afl.len[0] + sol(afl.np - 1)*afl.len[afl.np - 1]);
-	virtualWake.vtx.push_back(virtVort);
+	virtualWake.vtx.push_back(virtVort);*/
 
 
 	for (size_t j = 0; j < afl.np; ++j)
@@ -346,6 +364,7 @@ void BoundaryConstLayerAver::GPUGetWakeInfluence(std::vector<double>& wakeVelo) 
 	if (nvt > 0)
 	{
 		cuCalculateRhs(par.myDisp, par.myLen, dev_ptr_pt, nvt, dev_ptr_vt, dev_ptr_rhs);
+		
 		W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_rhs, (double*)&locrhs[0]);
 
 		std::vector<double> newRhs;
@@ -597,7 +616,7 @@ void BoundaryConstLayerAver::GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(
 	if (npt > 0)
 	{
 		cuCalculateConvVeloWakeFromVirtual(par.myDisp, par.myLen, dev_ptr_pt, nvt, dev_ptr_vt, dev_ptr_vel, eps2);
-
+		
 		W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_vel, (double*)&locvel[0]);
 
 		std::vector<Point2D> newV;
@@ -619,7 +638,7 @@ void BoundaryConstLayerAver::GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(
 #endif
 
 
-//Заполнение в правой части влияния набегающего потока и следа (без присооединенных слоев)
+//Заполнение в правой части влияния набегающего потока и следа (без присоединенных слоев)
 void BoundaryConstLayerAver::FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform)
 {
 	std::vector<double> wakeVelo;
@@ -731,6 +750,12 @@ void BoundaryConstLayerAver::FillRhsFromOther(const Airfoil& otherAirfoil, Eigen
 //Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников
 void BoundaryConstLayerAver::ComputeAttachedSheetsIntensity()
 {
+	for (size_t i = 0; i < sheets.attachedVortexSheet.size(); ++i)
+	{
+		oldSheets.attachedVortexSheet[i][0] = sheets.attachedVortexSheet[i][0];
+		oldSheets.attachedSourceSheet[i][0] = sheets.attachedVortexSheet[i][0];
+	}
+
 	for (size_t i = 0; i < sheets.attachedVortexSheet.size(); ++i)
 	{
 		sheets.attachedVortexSheet[i][0] = afl.v[i] * afl.tau[i];

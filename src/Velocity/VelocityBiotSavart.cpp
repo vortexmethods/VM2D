@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 
@@ -201,7 +201,10 @@ void VelocityBiotSavart::GPUCalcConvVeloToSetOfPoints(const WakeDataBase& points
 	const size_t nbou = W.getNumberOfBoundary();
 	
 	size_t* const& dev_nPanels = W.getCuda().dev_nPanels;
-	double** const & dev_ptr_ptr_pnl = W.getCuda().dev_ptr_ptr_pnl;
+	size_t* const& dev_nVortices = W.getCuda().dev_nVortices;
+
+
+	double** const & dev_ptr_ptr_vtx = W.getCuda().dev_ptr_ptr_vtx;
 	
 	std::vector<Point2D>& Vel = velo;
 	std::vector<double>& Rad = domainRadius;
@@ -222,10 +225,9 @@ void VelocityBiotSavart::GPUCalcConvVeloToSetOfPoints(const WakeDataBase& points
 
 	if (npt > 0)
 	{
-		cuCalculateConvVeloWake(par.myDisp, par.myLen, dev_ptr_pt, nvt, dev_ptr_vt, nbou, dev_nPanels, dev_ptr_ptr_pnl, dev_ptr_vel, dev_ptr_rad, minRad, eps2);
+		cuCalculateConvVeloWake(par.myDisp, par.myLen, dev_ptr_pt, nvt, dev_ptr_vt, nbou, dev_nVortices, dev_ptr_ptr_vtx, dev_ptr_vel, dev_ptr_rad, minRad, eps2);
 
 		W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_vel, (double*)&locvel[0]);
-
 		W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_rad, &locrad[0]);
 
 		std::vector<Point2D> newV;

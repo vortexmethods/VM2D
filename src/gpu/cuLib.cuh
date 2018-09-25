@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #ifndef CUVELOCITYBIOTSAVART_CUH
@@ -43,7 +43,7 @@
 
 #if defined(__CUDACC__) || defined(USE_CUDA)
 
-#include "/usr/include/linux/cuda.h"
+//#include "/usr/include/linux/cuda.h"
 //#include <cuda.h>
 
 #include "Vortex2D.h"
@@ -59,7 +59,7 @@ void cuCopyMemFromDev(void* host_ptr, void* dev_ptr, size_t nBytes);
 void cuDeleteFromDev(void* devPtr);
 
 ////////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nAfls, size_t* nPnls, double** ptrPnls, double* vel, double* rd, double minRd, double eps2);
+void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double minRd, double eps2);
 void cuCalculateConvVeloWakeFromVirtual(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* vel, double eps2);
 void cuCalculateDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd);
 void cuCalculateDiffVeloWakeMesh(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, int* mesh, double meshStep, double* i1, double* i2, double* rd);
@@ -68,6 +68,8 @@ void cuCalculateRhs(size_t myDisp, size_t myLen, double* pt, size_t nvt, double*
 
 void cuCalculatePairs(size_t myDisp, size_t myLen, size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 
+
+//void cuTEST(const std::string& str);
 
 #endif
 

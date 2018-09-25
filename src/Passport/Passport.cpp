@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #include "defs.h"
@@ -117,6 +117,7 @@ void Passport::GetAllParamsFromParser
 	parser->get("dt", timeDiscretizationProperties.dt);
 	parser->get("deltacntText", timeDiscretizationProperties.deltacntText, &defaults::defaultDeltacntText);
 	parser->get("deltacntBinary", timeDiscretizationProperties.deltacntBinary, &defaults::defaultDeltacntBinary);
+	parser->get("deltacntVelocityPressure", timeDiscretizationProperties.deltacntVelocityPressure, &defaults::deltacntVelocityPressure);
 
 
 	parser->get("eps", wakeDiscretizationProperties.eps);
@@ -124,6 +125,7 @@ void Passport::GetAllParamsFromParser
 	parser->get("epscol", wakeDiscretizationProperties.epscol);
 	parser->get("distKill", wakeDiscretizationProperties.distKill, &defaults::defaultDistKill);
 	parser->get("delta", wakeDiscretizationProperties.delta, &defaults::defaultDelta);
+	parser->get("vortexPerPanel", wakeDiscretizationProperties.vortexPerPanel, &defaults::defaultVortexPerPanel);
 	
 	parser->get("linearSystemSolver", numericalSchemes.linearSystemSolver);
 	parser->get("velocityComputation", numericalSchemes.velocityComputation);
@@ -220,11 +222,13 @@ void Passport::PrintAllParams()
 	out << str << "dt = " << timeDiscretizationProperties.dt << std::endl;
 	out << str << "deltacntText = " << timeDiscretizationProperties.deltacntText << std::endl;
 	out << str << "deltacntBinary = " << timeDiscretizationProperties.deltacntBinary << std::endl;
+	out << str << "deltacntVelocityPressure = " << timeDiscretizationProperties.deltacntVelocityPressure << std::endl;
 	out << str << "eps = " << wakeDiscretizationProperties.eps << std::endl;
 	out << str << "eps2 = " << wakeDiscretizationProperties.eps2 << std::endl;
 	out << str << "epscol = " << wakeDiscretizationProperties.epscol << std::endl;
 	out << str << "distKill = " << wakeDiscretizationProperties.distKill << std::endl;
 	out << str << "delta = " << wakeDiscretizationProperties.delta << std::endl;
+	out << str << "vortexPerPanel = " << wakeDiscretizationProperties.vortexPerPanel << std::endl;
 	out << str << "linearSystemSolver = " << numericalSchemes.linearSystemSolver << std::endl;
 	out << str << "velocityComputation = " << numericalSchemes.velocityComputation << std::endl;
 	out << str << "wakeMotionIntegrator = " << numericalSchemes.wakeMotionIntegrator << std::endl;

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #include "gpu.h"
@@ -93,27 +93,31 @@ gpu::~gpu()
 	for (size_t s = 0; s < n_CUDA_afls; ++s)
 	{
 		cuDeleteFromDev(W.getBoundary(s).virtualWake.devWakePtr);
-		cuDeleteFromDev(W.getBoundary(s).afl.devR);
 		cuDeleteFromDev(W.getBoundary(s).virtualWake.devI0Ptr);
 		cuDeleteFromDev(W.getBoundary(s).virtualWake.devI1Ptr);
 		cuDeleteFromDev(W.getBoundary(s).virtualWake.devI2Ptr);
 		cuDeleteFromDev(W.getBoundary(s).virtualWake.devI3Ptr);
 		cuDeleteFromDev(W.getBoundary(s).virtualWake.devRadsPtr);
 		cuDeleteFromDev(W.getBoundary(s).virtualWake.devVelsPtr);
+		
+		cuDeleteFromDev(W.getBoundary(s).afl.devR);
 		cuDeleteFromDev(W.getBoundary(s).afl.devRhs);
 	}
 
 	if (n_CUDA_afls)
 	{
 		cuDeleteFromDev(dev_nPanels);
-		cuDeleteFromDev(dev_ptr_ptr_pnl);
-		cuDeleteFromDev(dev_ptr_ptr_r);
+		cuDeleteFromDev(dev_nVortices);
+
+		cuDeleteFromDev(dev_ptr_ptr_vtx);		
 		cuDeleteFromDev(dev_ptr_ptr_i0);
 		cuDeleteFromDev(dev_ptr_ptr_i1);
 		cuDeleteFromDev(dev_ptr_ptr_i2);
 		cuDeleteFromDev(dev_ptr_ptr_i3);
 		cuDeleteFromDev(dev_ptr_ptr_rad);
 		cuDeleteFromDev(dev_ptr_ptr_vel);
+		
+		cuDeleteFromDev(dev_ptr_ptr_r);
 		cuDeleteFromDev(dev_ptr_ptr_rhs);
 	}
 #endif
@@ -175,7 +179,8 @@ void gpu::RefreshWake()
 			}
 
 			cuClearWakeMem(W.getWake().devNWake, W.getWake().devWakePtr);
-			cuCopyWakeToDev(W.getWake().vtx.size(), W.getWake().vtx.data(), W.getWake().devWakePtr);
+			
+			cuCopyWakeToDev(W.getWake().vtx.size(), W.getWake().vtx.data(), W.getWake().devWakePtr);			
 		}
 	}	
 }
@@ -190,111 +195,130 @@ void gpu::RefreshAfls()
 		{
 			if (W.getNumberOfBoundary() > n_CUDA_afls)
 			{	
-				n_CUDA_pnls.resize(W.getNumberOfBoundary(), 0);
-				n_CUDA_rs.resize(W.getNumberOfBoundary(), 0);
+				n_CUDA_vtxs.resize(W.getNumberOfBoundary(), 0);
 				n_CUDA_i0s.resize(W.getNumberOfBoundary(), 0);
 				n_CUDA_i1s.resize(W.getNumberOfBoundary(), 0);
 				n_CUDA_i2s.resize(W.getNumberOfBoundary(), 0);
 				n_CUDA_i3s.resize(W.getNumberOfBoundary(), 0);
 				n_CUDA_rads.resize(W.getNumberOfBoundary(), 0);
 				n_CUDA_vels.resize(W.getNumberOfBoundary(), 0);
+				
+				n_CUDA_rs.resize(W.getNumberOfBoundary(), 0);
 				n_CUDA_rhss.resize(W.getNumberOfBoundary(), 0);
 
 				for (size_t s = 0; s < n_CUDA_afls; ++s)
 				{
 					cuDeleteFromDev(W.getBoundary(s).virtualWake.devWakePtr);
-					cuDeleteFromDev(W.getBoundary(s).afl.devR);
 					cuDeleteFromDev(W.getBoundary(s).virtualWake.devI0Ptr);
 					cuDeleteFromDev(W.getBoundary(s).virtualWake.devI1Ptr);
 					cuDeleteFromDev(W.getBoundary(s).virtualWake.devI2Ptr);
 					cuDeleteFromDev(W.getBoundary(s).virtualWake.devI3Ptr);
 					cuDeleteFromDev(W.getBoundary(s).virtualWake.devRadsPtr);
 					cuDeleteFromDev(W.getBoundary(s).virtualWake.devVelsPtr);
+					
+					cuDeleteFromDev(W.getBoundary(s).afl.devR);
 					cuDeleteFromDev(W.getBoundary(s).afl.devRhs);
 				}
 
 				if (n_CUDA_afls)
 				{
 					cuDeleteFromDev(dev_nPanels);
-					cuDeleteFromDev(dev_ptr_ptr_pnl);
-					cuDeleteFromDev(dev_ptr_ptr_r);
+					cuDeleteFromDev(dev_nVortices);
+
+					cuDeleteFromDev(dev_ptr_ptr_vtx);
 					cuDeleteFromDev(dev_ptr_ptr_i0);
 					cuDeleteFromDev(dev_ptr_ptr_i1);
 					cuDeleteFromDev(dev_ptr_ptr_i2);
 					cuDeleteFromDev(dev_ptr_ptr_i3);
 					cuDeleteFromDev(dev_ptr_ptr_rad);
 					cuDeleteFromDev(dev_ptr_ptr_vel);
+					
+					cuDeleteFromDev(dev_ptr_ptr_r);
 					cuDeleteFromDev(dev_ptr_ptr_rhs);
 				}
 
 				std::vector<size_t> host_nPanels(0);
+				std::vector<size_t> host_nVortices(0);
 				
 				n_CUDA_afls = 0;
+
 				for (size_t s = 0; s < W.getNumberOfBoundary(); ++s)
 				{
-					const size_t& sz = W.getBoundary(s).afl.np;//->virtualWake.vtx.size();
-					W.getBoundary(s).virtualWake.devWakePtr = ReserveDevMem<double, sizeof(Vortex2D) / sizeof(double)>(sz, n_CUDA_pnls[s]);
-					W.getBoundary(s).afl.devR = ReserveDevMem<double, 2>(sz+1, n_CUDA_rs[s]);
-					W.getBoundary(s).virtualWake.devI0Ptr = ReserveDevMem<double, 1>(sz, n_CUDA_i1s[s]);
-					W.getBoundary(s).virtualWake.devI1Ptr = ReserveDevMem<double, 1>(sz, n_CUDA_i1s[s]);
-					W.getBoundary(s).virtualWake.devI2Ptr = ReserveDevMem<double, 2>(sz, n_CUDA_i2s[s]);
-					W.getBoundary(s).virtualWake.devI3Ptr = ReserveDevMem<double, 2>(sz, n_CUDA_i2s[s]);
-					W.getBoundary(s).virtualWake.devRadsPtr = ReserveDevMem<double, 1>(sz, n_CUDA_rads[s]);
-					W.getBoundary(s).virtualWake.devVelsPtr = ReserveDevMem<double, 2>(sz, n_CUDA_vels[s]);
-					W.getBoundary(s).afl.devRhs = ReserveDevMem<double, 1>(sz, n_CUDA_rhss[s]);
+					const size_t& szPan = W.getBoundary(s).afl.np;
+					const size_t& szVtx = std::max(W.getBoundary(s).virtualWake.vtx.size(), W.getPassport().wakeDiscretizationProperties.vortexPerPanel * W.getBoundary(s).afl.np);
+
+					//std::cout << "szVtx = " << szVtx << std::endl;
+
+					W.getBoundary(s).virtualWake.devWakePtr = ReserveDevMem<double, sizeof(Vortex2D) / sizeof(double)>(szVtx, n_CUDA_vtxs[s]);
+					W.getBoundary(s).virtualWake.devI0Ptr = ReserveDevMem<double, 1>(szVtx, n_CUDA_i1s[s]);
+					W.getBoundary(s).virtualWake.devI1Ptr = ReserveDevMem<double, 1>(szVtx, n_CUDA_i1s[s]);
+					W.getBoundary(s).virtualWake.devI2Ptr = ReserveDevMem<double, 2>(szVtx, n_CUDA_i2s[s]);
+					W.getBoundary(s).virtualWake.devI3Ptr = ReserveDevMem<double, 2>(szVtx, n_CUDA_i2s[s]);
+					W.getBoundary(s).virtualWake.devRadsPtr = ReserveDevMem<double, 1>(szVtx, n_CUDA_rads[s]);
+					W.getBoundary(s).virtualWake.devVelsPtr = ReserveDevMem<double, 2>(szVtx, n_CUDA_vels[s]);
+					
+					W.getBoundary(s).afl.devR = ReserveDevMem<double, 2>(szPan + 1, n_CUDA_rs[s]);
+					W.getBoundary(s).afl.devRhs = ReserveDevMem<double, 1>(szPan, n_CUDA_rhss[s]);
 
 					n_CUDA_afls++;
-					host_nPanels.push_back(n_CUDA_pnls[s]);
+					host_nVortices.push_back(n_CUDA_vtxs[s]);
+					host_nPanels.push_back(n_CUDA_rhss[s]);
+					
 
-					W.getBoundary(s).virtualWake.tmpVels.resize(n_CUDA_vels[s], { 0.0, 0.0 });
-					W.getBoundary(s).virtualWake.tmpRads.resize(n_CUDA_vels[s], 1.0e+5);
+					W.getBoundary(s).virtualWake.tmpVels.resize(n_CUDA_vtxs[s], { 0.0, 0.0 });
+					W.getBoundary(s).virtualWake.tmpRads.resize(n_CUDA_vtxs[s], 1.0e+5);
 
-					W.getBoundary(s).virtualWake.tmpI0.resize(n_CUDA_vels[s], 0.0);
-					W.getBoundary(s).virtualWake.tmpI1.resize(n_CUDA_vels[s], 0.0);
-					W.getBoundary(s).virtualWake.tmpI2.resize(n_CUDA_vels[s], { 0.0, 0.0 });
-					W.getBoundary(s).virtualWake.tmpI3.resize(n_CUDA_vels[s], { 0.0, 0.0 });
-					W.getBoundary(s).afl.tmpRhs.resize(n_CUDA_vels[s], 0.0);
+					W.getBoundary(s).virtualWake.tmpI0.resize(n_CUDA_vtxs[s], 0.0);
+					W.getBoundary(s).virtualWake.tmpI1.resize(n_CUDA_vtxs[s], 0.0);
+					W.getBoundary(s).virtualWake.tmpI2.resize(n_CUDA_vtxs[s], { 0.0, 0.0 });
+					W.getBoundary(s).virtualWake.tmpI3.resize(n_CUDA_vtxs[s], { 0.0, 0.0 });
+					
+					W.getBoundary(s).afl.tmpRhs.resize(n_CUDA_rhss[s], 0.0);
 				}
 
 				dev_nPanels = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_nPanels.data());
+				dev_nVortices = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_nVortices.data());
 
-				std::vector<double*> host_ptr_ptr_pnl_tmp;
+				std::vector<double*> host_ptr_ptr_vtx_tmp;
 				std::vector<double*> host_ptr_ptr_vel_tmp;
 				std::vector<double*> host_ptr_ptr_rad_tmp;
 				std::vector<double*> host_ptr_ptr_i0_tmp;
 				std::vector<double*> host_ptr_ptr_i1_tmp;
 				std::vector<double*> host_ptr_ptr_i2_tmp;
 				std::vector<double*> host_ptr_ptr_i3_tmp;
+
 				std::vector<double*> host_ptr_ptr_r_tmp;
 				std::vector<double*> host_ptr_ptr_rhs_tmp;
+
 				for (size_t q = 0; q < W.getNumberOfBoundary(); ++q)
 				{
-					host_ptr_ptr_pnl_tmp.push_back(W.getBoundary(q).virtualWake.devWakePtr);
+					host_ptr_ptr_vtx_tmp.push_back(W.getBoundary(q).virtualWake.devWakePtr);
 					host_ptr_ptr_vel_tmp.push_back(W.getBoundary(q).virtualWake.devVelsPtr);
 					host_ptr_ptr_rad_tmp.push_back(W.getBoundary(q).virtualWake.devRadsPtr);
 					host_ptr_ptr_i0_tmp.push_back(W.getBoundary(q).virtualWake.devI0Ptr);
 					host_ptr_ptr_i1_tmp.push_back(W.getBoundary(q).virtualWake.devI1Ptr);
 					host_ptr_ptr_i2_tmp.push_back(W.getBoundary(q).virtualWake.devI2Ptr);
 					host_ptr_ptr_i3_tmp.push_back(W.getBoundary(q).virtualWake.devI3Ptr);
+					
 					host_ptr_ptr_r_tmp.push_back(W.getBoundary(q).afl.devR);
 					host_ptr_ptr_rhs_tmp.push_back(W.getBoundary(q).afl.devRhs);
 				}
 
-				dev_ptr_ptr_pnl = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_pnl_tmp.data());
+				dev_ptr_ptr_vtx = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_vtx_tmp.data());
 				dev_ptr_ptr_rad = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_rad_tmp.data());
 				dev_ptr_ptr_vel = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_vel_tmp.data());
-				dev_ptr_ptr_r = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_r_tmp.data());
 				dev_ptr_ptr_i0 = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_i0_tmp.data());
 				dev_ptr_ptr_i1 = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_i1_tmp.data());
 				dev_ptr_ptr_i2 = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_i2_tmp.data());
 				dev_ptr_ptr_i3 = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_i3_tmp.data());
 				
+				dev_ptr_ptr_r = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_r_tmp.data());
 				dev_ptr_ptr_rhs = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_ptr_rhs_tmp.data());
 			}
 
 			for (size_t s = 0; s < W.getNumberOfBoundary(); ++s)
 			{
-				cuClearWakeMem(n_CUDA_pnls[s], W.getBoundary(s).virtualWake.devWakePtr);
+				cuClearWakeMem(n_CUDA_vtxs[s], W.getBoundary(s).virtualWake.devWakePtr);
 				cuCopyWakeToDev(W.getBoundary(s).virtualWake.vtx.size(), W.getBoundary(s).virtualWake.vtx.data(), W.getBoundary(s).virtualWake.devWakePtr);
 				cuCopyRsToDev(W.getBoundary(s).afl.r.size(), W.getBoundary(s).afl.r.data(), W.getBoundary(s).afl.devR);
 			}
@@ -302,45 +326,5 @@ void gpu::RefreshAfls()
 	}
 }
 
-
-
-/*
-void gpu::ExpGetPairs(int type, std::vector<int>& NEIB)
-{
-	size_t npt = wakeDb.vtx.size();
-	const int& id = parallel.myidWork;
-	parProp par = parallel.SplitMPI(npt, true);
-
-	double tCUDASTART = 0.0, tCUDAEND = 0.0;
-
-	tCUDASTART = omp_get_wtime();
-
-	NEIB.resize(npt, 0);
-
-
-	if (npt > 0)
-	{
-		cuCalculatePairs(par.myDisp, par.myLen, npt, wakeDb.devWakePtr, dev_ptr_mesh, dev_ptr_nei, wake.param.epscol, sqr(wake.param.epscol), type);
-
-		CopyMemFromDev<int, 1>(par.myLen, dev_ptr_nei, &nei[0]);
-
-		std::vector<int> newNei;
-
-		newNei.resize(nei.size());
-
-		MPI_Allgatherv(nei.data(), par.myLen, MPI_INT, newNei.data(), par.len.data(), par.disp.data(), MPI_INT,  parallel.commWork);
-
-		for (size_t q = 0; q < NEIB.size(); ++q)
-		{
-			NEIB[q] = newNei[q];
-			//std::cout << q << " " << NEIB[q] << std::endl;
-		}
-	}
-	
-	tCUDAEND = omp_get_wtime();
-
-	//std::cout << "GPU_Pairs: " << (tCUDAEND - tCUDASTART) << std::endl;
-}
-*/
 
 #endif

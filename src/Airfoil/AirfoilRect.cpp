@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #include "AirfoilRect.h"
@@ -278,6 +278,7 @@ void AirfoilRect::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const Wa
 	if ((npt > 0) && (nr > 0))
 	{
 		cuCalculateSurfDiffVeloWake(par.myDisp, par.myLen, dev_ptr_pt, nr, dev_ptr_r, dev_ptr_i0, dev_ptr_i3, dev_ptr_rad);
+			
 		W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_i3, (double*)&loci3[0]);
 		W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_i0, &loci0[0]);
 
@@ -307,3 +308,21 @@ void AirfoilRect::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const Wa
 
 }//GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses
 #endif
+
+bool AirfoilRect::IsPointInAirfoil(const Point2D& point) const
+{
+	double angle = 0.0;
+
+	Point2D v1, v2;
+
+	for (size_t i = 0; i < r.size() - 1; i++)
+	{
+		v1 = r[i] - point;
+		v2 = r[i+1] - point;
+		angle += atan2(v1^v2, v1 * v2);
+	}
+
+	if (fabs(angle) < 0.1)
+		return false;
+	else return true;
+}//IsPointInAirfoil(...)

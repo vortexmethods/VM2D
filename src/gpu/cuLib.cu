@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,17 +32,17 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #include "cuLib.cuh"
 
-//#include "cuda.h"
+#include "cuda.h"
 #include "gpudefs.h"
 
 
-__device__ __constant__ size_t pos;
+__device__ __constant__ size_t sizeVort;
 __device__ __constant__ size_t posR;
 __device__ __constant__ size_t posG;
 
@@ -56,9 +56,9 @@ __global__ void CU_WakeToZero(size_t nvt, double* vt)
 {
 	int i = blockIdx.x * blockDim.x + threadIdx.x;
 
-	vt[i*pos + posR + 0] = 0.0;
-	vt[i*pos + posR + 1] = 0.0;
-	vt[i*pos + posG + 0] = 0.0;
+	vt[i*sizeVort + posR + 0] = 0.0;
+	vt[i*sizeVort + posR + 1] = 0.0;
+	vt[i*sizeVort + posG + 0] = 0.0;
 }
 
 
@@ -67,7 +67,7 @@ __global__ void CU_calc_conv_epsast(
 	size_t nvt, double* vt,
 	double eps2, double minRd,
 	double* vel, double* rad,
-	size_t nAfls, size_t* nPnls, double** ptrPnls)
+	size_t nAfls, size_t* nVtxs, double** ptrVtxs)
 {
 	__shared__ double shx[CUBLOCK];
 	__shared__ double shy[CUBLOCK];
@@ -76,8 +76,8 @@ __global__ void CU_calc_conv_epsast(
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
 
-	double ptx = pt[i*pos + posR + 0];
-	double pty = pt[i*pos + posR + 1];
+	double ptx = pt[i*sizeVort + posR + 0];
+	double pty = pt[i*sizeVort + posR + 1];
 
 	double velx = 0.0;
 	double vely = 0.0;
@@ -93,9 +93,9 @@ __global__ void CU_calc_conv_epsast(
 
 	for (size_t j = 0; j < nvt; j += CUBLOCK)
 	{
-		shx[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 0];
-		shy[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 1];
-		shg[threadIdx.x] = vt[(j + threadIdx.x)*pos + posG + 0];
+		shx[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 0];
+		shy[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 1];
+		shg[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posG + 0];
 
 		__syncthreads();
 	
@@ -126,10 +126,10 @@ __global__ void CU_calc_conv_epsast(
 	}
 
 	for (size_t q = 0; q < nAfls; ++q)
-	for (size_t j = 0; j < nPnls[q]; j += CUBLOCK)
+	for (size_t j = 0; j < nVtxs[q]; j += CUBLOCK)
 	{
-		shx[threadIdx.x] = ptrPnls[q][(j + threadIdx.x)*pos + posR + 0];
-		shy[threadIdx.x] = ptrPnls[q][(j + threadIdx.x)*pos + posR + 1];
+		shx[threadIdx.x] = ptrVtxs[q][(j + threadIdx.x)*sizeVort + posR + 0];
+		shy[threadIdx.x] = ptrVtxs[q][(j + threadIdx.x)*sizeVort + posR + 1];
 				
 		__syncthreads();
 
@@ -175,8 +175,8 @@ __global__ void CU_calc_conv(
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
 
-	double ptx = pt[i*pos + posR + 0];
-	double pty = pt[i*pos + posR + 1];
+	double ptx = pt[i*sizeVort + posR + 0];
+	double pty = pt[i*sizeVort + posR + 1];
 
 	double velx = 0.0;
 	double vely = 0.0;
@@ -186,9 +186,9 @@ __global__ void CU_calc_conv(
 
 	for (size_t j = 0; j < nvt; j += CUBLOCK)
 	{
-		shx[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 0];
-		shy[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 1];
-		shg[threadIdx.x] = vt[(j + threadIdx.x)*pos + posG + 0];
+		shx[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 0];
+		shy[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 1];
+		shg[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posG + 0];
 
 		__syncthreads();
 
@@ -223,8 +223,8 @@ __global__ void CU_calc_I1I2(
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
 
-	double ptx = pt[i*pos + posR + 0];
-	double pty = pt[i*pos + posR + 1];
+	double ptx = pt[i*sizeVort + posR + 0];
+	double pty = pt[i*sizeVort + posR + 1];
 	double rdi = rd[i];
 
 	double val1 = 0.0;
@@ -241,9 +241,9 @@ __global__ void CU_calc_I1I2(
 
 	for (size_t j = 0; j < nvt; j += CUBLOCK)
 	{
-		shx[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 0];
-		shy[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 1];
-		shg[threadIdx.x] = vt[(j + threadIdx.x)*pos + posG + 0];
+		shx[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 0];
+		shy[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 1];
+		shg[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posG + 0];
 		
 		__syncthreads();
 
@@ -290,8 +290,8 @@ __global__ void CU_calc_I1I2mesh(
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
 
-	double ptx = pt[i*pos + posR + 0];
-	double pty = pt[i*pos + posR + 1];
+	double ptx = pt[i*sizeVort + posR + 0];
+	double pty = pt[i*sizeVort + posR + 1];
 	double rdi = rd[i];
 
 	double val1 = 0.0;
@@ -308,9 +308,10 @@ __global__ void CU_calc_I1I2mesh(
 
 	for (size_t j = 0; j < nvt; j += CUBLOCK)
 	{
-		shx[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 0];
-		shy[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 1];
-		shg[threadIdx.x] = vt[(j + threadIdx.x)*pos + posG + 0];
+		shx[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 0];
+		shy[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 1];
+		shg[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posG + 0];
+
 		shmshx[threadIdx.x] = dev_ptr_mesh[(j + threadIdx.x)*2 + 0];
 		shmshy[threadIdx.x] = dev_ptr_mesh[(j + threadIdx.x)*2 + 1];
 
@@ -355,8 +356,8 @@ __global__ void CU_calc_I0I3(
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
 
-	double ptx = pt[i*pos + posR + 0];
-	double pty = pt[i*pos + posR + 1];
+	double ptx = pt[i*sizeVort + posR + 0];
+	double pty = pt[i*sizeVort + posR + 1];
 	double rdi = rd[i];
 
 	double val0 = 0.0;
@@ -518,9 +519,9 @@ __global__ void CU_calc_RHS(
 
 	for (size_t j = 0; j < nvt; j += CUBLOCK)
 	{
-		shx[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 0];
-		shy[threadIdx.x] = vt[(j + threadIdx.x)*pos + posR + 1];
-		shg[threadIdx.x] = vt[(j + threadIdx.x)*pos + posG + 0];
+		shx[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 0];
+		shy[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 1];
+		shg[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posG + 0];
 		
 		__syncthreads();
 
@@ -552,8 +553,8 @@ __global__ void CU_calc_mesh(
 {
 	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 
-	double ptx = pt[i*pos + posR + 0];
-	double pty = pt[i*pos + posR + 1];
+	double ptx = pt[i*sizeVort + posR + 0];
+	double pty = pt[i*sizeVort + posR + 1];
 
 	dev_ptr_mesh[2 * i + 0] = floor(ptx / meshStep);
 	dev_ptr_mesh[2 * i + 1] = floor(pty / meshStep);
@@ -567,53 +568,57 @@ __global__ void CU_calc_nei(
 {
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
+	size_t minI = disp + blockIdx.x * blockDim.x;
 
-	int ix = dev_ptr_mesh[2 * i + 0];
-	int iy = dev_ptr_mesh[2 * i + 1];
-
-	int jx, jy;
-
-	double ipx, ipy, jpx, jpy;
-	ipx = pt[i*pos + posR + 0];
-	ipy = pt[i*pos + posR + 1];
-
-	double dx, dy, r2, r2test;
-	dev_ptr_nei[locI] = 0;
-
-	double ig = pt[i*pos + posG + 0];
-	double jg;
-
-	r2test = (type == 1) ? 4.0*epsCol2 * fmax(1.0, ipx*ipx) : epsCol2 * fmax(1.0, ipx*ipx);
-	//r2test = epsCol2;
-
-	bool cond;
-
-	for (size_t j = 0; j < npt; ++j)
+	if (locI < len)
 	{
-		jx = dev_ptr_mesh[2 * j + 0];
-		jy = dev_ptr_mesh[2 * j + 1];
-		
-		if ((abs(ix-jx) <= 1) && (abs(iy - jy) <= 1) && (j>i))
+		int ix = dev_ptr_mesh[2 * i + 0];
+		int iy = dev_ptr_mesh[2 * i + 1];
+
+		int jx, jy;
+
+		double ipx, ipy, jpx, jpy;
+		ipx = pt[i*sizeVort + posR + 0];
+		ipy = pt[i*sizeVort + posR + 1];
+
+		double dx, dy, r2, r2test;
+		dev_ptr_nei[locI] = 0;
+
+		double ig = pt[i*sizeVort + posG + 0];
+		double jg;
+
+		r2test = (type == 1) ? 4.0*epsCol2 * fmax(1.0, ipx*ipx) : epsCol2 * fmax(1.0, ipx*ipx);
+		//r2test = epsCol2;
+
+		bool cond;
+
+		for (size_t j = minI; j < npt; ++j)
 		{
-			jpx = pt[j*pos + posR + 0];
-			jpy = pt[j*pos + posR + 1];
+			jx = dev_ptr_mesh[2 * j + 0];
+			jy = dev_ptr_mesh[2 * j + 1];
 
-			dx = ipx - jpx;
-			dy = ipy - jpy;
-			
-			r2 = dx*dx + dy*dy;
-			
-			jg = pt[j*pos + posG + 0];
-
-			cond = (r2 < r2test) && ((type == 1) ? ig*jg < 0 : (ig*jg > 0) && (fabs(ig + jg) < 0.03*0.25));
-			//cond = (r2 < r2test);
-			if (cond)
+			if ((abs(ix - jx) <= 1) && (abs(iy - jy) <= 1) && (j > i))
 			{
-				dev_ptr_nei[locI] = j;
-				break;
+				jpx = pt[j*sizeVort + posR + 0];
+				jpy = pt[j*sizeVort + posR + 1];
+
+				dx = ipx - jpx;
+				dy = ipy - jpy;
+
+				r2 = dx*dx + dy*dy;
+
+				jg = pt[j*sizeVort + posG + 0];
+
+				cond = (r2 < r2test) && ((type == 1) ? ig*jg < 0 : (ig*jg > 0) && (fabs(ig + jg) < 0.03*0.25));
+				//cond = (r2 < r2test);
+				if (cond)
+				{
+					dev_ptr_nei[locI] = j;
+					break;
+				}
 			}
 		}
-	}	
+	}
 }
 
 //ниже - обычные (__host__) функции
@@ -628,9 +633,9 @@ int cuCalcBlocks(size_t new_n)
 
 void cuSetConstants(size_t pos_, size_t posR_, size_t posG_)
 {
-	cudaError_t err1 = cudaMemcpyToSymbol(pos, &pos_, sizeof(size_t));
-	cudaError_t err2 = cudaMemcpyToSymbol(posR, &posR_, sizeof(size_t));
-	cudaError_t err3 = cudaMemcpyToSymbol(posG, &posG_, sizeof(size_t));
+	cudaError_t err1 = cudaMemcpyToSymbol(sizeVort, &pos_,  sizeof(size_t));
+	cudaError_t err2 = cudaMemcpyToSymbol(posR,     &posR_, sizeof(size_t));
+	cudaError_t err3 = cudaMemcpyToSymbol(posG,     &posG_, sizeof(size_t));
 
 	if (err1 != cudaSuccess)
 		std::cout << cudaGetErrorString(err1) << " (erSetConst01)" << std::endl;
@@ -665,10 +670,10 @@ void cuCopyWakeToDev(size_t n, const Vortex2D* host_src, double* dev_ptr)
 
 void cuCopyRsToDev(size_t n, const Point2D* host_src, double* dev_ptr)
 {
-	cudaError_t err1 = cudaMemcpy(dev_ptr, host_src, sizeof(double)*2*n, cudaMemcpyHostToDevice);
+	cudaError_t err1 = cudaMemcpy(dev_ptr, host_src, sizeof(double)* 2 * n, cudaMemcpyHostToDevice);
+		
 	if (err1 != cudaSuccess)
 		std::cout << cudaGetErrorString(err1) << " (erCopyRsToDev01)" << std::endl;
-
 }
 
 void cuCopyFixedArray(void* dev_ptr, void* host_src, size_t nBytes)
@@ -693,10 +698,10 @@ void cuDeleteFromDev(void* devPtr)
 }
 
 /////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nAfls, size_t* nPnls, double** ptrPnls, double* vel, double* rd, double minRd, double eps2)
+void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double minRd, double eps2)
 {	
 	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
-	CU_calc_conv_epsast << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, eps2, minRd, vel, rd, nAfls, nPnls, ptrPnls);
+	CU_calc_conv_epsast << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, eps2, minRd, vel, rd, nAfls, nVtxs, ptrVtxs);
 	
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
@@ -752,10 +757,6 @@ void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t
 }
 
 
-
-
-
-
 void cuCalculateRhs(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* rhs)
 {
 	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
@@ -770,16 +771,34 @@ void cuCalculateRhs(size_t myDisp, size_t myLen, double* pt, size_t nvt, double*
 
 void cuCalculatePairs(size_t myDisp, size_t myLen, size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type)
 {
-	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
-	CU_calc_mesh << < blocks, threads >> > (npt, pt, mesh, meshStep);
+	dim3 blocksMesh(cuCalcBlocks(npt)), threadsMesh(CUBLOCK);
+	CU_calc_mesh << < blocksMesh, threadsMesh >> > (npt, pt, mesh, meshStep);
 
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
 		std::cout << cudaGetErrorString(err1) << " (erCU_calc_mesh01)" << std::endl;
-
-	CU_calc_nei << < blocks, threads >> > (myDisp, myLen, npt, pt, mesh, nei, epsCol2, type);
-
+	
+	dim3 blocksNei(cuCalcBlocks(myLen)), threadsNei(CUBLOCK);
+	CU_calc_nei << < blocksNei, threadsNei >> > (myDisp, myLen, npt, pt, mesh, nei, epsCol2, type);
+	
 	cudaError_t err2 = cudaGetLastError();
 	if (err2 != cudaSuccess)
 		std::cout << cudaGetErrorString(err2) << " (erCU_calc_nei01)" << std::endl;
 }
+
+
+/*
+void cuTEST(const std::string& str)
+{
+	double* ppp;
+	double mmm = 134;
+
+	cudaMalloc(&ppp, 8);
+
+	cudaError_t err1 = cudaMemcpy(ppp, &mmm, sizeof(double), cudaMemcpyHostToDevice);
+	if (err1 != cudaSuccess)
+		std::cout << str << ": " << cudaGetErrorString(err1) << " (CUDA_TEST_BREAK)" << std::endl;
+	else
+		std::cout << str << ": " << cudaGetErrorString(err1) << " (CUDA_TEST_PASSED)" << std::endl;
+}
+*/

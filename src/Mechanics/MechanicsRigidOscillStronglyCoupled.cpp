@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.2    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/06/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.2
-\date 14 июня 2018 г.
+\version 1.3
+\date 26 сентября 2018 г.
 */
 
 #include "mpi.h"
@@ -103,6 +103,9 @@ void MechanicsRigidOscillStronglyCoupled::Move()
 	VcmOld = Vcm;
 	
 	Point2D dRcm = Vcm * W.getPassport().timeDiscretizationProperties.dt;
+	
+	MPI_Bcast(&dRcm, 1, Point2D::mpiPoint2D, 0, W.getParallel().commWork);
+	
 	Rcm += dRcm;
 	afl.Move(dRcm);
 }//Move()
@@ -117,7 +120,7 @@ void MechanicsRigidOscillStronglyCoupled::ReadSpecificParametersFromDictionary()
 
 	k =  m * 4.0 * PI * PI * sh[1] * sh[1] * W.getPassport().physicalProperties.vInf.length2();
 
-//	std::cout << "constr k = " << k << std::endl;
+	std::cout << "constr k = " << k << std::endl;
 }
 
 /// \todo пока считается, что вихревой слой состоит из отдельных изолированных вихрей

@@ -3,7 +3,6 @@ project(VM2D)
 
 #enable_language(CUDA)
 set (CMAKE_CUDA_FLAGS "-arch=sm_35")
-#set (CMAKE_CUDA_COMPILER "/usr/local/cuda/bin/nvcc")
 
 set(CMAKE_CONFIGURATION_TYPE "Debug;Release")
 
