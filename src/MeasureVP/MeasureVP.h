@@ -1,13 +1,13 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: MeasureVelocityPressure.h                                        |
+| File name: MeasureVP.h                                                      |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,16 +28,16 @@
 
 /*!
 \file
-\brief Заголовочный файл с описанием класса MeasureVelocityPressure
+\brief Заголовочный файл с описанием класса MeasureVP
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
-#ifndef MEASUREVELOCITYPRESSURE_H
-#define MEASUREVELOCITYPRESSURE_H
+#ifndef MEASUREVP_H
+#define MEASUREVP_H
 
 #include <memory>
 #include <vector>
@@ -59,11 +59,11 @@
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
 
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
-class MeasureVelocityPressure
+class MeasureVP
 {
 private:
 	///количество точек
@@ -96,10 +96,10 @@ public:
 	/// \brief Конструктор
 	/// 
 	/// \param[in] W_ константная ссылка на решаемую задачу
-	MeasureVelocityPressure(const World2D& W_) : W(W_) {};
+	MeasureVP(const World2D& W_) : W(W_) {};
 
 	/// Деструктор
-	~MeasureVelocityPressure() { };
+	~MeasureVP() { };
 
 	/// \brief Чтение точек, в которых нужно посчитать давление и скорость
 	///
@@ -111,7 +111,7 @@ public:
 	/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
 	/// \param[in] step номер кадра для сохранения
 	/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-	void CalcSaveVelocityPressure(const std::string& dir, size_t step, timePeriod& time);
+	void CalcSaveVP(const std::string& dir, size_t step, timePeriod& time);
 
 };
 

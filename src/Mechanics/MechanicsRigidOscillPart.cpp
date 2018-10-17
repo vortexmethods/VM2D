@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #include "mpi.h"
@@ -105,7 +105,7 @@ void MechanicsRigidOscillPart::Move()
 	
 	double dy, du;
 
-	//std::cout << "k = " << k << std::endl;
+	//W.getInfo('t') << "k = " << k << std::endl;
 
 	if (W.getParallel().myidWork == 0)
 	{
@@ -135,14 +135,14 @@ void MechanicsRigidOscillPart::ReadSpecificParametersFromDictionary()
 {
 	mechParamsParser->get("m", m);
 	
-	std::cout << "m = " << m << std::endl;
+	W.getInfo('i') << "mass " << "m = " << m << std::endl;
 		
 	std::vector<double> sh;
 	mechParamsParser->get("sh", sh);
 	
 	k = m * 4.0 * PI * PI * sh[1] * sh[1] * W.getPassport().physicalProperties.vInf.length2();
 
-	std::cout << "constr k = " << k << std::endl;
+	W.getInfo('i') << "rigidity k = " << k << std::endl;
 }
 
 void MechanicsRigidOscillPart::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)

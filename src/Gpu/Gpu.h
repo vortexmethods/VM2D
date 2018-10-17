@@ -1,13 +1,13 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: gpu.h                                                            |
+| File name: Gpu.h                                                            |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,12 +28,12 @@
 
 /*!
 \file
-\brief Заголовочный файл с описанием класса gpu
+\brief Заголовочный файл с описанием класса Gpu
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 
@@ -43,7 +43,7 @@
 #include <memory>
 
 #include "cuLib.cuh"
-#include "gpudefs.h"
+#include "Gpudefs.h"
 
 class World2D;
 
@@ -53,10 +53,10 @@ class World2D;
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
-class gpu
+class Gpu
 {
 private:
 	/// Константная ссылка на решаемую задачу
@@ -74,7 +74,7 @@ public:
 	/// \tparam T тип данных
 	/// \tparam dim внутренняя размерность массива
 	/// \param[in] n длина массива (внешняя размерность), для которого требуется зарезервировать память
-	/// \param[out] new_n ссылка на длину (внешнюю размерность) массива, под который выделена память
+	/// \param[out] new_n ссылка на длину (внешнюю размерность) массива, под который выделена память (округляется вверх до длины, кратной размеру блока CUBLOCK)
 	/// \return адрес на графической карте - указатель на начало массива
 	template<typename T, size_t dim>
 	T* ReserveDevMem(size_t n, size_t& new_n) 
@@ -87,7 +87,7 @@ public:
 
 		void* ptr;
 
-		cuReserveDevMem(ptr, CUBLOCK * nBlocks * dim * sizeof(T));
+		cuReserveDevMem(ptr, new_n * dim * sizeof(T));
 
 		return (T*)ptr;
 	} //ReserveDevMem(...)
@@ -135,13 +135,17 @@ public:
 	/// Синхронизация состояния профилей с графической картой
 	void RefreshAfls();
 	
-	// Данные для вычисления скоростей	
+	// Ниже - данные для вычисления скоростей	
+	
+	/// Число профилей в задаче
 	size_t n_CUDA_afls;
 
-	size_t* dev_nPanels;
-	size_t* dev_nVortices;
+	/// Указатели на массивы, которые хранятся на видеокарте и содержат число панелей и виртуальных вихрей на всех профилях
+	size_t* dev_ptr_nPanels;
+	size_t* dev_ptr_nVortices;
 	
 
+	//Переменная, которая лежит на хосте и хранит адрес на видеокарте массива, в котором хранятся указатели на соответствующие массивы
 	double** dev_ptr_ptr_vtx;
 	double** dev_ptr_ptr_i0;
 	double** dev_ptr_ptr_i1;
@@ -153,36 +157,31 @@ public:
 	double** dev_ptr_ptr_r;
 	double** dev_ptr_ptr_rhs;
 
-	std::vector<size_t> n_CUDA_vtxs;
-	std::vector<size_t> n_CUDA_i0s;
-	std::vector<size_t> n_CUDA_i1s;
-	std::vector<size_t> n_CUDA_i2s;
-	std::vector<size_t> n_CUDA_i3s;
-	std::vector<size_t> n_CUDA_rads;
-	std::vector<size_t> n_CUDA_vels;
+	double** dev_ptr_ptr_freeVortexSheet;
+	double** dev_ptr_ptr_attachedVortexSheet;
+	double** dev_ptr_ptr_attachedSourceSheet;
 
-	std::vector<size_t> n_CUDA_rs;
-	std::vector<size_t> n_CUDA_rhss;
 
-	size_t n_CUDA_vel;
-	size_t n_CUDA_rad;
-	size_t n_CUDA_i0;
-	size_t n_CUDA_i1;
-	size_t n_CUDA_i2;
-	size_t n_CUDA_i3;
+	/// Массив на хосте, содержащий число виртуальных вихрей на профилях; его длина равна числу профилей
+	std::vector<size_t> n_CUDA_virtWake;
+
+	/// Массив на хосте, содержащий число вершин на профилях (на единицу больше, чем число панелей); его длина равна числу профилей
+	std::vector<size_t> n_CUDA_r;
 		
-	size_t n_CUDA_mesh;
-	size_t n_CUDA_nei;	
+	/// Массив на хосте, содержащий число панелей на профилях; его длина равна числу профилей
+	std::vector<size_t> n_CUDA_panel;
 
+	/// Длина массивов на видеокарте, зарезервированных на хранение сведений о следе (wake)
+	size_t n_CUDA_wake;
 #endif
 
 	/// \brief Конструктор
 	/// 
 	/// \param[in] W_ константная ссылка на решаемую задачу	
-	gpu(const World2D& W_);
+	Gpu(const World2D& W_);
 
 	//// \brief Деструктор
-	~gpu();
+	~Gpu();
 };
 
 #endif

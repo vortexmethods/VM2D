@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,14 +32,14 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #include "cuLib.cuh"
 
 #include "cuda.h"
-#include "gpudefs.h"
+#include "Gpudefs.h"
 
 
 __device__ __constant__ size_t sizeVort;
@@ -58,7 +58,7 @@ __global__ void CU_WakeToZero(size_t nvt, double* vt)
 
 	vt[i*sizeVort + posR + 0] = 0.0;
 	vt[i*sizeVort + posR + 1] = 0.0;
-	vt[i*sizeVort + posG + 0] = 0.0;
+	vt[i*sizeVort + posG]     = 0.0;
 }
 
 
@@ -161,16 +161,25 @@ __global__ void CU_calc_conv_epsast(
 }
 
 
-__global__ void CU_calc_conv(
+__global__ void CU_calc_conv_From_Panels(
 	size_t disp, size_t len, double* pt,
-	size_t nvt, double* vt,
+	size_t npnl, double* r, double* freegamma, double* attgamma, double* attsource,
 	double eps2, 
 	double* vel)
 {
 /// \todo Не сделано влияние слоев, добавлен только учет виртуальных вихрей - корректно работает только для неподвижного профиля
 	__shared__ double shx[CUBLOCK];
 	__shared__ double shy[CUBLOCK];
-	__shared__ double shg[CUBLOCK];
+
+	__shared__ double shdx[CUBLOCK];
+	__shared__ double shdy[CUBLOCK];
+
+	__shared__ double shlen[CUBLOCK];
+
+
+	__shared__ double shfreegamma[CUBLOCK];
+	__shared__ double shattgamma[CUBLOCK];
+	__shared__ double shattsource[CUBLOCK];
 
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
@@ -181,26 +190,49 @@ __global__ void CU_calc_conv(
 	double velx = 0.0;
 	double vely = 0.0;
 
-	double dx, dy, dr2;
-	double izn;
+	double sx, sy, px, py, alpha, lambda, taux, tauy, psix, psiy;
 
-	for (size_t j = 0; j < nvt; j += CUBLOCK)
+	for (size_t j = 0; j < npnl; j += CUBLOCK)
 	{
-		shx[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 0];
-		shy[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 1];
-		shg[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posG + 0];
+		shx[threadIdx.x] = r[(j + threadIdx.x)*2 + 0];
+		shy[threadIdx.x] = r[(j + threadIdx.x)*2 + 1];
+		
+		shdx[threadIdx.x] = r[(j + threadIdx.x) * 2 + 2] - shx[threadIdx.x];
+		shdy[threadIdx.x] = r[(j + threadIdx.x) * 2 + 3] - shy[threadIdx.x];
+
+		shlen[threadIdx.x] = sqrt(shdx[threadIdx.x] * shdx[threadIdx.x] + shdy[threadIdx.x] * shdy[threadIdx.x]);
+		
+		shfreegamma[threadIdx.x] = freegamma[j + threadIdx.x];
+		shattgamma[threadIdx.x] = attgamma[j + threadIdx.x];
+		shattsource[threadIdx.x] = attsource[j + threadIdx.x];
 
 		__syncthreads();
 
 		for (size_t q = 0; q < CUBLOCK; ++q)
 		{
-			dx = ptx - shx[q];
-			dy = pty - shy[q];
-			dr2 = dx*dx + dy*dy;
-			izn = shg[q] / fmax(dr2, eps2);
+			if (j + q < npnl)
+			{
+				sx = ptx - shx[q];
+				sy = pty - shy[q];
 
-			velx -= dy * izn;
-			vely += dx * izn;		
+				px = sx - shdx[q];
+				py = sy - shdy[q];
+
+				alpha = atan2(px*sy - py*sx, px*sx + py*sy);
+				lambda = 0.5*log((sx*sx + sy*sy) / (px*px + py*py));
+
+				taux = shdx[q] / shlen[q];
+				tauy = shdy[q] / shlen[q];
+
+				psix = alpha*tauy + lambda*taux;
+				psiy = -alpha*taux + lambda*tauy;
+
+				//kpsix = -psiy;
+				//kpsiy =  psix;
+
+				velx += (shfreegamma[q] + shattgamma[q]) * (-psiy) + shattsource[q] * psix;
+				vely += (shfreegamma[q] + shattgamma[q]) * (psix)+shattsource[q] * psiy;
+			}
 		}
 		__syncthreads();
 	}	
@@ -234,7 +266,7 @@ __global__ void CU_calc_I1I2(
 	double dx, dy, dr;
 	double expr, exprdivdr;
 	
-	double diffRadius = 7.0*rdi;
+	double diffRadius = 8.0*rdi;
 
 	double left = ptx - diffRadius;
 	double right = ptx + diffRadius;
@@ -343,6 +375,98 @@ __global__ void CU_calc_I1I2mesh(
 	i2[2 * locI + 1] = val2y;
 }
 
+
+
+__global__ void CU_calc_I1I2FromPanels(
+	size_t disp, size_t len, double* pt,
+	size_t npnl, double* r, double* freegamma,
+	double* i1, double* i2,
+	double* rd)
+{
+	__shared__ double shx[CUBLOCK];
+	__shared__ double shy[CUBLOCK];
+	__shared__ double shxp1[CUBLOCK];
+	__shared__ double shyp1[CUBLOCK];
+
+	__shared__ double shtaux[CUBLOCK];
+	__shared__ double shtauy[CUBLOCK];
+
+	__shared__ double shlen[CUBLOCK];
+	__shared__ double shptG[CUBLOCK];
+
+	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
+	size_t i = disp + locI;
+
+	double ptx = pt[i*sizeVort + posR + 0];
+	double pty = pt[i*sizeVort + posR + 1];
+	double rdi = rd[i];
+
+	double val1 = 0.0;
+	double val2x = 0.0;
+	double val2y = 0.0;
+
+	double x0, y0, mn;
+
+	double dx, dy, dr;
+	double expr, exprdivdr;
+
+	double diffRadius = 8.0*rdi;
+
+	double left = ptx - diffRadius;
+	double right = ptx + diffRadius;
+
+	const int nQuadPt = 3;
+
+	for (size_t j = 0; j < npnl; j += CUBLOCK)
+	{
+		shx[threadIdx.x] = r[(j + threadIdx.x)*2 + 0];
+		shy[threadIdx.x] = r[(j + threadIdx.x)*2 + 1];		
+		shxp1[threadIdx.x] = r[(j + threadIdx.x) * 2 + 2];
+		shyp1[threadIdx.x] = r[(j + threadIdx.x) * 2 + 3];
+
+		shtaux[threadIdx.x] = shxp1[threadIdx.x] - shx[threadIdx.x];
+		shtauy[threadIdx.x] = shyp1[threadIdx.x] - shy[threadIdx.x];
+
+		shlen[threadIdx.x] = sqrt(shtaux[threadIdx.x] * shtaux[threadIdx.x] + shtauy[threadIdx.x] * shtauy[threadIdx.x] );
+
+		shptG[threadIdx.x] = freegamma[j + threadIdx.x] * shlen[threadIdx.x] / nQuadPt;
+
+		__syncthreads();
+
+		for (size_t q = 0; q < CUBLOCK; ++q)
+		{
+			double xcnt = 0.5*(shx[q] + shxp1[q]);
+			if ((xcnt < right) && (xcnt > left))
+			{
+				for (int s = 0; s < nQuadPt; ++s)
+				{
+					mn = (s + 0.5) / nQuadPt;
+					x0 = shx[q] + shtaux[q] * mn;
+					y0 = shy[q] + shtauy[q] * mn;
+
+
+					dx = ptx - x0;
+					dy = pty - y0;
+
+					dr = sqrt(dx*dx + dy*dy);
+
+					if ((dr < diffRadius) && (dr > 1e-10))
+					{
+						expr = shptG[q] * exp(-dr / rdi);
+						exprdivdr = expr / dr;
+						val1 += expr;
+						val2x += exprdivdr * dx;
+						val2y += exprdivdr * dy;
+					}//if (rij>1e-10)
+				}
+			}
+		}
+		__syncthreads();
+	}
+	i1[locI] = val1;
+	i2[2 * locI + 0] = val2x;
+	i2[2 * locI + 1] = val2y;
+}
 
 
 
@@ -587,7 +711,11 @@ __global__ void CU_calc_nei(
 		double ig = pt[i*sizeVort + posG + 0];
 		double jg;
 
-		r2test = (type == 1) ? 4.0*epsCol2 * fmax(1.0, ipx*ipx) : epsCol2 * fmax(1.0, ipx*ipx);
+		double cftmax2 = fmax(1.0, ipx);
+		cftmax2 *= cftmax2;
+
+		r2test = (type == 1) ? 4.0*epsCol2 * cftmax2 : epsCol2 * cftmax2;
+
 		//r2test = epsCol2;
 
 		bool cond;
@@ -708,10 +836,10 @@ void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt
 		std::cout << cudaGetErrorString(err1) << " (erCU_calc_conv_epsast01)" << std::endl;
 }
 
-void cuCalculateConvVeloWakeFromVirtual(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* vel, double eps2)
+void cuCalculateConvVeloWakeFromVirtual(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* attgamma, double* attsource, double* vel, double eps2)
 {
 	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
-	CU_calc_conv << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, eps2, vel);
+	CU_calc_conv_From_Panels << < blocks, threads >> > (myDisp, myLen, pt, npnl, r, freegamma, attgamma, attsource, eps2, vel);
 
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
@@ -743,6 +871,16 @@ void cuCalculateDiffVeloWakeMesh(size_t myDisp, size_t myLen, double* pt, size_t
 	cudaError_t err2 = cudaGetLastError();
 	if (err2 != cudaSuccess)
 		std::cout << cudaGetErrorString(err2) << " (erCU_calc_I1I2mesh01)" << std::endl;
+}
+
+void cuCalculateDiffVeloWakeFromPanels(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* i1, double* i2, double* rd)
+{
+	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
+	CU_calc_I1I2FromPanels << < blocks, threads >> > (myDisp, myLen, pt, npnl, r, freegamma, i1, i2, rd);
+
+	cudaError_t err1 = cudaGetLastError();
+	if (err1 != cudaSuccess)
+		std::cout << cudaGetErrorString(err1) << " (erCU_calc_I1I201)" << std::endl;
 }
 
 

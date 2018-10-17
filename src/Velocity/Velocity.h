@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #ifndef VELOCITY_H
@@ -43,9 +43,9 @@
 
 #include "Point2D.h"
 #include "WakeDataBase.h"
+#include "Boundary.h"
 
-//#include "Boundary.h"
-//#include "gpu.h"
+//#include "Gpu.h"
 
 class World2D;
 
@@ -54,8 +54,8 @@ class World2D;
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 struct VortexesParams
 {
@@ -86,8 +86,8 @@ struct VortexesParams
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 class Velocity
 {
@@ -112,7 +112,7 @@ public:
 		virtualVortexesParams.resize(0);
 	};
 	
-	/// \brief Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек
+	/// \brief Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа
 	///
 	/// \param[in] pointsDb константная ссылка на базу данных пелены из вихрей, в которых надо сосчитать конвективные скорости
 	/// \param[out] velo ссылка на вектор скоростей в требуемых точках
@@ -141,8 +141,11 @@ public:
 	/// \warning Использует OMP, MPI
 	/// \ingroup Parallel
 	virtual void CalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2) = 0;
+	virtual void CalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2) = 0;
+	
 #if defined(USE_CUDA)
 	virtual void GPUCalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false) = 0;
+	virtual void GPUCalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false) = 0;
 #endif
 
 	/// \brief Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе

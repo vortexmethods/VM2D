@@ -1,13 +1,13 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: gpudefs.h                                                        |
+| File name: VelocityFourier.h                                                |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,42 +28,68 @@
 
 /*!
 \file
-\brief Описание констант и параметров для взаимодействия с графическим ускорителем
+\brief Заголовочный файл с описанием класса WakeDataBase
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
-#ifndef GPUDEFS_H
-#define GPUDEFS_H
+#ifndef WAKEDATABASE_H
+#define WAKEDATABASE_H
 
-//#define USE_CUDA
+#include <vector>
 
-#define CUDA_ENABLE(a) a
-#define CUDA_DISABLE(a)
+#include "Gpudefs.h"
+#include "Point2D.h"
+#include "Vortex2D.h"
+
+
+class WakeDataBase
+{
+public:
+	/// Список вихревых элементов
+	std::vector<Vortex2D> vtx;
 
 #if defined(USE_CUDA)
-#define CUDAdef CUDA_ENABLE
-#else
-#define CUDAdef CUDA_DISABLE
+
+	/// Число вихрей, под хранение которых зарезервирована память на видеокарте
+	mutable size_t devNWake;
+
+	/// Адрес на видеокарте, где будет храниться коппия массива вихрей
+	mutable double* devVtxPtr;
+	
+	/// Векторы для возврата вычисленных значений на хост и адреса для хранения результатов на видеокарте
+	mutable std::vector<Point2D> tmpVel;
+	mutable double* devVelPtr;
+
+	mutable std::vector<double> tmpRad;
+	mutable double* devRadPtr;
+
+	mutable std::vector<double> tmpI0;
+	mutable double* devI0Ptr;
+
+	mutable std::vector<double> tmpI1;
+	mutable double* devI1Ptr;
+
+	mutable std::vector<Point2D> tmpI2;
+	mutable double* devI2Ptr;
+
+	mutable std::vector<Point2D> tmpI3;
+	mutable double* devI3Ptr;
+
+	//Данные для коллапса
+	mutable std::vector<int> tmpNei;
+	mutable int* devMeshPtr;
+	mutable int* devNeiPtr;
+
+	mutable std::vector<numvector<int, 2>> mesh;
 #endif
 
-#define IFCUDA_(e, a) e(a)
-#define IFCUDA(...) IFCUDA_(CUDAdef, __VA_ARGS__)
-
-
-#define CUBLOCK (128)
-#define INC_VORT_DEV (1024)
-
-#define CU_I1I2
-#define CU_RHS
-#define CU_I0I3
-#define CU_CONV_TOWAKE
-#define CU_CONV_TOBOU
-#define CU_CONVVIRT
-#define CU_PAIRS
-
+	WakeDataBase() {};
+	virtual ~WakeDataBase() {}; 
+};
 
 #endif
+

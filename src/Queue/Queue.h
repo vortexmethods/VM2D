@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #ifndef QUEUE_H
@@ -44,8 +44,10 @@
 #include <vector>
 #include "mpi.h"
 
+#include "defs.h"
 #include "Parallel.h"
 #include "Passport.h"
+#include "LogStream.h"
 #include "Task.h"
 #include "World2D.h"
 
@@ -58,8 +60,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 class Queue
 {
@@ -146,9 +148,6 @@ private:
 	/// В него всегда входит 0-й процессор, даже если он не раешает задачу в данном кванте времени
 	int sizeCommSolving;
 	
-	/// Поток для вывода временной статистики
-	std::ostream& timeFile;
-
 	/// \brief Процедура, нумерующая задачи в возрастающем порядке
 	/// 
 	/// Необходима для корректного распределения задач по процессорам
@@ -159,6 +158,9 @@ private:
 	/// \param[in] _nProc число запрашиваемых процессоров
 	/// \param[in] _passport константная ссылка на паспорт задачи, направляемой в очередь
 	void AddTask(int _nProc, const Passport& _passport);
+
+	/// Поток для вывода логов и сообщений об ошибках
+	LogStream info;
 
 public:
 	/// \brief Список описаний решаемых задач 
@@ -214,9 +216,8 @@ public:
 	///
 	/// \param[in] argc ссылка на число параметров командной строки
 	/// \param[in] argv ссылка на указатель на список параметров командной строки
-	/// \param[in,out] _timeFile поток для вывода временной статистики
 	/// \param[in] _CreateMpiTypes указатель на функцию, инициализирующую все необходимые MPI-описания типов
-	Queue(int& argc, char**& argv, std::ostream& _timeFile, void(*_CreateMpiTypes)());
+	Queue(int& argc, char**& argv, void(*_CreateMpiTypes)());
 
 	/// Деструктор
 	~Queue();

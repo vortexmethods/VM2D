@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #include "AirfoilRect.h"
@@ -47,28 +47,16 @@ void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка про
 	const AirfoilParams& param = W.getPassport().airfoilParams[numberInPassport];
 	std::string filename = dir + param.fileAirfoil;
 	std::ifstream airfoilFile;
-
-	std::ostream *Pinfo, *Perr;
-	if (W.getParallel().myidWork == 0)
-	{
-		Pinfo = defaults::defaultPinfo;
-		Perr = defaults::defaultPerr;
-	}
-	else
-	{
-		Pinfo = nullptr;
-		Perr = nullptr;
-	}
-
-	if (fileExistTest(filename, Pinfo, Perr, "airfoil"))
+	
+	if (fileExistTest(filename, W.getInfo()))
 	{
 		std::stringstream airfoilFile(Preprocessor(filename).resultString);
+		
+		StreamParser airfoilParser(W.getInfo(), "airfoil file parser", airfoilFile);
 
-		StreamParser airfoilParser(airfoilFile);
-
-		rcm = param.basePoint;
 		m = 0.0; //TODO
 		J = 0.0; //TODO
+		rcm = { 0.0, 0.0 }; //TODO
 		
 		airfoilParser.get("np", np);
 
@@ -81,7 +69,7 @@ void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка про
 		for (size_t q = 0; q < r.size(); ++q)
 			v.push_back({ 0.0, 0.0 });
 
-		Move(rcm);
+		Move(param.basePoint);
 		Scale(param.scale);
 		Rotate(param.angle);
 		//в конце Rotate нормали, касательные и длины вычисляются сами
@@ -136,7 +124,7 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 #pragma omp parallel for \
 	default(none) \
 	shared(locI0, locI3, domainRadius, locPoints, id, iDPIepscol2, par) \
-	private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, iDDomRad) schedule(dynamic, 1)
+	private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, iDDomRad) schedule(dynamic, DYN_SCHEDULE)
 	for (int i = 0; i < par.myLen; ++i)
 	{
 		iDDomRad = 1.0 / domainRadius[i+par.myDisp];
@@ -259,14 +247,14 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 void AirfoilRect::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3)
 {
 	const size_t npt = pointsDb.vtx.size();
-	double*& dev_ptr_pt = pointsDb.devWakePtr;
-	double*& dev_ptr_rad = pointsDb.devRadsPtr;
+	double*& dev_ptr_pt = pointsDb.devVtxPtr;
+	double*& dev_ptr_rad = pointsDb.devRadPtr;
 	const size_t nr = r.size();
-	double*& dev_ptr_r = devR; 
+	double*& dev_ptr_r = devRPtr; 
 	std::vector<double>& loci0 = pointsDb.tmpI0;
 	std::vector<Point2D>& loci3 = pointsDb.tmpI3;
-	double* dev_ptr_i0 = pointsDb.devI0Ptr;
-	double* dev_ptr_i3 = pointsDb.devI3Ptr;
+	double*& dev_ptr_i0 = pointsDb.devI0Ptr;
+	double*& dev_ptr_i3 = pointsDb.devI3Ptr;
 
 	const int& id = W.getParallel().myidWork;
 	parProp par = W.getParallel().SplitMPI(npt, true);
@@ -284,6 +272,7 @@ void AirfoilRect::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const Wa
 
 		std::vector<Point2D> newI3;
 		std::vector<double> newI0;
+		
 		if (id == 0)
 		{
 			newI3.resize(I3.size());
@@ -303,7 +292,7 @@ void AirfoilRect::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const Wa
 
 	tCUDAEND = omp_get_wtime();
 
-	//std::cout << "DIFF_SURF_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
+	//W.info('t') << "DIFF_SURF_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
 	
 
 }//GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses

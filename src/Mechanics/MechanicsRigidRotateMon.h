@@ -1,13 +1,13 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: MechanicsRigidRotateStronglyCoupled.h                            |
+| File name: MechanicsRigidRotateMon.h                                        |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,16 +28,16 @@
 
 /*!
 \file
-\brief Заголовочный файл с описанием класса MechanicsRigidRotateStronglyCoupled
+\brief Заголовочный файл с описанием класса MechanicsRigidRotateMon
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
-#ifndef MECHANICSRIGIDROTATESTRONGLYCOUPLED_H
-#define MECHANICSRIGIDROTATESTRONGLYCOUPLED_H
+#ifndef MECHANICSRIGIDROTATEMON_H
+#define MECHANICSRIGIDROTATEMON_H
 
 #include "Mechanics.h"
 
@@ -52,11 +52,11 @@ class World2D;
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
 
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
-class MechanicsRigidRotateStronglyCoupled :
+class MechanicsRigidRotateMon :
 	public Mechanics
 {
 private:
@@ -110,14 +110,14 @@ public:
 	/// 
 	/// \param[in] W_ константная ссылка на решаемую задачу
 	/// \param[in] numberInPassport_ номер профиля в паспорте задачи	
-	MechanicsRigidRotateStronglyCoupled(const World2D& W_, size_t numberInPassport_)
+	MechanicsRigidRotateMon(const World2D& W_, size_t numberInPassport_)
 		: Mechanics(W_, numberInPassport_, 1, true, false, true, { 0.0, 0.0 }, {0.0, 0.0}, 0.0, 0.0), b(0.0 * 0.731)
 	{
 		ReadSpecificParametersFromDictionary();
 	};
 
 	/// Деструктор
-	~MechanicsRigidRotateStronglyCoupled() {};
+	~MechanicsRigidRotateMon() {};
 
 
 	//далее -- реализации виртуальных функций

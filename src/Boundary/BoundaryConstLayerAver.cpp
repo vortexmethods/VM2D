@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #include "BoundaryConstLayerAver.h"
@@ -80,8 +80,8 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 	//	virtualWake.vtx.push_back(virtVort);
 	//}
 
-	virtualWakeVelocity.clear();
-	virtualWakeVelocity.resize(0);
+	virtualWake.vecHalfGamma.clear();
+	virtualWake.vecHalfGamma.resize(0);
 
 	int nVortPerPan = W.getPassport().wakeDiscretizationProperties.vortexPerPanel;
 	
@@ -96,7 +96,8 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 			virtVort.g() = sol(i) * afl.len[i] / nVortPerPan;
 			virtualWake.vtx.push_back(virtVort);
 
-			virtualWakeVelocity.push_back(0.5 * sol(i)  * afl.tau[i]);
+			virtualWake.vecHalfGamma.push_back(0.5 * sol(i)  * afl.tau[i]);
+			virtualWake.aflPan = { numberInPassport, i };
 		}
 
 	/*
@@ -123,7 +124,9 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 	for (size_t j = 0; j < afl.np; ++j)
 		sheets.freeVortexSheet[j][0] = sol(j);
 
-	//"закольцовываем"
+	//закольцовываем
+	/// \todo Тут была ошибка - не делался resize(), в итоге размер freeVortexSheet рос на единицу на каждом шаге 
+	sheets.freeVortexSheet.resize(afl.np);
 	sheets.freeVortexSheet.push_back(sheets.freeVortexSheet[0]);
 
 /*
@@ -343,23 +346,22 @@ void BoundaryConstLayerAver::GetWakeInfluence(std::vector<double>& wakeVelo) con
 void BoundaryConstLayerAver::GPUGetWakeInfluence(std::vector<double>& wakeVelo) const
 {
 	const size_t& npt = afl.np;
-	double*& dev_ptr_pt = afl.devR;
+	double*& dev_ptr_pt = afl.devRPtr;
 	const size_t& nvt = W.getWake().vtx.size();
-	double*& dev_ptr_vt = W.getWake().devWakePtr;
+	double*& dev_ptr_vt = W.getWake().devVtxPtr;
 	std::vector<double>& rhs = wakeVelo;
 	std::vector<double>& locrhs = afl.tmpRhs;
-	double*& dev_ptr_rhs = afl.devRhs;
+	double*& dev_ptr_rhs = afl.devRhsPtr;
 
 	const int& id = W.getParallel().myidWork;
 	parProp par = W.getParallel().SplitMPI(npt, true);
-
-
-
+	
 	double tCUDASTART = 0.0, tCUDAEND = 0.0;
 
 	tCUDASTART = omp_get_wtime();
 
-	rhs.resize(npt, 0.0);
+	if (id == 0)
+		rhs.resize(npt, 0.0);
 
 	if (nvt > 0)
 	{
@@ -380,7 +382,7 @@ void BoundaryConstLayerAver::GPUGetWakeInfluence(std::vector<double>& wakeVelo) 
 				rhs[q] = newRhs[q];
 	}
 	tCUDAEND = omp_get_wtime();
-	//std::cout << "RHS_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
+	//W.getInfo('t') << "RHS_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
 }//GPUGetWakeInfluence(...)
 #endif
 
@@ -509,6 +511,8 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPoints(const std::vector<Vort
 //Вычисление скоростей в наборе точек, вызываемых наличием завихренности и источников на профиле как от виртуальных вихрей
 void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
 {
+	const VirtualWake* virtwake = dynamic_cast<const VirtualWake*>(&pointsDb);
+	
 	std::vector<Point2D> selfVelo;
 
 	size_t np = afl.np;
@@ -516,6 +520,28 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 	int id = W.getParallel().myidWork;
 
 	parProp par = W.getParallel().SplitMPI(pointsDb.vtx.size());
+
+
+
+	/// \todo Временно сделана довольно извращенная, но синхронизация свободного вихревого слоя
+	std::vector<double> freeVortexSheetGamma;
+	int sz;
+
+	if (id == 0)
+	{
+		sz = (int)sheets.freeVortexSheet.size();
+		freeVortexSheetGamma.resize(sz, 0.0);
+		for (size_t j = 0; j < sheets.freeVortexSheet.size(); ++j)
+			freeVortexSheetGamma[j] = sheets.freeVortexSheet[j][0];
+	}
+	MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
+	if (id != 0)
+		freeVortexSheetGamma.resize(sz, 0.0);
+	//std::cout << "id = " << id << ", size = " << freeVortexSheetGamma.size() << std::endl;
+	MPI_Bcast(freeVortexSheetGamma.data(), (int)sz, MPI_DOUBLE, 0, W.getParallel().commWork);
+
+
+
 
 	std::vector<Vortex2D> locPoints;
 	locPoints.resize(par.myLen);
@@ -533,16 +559,17 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 	//Локальные переменные для цикла
 	Point2D velI;
 	Point2D tempVel;
-	double dst2eps, dst2;
+	//double dst2eps, dst2;
 #pragma warning (pop)
 
-#pragma omp parallel for default(none) shared(locConvVelo, locPoints, cft, par) private(velI, tempVel, dst2, dst2eps)
+#pragma omp parallel for default(none) shared(locConvVelo, locPoints, cft, par, freeVortexSheetGamma, std::cout) private(velI, tempVel/*, dst2, dst2eps*/)
 	for (int i = 0; i < par.myLen; ++i)
 	{
 		velI.toZero();
 
 		const Point2D& posI = locPoints[i].r();
-
+		
+		/*
 		for (size_t j = 0; j < virtualWake.vtx.size(); ++j)
 		{
 			const Point2D& posJ = virtualWake.vtx[j].r();
@@ -557,6 +584,7 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 			tempVel *= (gamJ / dst2eps);
 			velI += tempVel;
 		}
+		*/
 
 		//*
 		/// \todo Тут надо разобраться, как должно быть...
@@ -571,17 +599,25 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 
 			double a = Alpha(p, s);
 
-			double lambda = Lambda(s, p);
+			double lambda = Lambda(p, s);
 
-			velI +=  (sheets.attachedVortexSheet[j][0] * (- a * tauj.kcross() + lambda * tauj)).kcross();
-			velI +=  (sheets.attachedSourceSheet[j][0] * (- a * tauj.kcross() + lambda * tauj));
+			//if (i == 49)
+			//	std::cout << "j=" << j << velI * cft << " => ";
+
+			velI += (freeVortexSheetGamma[j] * (-a * tauj.kcross() + lambda * tauj)).kcross();
+			velI += (sheets.attachedVortexSheet[j][0] * (-a * tauj.kcross() + lambda * tauj)).kcross();
+			velI += (sheets.attachedSourceSheet[j][0] * (-a * tauj.kcross() + lambda * tauj));
+			
+			//if (i == 49)
+			//	std::cout << velI * cft << std::endl;
+		
 		}//for j
 
 		//*/		
 
 		velI *= cft;
 		locConvVelo[i] = velI;
-	}
+	}//for i
 
 	if (id == 0)
 		selfVelo.resize(pointsDb.vtx.size());
@@ -591,31 +627,48 @@ void BoundaryConstLayerAver::GetConvVelocityToSetOfPointsFromVirtualVortexes(con
 	if (id == 0)
 	for (size_t i = 0; i < velo.size(); ++i)
 		velo[i] += selfVelo[i];
+
+	//Коррекция в случае необходимости
+	if (id == 0)
+	if ((virtwake != nullptr) && (virtwake->aflPan.first == numberInPassport))
+	{		
+		for (size_t i = 0; i < velo.size(); ++i)
+		{
+			//std::cout << "i = " << i << " " << velo[i] << " -> ";
+			velo[i] -= virtualWake.vecHalfGamma[i];
+			//std::cout << velo[i] << std::endl;
+		}
+	}
+
 }//GetVelocityToSetOfPointsFromVirtualVortexes(...)
 
 #if defined(USE_CUDA)
 void BoundaryConstLayerAver::GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
-{
+{	
 	const size_t npt = pointsDb.vtx.size();
-	double*& dev_ptr_pt = pointsDb.devWakePtr;
-	const size_t nvt = virtualWake.vtx.size();
-	double*& dev_ptr_vt = virtualWake.devWakePtr;
+	double*& dev_ptr_pt = pointsDb.devVtxPtr;
+	const size_t npnl = afl.np;//virtualWake.vtx.size();
+	
+	double*& dev_ptr_r = afl.devRPtr;
+	double*& dev_ptr_freeVortexSheet = afl.devFreeVortexSheetPtr;
+	double*& dev_ptr_attachedVortexSheet = afl.devAttachedVortexSheetPtr;
+	double*& dev_ptr_attachedSourceSheet = afl.devAttachedSourceSheetPtr;
+	
 	std::vector<Point2D>& Vel = velo;
-	std::vector<Point2D>& locvel = pointsDb.tmpVels;
-	double*& dev_ptr_vel = pointsDb.devVelsPtr;
+	std::vector<Point2D>& locvel = pointsDb.tmpVel;
+	double*& dev_ptr_vel = pointsDb.devVelPtr;
 	double eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
-
-
+	
 	const int& id = W.getParallel().myidWork;
 	parProp par = W.getParallel().SplitMPI(npt, true);
 
 	double tCUDASTART = 0.0, tCUDAEND = 0.0;
 
 	tCUDASTART = omp_get_wtime();
-
+		
 	if (npt > 0)
 	{
-		cuCalculateConvVeloWakeFromVirtual(par.myDisp, par.myLen, dev_ptr_pt, nvt, dev_ptr_vt, dev_ptr_vel, eps2);
+		cuCalculateConvVeloWakeFromVirtual(par.myDisp, par.myLen, dev_ptr_pt, npnl, dev_ptr_r, dev_ptr_freeVortexSheet, dev_ptr_attachedVortexSheet, dev_ptr_attachedSourceSheet, dev_ptr_vel, eps2);
 		
 		W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_vel, (double*)&locvel[0]);
 
@@ -629,10 +682,28 @@ void BoundaryConstLayerAver::GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(
 			for (size_t q = 0; q < Vel.size(); ++q)
 				Vel[q] += newV[q];
 	}
+	
 
-	tCUDAEND = omp_get_wtime();
 
-	//std::cout << "CONV_VIRT_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
+	//Коррекция в случае необходимости
+	if (id == 0)
+	{
+		const VirtualWake* virtwake = dynamic_cast<const VirtualWake*>(&pointsDb);
+		if ((virtwake != nullptr) && (virtwake->aflPan.first == numberInPassport))
+		{
+			for (size_t i = 0; i < Vel.size(); ++i)
+			{
+				//std::cout << "i = " << i << " " << velo[i] << " -> ";
+				Vel[i] -= virtualWake.vecHalfGamma[i];
+				//Vel[i] = virtualWake.vecHalfGamma[i] - Point2D({1.0, 0.0});
+				//std::cout << velo[i] << std::endl;
+			}
+		}
+	}
+
+	//tCUDAEND = omp_get_wtime();
+
+	//W.getInfo('t') << "CONV_VIRT_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
 }
 //GPUGetVelocityToSetOfPointsFromVirtualVortexes(...)
 #endif

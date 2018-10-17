@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #ifndef WORLD2D_H
@@ -45,7 +45,7 @@
 #include "Eigen/Dense"
 
 #include "defs.h"
-#include "gpu.h"
+#include "Gpu.h"
 
 #include "Airfoil.h"
 #include "AirfoilRect.h"
@@ -59,15 +59,16 @@
 #include "MechanicsRigidImmovable.h"
 #include "MechanicsRigidGivenLaw.h"
 #include "MechanicsRigidOscillPart.h"
-#include "MechanicsRigidOscillStronglyCoupled.h"
-#include "MechanicsRigidRotateStronglyCoupled.h"
+#include "MechanicsRigidOscillMon.h"
+#include "MechanicsRigidRotateMon.h"
 
 #include "Velocity.h"
 #include "VelocityBiotSavart.h"
 #include "VelocityFourier.h"
 
-#include "MeasureVelocityPressure.h"
+#include "MeasureVP.h"
 
+#include "LogStream.h"
 #include "Parallel.h"
 #include "Passport.h"
 #include "Point2D.h"
@@ -79,14 +80,14 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 class World2D
 {
 private:
-	/// Ссылка на поток для вывода временной статистики
-	std::ostream& teleFile;
+	/// Поток для вывода логов и сообщений об ошибках
+	mutable LogStream info;
 	
 	/// Список умных казателей на обтекаемые профили
 	std::vector<std::unique_ptr<Airfoil>> airfoil;
@@ -107,7 +108,7 @@ private:
 	Wake wake;
 
 	/// Поле скоростей и давления (для сохранения в файл)
-	std::unique_ptr<MeasureVelocityPressure> measureVelocityPressure;
+	std::unique_ptr<MeasureVP> measureVP;
 
 	/// Матрица системы
 	Eigen::MatrixXd matr;
@@ -128,7 +129,7 @@ private:
 	const Parallel& parallel;
 
 	/// Объект, управляющий графическим ускорителем
-	gpu cuda;
+	Gpu cuda;
 
 	/// Текущий номер шага в решаемой задаче
 	size_t currentStep;
@@ -137,6 +138,11 @@ private:
 	Times timestat;
 	
 public:	
+	/// \todo откомментировать
+	LogStream& getInfo() const { return info; };
+
+	/// \todo откомментировать
+	std::ostream& getInfo(char x) const { return info(x); };
 
 	/// \todo откомментировать
 	const Airfoil& getAirfoil(size_t i) const { return *airfoil[i]; };
@@ -174,7 +180,7 @@ public:
 	const Parallel& getParallel() const { return parallel; };
 
 	/// \todo откомментировать
-	const gpu& getCuda() const { return cuda; };	
+	const Gpu& getCuda() const { return cuda; };	
 
 	/// \todo откомментировать
 	size_t getCurrentStep() const { return currentStep; };
@@ -227,8 +233,7 @@ public:
 	///
 	/// \param[in] passport_ константная ссылка на паспорт расчета
 	/// \param[in] parallel_ коенстантная ссылка на параметры исполнения задачи в параллельном MPI-режиме
-	/// \param[in,out] telefile_ ссылка на поток для вывода временной статистики 
-	World2D(const Passport& passport_, const Parallel& parallel_, std::ostream& telefile_);
+	World2D(const Passport& passport_, const Parallel& parallel_);
 	
 	/// Деструктор
 	~World2D() { };

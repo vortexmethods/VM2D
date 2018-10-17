@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #ifndef STREAMPARSER_H
@@ -49,6 +49,7 @@
 #include <vector>
 
 #include "defs.h"
+#include "LogStream.h"
 #include "Point2D.h"
 #include "Vortex2D.h"
 
@@ -57,17 +58,15 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 class StreamParser
 {
 private:
-	/// Указатель на поток вывода логов
-	static std::ostream* pinfo;
 
-	/// Указатель на поток вывода ошибок
-	static std::ostream* perr;
+	/// Поток для вывода логов и сообщений об ошибках
+	mutable LogStream info;
 
 	/// \brief Данные считываемые из основного файла-паспорта расчета
 	///
@@ -119,32 +118,38 @@ public:
 	/// Заполняет 4 базы данных --- database, defaults, switchers, vars
 	/// \n Используется для установки основных параметров расчета
 	///
+	/// \param[in, out] infoStream базовый поток для вывода логов
+	/// \param[in] label константная ссылка на метку парсера для вывода логов
 	/// \param[in] mainStream ссылка на основной поток параметров
 	/// \param[in] defaultsStream ссылка на поток по умолчанию
 	/// \param[in] switchersStream ссылка на поток параметров-переключателей
 	/// \param[in] varsStream ссылка на поток переменных
 	/// \param[in] specificKey поиск только ключей из данного списка (по умолчанию --- пустой список, что означает разбор всех ключей)
-	StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream, std::vector<std::string> specificKey = {});
+	StreamParser(LogStream& infoStream, const std::string& label, std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream, std::vector<std::string> specificKey = {});
 		
 	/// \brief Конструктор, принимающий два потока
 	/// 
 	/// Заполняет 2 базы данных --- database, defaults; базы данных switchers и vars остаются пустыми
 	/// \n Используется для первоначального считывания параметров задач из списка задач и формирования очереди
 	///
+	/// \param[in, out] infoStream базовый поток для вывода логов
+	/// \param[in] label константная ссылка на метку парсера для вывода логов
 	/// \param[in] mainStream ссылка на основной поток параметров
 	/// \param[in] defaultsStream ссылка на поток по умолчанию
 	/// \param[in] specificKey поиск только ключей из данного списка (по умолчанию --- пустой список, что означает разбор всех ключей)
-	StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::vector<std::string> specificKey = {});
+	StreamParser(LogStream& infoStream, const std::string& label, std::istream& mainStream, std::istream& defaultsStream, std::vector<std::string> specificKey = {});
 	
 	/// \brief Конструктор, принимающий один поток
 	/// 
 	/// Заполняет 1 базу данных --- database; базы данных defaults, switchers и vars остаются пустыми
 	/// \n Используется для считывания профиля, следа, списка задач
 	///
+	/// \param[in, out] infoStream базовый поток для вывода логов
+	/// \param[in] label константная ссылка на метку парсера для вывода логов
 	/// \param[in] mainStream ссылка на основной поток параметров
 	/// \param[in] openBracket тип открывающейся скобки (по умолчанию --- "{" )
 	/// \param[in] closeBracket тип закрывающейся скобки (по умолчанию --- "}" )
-	StreamParser(std::istream& mainStream, char openBracket = '{', char closeBracket = '}');
+	StreamParser(LogStream& infoStream, const std::string& label, std::istream& mainStream, char openBracket = '{', char closeBracket = '}');
 
 	/// Деструктор
 	~StreamParser() { };
@@ -174,10 +179,11 @@ public:
 	/// \brief Разбор строки на пару ключ-значение
 	///
 	/// Разбирает строку вида xxx(yyy) на пару подстрок xxx и yyy
+	/// \param[in, out] info поток для вывода логов и сообщений об ошибках
 	/// \param[in] line разбираемая строка вида xxx(ууу)
 	/// \param[in] upcase признак перевода ключа в верхний регистр
-	/// \return пара строк <xxx, yyy>
-	static std::pair<std::string, std::string> SplitString(std::string line, bool upcase = true);
+	/// \return пара строк (xxx, yyy)
+	static std::pair<std::string, std::string> SplitString(LogStream& info, std::string line, bool upcase = true);
 
 	/// \brief Установка значения параметра по умолчанию
     ///
@@ -192,11 +198,11 @@ public:
 		if (defValue != nullptr)
 		{
 			res = *defValue;
-			*pinfo << "parser info: parameter <" << name << " = " << res << "> set as default" << std::endl;
+			info('i') << "parameter <" << name << " = " << res << "> set as default" << std::endl;
 		}
 		else
 		{
-			*perr << "parser error: PARAMETER " << name << " NOT FOUND " << std::endl;
+			info('e') << "parameter " << name << " is not found" << std::endl;
 			exit(-1);
 		}
 	}
@@ -340,7 +346,7 @@ public:
 			}
 			else
 			{
-				*perr << "parser error: PARAMETER " << name << " IS VECTOR " << std::endl;
+				info('e') << "parameter " << name << " is list (only scalar is available)" << std::endl;
 				exit(-1);
 			}
 		}
@@ -376,7 +382,7 @@ public:
 			}
 			else
 			{
-				*perr << "parser error: PARAMETER " << name << " LENGTH DIFFERS FROM 2" << std::endl;
+				info('e') << "parameter " << name << " length differs from 2 (only Point2D is available)" << std::endl;
 				exit(-1);
 			}
 

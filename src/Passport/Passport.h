@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -40,8 +40,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 
@@ -54,6 +54,7 @@
 #include <vector>
 
 #include "Point2D.h"
+#include "LogStream.h"
 
 
 /*!
@@ -62,8 +63,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 struct PhysicalProperties
 {
@@ -120,8 +121,8 @@ public:
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 struct TimeDiscretizationProperties
 {
@@ -135,13 +136,13 @@ struct TimeDiscretizationProperties
 	double dt;    
 	
 	/// Шаг сохранения кадров в текстовые файлы
-	int deltacntText;
+	int saveTXT;
 	
 	/// Шаг сохранения кадров в бинарные файлы	
-	int deltacntBinary; 
+	int saveVTK; 
 
 	/// Шаг вычисления и сохранения скорости и давления
-	int deltacntVelocityPressure;
+	int saveVP;
 };//TimeDiscretizationProperties
 
 
@@ -151,8 +152,8 @@ struct TimeDiscretizationProperties
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 struct WakeDiscretizationProperties
 {	
@@ -169,7 +170,7 @@ struct WakeDiscretizationProperties
 	double epscol;   
 	
 	/// Расстояние от центра самого подветренного (правого) профиля, на котором вихри уничтожаются
-	double distKill; 
+	double distFar; 
 
 	/// Расстояние, на которое рождаемый вихрь отодвигается от профиля
 	double delta;
@@ -186,8 +187,8 @@ struct WakeDiscretizationProperties
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 struct NumericalSchemes
 {
@@ -208,8 +209,8 @@ struct NumericalSchemes
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 struct AirfoilParams
 {
@@ -246,8 +247,8 @@ struct AirfoilParams
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 class Passport
 {
@@ -267,16 +268,22 @@ private:
 		std::istream& switcherStream,
 		std::istream& varsStream
 	);
-	
-	/// Признак вывода в поток логов и ошибок
-	bool print;
 
+	/// Поток для вывода логов и сообщений об ошибках
+	mutable LogStream info;
+	
 	/// Печать всех параметров расчета в поток логов
 	void PrintAllParams();
 
 public:
 	/// Рабочий каталог задачи
 	std::string dir;
+
+	/// Название задачи
+	std::string problemName;
+
+	/// Номер задачи
+	size_t problemNumber;
 
 	/// Каталог с файлами профилей
 	std::string airfoilsDir;
@@ -303,22 +310,24 @@ public:
 	///
 	/// Осуществляет чтение всех данных из соответствующих потоков, полностью инициализирует паспорт
 	///
-	/// \param[in] _dir константная ссылка на рабочий каталог задачи
+	/// \param[in, out] infoStream базовый поток для вывода логов
+	/// \param[in] _problemName константная ссылка наназвание задачи
+	/// \param[in] _problemNumber номер (по счету) решаемой задачи
 	/// \param[in] _filePassport константная ссылка на файл (без пути) с паспортом задачи
 	/// \param[in] _mechanics константная ссылка на файл (c путем) со словарем механических систем
 	/// \param[in] _defaults константная ссылка на имя файла (с путем) с параметрами по умолчанию
 	/// \param[in] _switchers константная ссылка на имя файла (с путем) со значениями параметров-переключателей
 	/// \param[in] vars константная ссылка на список переменных, заданных в виде строк
-	/// \param[in] _print признак вывода в поток логов и ошибок
 	Passport
 	(
-		const std::string& _dir,
+		LogStream& infoStream,
+		const std::string& _problemName,
+		const size_t _problemNumber,
 		const std::string& _filePassport,
 		const std::string& _mechanics,
 		const std::string& _defaults, 
 		const std::string& _switchers,
-		const std::vector<std::string>& vars,
-		bool _print
+		const std::vector<std::string>& vars
 	);
 
 	/// Деструктор

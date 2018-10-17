@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 
@@ -48,9 +48,10 @@
 #include "Eigen/Dense"
 
 #include "Point2D.h"
+#include "LogStream.h"
 
 /// включатель отладочной печати
-#define DEB
+#define DYN_SCHEDULE 20
    
 /// Тип для хранения начала и конца промежутка времени
 typedef std::pair<double, double> timePeriod;
@@ -76,16 +77,16 @@ namespace defaults
 	const double defaultTimeAccel = 0.0;
 	
 	/// Шаг сохранения в текстовый файл
-	const int defaultDeltacntText = 1;
+	const int defaultSaveTXT = 1;
 
 	/// Шаг сохранения в бинарный файл
-	const int defaultDeltacntBinary = 0;
+	const int defaultSaveVTK = 0;
 
 	/// Шаг подсчета поля скорости и давления
-	const int deltacntVelocityPressure = 0;
+	const int defaultSaveVP = 0;
 
 	/// Радиус убивания дальнего следа
-	const double defaultDistKill = 10.0;
+	const double defaultDistFar = 10.0;
 
 	/// Расстояние, на которое рождаемый вихрь отодвигается от профиля
 	const double defaultDelta = 1.e-5;
@@ -136,14 +137,11 @@ namespace defaults
 	/// Имя файла с паспортом задачи для копирования в новые каталоги
 	const std::string defaultCopyPspFile = "";
 
-	/// Поток вывода логов
-	static std::ostream* defaultPinfo = &std::cout;
-	
-	/// Поток вывода ошибок
-	static std::ostream* defaultPerr = &std::cout;
+	/// Поток вывода логов и ошибок очереди
+	static std::ostream* defaultQueueLogStream = &std::cout;
 
-	/// Поток вывода телеметрии
-	static std::ostream* defaultPtele = &std::cout;
+	/// Поток вывода логов и ошибок задачи
+	static std::ostream* defaultWorld2DLogStream = &std::cout;
 	
 } //namespace defaults
 
@@ -190,14 +188,14 @@ std::ostream& operator<< (std::ostream& _stream, const std::vector<T>& _vec)
 	return _stream;
 }//operator<<(...)
 
+
+
 /// \brief Проверка существования файла
 ///
 /// \param[in] fileName константная ссылка на имя проверяемого файла
-/// \param[in, out] Pinfo указатель на поток вывода логов
-/// \param[in, out] Perr указатель на поток вывода ошибок
-/// \param[in] _str константная ссылка на текстовую метку, которая выводится в потоки
+/// \param[in, out] info ссылка на поток вывода логов/ошибок
 /// \return true, если файл существует; false если файл отсутствует
-inline bool fileExistTest(const std::string& fileName, std::ostream *Pinfo, std::ostream *Perr, const std::string& _str)
+inline bool fileExistTest(const std::string& fileName, LogStream& info)
 {
 	std::ifstream f(fileName.c_str());
 	if (f.good())
@@ -205,14 +203,12 @@ inline bool fileExistTest(const std::string& fileName, std::ostream *Pinfo, std:
 		f.close();
 		f.clear();
 
-		if (Pinfo != nullptr)
-			*Pinfo << _str << " info: FILE " << fileName << " IS FOUND" << std::endl;
+		info('i') << "file " << fileName << " is found" << std::endl;
 		return true;
 	}
 	else
 	{
-		if (Perr != nullptr)
-			*Perr << _str << " error: FILE " << fileName << " IS NOT FOUND" << std::endl;
+		info('e') << "file " << fileName << " is not found" << std::endl;
 		exit(-1);
 		return false;
 	}

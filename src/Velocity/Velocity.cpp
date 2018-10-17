@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */ 
 
 
@@ -99,6 +99,7 @@ void Velocity::CalcDiffVelo()
 
 	/// \todo Сделать влияние присоединенных слоев
 
+
 	//пелена на пелену
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I1I2))	
 	GPUCalcDiffVeloI1I2ToSetOfPoints(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2, true);
@@ -119,10 +120,14 @@ void Velocity::CalcDiffVelo()
 
 		//виртуальные на границе на след
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I1I2))				
-		GPUCalcDiffVeloI1I2ToSetOfPoints(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou).virtualWake, wakeVortexesParams.I1, wakeVortexesParams.I2);
-#else		
-		CalcDiffVeloI1I2ToSetOfPoints(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou).virtualWake, wakeVortexesParams.I1, wakeVortexesParams.I2);
+		GPUCalcDiffVeloI1I2ToSetOfPointsFromPanels(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
+#else	
+		//CalcDiffVeloI1I2ToSetOfPoints(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou).virtualWake, wakeVortexesParams.I1, wakeVortexesParams.I2);
+		CalcDiffVeloI1I2ToSetOfPointsFromPanels(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
 #endif
+
+
+
 
 		// след на виртуальные		
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I1I2))					
@@ -135,9 +140,10 @@ void Velocity::CalcDiffVelo()
 		{
 		// виртуальные на виртуальные
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I1I2))				
-			GPUCalcDiffVeloI1I2ToSetOfPoints(W.getBoundary(targetBou).virtualWake, virtualVortexesParams[targetBou].epsastWake, W.getBoundary(bou).virtualWake, virtualVortexesParams[targetBou].I1, virtualVortexesParams[targetBou].I2);
+			GPUCalcDiffVeloI1I2ToSetOfPointsFromPanels(W.getBoundary(targetBou).virtualWake, virtualVortexesParams[targetBou].epsastWake, W.getBoundary(bou), virtualVortexesParams[targetBou].I1, virtualVortexesParams[targetBou].I2);
 #else			
-			CalcDiffVeloI1I2ToSetOfPoints(W.getBoundary(targetBou).virtualWake, virtualVortexesParams[targetBou].epsastWake, W.getBoundary(bou).virtualWake, virtualVortexesParams[targetBou].I1, virtualVortexesParams[targetBou].I2);
+			//CalcDiffVeloI1I2ToSetOfPoints(W.getBoundary(targetBou).virtualWake, virtualVortexesParams[targetBou].epsastWake, W.getBoundary(bou).virtualWake, virtualVortexesParams[targetBou].I1, virtualVortexesParams[targetBou].I2);
+			CalcDiffVeloI1I2ToSetOfPointsFromPanels(W.getBoundary(targetBou).virtualWake, virtualVortexesParams[targetBou].epsastWake, W.getBoundary(bou), virtualVortexesParams[targetBou].I1, virtualVortexesParams[targetBou].I2);
 #endif	
 		}
 	
@@ -174,7 +180,7 @@ tTemp[2] = omp_get_wtime();
 
 #pragma warning (push)
 #pragma warning (disable: 4010)
-	//std::cout << "Times_diff:" << \
+	//W.getInfo('t') << "Times_diff:" << \
 		tTemp[1] - tTemp[0] << " " << \
 		tTemp[2] - tTemp[1] << " " << \
 		tTemp[3] - tTemp[2] << " " << \

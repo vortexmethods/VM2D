@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,11 +32,11 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
-#if !defined(__linux__)
+#if defined(_WIN32)
 #include <direct.h>
 #endif
 
@@ -53,29 +53,16 @@ void Wake::ReadFromFile(const std::string& dir)
 {
 	std::string filename = dir + W.getPassport().wakeDiscretizationProperties.fileWake;
 	std::ifstream wakeFile;
-
-	std::ostream *Pinfo, *Perr;
-	if (W.getParallel().myidWork == 0)
-	{
-		Pinfo = defaults::defaultPinfo;
-		Perr = defaults::defaultPerr;
-	}
-	else
-	{
-		Pinfo = nullptr;
-		Perr = nullptr;
-	}
-
 	
-	if (fileExistTest(filename, Pinfo, Perr, "wake"))
+	if (fileExistTest(filename, W.getInfo()))
 	{
 		std::stringstream wakeFile(Preprocessor(filename).resultString);
 		
-		StreamParser wakeParser(wakeFile);
+		LogStream XXX;
+		StreamParser wakeParser(XXX, "vortex wake file parser", wakeFile);
 		
 		int nv;
 		wakeParser.get("nv", nv);
-
 		wakeParser.get("vtx", vtx);
 	}
 }//ReadFromFile(...)
@@ -108,7 +95,7 @@ void Wake::SaveKadr(const std::vector<Vortex2D>& outVtx, const std::string& dir,
 			numberNonZero++;
 	}
 
-#if !defined(__linux__)
+#if defined(_WIN32)
 	_mkdir((dir + "snapshots").c_str());
 #else
 	mkdir((dir + "snapshots").c_str(), S_IRWXU | S_IRGRP | S_IROTH);
@@ -168,7 +155,7 @@ void Wake::SaveKadrVtk(const std::vector<Vortex2D>& outVtx, const std::string& d
 			numberNonZero++;
 	}
 
-#if !defined(__linux__)
+#if defined(_WIN32)
 	_mkdir((dir + "snapshots").c_str());
 #else
 	mkdir((dir + "snapshots").c_str(), S_IRWXU | S_IRGRP | S_IROTH);
@@ -287,9 +274,7 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 
 		if (r2*r3 > 0)
 			continue;
-
-		//std::cout << A << " " << B << " " << D << " " << r0 << " " << r1 << " " <<  r2 << " " << r3  << std::endl;
-		
+				
 		hit = true;// пробила!
 		double d2 = (oldPos[0] - (B*D1 - D*B1) / (A*B1 - B*A1))*(oldPos[0] - (B*D1 - D*B1) / (A*B1 - B*A1)) + \
 			(oldPos[1] - (A1*D - D1*A) / (A*B1 - B*A1))*(oldPos[1] - (A1*D - D1*A) / (A*B1 - B*A1));
@@ -433,7 +418,7 @@ void Wake::GetPairs(int type)
 
 	Point2D Ri, Rk;
 
-#pragma omp parallel for default(none) shared(type, locNeighb, par)
+#pragma omp parallel for default(none) shared(type, locNeighb, par) schedule(dynamic, DYN_SCHEDULE)
 	for (int locI = 0; locI < par.myLen; ++locI)
 	{
 		int s = locI + par.myDisp;
@@ -500,11 +485,10 @@ void Wake::GPUGetPairs(int type)
 	tCUDASTART = omp_get_wtime();
 	tmpNei.resize(npt, 0);
 	neighb.resize(npt, 0);
-
 	
 	if (npt > 0)
 	{
-		cuCalculatePairs(par.myDisp, par.myLen, npt, devWakePtr, devMeshPtr, devNeiPtr, 2.0*W.getPassport().wakeDiscretizationProperties.epscol, sqr(W.getPassport().wakeDiscretizationProperties.epscol), type);
+		cuCalculatePairs(par.myDisp, par.myLen, npt, devVtxPtr, devMeshPtr, devNeiPtr, 2.0*W.getPassport().wakeDiscretizationProperties.epscol, sqr(W.getPassport().wakeDiscretizationProperties.epscol), type);
 		
 		W.getCuda().CopyMemFromDev<int, 1>(par.myLen, devNeiPtr, &tmpNei[0]);
 
@@ -516,14 +500,14 @@ void Wake::GPUGetPairs(int type)
 
 		for (size_t q = 0; q < neighb.size(); ++q)
 		{
-			neighb[q] = newNei[q];
-			//std::cout << q << " " << NEIB[q] << std::endl;
+			neighb[q] = newNei[q];			
+			//std::cout << q << " " << vtx[q].r() << " " << vtx[q].g() << " " << neighb[q] << " " << vtx[neighb[q]].r() << " " << vtx[neighb[q]].g() << std::endl;		
 		}
 	}
 
 	tCUDAEND = omp_get_wtime();
 
-	//std::cout << "GPU_Pairs: " << (tCUDAEND - tCUDASTART) << std::endl;
+	//W.getInfo('t') << "GPU_Pairs: " << (tCUDAEND - tCUDASTART) << std::endl;
 }
 #endif
 
@@ -540,8 +524,8 @@ int Wake::Collaps(int type, int times)
 	{
 	
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_PAIRS))	
-		//std::cout << "nvtx (" << parallel.myidWork << ") = " << vtx.size() << std::endl;
-		const_cast<gpu&>(W.getCuda()).RefreshWake();
+		//W.getInfo('t') << "nvtx (" << parallel.myidWork << ") = " << vtx.size() << std::endl;
+		const_cast<Gpu&>(W.getCuda()).RefreshWake();
 		GPUGetPairs(type);
 #else
 		GetPairs(type);
@@ -619,19 +603,19 @@ int Wake::Collaps(int type, int times)
 }//Collaps(...)
 
 
-int Wake::KillFar()
+int Wake::RemoveFar()
 {
 	int nFar = 0;
-	double distKill2 = sqr(W.getPassport().wakeDiscretizationProperties.distKill);
+	double distFar2 = sqr(W.getPassport().wakeDiscretizationProperties.distFar);
 	/// \todo Пока профиль 1, расстояние от его центра
 	Point2D zerovec = { 0.0, 0.0 };
-#pragma omp parallel for default(none) shared(distKill2, zerovec) reduction(+:nFar)
+#pragma omp parallel for default(none) shared(distFar2, zerovec) reduction(+:nFar)
 	for (int i = 0; i <static_cast<int>(vtx.size()); ++i)
 	{
 
 	//	!!!!!!!!!!!!
-	//	if (dist2(vtx[i].r(), (*airfoils[0]).rcm) > distKill2)
-		if (dist2(vtx[i].r(), zerovec) > distKill2)
+	//	if (dist2(vtx[i].r(), (*airfoils[0]).rcm) > distFar2)
+		if (dist2(vtx[i].r(), zerovec) > distFar2)
 		{
 			vtx[i].g() = 0.0;
 			nFar++; 
@@ -640,7 +624,7 @@ int Wake::KillFar()
 
 	WakeSynchronize();
 	return nFar;
-}//KillFar()
+}//RemoveFar()
 
 
 size_t Wake::RemoveZero()
@@ -675,7 +659,7 @@ void Wake::Restruct(timePeriod& time)
 	Collaps(1, 1);
 	Collaps(2, 1);
 
-	KillFar();
+	RemoveFar();
 	RemoveZero();
 
 	time.second = omp_get_wtime();

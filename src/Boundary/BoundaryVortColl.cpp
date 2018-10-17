@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #include "BoundaryVortColl.h"
@@ -140,7 +140,7 @@ void BoundaryVortColl::GetWakeInfluence(std::vector<double>& wakeVelo) const
 #if defined(USE_CUDA)
 void BoundaryVortColl::GPUGetWakeInfluence(std::vector<double>& wakeVelo) const
 {
-	std::cout << "GPU-computing is not implemented now! CPU-computing is active" << std::endl;
+	W.getInfo('i') << "GPU-computing is not implemented now! CPU-computing is active" << std::endl;
 	GetWakeInfluence(wakeVelo);
 }
 #endif
@@ -283,7 +283,7 @@ void BoundaryVortColl::SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::Ve
 	for (size_t j = 0; j < afl.np; ++j)
 		sheets.freeVortexSheet[j][0] = sol(j) / afl.len[j];
 
-	//"закольцовываем"
+	//закольцовываем
 	sheets.freeVortexSheet[afl.np][0] = sol(0) / afl.len[0];
 	
 	

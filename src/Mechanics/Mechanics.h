@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #ifndef MECHANICS_H
@@ -60,14 +60,14 @@ class World2D;
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
 
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 class Mechanics
 {
 private:
-	/// \brief Парсинг списка параметров механической системы
+	/// Парсинг списка параметров механической системы
 	void ReadParametersFromDictionary();
 
 protected:
@@ -93,22 +93,22 @@ protected:
 	/// Умный указатель на парсер параметров механической системы
 	std::unique_ptr<StreamParser> mechParamsParser;
 
-	///начальная скорость центра и угловая скорость
+	/// Начальная скорость центра и угловая скорость
 	const Point2D Vcm0;	const double Wcm0;
 
-	///начальное положение профиля
+	/// Начальное положение профиля
 	const Point2D Rcm0; double Phi0;
 	
-	///текущие скорость центра и угловая скорость
+	/// Текущие скорость центра и угловая скорость
 	Point2D Vcm; double Wcm;
 
-	///текущие положение профиля
+	/// Текущие положение профиля
 	Point2D Rcm; double Phi;
 
-	///скорость и отклонение с предыдущего шага
+	/// Скорость и отклонение с предыдущего шага
 	Point2D VcmOld;	double WcmOld;
 
-	///текущие положение профиля
+	/// Текущие положение профиля
 	Point2D RcmOld;	double PhiOld;
 
 public:
@@ -146,7 +146,7 @@ public:
 	/// \param[in] Vcm0_ - скорость центра масс
 	/// \param[in] Rcm0_ - положение центра масс
 	/// \param[in] Wcm0_ - угловая скорость центра масс 
-	/// \param[in] Wcm0_ - ???
+	/// \param[in] Phi0_ - угол поворота центра масс
 	Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_, Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_);
 		
 	
@@ -204,7 +204,7 @@ public:
 	/// \param[in] rhs вектор правой части для механики одного профиля (количество элементов = количеству степеней свободы)
 	virtual void FillAtt(Eigen::MatrixXd& row, Eigen::MatrixXd& rhs) = 0;
 
-	/// \brief Извлечение из системы параметров механической системы
+	/// \brief Извлечение из решения параметров механической системы
 	///
 	/// \param[in] col
 	virtual void SolutionToMechanicalSystem(Eigen::VectorXd& col) = 0;

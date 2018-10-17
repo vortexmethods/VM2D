@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,30 +32,29 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #include "StreamParser.h"
 
-//Создание экземпляров статических указателей
-std::ostream* StreamParser::pinfo = defaults::defaultPinfo;
-std::ostream* StreamParser::perr = defaults::defaultPerr;
-
-
 //Конструктор, принимающий четыре потока
-StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream, std::vector<std::string> specificKey)
+StreamParser::StreamParser(LogStream& infoStream, const std::string& label, std::istream& mainStream, std::istream& defaultsStream, std::istream& switchersStream, std::istream& varsStream, std::vector<std::string> specificKey)
 {
+	info.inheritStream(infoStream, label);
+
 	ParseStream(varsStream, vars);
 	ParseStream(defaultsStream, defaults);
 	ParseStream(switchersStream, switchers);
-	ParseStream(mainStream, database, specificKey, true);
+	ParseStream(mainStream, database, specificKey, true);	
 }//StreamParser(...)
 
 
 //Конструктор, принимающий два потока
-StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStream, std::vector<std::string> specificKey)
+StreamParser::StreamParser(LogStream& infoStream, const std::string& label, std::istream& mainStream, std::istream& defaultsStream, std::vector<std::string> specificKey)
 {
+	info.inheritStream(infoStream, label);
+
 	ParseStream(mainStream, database, specificKey);
 	ParseStream(defaultsStream, defaults);
 
@@ -65,8 +64,10 @@ StreamParser::StreamParser(std::istream& mainStream, std::istream& defaultsStrea
 
 
 //Конструктор, принимающий один поток
-StreamParser::StreamParser(std::istream& mainStream, char openBracket, char closeBracket)
+StreamParser::StreamParser(LogStream& infoStream, const std::string& label, std::istream& mainStream, char openBracket, char closeBracket)
 {
+	info.inheritStream(infoStream, label);
+
 	ParseStream(mainStream, database, {}, false, openBracket, closeBracket);
 		
 	defaults.clear();
@@ -96,13 +97,16 @@ std::string StreamParser::UpperCase(const std::string& line)
 //Pазбор строки, содержащей запятые, на отдельные строки
 std::vector<std::string> StreamParser::StringToVector(std::string line, char openBracket, char closeBracket) //строка передается по значению, т.к. изменяется изнутри!
 {
+	//LogStream info;
+	//info.inheritStream(infoStream, label);
+	
 	if (line[0] != '{')
 	{
 		if (line.length() > 0)
 			return { line };
 		else
 		{
-			*pinfo << "parser info: WITH EMPTY PARAMETER" << std::endl;
+			//info('i') << "empty parameter" << std::endl;
 			return std::vector<std::string>({});
 		}
 	}
@@ -120,17 +124,17 @@ std::vector<std::string> StreamParser::StringToVector(std::string line, char ope
 				vecLine.push_back(subline);
 
 				line.erase(1, subline.size() + 1);
-				//info << "subline = !" << subline << "!" << endl;
 			}
 			return vecLine;
 		}
 		else
 		{
-			*pinfo << "parser info: WITH EMPTY LIST" << std::endl;
+			//info('i') << "empty parameter list" << std::endl;
 			return std::vector<std::string>({});
 		}//else if (line[1] != '}')
 	}//else if (st[0] != '{')
 }//StringToVector(...)
+
 
 
 //Объединение вектора (списка) из строк в одну строку
@@ -148,13 +152,13 @@ std::string StreamParser::VectorStringToString(const std::vector<std::string>& _
 
 
 //Разбор строки на пару ключ-значение
-std::pair<std::string, std::string> StreamParser::SplitString(std::string line, bool upcase)
+std::pair<std::string, std::string> StreamParser::SplitString(LogStream& info, std::string line, bool upcase)
 {
 	size_t posBegin = line.find('(', 0);
 	size_t posEnd = line.find(')', 0);
 	if ((posBegin != -1) && (posEnd == -1))
 	{
-		*perr << "parser error: ERROR WHILE PARSING LINE " << line << std::endl;
+		info('e') << "error while parsing line " << line << std::endl;
 		exit(-1);
 	}
 	else
@@ -212,7 +216,7 @@ void StreamParser::ParseStream(std::istream& stream, std::unordered_map<std::str
 			}
 			else
 			{
-				*perr << "ERROR: KEY <" << key << "> FOUND TWICE" << std::endl;
+				info('e') << "key <" << key << "> is found twice" << std::endl;
 				exit(-1);
 			}
 		}//if (posEqual != -1)
@@ -281,7 +285,7 @@ void StreamParser::ReplaceVarsInString(std::string& st)
 		}
 		else
 		{
-			*perr << "parser error: SUBSTITUTION $" << var << " IS UNDEFINED" << std::endl;
+			info('e') << "substitution $" << var << " is us undefined" << std::endl;
 			exit(1);
 		}
 	}

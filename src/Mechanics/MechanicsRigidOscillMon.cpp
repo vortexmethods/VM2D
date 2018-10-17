@@ -1,13 +1,13 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: MechanicsRigidOscillStronglyCoupled.cpp                          |
+| File name: MechanicsRigidOscillMon.cpp                                      |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,21 +28,21 @@
 
 /*!
 \file
-\brief Файл кода с описанием класса MechanicsRigidOscillStronglyCoupled
+\brief Файл кода с описанием класса MechanicsRigidOscillMon
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #include "mpi.h"
 
-#include "MechanicsRigidOscillStronglyCoupled.h"
+#include "MechanicsRigidOscillMon.h"
 #include "World2D.h"
 
 //Вычисление гидродинамической силы, действующей на профиль
-void MechanicsRigidOscillStronglyCoupled::GetHydroDynamForce(timePeriod& time)
+void MechanicsRigidOscillMon::GetHydroDynamForce(timePeriod& time)
 {
 	time.first = omp_get_wtime();
 
@@ -75,21 +75,21 @@ void MechanicsRigidOscillStronglyCoupled::GetHydroDynamForce(timePeriod& time)
 }// GetHydroDynamForce(...)
 
 // Вычисление скорости центра масс
-Point2D MechanicsRigidOscillStronglyCoupled::VeloOfAirfoilRcm(double currTime)
+Point2D MechanicsRigidOscillMon::VeloOfAirfoilRcm(double currTime)
 {
 	return Vcm;
 	//return{ 0.0, 0.0 };
 }//VeloOfAirfoilRcm(...)
 
 // Вычисление положения центра масс
-Point2D MechanicsRigidOscillStronglyCoupled::PositionOfAirfoilRcm(double currTime)
+Point2D MechanicsRigidOscillMon::PositionOfAirfoilRcm(double currTime)
 {
 	return Rcm;
 	//return{ 0.0, 0.0 };
 }//PositionOfAirfoilRcm(...)
 
 // Вычисление скоростей начал панелей
-void MechanicsRigidOscillStronglyCoupled::VeloOfAirfoilPanels(double currTime)
+void MechanicsRigidOscillMon::VeloOfAirfoilPanels(double currTime)
 {
 	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
 	for (size_t i = 0; i < afl.v.size(); ++i)
@@ -98,7 +98,7 @@ void MechanicsRigidOscillStronglyCoupled::VeloOfAirfoilPanels(double currTime)
 }//VeloOfAirfoilPanels(...)
 
 
-void MechanicsRigidOscillStronglyCoupled::Move()
+void MechanicsRigidOscillMon::Move()
 {
 	VcmOld = Vcm;
 	
@@ -110,21 +110,21 @@ void MechanicsRigidOscillStronglyCoupled::Move()
 	afl.Move(dRcm);
 }//Move()
 
-void MechanicsRigidOscillStronglyCoupled::ReadSpecificParametersFromDictionary()
+void MechanicsRigidOscillMon::ReadSpecificParametersFromDictionary()
 {
 	mechParamsParser->get("m", m);
 	
-	std::cout << "m = " << m << std::endl;
+	W.getInfo('i') << "mass m = " << m << std::endl;
 	std::vector<double> sh;
 	mechParamsParser->get("sh", sh);
 
 	k =  m * 4.0 * PI * PI * sh[1] * sh[1] * W.getPassport().physicalProperties.vInf.length2();
 
-	std::cout << "constr k = " << k << std::endl;
+	W.getInfo('i') << "rigidity k = " << k << std::endl;
 }
 
 /// \todo пока считается, что вихревой слой состоит из отдельных изолированных вихрей
-void MechanicsRigidOscillStronglyCoupled::FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Eigen::MatrixXd& cross)
+void MechanicsRigidOscillMon::FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Eigen::MatrixXd& cross)
 {
 	cross(0, 0) = -(/*3*/ m + /*4*/ W.getPassport().timeDiscretizationProperties.dt * b);
 
@@ -141,7 +141,7 @@ void MechanicsRigidOscillStronglyCoupled::FillMechanicsRowsAndCross(Eigen::Matri
 
 
 /// \todo пока считается, что вихревой слой состоит из отдельных изолированных вихрей
-void MechanicsRigidOscillStronglyCoupled::FillMechanicsRhs(std::vector<double>& rhs)
+void MechanicsRigidOscillMon::FillMechanicsRhs(std::vector<double>& rhs)
 {
 	rhs[0] = /*7*/-m * Vcm[1] + /*8*/ W.getPassport().timeDiscretizationProperties.dt * k * Rcm[1];
 
@@ -152,13 +152,13 @@ void MechanicsRigidOscillStronglyCoupled::FillMechanicsRhs(std::vector<double>& 
 	}
 }
 
-void MechanicsRigidOscillStronglyCoupled::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
+void MechanicsRigidOscillMon::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
 {
 	for (size_t i = 0; i < afl.np; ++i)
 		col(i, 0) = /*12*/ -afl.tau[i][1];
 }
 
-void MechanicsRigidOscillStronglyCoupled::SolutionToMechanicalSystem(Eigen::VectorXd& col)
+void MechanicsRigidOscillMon::SolutionToMechanicalSystem(Eigen::VectorXd& col)
 {
 	VcmOld = Vcm;
 

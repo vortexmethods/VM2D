@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,11 +32,11 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
-#if !defined(__linux__)
+#if defined(_WIN32)
 #include <direct.h>
 #endif
 
@@ -50,8 +50,7 @@
 
 
 //Конструктор
-Queue::Queue(int& argc, char**& argv, std::ostream& _timeFile, void (*_CreateMpiTypes)())
-	: timeFile(_timeFile)
+Queue::Queue(int& argc, char**& argv, void (*_CreateMpiTypes)())
 {
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &nProcAll);
@@ -63,9 +62,7 @@ Queue::Queue(int& argc, char**& argv, std::ostream& _timeFile, void (*_CreateMpi
 	//(выполняется на глобальном нулевом процессоре)
 	if (myidAll == 0)
 	{
-		//TODO: Переделать вывод в файл (вывод касательных напряжений)
-		//std::ofstream stressFile("Stresses");
-		//stressFile.close();
+		info.assignStream(defaults::defaultQueueLogStream, "queue");
 
 		//Устанавливаем флаг занятости в состояние "свободен" всем процессорам, 	
 		procState.resize(nProcAll, MPI_UNDEFINED);
@@ -90,13 +87,13 @@ Queue::~Queue()
 
 //Процедура постановка новых задач на отсчет и занятие процессоров
 void Queue::TaskSplit()
-{	
+{		
 	//Пересылаем информацию о состоянии процессоров на все компьютеры
 	MPI_Scatter(procState.data(), 1, MPI_INT, &myProcState, 1, MPI_INT, 0, MPI_COMM_WORLD);
-	
+		
 	if (myProcState == MPI_UNDEFINED)
 		world2D.reset(nullptr);
-
+	
 	if (myidAll == 0)
 	{
 		currentKvant++;
@@ -138,13 +135,7 @@ void Queue::TaskSplit()
 
 				//переходим к следующему процессору
 				j++;
-			} while (p < task[taskFol].nProc);
-
-			std::cout << "ProcState: " << std::endl;
-			for (int i = 0; i < nProcAll; i++)
-			{
-				std::cout << "proc[" << i << "].state = " << procState[i] << std::endl;
-			}
+			} while (p < task[taskFol].nProc);			
 
 			//состояние задачи устанавливаем в режим "стартует"
 			task[taskFol].state = TaskState::starting;
@@ -165,6 +156,16 @@ void Queue::TaskSplit()
 		}//while ((nfree >= Task[task_fol].nproc)&&(task_fol<Task.size()))
 
 	}//if (myidAll == 0)
+	
+	//Вывод информации о занятости процессоров задачами
+	if (myidAll == 0)
+	{
+		info.endl();
+		info('i') << "ProcStates: " << std::endl;
+		for (int i = 0; i < nProcAll; i++)
+			info('-') << "proc[" << i << "] <=> problem[" << procState[i] << "]" << std::endl;
+		info.endl();
+	}
 
 	//Пересылаем информацию о состоянии процессоров на все компьютеры
 	MPI_Scatter(procState.data(), 1, MPI_INT, &myProcState, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -216,17 +217,20 @@ void Queue::TaskSplit()
 		commStarting = MPI_COMM_NULL;
 		MPI_Group_incl(groupAll, numberOfTask.prepared, prepList.data(), &groupStarting);
 		MPI_Comm_create(MPI_COMM_WORLD, groupStarting, &commStarting);
-					
+		
+
 		//следующий фрагмент кода только для стартующих процессов, 
 		//которые входят в коммуникатор comm_starting
 		if (commStarting != MPI_COMM_NULL)
 		{
+
 			//получаем номер процесса в списке стартующих
 			int myidStarting;
 			MPI_Comm_rank(commStarting, &myidStarting);
 			
 			//подготовка стартующих задач
-			world2D.reset(new World2D(task[myProcState].passport, parallel, *(defaults::defaultPtele)));
+			parallel.myidWork = 0;
+			world2D.reset(new World2D(task[myProcState].passport, parallel));
 
 			//Коммуникатор головных процессоров стартующих задач
 			//выполнил свое черное дело и будет удален
@@ -250,7 +254,6 @@ void Queue::TaskSplit()
 		if (procState[0] == MPI_UNDEFINED)
 			solvList.push_back(0);
 
-
 		//далее ищем считающие задачи (в том числе только что стартующие)
 		//и собираем номера их головных процессоров
 		//(собираем в порядке просмотра номеров процессоров))
@@ -263,12 +266,7 @@ void Queue::TaskSplit()
 		flagFinish.clear();
 		flagFinish.resize(solvList.size());
 
-		//if (myidAll == 0)
-		//for (size_t q = 0; q < solvList.size(); q++)
-		//	std::cout << "solvList[" << q << "] = " << solvList[q] << std::endl;
-	
 	}//if myidAll==0
-
 
 	//число sizeCommSolving на единицу больше, чем taskSolving, если нулевой процессор свободен
 	//и равно taskSolving, если он занят решением задачи
@@ -284,7 +282,7 @@ void Queue::TaskSplit()
 	MPI_Bcast(solvList.data(), sizeCommSolving, MPI_INT, 0, MPI_COMM_WORLD);
 
 	commSolving = MPI_COMM_NULL;
-
+	
 	//формируем группу и коммуникатор головных процессоров
 	MPI_Group_incl(groupAll, sizeCommSolving, solvList.data(), &groupSolving);
 	MPI_Comm_create(MPI_COMM_WORLD, groupSolving, &commSolving);
@@ -295,16 +293,10 @@ void Queue::TaskSplit()
 		//распределения задач по процессоров, с тем чтобы задачи
 		//с прошлого кванта оказались в тех же группах, что и раньше
 		ConstructProcStateVar();	
-
-		//if (myidAll == 0)
-		//for (int q = 0; q < nProcAll; q++)
-		//	std::cout << "procStateVar[" << q << "] = " << procStateVar[q] << std::endl;
 	}
 		
 	//Пересылаем информацию о состоянии процессоров на все компьютеры
 	MPI_Scatter(procStateVar.data(), 1, MPI_INT, &myProcStateVar, 1, MPI_INT, 0, MPI_COMM_WORLD);
-
-	//std::cout << "id = " << myidAll << ", myProcStateVar = " << myProcStateVar << std::endl;
 
 	//Расщепляем весь комммуникатор MPI_COMM_WORLD (т.е. вообще все процессоры) 
 	//на коммуникаторы решаемых задач
@@ -321,13 +313,9 @@ void Queue::TaskSplit()
 	//MPI_Bcast(&kvantTime, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 	//следующий код выполняется процессорами, участвующими в решении задач, 
-	//следовательно, входящими в коммуникаторы comm_work
-	
-	//std::cout << "myid = " << myidAll << std::endl;
-	
+	//следовательно, входящими в коммуникаторы comm_work	
 	if (parallel.commWork != MPI_COMM_NULL)
 	{
-		//std::cout << "inside_myid = " << myidAll << std::endl;
 		//оперделяем "локальный" номер данного процессора в коммуникаторе commWork и число процессов в нем
 		MPI_Comm_size(parallel.commWork, &parallel.nProcWork);
 		MPI_Comm_rank(parallel.commWork, &parallel.myidWork);
@@ -336,7 +324,7 @@ void Queue::TaskSplit()
 		//в этом случае он создан только на главном процессоре группы;
 		//на остальных происходит его создание
 		if (world2D == nullptr)
-			world2D.reset(new World2D(task[myProcState].passport, parallel, *(defaults::defaultPtele)));
+			world2D.reset(new World2D(task[myProcState].passport, parallel));
 
 		//Синхронизация параметров
 		MPI_Bcast(&(world2D->getPassport().physicalProperties.currTime), 1, MPI_DOUBLE, 0, parallel.commWork);
@@ -344,10 +332,8 @@ void Queue::TaskSplit()
 		//Создание файлов для записи сил
 		if ((parallel.myidWork == 0) && (world2D->getCurrentStep() == 0))
 		for (size_t q = 0; q < world2D->getPassport().airfoilParams.size(); ++q)
-		{
 			world2D->GenerateMechanicsHeader(q);
-		}
-
+		
 		//Создание файла для записи временной статистики
 		if ((parallel.myidWork == 0) && (world2D->getCurrentStep() == 0))
 			world2D->getTimestat().GenerateStatHeader();
@@ -356,16 +342,14 @@ void Queue::TaskSplit()
 		//Синхронизация паспортов
 		//MPI_Bcast(...)
 	}
+
 }//TaskSplit()
 
 
 //Процедура обновления состояния задач и процессоров
 void Queue::TaskUpdate()//Обновление состояния задач и процессоров
 {
-	if (myidAll == 0)
-	{
-		std::cout << "------ Kvant finished ------" << std::endl;
-	}
+	info('i') << "------ Kvant finished ------" << std::endl;
 	
 	//Код только для головных процессов, которые входят в коммуникатор commSolving
 	//т.е. выполняется только на головных процессорах, решающих задачи.
@@ -391,12 +375,6 @@ void Queue::TaskUpdate()//Обновление состояния задач и 
 		// --- вот для чего его насильно присоединяли к этому коммуникатору
 		//если сам по себе он туда не входил		
 		MPI_Gather(&stopSignal, 1, MPI_INT, flagFinish.data(), 1, MPI_INT, 0, commSolving);
-				
-		//if (myidSolving == 0)
-		//{
-		//	for (int q = 0; q < flagFinish.size(); ++q)
-		//		std::cout << "FlagFinish[" << q << "] = " << flagFinish[q] << std::endl;
-		//}
 
 		//после пересылки информации коммуникатор comm_solving уничтожается
 		MPI_Comm_free(&commSolving);
@@ -414,10 +392,6 @@ void Queue::TaskUpdate()//Обновление состояния задач и 
 		//Поэтому коммуникаторы решаемых задач нам уже ни к чему - уничтожаем их
 		MPI_Comm_free(&parallel.commWork);
 	}
-
-	//std::cout << "id = " << myidAll << ", commWork cleared!" << std::endl;
-
-
 
 	//Обновление состояния задач и высвобождение процессоров из отсчитавших задач
 	//(выполняется на глобальном нулевом процессоре)
@@ -457,10 +431,7 @@ void Queue::TaskUpdate()//Обновление состояния задач и 
 
 				//отмечаем последний квант, когда задача считалась
 				task[i].startEndKvant.second = currentKvant;
-
-				//отметка в общий файл статистики о времени счета данной задачи (с точностью до кванта)
-				//timeFile << "Task " << task[i].passport.GetFilePassport() << " time (rounded upto kvantTime) = " << (task[i].endKvant - task[i].startKvant + 1)*kvantTime << endl;
-
+				
 				//изменяем счетчики
 				numberOfTask.solving--;
 				numberOfTask.finished++;
@@ -537,8 +508,6 @@ void Queue::RunConveyer()
 
 		//Проверка окончания кванта по времени (или завершения задачи)
 		while (deltaWallTime < kvantTime);
-
-		//std::cout << "id = " << myidAll << " - conv. finished!" << std::endl;
 	}//if (commWork != MPI_COMM_NULL)
 }//RunConveyer()
 
@@ -551,23 +520,17 @@ void Queue::AddTask(int _nProc, const Passport& _passport)
 	newTask.state = TaskState::waiting;
 	newTask.proc.resize(_nProc);
 
-	task.push_back(newTask);
+	task.emplace_back(newTask);
 }//AddTask(...)
 
 
 //Загрузка списка задач
 void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mechanicsFile, const std::string& _defaultsFile, const std::string& _switchersFile)
 {
-	std::ostream *Pinfo, *Perr;
-	{
-		Pinfo = defaults::defaultPinfo;
-		Perr = defaults::defaultPerr;
-	}
-	
 	if (
-	fileExistTest(_tasksFile, Pinfo, Perr, "problems")&& 
-	fileExistTest(_defaultsFile, Pinfo, Perr, "defaults")&&
-	fileExistTest(_switchersFile, Pinfo, Perr, "switchers") 
+	fileExistTest(_tasksFile, info) && 
+	fileExistTest(_defaultsFile, info) &&
+	fileExistTest(_switchersFile, info)
 	)
 	{
 		std::stringstream tasksFile(Preprocessor(_tasksFile).resultString);
@@ -576,21 +539,26 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mec
 		std::vector<std::string> taskFolder;
 
 		std::unique_ptr<StreamParser> parserTaskList;
-		parserTaskList.reset(new StreamParser(tasksFile, '(', ')'));
+		parserTaskList.reset(new StreamParser(info, "parser", tasksFile, '(', ')'));
 
 		std::vector<std::string> alltasks;
 		parserTaskList->get("problems", alltasks);
 
-		size_t nTasks = alltasks.size();
-
-		for (size_t i = 0; i < nTasks; ++i)
+		std::ptrdiff_t nTasks = std::count_if(alltasks.begin(), alltasks.end(), [](const std::string& a) {return (a.length() > 0);});
+		info.endl();
+		info('i') << "Number of problems to be solved: " << nTasks << std::endl;
+		
+		for (size_t i = 0; i < alltasks.size(); ++i)
 		{
 			if (alltasks[i].length() > 0)
 			{
-				//делим имя файла + выражение в скобках на 2 подстроки
-				std::pair<std::string, std::string> taskLine = StreamParser::SplitString(alltasks[i], false);
+				//делим имя задачи + выражение в скобках на 2 подстроки
+				std::pair<std::string, std::string> taskLine = StreamParser::SplitString(info, alltasks[i], false);
 
 				std::string dir = taskLine.first;
+
+				info.endl();
+				info('i') << "-------- Loading problem #" << i << " (" << dir << ") --------" << std::endl;
 
 				//вторую подстроку разделяем на вектор из строк по запятым, стоящим вне фигурных скобок		
 				std::vector<std::string> vecTaskLineSecond = StreamParser::StringToVector(taskLine.second, '{', '}');
@@ -599,13 +567,25 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mec
 				std::stringstream tskStream(StreamParser::VectorStringToString(vecTaskLineSecond));
 				std::unique_ptr<StreamParser> parserTask;
 
-				parserTask.reset(new StreamParser(tskStream, defaultsFile, {"pspfile", "np", "copyPspFile"}));
+				parserTask.reset(new StreamParser(info, "problem parameters", tskStream, defaultsFile, {"pspfile", "np", "copyPspFile"}));
 
 				std::string pspFile;
 				int np;
 				//считываем нужные параметры с учетом default-значений
 				parserTask->get("pspfile", pspFile, &defaults::defaultPspFile);
 				parserTask->get("np", np, &defaults::defaultNp);
+
+				if (np > nProcAll)
+				{
+					info.endl();
+					info('e') << "problem #" << i << " (" << dir << \
+						") requires " << np << " processors (" << nProcAll << " available)" << std::endl;
+					exit(-1);
+				}
+				else
+				{
+					info('i') << "number of processors np = " << np << std::endl;
+				}
 
 				std::string copyPspFile;
 				parserTask->get("copyPspFile", copyPspFile, &defaults::defaultCopyPspFile);
@@ -614,7 +594,7 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mec
 					//Копировать паспорт поручаем только одному процессу
 					if (myidAll == 0)
 					{
-#if !defined(__linux__)
+#if defined(_WIN32)
 						_mkdir(dir.c_str());
 #else
 						mkdir(dir.c_str(), S_IRWXU | S_IRGRP | S_IROTH);
@@ -649,14 +629,10 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mec
 				MPI_Barrier(MPI_COMM_WORLD);
 
 
-				Passport psp("./" + dir + "/", pspFile, _mechanicsFile, _defaultsFile, _switchersFile, vecTaskLineSecond, myidAll == 0);
+				Passport psp(info, dir, i, pspFile, _mechanicsFile, _defaultsFile, _switchersFile, vecTaskLineSecond);
 				AddTask(np, psp);
 
-				if (parallel.myidWork == 0)
-				{
-					*defaults::defaultPinfo << "-------- Problem #" << i << " is loaded --------" << std::endl;
-					*defaults::defaultPinfo << std::endl;
-				}
+				info('i') << "-------- Problem #" << i << " (" << dir << ") is loaded --------" << std::endl << std::endl;
 			} 
 		} //for i
 

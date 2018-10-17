@@ -1,13 +1,13 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: MechanicsRigidRotateStronglyCoupled.cpp                          |
+| File name: MechanicsRigidRotateMon.cpp                                      |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,21 +28,21 @@
 
 /*!
 \file
-\brief Файл кода с описанием класса MechanicsRigidRotateStronglyCoupled
+\brief Файл кода с описанием класса MechanicsRigidRotateMon
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #include "mpi.h"
 
-#include "MechanicsRigidRotateStronglyCoupled.h"
+#include "MechanicsRigidRotateMon.h"
 #include "World2D.h"
 
 //Вычисление гидродинамической силы, действующей на профиль
-void MechanicsRigidRotateStronglyCoupled::GetHydroDynamForce(timePeriod& time)
+void MechanicsRigidRotateMon::GetHydroDynamForce(timePeriod& time)
 {
 	time.first = omp_get_wtime();
 
@@ -90,20 +90,20 @@ void MechanicsRigidRotateStronglyCoupled::GetHydroDynamForce(timePeriod& time)
 }// CalcHydroDynamForce(...)
 
 // Вычисление скорости центра масс
-Point2D MechanicsRigidRotateStronglyCoupled::VeloOfAirfoilRcm(double currTime)
+Point2D MechanicsRigidRotateMon::VeloOfAirfoilRcm(double currTime)
 {
 	return{ 0.0, 0.0 };
 	//return{ 0.0, 0.0 };
 }//VeloOfAirfoilRcm(...)
 
 // Вычисление положения центра масс
-Point2D MechanicsRigidRotateStronglyCoupled::PositionOfAirfoilRcm(double currTime)
+Point2D MechanicsRigidRotateMon::PositionOfAirfoilRcm(double currTime)
 {
 	return afl.rcm;
 }//PositionOfAirfoilRcm(...)
 
 // Вычисление скоростей начал панелей
-void MechanicsRigidRotateStronglyCoupled::VeloOfAirfoilPanels(double currTime)
+void MechanicsRigidRotateMon::VeloOfAirfoilPanels(double currTime)
 {
 	for (size_t i = 0; i < afl.v.size(); ++i)
 	{
@@ -112,8 +112,8 @@ void MechanicsRigidRotateStronglyCoupled::VeloOfAirfoilPanels(double currTime)
 	}
 }//VeloOfAirfoilPanels(...)
 
-
-void MechanicsRigidRotateStronglyCoupled::Move()
+//Перемещение профиля в соответствии с законом
+void MechanicsRigidRotateMon::Move()
 {
 	PhiOld = Phi;
 
@@ -124,7 +124,8 @@ void MechanicsRigidRotateStronglyCoupled::Move()
 	afl.Rotate(dphi);
 }//Move()
 
-void MechanicsRigidRotateStronglyCoupled::ReadSpecificParametersFromDictionary()
+//Чтение параметров конкретной механической системы
+void MechanicsRigidRotateMon::ReadSpecificParametersFromDictionary()
 {
 	mechParamsParser->get("J", J);
 	mechParamsParser->get("k", k);
@@ -132,11 +133,11 @@ void MechanicsRigidRotateStronglyCoupled::ReadSpecificParametersFromDictionary()
 	mechParamsParser->get("tMomentAccel", tMomentAccel);
 	mechParamsParser->get("Mz", Mz);
 
-	std::cout << "J = " << J << std::endl;
-	std::cout << "k = " << k << std::endl;
-	std::cout << "tRotateAccel = " << tRotateAccel << std::endl;
-	std::cout << "tMomentAccel = " << tMomentAccel << std::endl;
-	std::cout << "Mz = " << Mz << std::endl;
+	W.getInfo('i') << "J = " << J << std::endl;
+	W.getInfo('i') << "k = " << k << std::endl;
+	W.getInfo('i') << "tRotateAccel = " << tRotateAccel << std::endl;
+	W.getInfo('i') << "tMomentAccel = " << tMomentAccel << std::endl;
+	W.getInfo('i') << "Mz = " << Mz << std::endl;
 
 //	std::vector<double> sh;
 //	mechParamsParser->get("sh", sh);
@@ -144,63 +145,116 @@ void MechanicsRigidRotateStronglyCoupled::ReadSpecificParametersFromDictionary()
 }
 
 /// \todo пока считается, что вихревой слой состоит из отдельных изолированных вихрей
-void MechanicsRigidRotateStronglyCoupled::FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Eigen::MatrixXd& cross)
+//Заполнение строк в матрице, соответствующих механической системе.А также пересечений строк и столбцов, соответствующих мех.системе
+void MechanicsRigidRotateMon::FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Eigen::MatrixXd& cross)
 {
-	cross(0, 0) = -(/*3*/ J + /*4*/ W.getPassport().timeDiscretizationProperties.dt * b);
-
-	Point2D riC;
-
-	for (size_t loc_i = 0; loc_i < afl.np; ++loc_i)
+	if (W.getCurrentStep() == 0)
 	{
-		riC = 0.5 * (afl.r[loc_i + 1] + afl.r[loc_i]) - afl.rcm;
+		cross(0, 0) = -(/*3*/ J + /*4*/ W.getPassport().timeDiscretizationProperties.dt * b);
 
-		row(0, loc_i) = /*1*/ 0.5 * riC * riC * afl.len[loc_i];
-		cross(0, 0) += /*2*/ 0.5 * riC * riC * (riC ^ afl.tau[loc_i]) * afl.len[loc_i];
-	}
-}
-//FillMechanicsRowsAndCols(...)
+		Point2D riC;
+#pragma warning (push)
+#pragma warning (disable: 4101)
+		double crossOmp;
+#pragma warning (pop)
+
+#pragma omp parallel for default(none) shared(row, cross) private(riC, crossOmp)
+		for (int loc_i = 0; loc_i < afl.np; ++loc_i)
+		{
+			riC = 0.5 * (afl.r[loc_i + 1] + afl.r[loc_i]) - afl.rcm;
+			crossOmp = /*2*/ 0.5 * riC * riC * (riC ^ afl.tau[loc_i]) * afl.len[loc_i];
+
+			row(0, loc_i) = /*1*/ 0.5 * riC * riC * afl.len[loc_i];
+#pragma omp atomic
+			cross(0, 0) += crossOmp;
+		}//pragma omp for
+	}//if (W.getCurrentStep() == 0)
+}//FillMechanicsRowsAndCols(...)
 
 
 /// \todo пока считается, что вихревой слой состоит из отдельных изолированных вихрей
-void MechanicsRigidRotateStronglyCoupled::FillMechanicsRhs(std::vector<double>& rhs)
+//Заполнение правых частей, соответствующих механической системе
+void MechanicsRigidRotateMon::FillMechanicsRhs(std::vector<double>& rhs)
 {
 	rhs[0] = /*7*/-J * Wcm + /*8*/ W.getPassport().timeDiscretizationProperties.dt * k * Phi -\
 				/*11*/GetMz(W.getCurrentStep() * W.getPassport().timeDiscretizationProperties.dt)* W.getPassport().timeDiscretizationProperties.dt;
-
-	for (size_t loc_i = 0; loc_i < afl.np; ++loc_i)
-	{
-		Point2D riC = 0.5 * (afl.r[loc_i + 1] + afl.r[loc_i]) - afl.rcm;
-
-		rhs[0] += /*5*/ 0.5 * riC * riC * afl.gammaThrough[loc_i];
-		rhs[0] += /*6*/ 0.5 * riC * riC * Wcm * (riC ^ afl.tau[loc_i]) * afl.len[loc_i];
-		rhs[0] += /*9*/ 0.5 * afl.len[loc_i] * (Wcm * riC ^ afl.tau[loc_i]) * (-Wcm * riC) ^ riC * W.getPassport().timeDiscretizationProperties.dt;
-		rhs[0] -= /*10*/ -0.5 * Wcm * riC * riC * afl.len[loc_i] * (riC ^ afl.nrm[loc_i]) * Wcm * W.getPassport().timeDiscretizationProperties.dt;
-	}
-}
-
-void MechanicsRigidRotateStronglyCoupled::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
-{
+	
 	Point2D riC;
-	for (size_t i = 0; i < afl.np; ++i)
+
+#pragma warning (push)
+#pragma warning (disable: 4101)
+	double rhsOmp;
+#pragma warning (pop)
+
+#pragma omp parallel for default(none) shared(rhs) private(riC, rhsOmp)
+	for (int loc_i = 0; loc_i < afl.np; ++loc_i)
 	{
-		riC = 0.5 * (afl.r[i + 1] + afl.r[i]) - afl.rcm;
+		riC = 0.5 * (afl.r[loc_i + 1] + afl.r[loc_i]) - afl.rcm;
 
-		col(i, 0) = /*12 + 91*/ -0.5 * (riC ^ afl.tau[i]);
-		for (size_t j = 0; j < afl.np; ++j)
-		{
-			col(i, 0) += /*92*/ IDPI * (Alpha(riC - afl.r[j + 1], riC - afl.r[j]) * afl.tau[j]
-									 - Lambda(riC - afl.r[j + 1], riC - afl.r[j]) * afl.nrm[j]
-									   )* afl.tau[i] * (riC ^ afl.tau[j]);
+		rhsOmp = 0.0;
+		rhsOmp += /*5*/ 0.5 * riC * riC * afl.gammaThrough[loc_i];
+		rhsOmp += /*6*/ 0.5 * riC * riC * Wcm * (riC ^ afl.tau[loc_i]) * afl.len[loc_i];
+		rhsOmp += /*9*/ 0.5 * afl.len[loc_i] * (Wcm * riC ^ afl.tau[loc_i]) * (-Wcm * riC) ^ riC * W.getPassport().timeDiscretizationProperties.dt;
+		rhsOmp -= /*10*/ -0.5 * Wcm * riC * riC * afl.len[loc_i] * (riC ^ afl.nrm[loc_i]) * Wcm * W.getPassport().timeDiscretizationProperties.dt;
 
-			col(i, 0) += /*93*/ IDPI * (Alpha(riC - afl.r[j + 1], riC - afl.r[j]) * afl.nrm[j] +
-									   Lambda(riC - afl.r[j + 1], riC - afl.r[j]) * afl.tau[j]
-									   )* afl.tau[i] * (riC ^ afl.nrm[j]);
-		}
+#pragma omp atomic
+		rhs[0] += rhsOmp;
 	}
-		
-}
+}//FillMechanicsRhs(...)
 
-void MechanicsRigidRotateStronglyCoupled::SolutionToMechanicalSystem(Eigen::VectorXd& col)
+//Заполнение правых частей (расщепленная схема) либо коэффициентов в матрице при скорости (монолитный подход), соответствующих присоединенным слоям
+void MechanicsRigidRotateMon::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
+{
+	W.getInfo('t') << "FillAtt: " << W.getParallel().myidWork << std::endl;
+
+	if (W.getCurrentStep() == 0)
+	{
+		Point2D riC;
+
+
+		std::vector<double> colMPI;
+		colMPI.resize(col.rows(), 0.0);
+
+		int id = W.getParallel().myidWork;
+
+		parProp par = W.getParallel().SplitMPI(col.rows());
+
+		std::vector<double> locColMPI;
+		locColMPI.resize(par.myLen);
+
+
+#pragma omp parallel for default(none) shared(locColMPI, par) private(riC)
+		for (int locI = 0; locI < par.myLen; ++locI)
+		{
+			int i = locI + par.myDisp;
+
+			riC = 0.5 * (afl.r[i + 1] + afl.r[i]) - afl.rcm;
+
+			locColMPI[locI] = /*12 + 91*/ -0.5 * (riC ^ afl.tau[i]);
+
+			for (size_t j = 0; j < afl.np; ++j)
+			{
+				locColMPI[locI] += /*92*/ IDPI * (Alpha(riC - afl.r[j + 1], riC - afl.r[j]) * afl.tau[j]
+					- Lambda(riC - afl.r[j + 1], riC - afl.r[j]) * afl.nrm[j]
+					)* afl.tau[i] * (riC ^ afl.tau[j]);
+
+				locColMPI[locI] += /*93*/ IDPI * (Alpha(riC - afl.r[j + 1], riC - afl.r[j]) * afl.nrm[j] +
+					Lambda(riC - afl.r[j + 1], riC - afl.r[j]) * afl.tau[j]
+					)* afl.tau[i] * (riC ^ afl.nrm[j]);
+			}
+		}//pragma omp for
+		MPI_Gatherv(locColMPI.data(), par.myLen, MPI_DOUBLE, colMPI.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
+
+		if (id == 0)
+		for (size_t i = 0; i < (size_t)(col.rows()); ++i)
+		{
+			col(i, 0) = colMPI[i];
+		}
+	}//if (W.getCurrentStep() == 0)	
+}//FillAtt(...)
+
+//Извлечение из решения параметров механической системы
+void MechanicsRigidRotateMon::SolutionToMechanicalSystem(Eigen::VectorXd& col)
 {
 	WcmOld = Wcm;
 
@@ -208,4 +262,4 @@ void MechanicsRigidRotateStronglyCoupled::SolutionToMechanicalSystem(Eigen::Vect
 
 	for (size_t i = 0; i < afl.np + 1; ++i)
 		afl.v[i] = afl.r[i].kcross() * Wcm;
-}
+}//SolutionToMechanicalSystem(...)

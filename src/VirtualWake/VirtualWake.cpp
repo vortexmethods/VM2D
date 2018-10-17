@@ -1,13 +1,13 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
 | Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: VelocityFourier.h                                                |
+| File name: VirtualWake.cpp                                                  |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,63 +28,29 @@
 
 /*!
 \file
-\brief Заголовочный файл с описанием класса WakeDataBase
+\brief Файл кода с описанием класса VirtualWake
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
-#ifndef WAKEDATABASE_H
-#define WAKEDATABASE_H
 
-#include <vector>
-
-#include "gpudefs.h"
-#include "Point2D.h"
-#include "Vortex2D.h"
+#include "VirtualWake.h"
+#include "World2D.h"
 
 
-class WakeDataBase
+//MPI-синхронизация вихревого следа
+void VirtualWake::WakeSynchronize()
 {
-public:
-	/// Список вихревых элементов
-	std::vector<Vortex2D> vtx;
+	int nV;
+	if (W.getParallel().myidWork == 0)
+		nV = (int)vtx.size();
+	MPI_Bcast(&nV, 1, MPI_INT, 0, W.getParallel().commWork);
 
-#if defined(USE_CUDA)
-	mutable double* devWakePtr;
-	mutable size_t devNWake;
+	if (W.getParallel().myidWork > 0)
+		vtx.resize(nV);
 
-	mutable std::vector<Point2D> tmpVels;
-	mutable double* devVelsPtr;
-
-	mutable std::vector<double> tmpRads;
-	mutable double* devRadsPtr;
-
-	mutable std::vector<double> tmpI0;
-	mutable double* devI0Ptr;
-
-	mutable std::vector<double> tmpI1;
-	mutable double* devI1Ptr;
-
-	mutable std::vector<Point2D> tmpI2;
-	mutable double* devI2Ptr;
-
-	mutable std::vector<Point2D> tmpI3;
-	mutable double* devI3Ptr;
-
-	//Данные для коллапса
-	mutable std::vector<int> tmpNei;
-	mutable int* devMeshPtr;
-	mutable int* devNeiPtr;
-
-	mutable std::vector<numvector<int, 2>> mesh;
-#endif
-
-	WakeDataBase() {};
-	virtual ~WakeDataBase() {}; 
-};
-
-#endif
-
+	MPI_Bcast(vtx.data(), nV, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
+}//WakeSinchronize()

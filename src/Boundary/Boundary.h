@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #ifndef BOUNDARY_H
@@ -46,7 +46,7 @@
 #include "Point2D.h"
 #include "Sheet.h"
 #include "Vortex2D.h"
-#include "WakeDataBase.h"
+#include "VirtualWake.h"
 
 class World2D;
 
@@ -55,8 +55,8 @@ class World2D;
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 class Boundary
@@ -81,10 +81,7 @@ public:
 	int vortexPerPanel;
 	
 	/// Виртуальный вихревой след конкретного профиля
-	WakeDataBase virtualWake;
-
-	/// Скорость вихрей виртуального следа конкретного профиля (равна Gamma/2) используется для расчета давления
-	std::vector<Point2D> virtualWakeVelocity;
+	VirtualWake virtualWake;
 
 	/// \brief MPI-синхронизация виртуального вихревого следа
 	///

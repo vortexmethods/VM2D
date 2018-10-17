@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.3    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/09/26     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.3
-\date 26 сентября 2018 г.
+\version 1.4
+\date 16 октября 2018 г.
 */
 
 #include "defs.h"
@@ -42,30 +42,24 @@
 #include "StreamParser.h"
 
 //Конструктор
-Passport::Passport(const std::string& _dir, const std::string& _filePassport, const std::string& _mechanics, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars, bool _print)
-: dir(_dir), print(_print)
-{	
+Passport::Passport(LogStream& infoStream, const std::string& _problemName, const size_t _problemNumber, const std::string& _filePassport, const std::string& _mechanics, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars)
+: problemName(_problemName), problemNumber(_problemNumber)
+{		
+	std::stringstream ss;
+	ss << "#" << problemNumber << " (" << problemName <<") passport";
+	info.inheritStream(infoStream, ss.str());
+	
+	dir = "./" + problemName + "/";
+
 	std::string fileFullName = dir + _filePassport;
 	std::string mechanicsFileFullName = _mechanics;
 	std::string defaultsFileFullName = _defaults;
 	std::string switchersFileFullName = _switchers;
-
-	std::ostream *Pinfo, *Perr;
-	if (print)
-	{
-		Pinfo = defaults::defaultPinfo;
-		Perr = defaults::defaultPerr;
-	}
-	else
-	{
-		Pinfo = nullptr;
-		Perr = nullptr;
-	}
-
-	if (fileExistTest(fileFullName, Pinfo, Perr, "passport") 
-		&& fileExistTest(defaultsFileFullName, Pinfo, Perr, "defaults")
-		&& fileExistTest(switchersFileFullName, Pinfo, Perr, "switchers")
-		&& fileExistTest(mechanicsFileFullName, Pinfo, Perr, "mechanics"))
+	
+	if (fileExistTest(fileFullName, info) 
+		&& fileExistTest(defaultsFileFullName, info)
+		&& fileExistTest(switchersFileFullName, info)
+		&& fileExistTest(mechanicsFileFullName, info))
 	{
 		std::string str = StreamParser::VectorStringToString(vars);
 		std::stringstream varsStream(str);
@@ -104,7 +98,7 @@ void Passport::GetAllParamsFromParser
 	
 	//создаем парсер и связываем его с нужным потоком
 	std::unique_ptr<StreamParser> parser;
-	parser.reset(new StreamParser(mainStream, defaultStream, switcherStream, varsStream));
+	parser.reset(new StreamParser(info, "parser", mainStream, defaultStream, switcherStream, varsStream));
 		
 	//считываем общие парамеры
 	parser->get("rho", physicalProperties.rho);
@@ -115,15 +109,15 @@ void Passport::GetAllParamsFromParser
 	parser->get("timeStart", timeDiscretizationProperties.timeStart, &defaults::defaultTimeStart);
 	parser->get("timeStop", timeDiscretizationProperties.timeStop);
 	parser->get("dt", timeDiscretizationProperties.dt);
-	parser->get("deltacntText", timeDiscretizationProperties.deltacntText, &defaults::defaultDeltacntText);
-	parser->get("deltacntBinary", timeDiscretizationProperties.deltacntBinary, &defaults::defaultDeltacntBinary);
-	parser->get("deltacntVelocityPressure", timeDiscretizationProperties.deltacntVelocityPressure, &defaults::deltacntVelocityPressure);
+	parser->get("saveTXT", timeDiscretizationProperties.saveTXT, &defaults::defaultSaveTXT);
+	parser->get("saveVTK", timeDiscretizationProperties.saveVTK, &defaults::defaultSaveVTK);
+	parser->get("saveVP",  timeDiscretizationProperties.saveVP,  &defaults::defaultSaveVP);
 
 
 	parser->get("eps", wakeDiscretizationProperties.eps);
 	wakeDiscretizationProperties.eps2 = wakeDiscretizationProperties.eps* wakeDiscretizationProperties.eps;
 	parser->get("epscol", wakeDiscretizationProperties.epscol);
-	parser->get("distKill", wakeDiscretizationProperties.distKill, &defaults::defaultDistKill);
+	parser->get("distFar", wakeDiscretizationProperties.distFar, &defaults::defaultDistFar);
 	parser->get("delta", wakeDiscretizationProperties.delta, &defaults::defaultDelta);
 	parser->get("vortexPerPanel", wakeDiscretizationProperties.vortexPerPanel, &defaults::defaultVortexPerPanel);
 	
@@ -147,7 +141,7 @@ void Passport::GetAllParamsFromParser
 	for (size_t i = 0; i < nAirfoil; ++i) 
 	{
 		//делим имя файла + выражение в скобках на 2 подстроки
-		std::pair<std::string, std::string> airfoilLine = StreamParser::SplitString(airfoil[i], false);
+		std::pair<std::string, std::string> airfoilLine = StreamParser::SplitString(info, airfoil[i], false);
 
 		AirfoilParams prm;
 		//первая подстрока - имя файла
@@ -160,7 +154,7 @@ void Passport::GetAllParamsFromParser
 		std::stringstream aflStream(StreamParser::VectorStringToString(vecAirfoilLineSecond));
 		std::unique_ptr<StreamParser> parserAirfoil;
 
-		parserAirfoil.reset(new StreamParser(aflStream, defaultStream, switcherStream, varsStream));
+		parserAirfoil.reset(new StreamParser(info, "airfoil parser", aflStream, defaultStream, switcherStream, varsStream));
 
 		//считываем нужные параметры с учетом default-значений
 		parserAirfoil->get("basePoint", prm.basePoint, &defaults::defaultBasePoint);
@@ -180,15 +174,15 @@ void Passport::GetAllParamsFromParser
 		{
 			std::unique_ptr<StreamParser> parserMechanicsList;
 			std::unique_ptr<StreamParser> parserSwitchers;
-			parserMechanicsList.reset(new StreamParser(mechanicsStream, defaultStream, switcherStream, varsStream, { prm.mechanicalSystem }));
-			parserSwitchers.reset(new StreamParser(switcherStream));
+			parserMechanicsList.reset(new StreamParser(info, "mechanical parser", mechanicsStream, defaultStream, switcherStream, varsStream, { prm.mechanicalSystem }));
+			parserSwitchers.reset(new StreamParser(info, "switchers parser" ,switcherStream));
 
 			std::string mechString;
 
 			parserMechanicsList->get(prm.mechanicalSystem, mechString);
 			
 			//делим тип мех.системы + выражение в скобках (ее параметры) на 2 подстроки
-			std::pair<std::string, std::string> mechanicsLine = StreamParser::SplitString(mechString);
+			std::pair<std::string, std::string> mechanicsLine = StreamParser::SplitString(info, mechString);
 
 			std::string mechTypeAlias = mechanicsLine.first;
 			parserSwitchers->get(mechTypeAlias, prm.mechanicalSystemType);
@@ -202,9 +196,6 @@ void Passport::GetAllParamsFromParser
 		airfoilParams.push_back(prm);
 
 	} //for i
-
-
-
 }//GetAllParamsFromParser(...)
 
 
@@ -212,41 +203,41 @@ void Passport::GetAllParamsFromParser
 void Passport::PrintAllParams()
 {
 	const std::string str = "passport info: ";
-	std::ostream& out = *(defaults::defaultPinfo);
-
-	out << str << "rho = " << physicalProperties.rho << std::endl;
-	out << str << "vInf = " << physicalProperties.vInf << std::endl;
-	out << str << "nu = " << physicalProperties.nu << std::endl;
-	out << str << "timeStart = " << timeDiscretizationProperties.timeStart << std::endl;
-	out << str << "timeStop = " << timeDiscretizationProperties.timeStop << std::endl;
-	out << str << "dt = " << timeDiscretizationProperties.dt << std::endl;
-	out << str << "deltacntText = " << timeDiscretizationProperties.deltacntText << std::endl;
-	out << str << "deltacntBinary = " << timeDiscretizationProperties.deltacntBinary << std::endl;
-	out << str << "deltacntVelocityPressure = " << timeDiscretizationProperties.deltacntVelocityPressure << std::endl;
-	out << str << "eps = " << wakeDiscretizationProperties.eps << std::endl;
-	out << str << "eps2 = " << wakeDiscretizationProperties.eps2 << std::endl;
-	out << str << "epscol = " << wakeDiscretizationProperties.epscol << std::endl;
-	out << str << "distKill = " << wakeDiscretizationProperties.distKill << std::endl;
-	out << str << "delta = " << wakeDiscretizationProperties.delta << std::endl;
-	out << str << "vortexPerPanel = " << wakeDiscretizationProperties.vortexPerPanel << std::endl;
-	out << str << "linearSystemSolver = " << numericalSchemes.linearSystemSolver << std::endl;
-	out << str << "velocityComputation = " << numericalSchemes.velocityComputation << std::endl;
-	out << str << "wakeMotionIntegrator = " << numericalSchemes.wakeMotionIntegrator << std::endl;
 	
-	out << str << "airfoilsDir = " << airfoilsDir << std::endl;
-	out << str << "wakesDir = " << wakesDir << std::endl;
+	info('i') << "--- Passport info ---" << std::endl;
+	info('-') << "rho = " << physicalProperties.rho << std::endl;
+	info('-') << "vInf = " << physicalProperties.vInf << std::endl;
+	info('-') << "nu = " << physicalProperties.nu << std::endl;
+	info('-') << "timeStart = " << timeDiscretizationProperties.timeStart << std::endl;
+	info('-') << "timeStop = " << timeDiscretizationProperties.timeStop << std::endl;
+	info('-') << "dt = " << timeDiscretizationProperties.dt << std::endl;
+	info('-') << "saveTXT = " << timeDiscretizationProperties.saveTXT << std::endl;
+	info('-') << "saveVTK = " << timeDiscretizationProperties.saveVTK << std::endl;
+	info('-') << "saveVP = " << timeDiscretizationProperties.saveVP << std::endl;
+	info('-') << "eps = " << wakeDiscretizationProperties.eps << std::endl;
+	info('-') << "eps2 = " << wakeDiscretizationProperties.eps2 << std::endl;
+	info('-') << "epscol = " << wakeDiscretizationProperties.epscol << std::endl;
+	info('-') << "distFar = " << wakeDiscretizationProperties.distFar << std::endl;
+	info('-') << "delta = " << wakeDiscretizationProperties.delta << std::endl;
+	info('-') << "vortexPerPanel = " << wakeDiscretizationProperties.vortexPerPanel << std::endl;
+	info('-') << "linearSystemSolver = " << numericalSchemes.linearSystemSolver << std::endl;
+	info('-') << "velocityComputation = " << numericalSchemes.velocityComputation << std::endl;
+	info('-') << "wakeMotionIntegrator = " << numericalSchemes.wakeMotionIntegrator << std::endl;
+	
+	info('-') << "airfoilsDir = " << airfoilsDir << std::endl;
+	info('-') << "wakesDir = " << wakesDir << std::endl;
 
-	out << str << "number of airfoils = " << airfoilParams.size() << std::endl;
+	info('-') << "number of airfoils = " << airfoilParams.size() << std::endl;
 	for (size_t q = 0; q < airfoilParams.size(); ++q)
 	{
-		out << str << "airfoil[" << q << "]_file = " << airfoilParams[q].fileAirfoil << std::endl;
-		out << str << "airfoil[" << q << "]_basePoint = " << airfoilParams[q].basePoint << std::endl;
-		out << str << "airfoil[" << q << "]_scale = " << airfoilParams[q].scale << std::endl;
-		out << str << "airfoil[" << q << "]_angle = " << airfoilParams[q].angle << std::endl;
-		out << str << "airfoil[" << q << "]_panelType = " << airfoilParams[q].panelsType << std::endl;
-		out << str << "airfoil[" << q << "]_boundaryCondition = " << airfoilParams[q].boundaryCondition << std::endl;
-		out << str << "airfoil[" << q << "]_mechanicalSystem = " << airfoilParams[q].mechanicalSystem << std::endl;
+		info('_') << "airfoil[" << q << "]_file = " << airfoilParams[q].fileAirfoil << std::endl;
+		info('_') << "airfoil[" << q << "]_basePoint = " << airfoilParams[q].basePoint << std::endl;
+		info('_') << "airfoil[" << q << "]_scale = " << airfoilParams[q].scale << std::endl;
+		info('_') << "airfoil[" << q << "]_angle = " << airfoilParams[q].angle << std::endl;
+		info('_') << "airfoil[" << q << "]_panelType = " << airfoilParams[q].panelsType << std::endl;
+		info('_') << "airfoil[" << q << "]_boundaryCondition = " << airfoilParams[q].boundaryCondition << std::endl;
+		info('_') << "airfoil[" << q << "]_mechanicalSystem = " << airfoilParams[q].mechanicalSystem << std::endl;
 	}
 
-	out << str << "fileWake = " << wakeDiscretizationProperties.fileWake << std::endl;
+	info('-') << "fileWake = " << wakeDiscretizationProperties.fileWake << std::endl;
 }//PrintAllParams()
