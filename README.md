@@ -1,5 +1,5 @@
-VM2D
-====
+VM2D: Vortex method for 2D flow simulation
+==========================================
 
 <p align="center"><img src="https://vortexmethods.github.io/VM2D/LOGO.png"></p>
 
@@ -8,11 +8,11 @@ VM2D
 ![License](https://img.shields.io/github/license/vortexmethods/VM2D.svg)
 
 
-Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina
+Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina
 
 Программная реализация (с открытым исходным кодом) вихревых методов вычислительной гидродинамики для моделирования течений вязкой несжимаемой среды. 
 
-Версия 1.4 от 16 октября 2018 г.
+Версия 1.5 от 20 февраля 2019 г.
 
 ЛИЦЕНЗИЯ
 --------
@@ -74,7 +74,42 @@ Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina
       -T"Intel C++ Compiler 16.0"
       -T"Intel C++ Compiler 17.0"
       -T"Intel C++ Compiler 18.0"
+	 
+РАБОТА С CUDA
+-------------
+	 
+При наличии в системе установленного [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit) в ходе работы cmake программа будет автоматически сконфигурирована для счета с использованием возможностей графических карт, работающих по технологии NVidia CUDA.
+
+Для корректной работы в файле VM2D/CMakeLists.txt требуется уточнить архитектуру, поддерживаемую используемой видеокартой.
+
+Например, для GeForce GTX 970 должно быть указано
+
+      set (CMAKE_CUDA_FLAGS "-std=c++11 -gencode arch=compute_52,code=sm_52")
+
+для Tesla K20/K40 следует указать	  
+
+      set (CMAKE_CUDA_FLAGS "-std=c++11 -gencode arch=compute_35,code=sm_35")
 	  
+а для Tesla V100 необходимо указать	  
+     
+      set (CMAKE_CUDA_FLAGS "-std=c++11 -gencode arch=compute_70,code=sm_70")
+	  
+Таблицу архитектур видеокарт можно найти [на странице в Википедии](https://en.wikipedia.org/wiki/CUDA) в разделе "GPUs supported"
+	 
+При выполнении расчетов на узле, на котором установлено несколько видеокарт, по умолчаию все расчеты будут производиться на устройстве с индексом #0. Чтобы этого избежать, нужно открыть файл исходного кода VM2D/src/VM2D/Gpu2D/Gpu2D.cpp, прочитать написанные в нем комментарии и откомментировать нужную строку.
+	 
+Если при наличии установленного CUDA Toolkit планируется производить расчет на центральных процессорах, не привлекая возможности GPU, то в файле VM2D/CMakeLists.txt требуется закомментировать строку
+
+      add_definitions(-DUSE_CUDA)
+	  
+добавив перед ней знак #, чтобы получилось
+	  
+	  #add_definitions(-DUSE_CUDA)
+	  
+	  
+ЗАПУСК
+------	  
+	  	  
 Запуск программы осуществляется из той папки, в которой хранится описание решаемой (решаемых) задач вызовом команды
 
       VM2D
@@ -100,8 +135,9 @@ Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina
 [Документация разработчика](http://vortexmethods.github.io/VM2D), генерируемая автоматически средствами [doxygen](http://www.doxygen.org) доступна по ссылке
 
       http://vortexmethods.github.io/VM2D
+  
+Документация пользователя будет подготовлена и сделана общедоступной через некоторое время.
 
-Документация пользователя будет подготовлена и сделана общедоступной через некоторое время
 
 
 КРАТКАЯ ИСТОРИЯ ВЕРСИЙ
@@ -115,17 +151,9 @@ Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina
 
 * Версия 1.3 представлена 26 сентября 2018 г. на конференции в [БГТУ "ВоенМех"](https://www.voenmeh.ru/science/conferences/gasjets) (Санкт-Петербург). [Презентация pdf](https://github.com/vortexmethods/PresentationVM2D/blob/master/Presentation-1.3.pdf)
 
-* Версия 1.4 представлена 16 октября 2018 г. на конференции в [ICVFM](http://icvfm2018.xjtu.edu.cn/) (Сиань, КНР). [Презентация pdf](https://github.com/vortexmethods/PresentationVM2D/blob/master/Presentation-1.4.pdf)
+* Версия 1.4 представлена 16 октября 2018 г. на конференции [ICVFM](http://icvfm2018.xjtu.edu.cn/) (Сиань, КНР). [Презентация pdf](https://github.com/vortexmethods/PresentationVM2D/blob/master/Presentation-1.4.pdf)
 
-ДОКУМЕНТАЦИЯ
-------------
-
-[Документация разработчика](http://vortexmethods.github.io/VM2D), генерируемая автоматически средствами [doxygen](http://www.doxygen.org) доступна по ссылке
-
-      http://vortexmethods.github.io/VM2D
-
-Документация пользователя будет подготовлена и сделана общедоступной через некоторое время
-
+* Версия 1.5 представлена 20 февраля 2019 г. на конференции [Topical Problems of Fluid Mechanics](http://www.it.cas.cz/fm/) (Прага). 
 
 
 ВОПРОСЫ, ПРЕДЛОЖЕНИЯ И ЗАМЕЧАНИЯ

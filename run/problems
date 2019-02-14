@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: problems                                                         |
 | Info: Problems to be solved by using VM2D                                   |
@@ -13,9 +13,11 @@
 
 problems = 
 {
-circle200(np=1),
+tube(np=1),
+//circle200(np=1),
 //blasius(np=4),
 //twoCircle(np=1),
+//twoCircleRut1(np=1),
 //oscilCircle(np=4, m=1.0, sh=0.2),
 //rotor(np=4, J=10.0, k=0.0, Mz=0.0, tRotateAccel=0.1, tMomentAccel=0.1),
 

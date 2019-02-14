@@ -1,17 +1,16 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: wing80                                                           |
 | Info: Wing (Zhukovsky) airfoil (80 panels)                                  |
 \*---------------------------------------------------------------------------*/
 
-np = 80;
 r = {
 {3.5, 0.},
 {3.32158, 0.0359848},

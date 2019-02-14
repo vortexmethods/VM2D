@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: passport                                                         |
 | Info: Parameters of the problem to be solved                                |
@@ -18,19 +18,20 @@ nu = 0.001;
 
 //Time Discretization Properties
 //timeStart = 0.0;             //by default = 0.0
-timeStop = 100.0001;
-dt = 0.002;
+timeStop = 500.0001;
+dt = 0.00015;
 timeAccel = 0.2;               //by default = 0.0
 saveTXT = 0;                   //by default = 1
-saveVTK = 10;                  //by default = 0
-saveVP = 0;                    //by default = 0
+saveVTK = 100;                 //by default = 0
+saveVP = 10;                  //by default = 0
 
 //Wake Discretization Properties
-eps = 0.0006;
-epscol = 0.0004;
-distFar = 20.0;                 //by default = 10.0
-delta = 1.e-6;                  //by default = 1.e-5
-vortexPerPanel = 3;             //by default = 1
+eps = 0.0007;
+epscol = 0.0005;
+distFar = 25.0;                 //by default = 10.0
+delta = 5.e-6;                  //by default = 1.e-5
+vortexPerPanel = 1;             //by default = 1
+maxGamma = 0.000025;             //by default = 0.0
 
 //Numerical Schemes
 linearSystemSolver = 0;                     //0 is only available now 
@@ -38,8 +39,9 @@ velocityComputation = velocityBiotSavart;   //velocityBiotSavart is only availab
 wakeMotionIntegrator = 0;                   //0 is only available now
 
 //Files and parameters
-airfoil = { "blasius518"(basePoint = {0.0, 0.0}, 
+airfoil = { "blasius1288"(basePoint = {0.0, 0.0}, 
                         panelsType = panelsRectilinear, 
                         boundaryConditionSatisfaction = boundaryConstantLayerAverage,
-                        mechanicalSystem=mech1) };
+                        mechanicalSystem=mech1),
+	    };
 //fileWake = { "OblakoV1000" };              //by default={}

@@ -1,0 +1,52 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+*-----------------------------------------------------------------------------*
+| File name: passport                                                         |
+| Info: Parameters of the problem to be solved                                |
+\*---------------------------------------------------------------------------*/
+
+//Physical Properties
+rho = 1.0;
+vInf = {0.0, 0.0};
+vRef = 1.0;
+nu = 0.003333333;
+
+//Time Discretization Properties
+//timeStart = 0.0;             //by default = 0.0
+timeStop = 500.0001;
+dt = 0.004;
+timeAccel = 1.0;               //by default = 0.0
+saveTXT = 0;                   //by default = 1
+saveVTK = 10;                  //by default = 0
+saveVP = 100;                  //by default = 0
+
+//Wake Discretization Properties
+eps = 0.0075;
+epscol = 0.0050;
+distFar = 20.0;                 //by default = 10.0
+delta = 5.e-6;                  //by default = 1.e-5
+vortexPerPanel = 1;             //by default = 1
+
+//Numerical Schemes
+linearSystemSolver = 0;                     //0 is only available now 
+velocityComputation = velocityBiotSavart;   //velocityBiotSavart is only available now
+wakeMotionIntegrator = 0;                   //0 is only available now
+
+//Files and parameters
+airfoil = { 
+"tube1384"(basePoint = {0.0, 0.0}, inverse = true,
+                        panelsType = panelsRectilinear, 
+                        boundaryConditionSatisfaction = boundaryConstantLayerAverage,
+                        mechanicalSystem=mech1),						
+"circle200"(basePoint = {0.0, 0.0}, 
+                        panelsType = panelsRectilinear, 
+                        boundaryConditionSatisfaction = boundaryConstantLayerAverage,
+                        mechanicalSystem=mech1) };
+//fileWake = { "OblakoV1000" };              //by default={}
+fileSource = { "sources" };              //by default={}

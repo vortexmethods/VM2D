@@ -1,17 +1,16 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.4    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2018/10/16     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2018 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: rotor30_1260-90deg                                               |
 | Info: Rotor airfoil, angle pi/2 (1260 panels)                               |
 \*---------------------------------------------------------------------------*/
 
-np = 1260;
 r = {
 {0, 1.0500000000000000},
 {-0.0052359086667671546, 1.0499750769447951},
