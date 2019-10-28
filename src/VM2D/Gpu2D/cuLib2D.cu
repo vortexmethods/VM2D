@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include <iostream>
@@ -335,15 +335,18 @@ __global__ void CU_calc_conv_From_Panels(
 	double velx = 0.0;
 	double vely = 0.0;
 
-	double sx, sy, px, py, alpha, lambda, taux, tauy, psix, psiy;
+	double sx, sy, px, py, s2, p2, alpha, lambda, taux, tauy, psix, psiy;
+	int rindexnext;
 
 	for (size_t j = 0; j < npnl; j += CUBLOCK)
 	{
 		shx[threadIdx.x] = r[(j + threadIdx.x)*2 + 0];
 		shy[threadIdx.x] = r[(j + threadIdx.x)*2 + 1];
 		
-		shdx[threadIdx.x] = r[(j + threadIdx.x) * 2 + 2] - shx[threadIdx.x];
-		shdy[threadIdx.x] = r[(j + threadIdx.x) * 2 + 3] - shy[threadIdx.x];
+		rindexnext = ((j + threadIdx.x + 1) < npnl) ? j + threadIdx.x + 1 : 0;
+
+		shdx[threadIdx.x] = r[rindexnext * 2 + 0] - shx[threadIdx.x];
+		shdy[threadIdx.x] = r[rindexnext * 2 + 1] - shy[threadIdx.x];
 
 		shlen[threadIdx.x] = sqrt(shdx[threadIdx.x] * shdx[threadIdx.x] + shdy[threadIdx.x] * shdy[threadIdx.x]);
 		
@@ -364,7 +367,14 @@ __global__ void CU_calc_conv_From_Panels(
 				py = sy - shdy[q];
 
 				alpha = atan2(px*sy - py*sx, px*sx + py*sy);
-				lambda = 0.5*log((sx*sx + sy*sy) / (px*px + py*py));
+
+				s2 = sx*sx + sy*sy;
+				p2 = px*px + py*py;
+				
+				if ((s2 > 1e-16) && (p2 > 1e-16))
+					lambda = 0.5*log(s2 / p2);
+				else 
+					lambda = 0.0;
 
 				taux = shdx[q] / shlen[q];
 				tauy = shdy[q] / shlen[q];
@@ -562,12 +572,17 @@ __global__ void CU_calc_I1I2FromPanels(
 
 	const int nQuadPt = 3;
 
+	int rindexnext;
+
 	for (size_t j = 0; j < npnl; j += CUBLOCK)
 	{
 		shx[threadIdx.x] = r[(j + threadIdx.x)*2 + 0];
 		shy[threadIdx.x] = r[(j + threadIdx.x)*2 + 1];		
-		shxp1[threadIdx.x] = r[(j + threadIdx.x) * 2 + 2];
-		shyp1[threadIdx.x] = r[(j + threadIdx.x) * 2 + 3];
+	
+		rindexnext = ((j + threadIdx.x + 1) < npnl) ? j + threadIdx.x + 1 : 0;
+		
+		shxp1[threadIdx.x] = r[rindexnext * 2 + 0];
+		shyp1[threadIdx.x] = r[rindexnext * 2 + 1];
 
 		shtaux[threadIdx.x] = shxp1[threadIdx.x] - shx[threadIdx.x];
 		shtauy[threadIdx.x] = shyp1[threadIdx.x] - shy[threadIdx.x];
@@ -650,12 +665,17 @@ __global__ void CU_calc_I0I3(
 	double xi_mx, xi_my, lxi_m;
 	double mnog1;
 
-	for (size_t j = 0; j < nvt - 1; ++j)
+	int vtindexnext;
+
+	for (size_t j = 0; j < nvt; ++j)
 	{
 		begx = vt[j * 2 + 0];
 		begy = vt[j * 2 + 1];
-		endx = vt[j * 2 + 2];
-		endy = vt[j * 2 + 3];
+
+		vtindexnext = ((j + 1) < nvt) ? j + 1 : 0;
+
+		endx = vt[vtindexnext * 2 + 0];
+		endy = vt[vtindexnext * 2 + 1];
 
 		qx = ptx - 0.5 * (begx + endx);
 		qy = pty - 0.5 * (begy + endy);
@@ -763,7 +783,8 @@ __global__ void CU_calc_I0I3(
 
 
 __global__ void CU_calc_RHS(
-	size_t disp, size_t len, double* pt,
+	size_t disp, size_t len, 
+	size_t npt, double* pt,
 	size_t nvt, double* vt,
 	size_t nsr, double* sr,
 	double* rhs)
@@ -775,10 +796,13 @@ __global__ void CU_calc_RHS(
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i  = disp + locI;
 
+	int ptindexnext = ((i + 1) < npt) ? i + 1 : 0;
+
+
 	double begx = pt[i*2 + 0];
 	double begy = pt[i*2 + 1];
-	double endx = pt[i*2 + 2];
-	double endy = pt[i*2 + 3];
+	double endx = pt[ptindexnext *2 + 0];
+	double endy = pt[ptindexnext *2 + 1];
 
 	double dlen = sqrt((endx-begx)*(endx-begx) + (endy-begy)*(endy-begy));
 
@@ -1116,10 +1140,10 @@ void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t
 }
 
 
-void cuCalculateRhs(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double* rhs)
+void cuCalculateRhs(size_t myDisp, size_t myLen, size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double* rhs)
 {
 	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
-	CU_calc_RHS << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, nsr, sr, rhs);
+	CU_calc_RHS << < blocks, threads >> > (myDisp, myLen, npt, pt, nvt, vt, nsr, sr, rhs);
 
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #if defined(_WIN32)
@@ -75,11 +75,7 @@ void Wake::SaveKadr(const std::vector<Vortex2D>& outVtx, const std::string& dir,
 			numberNonZero++;
 	}
 
-#if defined(_WIN32)
-	_mkdir((dir + "snapshots").c_str());
-#else
-	mkdir((dir + "snapshots").c_str(), S_IRWXU | S_IRGRP | S_IROTH);
-#endif
+	VMlib::CreateDirectory(dir, "snapshots");
 
 	outfile.open(dir + "snapshots/" + fname);
 //  PrintLogoToTextFile(outfile, dir + "snapshots/" + fname, W.getPassport().worldType, "Positions and circulations of vortices in the wake");
@@ -124,11 +120,7 @@ void Wake::SaveKadrVtk(const std::vector<Vortex2D>& outVtx, const std::string& d
 			numberNonZero++;
 	}
 
-#if defined(_WIN32)
-	_mkdir((dir + "snapshots").c_str());
-#else
-	mkdir((dir + "snapshots").c_str(), S_IRWXU | S_IRGRP | S_IROTH);
-#endif
+	VMlib::CreateDirectory(dir, "snapshots");
 
 	outfile.open(dir + "snapshots/" + fname);
 	
@@ -202,10 +194,10 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 
 	//Проверка на пересечение
 	double r0 = 0, r1 = 0, r2 = 0, r3 = 0;
-	for (size_t j = 0; j < afl.np; ++j)
+	for (size_t j = 0; j < afl.getNumberOfPanels(); ++j)
 	{
-		r0 = A*afl.r[j][0] + B*afl.r[j][1] + D;
-		r1 = A*afl.r[j + 1][0] + B*afl.r[j + 1][1] + D;
+		r0 = A*afl.getR(j)[0] + B*afl.getR(j)[1] + D;
+		r1 = A*afl.getR(j + 1)[0] + B*afl.getR(j + 1)[1] + D;
 
 		if (fabs(r0) < porog_r) r0 = 0.0;
 		if (fabs(r1)<porog_r) r1 = 0.0;
@@ -214,9 +206,9 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 			continue;
 
 		//Определение прямой:A1x+B1y+D1=0 - панель
-		A1 = afl.r[j + 1][1] - afl.r[j][1];
-		B1 = afl.r[j][0] - afl.r[j + 1][0];
-		D1 = afl.r[j][1] * afl.r[j + 1][0] - afl.r[j][0] * afl.r[j + 1][1];
+		A1 = afl.getR(j + 1)[1] - afl.getR(j)[1];
+		B1 = afl.getR(j)[0] - afl.getR(j + 1)[0];
+		D1 = afl.getR(j)[1] * afl.getR(j + 1)[0] - afl.getR(j)[0] * afl.getR(j + 1)[1];
 
 		r2 = A1*oldPos[0] + B1*oldPos[1] + D1;
 		r3 = A1*newPos[0] + B1*newPos[1] + D1;
@@ -258,14 +250,14 @@ bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos
 
 	double dist2 = 1000000000.0;
 
-	for (int i = 0; i<afl.np; i++)
+	for (int i = 0; i<afl.getNumberOfPanels(); i++)
 	{
 		Point2D v1, v2, vv;
-		v1 = afl.r[i] - newPos;
+		v1 = afl.getR(i) - newPos;
 						
-		v2 = afl.r[i + 1] - newPos;
+		v2 = afl.getR(i + 1) - newPos;
 						
-		vv = afl.r[i + 1] - afl.r[i];
+		vv = afl.getR(i + 1) - afl.getR(i);
 
 		double dst = v1.length2() + v2.length2();
 		if (dst < dist2)
@@ -300,10 +292,10 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves
 	locNewPos.resize(par.myLen);
 	
 	std::vector<double> gamma;
-	gamma.resize(afl.np, 0.0);
+	gamma.resize(afl.getNumberOfPanels(), 0.0);
 
 	std::vector<double> locGamma;
-	locGamma.resize(afl.np, 0.0);
+	locGamma.resize(afl.getNumberOfPanels(), 0.0);
 
 	std::vector<int> through;
 	if (W.getParallel().myidWork == 0)
@@ -345,7 +337,7 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves
 		}
 	}
 
-	MPI_Reduce(locGamma.data(), gamma.data(), (int)afl.np, MPI_DOUBLE, MPI_SUM, 0, W.getParallel().commWork);
+	MPI_Reduce(locGamma.data(), gamma.data(), (int)afl.getNumberOfPanels(), MPI_DOUBLE, MPI_SUM, 0, W.getParallel().commWork);
 
 	if (W.getParallel().myidWork == 0)
 		afl.gammaThrough = gamma;	

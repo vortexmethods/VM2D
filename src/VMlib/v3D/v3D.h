@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.5    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/02/20     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -29,14 +29,16 @@
 \file
 \brief Заголовочный файл с описанием класса v3D
 \author Марчевский Илья Константинович
-\version 1.5
-\date 20 февраля 2019 г.
+\version 1.6
+\date 28 октября 2019 г.
 */
 
 #ifndef V3D_H_
 #define V3D_H_
 
-#include "mpi.h"
+#ifndef __CUDACC__
+	#include "mpi.h"
+#endif
 
 #include "numvector.h"
 
@@ -51,14 +53,17 @@ namespace VMlib
 	- генерируется MPI-описатель для возможности его пересылки как единичного объекта.
 
 	\author Марчевский Илья Константинович
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
 	class v3D : public numvector<double, 3>
 	{
 	public:
+		
+#ifndef __CUDACC__		
 		/// MPI-описатель типа
 		static MPI_Datatype mpiv3D;
+#endif
 
 		/// Пустой конструктор
 		v3D() { };
@@ -73,7 +78,7 @@ namespace VMlib
 		/// \param[in] _r константная ссылка на копируемый вектор
 		v3D(const v3D& _r);
 
-#if !defined(__CUDACC__)
+#ifndef __CUDACC__
 		/// \brief Конструктор инициализации списком
 		///
 		/// \param[in] z константная ссылка на список инициализации из чисел типа double
@@ -91,9 +96,10 @@ namespace VMlib
 		/// \return новый вектор, полученный поворотом старого 
 		v3D rotated(const double angle, const v3D& axis) const;
 
-
+#ifndef __CUDACC__
 		/// Cоздание MPI-описателя типа
 		static void CreateMpiType();
+#endif
 	};
 
 
@@ -102,6 +108,18 @@ namespace VMlib
 		a.first += b.first;
 		a.second += b.second;
 		return a;
+	}//operator+=(...)
+
+	inline std::pair<v3D, v3D>& operator*=(std::pair<v3D, v3D>& a, double c)
+	{
+		a.first *= c;
+		a.second *= c;
+		return a;
+	}//operator+=(...)
+
+	inline std::pair<v3D, v3D> operator*(std::pair<v3D, v3D>& a, double c)
+	{		
+		return {a.first * c, a.second * c};
 	}//operator+=(...)
 
 }//namespace VMlib

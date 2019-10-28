@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include "Boundary2D.h"
@@ -54,14 +54,16 @@ Boundary::Boundary(const World2D& W_, size_t numberInPassport_, int sheetDim_) :
 	W(W_ ), 
 	numberInPassport(numberInPassport_),
 	sheetDim(sheetDim_), 
-	afl(W_.getAirfoil(numberInPassport_)),
-	CC(W_.getAirfoil(numberInPassport_).r),
-	virtualWake(W_, *this)
+	afl(W_.getAirfoil(numberInPassport_)),	
+	virtualWake(W_, *this),
+	sheets(W_, sheetDim_),
+	oldSheets(W_, sheetDim_)
 {
-	sheets.SetLayersDim(afl.np, sheetDim);
-	oldSheets.SetLayersDim(afl.np, sheetDim);
 	virtualWake.vtx.resize(0);
 	virtualWake.vecHalfGamma.resize(0);
+
+	sheets.SetLayers(afl.getNumberOfPanels());
+	oldSheets.SetLayers(afl.getNumberOfPanels());
 }//Boundary(...)
 
 

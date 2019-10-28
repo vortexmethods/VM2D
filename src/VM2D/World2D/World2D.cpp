@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,13 +32,14 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include "World2D.h"
 
 #include "Airfoil2DRect.h"
+#include "Airfoil2DCurv.h"
 
 #include "Boundary2DConstLayerAver.h"
 
@@ -128,11 +129,10 @@ World2D::World2D(const VMlib::PassportGen& passport_, const VMlib::Parallel& par
 			airfoil.emplace_back(new AirfoilRect(*this, i));
 			break;
 		case 1:
-			/*
 			airfoil.emplace_back(new AirfoilCurv(*this, i));
-			*/
-			info('e') << "AirfoilCurv is not implemented now! " << std::endl;
-			exit(1);
+
+//			info('e') << "AirfoilCurv is not implemented now! " << std::endl;
+//			exit(1);
 			break;
 		}
 
@@ -296,7 +296,6 @@ void World2D::Step()
 	CalcVortexVelo(dt, getTimestat().timeCalcVortexConvVelo, getTimestat().timeCalcVortexDiffVelo);
 
 
-
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//Сохранение пелены до сдвига - для отладки
 	size_t wakevirtualsize = wake->vtx.size();
@@ -366,6 +365,7 @@ void World2D::Step()
 		info('i') << "Saving VP to vtk-file " << std::endl;
 		measureVP->CalcSaveVP(passport.dir, currentStep, getTimestat().timeVP);
 	}
+
 
 	//Вычисление сил, действующих на профиль и сохранение в файл	
 	if (parallel.myidWork == 0)

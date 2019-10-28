@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include "mpi.h"
@@ -69,11 +69,11 @@ void MechanicsRigidOscillPart::GetHydroDynamForce(timePeriod& time)
 
 	Point2D deltaVstep = { 0.0, u - uOld };
 
-	for (size_t i = 0; i < afl.np; ++i)
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
-
-		double deltaK = boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i] + deltaVstep * afl.tau[i] * afl.len[i];
-		Point2D rK = 0.5 * (afl.r[i + 1] + afl.r[i]) - afl.rcm;
+		/// \todo Учитываем только нулевой момент решения. Надо ли учитывать остальные?
+		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + deltaVstep * afl.tau[i] * afl.len[i];
+		Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
 
 		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
 		hDMdelta += 0.5 * deltaK * (rK * rK);
@@ -103,9 +103,7 @@ Point2D MechanicsRigidOscillPart::PositionOfAirfoilRcm(double currTime)
 void MechanicsRigidOscillPart::VeloOfAirfoilPanels(double currTime)
 {
 	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
-	for (size_t i = 0; i < afl.v.size(); ++i)
-		afl.v[i] = veloRcm;
-		//afl.v[i] = { 0.0, 0.0 };
+	afl.setV(veloRcm);	
 }//VeloOfAirfoilPanels(...)
 
 
@@ -158,6 +156,6 @@ void MechanicsRigidOscillPart::ReadSpecificParametersFromDictionary()
 
 void MechanicsRigidOscillPart::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
 {
-	for (int i = 0; i < afl.np; ++i)
-		rhs(i, 0) = /*12*/ afl.v[i] * afl.tau[i];
+	for (int i = 0; i < afl.getNumberOfPanels(); ++i)
+		rhs(i, 0) = /*12*/ afl.getV(i) * afl.tau[i];
 }

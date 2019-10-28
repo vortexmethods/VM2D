@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.5    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/02/20     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса Vortex2D
 \author Марчевский Илья Константинович
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #ifndef VORTEX2D_H_
@@ -45,8 +45,8 @@ namespace VMlib
 	/*!
 	\brief Класс, опеделяющий двумерный вихревой элемент	
 	\author Марчевский Илья Константинович
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
 	class Vortex2D
 	{
@@ -58,8 +58,11 @@ namespace VMlib
 		double gam;
 
 	public:
+
+#ifndef __CUDACC__
 		/// MPI-описатель типа
 		static MPI_Datatype mpiVortex2D;
+#endif
 
 		static size_t offsPos;
 		static size_t offsGam;
@@ -93,8 +96,10 @@ namespace VMlib
 		/// \return константная ссылка на циркуляцию вихря
 		const double& g() const { return gam; }
 
+#ifndef __CUDACC__
 		/// Cоздание MPI-описателя типа
 		static void CreateMpiType();
+#endif
 	};
 
 	/// Определение типа данных - источника, имеющего ту же структуру, что и вихрь

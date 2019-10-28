@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include "Gpu2D.h"
@@ -340,8 +340,8 @@ void Gpu::RefreshAfls()
 
 			for (size_t s = 0; s < W.getNumberOfBoundary(); ++s)
 			{
-				const size_t& szPan = W.getBoundary(s).afl.np;
-				const size_t& szVtx = std::max(W.getBoundary(s).virtualWake.vtx.size(),   W.getPassport().wakeDiscretizationProperties.vortexPerPanel * W.getBoundary(s).afl.np);
+				const size_t& szPan = W.getBoundary(s).afl.getNumberOfPanels();
+				const size_t& szVtx = std::max(W.getBoundary(s).virtualWake.vtx.size(),   W.getPassport().wakeDiscretizationProperties.vortexPerPanel * W.getBoundary(s).afl.getNumberOfPanels());
 				
 				//W.getInfo('t') << "szVtx = " << szVtx << std::endl;
 
@@ -356,7 +356,7 @@ void Gpu::RefreshAfls()
 				W.getBoundary(s).virtualWake.devNWake = n_CUDA_virtWake[s];
 
 
-				W.getBoundary(s).afl.devRPtr = ReserveDevMem<double, 2>(szPan + 1, n_CUDA_r[s]);
+				W.getBoundary(s).afl.devRPtr = ReserveDevMem<double, 2>(szPan, n_CUDA_r[s]);
 				W.getBoundary(s).afl.devRhsPtr = ReserveDevMem<double, 1>(szPan, n_CUDA_panel[s]);
 
 				W.getBoundary(s).afl.devFreeVortexSheetPtr = ReserveDevMem<double, 1>(szPan, n_CUDA_panel[s]);
@@ -445,23 +445,26 @@ void Gpu::RefreshAfls()
 			cuCopyWakeToDev(W.getBoundary(s).virtualWake.vtx.size(), W.getBoundary(s).virtualWake.vtx.data(), W.getBoundary(s).virtualWake.devVtxPtr);
 			*/
 
+			size_t np = W.getBoundary(s).afl.getNumberOfPanels();
+
 			//Копирование вершин профиля на видеокарту
-			cuCopyRsToDev(W.getBoundary(s).afl.r.size(), W.getBoundary(s).afl.r.data(), W.getBoundary(s).afl.devRPtr);
+			cuCopyRsToDev(np, &W.getBoundary(s).afl.getR(0), W.getBoundary(s).afl.devRPtr);
 
 			//Копирование слоев на видеокарту			
-			std::vector<double> host_freeVortexSheet(W.getBoundary(s).afl.np);
-			std::vector<double> host_attachedVortexSheet(W.getBoundary(s).afl.np);
-			std::vector<double> host_attachedSourceSheet(W.getBoundary(s).afl.np);
+			std::vector<double> host_freeVortexSheet(np);
+			std::vector<double> host_attachedVortexSheet(np);
+			std::vector<double> host_attachedSourceSheet(np);
 
 			const Sheet& sh = W.getBoundary(s).sheets;
 						
-			for (size_t p = 0; p < W.getBoundary(s).afl.np; ++p)
+			for (size_t p = 0; p < np; ++p)
 			{				
-				host_attachedVortexSheet[p] = sh.attachedVortexSheet[p][0];
-				host_attachedSourceSheet[p] = sh.attachedSourceSheet[p][0];
+				/// \todo ПЕРЕДЕЛАТЬ пока работаем только со средними значениями
+				host_attachedVortexSheet[p] = sh.attachedVortexSheet(p, 0);
+				host_attachedSourceSheet[p] = sh.attachedSourceSheet(p, 0);
 				
 				if (W.getParallel().myidWork == 0)
-					host_freeVortexSheet[p] = sh.freeVortexSheet[p][0];
+					host_freeVortexSheet[p] = sh.freeVortexSheet(p, 0);
 			}//for p
 			
 			MPI_Bcast(host_freeVortexSheet.data(), (int)host_freeVortexSheet.size(), MPI_DOUBLE, 0, W.getParallel().commWork);
@@ -493,8 +496,8 @@ void Gpu::RefreshVirtualWakes()
 			cuDeleteFromDev(W.getBoundary(s).virtualWake.devI2Ptr);
 			cuDeleteFromDev(W.getBoundary(s).virtualWake.devI3Ptr);
 
-			const size_t& szPan = W.getBoundary(s).afl.np;
-			const size_t& szVtx = std::max(W.getBoundary(s).virtualWake.vtx.size(), W.getPassport().wakeDiscretizationProperties.vortexPerPanel * W.getBoundary(s).afl.np);
+			const size_t& szPan = W.getBoundary(s).afl.getNumberOfPanels();
+			const size_t& szVtx = std::max(W.getBoundary(s).virtualWake.vtx.size(), W.getPassport().wakeDiscretizationProperties.vortexPerPanel * W.getBoundary(s).afl.getNumberOfPanels());
 
 			//W.getInfo('t') << "szVtx = " << szVtx << std::endl;
 

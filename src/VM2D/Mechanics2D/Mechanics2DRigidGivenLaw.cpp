@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include <algorithm>
@@ -42,6 +42,8 @@
 
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
+
+
 #include "MeasureVP2D.h"
 #include "Parallel.h"
 #include "Passport2D.h"
@@ -51,6 +53,10 @@
 #include "World2D.h"
 
 using namespace VM2D;
+
+
+const double Comega = 13.1947, CA = 0.0795775;
+
 
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidGivenLaw::GetHydroDynamForce(timePeriod& time)
@@ -67,12 +73,12 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce(timePeriod& time)
 	double hDMdelta = 0.0;
 
 	Point2D deltaVstep = VeloOfAirfoilRcm(W.getCurrentStep() * dt) - VeloOfAirfoilRcm((std::max(W.getCurrentStep(), (size_t)1) - 1) * dt);
-
-	for (size_t i = 0; i < afl.np; ++i)
-	{
 		
-		double deltaK = boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i] + deltaVstep * afl.tau[i] * afl.len[i];
-		Point2D rK = 0.5 * (afl.r[i + 1] + afl.r[i]) - afl.rcm;
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
+	{
+		/// \todo Учитываем только нулевой момент решения. Надо ли учитывать остальные?
+		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + deltaVstep * afl.tau[i] * afl.len[i];
+		Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
 
 		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
 		hDMdelta += 0.5 * deltaK * (rK * rK);
@@ -88,25 +94,33 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce(timePeriod& time)
 // Вычисление скорости центра масс
 Point2D MechanicsRigidGivenLaw::VeloOfAirfoilRcm(double currTime)
 {
-	if (currTime < 10.0)
-		return { -currTime / 10.0, 0.0 };
-	else return { -1.0, 0.0};
+	return{ CA*Comega*cos(Comega*currTime), 0.0 };
+	
+	//Тестовый вариант 
+	//if (currTime < 10.0)
+	//	return { -currTime / 10.0, 0.0 };
+	//else return { -1.0, 0.0};
+
+
 }//VeloOfAirfoilRcm(...)
 
 // Вычисление положения центра масс
 Point2D MechanicsRigidGivenLaw::PositionOfAirfoilRcm(double currTime)
 {
-	if (currTime < 10.0)
-		return { -currTime / 10.0 * currTime * 0.5, 0.0 };
-	else return { -5.0 - (currTime - 10.0), 0.0 };
+	return{ CA*sin(Comega*currTime), 0.0};
+	
+	//Тестовый вариант
+	//if (currTime < 10.0)
+	//	return { -currTime / 10.0 * currTime * 0.5, 0.0 };
+	//else return { -5.0 - (currTime - 10.0), 0.0 };
+
 }//PositionOfAirfoilRcm(...)
 
 // Вычисление скоростей начал панелей
 void MechanicsRigidGivenLaw::VeloOfAirfoilPanels(double currTime)
 {
 	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
-	for (size_t i = 0; i < afl.v.size(); ++i)
-		afl.v[i] = veloRcm;
+	afl.setV(veloRcm);	
 }//VeloOfAirfoilPanels(...)
 
 void MechanicsRigidGivenLaw::Move()
@@ -118,6 +132,6 @@ void MechanicsRigidGivenLaw::Move()
 
 void MechanicsRigidGivenLaw::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
 {
-	for (int i = 0; i < afl.np; ++i)
-		rhs(i, 0) = /*12*/0.5 * 0.5 * (afl.v[i] + afl.v[i+1])*afl.tau[i];
+	for (int i = 0; i < afl.getNumberOfPanels(); ++i)
+		rhs(i, 0) = /*12*/0.5 * 0.5 * (afl.getV(i) + afl.getV(i+1))*afl.tau[i];
 }

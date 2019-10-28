@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */ 
 
 #ifndef TIMES_H
@@ -51,8 +51,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
 	class Times : public VMlib::TimesGen
 	{
@@ -111,13 +111,13 @@ namespace VM2D
 		timePeriod timeOther;
 		
 		/// Генерация заголовка файла временной статистики
-		virtual void GenerateStatHeader() const;
+		virtual void GenerateStatHeader() const override;
 
 		/// Сохранение строки со статистикой в файл временной статистики
-		virtual void GenerateStatString() const;
+		virtual void GenerateStatString() const override;
 		
 		//Обнуление состояния временной статистики
-		virtual void ToZero();
+		virtual void ToZero() override;
 
 	};
 

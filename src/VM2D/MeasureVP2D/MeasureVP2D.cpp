@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #if defined(_WIN32)
@@ -48,6 +48,8 @@
 
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
+#include "Boundary2DConstLayerAver.h"
+
 #include "Mechanics2D.h"
 #include "Parallel.h"
 #include "Passport2D.h"
@@ -80,15 +82,10 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 		
 		VPParser.get("points", initialPoints);
 		VPParser.get("history", historyPoints);
-
+				
 		if (historyPoints.size() > 0)
 		{
-#if defined(_WIN32)
-			_mkdir((dir + "velPres").c_str());
-#else
-			mkdir((dir + "velPres").c_str(), S_IRWXU | S_IRGRP | S_IROTH);
-#endif
-			
+			VMlib::CreateDirectory(dir, "velPres");
 			std::string VPFileNameList = W.getPassport().dir + "velPres/listPoints";
 			std::ofstream VPFileList(VPFileNameList.c_str());
 
@@ -185,6 +182,7 @@ void MeasureVP::CalcSaveVP(const std::string& dir, size_t step, timePeriod& time
 		velConvWake.resize(additionalWake->vtx.size(), { 0.0, 0.0 });
 	}
 
+
 	int addWSize = (int)additionalWake->vtx.size();
 	MPI_Bcast(&addWSize, 1, MPI_INT, 0, W.getParallel().commWork);
 
@@ -192,22 +190,23 @@ void MeasureVP::CalcSaveVP(const std::string& dir, size_t step, timePeriod& time
 	for (size_t i = 0; i < W.getNumberOfBoundary(); i++)
 		velConvBou[i].resize(additionalWake->vtx.size(), { 0.0, 0.0 });
 
-	/*#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_CONV_TOWAKE))
-		{
-		VelocityClass.GPUCalcConvVeloToSetOfPoints(*additionalWake, velConvWake, domainRadius);
+
+
+/*
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_CONV_TOWAKE))
+	{
+		W.getNonConstVelocity().GPUCalcConvVeloToSetOfPoints(*additionalWake, velConvWake, domainRadius);
 		for (size_t i = 0; i < W.getNumberOfBoundary(); i++)
-		{
-		Boundary& BoundaryClass = W.getNonConstBoundary(i);
-		BoundaryClass.GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(*additionalWake, velConvBou[i]);
+		{			
+			W.getNonConstBoundary(i).GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(*additionalWake, velConvBou[i]);
 		}
-		}
-		#else
-		*/
-	{		
-	
+	}
+#else
+*/
+	{	
 		/// \todo Сделать GPU-версию вычисления скорости и давления
 		W.getNonConstVelocity().CalcConvVeloToSetOfPoints(*additionalWake, velConvWake, domainRadius);
-			
+
 		for (size_t i = 0; i < W.getNumberOfBoundary(); i++)
 		{			
 			W.getNonConstBoundary(i).GetConvVelocityToSetOfPointsFromVirtualVortexes(*additionalWake, velConvBou[i]);
@@ -248,28 +247,11 @@ void MeasureVP::CalcSaveVP(const std::string& dir, size_t step, timePeriod& time
 	
 	W.getNonConstVelocity().wakeVortexesParams.convVelo.resize(W.getWake().vtx.size());
 	MPI_Bcast(W.getNonConstVelocity().wakeVortexesParams.convVelo.data(), (int)(W.getVelocity().wakeVortexesParams.convVelo.size()), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-
-	
-	/// \todo Пока передаем только средние значения свободного слоя на панелях
-	std::vector<std::vector<double>> gamAverPan;
-	gamAverPan.resize(W.getNumberOfBoundary());
-
-	if (W.getParallel().myidWork == 0)
+		
 	for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
 	{
-		gamAverPan[bou].resize(W.getBoundary(bou).sheets.freeVortexSheet.size());
-		for (int j = 0; j < W.getBoundary(bou).sheets.freeVortexSheet.size(); ++j)
-			gamAverPan[bou][j] = W.getBoundary(bou).sheets.freeVortexSheet[j][0];
-	}
-	
-	for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
-	{
-		int sz = (int)(W.getBoundary(bou).sheets.freeVortexSheet.size());
-		MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
-		if (id > 0)
-			gamAverPan[bou].resize(sz);
-		MPI_Bcast(gamAverPan[bou].data(), sz, MPI_DOUBLE, 0, W.getParallel().commWork);
-	}
+		W.getNonConstBoundary(bou).sheets.FreeSheetSynchronize();	
+	}		
 
 	for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
 	{
@@ -308,7 +290,7 @@ void MeasureVP::CalcSaveVP(const std::string& dir, size_t step, timePeriod& time
 	double dst2eps;
 #pragma warning (pop)
 
-#pragma omp parallel for default(none) private(alpha, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, eps2, V0, gamAverPan, id, locAdditionalWake, locPressure, locVelocity, par, std::cout) 
+#pragma omp parallel for default(none) private(alpha, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, eps2, V0, /*gamAverPan,*/ id, locAdditionalWake, locPressure, locVelocity, par, std::cout) 
 	for (int locI = 0; locI < par.myLen; ++locI)
 	{
 		//int i = locI + par.myDisp;
@@ -345,12 +327,13 @@ void MeasureVP::CalcSaveVP(const std::string& dir, size_t step, timePeriod& time
 		{
 			const Point2D& rcm = W.getAirfoil(bou).rcm;
 
-			for (int j = 0; j < W.getAirfoil(bou).np; j++)
+			for (int j = 0; j < W.getAirfoil(bou).getNumberOfPanels(); j++)
 			{
-				cPan = 0.5 * (W.getAirfoil(bou).r[j] + W.getAirfoil(bou).r[j + 1]);
+				cPan = 0.5 * (W.getAirfoil(bou).getR(j) + W.getAirfoil(bou).getR(j + 1));
 				alpha = atan2((cPan - pt) ^ (rcm - pt),   (cPan - pt)*(rcm - pt));
 					
-				locPressure[locI] += IDPI * alpha *	gamAverPan[bou][j] * W.getAirfoil(bou).len[j] / dt;
+				/// \todo Пока используем только средние значения свободного слоя на панелях
+				locPressure[locI] += IDPI * alpha *	W.getBoundary(bou).sheets.freeVortexSheet(j, 0) * W.getAirfoil(bou).len[j] / dt;
 
 				locPressure[locI] -= IDPI * alpha * W.getAirfoil(bou).gammaThrough[j] / dt;
 			}
@@ -366,6 +349,7 @@ void MeasureVP::CalcSaveVP(const std::string& dir, size_t step, timePeriod& time
 		
 		std::ofstream outfile;
 
+		VMlib::CreateDirectory(dir, "velPres");
 		outfile.open(dir + "velPres/" + fname);
 
 		outfile << "# vtk DataFile Version 2.0" << std::endl;

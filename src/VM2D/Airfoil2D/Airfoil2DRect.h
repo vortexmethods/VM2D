@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #ifndef AIRFOILRECT_H
@@ -56,8 +56,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
 	class AirfoilRect
 		: public Airfoil
@@ -73,15 +73,26 @@ namespace VM2D
 
 		/// Деструктор
 		virtual ~AirfoilRect() { };
+		
+		/// Вычисление нормалей, касательных и длин панелей по текущему положению вершин
+		void CalcNrmTauLen();
+
+		///Вычисляет габаритный прямоугольник профиля
+		virtual void GetGabarits(double gap = 0.02) override;
 
 		//далее -- реализация виртуальных функций
-		virtual void ReadFromFile(const std::string& dir);
+		virtual void ReadFromFile(const std::string& dir) override;
+		virtual void Rotate(double alpha) override;
+		virtual void Scale(double factor) override;
+		virtual void Move(const Point2D& dr) override;
 
-		virtual bool IsPointInAirfoil(const Point2D& point) const;
+		
 
-		virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
+		virtual bool IsPointInAirfoil(const Point2D& point) const override;
+
+		virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) override;
 #if defined(USE_CUDA)
-		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
+		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) override;
 #endif
 	};
 

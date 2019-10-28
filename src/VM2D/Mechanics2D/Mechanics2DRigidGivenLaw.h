@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #ifndef MECHANICSRIGIDGIVENLAW_H
@@ -55,9 +55,10 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
+
 
 	class MechanicsRigidGivenLaw :
 		public Mechanics
@@ -78,19 +79,19 @@ namespace VM2D
 		~MechanicsRigidGivenLaw() { };
 
 		//далее -- реализации виртуальных функций
-		virtual void GetHydroDynamForce(timePeriod& time);
-		virtual Point2D VeloOfAirfoilRcm(double currTime);
-		virtual Point2D PositionOfAirfoilRcm(double currTime);
-		virtual void VeloOfAirfoilPanels(double currTime);
-		virtual void ReadSpecificParametersFromDictionary() {};
+		virtual void GetHydroDynamForce(timePeriod& time) override;
+		virtual Point2D VeloOfAirfoilRcm(double currTime) override;
+		virtual Point2D PositionOfAirfoilRcm(double currTime) override;
+		virtual void VeloOfAirfoilPanels(double currTime) override;
+		virtual void ReadSpecificParametersFromDictionary() override {};
 
 
-		virtual void FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Eigen::MatrixXd& cross) {};
+		virtual void FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Eigen::MatrixXd& cross) override {};
 
-		virtual void FillMechanicsRhs(std::vector<double>& rhs) {};
-		virtual void FillAtt(Eigen::MatrixXd& row, Eigen::MatrixXd& rhs);
-		virtual void SolutionToMechanicalSystem(Eigen::VectorXd& col) {};
-		virtual void Move();
+		virtual void FillMechanicsRhs(std::vector<double>& rhs) override {};
+		virtual void FillAtt(Eigen::MatrixXd& row, Eigen::MatrixXd& rhs) override;
+		virtual void SolutionToMechanicalSystem(Eigen::VectorXd& col) override {};
+		virtual void Move() override;
 	};
 
 }//namespace VM2D

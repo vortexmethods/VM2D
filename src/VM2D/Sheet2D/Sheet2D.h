@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -28,12 +28,12 @@
 
 /*!
 \file
-\brief Заголовочный файл с описанием класса Sheet
+\brief Заголовочный файл с описанием класса SheetV
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #ifndef SHEET_H
@@ -41,9 +41,11 @@
 
 #include <vector>
 #include <cstring>
+#include <memory>
 
 namespace VM2D
 {
+	class World2D;
 
 	/*!
 	\brief Класс, опеделяющий слои на поверхности обтекаемого профиля
@@ -51,24 +53,33 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
 	class Sheet
 	{
-	public:
-
+	private:
 		/// Список из характеристик свободного вихревого слоя на панелях
-		std::vector<std::vector<double>> freeVortexSheet;
+		std::vector<double> freeVortexSheet_;
 
 		/// Список из характеристик присоединенного вихревого слоя на панелях
-		std::vector<std::vector<double>> attachedVortexSheet;
+		std::vector<double> attachedVortexSheet_;
 
 		/// Список из характеристик присоединенного слоя источников на панелях
-		std::vector<std::vector<double>> attachedSourceSheet;
+		std::vector<double> attachedSourceSheet_;
 
-		/// Пустой конструктор 
-		Sheet() { };
+	public:
+		/// Константная ссылка на решаемую задачу
+		const World2D& W;
+		
+		/// Число параметров в описании каждого слоя
+		const int dim;
+
+		/// \brief Конструктор 
+		///
+		/// \param[in] W_ константная ссылка на решаемую задачу	
+		/// \param[in] in dim_ число параметров в описании каждого слоя (1 - кусочно-постоянное решение, 2 - кусочно-линейное и т.п.)
+		Sheet(const World2D& W_, int dim_);
 
 		/// Деструктор
 		~Sheet() { };
@@ -77,7 +88,45 @@ namespace VM2D
 		///
 		/// \param[in] np число панелей на профиле (внешняя размерность списков)
 		/// \param[in] layerDim количество чисел, которыми характеризуются слои на каждой из панелей
-		void SetLayersDim(size_t np, size_t layerDim);
+		void SetLayers(size_t np);
+
+		size_t getSheetSize() const
+		{
+			return freeVortexSheet_.size();
+		}
+		
+		const double& freeVortexSheet(size_t n, size_t moment) const
+		{
+			return freeVortexSheet_[n*dim + moment];
+		}
+			
+		const double& attachedVortexSheet(size_t n, size_t moment) const
+		{
+			return attachedVortexSheet_[n*dim + moment];
+		}
+
+		const double& attachedSourceSheet(size_t n, size_t moment) const
+		{
+			return attachedSourceSheet_[n*dim + moment];
+		}
+
+		double& freeVortexSheet(size_t n, size_t moment)
+		{
+			return freeVortexSheet_[n*dim + moment];
+		}
+
+		double& attachedVortexSheet(size_t n, size_t moment)
+		{
+			return attachedVortexSheet_[n*dim + moment];
+		}
+
+		double& attachedSourceSheet(size_t n, size_t moment)
+		{
+			return attachedSourceSheet_[n*dim + moment];
+		}
+
+		void FreeSheetSynchronize() const; //константность условная, т.к. разумеется происходит изменение данных
+
 	};
 
 }//namespace VM2D

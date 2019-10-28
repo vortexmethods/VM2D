@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -13,11 +13,14 @@
 
 problems = 
 {
-tube(np=1),
-//circle200(np=1),
+circle200(np=1),
+//cylPlate(),
+//rectNuriev(),
+//boatNuriev(),
 //blasius(np=4),
 //twoCircle(np=1),
 //twoCircleRut1(np=1),
+//tube(np=1),
 //oscilCircle(np=4, m=1.0, sh=0.2),
 //rotor(np=4, J=10.0, k=0.0, Mz=0.0, tRotateAccel=0.1, tMomentAccel=0.1),
 

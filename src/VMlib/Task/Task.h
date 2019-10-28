@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.5    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/02/20     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса Task
 \author Марчевский Илья Константинович
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #ifndef TASK_H
@@ -53,8 +53,8 @@ namespace VMlib
 	 - done (4)      --- отсчитано;
 
 	\author Марчевский Илья Константинович
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
 	enum class TaskState
 	{
@@ -78,8 +78,8 @@ namespace VMlib
 	/*!
 	\brief Класс, опеделяющий описание каждой задачи в смысле прохождения процесса ее решения
 	\author Марчевский Илья Константинович
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
 	class Task
 	{

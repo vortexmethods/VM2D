@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -33,8 +33,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #ifndef BOUNDARYCONSTLAYERAVER_H
@@ -58,8 +58,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
 	class BoundaryConstLayerAver : public Boundary
 	{
@@ -104,34 +104,33 @@ namespace VM2D
 		/// \param[in] W_ константная ссылка на решаемую задачу
 		/// \param[in] numberInPassport_ номер профиля в паспорте задачи
 		BoundaryConstLayerAver(const World2D& W_, size_t numberInPassport_) :
-			Boundary(W_, numberInPassport_, 1)
-		{ };
+			Boundary(W_, numberInPassport_, 1){};
 
 		/// Деструктор
 		virtual ~BoundaryConstLayerAver() {};
 
 		//далее -- реализации виртуальных функций
-		virtual void FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol);
-		virtual void FillMatrixFromOther(const Boundary& otherBoundary, Eigen::MatrixXd& matr);
-		virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform);
-		virtual size_t GetUnknownsSize() const;
-		virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol);
+		virtual void FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol) override;
+		virtual void FillMatrixFromOther(const Boundary& otherBoundary, Eigen::MatrixXd& matr) override;
+		virtual void FillRhs(const Point2D& V0, Eigen::VectorXd& rhs, double* lastRhs, bool move, bool deform) override;
+		virtual size_t GetUnknownsSize() const override;
+		virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol) override;
 
-		virtual void GetWakeInfluence(std::vector<double>& wakeVelo) const;
+		virtual void GetWakeInfluence(std::vector<double>& wakeVelo) const override;
 #if defined(USE_CUDA)
-		virtual void GPUGetWakeInfluence(std::vector<double>& wakeVelo) const;
+		virtual void GPUGetWakeInfluence(std::vector<double>& wakeVelo) const override;
 #endif
 
-		virtual void GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const;
-		virtual void GetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const;
+		virtual void GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const override;
+		virtual void GetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const override;
 #if defined(USE_CUDA)
-		virtual void GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const;
+		virtual void GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const override;
 #endif
 
-		virtual void GetConvVelocityAtVirtualVortexes(std::vector<Point2D>& velo) const;
+		virtual void GetConvVelocityAtVirtualVortexes(std::vector<Point2D>& velo) const override;
 
-		virtual void ComputeAttachedSheetsIntensity();
-		virtual void FillRhsFromOther(const Airfoil& otherAirfoil, Eigen::VectorXd& rhs);
+		virtual void ComputeAttachedSheetsIntensity() override;
+		virtual void FillRhsFromOther(const Airfoil& otherAirfoil, Eigen::VectorXd& rhs) override;
 	};
 
 }//namespace VM2D

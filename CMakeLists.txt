@@ -37,12 +37,10 @@ endif()
 
 IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")
 	message(STATUS "-------------------------2D CODE-------------------------")
-	add_definitions(-DCODE2D)
 ENDIF()
 
 IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM3D/CMakeLists.txt")
 	message(STATUS "-------------------------3D CODE-------------------------")
-	add_definitions(-DCODE2D)
 ENDIF()
 
 
@@ -64,7 +62,7 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")
 	set_target_properties(VM2D PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 	set_target_properties(VM2D PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
 	set_target_properties(VM2D PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
-	add_dependencies(VM2D VMlib)
+	add_dependencies(VM2D VMlib2)
 	set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT VM2D)
 ENDIF()
 
@@ -74,7 +72,7 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM3D/CMakeLists.txt")
 	set_target_properties(VM3D PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
 	set_target_properties(VM3D PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
 
-	add_dependencies(VM3D VMlib)
+	add_dependencies(VM3D VMlib3)
 	#set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT VM2D)
 ENDIF()
 

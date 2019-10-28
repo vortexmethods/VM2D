@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include "Airfoil2DRect.h"
@@ -71,20 +71,14 @@ void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка про
 		
 		
 
-		airfoilParser.get("r", r);
+		airfoilParser.get("r", r_);
 		if (inverse)
-			std::reverse(r.begin(), r.end());
+			std::reverse(r_.begin(), r_.end());
 
-		//не считываем явно из файла
-		//airfoilParser.get("np", np);
-		np = r.size();
 
-		//замыкаем --- в конец приписываем первую точку (для простоты)
-		r.push_back(r[0]);
-
-		v.resize(0);
-		for (size_t q = 0; q < r.size(); ++q)
-			v.push_back({ 0.0, 0.0 });		
+		v_.resize(0);
+		for (size_t q = 0; q < r_.size(); ++q)
+			v_.push_back({ 0.0, 0.0 });		
 
 		Move(param.basePoint);
 		Scale(param.scale);
@@ -92,7 +86,7 @@ void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка про
 		//в конце Rotate нормали, касательные и длины вычисляются сами
 
 		gammaThrough.clear();
-		gammaThrough.resize(np, 0.0);
+		gammaThrough.resize(r_.size(), 0.0);
 	}
 }//ReadFromFile(...)
 
@@ -103,7 +97,7 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 	std::vector<Point2D> selfI3;
 
 	viscousStress.clear();
-	viscousStress.resize(np, 0.0);
+	viscousStress.resize(r_.size(), 0.0);
 
 	const int& id = W.getParallel().myidWork;
 
@@ -146,9 +140,9 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 	{
 		iDDomRad = 1.0 / domainRadius[i+par.myDisp];
 
-		for (size_t j = 0; j < r.size() - 1; j++)
+		for (size_t j = 0; j < r_.size() - 1; j++)
 		{
-			q = locPoints[i].r() - 0.5 * (r[j] + r[j + 1]);
+			q = locPoints[i].r() - 0.5 * (r_[j] + r_[j + 1]);
 			vec = tau[j];
 
 			s = q * vec;
@@ -190,7 +184,7 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 
 					for (int m = 0; m < new_n; m++)
 					{
-						xi_m = (locPoints[i].r() - (r[j] + h * (m + 0.5))) * iDDomRad;
+						xi_m = (locPoints[i].r() - (r_[j] + h * (m + 0.5))) * iDDomRad;
 						lxi_m = xi_m.length();
 
 						expon = exp(-lxi_m);
@@ -266,7 +260,7 @@ void AirfoilRect::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const Wa
 	const size_t npt = pointsDb.vtx.size();
 	double*& dev_ptr_pt = pointsDb.devVtxPtr;
 	double*& dev_ptr_rad = pointsDb.devRadPtr;
-	const size_t nr = r.size();
+	const size_t nr = r_.size();
 	double*& dev_ptr_r = devRPtr; 
 	std::vector<double>& loci0 = pointsDb.tmpI0;
 	std::vector<Point2D>& loci3 = pointsDb.tmpI3;
@@ -321,10 +315,10 @@ bool AirfoilRect::IsPointInAirfoil(const Point2D& point) const
 
 	Point2D v1, v2;
 
-	for (size_t i = 0; i < r.size() - 1; i++)
+	for (size_t i = 0; i < r_.size(); i++)
 	{
-		v1 = r[i] - point;
-		v2 = r[i+1] - point;
+		v1 = getR(i) - point;
+		v2 = getR(i+1) - point;
 		angle += atan2(v1^v2, v1 * v2);
 	}
 
@@ -333,3 +327,85 @@ bool AirfoilRect::IsPointInAirfoil(const Point2D& point) const
 	else 
 		return true;
 }//IsPointInAirfoil(...)
+
+//Перемещение профиля 
+void AirfoilRect::Move(const Point2D& dr)	//перемещение профиля как единого целого на вектор dr
+{
+	for (size_t i = 0; i < r_.size(); i++)
+		r_[i] += dr;
+	rcm += dr;
+	CalcNrmTauLen();
+	GetGabarits();
+}//Move(...)
+
+
+//Поворот профиля 
+void AirfoilRect::Rotate(double alpha)	//поворот профиля на угол alpha вокруг центра масс
+{
+	phiAfl += alpha;
+	numvector<numvector<double, 2>, 2> rotMatrix = { { cos(alpha), sin(alpha) }, { -sin(alpha), cos(alpha) } };
+
+	for (size_t i = 0; i < r_.size(); i++)
+		r_[i] = rcm + dot(rotMatrix, r_[i] - rcm);
+
+	CalcNrmTauLen();
+	GetGabarits();
+}//Rotate(...)
+
+
+//Масштабирование профиля
+void AirfoilRect::Scale(double factor)	//масштабирование профиля на коэффициент factor относительно центра масс
+{
+	for (size_t i = 0; i < r_.size(); i++)
+		r_[i] = rcm + factor*(r_[i] - rcm);
+
+	CalcNrmTauLen(); //строго говоря, меняются при этом только длины, нормали и касательные - без изменения
+	GetGabarits();
+}//Scale(...)
+
+// Вычисление нормалей, касательных и длин панелей по текущему положению вершин
+void AirfoilRect::CalcNrmTauLen()
+{
+	if (nrm.size() != r_.size())
+	{
+		nrm.resize(r_.size());
+		tau.resize(r_.size());
+		len.resize(r_.size());
+	}
+
+	Point2D rpan;
+
+	for (size_t i = 0; i < r_.size(); ++i)
+	{
+		rpan = (getR(i + 1) - getR(i));
+		len[i] = rpan.length();
+		tau[i] = rpan.unit();
+
+		nrm[i] = { tau[i][1], -tau[i][0] };
+	}
+
+	//закольцовываем
+	nrm.push_back(nrm[0]);
+	tau.push_back(tau[0]);
+	len.push_back(len[0]);
+}//CalcNrmTauLen()
+
+//Вычисляет габаритный прямоугольник профиля
+void AirfoilRect::GetGabarits(double gap)	//определение габаритного прямоугольника
+{
+	lowLeft = { 1E+10, 1E+10 };
+	upRight = { -1E+10, -1E+10 };
+
+	for (size_t i = 0; i < r_.size(); i++)
+	{
+		lowLeft[0] = std::min(lowLeft[0], r_[i][0]);
+		lowLeft[1] = std::min(lowLeft[1], r_[i][1]);
+
+		upRight[0] = std::max(upRight[0], r_[i][0]);
+		upRight[1] = std::max(upRight[1], r_[i][1]);
+	}
+
+	Point2D size = upRight - lowLeft;
+	lowLeft -= size*gap;
+	upRight += size*gap;
+}//GetGabarits(...)

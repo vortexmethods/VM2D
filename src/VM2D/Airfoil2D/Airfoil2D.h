@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #ifndef AIRFOIL_H
@@ -52,11 +52,18 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.6
+	\date 28 октября 2019 г.
 	*/
 	class Airfoil
 	{
+	protected:
+		/// Координаты начал панелей  
+		std::vector<Point2D> r_;
+
+		/// Скорости начал панелей  
+		std::vector<Point2D> v_;
+
 	public:
 		/// Константная ссылка на решаемую задачу
 		const World2D& W;
@@ -76,16 +83,53 @@ namespace VM2D
 		/// Полярный момент инерции профиля относительно центра масс
 		double J;
 
-		/// Число панелей на профиле
-		size_t np;
-
-		///\brief Координаты начал панелей  
+		///\brief Возврат константной ссылки на вершину профиля  
 		///
-		/// Всегда обеспечивается условие r[np] = r[0];
-		/// \n вектор r содержит (np+1) элемент, где np --- число панелей.
-		/// \n Это позволяет удобно обращаться к r[i] и r[i+1] как к началу и концу i-й панели
-		std::vector<Point2D> r;
+		/// Организовано "зацикливание" в сторону увеличения индекса, т.е. getR[size()] = getR[0];		
+		/// \n Это позволяет удобно обращаться к getR(i) и getR(i+1) как к началу и концу i-й панели
+		/// 
+		/// \param[in] q номер вершины профиля
+		/// return константную ссылку на вершину профиля  
+		const Point2D& getR(size_t q) const
+		{
+			return r_[q % r_.size()];
+		};
 
+		///\brief Возврат константной ссылки на скорость вершины профиля  
+		///
+		/// Организовано "зацикливание" в сторону увеличения индекса, т.е. getV[size()] = getV[0];		
+		/// \n Это позволяет удобно обращаться к getV(i) и getV(i+1) как к скоростям начала и конца i-й панели
+		/// 
+		/// \param[in] q номер вершины профиля
+		/// return константную ссылку на скорость вершины профиля  
+		const Point2D& getV(size_t q) const
+		{
+			return v_[q % v_.size()];
+		};
+
+		/// \brief Установка постоянной скорости всех вершин профиля
+		///
+		/// \param[in] vel константная ссылка на величину устанавливаемой скорости
+		void setV(const Point2D& vel)
+		{
+			v_.clear();
+			v_.resize(r_.size(), vel);
+		}
+
+		/// \brief Установка скоростей всех вершин профиля
+		///
+		/// \param[in] vel константная ссылка на вектор величин скоростей вершин профиля
+		void setV(const std::vector<Point2D>& vel)
+		{
+			v_.clear();
+			v_.insert(v_.end(), vel.begin(), vel.end());				
+		}
+
+		/// \brief Возврат количества панелей на профиле
+		///
+		/// \return количество панелей на профиле
+		size_t getNumberOfPanels() const { return r_.size(); };
+		
 		/// Признак разворота нормалей (для расчета внутренних течений)
 		bool inverse;
 
@@ -126,14 +170,6 @@ namespace VM2D
 		Point2D lowLeft; ///< Левый нижний угол габаритного прямоугольника профиля
 		Point2D upRight; ///< Правый верхний угол габаритного прямоугольника профиля
 
-		///\brief Скорости начал панелей  
-		///
-		/// Всегда обеспечивается условие v[np] = v[0];
-		/// \n вектор v содержит (np+1) элемент, где np --- число панелей.
-		/// \n Это позволяет удобно обращаться к v[i] и v[i+1] как к скорости начала и конца i-й панели
-		/// \warning при чтении из файла зашивается нулями
-		std::vector<Point2D> v;
-
 		///\brief Суммарные циркуляции вихрей, пересекших панели профиля на прошлом шаге 
 		///
 		/// Используются в правой части системы, чтобы компенсировать вихри, проникшие в профиль
@@ -144,31 +180,10 @@ namespace VM2D
 		/// \param[in] numberInPassport_ номер профиля в паспорте задачи
 		Airfoil(const World2D& W_, const size_t numberInPassport_);
 
-		/// Конструктор копирования
-		/// \todo откомментировать --- почему нельзя использовать default?
-		Airfoil(const Airfoil& afl) : np(0), W(afl.W), numberInPassport(afl.numberInPassport)
-		{
-			rcm = afl.rcm;
-			np = afl.np;
-			phiAfl = afl.phiAfl;
-			inverse = afl.inverse;
-
-			r.insert(r.begin(), afl.r.begin(), afl.r.end());
-			nrm.insert(nrm.begin(), afl.nrm.begin(), afl.nrm.end());
-			tau.insert(tau.begin(), afl.tau.begin(), afl.tau.end());
-			len.insert(len.begin(), afl.len.begin(), afl.len.end());
-			viscousStress = afl.viscousStress;
-			lowLeft = afl.lowLeft;
-			upRight = afl.upRight;
-			v = afl.v;
-			gammaThrough.insert(gammaThrough.begin(), afl.gammaThrough.begin(), afl.gammaThrough.end());
-		};
 
 		/// Деструктор
 		virtual ~Airfoil() { };
 
-		/// Вычисление нормалей, касательных и длин панелей по текущему положению вершин
-		void CalcNrmTauLen();
 
 		/// \brief Проверка, идет ли вершина i следом за вершиной j
 		///
@@ -181,27 +196,27 @@ namespace VM2D
 		///
 		/// Поворачивает профиль на угол \f$ \alpha \f$ вокруг центра масс
 		/// \param[in] alpha угол поворота против часовой стрелки в радианах
-		void Rotate(double alpha);
+		virtual void Rotate(double alpha) = 0;
 
 		/// \brief Масштабирование профиля 
 		///
 		/// Масштабирует профиль в factor раз относительно центра масс
 		/// \param[in] factor масштабный коэффициент
-		void Scale(double factor);
+		virtual void Scale(double factor) = 0;
 
 		/// \brief Перемещение профиля 
 		///
 		/// Плоскопараллельно перемещает профиль на вектор \f$ \overrightarrow{dr} \f$
 		///
 		/// \param[in] dr константная ссылка на вектор перемещения
-		void Move(const Point2D& dr);
+		virtual void Move(const Point2D& dr) = 0;
 
 		/// \brief Вычисляет габаритный прямоугольник профиля
 		///
 		/// Заполняет значения полей lowLeft и upRight по габаритному прямоугольнику профиля с учетом зазора
 		///
 		/// \param[in] gap относительная величина зазора в долях от размера габаритного прямоугольника (по умолчанию 0.02, что соответствует 2 %)
-		void GetGabarits(double gap = 0.02);
+		virtual void GetGabarits(double gap = 0.02) = 0;
 
 		/// \brief Определяет, находится ли точка с радиус-вектором \f$ \vec r \f$ внутри габаритного прямоугольника профиля
 		///

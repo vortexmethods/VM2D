@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include "Velocity2DBiotSavart.h"
@@ -393,22 +393,7 @@ void VelocityBiotSavart::CalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataB
 
 	
 	//синхронизация свободного вихревого слоя
-	std::vector<double> freeVortexSheetGamma;
-	int sz;
-
-	if (id == 0)
-	{
-		sz = (int)(bnd.sheets.freeVortexSheet.size());
-		freeVortexSheetGamma.resize(sz, 0.0);
-		for (size_t j = 0; j < bnd.sheets.freeVortexSheet.size(); ++j)
-			freeVortexSheetGamma[j] = bnd.sheets.freeVortexSheet[j][0];
-	}
-	MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
-	if (id != 0)
-		freeVortexSheetGamma.resize(sz, 0.0);
-
-	MPI_Bcast(freeVortexSheetGamma.data(), (int)sz, MPI_DOUBLE, 0, W.getParallel().commWork);
-
+	bnd.sheets.FreeSheetSynchronize();
 
 	std::vector<Vortex2D> locPoints;
 	locPoints.resize(par.myLen);
@@ -431,7 +416,7 @@ void VelocityBiotSavart::CalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataB
 #pragma warning (pop)
 
 
-#pragma omp parallel for default(none) shared(locI1, locI2, domainRadius, locPoints, bnd, par, std::cout, freeVortexSheetGamma) private(Rij, rij, expr, diffRadius, left, right, posJx)
+#pragma omp parallel for default(none) shared(locI1, locI2, domainRadius, locPoints, bnd, par, std::cout) private(Rij, rij, expr, diffRadius, left, right, posJx)
 	for (int i = 0; i < par.myLen; ++i)
 	{
 		const Vortex2D& vtxI = locPoints[i];
@@ -439,19 +424,20 @@ void VelocityBiotSavart::CalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataB
 		/// \todo Понять природу магической константы 8.0 и синхронизировать с GPU
 		diffRadius = 8.0 * domainRadius[i + par.myDisp];
 
-		left = vtxI.r()[0] - diffRadius;
+		left  = vtxI.r()[0] - diffRadius;
 		right = vtxI.r()[0] + diffRadius;
 
-		for (size_t j = 0; j < bnd.sheets.freeVortexSheet.size(); ++j)
+		for (size_t j = 0; j < bnd.sheets.getSheetSize(); ++j)
 		{			
 			/// \todo Сделать переменной и синхронизировать с GPU
 			const int nQuadPt = 1;
 			
-			const double ptG = freeVortexSheetGamma[j] * bnd.afl.len[j] / nQuadPt;
+			/// \todo Учитываем пока только нулевой момент решения
+			const double ptG = bnd.sheets.freeVortexSheet(j, 0) * bnd.afl.len[j] / nQuadPt;
 
 			for (int q = 0; q < nQuadPt; ++q)
 			{
-				const Point2D& ptJ = bnd.CC[j] + bnd.afl.tau[j] * (q + 0.5) * bnd.afl.len[j] * (1.0 / nQuadPt);  // vorticesDb.vtx[j];
+				const Point2D& ptJ = bnd.afl.getR(j) + bnd.afl.tau[j] * (q + 0.5) * bnd.afl.len[j] * (1.0 / nQuadPt);  // vorticesDb.vtx[j];
 				posJx = ptJ[0];
 
 				if ((left < posJx) && (posJx < right))
@@ -567,7 +553,7 @@ void VelocityBiotSavart::GPUCalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDa
 	double*& dev_ptr_pt = pointsDb.devVtxPtr;
 	double*& dev_ptr_dr = pointsDb.devRadPtr;
 
-	const size_t npnl = bou.afl.np; //vorticesDb.vtx.size();
+	const size_t npnl = bou.afl.getNumberOfPanels(); //vorticesDb.vtx.size();
 	double*& dev_ptr_r = bou.afl.devRPtr;
 	double*& dev_ptr_freeVortexSheet = bou.afl.devFreeVortexSheetPtr;
 	//double*& dev_ptr_attachedVortexSheet = bou.afl.devAttachedVortexSheetPtr;

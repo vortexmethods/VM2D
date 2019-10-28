@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.5    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/02/20     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,16 +30,23 @@
 \file
 \brief Описание базовых вспомогательных функций
 \author Марчевский Илья Константинович
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 
 #ifndef DEFS_H
 #define DEFS_H
 
-#include <ctime>
+#if defined(_WIN32)
+	#include <direct.h>
+#endif
+
 #include <fstream>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#include <ctime>
 #include <iostream>
 
 #include "Eigen/Dense"
@@ -113,12 +120,14 @@ namespace defaults
 
 	/// Каталог с файлами профилей
 	const std::string defaultAirfoilsDir = "./airfoils/";
+    const std::string defaultBodiesDir = "./bodies/";
 
 	/// Каталог с файлами вихревых следов
 	const std::string defaultWakesDir = "./wakes/";
 
 	/// Список профилей
 	const std::vector<std::string> defaultFileAirfoil({});
+    const std::vector<std::string> defaultFileBody({});
 
 	/// Файл со следом
 	const std::string defaultFileWake("");
@@ -128,9 +137,11 @@ namespace defaults
 
 	/// Список профилей
 	const std::vector<std::string> defaultAirfoil({});
+    const std::vector<std::string> defaultBody({});
 
 	/// Базовое смещение профиля
 	const VMlib::Point2D defaultBasePoint = { 0.0, 0.0 };
+    const VMlib::v3D defaultBodyBasePoint = { 0.0, 0.0, 0.0 };
 	
 	/// Коэффициент масштабирования профиля
 	const double defaultScale = 1.0;
@@ -309,15 +320,34 @@ namespace VMlib
 		FILE *in, *out;
 		size_t n;
 
+		
+#pragma warning (push)
+#pragma warning (disable: 4996)
 		in = fopen(fileNameFrom.c_str(), "rb");
 		out = fopen(fileNameTo.c_str(), "wb");
+#pragma warning (pop)
+
 		while ((n = fread((void*)buf.data(), 1, BUFSIZ, in)) != 0) 
 		{
 			fwrite((void*)buf.data(), 1, n, out);
 		}
 	}//copyFile
 
+
+	/// \brief Создание каталога
+	///
+	/// \param[in] dir константная ссылка на имя текущего каталога (со слешем на конце)
+	/// \param[in] name константная ссылка на имя создаваемого подкаталога
+	inline void CreateDirectory(const std::string& dir, const std::string& name)
+	{
+#if defined(_WIN32)
+		_mkdir((dir + name).c_str());
+#else
+		mkdir((dir + name).c_str(), S_IRWXU | S_IRGRP | S_IROTH);
+#endif
+	}
 	
+
 	/// \brief Возведение числа в квадрат
 	/// 
 	/// \tparam T тип данных

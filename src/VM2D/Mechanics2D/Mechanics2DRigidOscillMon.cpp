@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include "mpi.h"
@@ -69,11 +69,11 @@ void MechanicsRigidOscillMon::GetHydroDynamForce(timePeriod& time)
 
 	Point2D deltaVstep = { 0.0, Vcm[1] - VcmOld[1] };
 
-	for (size_t i = 0; i < afl.np; ++i)
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
-
-		double deltaK = boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i] + deltaVstep * afl.tau[i] * afl.len[i];
-		Point2D rK = 0.5 * (afl.r[i + 1] + afl.r[i]) - afl.rcm;
+		/// \todo Учитываем только нулевой момент решения. Надо ли учитывать остальные?
+		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + deltaVstep * afl.tau[i] * afl.len[i];
+		Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
 
 		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
 		hDMdelta += 0.5 * deltaK * (rK * rK);
@@ -103,9 +103,7 @@ Point2D MechanicsRigidOscillMon::PositionOfAirfoilRcm(double currTime)
 void MechanicsRigidOscillMon::VeloOfAirfoilPanels(double currTime)
 {
 	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
-	for (size_t i = 0; i < afl.v.size(); ++i)
-		afl.v[i] = veloRcm;
-	//afl.v[i] = { 0.0, 0.0 };
+	afl.setV(veloRcm);	
 }//VeloOfAirfoilPanels(...)
 
 
@@ -140,9 +138,9 @@ void MechanicsRigidOscillMon::FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Ei
 
 	Point2D riC;
 
-	for (size_t loc_i = 0; loc_i < afl.np; ++loc_i)
+	for (size_t loc_i = 0; loc_i < afl.getNumberOfPanels(); ++loc_i)
 	{
-		riC = 0.5 * (afl.r[loc_i + 1] + afl.r[loc_i]) - afl.rcm;
+		riC = 0.5 * (afl.getR(loc_i + 1) + afl.getR(loc_i)) - afl.rcm;
 		row(0, loc_i) = /*1*/ riC.kcross()[1] * afl.len[loc_i];
 		cross(0, 0) += /*2*/ riC.kcross()[1] * afl.tau[loc_i][1] * afl.len[loc_i];
 	}
@@ -153,16 +151,16 @@ void MechanicsRigidOscillMon::FillMechanicsRhs(std::vector<double>& rhs)
 {
 	rhs[0] = /*7*/-m * Vcm[1] + /*8*/ W.getPassport().timeDiscretizationProperties.dt * k * Rcm[1];
 
-	for (size_t loc_i = 0; loc_i < afl.np; ++loc_i)
+	for (size_t loc_i = 0; loc_i < afl.getNumberOfPanels(); ++loc_i)
 	{
-		Point2D riC = 0.5 * (afl.r[loc_i + 1] + afl.r[loc_i]) - afl.rcm;
+		Point2D riC = 0.5 * (afl.getR(loc_i + 1) + afl.getR(loc_i)) - afl.rcm;
 		rhs[0] += riC.kcross()[1] * (/*5*/afl.gammaThrough[loc_i] + /*6*/Vcm[1] * afl.tau[loc_i][1] * afl.len[loc_i]);
 	}
 }
 
 void MechanicsRigidOscillMon::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
 {
-	for (size_t i = 0; i < afl.np; ++i)
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 		col(i, 0) = /*12*/ -afl.tau[i][1];
 }
 
@@ -172,6 +170,5 @@ void MechanicsRigidOscillMon::SolutionToMechanicalSystem(Eigen::VectorXd& col)
 
 	Vcm[1] = col(0);
 
-	for (size_t i = 0; i < afl.np + 1; ++i)
-		afl.v[i] = Vcm;
+	afl.setV(Vcm);	
 }

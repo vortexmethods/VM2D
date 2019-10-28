@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.5    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/02/20     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5   
-\date 20 февраля 2019 г.
+\version 1.6   
+\date 28 октября 2019 г.
 */
 
 #include "mpi.h"
@@ -69,9 +69,9 @@ void MechanicsRigidRotateMon::GetHydroDynamForce(timePeriod& time)
 	double hDMdelta = 0.0;				//гидродинамический момент, обусловленный Gamma_k
 	double hDMQ = 0.0;					//гидродинамический момент, обусловленный Gamma_k
 
-	for (size_t i = 0; i < afl.np; ++i)
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
-		Point2D rK = 0.5 * (afl.r[i + 1] + afl.r[i]) - afl.rcm;
+		Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
 		Point2D velK = { -Wcm * rK[1], Wcm * rK[0] };
 
 		double gAtt = Wcm * (rK ^ afl.tau[i]);
@@ -81,17 +81,18 @@ void MechanicsRigidRotateMon::GetHydroDynamForce(timePeriod& time)
 		double qAtt = Wcm * (rK ^ afl.nrm[i]);
 		
 		/*1*/
-		double deltaK = boundary.sheets.freeVortexSheet[i][0] * afl.len[i] - afl.gammaThrough[i] + deltaGAtt * afl.len[i];
+		/// \todo Учитываем только нулевой момент решения. Надо ли учитывать остальные?
+		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + deltaGAtt * afl.len[i];
 		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
 		hDMdelta += 0.5 * deltaK * (rK * rK);
 		
 		/*2*/
-		hDFGam += 0.5 * afl.v[i].kcross() * gAtt * afl.len[i];
-		hDMGam += 0.5 * rK ^ afl.v[i].kcross() * gAtt * afl.len[i];
+		hDFGam += 0.5 * afl.getV(i).kcross() * gAtt * afl.len[i];
+		hDMGam += 0.5 * rK ^ afl.getV(i).kcross() * gAtt * afl.len[i];
 
 		/*3*/
-		hDFQ -= 0.5 * afl.v[i] * qAtt * afl.len[i];
-		hDMQ -= 0.5 * rK ^ afl.v[i] * qAtt * afl.len[i];
+		hDFQ -= 0.5 * afl.getV(i) * qAtt * afl.len[i];
+		hDMQ -= 0.5 * rK ^ afl.getV(i) * qAtt * afl.len[i];
 	}
 
 	hydroDynamForce = hDFGam + hDFdelta * (1.0 / dt) + hDFQ;
@@ -116,11 +117,14 @@ Point2D MechanicsRigidRotateMon::PositionOfAirfoilRcm(double currTime)
 // Вычисление скоростей начал панелей
 void MechanicsRigidRotateMon::VeloOfAirfoilPanels(double currTime)
 {
-	for (size_t i = 0; i < afl.v.size(); ++i)
+	std::vector<Point2D> vel(afl.getNumberOfPanels(), { 0.0, 0.0 });
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
-		afl.v[i][0] = afl.r[i].kcross()[0] * Wcm;
-		afl.v[i][1] = afl.r[i].kcross()[1] * Wcm;
+		vel[i][0] = afl.getR(i).kcross()[0] * Wcm;
+		vel[i][1] = afl.getR(i).kcross()[1] * Wcm;
 	}
+	afl.setV(vel);
+
 }//VeloOfAirfoilPanels(...)
 
 //Перемещение профиля в соответствии с законом
@@ -169,9 +173,9 @@ void MechanicsRigidRotateMon::FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Ei
 #pragma warning (pop)
 
 #pragma omp parallel for default(none) shared(row, cross) private(riC, crossOmp)
-		for (int loc_i = 0; loc_i < afl.np; ++loc_i)
+		for (int loc_i = 0; loc_i < afl.getNumberOfPanels(); ++loc_i)
 		{
-			riC = 0.5 * (afl.r[loc_i + 1] + afl.r[loc_i]) - afl.rcm;
+			riC = 0.5 * (afl.getR(loc_i + 1) + afl.getR(loc_i)) - afl.rcm;
 			crossOmp = /*2*/ 0.5 * riC * riC * (riC ^ afl.tau[loc_i]) * afl.len[loc_i];
 
 			row(0, loc_i) = /*1*/ 0.5 * riC * riC * afl.len[loc_i];
@@ -196,9 +200,9 @@ void MechanicsRigidRotateMon::FillMechanicsRhs(std::vector<double>& rhs)
 #pragma warning (pop)
 
 #pragma omp parallel for default(none) shared(rhs) private(riC, rhsOmp)
-	for (int loc_i = 0; loc_i < afl.np; ++loc_i)
+	for (int loc_i = 0; loc_i < afl.getNumberOfPanels(); ++loc_i)
 	{
-		riC = 0.5 * (afl.r[loc_i + 1] + afl.r[loc_i]) - afl.rcm;
+		riC = 0.5 * (afl.getR(loc_i + 1) + afl.getR(loc_i)) - afl.rcm;
 
 		rhsOmp = 0.0;
 		rhsOmp += /*5*/ 0.5 * riC * riC * afl.gammaThrough[loc_i];
@@ -238,18 +242,18 @@ void MechanicsRigidRotateMon::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs
 		{
 			int i = locI + par.myDisp;
 
-			riC = 0.5 * (afl.r[i + 1] + afl.r[i]) - afl.rcm;
+			riC = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
 
 			locColMPI[locI] = /*12 + 91*/ -0.5 * (riC ^ afl.tau[i]);
 
-			for (size_t j = 0; j < afl.np; ++j)
+			for (size_t j = 0; j < afl.getNumberOfPanels(); ++j)
 			{
-				locColMPI[locI] += /*92*/ IDPI * (Alpha(riC - afl.r[j + 1], riC - afl.r[j]) * afl.tau[j]
-					- Lambda(riC - afl.r[j + 1], riC - afl.r[j]) * afl.nrm[j]
+				locColMPI[locI] += /*92*/ IDPI * (Alpha(riC - afl.getR(j + 1), riC - afl.getR(j)) * afl.tau[j]
+					- Lambda(riC - afl.getR(j + 1), riC - afl.getR(j)) * afl.nrm[j]
 					)* afl.tau[i] * (riC ^ afl.tau[j]);
 
-				locColMPI[locI] += /*93*/ IDPI * (Alpha(riC - afl.r[j + 1], riC - afl.r[j]) * afl.nrm[j] +
-					Lambda(riC - afl.r[j + 1], riC - afl.r[j]) * afl.tau[j]
+				locColMPI[locI] += /*93*/ IDPI * (Alpha(riC - afl.getR(j + 1), riC - afl.getR(j)) * afl.nrm[j] +
+					Lambda(riC - afl.getR(j + 1), riC - afl.getR(j)) * afl.tau[j]
 					)* afl.tau[i] * (riC ^ afl.nrm[j]);
 			}
 		}//pragma omp for
@@ -270,6 +274,9 @@ void MechanicsRigidRotateMon::SolutionToMechanicalSystem(Eigen::VectorXd& col)
 
 	Wcm = col(0);
 
-	for (size_t i = 0; i < afl.np + 1; ++i)
-		afl.v[i] = afl.r[i].kcross() * Wcm;
+	std::vector<Point2D> vel(afl.getNumberOfPanels(), { 0.0, 0.0 });
+	for (size_t i = 0; i < afl.getNumberOfPanels() + 1; ++i)
+		vel[i] = afl.getR(i).kcross() * Wcm;
+
+	afl.setV(vel);
 }//SolutionToMechanicalSystem(...)
