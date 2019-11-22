@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #include "mpi.h"
@@ -152,10 +152,4 @@ void MechanicsRigidOscillPart::ReadSpecificParametersFromDictionary()
 	k = m * 4.0 * PI * PI * sh[1] * sh[1] * W.getPassport().physicalProperties.vInf.length2();
 
 	W.getInfo('i') << "rigidity k = " << k << std::endl;
-}
-
-void MechanicsRigidOscillPart::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
-{
-	for (int i = 0; i < afl.getNumberOfPanels(); ++i)
-		rhs(i, 0) = /*12*/ afl.getV(i) * afl.tau[i];
-}
+}//ReadSpecificParametersFromDictionary()

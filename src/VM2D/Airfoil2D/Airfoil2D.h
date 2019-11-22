@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #ifndef AIRFOIL_H
@@ -52,8 +52,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	class Airfoil
 	{
@@ -92,7 +92,7 @@ namespace VM2D
 		/// return константную ссылку на вершину профиля  
 		const Point2D& getR(size_t q) const
 		{
-			return r_[q % r_.size()];
+			return (q < r_.size()) ? r_[q] : r_[0];
 		};
 
 		///\brief Возврат константной ссылки на скорость вершины профиля  
@@ -104,7 +104,7 @@ namespace VM2D
 		/// return константную ссылку на скорость вершины профиля  
 		const Point2D& getV(size_t q) const
 		{
-			return v_[q % v_.size()];
+			return (q < v_.size()) ? v_[q] : v_[0];
 		};
 
 		/// \brief Установка постоянной скорости всех вершин профиля
@@ -150,6 +150,12 @@ namespace VM2D
 
 		/// Указатель на девайсе, где хранятся интенсивности присоединенного слоя источников на панелях
 		IFCUDA(mutable double* devAttachedSourceSheetPtr);
+
+		/// Указатель на девайсе, где хранится вектор (по панелям) для силы вязкого трения
+		IFCUDA(mutable double* devViscousStressesPtr);
+			   
+		/// Указатель на хосте, где хранится временная часть вектора (по панелям) для силы вязкого трения
+		IFCUDA(mutable std::vector<double> tmpViscousStresses);
 
 		/// \brief Нормали к панелям профиля
 		///
@@ -245,6 +251,38 @@ namespace VM2D
 		/// \param[in] dir константная ссылка на строку --- имя каталога, где лежит cчитываемый файл
 		virtual void ReadFromFile(const std::string& dir) = 0;
 
+		/// \brief Вычисление коэффициентов матрицы A для расчета влияния панели на панель
+		///
+		/// \param[in] p размерность матрицы - результата
+		/// \param[in] i номер панели, на которую оказывается влияние
+		/// \param[in] otherAirfoil константная ссылка на профиль, от которого рассчитывается влияние
+		/// \param[in] j номер влияющей панели
+		/// return соответствующий блок матрицы СЛАУ, вытянутый в линию 
+		virtual std::vector<double> getA(size_t p, size_t i, const Airfoil& otherAirfoil, size_t j) const = 0;
+
+		/// \brief Вычисление коэффициентов матрицы, состоящей из интегралов от (r-xi)/|r-xi|^2 
+		///
+		/// \param[in] p размерность матрицы - результата
+		/// \param[in] otherAirfoil константная ссылка на профиль, от которого рассчитывается влияние
+		/// return соответствующий блок матрицы СЛАУ, вытянутый в линию 
+		virtual void calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& matrPair) const = 0;
+
+		/// \brief Вычисление влияния присоединенных слоев от другого профиля (константные базисные функции)
+		///
+		/// Расчет интегралов в правой части с константными базисными функциями
+		///
+		/// \param[out] wakeVelo массив значений влияний для панелей профиля
+		virtual void getInfAttFromOther0(std::vector<double>& attOtherVelo, const Airfoil& otherAirfoil, size_t currentRow, size_t currentCol) const = 0;
+
+		/// \brief Вычисление влияния присоединенных слоев от другого профиля (линейные базисные функции)
+		///
+		/// Расчет интегралов с константными и линейными базисными функциями
+		///
+		/// \param[out] wakeVelo массив значений влияний для панелей профиля
+		virtual void getInfAttFromOther1(std::vector<double>& attOtherVelo, const Airfoil& otherAirfoil, size_t currentRow, size_t currentCol) const = 0;
+
+
+
 		/// \brief Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения
 		///
 		/// Вычисляет диффузионные скорости в наборе точек, которые обусловленных геометрией профиля, и вычисляет вязкое трение
@@ -261,7 +299,29 @@ namespace VM2D
 #if defined(USE_CUDA)
 		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
 #endif
-	};
+
+		/// \brief Вычисление влияния части подряд идущих вихрей из вихревого следа на панель для правой части
+		///
+		/// Вычисляет влияния части подряд идущих вихрей из вихревого следа на панель для правой части
+		/// 
+		/// \param[in] panel номер панели профиля, на которую считается влияние
+		/// \param[in] ptr указатель на начало диапазона вихрей
+		/// \param[in] count длина диапазона вихрей
+		/// \param[out] panelRhs ссылка на вектор полученного влияния для правой части СЛАУ для конкретной панели
+		virtual void GetInfluenceFromVorticesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const = 0;
+				
+	
+		/// \brief Вычисление влияния части подряд идущих источников из области течения на панель для правой части
+		///
+		/// Вычисляет влияния части подряд идущих источников из области течения на панель для правой части
+		/// 
+		/// \param[in] panel номер панели профиля, на которую считается влияние
+		/// \param[in] ptr указатель на начало диапазона источников
+		/// \param[in] count длина диапазона источников
+		/// \param[out] panelRhs ссылка на вектор полученного влияния для правой части СЛАУ для конкретной панели
+		virtual void GetInfluenceFromSourcesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const = 0;
+
+};
 
 }//namespace VM2D
 

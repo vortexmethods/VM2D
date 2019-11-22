@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Описание класса numvector
 \author Марчевский Илья Константинович
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #ifndef NUMVECTOR_H_
@@ -57,6 +57,7 @@
 #define DEPRECATED
 
 #include <cmath>
+#include <cstring>
 #include <initializer_list>
 #include <ostream>
 #include <set>
@@ -77,8 +78,8 @@ namespace VMlib
 	\tparam n длина вектора
 
 	\author Марчевский Илья Константинович
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 
 
@@ -405,7 +406,7 @@ namespace VMlib
 		template <typename P = double>
 		auto unit(P newlen = 1) const -> numvector<typename std::remove_const<decltype(r[0] * newlen)>::type, n>
 		{
-			auto ilen = static_cast<decltype(r[0] * newlen)>(newlen / this->length());
+			auto ilen = static_cast<decltype(r[0] * newlen)>(newlen / std::max(this->length(), 1e-16));
 			return (*this * ilen);
 		}//unit(...)
 
@@ -569,8 +570,9 @@ namespace VMlib
 		/// \param[in] vec константная ссылка на копируемый вектор
 		numvector(const numvector<T, n>& vec)
 		{
-			for (size_t i = 0; i < n; ++i)
-				r[i] = vec[i];
+			//for (size_t i = 0; i < n; ++i)
+			//	r[i] = vec[i];
+			memcpy(r, vec.r, n * sizeof(T));
 		}//numvector(...)
 
 
@@ -699,7 +701,14 @@ namespace VMlib
 
 	}; //class numvector
 
-
+        /// \todo Исследовать целесообразность наличия нешаблонного умножения
+	inline numvector<double, 3> operator*(double c, const numvector<double, 3>& x)
+	{
+		numvector<double, 3> res(x);
+		for (size_t i = 0; i < 3; ++i)
+			res[i] *= c;
+		return res;
+	}//operator*(...)
 	/// \brief Оператор "*" умножения вектора на число (число слева, вектор справа)
 	///
 	/// \tparam T тип данных компонент вектора

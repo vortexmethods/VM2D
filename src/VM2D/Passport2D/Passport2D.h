@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -40,8 +40,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 
@@ -60,8 +60,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	struct PhysicalProperties
 	{
@@ -78,14 +78,14 @@ namespace VM2D
 		/// Референсная скорость
 		double vRef;
 
-		/// Время разгона
+		/// Способ разгона потока
+		std::pair<std::string, int> typeAccel;
+
+		/// Время разгона потока
 		double timeAccel;
 		
 		/// Функция-множитель, позволяющая моделировать разгон
-		double accelCft() const
-		{
-			return (timeProp.currTime < timeAccel) ? (timeProp.currTime / timeAccel) : 1.0;
-		}
+		double accelCft() const;
 		
 		/// Функция скорости набегающего потока с учетом разгона
 		Point2D V0() const
@@ -127,8 +127,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	struct WakeDiscretizationProperties
 	{
@@ -148,7 +148,7 @@ namespace VM2D
 		double delta;
 
 		/// Минимальное число вихрей, рождаемых на каждой панели профииля
-		int vortexPerPanel;
+		int minVortexPerPanel;
 
 		/// Максимально допустимая циркуляция вихря
 		double maxGamma;
@@ -168,19 +168,25 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	struct NumericalSchemes
 	{
 		//Решатель СЛАУ
-		int linearSystemSolver;
+		std::pair<std::string, int> linearSystemSolver;
 
 		//Метод вычисления скоростей вихрей и в отдельных точках
-		int velocityComputation;
+		std::pair<std::string, int> velocityComputation;
 
 		//Метод решения ОДУ движения вихрей
-		int wakeMotionIntegrator;
+		//std::pair<std::string, int> wakeMotionIntegrator;
+
+		/// Тип панелей (0 --- прямые)
+		std::pair<std::string, int> panelsType;
+
+		/// Метод аппроксимации граничных условий
+		std::pair<std::string, int> boundaryCondition;
 	};//NumericalSchemes
 
 
@@ -190,8 +196,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	struct AirfoilParams
 	{
@@ -210,12 +216,6 @@ namespace VM2D
 		/// Признак разворота нормалей (для расчета внутреннего течения)
 		bool inverse;
 
-		/// Тип панелей (0 --- прямые)
-		int panelsType;
-
-		/// Метод аппроксимации граничных условий
-		int boundaryCondition;
-
 		/// Тип механической системы
 		int mechanicalSystemType;
 		std::string mechanicalSystem;
@@ -231,8 +231,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	class Passport : public VMlib::PassportGen
 	{

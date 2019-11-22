@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,29 +32,32 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #ifndef VELOCITY_H
 #define VELOCITY_H
 
+#include "defs.h"
 #include "Point2D.h"
 
 namespace VM2D
 {
 
+	class Airfoil;
 	class Boundary;
 	class WakeDataBase;
 	class World2D;
+	
 
 	/*!
 	\brief Структура, определяющая параметры виртуальных вихрей для отдельного профиля
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	struct VortexesParams
 	{
@@ -85,8 +88,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	class Velocity
 	{
@@ -119,18 +122,23 @@ namespace VM2D
 		/// \param[in] onlyRadius признак вычисления только радиусов доменом, иначе и скоростей тоже (по умолчанию false)
 		/// \warning Использует OMP, MPI
 		/// \ingroup Parallel
-		virtual void CalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool onlyRadius = false) = 0;
-#if defined(USE_CUDA)	
-		virtual void GPUCalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool onlyRadius = false) = 0;
-#endif
+		//virtual void CalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool onlyRadius = false) = 0;
+//#if defined(USE_CUDA)	
+//		virtual void GPUCalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool onlyRadius = false) = 0;
+//#endif
 
 
-		/// \brief Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе
+		/// \brief Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wakeVP
 		///
-		/// Вызывает 2 раза функцию CalcConvVeloToSetOfPoints
-		///
+		/// \param[out] convWakeTime время, затраченное на вычисление конвективных скоростей в следе
+		/// \param[out] convVPTime время, затраченное на вычисление конвективных скоростей в точках VP
 		/// \warning скорости приплюсовываются к уже имеющимся
-		void CalcConvVelo();
+		virtual void CalcConvVelo(timePeriod& convWakeTime, timePeriod& convVPTime) = 0;
+
+
+
+
+
 
 		/// \brief Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек
 		///
@@ -141,12 +149,12 @@ namespace VM2D
 		/// \param[out] I2 ссылка на вектор величин I2 (числителей в диффузионных скоростях) в требуемых точках
 		/// \warning Использует OMP, MPI
 		/// \ingroup Parallel
-		virtual void CalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2) = 0;
-		virtual void CalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2) = 0;
+		void CalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2);
+		void CalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2);
 
 #if defined(USE_CUDA)
-		virtual void GPUCalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false) = 0;
-		virtual void GPUCalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false) = 0;
+		void GPUCalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false);
+		void GPUCalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false);
 #endif
 
 		/// \brief Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе
@@ -155,6 +163,10 @@ namespace VM2D
 		///
 		/// \warning скорости приплюсовываются к уже имеющимся
 		void CalcDiffVelo();
+
+		/// \brief Расчет вектора правой части (всего)
+		///
+		virtual void FillRhs(Eigen::VectorXd& rhs) const = 0;
 
 		/// Деструктор
 		virtual ~Velocity() { };

@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса Vortex2D
 \author Марчевский Илья Константинович
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #ifndef VORTEX2D_H_
@@ -45,8 +45,8 @@ namespace VMlib
 	/*!
 	\brief Класс, опеделяющий двумерный вихревой элемент	
 	\author Марчевский Илья Константинович
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	class Vortex2D
 	{

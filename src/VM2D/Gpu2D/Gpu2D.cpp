@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #include "Gpu2D.h"
@@ -78,37 +78,13 @@ Gpu::Gpu(const World2D& W_)
 
 // cuDevice(W.getParallel().myidWork);          //Индекс используемой видеокарты будет равен номеру MPI-ной нити
 
-
-
-
+	   
 	cuSetConstants(sizeof(Vortex2D)/sizeof(double), Vortex2D::offsPos / sizeof(double), Vortex2D::offsGam / sizeof(double) );
 	
-/*
-	W.getWake().devVtxPtr = ReserveDevMem<double, sizeof(Vortex2D) / sizeof(double)>(INC_VORT_DEV, W.getWake().devNWake);
-	
-	W.getWake().devVelPtr = ReserveDevMem<double, 2>(INC_VORT_DEV, n_CUDA_wake);
-	W.getWake().devRadPtr = ReserveDevMem<double, 1>(INC_VORT_DEV, n_CUDA_wake);
-	W.getWake().devI0Ptr = ReserveDevMem<double, 1>(INC_VORT_DEV, n_CUDA_wake);
-	W.getWake().devI1Ptr = ReserveDevMem<double, 1>(INC_VORT_DEV, n_CUDA_wake);
-	W.getWake().devI2Ptr = ReserveDevMem<double, 2>(INC_VORT_DEV, n_CUDA_wake);
-	W.getWake().devI3Ptr = ReserveDevMem<double, 2>(INC_VORT_DEV, n_CUDA_wake);
-	
-
-	W.getWake().devMeshPtr = ReserveDevMem<int, 2>(INC_VORT_DEV, n_CUDA_wake);
-	W.getWake().devNeiPtr = ReserveDevMem<int, 1>(INC_VORT_DEV, n_CUDA_wake);
-
-	W.getWake().tmpVel.resize(n_CUDA_wake, { 0.0, 0.0 });
-	W.getWake().tmpRad.resize(n_CUDA_wake, 1.0e+5);
-
-	W.getWake().tmpI0.resize(n_CUDA_wake, 0.0);
-	W.getWake().tmpI1.resize(n_CUDA_wake, 0.0);
-	W.getWake().tmpI2.resize(n_CUDA_wake, { 0.0, 0.0 });
-	W.getWake().tmpI3.resize(n_CUDA_wake, { 0.0, 0.0 });
-	W.getWake().tmpNei.resize(n_CUDA_wake, 0);
-	//mesh.resize(n_CUDA_vel, { 0, 0 });
-*/		
 	n_CUDA_wake = 0;
 	n_CUDA_afls = 0;
+
+	n_CUDA_velVP = 0;
 
 #endif
 }
@@ -146,6 +122,8 @@ Gpu::~Gpu()
 		cuDeleteFromDev(W.getBoundary(s).afl.devFreeVortexSheetPtr);
 		cuDeleteFromDev(W.getBoundary(s).afl.devAttachedVortexSheetPtr);
 		cuDeleteFromDev(W.getBoundary(s).afl.devAttachedSourceSheetPtr);
+
+		cuDeleteFromDev(W.getBoundary(s).afl.devViscousStressesPtr);
 	}
 
 	if (n_CUDA_afls)
@@ -167,7 +145,13 @@ Gpu::~Gpu()
 		cuDeleteFromDev(dev_ptr_ptr_freeVortexSheet);
 		cuDeleteFromDev(dev_ptr_ptr_attachedVortexSheet);
 		cuDeleteFromDev(dev_ptr_ptr_attachedSourceSheet);
+
+		cuDeleteFromDev(dev_ptr_ptr_viscousStresses);
 	}
+
+	cuDeleteFromDev(W.getMeasureVP().getWakeVP().devVtxPtr);
+	cuDeleteFromDev(W.getMeasureVP().getWakeVP().devVelPtr);
+	cuDeleteFromDev(W.getMeasureVP().getWakeVP().devRadPtr);
 #endif
 }
 
@@ -277,6 +261,53 @@ void Gpu::RefreshWake()
 }
 
 
+
+//Обновление состояния сетки для вычисления VP
+void Gpu::RefreshVP()
+{
+	const int& id = W.getParallel().myidWork;
+
+	if (W.getMeasureVP().getWakeVP().vtx.size() > 0)
+	{
+		//Если зарезервировано меньше, чем вихрей в пелене
+		if (W.getMeasureVP().getWakeVP().vtx.size() > W.getMeasureVP().getWakeVP().devNWake)
+		{
+			size_t curLength = W.getMeasureVP().getWakeVP().devNWake;
+
+			//Освобождаем всю память на видеокарте
+			if (curLength > 0)
+			{
+				cuDeleteFromDev(W.getMeasureVP().getWakeVP().devVtxPtr);
+				cuDeleteFromDev(W.getMeasureVP().getWakeVP().devVelPtr);	
+				cuDeleteFromDev(W.getMeasureVP().getWakeVP().devRadPtr);
+			}
+
+			size_t sz = curLength;
+			while (W.getMeasureVP().getWakeVP().vtx.size() > sz)
+				sz += INC_VORT_DEV;
+
+			//Резервируем новое количество памяти
+			W.getMeasureVP().getWakeVP().devVtxPtr = ReserveDevMem<double, sizeof(Vortex2D) / sizeof(double)>(sz, W.getMeasureVP().getWakeVP().devNWake);
+			W.getMeasureVP().getWakeVP().devVelPtr = ReserveDevMem<double, 2>(sz, n_CUDA_velVP);
+			W.getMeasureVP().getWakeVP().devRadPtr = ReserveDevMem<double, 1>(sz, n_CUDA_velVP);
+
+			//Резервируем память в массиве скоростей
+			W.getMeasureVP().getWakeVP().tmpVel.resize(n_CUDA_velVP, { 0.0, 0.0 });
+			W.getMeasureVP().getWakeVP().tmpRad.resize(n_CUDA_velVP, 1.0e+5);
+
+			W.getInfo('i') << "CUDA memory resize: " << curLength << " -> " << n_CUDA_velVP << " points_VP" << std::endl;
+		}// if (W.getWake().vtx.size() > W.getWake().devNWake)
+
+		//Обнуляем память, выделенную выше для хранения следа
+		cuClearWakeMem(W.getMeasureVP().getWakeVP().devNWake, W.getMeasureVP().getWakeVP().devVtxPtr);
+
+		//Копирование следа на видеокарту
+		cuCopyWakeToDev(W.getMeasureVP().getWakeVP().vtx.size(), W.getMeasureVP().getWakeVP().vtx.data(), W.getMeasureVP().getWakeVP().devVtxPtr);
+	}
+}
+
+
+
 //Обновление состояния всех профилей и всего, что с ними тесно связано
 void Gpu::RefreshAfls() 
 {
@@ -309,6 +340,8 @@ void Gpu::RefreshAfls()
 				cuDeleteFromDev(W.getBoundary(s).afl.devFreeVortexSheetPtr);
 				cuDeleteFromDev(W.getBoundary(s).afl.devAttachedVortexSheetPtr);
 				cuDeleteFromDev(W.getBoundary(s).afl.devAttachedSourceSheetPtr);
+
+				cuDeleteFromDev(W.getBoundary(s).afl.devViscousStressesPtr);
 			}
 
 			if (n_CUDA_afls)
@@ -330,6 +363,7 @@ void Gpu::RefreshAfls()
 				cuDeleteFromDev(dev_ptr_ptr_freeVortexSheet);
 				cuDeleteFromDev(dev_ptr_ptr_attachedVortexSheet);
 				cuDeleteFromDev(dev_ptr_ptr_attachedSourceSheet);
+				cuDeleteFromDev(dev_ptr_ptr_viscousStresses);
 			}
 
 			//Временные массивы для агрегации числа панелей и числа виртуальных вихрей (округленные вверх до блока) на профилях для их последующей отправки в dev_ptr_nPanels и dev_ptr_nVortices
@@ -341,7 +375,7 @@ void Gpu::RefreshAfls()
 			for (size_t s = 0; s < W.getNumberOfBoundary(); ++s)
 			{
 				const size_t& szPan = W.getBoundary(s).afl.getNumberOfPanels();
-				const size_t& szVtx = std::max(W.getBoundary(s).virtualWake.vtx.size(),   W.getPassport().wakeDiscretizationProperties.vortexPerPanel * W.getBoundary(s).afl.getNumberOfPanels());
+				const size_t& szVtx = std::max(W.getBoundary(s).virtualWake.vtx.size(),   W.getPassport().wakeDiscretizationProperties.minVortexPerPanel * W.getBoundary(s).afl.getNumberOfPanels());
 				
 				//W.getInfo('t') << "szVtx = " << szVtx << std::endl;
 
@@ -363,6 +397,8 @@ void Gpu::RefreshAfls()
 				W.getBoundary(s).afl.devAttachedVortexSheetPtr = ReserveDevMem<double, 1>(szPan, n_CUDA_panel[s]);
 				W.getBoundary(s).afl.devAttachedSourceSheetPtr = ReserveDevMem<double, 1>(szPan, n_CUDA_panel[s]);
 
+				W.getBoundary(s).afl.devViscousStressesPtr = ReserveDevMem<double, 1>(szPan, n_CUDA_panel[s]);
+
 
 				n_CUDA_afls++;
 				host_nVortices.push_back(n_CUDA_virtWake[s]);
@@ -377,6 +413,8 @@ void Gpu::RefreshAfls()
 				W.getBoundary(s).virtualWake.tmpI3.resize(n_CUDA_virtWake[s], { 0.0, 0.0 });
 
 				W.getBoundary(s).afl.tmpRhs.resize(n_CUDA_panel[s], 0.0);
+
+				W.getBoundary(s).afl.tmpViscousStresses.resize(n_CUDA_panel[s], 0.0);
 			}// for s
 
 			dev_ptr_nPanels = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_nPanels.data());
@@ -398,6 +436,8 @@ void Gpu::RefreshAfls()
 			std::vector<double*> host_ptr_attachedVortexSheet;
 			std::vector<double*> host_ptr_attachedSourceSheet;
 
+			std::vector<double*> host_ptr_viscousStresses;
+
 			for (size_t q = 0; q < W.getNumberOfBoundary(); ++q)
 			{
 				host_ptr_vtx.push_back(W.getBoundary(q).virtualWake.devVtxPtr);
@@ -414,6 +454,8 @@ void Gpu::RefreshAfls()
 				host_ptr_freeVortexSheet.push_back(W.getBoundary(q).afl.devFreeVortexSheetPtr);
 				host_ptr_attachedVortexSheet.push_back(W.getBoundary(q).afl.devAttachedVortexSheetPtr);
 				host_ptr_attachedSourceSheet.push_back(W.getBoundary(q).afl.devAttachedSourceSheetPtr);
+				
+				host_ptr_viscousStresses.push_back(W.getBoundary(q).afl.devViscousStressesPtr);
 
 			}
 
@@ -431,6 +473,8 @@ void Gpu::RefreshAfls()
 			dev_ptr_ptr_freeVortexSheet = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_freeVortexSheet.data());
 			dev_ptr_ptr_attachedVortexSheet = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_attachedVortexSheet.data());
 			dev_ptr_ptr_attachedSourceSheet = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_attachedSourceSheet.data());
+
+			dev_ptr_ptr_viscousStresses = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_viscousStresses.data());
 		}//if (W.getNumberOfBoundary() > n_CUDA_afls)
 		
 
@@ -474,6 +518,7 @@ void Gpu::RefreshAfls()
 			cuCopyFixedArray(W.getBoundary(s).afl.devAttachedSourceSheetPtr, host_attachedSourceSheet.data(), sizeof(double)*host_attachedSourceSheet.size());
 		}
 	}
+	;
 }//RefreshAfls()
 
 
@@ -497,7 +542,7 @@ void Gpu::RefreshVirtualWakes()
 			cuDeleteFromDev(W.getBoundary(s).virtualWake.devI3Ptr);
 
 			const size_t& szPan = W.getBoundary(s).afl.getNumberOfPanels();
-			const size_t& szVtx = std::max(W.getBoundary(s).virtualWake.vtx.size(), W.getPassport().wakeDiscretizationProperties.vortexPerPanel * W.getBoundary(s).afl.getNumberOfPanels());
+			const size_t& szVtx = std::max(W.getBoundary(s).virtualWake.vtx.size(), W.getPassport().wakeDiscretizationProperties.minVortexPerPanel * W.getBoundary(s).afl.getNumberOfPanels());
 
 			//W.getInfo('t') << "szVtx = " << szVtx << std::endl;
 

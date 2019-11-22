@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса StreamParser
 \author Марчевский Илья Константинович
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #include "StreamParser.h"
@@ -165,7 +165,10 @@ std::pair<std::string, std::string> StreamParser::SplitString(LogStream& info, s
 	else
 	{
 		std::string sub = line.substr(0, posBegin);
-		return std::pair<std::string, std::string>(upcase ? UpperCase(sub) : sub, "{" + line.substr(posBegin + 1, posEnd - posBegin - 1) + "}");
+		if ((posBegin == -1) && (posEnd == -1))
+			return std::pair<std::string, std::string>(upcase ? UpperCase(sub) : sub, "{}");
+		else
+			return std::pair<std::string, std::string>(upcase ? UpperCase(sub) : sub, "{" + line.substr(posBegin + 1, posEnd - posBegin - 1) + "}");
 	}
 }//SplitString(...)
 
@@ -174,6 +177,7 @@ std::pair<std::string, std::string> StreamParser::SplitString(LogStream& info, s
 void StreamParser::ParseStream(std::istream& stream, std::unordered_map<std::string, std::vector<std::string>>& database, std::vector<std::string> specificKey, bool replaceVars, char openBracket, char closeBracket)
 {
 	std::string line, readline;
+	size_t defVarNum = 0;
 		
 	while (stream.good())
 	{
@@ -221,6 +225,19 @@ void StreamParser::ParseStream(std::istream& stream, std::unordered_map<std::str
 				exit(-1);
 			}
 		}//if (posEqual != -1)
+		else if (line.size() > 0)
+		{
+			std::string value = line;
+			if (replaceVars)
+				ReplaceVarsInString(value);
+
+			std::stringstream ssDef;
+			ssDef << "_defVar_" << defVarNum;
+
+			database.insert(make_pair(UpperCase(ssDef.str()), StringToVector(value, openBracket, closeBracket)));
+
+			++defVarNum;
+		}
 	}//while (streamName.good())
 
 	//Указатель возвращаем в начало потока

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #include "Mechanics2DRigidImmovable.h"
@@ -79,6 +79,9 @@ void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
 	hydroDynamForce = { 0.0, 0.0 };
 	hydroDynamMoment = 0.0;
 
+	viscousStress = { 0.0, 0.0 };
+	viscousMoment = 0.0;
+
 	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
 	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные delta_k
 	double hDMdelta = 0.0;
@@ -96,12 +99,8 @@ void MechanicsRigidImmovable::GetHydroDynamForce(timePeriod& time)
 	hydroDynamForce =  hDFdelta * (1.0 / dt);
 	hydroDynamMoment = hDMdelta / dt;
 		
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
+		viscousStress += afl.viscousStress[i] * afl.tau[i];
 
 	time.second = omp_get_wtime();
 }//GetHydroDynamForce(...)
-
-void MechanicsRigidImmovable::FillAtt(Eigen::MatrixXd& col, Eigen::MatrixXd& rhs)
-{
-	for (int i = 0; i < afl.getNumberOfPanels(); ++i)
-		rhs(i, 0) = /*12*/0.5 * 0.5 * (afl.getV(i) + afl.getV(i + 1))*afl.tau[i];
-}

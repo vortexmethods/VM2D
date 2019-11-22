@@ -1,5 +1,5 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
 | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/20/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
@@ -20,10 +20,12 @@ nu = 0.00188225;
 //timeStart = 0.0;             //by default = 0.0
 timeStop = 500.0001;
 dt = 0.002;
-timeAccel = 0.2;               //by default = 0.0
-saveTXT = 0;                   //by default = 1
-saveVTK = 100;                 //by default = 0
-saveVP = 10;                  //by default = 0
+accelVel = RampCos(0.2);       //by default = RampLin(0.0)
+
+saveTXT = 0;                   //by default = 0
+saveVTK = 100;                 //by default = 100
+saveVP = 10;                   //by default = 0
+nameLength = 6;                //by default = 5
 
 //Wake Discretization Properties
 eps = 0.0030;
@@ -31,20 +33,15 @@ epscol = 0.0020;
 distFar = 25.0;                 //by default = 10.0
 delta = 5.e-6;                  //by default = 1.e-5
 vortexPerPanel = 1;             //by default = 1
+maxGamma = 0.0;                 //by default = 0.0
 
 //Numerical Schemes
-linearSystemSolver = 0;                     //0 is only available now 
-velocityComputation = velocityBiotSavart;   //velocityBiotSavart is only available now
-wakeMotionIntegrator = 0;                   //0 is only available now
+linearSystemSolver = linearSystemGauss;     
+velocityComputation = velocityBiotSavart;   
+panelsType = panelsRectilinear; 
+boundaryConditionSatisfaction = boundaryConstantLayerAverage;
 
 //Files and parameters
-airfoil = { "circle500"(basePoint = {0.0, 0.0}, 
-                        panelsType = panelsRectilinear, 
-                        boundaryConditionSatisfaction = boundaryConstantLayerAverage,
-                        mechanicalSystem=mech0),
-	    "circle200"(basePoint = {4.05, -1.25}, 
-			scale = 0.4,
-                        panelsType = panelsRectilinear, 
-                        boundaryConditionSatisfaction = boundaryConstantLayerAverage,
-                        mechanicalSystem=mech0)};
+airfoil = { "circle500"(basePoint = {0.0, 0.0}, mechanicalSystem=mech0),
+	        "circle200"(basePoint = {4.05, -1.25}, scale = 0.4, mechanicalSystem=mech0)};
 //fileWake = { "OblakoV1000" };              //by default={}

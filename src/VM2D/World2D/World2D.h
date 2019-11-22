@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #ifndef WORLD2D_H
@@ -65,8 +65,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	class World2D : public VMlib::WorldGen
 	{
@@ -79,6 +79,9 @@ namespace VM2D
 
 		/// Список умных указателей на формирователи граничных условий на профилях
 		std::vector<std::unique_ptr<Boundary>> boundary;
+
+		/// Список номеров, с которых начинаются элементы правой части (или матрицы) системы для профилей
+		std::vector<size_t> dispBoundaryInSystem;
 
 		/// Список умных указателей на типы механической системы для каждого профиля
 		std::vector<std::unique_ptr<Mechanics>> mechanics;
@@ -98,6 +101,9 @@ namespace VM2D
 		/// Матрица системы
 		Eigen::MatrixXd matr;
 
+		/// Матрица, состоящая из пар матриц, в которых хранятся касательные и нормальные компоненты интегралов от ядра
+		std::vector<std::vector<std::pair<Eigen::MatrixXd, Eigen::MatrixXd>>> IQ;
+
 		/// Обратная матрица
 		Eigen::MatrixXd invMatr;
 
@@ -111,7 +117,7 @@ namespace VM2D
 		const Passport& passport;
 
 		/// Объект, управляющий графическим ускорителем
-		Gpu cuda;
+		mutable Gpu cuda;
 
 	public:
 		/// \brief Возврат константной ссылки на объект профиля
@@ -148,6 +154,28 @@ namespace VM2D
 		/// \return количество граничных условий в задаче
 		size_t getNumberOfBoundary() const { return boundary.size(); };
 
+		/// \brief Возврат смещения в системе dispBoundaryInSystem
+		///
+		/// \param[in] i номер граничного условия, константная ссылка на которое возвращается
+		/// \return константную ссылку на i-е граничное условие
+		size_t getDispBoundaryInSystem(size_t i) const { return dispBoundaryInSystem[i]; };
+
+		/// \brief Возврат константной ссылки на measureVP
+		///
+		/// \return константную ссылку на вихревой след
+		const MeasureVP& getMeasureVP() const { return *measureVP; };
+
+		/// \brief Возврат неконстантной ссылки на measureVP
+		///
+		/// \return константную ссылку на вихревой след
+		MeasureVP& getNonConstMeasureVP() const { return *measureVP; };
+
+		/// \brief Возврат константной ссылки на объект механики
+		///
+		/// \param[in] i номер механики, константная ссылка на который возвращается
+		/// \return константную ссылку на i-ю механику
+		const Mechanics& getMechanics(size_t i) const { return *mechanics[i]; };
+
 		/// \brief Возврат константной ссылки на вихревой след
 		///
 		/// \return константную ссылку на вихревой след
@@ -178,6 +206,16 @@ namespace VM2D
 		/// \return константную ссылку на объект, связанный с видеокартой (GPU)
 		const Gpu& getCuda() const { return cuda; };
 
+		/// \brief Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU)
+		///
+		/// \return неконстантную ссылку на объект, связанный с видеокартой (GPU)
+		Gpu& getNonConstCuda() const { return cuda; };
+
+		/// \brief Возврат константной ссылки на объект, связанный с матрицей интегралов от (r-xi)/|r-xi|^2
+		///
+		/// \return константную ссылку на объект, связанный с матрицей интегралов от (r-xi)/|r-xi|^2
+		const std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& getIQ(size_t i, size_t j) const { return IQ[i][j]; };
+
 		/// \brief Возврат ссылки на временную статистику выполнения шага расчета по времени
 		///
 		/// \return ссылку на временную статистику выполнения шага расчета по времени
@@ -188,6 +226,11 @@ namespace VM2D
 		/// Вызывается в Step()
 		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
 		void SolveLinearSystem(timePeriod& time);
+
+		/// \brief Заполнение матрицы, состоящей из интегралов от (r-xi) / |r-xi|^2
+		///
+		/// Вызывается в Step()
+		void FillIQ();
 
 		/// \brief Заполнение матрицы системы для всех профилей
 		///
@@ -207,7 +250,7 @@ namespace VM2D
 		/// \param[in] dt шаг по времени
 		/// \param[out] convTime ссылка на промежуток времени для вычисления конвективных скоростей --- пару чисел (время начала и время конца операции)
 		/// \param[out] diffTime ссылка на промежуток времени для вычисления диффузионных скоростей --- пару чисел (время начала и время конца операции)
-		void CalcVortexVelo(double dt, timePeriod& convTime, timePeriod& diffTime);
+		void CalcVortexVelo(double dt, timePeriod& convTime, timePeriod& diffTime, timePeriod& vpTime);
 
 		/// \brief Вычисляем новые положения вихрей (в пелене и виртуальных)
 		///
@@ -236,6 +279,8 @@ namespace VM2D
 		/// Метод-обертка для вызова метода генерации заголовка файла нагрузок и заголовка файла положения (последнее --- если профиль движется) 
 		/// \param[in] mechanicsNumber номер профиля, для которого генерируется заголовок файла
 		void GenerateMechanicsHeader(size_t mechanicsNumber);
+
+
 
 		// Реализация виртуальных функций
 		virtual void Step() override;

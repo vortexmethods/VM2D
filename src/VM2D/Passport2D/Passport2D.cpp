@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #include "Passport2D.h"
@@ -43,6 +43,27 @@
 #include "StreamParser.h"
 
 using namespace VM2D;
+
+
+
+// Функция-множитель, позволяющая моделировать разгон
+double PhysicalProperties::accelCft() const
+{
+	switch (typeAccel.second)
+	{
+	case 0: //импульсный старт
+		return 1.0;
+	case 1: //разгон потока по линейному закону
+		return (timeProp.currTime < timeAccel) ? (timeProp.currTime / timeAccel) : 1.0;
+	case 2: //разгон потока по косинусоиде
+		return (timeProp.currTime < timeAccel) ? 0.5 * (1.0 - cos(PI * timeProp.currTime / timeAccel)) : 1.0;
+	}
+
+	return 1.0;
+}//accelCft()
+
+
+
 
 //Конструктор
 Passport::Passport(VMlib::LogStream& infoStream, const std::string& _problemName, const size_t _problemNumber, const std::string& _filePassport, const std::string& _mechanics, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars)
@@ -80,6 +101,7 @@ physicalProperties(timeDiscretizationProperties)
 	}
 }
 
+
 //Считывание всех параметров расчета из соответствующих потоков
 void Passport::GetAllParamsFromParser
 (
@@ -101,6 +123,7 @@ void Passport::GetAllParamsFromParser
 	parser->get("rho", physicalProperties.rho);
 	parser->get("vInf", physicalProperties.vInf);
 	parser->get("vRef", physicalProperties.vRef, &defaults::defaultVRef);
+	
 	if (physicalProperties.vRef == 0.0)
 	{
 		if (physicalProperties.vInf.length() == 0.0)
@@ -111,7 +134,41 @@ void Passport::GetAllParamsFromParser
 		physicalProperties.vRef = physicalProperties.vInf.length();
 	}
 
-	parser->get("timeAccel", physicalProperties.timeAccel, &defaults::defaultTimeAccel);
+	//Считывание схемы разгона потока
+	std::pair<std::pair<std::string, int>, std::string> velAccel;
+	bool defParam = parser->get("accelVel", velAccel, &defaults::defaultVelAccel);
+	if (velAccel.first.second != -1)
+	{
+		physicalProperties.typeAccel = velAccel.first;
+		std::stringstream sstr(velAccel.second);
+		std::istream& istr(sstr);
+		
+		std::unique_ptr<VMlib::StreamParser> parserAccel;
+		
+		parserAccel.reset(new VMlib::StreamParser(info, "parserAccel", istr, defaultStream, switcherStream, varsStream));
+		bool defParamTime = parserAccel->get("timeAccel", physicalProperties.timeAccel, &defaults::defaultTimeAccel, false);
+		parserAccel->get("_DEFVAR_0", physicalProperties.timeAccel, &physicalProperties.timeAccel, defParam && !defParamTime);
+	}
+	else
+	{
+		info('e') << "Velocity acceleration scheme <" << velAccel.first.first << "> is unknown" << std::endl;
+		exit(1);
+	}
+
+	/// \todo Удалить в следующих версиях. Добавлено для совместимости со старым синтаксисом задания разгона потока
+	if (!defParam)
+		parser->get("timeAccel", physicalProperties.timeAccel, &defaults::defaultTimeAccel);
+	else
+	{
+		double tempTimeAccel;
+		if (parser->get("timeAccel", tempTimeAccel, &defaults::defaultTimeAccel, false))
+		{
+			info('e') << "timeAccel parameter is set twice!" << std::endl;
+			exit(1);
+		}
+	}
+	
+	
 	parser->get("nu", physicalProperties.nu);
 
 	parser->get("timeStart", timeDiscretizationProperties.timeStart, &defaults::defaultTimeStart);
@@ -128,14 +185,16 @@ void Passport::GetAllParamsFromParser
 	parser->get("epscol", wakeDiscretizationProperties.epscol);
 	parser->get("distFar", wakeDiscretizationProperties.distFar, &defaults::defaultDistFar);
 	parser->get("delta", wakeDiscretizationProperties.delta, &defaults::defaultDelta);
-	parser->get("vortexPerPanel", wakeDiscretizationProperties.vortexPerPanel, &defaults::defaultVortexPerPanel);
+	parser->get("vortexPerPanel", wakeDiscretizationProperties.minVortexPerPanel, &defaults::defaultVortexPerPanel);
 	parser->get("maxGamma", wakeDiscretizationProperties.maxGamma, &defaults::defaultMaxGamma);
 	if (wakeDiscretizationProperties.maxGamma == 0.0)
 		wakeDiscretizationProperties.maxGamma = 1e+10;
 	
-	parser->get("linearSystemSolver", numericalSchemes.linearSystemSolver);
-	parser->get("velocityComputation", numericalSchemes.velocityComputation);
-	parser->get("wakeMotionIntegrator", numericalSchemes.wakeMotionIntegrator);
+	parser->get("linearSystemSolver", numericalSchemes.linearSystemSolver, &defaults::defaultLinearSystemSolver);
+	parser->get("velocityComputation", numericalSchemes.velocityComputation, &defaults::defaultVelocityComputation);
+	//parser->get("wakeMotionIntegrator", numericalSchemes.wakeMotionIntegrator);
+	parser->get("panelsType", numericalSchemes.panelsType, &defaults::defaultPanelsType, &defaults::defaultPanelsType);
+	parser->get("boundaryConditionSatisfaction", numericalSchemes.boundaryCondition, &defaults::defaultBoundaryCondition);
 	
 	parser->get("airfoilsDir", airfoilsDir, &defaults::defaultAirfoilsDir);
 	parser->get("wakesDir",    wakesDir,    &defaults::defaultWakesDir);
@@ -174,9 +233,8 @@ void Passport::GetAllParamsFromParser
 		parserAirfoil->get("scale", prm.scale, &defaults::defaultScale);
 		parserAirfoil->get("angle", prm.angle, &defaults::defaultAngle);
 		prm.angle *= PI / 180.0;
-		parserAirfoil->get("panelsType", prm.panelsType, &defaults::defaultPanelsType);
-		parserAirfoil->get("inverse", prm.inverse, &defaults::defaultInverse);
-		parserAirfoil->get("boundaryConditionSatisfaction", prm.boundaryCondition, &defaults::defaultBoundaryCondition);
+		
+		parserAirfoil->get("inverse", prm.inverse, &defaults::defaultInverse);		
 		parserAirfoil->get("mechanicalSystem", prm.mechanicalSystem, &defaults::defaultMechanicalSystem);
 
 		if (prm.mechanicalSystem == defaults::defaultMechanicalSystem)
@@ -222,6 +280,8 @@ void Passport::PrintAllParams()
 	info('-') << "rho = " << physicalProperties.rho << std::endl;
 	info('-') << "vInf = " << physicalProperties.vInf << std::endl;
 	info('-') << "vRef = " << physicalProperties.vRef << std::endl;
+	info('-') << "velAccel = " << physicalProperties.typeAccel.first << "( " << physicalProperties.timeAccel << " )" << std::endl;
+
 	info('-') << "nu = " << physicalProperties.nu << std::endl;
 	info('-') << "timeStart = " << timeDiscretizationProperties.timeStart << std::endl;
 	info('-') << "timeStop = " << timeDiscretizationProperties.timeStop << std::endl;
@@ -235,11 +295,13 @@ void Passport::PrintAllParams()
 	info('-') << "epscol = " << wakeDiscretizationProperties.epscol << std::endl;
 	info('-') << "distFar = " << wakeDiscretizationProperties.distFar << std::endl;
 	info('-') << "delta = " << wakeDiscretizationProperties.delta << std::endl;
-	info('-') << "vortexPerPanel = " << wakeDiscretizationProperties.vortexPerPanel << std::endl;
+	info('-') << "vortexPerPanel = " << wakeDiscretizationProperties.minVortexPerPanel << std::endl;
 	info('-') << "maxGamma = " << ((wakeDiscretizationProperties.maxGamma == 1e+10) ? 0.0 : wakeDiscretizationProperties.maxGamma) << std::endl;
-	info('-') << "linearSystemSolver = " << numericalSchemes.linearSystemSolver << std::endl;
-	info('-') << "velocityComputation = " << numericalSchemes.velocityComputation << std::endl;
-	info('-') << "wakeMotionIntegrator = " << numericalSchemes.wakeMotionIntegrator << std::endl;
+	info('-') << "linearSystemSolver = " << numericalSchemes.linearSystemSolver.first << std::endl;
+	info('-') << "velocityComputation = " << numericalSchemes.velocityComputation.first << std::endl;
+	//info('-') << "wakeMotionIntegrator = " << numericalSchemes.wakeMotionIntegrator << std::endl;
+	info('_') << "panelType = " << numericalSchemes.panelsType.first << std::endl;
+	info('_') << "boundaryCondition = " << numericalSchemes.boundaryCondition.first << std::endl;
 	
 	info('-') << "airfoilsDir = " << airfoilsDir << std::endl;
 	info('-') << "wakesDir = " << wakesDir << std::endl;
@@ -252,8 +314,6 @@ void Passport::PrintAllParams()
 		info('_') << "airfoil[" << q << "]_scale = " << airfoilParams[q].scale << std::endl;
 		info('_') << "airfoil[" << q << "]_angle = " << airfoilParams[q].angle << std::endl;
 		info('_') << "airfoil[" << q << "]_inverse = " << (airfoilParams[q].inverse ? "true": "false") << std::endl;
-		info('_') << "airfoil[" << q << "]_panelType = " << airfoilParams[q].panelsType << std::endl;
-		info('_') << "airfoil[" << q << "]_boundaryCondition = " << airfoilParams[q].boundaryCondition << std::endl;
 		info('_') << "airfoil[" << q << "]_mechanicalSystem = " << airfoilParams[q].mechanicalSystem << std::endl;
 	}
 

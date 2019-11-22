@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 
@@ -56,8 +56,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	class Gpu
 	{
@@ -111,7 +111,7 @@ namespace VM2D
 			void* dev_ptr;
 
 			cuReserveDevMem(dev_ptr, n * sizeof(T));
-			cuCopyFixedArray(dev_ptr, host_src, sizeof(size_t) * n);
+			cuCopyFixedArray(dev_ptr, host_src, sizeof(T) * n);
 
 			return (T*)dev_ptr;
 		}//ReserveDevMemAndCopyFixedArray(...)
@@ -133,11 +133,14 @@ namespace VM2D
 
 		/// Синхронизация состояния следа с графической картой
 		void RefreshWake();
-
-
+		
 		/// Синхронизация состояния профилей с графической картой
 		void RefreshAfls();
 		void RefreshVirtualWakes();
+
+		/// Обновление состояния сетки для вычисления VP
+		void RefreshVP();
+
 
 		// Ниже - данные для вычисления скоростей	
 
@@ -165,6 +168,7 @@ namespace VM2D
 		double** dev_ptr_ptr_attachedVortexSheet;
 		double** dev_ptr_ptr_attachedSourceSheet;
 
+		double** dev_ptr_ptr_viscousStresses;
 
 		/// Массив на хосте, содержащий число виртуальных вихрей на профилях; его длина равна числу профилей
 		std::vector<size_t> n_CUDA_virtWake;
@@ -180,6 +184,9 @@ namespace VM2D
 
 		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о следе (source)
 		size_t n_CUDA_source;
+
+		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о точках вычисления VP
+		size_t n_CUDA_velVP;
 
 
 #endif
@@ -225,6 +232,17 @@ namespace VM2D
 			cuSetMaxGamma(gam_);
 #endif
 		}
+
+		/// \brief Установка минимального epsAst
+		///
+		/// \param[in] gam_ максимально возможное значение epsAst
+		void setMinEpsAst2(double minEpsAst2_)
+		{
+#if defined(__CUDACC__) || defined(USE_CUDA)		
+			cuSetMinEpsAst2(minEpsAst2_);
+#endif
+		}
+
 	};
 
 }//namespace VM2D

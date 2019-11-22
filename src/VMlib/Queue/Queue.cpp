@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса Queue
 \author Марчевский Илья Константинович
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #if defined(_WIN32)
@@ -110,7 +110,7 @@ Queue::~Queue()
 }//~Queue()
 
 
-//Процедура постановка новых задач на отсчет и занятие процессоров
+//Процедура постановки новых задач на отсчет и занятие процессоров
 void Queue::TaskSplit()
 {		
 	//Пересылаем информацию о состоянии процессоров на все компьютеры
@@ -555,9 +555,9 @@ void Queue::RunConveyer()
 				deltaWallTime = MPI_Wtime() - kvantStartWallTime;
 			MPI_Bcast(&deltaWallTime, 1, MPI_DOUBLE, 0, parallel.commWork);		
 		}
-
 		//Проверка окончания кванта по времени (или завершения задачи)
 		while (deltaWallTime < kvantTime);
+
 	}//if (commWork != MPI_COMM_NULL)
 }//RunConveyer()
 
@@ -672,7 +672,15 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mec
 #endif
 
 						std::cout << "Copying files from folder \"" << initDir << "\" to \"" << dir << "\"" << std::endl;
-						system(command.c_str());
+						
+						int systemRet = system(command.c_str());
+						if(systemRet == -1)
+						{
+							// The system method failed
+							info('e') << "problem #" << i << " (" << dir << \
+										 ") copying passport system method failed" << std::endl;
+							exit(-1);
+						}					
 						std::cout << "Copying OK " << std::endl << std::endl;
 
 						//copyFile(pspFile, "./" + dir + "/" + pspFile);

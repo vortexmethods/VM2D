@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,11 +32,12 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #include <iostream>
+#include <algorithm>
 
 #include "cuLib2D.cuh"
 
@@ -54,19 +55,54 @@ __device__ __constant__ double maxGamma;
 __device__ __constant__ double collapseRightBorder;
 __device__ __constant__ double collapseScale;
 
+__device__ __constant__ double iDPIminEpsAst2;
+
 
 #define invdpi (0.15915494309189533576888376337251)
 #define pi (3.1415926535897932384626433832795)
+
+
+//#if __CUDA_ARCH__ < 600
+__device__ double myAtomicAdd(double* address, double val)
+{
+	unsigned long long int* address_as_ull =
+		(unsigned long long int*)address;
+	unsigned long long int old = *address_as_ull, assumed;
+
+	do {
+		assumed = old;
+		old = atomicCAS(address_as_ull, assumed,
+			__double_as_longlong(val +
+				__longlong_as_double(assumed)));
+
+		// Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
+	} while (assumed != old);
+
+	return __longlong_as_double(old);
+}
+//#endif
+
+
+
+__device__ inline double myMax(double x, double y)
+{
+	return (x > y) ? x : y;
+}
+
+__device__ inline double myMin(double x, double y)
+{
+	return (x > y) ? y : x;
+}
 
 
 /// \brief Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба)
 __device__ double CUboundDenom(double r2, double eps2)
 {
 #ifndef LAMBVORTEX
-	return fmax(r2, eps2);
+	return myMax(r2, eps2);
 #else
 	if (r2 > eps2)
-		return fmax(r2, eps2);
+		return r2;
 	else
 		return (r2 < 1e-10) ? 1e-10 : r2  / (1.0 - exp(-6.0*r2 / eps2));
 #endif
@@ -92,7 +128,8 @@ __global__ void CU_calc_conv_epsast(
 	size_t nsr, double* sr,
 	double eps2, double minRd,
 	double* vel, double* rad,
-	size_t nAfls, size_t* nVtxs, double** ptrVtxs)
+	size_t nAfls, size_t* nVtxs, double** ptrVtxs,
+	bool calcVelo, bool calcRadius)
 {
 	__shared__ double shx[CUBLOCK];
 	__shared__ double shy[CUBLOCK];
@@ -109,16 +146,18 @@ __global__ void CU_calc_conv_epsast(
 
 	double dx, dy, dr2;
 	double izn;
-
+		
+#ifndef TESTONLYVELO
 	double d_1 = 1e+5;
 	double d_2 = 1e+5;
 	double d_3 = 1e+5;
 	double d_0 = 1e+5;
 	double dst23, dst12, dst01;
+#endif	
 
 	//vortices
 	for (size_t j = 0; j < nvt; j += CUBLOCK)
-	{
+	{		
 		shx[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 0];
 		shy[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 1];
 		shg[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posG + 0];
@@ -127,190 +166,135 @@ __global__ void CU_calc_conv_epsast(
 	
 		for (size_t q = 0; q < CUBLOCK; ++q)
 		{
-			dx = ptx - shx[q];
-			dy = pty - shy[q];
-			dr2 = dx*dx + dy*dy;
-
-			izn = shg[q] / CUboundDenom(dr2, eps2); //Сглаживать надо!!!
-
-			velx -= dy * izn;
-			vely += dx * izn;
-
-			if (d_3 > dr2) 
-			{
-				dst23 = fmin(dr2, d_2);
-				d_3 = fmax(dr2, d_2);
-				
-				dst12 = fmin(dst23, d_1);
-				d_2 = fmax(dst23, d_1);
-				
-				dst01 = fmin(dst12, d_0);
-				d_1 = fmax(dst12, d_0);
-				d_0 = dst01;
-			}
-		}
-		__syncthreads();
-	}
-
-	//sources
-	for (size_t j = 0; j < nsr; j += CUBLOCK)
-	{
-		shx[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posR + 0];
-		shy[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posR + 1];
-		shg[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posG + 0] * accelCoeff;
-
-		__syncthreads();
-
-		for (size_t q = 0; q < CUBLOCK; ++q)
-		{
-			if (j + q < nsr)
+			if (j + q < nvt)
 			{
 				dx = ptx - shx[q];
 				dy = pty - shy[q];
 				dr2 = dx * dx + dy * dy;
 
-				izn = shg[q] / CUboundDenom(dr2, eps2); //Сглаживать надо!!!
+				if (calcVelo)
+				{
+					izn = shg[q] / CUboundDenom(dr2, eps2); //Сглаживать надо!!!
 
-				velx += dx * izn;
-				vely += dy * izn;
+					velx -= dy * izn;
+					vely += dx * izn;
+				}
+
+#ifndef TESTONLYVELO
+				if (calcRadius)
+				{
+					if (d_3 > dr2)
+					{
+						dst23 = myMin(dr2, d_2);
+						d_3 = myMax(dr2, d_2);
+
+						dst12 = myMin(dst23, d_1);
+						d_2 = myMax(dst23, d_1);
+
+						dst01 = myMin(dst12, d_0);
+						d_1 = myMax(dst12, d_0);
+						d_0 = dst01;
+					}
+				}
+#endif
 			}
 		}
 		__syncthreads();
 	}
 
-	
-	for (size_t q = 0; q < nAfls; ++q)
-	for (size_t j = 0; j < nVtxs[q]; j += CUBLOCK)
+
+	//sources
+	if (calcVelo)
 	{
-		shx[threadIdx.x] = ptrVtxs[q][(j + threadIdx.x)*sizeVort + posR + 0];
-		shy[threadIdx.x] = ptrVtxs[q][(j + threadIdx.x)*sizeVort + posR + 1];
-				
-		__syncthreads();
-
-		for (size_t q = 0; q < CUBLOCK; ++q)
+		for (size_t j = 0; j < nsr; j += CUBLOCK)
 		{
-			dx = ptx - shx[q];
-			dy = pty - shy[q];
-			dr2 = dx*dx + dy*dy;
-
-			if (d_3 > dr2) 
-			{
-				dst23 = fmin(dr2, d_2);
-				d_3 = fmax(dr2, d_2);
-
-				dst12 = fmin(dst23, d_1);
-				d_2 = fmax(dst23, d_1);
-
-				dst01 = fmin(dst12, d_0);
-				d_1 = fmax(dst12, d_0);
-				d_0 = dst01;
-			}
-		}
-		__syncthreads();
-	}
-
-	vel[2 * locI + 0] = velx * invdpi;
-	vel[2 * locI + 1] = vely * invdpi;
-	rad[locI] = fmax( sqrt( (d_1 + d_2 + d_3) / 3.0), minRd);
-}
-
-
-
-__global__ void CU_calc_only_epsast(
-	size_t disp, size_t len, double* pt,
-	size_t nvt, double* vt,
-	size_t nsr, double* sr,
-	double eps2, double minRd,
-	double* rad,
-	size_t nAfls, size_t* nVtxs, double** ptrVtxs)
-{
-	__shared__ double shx[CUBLOCK];
-	__shared__ double shy[CUBLOCK];
-
-	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
-	size_t i = disp + locI;
-
-	double ptx = pt[i*sizeVort + posR + 0];
-	double pty = pt[i*sizeVort + posR + 1];
-
-	double dx, dy, dr2;
-
-	double d_1 = 1e+5;
-	double d_2 = 1e+5;
-	double d_3 = 1e+5;
-	double d_0 = 1e+5;
-	double dst23, dst12, dst01;
-
-	//vortices
-	for (size_t j = 0; j < nvt; j += CUBLOCK)
-	{
-		shx[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 0];
-		shy[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 1];
-
-		__syncthreads();
-
-		for (size_t q = 0; q < CUBLOCK; ++q)
-		{
-			dx = ptx - shx[q];
-			dy = pty - shy[q];
-			dr2 = dx * dx + dy * dy;
-			
-			if (d_3 > dr2)
-			{
-				dst23 = fmin(dr2, d_2);
-				d_3 = fmax(dr2, d_2);
-
-				dst12 = fmin(dst23, d_1);
-				d_2 = fmax(dst23, d_1);
-
-				dst01 = fmin(dst12, d_0);
-				d_1 = fmax(dst12, d_0);
-				d_0 = dst01;
-			}
-		}
-		__syncthreads();
-	}
-	
-	for (size_t q = 0; q < nAfls; ++q)
-		for (size_t j = 0; j < nVtxs[q]; j += CUBLOCK)
-		{
-			shx[threadIdx.x] = ptrVtxs[q][(j + threadIdx.x)*sizeVort + posR + 0];
-			shy[threadIdx.x] = ptrVtxs[q][(j + threadIdx.x)*sizeVort + posR + 1];
+			shx[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posR + 0];
+			shy[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posR + 1];
+			shg[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posG + 0] * accelCoeff;
 
 			__syncthreads();
 
 			for (size_t q = 0; q < CUBLOCK; ++q)
 			{
-				dx = ptx - shx[q];
-				dy = pty - shy[q];
-				dr2 = dx * dx + dy * dy;
-
-				if (d_3 > dr2)
+				if (j + q < nsr)
 				{
-					dst23 = fmin(dr2, d_2);
-					d_3 = fmax(dr2, d_2);
+					dx = ptx - shx[q];
+					dy = pty - shy[q];
+					dr2 = dx * dx + dy * dy;
 
-					dst12 = fmin(dst23, d_1);
-					d_2 = fmax(dst23, d_1);
+					izn = shg[q] / CUboundDenom(dr2, eps2); //Сглаживать надо!!!
 
-					dst01 = fmin(dst12, d_0);
-					d_1 = fmax(dst12, d_0);
-					d_0 = dst01;
+					velx += dx * izn;
+					vely += dy * izn;
 				}
 			}
 			__syncthreads();
 		}
+	}
 
-	rad[locI] = fmax(sqrt((d_1 + d_2 + d_3) / 3.0), minRd);
+	if (calcRadius)
+	{
+#ifndef TESTONLYVELO	
+		for (size_t p = 0; p < nAfls; ++p)
+			for (size_t j = 0; j < nVtxs[p]; j += CUBLOCK)
+			{
+				shx[threadIdx.x] = ptrVtxs[p][(j + threadIdx.x)*sizeVort + posR + 0];
+				shy[threadIdx.x] = ptrVtxs[p][(j + threadIdx.x)*sizeVort + posR + 1];
+
+				__syncthreads();
+
+				for (size_t q = 0; q < CUBLOCK; ++q)
+				{
+					if (j + q < nVtxs[p])
+					{
+						dx = ptx - shx[q];
+						dy = pty - shy[q];
+						dr2 = dx * dx + dy * dy;
+
+
+						if (d_3 > dr2)
+						{
+							dst23 = myMin(dr2, d_2);
+							d_3 = myMax(dr2, d_2);
+
+							dst12 = myMin(dst23, d_1);
+							d_2 = myMax(dst23, d_1);
+
+							dst01 = myMin(dst12, d_0);
+							d_1 = myMax(dst12, d_0);
+							d_0 = dst01;
+						}
+					}
+				}
+				__syncthreads();
+			}
+#endif
+	}
+
+	
+	if (locI < len)
+	{
+		if (calcVelo)
+		{
+			vel[2 * locI + 0] = velx * invdpi;
+			vel[2 * locI + 1] = vely * invdpi;
+		}
+
+		if (calcRadius)
+		{
+#ifndef TESTONLYVELO
+			rad[locI] = myMax(sqrt((d_1 + d_2 + d_3) / 3.0), minRd);
+#endif
+		}
+	}
 }
-
 
 
 
 __global__ void CU_calc_conv_From_Panels(
 	size_t disp, size_t len, double* pt,
 	size_t npnl, double* r, double* freegamma, double* attgamma, double* attsource,
-	double eps2, 
+	double eps2,
 	double* vel)
 {
 	__shared__ double shx[CUBLOCK];
@@ -340,16 +324,16 @@ __global__ void CU_calc_conv_From_Panels(
 
 	for (size_t j = 0; j < npnl; j += CUBLOCK)
 	{
-		shx[threadIdx.x] = r[(j + threadIdx.x)*2 + 0];
-		shy[threadIdx.x] = r[(j + threadIdx.x)*2 + 1];
-		
+		shx[threadIdx.x] = r[(j + threadIdx.x) * 2 + 0];
+		shy[threadIdx.x] = r[(j + threadIdx.x) * 2 + 1];
+
 		rindexnext = ((j + threadIdx.x + 1) < npnl) ? j + threadIdx.x + 1 : 0;
 
 		shdx[threadIdx.x] = r[rindexnext * 2 + 0] - shx[threadIdx.x];
 		shdy[threadIdx.x] = r[rindexnext * 2 + 1] - shy[threadIdx.x];
 
 		shlen[threadIdx.x] = sqrt(shdx[threadIdx.x] * shdx[threadIdx.x] + shdy[threadIdx.x] * shdy[threadIdx.x]);
-		
+
 		shfreegamma[threadIdx.x] = freegamma[j + threadIdx.x];
 		shattgamma[threadIdx.x] = attgamma[j + threadIdx.x];
 		shattsource[threadIdx.x] = attsource[j + threadIdx.x];
@@ -366,34 +350,37 @@ __global__ void CU_calc_conv_From_Panels(
 				px = sx - shdx[q];
 				py = sy - shdy[q];
 
-				alpha = atan2(px*sy - py*sx, px*sx + py*sy);
+				alpha = atan2(px*sy - py * sx, px*sx + py * sy);
 
-				s2 = sx*sx + sy*sy;
-				p2 = px*px + py*py;
-				
+				s2 = sx * sx + sy * sy;
+				p2 = px * px + py * py;
+
 				if ((s2 > 1e-16) && (p2 > 1e-16))
 					lambda = 0.5*log(s2 / p2);
-				else 
+				else
 					lambda = 0.0;
 
 				taux = shdx[q] / shlen[q];
 				tauy = shdy[q] / shlen[q];
 
-				psix = alpha*tauy + lambda*taux;
-				psiy = -alpha*taux + lambda*tauy;
+				psix = alpha * tauy + lambda * taux;
+				psiy = -alpha * taux + lambda * tauy;
 
 				//kpsix = -psiy;
 				//kpsiy =  psix;
 
 				velx += (shfreegamma[q] + shattgamma[q]) * (-psiy) + shattsource[q] * psix;
-				vely += (shfreegamma[q] + shattgamma[q]) * (psix)+shattsource[q] * psiy;
+				vely += (shfreegamma[q] + shattgamma[q]) * ( psix) + shattsource[q] * psiy;
 			}
 		}
 		__syncthreads();
-	}	
+	}
 
-	vel[2 * locI + 0] = velx * invdpi;
-	vel[2 * locI + 1] = vely * invdpi;
+	if (locI < len)
+	{
+		vel[2 * locI + 0] = velx * invdpi;
+		vel[2 * locI + 1] = vely * invdpi;
+	}
 }
 
 
@@ -421,7 +408,7 @@ __global__ void CU_calc_I1I2(
 	double dx, dy, dr;
 	double expr, exprdivdr;
 	
-	double diffRadius = 8.0*rdi;
+	double diffRadius = 8.0 * rdi;
 
 	double left = ptx - diffRadius;
 	double right = ptx + diffRadius;
@@ -436,28 +423,35 @@ __global__ void CU_calc_I1I2(
 
 		for (size_t q = 0; q < CUBLOCK; ++q)
 		{
-			if ((shx[q] < right) && (shx[q] > left))
+			if (j + q < nvt)
 			{
-				dx = ptx - shx[q];
-				dy = pty - shy[q];
-
-				dr = sqrt(dx*dx + dy*dy);
-
-				if ((dr < diffRadius) && (dr > 1e-10))
+				if ((shx[q] < right) && (shx[q] > left))
 				{
-					expr = shg[q] * exp(-dr / rdi);
-					exprdivdr = expr / dr;
-					val1 += expr;
-					val2x += exprdivdr * dx;
-					val2y += exprdivdr * dy;
-				}//if (rij>1e-10)
+					dx = ptx - shx[q];
+					dy = pty - shy[q];
+
+					dr = sqrt(dx*dx + dy * dy);
+
+					if ((dr < diffRadius) && (dr > 1e-10))
+					{
+						expr = shg[q] * exp(-dr / rdi);
+						exprdivdr = expr / dr;
+						val1 += expr;
+						val2x += exprdivdr * dx;
+						val2y += exprdivdr * dy;
+					}//if (rij>1e-10)
+				}
 			}
 		}
 		__syncthreads();
 	}
-	i1[locI] = val1;
-	i2[2 * locI + 0] = val2x;
-	i2[2 * locI + 1] = val2y;
+
+	if (locI < len)
+	{
+		i1[locI] = val1;
+		i2[2 * locI + 0] = val2x;
+		i2[2 * locI + 1] = val2y;
+	}
 }
 
 
@@ -506,28 +500,35 @@ __global__ void CU_calc_I1I2mesh(
 
 		for (size_t q = 0; q < CUBLOCK; ++q)
 		{
-			if ((abs(imshx-shmshx[q])<25) && (abs(imshy - shmshy[q])<25))
+			if (j + q < nvt)
 			{
-				dx = ptx - shx[q];
-				dy = pty - shy[q];
-
-				dr = sqrt(dx*dx + dy*dy);
-
-				if ((dr < diffRadius) && (dr > 1e-10))
+				if ((abs(imshx - shmshx[q]) < 25) && (abs(imshy - shmshy[q]) < 25))
 				{
-					expr = shg[q] * exp(-dr / rdi);
-					exprdivdr = expr / dr;
-					val1 += expr;
-					val2x += exprdivdr * dx;
-					val2y += exprdivdr * dy;
-				}//if (rij>1e-10)
+					dx = ptx - shx[q];
+					dy = pty - shy[q];
+
+					dr = sqrt(dx*dx + dy * dy);
+
+					if ((dr < diffRadius) && (dr > 1e-10))
+					{
+						expr = shg[q] * exp(-dr / rdi);
+						exprdivdr = expr / dr;
+						val1 += expr;
+						val2x += exprdivdr * dx;
+						val2y += exprdivdr * dy;
+					}//if (rij>1e-10)
+				}
 			}
 		}
 		__syncthreads();
 	}
-	i1[locI] = val1;
-	i2[2 * locI + 0] = val2x;
-	i2[2 * locI + 1] = val2y;
+
+	if (locI < len)
+	{
+		i1[locI] = val1;
+		i2[2 * locI + 0] = val2x;
+		i2[2 * locI + 1] = val2y;
+	}
 }
 
 
@@ -538,6 +539,11 @@ __global__ void CU_calc_I1I2FromPanels(
 	double* i1, double* i2,
 	double* rd)
 {
+	//if ((blockIdx.x == 0) && (threadIdx.x == 0))
+	//{
+	//	printf("sizeVort = %llu, posR = %llu, posG = %llu\n", sizeVort, posR, posG);
+	//}
+
 	__shared__ double shx[CUBLOCK];
 	__shared__ double shy[CUBLOCK];
 	__shared__ double shxp1[CUBLOCK];
@@ -551,6 +557,7 @@ __global__ void CU_calc_I1I2FromPanels(
 
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
+	   
 
 	double ptx = pt[i*sizeVort + posR + 0];
 	double pty = pt[i*sizeVort + posR + 1];
@@ -576,18 +583,18 @@ __global__ void CU_calc_I1I2FromPanels(
 
 	for (size_t j = 0; j < npnl; j += CUBLOCK)
 	{
-		shx[threadIdx.x] = r[(j + threadIdx.x)*2 + 0];
-		shy[threadIdx.x] = r[(j + threadIdx.x)*2 + 1];		
-	
+		shx[threadIdx.x] = r[(j + threadIdx.x) * 2 + 0];
+		shy[threadIdx.x] = r[(j + threadIdx.x) * 2 + 1];
+
 		rindexnext = ((j + threadIdx.x + 1) < npnl) ? j + threadIdx.x + 1 : 0;
-		
+
 		shxp1[threadIdx.x] = r[rindexnext * 2 + 0];
 		shyp1[threadIdx.x] = r[rindexnext * 2 + 1];
 
 		shtaux[threadIdx.x] = shxp1[threadIdx.x] - shx[threadIdx.x];
 		shtauy[threadIdx.x] = shyp1[threadIdx.x] - shy[threadIdx.x];
 
-		shlen[threadIdx.x] = sqrt(shtaux[threadIdx.x] * shtaux[threadIdx.x] + shtauy[threadIdx.x] * shtauy[threadIdx.x] );
+		shlen[threadIdx.x] = sqrt(shtaux[threadIdx.x] * shtaux[threadIdx.x] + shtauy[threadIdx.x] * shtauy[threadIdx.x]);
 
 		shptG[threadIdx.x] = freegamma[j + threadIdx.x] * shlen[threadIdx.x] / nQuadPt;
 
@@ -595,37 +602,44 @@ __global__ void CU_calc_I1I2FromPanels(
 
 		for (size_t q = 0; q < CUBLOCK; ++q)
 		{
-			double xcnt = 0.5*(shx[q] + shxp1[q]);
-			if ((xcnt < right) && (xcnt > left))
+			if (j + q < npnl)
 			{
-				for (int s = 0; s < nQuadPt; ++s)
+				double xcnt = 0.5*(shx[q] + shxp1[q]);
+				if ((xcnt < right) && (xcnt > left))
 				{
-					mn = (s + 0.5) / nQuadPt;
-					x0 = shx[q] + shtaux[q] * mn;
-					y0 = shy[q] + shtauy[q] * mn;
-
-
-					dx = ptx - x0;
-					dy = pty - y0;
-
-					dr = sqrt(dx*dx + dy*dy);
-
-					if ((dr < diffRadius) && (dr > 1e-10))
+					for (int s = 0; s < nQuadPt; ++s)
 					{
-						expr = shptG[q] * exp(-dr / rdi);
-						exprdivdr = expr / dr;
-						val1 += expr;
-						val2x += exprdivdr * dx;
-						val2y += exprdivdr * dy;
-					}//if (rij>1e-10)
+						mn = (s + 0.5) / nQuadPt;
+						x0 = shx[q] + shtaux[q] * mn;
+						y0 = shy[q] + shtauy[q] * mn;
+
+
+						dx = ptx - x0;
+						dy = pty - y0;
+
+						dr = sqrt(dx*dx + dy * dy);
+
+						if ((dr < diffRadius) && (dr > 1e-10))
+						{
+							expr = shptG[q] * exp(-dr / rdi);
+							exprdivdr = expr / dr;
+							val1 += expr;
+							val2x += exprdivdr * dx;
+							val2y += exprdivdr * dy;
+						}//if (rij>1e-10)
+					}
 				}
 			}
 		}
 		__syncthreads();
 	}
-	i1[locI] = val1;
-	i2[2 * locI + 0] = val2x;
-	i2[2 * locI + 1] = val2y;
+	
+	if (locI < len)
+	{
+		i1[locI] = val1;
+		i2[2 * locI + 0] = val2x;
+		i2[2 * locI + 1] = val2y;
+	}
 }
 
 
@@ -635,13 +649,15 @@ __global__ void CU_calc_I0I3(
 	size_t disp, size_t len, double* pt,
 	size_t nvt, double* vt,
 	double* i0, double* i3,
-	double* rd)
+	double* rd,
+	double* visstr)
 {
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
 
 	double ptx = pt[i*sizeVort + posR + 0];
 	double pty = pt[i*sizeVort + posR + 1];
+	double ptg = pt[i*sizeVort + posG + 0];
 	double rdi = rd[i];
 
 	double val0 = 0.0;
@@ -664,121 +680,158 @@ __global__ void CU_calc_I0I3(
 	int new_n;
 	double xi_mx, xi_my, lxi_m;
 	double mnog1;
+	double vs;
 
 	int vtindexnext;
 
-	for (size_t j = 0; j < nvt; ++j)
+	if (i < len)
 	{
-		begx = vt[j * 2 + 0];
-		begy = vt[j * 2 + 1];
-
-		vtindexnext = ((j + 1) < nvt) ? j + 1 : 0;
-
-		endx = vt[vtindexnext * 2 + 0];
-		endy = vt[vtindexnext * 2 + 1];
-
-		qx = ptx - 0.5 * (begx + endx);
-		qy = pty - 0.5 * (begy + endy);
-
-		lenj = sqrt((endx - begx)*(endx - begx) + (endy - begy)*(endy - begy));
-
-		taux = (endx - begx) / lenj;
-		tauy = (endy - begy) / lenj;
-
-		s = qx * taux + qy * tauy;
-
-		normx = tauy;
-		normy = -taux;
-
-		d = sqrt(qx*qx + qy*qy);
-
-		if (d < 50.0 * lenj)	//Почему зависит от длины панели???
+		for (size_t j = 0; j < nvt; ++j)
 		{
-			v0x = taux * lenj;
-			v0y = tauy * lenj;
+			begx = vt[j * 2 + 0];
+			begy = vt[j * 2 + 1];
 
-			if (d > 5.0 * lenj)
+			vtindexnext = ((j + 1) < nvt) ? j + 1 : 0;
+
+			endx = vt[vtindexnext * 2 + 0];
+			endy = vt[vtindexnext * 2 + 1];
+
+			vs = 0.0;
+
+			qx = ptx - 0.5 * (begx + endx);
+			qy = pty - 0.5 * (begy + endy);
+
+			lenj = sqrt((endx - begx)*(endx - begx) + (endy - begy)*(endy - begy));
+
+			taux = (endx - begx) / lenj;
+			tauy = (endy - begy) / lenj;
+
+			s = qx * taux + qy * tauy;
+
+			normx = tauy;
+			normy = -taux;
+
+			d = sqrt(qx*qx + qy * qy);
+
+			if (d < 50.0 * lenj)	//Почему зависит от длины панели???
 			{
-				xix = qx * iDDomRad;
-				xiy = qy * iDDomRad;
-				lxi = sqrt(xix*xix + xiy*xiy);
+				v0x = taux * lenj;
+				v0y = tauy * lenj;
 
-				expon = exp(-lxi)*lenj;
-				mnx = normx*expon;
-				mny = normy*expon;
-
-				if (val0 != -pi * rdi)
+				if (d > 5.0 * lenj)
 				{
-					val0 += (xix * mnx + xiy * mny) * (lxi + 1.0) / (lxi*lxi);
-					val3x += mnx;
-					val3y += mny;
-				}
+					xix = qx * iDDomRad;
+					xiy = qy * iDDomRad;
+					lxi = sqrt(xix*xix + xiy * xiy);
 
-				//viscousStress[j] += locPoints[i].g() * expon * iDPIepscol2;
-			}
-			else if ((d <= 5.0 * lenj) && (d >= 0.1 * lenj))
-			{
-				//vs = 0.0;
-				//new_n = 100;
-				new_n = (int)(ceil(5.0 * lenj / d));
-
-				hx = v0x / new_n;
-				hy = v0y / new_n;
-
-				for (int m = 0; m < new_n; m++)
-				{
-					xi_mx = (ptx - (begx + hx * (m + 0.5))) * iDDomRad;
-					xi_my = (pty - (begy + hy * (m + 0.5))) * iDDomRad;
-
-					lxi_m = sqrt(xi_mx*xi_mx + xi_my*xi_my);
-
-					lenj_m = lenj / new_n;
-					expon = exp(-lxi_m)*lenj_m;
-					
-
+					expon = exp(-lxi)*lenj;
 					mnx = normx * expon;
 					mny = normy * expon;
 
 					if (val0 != -pi * rdi)
 					{
-						val0 += (xi_mx*mnx + xi_my*mny) * (lxi_m + 1.0) / (lxi_m*lxi_m);
+						val0 += (xix * mnx + xiy * mny) * (lxi + 1.0) / (lxi*lxi);
 						val3x += mnx;
 						val3y += mny;
 					}
-					
-				}//for m
-			}
-			else if (d <= 0.1 * lenj)
-			{
-				val0 = -pi * rdi;
-				
-				if (fabs(s) > 0.5 * lenj)
-				{
-					mnog1 = 2.0 * rdi * (exp(-fabs(s)  * iDDomRad) * sinh(lenj * iDDomRad / 2.0));
-					val3x = mnog1 * normx;
-					val3y = mnog1 * normy;
+
+					vs = ptg * expon * iDPIminEpsAst2;
 				}
-				else
+				else if ((d <= 5.0 * lenj) && (d >= 0.1 * lenj))
 				{
-					mnog1 = 2.0 * rdi * (1.0 - exp(-lenj * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
-					val3x = mnog1 * normx;
-					val3y = mnog1 * normy;			
+					vs = 0.0;
+					//new_n = 100;
+					new_n = (int)(ceil(5.0 * lenj / d));
+
+					hx = v0x / new_n;
+					hy = v0y / new_n;
+
+					for (int m = 0; m < new_n; m++)
+					{
+						xi_mx = (ptx - (begx + hx * (m + 0.5))) * iDDomRad;
+						xi_my = (pty - (begy + hy * (m + 0.5))) * iDDomRad;
+
+						lxi_m = sqrt(xi_mx*xi_mx + xi_my * xi_my);
+
+						lenj_m = lenj / new_n;
+						expon = exp(-lxi_m)*lenj_m;
+
+
+						mnx = normx * expon;
+						mny = normy * expon;
+
+						if (val0 != -pi * rdi)
+						{
+							val0 += (xi_mx*mnx + xi_my * mny) * (lxi_m + 1.0) / (lxi_m*lxi_m);
+							val3x += mnx;
+							val3y += mny;
+						}
+
+						vs += expon;
+					}//for m
+					vs *= ptg * iDPIminEpsAst2;
 				}
-				break;
+				else if (d <= 0.1 * lenj)
+				{
+					if (val0 != -pi * rdi)
+					{
+						val0 = -pi * rdi;
 
-			}
-		}//if d<50 len 
+						if (fabs(s) > 0.5 * lenj)
+						{
+							mnog1 = 2.0 * rdi * (exp(-fabs(s)  * iDDomRad) * sinh(lenj * iDDomRad / 2.0));
+							val3x = mnog1 * normx;
+							val3y = mnog1 * normy;
+						}
+						else
+						{
+							mnog1 = 2.0 * rdi * (1.0 - exp(-lenj * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
+							val3x = mnog1 * normx;
+							val3y = mnog1 * normy;
+						}
+					}
 
-	}//for j
+					vs = 0.0;
+					//new_n = 100;
+					new_n = (int)(ceil(5.0 * lenj / d));
 
-	i0[locI] = val0;
-	i3[2 * locI + 0] = val3x;
-	i3[2 * locI + 1] = val3y;
+					hx = v0x / new_n;
+					hy = v0y / new_n;
+
+					for (int m = 0; m < new_n; m++)
+					{
+						xi_mx = (ptx - (begx + hx * (m + 0.5))) * iDDomRad;
+						xi_my = (pty - (begy + hy * (m + 0.5))) * iDDomRad;
+
+						lxi_m = sqrt(xi_mx*xi_mx + xi_my * xi_my);
+
+						lenj_m = lenj / new_n;
+						expon = exp(-lxi_m)*lenj_m;
+						vs += expon;
+					}//for m
+					vs *= ptg * iDPIminEpsAst2;
+
+
+					//break;
+
+				}
+			}//if d<50 len 
+
+			
+
+			myAtomicAdd(visstr + j, vs);
+
+
+		}//for j
+	}
+
+	if (locI < len)
+	{
+		i0[locI] = val0;
+		i3[2 * locI + 0] = val3x;
+		i3[2 * locI + 1] = val3y;
+	}
 }
-
-
-
-
 
 
 
@@ -822,16 +875,19 @@ __global__ void CU_calc_RHS(
 
 		for (size_t q = 0; q < CUBLOCK; ++q)
 		{
-			sx = shx[q] - begx;
-			sy = shy[q] - begy;
+			if (j + q < nvt)
+			{
+				sx = shx[q] - begx;
+				sy = shy[q] - begy;
 
-			px = shx[q] - endx;
-			py = shy[q] - endy;
+				px = shx[q] - endx;
+				py = shy[q] - endy;
 
-			alpha = atan2(px*sy - py*sx, px*sx + py*sy);
-		
-			tempVel = shg[q] * alpha;
-			val -= tempVel;
+				alpha = atan2(px*sy - py * sx, px*sx + py * sy);
+
+				tempVel = shg[q] * alpha;
+				val -= tempVel;
+			}
 		}
 		__syncthreads();
 	}
@@ -866,7 +922,8 @@ __global__ void CU_calc_RHS(
 
 	val *= invdpi / dlen;
 
-	rhs[locI] = val;
+	if (locI < len)
+		rhs[locI] = val;
 }
 
 
@@ -911,9 +968,9 @@ __global__ void CU_calc_nei(
 		double ig = pt[i*sizeVort + posG + 0];
 		double jg;
 
-		double cftmax2 = fmax(1.0, (ipx-collapseRightBorder) / collapseScale);
+		double cftmax = myMax(1.0, (ipx-collapseRightBorder) / collapseScale);
 		
-		cftmax2 *= cftmax2;
+		double cftmax2 = cftmax * cftmax;
 
 		r2test = (type == 1) ? 4.0*epsCol2 * cftmax2 : epsCol2 * cftmax2;
 
@@ -940,7 +997,7 @@ __global__ void CU_calc_nei(
 
 				//printf("max+gamma=%f\n", maxGamma);
 
-				cond = (r2 < r2test) && ((type == 1) ? ig*jg < 0 : (ig*jg > 0) && (fabs(ig + jg) < maxGamma));
+				cond = (r2 < r2test) && ((type == 1) ? ig*jg < 0 : (ig*jg > 0) && (fabs(ig + jg) < cftmax * maxGamma));
 				//cond = (r2 < r2test);
 				if (cond)
 				{
@@ -1013,6 +1070,17 @@ void cuSetMaxGamma(double gam_)
 		std::cout << cudaGetErrorString(err1) << " (erSetMaxGamma01)" << std::endl;	
 }
 
+
+void cuSetMinEpsAst2(double minEpsAst2_)
+{
+	double tmp = 2.0 * invdpi / minEpsAst2_;
+	cudaError_t err1 = cudaMemcpyToSymbol(iDPIminEpsAst2, &tmp, sizeof(double));
+
+	if (err1 != cudaSuccess)
+		std::cout << cudaGetErrorString(err1) << " (erSetMinEpsAst2)" << std::endl;
+
+}
+
 void cuReserveDevMem(void*& ptr, size_t nBytes)
 {
 	cudaError_t err1 = cudaMalloc(&ptr, nBytes);
@@ -1066,14 +1134,11 @@ void cuDeleteFromDev(void* devPtr)
 }
 
 /////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double minRd, double eps2, bool onlyRadius)
+void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double minRd, double eps2, bool calcVelo, bool calcRadius)
 {	
 	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
 
-	if (!onlyRadius)
-		CU_calc_conv_epsast << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, nsr, sr, eps2, minRd, vel, rd, nAfls, nVtxs, ptrVtxs);
-	else
-		CU_calc_only_epsast << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, nsr, sr, eps2, minRd, rd, nAfls, nVtxs, ptrVtxs);
+	CU_calc_conv_epsast <<< blocks, threads >>> (myDisp, myLen, pt, nvt, vt, nsr, sr, eps2, minRd, vel, rd, nAfls, nVtxs, ptrVtxs, calcVelo, calcRadius);
 
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
@@ -1129,11 +1194,11 @@ void cuCalculateDiffVeloWakeFromPanels(size_t myDisp, size_t myLen, double* pt, 
 }
 
 
-void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd)
+void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* visstr)
 {
 	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
-	CU_calc_I0I3 << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, i0, i3, rd);
-
+	CU_calc_I0I3 << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, i0, i3, rd, visstr);
+	
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
 		std::cout << cudaGetErrorString(err1) << " (erCU_calc_I0I31)" << std::endl;

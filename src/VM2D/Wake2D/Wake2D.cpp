@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #if defined(_WIN32)
@@ -56,6 +56,7 @@
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "World2D.h"
+#include <algorithm>
 
 using namespace VM2D;
 
@@ -172,7 +173,6 @@ void Wake::SaveKadrVtk(const std::vector<Vortex2D>& outVtx, const std::string& d
 
 bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough)
 {
-
 	const double porog_r = 1e-12;
 	
 	double minDist = 1.0E+10; //расстояние до пробиваемой панели
@@ -185,53 +185,110 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 	//если внутри габ. прямоугольника - проводим контроль
 	bool hit = false;
 
-	//Определение прямой: Ax+By+D=0 - перемещение вихря
-	double A = newPos[1] - oldPos[1];
-	double B = oldPos[0] - newPos[0];
-	double D = oldPos[1] * newPos[0] - oldPos[0] * newPos[1];
+	std::pair<double, double> gabPointX = std::minmax(newPos[0], oldPos[0]);
+	std::pair<double, double> gabPointY = std::minmax(newPos[1], oldPos[1]);
 
-	double A1, B1, D1;
+	std::pair<double, double> gabPanelX, gabPanelY;
 
 	//Проверка на пересечение
 	double r0 = 0, r1 = 0, r2 = 0, r3 = 0;
+
+	int cnt = 0;
 	for (size_t j = 0; j < afl.getNumberOfPanels(); ++j)
 	{
-		r0 = A*afl.getR(j)[0] + B*afl.getR(j)[1] + D;
-		r1 = A*afl.getR(j + 1)[0] + B*afl.getR(j + 1)[1] + D;
+		const Point2D& aflRj = afl.getR(j);
+		const Point2D& aflRj1 = afl.getR(j + 1);
 
-		if (fabs(r0) < porog_r) r0 = 0.0;
-		if (fabs(r1)<porog_r) r1 = 0.0;
+//		gabPanelX = std::minmax(aflRj[0], aflRj1[0]);
+//		gabPanelY = std::minmax(aflRj[1], aflRj1[1]);
 
-		if (r0*r1>0)
-			continue;
-
-		//Определение прямой:A1x+B1y+D1=0 - панель
-		A1 = afl.getR(j + 1)[1] - afl.getR(j)[1];
-		B1 = afl.getR(j)[0] - afl.getR(j + 1)[0];
-		D1 = afl.getR(j)[1] * afl.getR(j + 1)[0] - afl.getR(j)[0] * afl.getR(j + 1)[1];
-
-		r2 = A1*oldPos[0] + B1*oldPos[1] + D1;
-		r3 = A1*newPos[0] + B1*newPos[1] + D1;
-
-		if (fabs(r2) < porog_r) r2 = 0.0;
-		if (fabs(r3) < porog_r) r3 = 0.0;
-
-		if (r2*r3 > 0)
-			continue;
-				
-		hit = true;// пробила!
-		double d2 = (oldPos[0] - (B*D1 - D*B1) / (A*B1 - B*A1))*(oldPos[0] - (B*D1 - D*B1) / (A*B1 - B*A1)) + \
-			(oldPos[1] - (A1*D - D1*A) / (A*B1 - B*A1))*(oldPos[1] - (A1*D - D1*A) / (A*B1 - B*A1));
-		
-		if (d2 < minDist)
-		{
-			minDist = d2;
-			panThrough = j;
-		}//if d2
+//		if ((gabPointX.second >= gabPanelX.first) && (gabPanelX.second >= gabPointX.first) && (gabPointY.second >= gabPanelY.first) && (gabPanelY.second >= gabPointY.first))
+//		{
+			if ((((aflRj - oldPos) ^ (newPos - oldPos)) * ((aflRj1 - oldPos) ^ (newPos - oldPos)) <= 0) && \
+				(((oldPos - aflRj) ^ (aflRj1 - aflRj)) * ((newPos - aflRj) ^ (aflRj1 - aflRj)) <= 0))
+			{
+				hit = true;
+				panThrough = j;
+				break;
+			}
+//		}
+//		else { ++cnt; }
 	}//for j
+
+//	std::cout << cnt << std::endl;
 
 	return hit;
 }//MoveInside(...)
+
+
+//bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough)
+//{
+//	const double porog_r = 1e-12;
+//
+//	double minDist = 1.0E+10; //расстояние до пробиваемой панели
+//	panThrough = -1;
+//
+//	//проверка габ. прямоугольника
+//	if (afl.isOutsideGabarits(newPos) && afl.isOutsideGabarits(oldPos))
+//		return false;
+//
+//	//если внутри габ. прямоугольника - проводим контроль
+//	bool hit = false;
+//
+//	//Определение прямой: Ax+By+D=0 - перемещение вихря
+//	double A = newPos[1] - oldPos[1];
+//	double B = oldPos[0] - newPos[0];
+//	double D = oldPos[1] * newPos[0] - oldPos[0] * newPos[1];
+//
+//	double A1, B1, D1;
+//
+//	std::pair<double, double> gabPointX = std::minmax(newPos[0], oldPos[0]);
+//	std::pair<double, double> gabPointY = std::minmax(newPos[1], oldPos[1]);
+//
+//	std::pair<double, double> gabPanelX, gabPanelY;
+//
+//	//Проверка на пересечение
+//	double r0 = 0, r1 = 0, r2 = 0, r3 = 0;
+//
+//	for (size_t j = 0; j < afl.getNumberOfPanels(); ++j)
+//	{
+//		r0 = A * afl.getR(j)[0] + B * afl.getR(j)[1] + D;
+//		r1 = A * afl.getR(j + 1)[0] + B * afl.getR(j + 1)[1] + D;
+//
+//		if (fabs(r0) < porog_r) r0 = 0.0;
+//		if (fabs(r1) < porog_r) r1 = 0.0;
+//
+//		if (r0*r1 > 0)
+//			continue;
+//
+//		//Определение прямой:A1x+B1y+D1=0 - панель
+//		A1 = afl.getR(j + 1)[1] - afl.getR(j)[1];
+//		B1 = afl.getR(j)[0] - afl.getR(j + 1)[0];
+//		D1 = afl.getR(j)[1] * afl.getR(j + 1)[0] - afl.getR(j)[0] * afl.getR(j + 1)[1];
+//
+//		r2 = A1 * oldPos[0] + B1 * oldPos[1] + D1;
+//		r3 = A1 * newPos[0] + B1 * newPos[1] + D1;
+//
+//		if (fabs(r2) < porog_r) r2 = 0.0;
+//		if (fabs(r3) < porog_r) r3 = 0.0;
+//
+//		if (r2*r3 > 0)
+//			continue;
+//
+//		hit = true;// пробила!
+//		double d2 = (oldPos[0] - (B*D1 - D * B1) / (A*B1 - B * A1))*(oldPos[0] - (B*D1 - D * B1) / (A*B1 - B * A1)) + \
+//			(oldPos[1] - (A1*D - D1 * A) / (A*B1 - B * A1))*(oldPos[1] - (A1*D - D1 * A) / (A*B1 - B * A1));
+//
+//		if (d2 < minDist)
+//		{
+//			minDist = d2;
+//			panThrough = j;
+//		}//if d2
+//	}//for j
+//
+//
+//	return hit;
+//}//MoveInside(...)
 
 bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, size_t& panThrough)
 {
@@ -272,10 +329,54 @@ bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos
 		angle += atan2(sn, cs);
 	}//for i
 
-	hit = ((angle > 3.00) || (angle < -3.00));
+	hit = ((angle > 3.14) || (angle < -3.14));
 
 	return hit;
 }//MoveInsideMovingBoundary(...)
+
+//bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, size_t& panThrough)
+//{
+//	panThrough = -1;
+//
+//	/// \todo сравнить производительности двух inside-ов
+//
+//	//проверка габ. прямоугольника
+//	if (afl.isOutsideGabarits(newPos) && afl.isOutsideGabarits(oldPos))
+//		return false;
+//
+//	bool hit = false;
+//
+//	double angle = 0;
+//	double cs, sn;
+//
+//	double dist2 = 1000000000.0;
+//
+//	for (int i = 0; i < afl.getNumberOfPanels(); i++)
+//	{
+//		Point2D v1, v2, vv;
+//		v1 = afl.getR(i) - newPos;
+//
+//		v2 = afl.getR(i + 1) - newPos;
+//
+//		vv = afl.getR(i + 1) - afl.getR(i);
+//
+//		double dst = v1.length2() + v2.length2();
+//		if (dst < dist2)
+//		{
+//			dist2 = dst;
+//			panThrough = i;
+//		}
+//
+//		cs = v1 * v2;
+//		sn = v1 ^ v2;
+//
+//		angle += atan2(sn, cs);
+//	}//for i
+//
+//	hit = ((angle > 3.00) || (angle < -3.00));
+//
+//	return hit;
+//}//MoveInsideMovingBoundary(...)
 
 
 
@@ -394,13 +495,13 @@ void Wake::GetPairs(int type)
 				switch (type)
 				{
 					case 0: 
-						found = ( fabs(vtxI.g()*vtxK.g()) != 0.0) && (fabs(vtxI.g() + vtxK.g()) < maxG);
+						found = ( fabs(vtxI.g()*vtxK.g()) != 0.0) && (fabs(vtxI.g() + vtxK.g()) < mnog * maxG);
 						break;
 					case 1:
 						found = (vtxI.g()*vtxK.g() < 0.0);
 						break;
 					case 2:
-						found = (vtxI.g()*vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < maxG);
+						found = (vtxI.g()*vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < mnog * maxG);
 						break;
 				}
 			}//if r2<r2_test

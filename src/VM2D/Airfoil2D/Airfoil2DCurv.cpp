@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -28,12 +28,12 @@
 
 /*!
 \file
-\brief Файл кода с описанием класса AirfoilRect
-\author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
-\author Рятина Евгения Павловна
-\version 1.6
-\date 28 октября 2019 г.
+\brief Р¤Р°Р№Р» РєРѕРґР° СЃ РѕРїРёСЃР°РЅРёРµРј РєР»Р°СЃСЃР° AirfoilRect
+\author РњР°СЂС‡РµРІСЃРєРёР№ РР»СЊСЏ РљРѕРЅСЃС‚Р°РЅС‚РёРЅРѕРІРёС‡
+\author РљСѓР·СЊРјРёРЅР° РљСЃРµРЅРёСЏ РЎРµСЂРіРµРµРІРЅР°
+\author Р СЏС‚РёРЅР° Р•РІРіРµРЅРёСЏ РџР°РІР»РѕРІРЅР°
+\version 1.7
+\date 22 РЅРѕСЏР±СЂСЏ 2019 Рі.
 */
 
 #include "Airfoil2DCurv.h"
@@ -47,11 +47,12 @@
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
+#include <algorithm>
 
 using namespace VM2D;
 
-//Считывание профиля из файла
-void AirfoilCurv::ReadFromFile(const std::string& dir) //загрузка профиля из файла, его поворот и масштабирование
+//РЎС‡РёС‚С‹РІР°РЅРёРµ РїСЂРѕС„РёР»СЏ РёР· С„Р°Р№Р»Р°
+void AirfoilCurv::ReadFromFile(const std::string& dir) //Р·Р°РіСЂСѓР·РєР° РїСЂРѕС„РёР»СЏ РёР· С„Р°Р№Р»Р°, РµРіРѕ РїРѕРІРѕСЂРѕС‚ Рё РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёРµ
 {
 	const AirfoilParams& param = W.getPassport().airfoilParams[numberInPassport];
 	std::string filename = dir + param.fileAirfoil;
@@ -68,38 +69,43 @@ void AirfoilCurv::ReadFromFile(const std::string& dir) //загрузка профиля из фай
 		rcm = { 0.0, 0.0 }; //TODO
 		inverse = param.inverse;
 
-
-
 		airfoilParser.get("r", r_);
 		if (inverse)
 			std::reverse(r_.begin(), r_.end());
 
-		airfoilParser.get("rc", rc);
+		airfoilParser.get("rc", rc_);
 		if (inverse)
-			std::reverse(rc.begin(), rc.end());
+			std::reverse(rc_.begin(), rc_.end());
 
 		airfoilParser.get("L", len);
 		if (inverse)
 			std::reverse(len.begin(), len.end());
 
-		airfoilParser.get("k", k);
+		airfoilParser.get("k", k_);
 		if (inverse)
-			std::reverse(k.begin(), k.end());
-		//замыкаем --- в конец приписываем первую точку (для простоты)
-		k.push_back(k[0]);
+			std::reverse(k_.begin(), k_.end());
 
-		airfoilParser.get("dk", dk);
+
+		airfoilParser.get("dk", dk_);
 		if (inverse)
-			std::reverse(dk.begin(), dk.end());
-		//замыкаем --- в конец приписываем первую точку (для простоты)
-		dk.push_back(dk[0]);
+			std::reverse(dk_.begin(), dk_.end());
 
-		airfoilParser.get("ddk", ddk);
+		airfoilParser.get("ddk", ddk_);
 		if (inverse)
-			std::reverse(ddk.begin(), ddk.end());
-		//замыкаем --- в конец приписываем первую точку (для простоты)
-		ddk.push_back(ddk[0]);
+			std::reverse(ddk_.begin(), ddk_.end());
 
+		airfoilParser.get("kc", kc_);
+		if (inverse)
+			std::reverse(kc_.begin(), kc_.end());
+
+		airfoilParser.get("dkc", dkc_);
+		if (inverse)
+			std::reverse(dkc_.begin(), dkc_.end());
+
+
+		airfoilParser.get("ddkc", ddkc_);
+		if (inverse)
+			std::reverse(ddkc_.begin(), ddkc_.end());
 
 		v_.resize(0);
 		for (size_t q = 0; q < r_.size(); ++q)
@@ -108,17 +114,19 @@ void AirfoilCurv::ReadFromFile(const std::string& dir) //загрузка профиля из фай
 
 		gammaThrough.clear();
 		gammaThrough.resize(r_.size(), 0.0);
+
+
 	}
 }//ReadFromFile(...)
 
 
-//Перемещение профиля 
-void AirfoilCurv::Move(const Point2D& dr)	//перемещение профиля как единого целого на вектор dr
+//РџРµСЂРµРјРµС‰РµРЅРёРµ РїСЂРѕС„РёР»СЏ 
+void AirfoilCurv::Move(const Point2D& dr)	//РїРµСЂРµРјРµС‰РµРЅРёРµ РїСЂРѕС„РёР»СЏ РєР°Рє РµРґРёРЅРѕРіРѕ С†РµР»РѕРіРѕ РЅР° РІРµРєС‚РѕСЂ dr
 {
 	for (size_t i = 0; i < r_.size(); i++)
 	{
 		r_[i] += dr;
-		rc[i] += dr;
+		rc_[i] += dr;
 	}	
 
 	rcm += dr;
@@ -126,8 +134,8 @@ void AirfoilCurv::Move(const Point2D& dr)	//перемещение профиля как единого цело
 }//Move(...)
 
 
-//Поворот профиля 
-void AirfoilCurv::Rotate(double alpha)	//поворот профиля на угол alpha вокруг центра масс
+//РџРѕРІРѕСЂРѕС‚ РїСЂРѕС„РёР»СЏ 
+void AirfoilCurv::Rotate(double alpha)	//РїРѕРІРѕСЂРѕС‚ РїСЂРѕС„РёР»СЏ РЅР° СѓРіРѕР» alpha РІРѕРєСЂСѓРі С†РµРЅС‚СЂР° РјР°СЃСЃ
 {
 	phiAfl += alpha;
 	numvector<numvector<double, 2>, 2> rotMatrix = { { cos(alpha), sin(alpha) }, { -sin(alpha), cos(alpha) } };
@@ -135,7 +143,7 @@ void AirfoilCurv::Rotate(double alpha)	//поворот профиля на угол alpha вокруг це
 	for (size_t i = 0; i < r_.size(); i++)
 	{
 		r_[i] = rcm + dot(rotMatrix, r_[i] - rcm);
-		rc[i] = rcm + dot(rotMatrix, rc[i] - rcm);
+		rc_[i] = rcm + dot(rotMatrix, rc_[i] - rcm);
 		tau[i] = dot(rotMatrix, tau[i]);
 	}	
 
@@ -145,13 +153,13 @@ void AirfoilCurv::Rotate(double alpha)	//поворот профиля на угол alpha вокруг це
 }//Rotate(...)
 
 
-//Масштабирование профиля
-void AirfoilCurv::Scale(double factor)	//масштабирование профиля на коэффициент factor относительно центра масс
+//РњР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёРµ РїСЂРѕС„РёР»СЏ
+void AirfoilCurv::Scale(double factor)	//РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёРµ РїСЂРѕС„РёР»СЏ РЅР° РєРѕСЌС„С„РёС†РёРµРЅС‚ factor РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ С†РµРЅС‚СЂР° РјР°СЃСЃ
 {
 	for (size_t i = 0; i < r_.size(); i++)
 	{
 		r_[i] = rcm + factor*(r_[i] - rcm);
-		rc[i] = rcm + factor*(rc[i] - rcm);
+		rc_[i] = rcm + factor*(rc_[i] - rcm);
 		len[i] *= factor;
 	}
 
@@ -159,7 +167,7 @@ void AirfoilCurv::Scale(double factor)	//масштабирование профиля на коэффициент 
 }//Scale(...)
 
 
-// Вычисление нормалей, касательных и длин панелей по текущему положению вершин
+// Р’С‹С‡РёСЃР»РµРЅРёРµ РЅРѕСЂРјР°Р»РµР№, РєР°СЃР°С‚РµР»СЊРЅС‹С… Рё РґР»РёРЅ РїР°РЅРµР»РµР№ РїРѕ С‚РµРєСѓС‰РµРјСѓ РїРѕР»РѕР¶РµРЅРёСЋ РІРµСЂС€РёРЅ
 void AirfoilCurv::CalcNrm()
 {
 	if (nrm.size() != r_.size())
@@ -174,8 +182,8 @@ void AirfoilCurv::CalcNrm()
 	}
 }//CalcNrmTauLen()
 
-//Вычисляет габаритный прямоугольник профиля
-void AirfoilCurv::GetGabarits(double gap)	//определение габаритного прямоугольника
+//Р’С‹С‡РёСЃР»СЏРµС‚ РіР°Р±Р°СЂРёС‚РЅС‹Р№ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє РїСЂРѕС„РёР»СЏ
+void AirfoilCurv::GetGabarits(double gap)	//РѕРїСЂРµРґРµР»РµРЅРёРµ РіР°Р±Р°СЂРёС‚РЅРѕРіРѕ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР°
 {
 	lowLeft = { 1E+10, 1E+10 };
 	upRight = { -1E+10, -1E+10 };
@@ -191,11 +199,11 @@ void AirfoilCurv::GetGabarits(double gap)	//определение габаритного прямоугольни
 
 	for (size_t i = 0; i < r_.size(); i++)
 	{
-		lowLeft[0] = std::min(lowLeft[0], rc[i][0]);
-		lowLeft[1] = std::min(lowLeft[1], rc[i][1]);
+		lowLeft[0] = std::min(lowLeft[0], rc_[i][0]);
+		lowLeft[1] = std::min(lowLeft[1], rc_[i][1]);
 
-		upRight[0] = std::max(upRight[0], rc[i][0]);
-		upRight[1] = std::max(upRight[1], rc[i][1]);
+		upRight[0] = std::max(upRight[0], rc_[i][0]);
+		upRight[1] = std::max(upRight[1], rc_[i][1]);
 	}
 
 	Point2D size = upRight - lowLeft;
@@ -204,8 +212,8 @@ void AirfoilCurv::GetGabarits(double gap)	//определение габаритного прямоугольни
 }//GetGabarits(...)
 
 
-//Переделать для криволинейных панелей!!! Пока скопирована из AirfoilRect
-//Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения
+//РџРµСЂРµРґРµР»Р°С‚СЊ РґР»СЏ РєСЂРёРІРѕР»РёРЅРµР№РЅС‹С… РїР°РЅРµР»РµР№!!! РџРѕРєР° СЃРєРѕРїРёСЂРѕРІР°РЅР° РёР· AirfoilRect
+//Р’С‹С‡РёСЃР»РµРЅРёРµ С‡РёСЃР»РёС‚РµР»РµР№ Рё Р·РЅР°РјРµРЅР°С‚РµР»РµР№ РґРёС„С„СѓР·РёРѕРЅРЅС‹С… СЃРєРѕСЂРѕСЃС‚РµР№ РІ Р·Р°РґР°РЅРЅРѕРј РЅР°Р±РѕСЂРµ С‚РѕС‡РµРє, РѕР±СѓСЃР»РѕРІР»РµРЅРЅС‹С… РіРµРѕРјРµС‚СЂРёРµР№ РїСЂРѕС„РёР»СЏ, Рё РІС‹С‡РёСЃР»РµРЅРёРµ РІСЏР·РєРѕРіРѕ С‚СЂРµРЅРёСЏ
 void AirfoilCurv::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3)
 {
 	std::vector<double> selfI0;
@@ -230,7 +238,7 @@ void AirfoilCurv::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 
 #pragma warning (push)
 #pragma warning (disable: 4101)
-	//Локальные переменные для цикла
+	//Р›РѕРєР°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ РґР»СЏ С†РёРєР»Р°
 	Point2D q, xi, xi_m, v0;
 	double lxi, lxi_m, lenj_m;
 
@@ -263,14 +271,14 @@ void AirfoilCurv::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 			s = q * vec;
 
 			//POLARA
-			//Сделала расстояние до центра, а не до конца панели
+			//РЎРґРµР»Р°Р»Р° СЂР°СЃСЃС‚РѕСЏРЅРёРµ РґРѕ С†РµРЅС‚СЂР°, Р° РЅРµ РґРѕ РєРѕРЅС†Р° РїР°РЅРµР»Рё
 			/*if (fabs(s) > 0.5 * len[j])
 			d = sqrt(sqr(fabs(q*vec) - 0.5*len[j]) + sqr(q*nrm[j]));
 			else
 			d = fabs(q*nrm[j]);*/
 			d = q.length();
 
-			if (d < 50.0 * len[j])	//Почему зависит от длины панели???
+			if (d < 50.0 * len[j])	//РџРѕС‡РµРјСѓ Р·Р°РІРёСЃРёС‚ РѕС‚ РґР»РёРЅС‹ РїР°РЅРµР»Рё???
 			{
 				v0 = vec * len[j];
 
@@ -288,7 +296,7 @@ void AirfoilCurv::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 						locI3[i] += mn;
 					}
 
-					viscousStress[j] += locPoints[i].g() * expon * iDPIepscol2;
+					viscousStress[j] += locPoints[i].g() * expon * iDPIepscol2 * len[j];
 				}
 				else if ((d <= 5.0 * len[j]) && (d >= 0.1 * len[j]))
 				{
@@ -310,9 +318,9 @@ void AirfoilCurv::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 							locI0[i] += xi_m*  mn * (lxi_m + 1.0) / (lxi_m*lxi_m);
 							locI3[i] += mn;
 						}
-						vs += locPoints[i].g() * expon;
+						vs += expon;
 					}//for m
-					viscousStress[j] += vs / new_n * iDPIepscol2;
+					viscousStress[j] += vs * len[j] * locPoints[i].g() / new_n * iDPIepscol2;
 				}
 				else if (d <= 0.1 * len[j])
 				{
@@ -326,15 +334,36 @@ void AirfoilCurv::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 						//	viscousStress[j] += locPoints[i].g() * (mn.kcross() * tau[j]) / (PI * sqr(epscol));
 						//	viscousStress[j] += locPoints[i].g() * (2.0 * nrm[j] * domainRadius[i+parallel.myDisp] * (1.0 - exp(-0.5 * len[j] / domainRadius[i+parallel.myDisp]))).kcross() * tau[j] / (PI * sqr(epscol) *len[j]);
 						//viscousStress[j] += locPoints[i].g()*(exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0))  * iDDomRad / len[j]; //locPoints[i].g() *(2.0 *  epscol* (1.0 - exp(-0.5 * len[j] / epscol))) / (PI * sqr(epscol) *len[j]);
-						viscousStress[j] += 2.0 * locPoints[i].g()*(exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0))  * iDDomRad / (PI * len[j]);
+						//viscousStress[j] += 2.0 * locPoints[i].g()*(exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0))  * iDDomRad / (PI * len[j]);
 					}
 					else
 					{
 						locI3[i] = 2.0 * nrm[j] * domainRadius[i + par.myDisp] * (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
 						//viscousStress[j] += points[i].g()* (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s)  * iDDomRad))  * iDDomRad / len[j]; // points[i].g()*(2.0 *  epscol* (1.0 - exp(-0.5 * len[j] / epscol))) / (PI * sqr(epscol) *len[j]);
-						viscousStress[j] += 2.0 * locPoints[i].g()* (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s)  * iDDomRad))  * iDDomRad / (PI * len[j]);
+						//viscousStress[j] += 2.0 * locPoints[i].g()* (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s)  * iDDomRad))  * iDDomRad / (PI * len[j]);
 					}
-					break;
+
+					vs = 0.0;
+					new_n = static_cast<int>(ceil(5.0 * len[j] / d));
+					//new_n = 100;
+					h = v0 * (1.0 / new_n);
+
+					for (int m = 0; m < new_n; m++)
+					{
+						xi_m = (locPoints[i].r() - (r_[j] + h * (m + 0.5))) * iDDomRad;
+						lxi_m = xi_m.length();
+
+						expon = exp(-lxi_m);
+						lenj_m = len[j] / new_n;
+						mn = lenj_m *nrm[j] * expon;
+						if (locI0[i] != -PI * domainRadius[i + par.myDisp])
+						{
+							locI0[i] += xi_m*  mn * (lxi_m + 1.0) / (lxi_m*lxi_m);
+							locI3[i] += mn;
+						}
+						vs += expon;
+					}//for m
+					viscousStress[j] += vs * len[j] * locPoints[i].g() / new_n * iDPIepscol2;
 
 				}
 			}//if d<50 len 
@@ -369,7 +398,7 @@ void AirfoilCurv::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 	}
 }; //GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(...)
 
-//Переделать для криволинейных панелей!!! Пока скопирована из AirfoilRect
+//РџРµСЂРµРґРµР»Р°С‚СЊ РґР»СЏ РєСЂРёРІРѕР»РёРЅРµР№РЅС‹С… РїР°РЅРµР»РµР№!!! РџРѕРєР° СЃРєРѕРїРёСЂРѕРІР°РЅР° РёР· AirfoilRect
 #if defined(USE_CUDA)
 void AirfoilCurv::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3)
 {
@@ -383,6 +412,9 @@ void AirfoilCurv::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const Wa
 	double*& dev_ptr_i0 = pointsDb.devI0Ptr;
 	double*& dev_ptr_i3 = pointsDb.devI3Ptr;
 
+	double*& dev_ptr_visstr = devViscousStressesPtr;
+	std::vector<double>& locvisstr = tmpViscousStresses;
+
 	const int& id = W.getParallel().myidWork;
 	VMlib::parProp par = W.getParallel().SplitMPI(npt, true);
 
@@ -390,31 +422,59 @@ void AirfoilCurv::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const Wa
 
 	tCUDASTART = omp_get_wtime();
 
+
+	if (&pointsDb == &(W.getWake()))
+	{
+		viscousStress.clear();
+		viscousStress.resize(r_.size(), 0.0);
+	}
+
+
 	if ((npt > 0) && (nr > 0))
 	{
-		cuCalculateSurfDiffVeloWake(par.myDisp, par.myLen, dev_ptr_pt, nr, dev_ptr_r, dev_ptr_i0, dev_ptr_i3, dev_ptr_rad);
+		cuCalculateSurfDiffVeloWake(par.myDisp, par.myLen, dev_ptr_pt, nr, dev_ptr_r, dev_ptr_i0, dev_ptr_i3, dev_ptr_rad, dev_ptr_visstr);
 
 		W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_i3, (double*)&loci3[0]);
 		W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_i0, &loci0[0]);
+		W.getCuda().CopyMemFromDev<double, 1>(nr, dev_ptr_visstr, &locvisstr[0]);
 
 		std::vector<Point2D> newI3;
 		std::vector<double> newI0;
+		std::vector<double> newViscousStress;
 
 		if (id == 0)
 		{
 			newI3.resize(I3.size());
 			newI0.resize(I0.size());
+			newViscousStress.resize(nr);
 		}
 
 		MPI_Gatherv(loci3.data(), par.myLen, Point2D::mpiPoint2D, newI3.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
 		MPI_Gatherv(loci0.data(), par.myLen, MPI_DOUBLE, newI0.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
 
+		MPI_Reduce(locvisstr.data(), newViscousStress.data(), (int)nr, MPI_DOUBLE, MPI_SUM, 0, W.getParallel().commWork);
+
+
 		if (id == 0)
-		for (size_t q = 0; q < I3.size(); ++q)
-		{
-			I0[q] += newI0[q];
-			I3[q] += newI3[q];
-		}
+			for (size_t i = 0; i < viscousStress.size(); ++i)
+			{
+				viscousStress[i] += newViscousStress[i];
+			}
+
+		if (id == 0)
+			for (size_t q = 0; q < I3.size(); ++q)
+			{
+				if (I0[q] != -PI * domainRadius[q])
+				{
+					I0[q] = newI0[q];
+					I3[q] = newI3[q];
+				}
+				else
+				{
+					I0[q] += newI0[q];
+					I3[q] += newI3[q];
+				}
+			}
 	}
 
 	tCUDAEND = omp_get_wtime();
@@ -425,7 +485,7 @@ void AirfoilCurv::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const Wa
 }//GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses
 #endif
 
-//Переделать для криволинейных панелей!!! Пока скопирована из AirfoilRect
+//РџРµСЂРµРґРµР»Р°С‚СЊ РґР»СЏ РєСЂРёРІРѕР»РёРЅРµР№РЅС‹С… РїР°РЅРµР»РµР№!!! РџРѕРєР° СЃРєРѕРїРёСЂРѕРІР°РЅР° РёР· AirfoilRect
 bool AirfoilCurv::IsPointInAirfoil(const Point2D& point) const
 {
 	double angle = 0.0;
@@ -444,3 +504,281 @@ bool AirfoilCurv::IsPointInAirfoil(const Point2D& point) const
 	else
 		return true;
 }//IsPointInAirfoil(...)
+
+
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ РјР°С‚СЂРёС†С‹ A00 РґР»СЏ СЂР°СЃС‡РµС‚Р° РІР»РёСЏРЅРёСЏ РїСЂРѕС„РёР»СЏ СЃР°РјРѕРіРѕ РЅР° СЃРµР±СЏ
+double AirfoilCurv::getA00(size_t i, size_t j) const
+{
+	double alpha, beta;
+
+	Point2D dij = getRc(i) - getRc(j);
+	double d = dij.length();
+
+
+	if (i == j)
+		return 0.5 * (tau[i] ^ nrm[i]) + (36.0 * len[i] * kc_[i] + len[i] * len[i] * ddkc_[i]) / (144.0 * PI);
+	else if (isAfter(i, j))
+		return len[j] / (288.0 * PI) * (72.0 * k_[i] - 12.0 * (len[j] - 2.0 * len[i]) * dk_[i] + \
+		(6.0 * len[i] * len[i] - 3.0 * len[i] * len[j] + 2.0 * len[i] * len[j] + 2.0 * len[j] * len[j]) * ddk_[i]);
+	else if (isAfter(j, i))
+		return len[j] / (288.0 * PI) * (72.0 * k_[j] + 12.0 * (len[j] - 2.0 * len[i]) * dk_[j] + \
+		(6.0 * len[i] * len[i] - 3.0 * len[i] * len[j] + 2.0 * len[i] * len[j] + 2.0 * len[j] * len[j]) * ddk_[j]);
+	else
+	{
+		alpha = VMlib::Alpha(dij, tau[i]);
+		beta = VMlib::Alpha(dij, tau[j]);
+
+		return len[j] / (48.0 * PI * d * d * d) * \
+			(2.0 * (len[j] * len[j] * sin(alpha + 2.0 * beta) + 12.0 * d * d * sin(alpha) + len[i] * len[i] * sin(3.0 * alpha))\
+				+ d * (len[j] * len[j] * kc_[j] * cos(alpha + beta) + len[i] * len[i] * (d * dkc_[i] * cos(alpha) - kc_[i] * (3.0 * cos(2.0 * alpha) + d * kc_[i] * sin(alpha)))));
+	}
+}
+
+
+double AirfoilCurv::getA00FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const
+{
+	double alpha, beta;
+
+	AirfoilCurv& othAirf = *((AirfoilCurv *)otherAirfoil);
+
+	Point2D dij = getRc(i) - othAirf.getRc(j);
+	double d = dij.length();
+
+	alpha = VMlib::Alpha(dij, tau[i]);
+	beta = VMlib::Alpha(dij, tau[j]);
+
+	return othAirf.len[j] / (48.0 * PI * d * d * d) * \
+		(2.0 * (othAirf.len[j] * othAirf.len[j] * sin(alpha + 2.0 * beta) + 12.0 * d * d * sin(alpha) + len[i] * len[i] * sin(3.0 * alpha))\
+			+ d * (othAirf.len[j] * othAirf.len[j] * othAirf.kc_[j] * cos(alpha + beta) + len[i] * len[i] * (d * dkc_[i] * cos(alpha) - kc_[i] * (3.0 * cos(2.0 * alpha) + d * kc_[i] * sin(alpha)))));
+}
+
+
+
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ РјР°С‚СЂРёС†С‹ A01 РґР»СЏ СЂР°СЃС‡РµС‚Р° РІР»РёСЏРЅРёСЏ РїСЂРѕС„РёР»СЏ СЃР°РјРѕРіРѕ РЅР° СЃРµР±СЏ
+double AirfoilCurv::getA01(size_t i, size_t j) const
+{
+	double alpha, beta;
+
+	Point2D dij = getRc(i) - getRc(j);
+	double d = dij.length();
+
+
+	if (i == j)
+		return  (len[i] * len[i] * dkc_[i]) / (144.0 * PI);
+	else if (isAfter(i, j))
+		return (len[j] * len[j]) / (576.0 * PI) * (4.0* dk_[i] - (len[j] - len[i]) * ddk_[i]);
+	else if (isAfter(j, i))
+		return (len[j] * len[j]) / (576.0 * PI) * (4.0* dk_[j] + (len[j] - len[i]) * ddk_[j]);
+	else
+	{
+		alpha = VMlib::Alpha(dij, tau[i]);
+		beta = VMlib::Alpha(dij, tau[j]);
+
+		return (len[j] * len[j]) / (24.0 * PI * d * d) * sin(alpha + beta);
+	}
+}
+
+
+double AirfoilCurv::getA01FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const
+{
+	double alpha, beta;
+
+	AirfoilCurv& othAirf = *((AirfoilCurv *)otherAirfoil);
+
+	Point2D dij = getRc(i) - othAirf.getRc(j);
+	double d = dij.length();
+
+	alpha = VMlib::Alpha(dij, tau[i]);
+	beta = VMlib::Alpha(dij, tau[j]);
+
+	return (othAirf.len[j] * othAirf.len[j]) / (24.0 * PI * d * d) * sin(alpha + beta);
+}
+
+
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ РјР°С‚СЂРёС†С‹ A02 РґР»СЏ СЂР°СЃС‡РµС‚Р° РІР»РёСЏРЅРёСЏ РїСЂРѕС„РёР»СЏ СЃР°РјРѕРіРѕ РЅР° СЃРµР±СЏ
+double AirfoilCurv::getA02(size_t i, size_t j) const
+{
+	double alpha, beta;
+
+	Point2D dij = getRc(i) - getRc(j);
+	double d = dij.length();
+
+
+	if (i == j)
+		return  (len[i] * len[i] * len[i] * ddkc_[i]) / (2160.0 * PI);
+	else if (isAfter(i, j))
+		return (len[j] * len[j] * len[j]) / (2160.0 * PI) * ddk_[i];
+	else if (isAfter(j, i))
+		return (len[j] * len[j] * len[j]) / (2160.0 * PI) * ddk_[j];
+	else
+	{
+		alpha = VMlib::Alpha(dij, tau[i]);
+		beta = VMlib::Alpha(dij, tau[j]);
+
+		return (len[j] * len[j] * len[j]) / (180.0 * PI * d * d* d) * (d * k_[j] * cos(alpha + beta) + 2.0 * sin(alpha + 2.0 * beta));
+	}
+}
+
+double AirfoilCurv::getA02FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const
+{
+	double alpha, beta;
+
+	AirfoilCurv& othAirf = *((AirfoilCurv *)otherAirfoil);
+
+	Point2D dij = getRc(i) - othAirf.getRc(j);
+	double d = dij.length();
+
+	alpha = VMlib::Alpha(dij, tau[i]);
+	beta = VMlib::Alpha(dij, tau[j]);
+
+	return (othAirf.len[j] * othAirf.len[j] * othAirf.len[j]) / (180.0 * PI * d * d* d) * (d * othAirf.k_[j] * cos(alpha + beta) + 2.0 * sin(alpha + 2.0 * beta));
+}
+
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ РјР°С‚СЂРёС†С‹ A10 РґР»СЏ СЂР°СЃС‡РµС‚Р° РІР»РёСЏРЅРёСЏ РїСЂРѕС„РёР»СЏ СЃР°РјРѕРіРѕ РЅР° СЃРµР±СЏ
+double AirfoilCurv::getA10(size_t i, size_t j) const
+{
+	double alpha, beta;
+
+	Point2D dij = getRc(i) - getRc(j);
+	double d = dij.length();
+
+
+	if (i == j)
+		return  (len[i] * len[i] * dkc_[i]) / (72.0 * PI);
+	else if (isAfter(i, j))
+		return (len[j] * len[j]) / (576.0 * PI) * (8.0 * dk_[i] - (len[j] - 3.0 * len[i]) * ddk_[i]);
+	else if (isAfter(j, i))
+		return (len[j] * len[j]) / (576.0 * PI) * (8.0 * dk_[j] - (len[j] - 3.0 * len[i]) * ddk_[j]);
+	else
+	{
+		alpha = VMlib::Alpha(dij, tau[i]);
+		beta = VMlib::Alpha(dij, tau[j]);
+
+		return (len[i] * len[j]) / (24.0 * PI * d * d) * (cos(alpha) * (d + k_[i] - 2.0 * sin(alpha)));
+	}
+}
+
+double AirfoilCurv::getA10FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const
+{
+	double alpha, beta;
+
+	AirfoilCurv& othAirf = *((AirfoilCurv *)otherAirfoil);
+
+	Point2D dij = getRc(i) - othAirf.getRc(j);
+	double d = dij.length();
+
+
+	alpha = VMlib::Alpha(dij, tau[i]);
+	beta = VMlib::Alpha(dij, tau[j]);
+
+	return (len[i] * othAirf.len[j]) / (24.0 * PI * d * d) * (cos(alpha) * (d + k_[i] - 2.0 * sin(alpha)));
+}
+
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ РјР°С‚СЂРёС†С‹ A11 РґР»СЏ СЂР°СЃС‡РµС‚Р° РІР»РёСЏРЅРёСЏ РїСЂРѕС„РёР»СЏ СЃР°РјРѕРіРѕ РЅР° СЃРµР±СЏ
+double AirfoilCurv::getA11(size_t i, size_t j) const
+{
+	double alpha, beta;
+
+	Point2D dij = getRc(i) - getRc(j);
+	double d = dij.length();
+
+
+	if (i == j)
+		return  1 / 24.0 * (tau[i] ^ nrm[i]) + (len[i] * len[i] * len[i] * ddkc_[i]) / (3456.0 * PI);
+	else if (isAfter(i, j))
+		return (len[i] * len[j] * len[j] * ddkc_[i]) / (3456.0 * PI);
+	else if (isAfter(j, i))
+		return (len[i] * len[j] * len[j] * ddkc_[j]) / (3456.0 * PI);
+	else
+	{
+		alpha = VMlib::Alpha(dij, tau[i]);
+		beta = VMlib::Alpha(dij, tau[j]);
+
+		return (len[i] * len[j] * len[j]) / (288.0 * PI * d * d  * d) * (d * k_[i] * cos(alpha + beta) - 2.0 * sin(2.0 * alpha + beta));
+	}
+}
+
+double AirfoilCurv::getA11FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const
+{
+	double alpha, beta;
+
+	AirfoilCurv& othAirf = *((AirfoilCurv *)otherAirfoil);
+
+	Point2D dij = getRc(i) - othAirf.getRc(j);
+	double d = dij.length();
+
+	alpha = VMlib::Alpha(dij, tau[i]);
+	beta = VMlib::Alpha(dij, tau[j]);
+
+	return (len[i] * othAirf.len[j] * othAirf.len[j]) / (288.0 * PI * d * d  * d) * (d * k_[i] * cos(alpha + beta) - 2.0 * sin(2.0 * alpha + beta));
+}
+
+
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ РјР°С‚СЂРёС†С‹ A20 РґР»СЏ СЂР°СЃС‡РµС‚Р° РІР»РёСЏРЅРёСЏ РїСЂРѕС„РёР»СЏ СЃР°РјРѕРіРѕ РЅР° СЃРµР±СЏ
+double AirfoilCurv::getA20(size_t i, size_t j) const
+{
+	double alpha, beta;
+
+	Point2D dij = getRc(i) - getRc(j);
+	double d = dij.length();
+
+
+	if (i == j)
+		return  (len[i] * len[i] * len[i] * ddkc_[i]) / (720.0 * PI);
+	else if (isAfter(i, j))
+		return (len[i] * len[i] * len[j] * ddk_[i]) / (720.0 * PI);
+	else if (isAfter(j, i))
+		return (len[i] * len[i] * len[j] * ddk_[j]) / (720.0 * PI);
+	else
+	{
+		alpha = VMlib::Alpha(dij, tau[i]);
+		beta = VMlib::Alpha(dij, tau[j]);
+
+		return (len[i] * len[i] * len[j]) / (720.0 * PI * d * d  * d) *(2.0 * sin(3.0 * alpha) - d * (k_[i] * (3.0 * cos(2.0 * alpha) + d * k_[i] * sin(alpha)) - d * dk_[i] * cos(alpha)));
+	}
+}
+
+double AirfoilCurv::getA20FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const
+{
+	double alpha, beta;
+
+	AirfoilCurv& othAirf = *((AirfoilCurv *)otherAirfoil);
+
+	Point2D dij = getRc(i) - othAirf.getRc(j);
+	double d = dij.length();
+
+	alpha = VMlib::Alpha(dij, tau[i]);
+	beta = VMlib::Alpha(dij, tau[j]);
+
+	return (len[i] * len[i] * othAirf.len[j]) / (720.0 * PI * d * d  * d) *(2.0 * sin(3.0 * alpha) - d * (k_[i] * (3.0 * cos(2.0 * alpha) + d * k_[i] * sin(alpha)) - d * dk_[i] * cos(alpha)));
+}
+
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ РјР°С‚СЂРёС†С‹ A22 РґР»СЏ СЂР°СЃС‡РµС‚Р° РІР»РёСЏРЅРёСЏ РїСЂРѕС„РёР»СЏ СЃР°РјРѕРіРѕ РЅР° СЃРµР±СЏ
+double AirfoilCurv::getA22(size_t i) const
+{
+	return  2.0 / 45.0;
+}
+
+
+
+
+//std::vector<double> D00, D11, D22;
+////РґРёР°РіРѕРЅР°Р»СЊРЅС‹Рµ
+//for (int i = 0; i < r_.size() - 1; i++)
+//{
+//	D00[i] = -len[i] / 2;
+//	D11[i] = -len[i] / 24;
+//	D22[i] = -2 * len[i] / 45;
+//}
+//
+//std::vector<double> A00, A01, A02, A10, A11, A20;
+////РґРёР°РіРѕРЅР°Р»СЊРЅС‹Рµ
+//for (int i = 0; i < r_.size() - 1; i++)
+//{
+//	A00[i] = (36 * (len[i] * len[i]) * kc[i] + (len[i] * len[i] * len[i] * len[i]) * ddkc[i]) / 144 * PI;
+//	A01[i] = (len[i] * len[i] * len[i] * dk[i]) / (144 * PI);
+//	A02[i] = ((len[i] * len[i] * len[i] * len[i]) * ddkc[i]) / (2160 * PI);
+//	A10[i] = (len[i] * len[i] * len[i] * dkc[i]) / (72 * PI);
+//	A11[i] = ((len[i] * len[i] * len[i] * len[i]) * ddkc[i]) / (3456 * PI);
+//	A20[i] = ((len[i] * len[i] * len[i] * len[i]) * ddkc[i]) / (720 * PI);
+//}

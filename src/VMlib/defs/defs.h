@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Описание базовых вспомогательных функций
 \author Марчевский Илья Константинович
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 
@@ -89,13 +89,14 @@ namespace defaults
 	const double defaultTimeStart = 0.0;
 
 	/// Время разгона
+	const std::pair<std::pair<std::string, int>, std::string> defaultVelAccel = { {"RampLin", 1}, "" };
 	const double defaultTimeAccel = 0.0;
 	
 	/// Шаг сохранения в текстовый файл
-	const int defaultSaveTXT = 1;
+	const int defaultSaveTXT = 0;
 
 	/// Шаг сохранения в бинарный файл
-	const int defaultSaveVTK = 0;
+	const int defaultSaveVTK = 100;
 
 	/// Шаг подсчета поля скорости и давления
 	const int defaultSaveVP = 0;
@@ -118,12 +119,28 @@ namespace defaults
 	/// Референсная скорость, равная нулю, что означает ее равенство скорости набегающего потока
 	const double defaultVRef = 0.0;
 
+
+	/// Тип панелей
+	const std::pair<std::string, int> defaultPanelsType = { "panelsRectilinear", 0 };
+
+	/// Способ удовлетворения граничного условия
+	const std::pair<std::string, int> defaultBoundaryCondition = { "boundaryConstLayerAver", 0 };
+
+	/// Способ решения линейной системы
+	const std::pair<std::string, int> defaultLinearSystemSolver = { "linearSystemGauss", 0 };
+
+
+	/// Способ вычисления скоростей вихрей
+	const std::pair<std::string, int> defaultVelocityComputation{ "velocityBiotSavart", 0 };
+	
+
+
 	/// Каталог с файлами профилей
-	const std::string defaultAirfoilsDir = "./airfoils/";
-    const std::string defaultBodiesDir = "./bodies/";
+	const std::string defaultAirfoilsDir = "../settings/airfoils/";
+    const std::string defaultBodiesDir = "../settings/bodies/";
 
 	/// Каталог с файлами вихревых следов
-	const std::string defaultWakesDir = "./wakes/";
+	const std::string defaultWakesDir = "../settings/wakes/";
 
 	/// Список профилей
 	const std::vector<std::string> defaultFileAirfoil({});
@@ -141,7 +158,7 @@ namespace defaults
 
 	/// Базовое смещение профиля
 	const VMlib::Point2D defaultBasePoint = { 0.0, 0.0 };
-    const VMlib::v3D defaultBodyBasePoint = { 0.0, 0.0, 0.0 };
+    const VMlib::v3D defaultBasePoint3D = { 0.0, 0.0, 0.0 };
 	
 	/// Коэффициент масштабирования профиля
 	const double defaultScale = 1.0;
@@ -149,14 +166,12 @@ namespace defaults
 	/// Угол атаки
 	const double defaultAngle = 0.0;
 	
-	/// Тип панелей
-	const int defaultPanelsType = 0;
+
+	
 
 	/// Признак разворота нормалей (для расчета внутреннего течения)
 	const bool defaultInverse = false;
 	
-	/// Способ удовлетворения граничного условия
-	const int defaultBoundaryCondition = 0;
 
 	/// Тип механической системы
 	const int defaultMechanicalSystemType = 0;
@@ -177,6 +192,10 @@ namespace defaults
 	/// Поток вывода логов и ошибок задачи
 	static std::ostream* defaultWorld2DLogStream = &std::cout;
 	
+	/// Расчет присоединенной массы
+	static bool defaultAddMass = false;
+	static v3D defaultAddMassVcm = { 0.0, 0.0, 0.0 };
+	static v3D defaultAddMassWcm = { 0.0, 0.0, 0.0 };
 } //namespace defaults
 
 
@@ -246,6 +265,33 @@ namespace VMlib
 		return _stream;
 	}//operator<<(...)
 
+
+	/// \brief Переопределение оператора "<<" для вывода в поток пары ((строка, целое число), строка)
+	///
+	/// Компоненты пары выводятся в скобках с разделителем ","
+	///
+	/// \param[in,out] _stream ссылка на поток для вывода
+	/// \param[in] _pair константная ссылка на выводимую пару
+	/// \return ссылка на поток
+	inline std::ostream& operator<< (std::ostream& _stream, const std::pair<std::pair<std::string, int>, std::string>& _pair)
+	{
+		_stream << "( ( " << _pair.first.first << ", " << _pair.first.second << " ), " << _pair.second << " )";	
+		return _stream;
+	}//operator<<(...)
+
+
+	/// \brief Переопределение оператора "<<" для вывода в поток пары (строка, целое число)
+	///
+	/// Компоненты пары выводятся в скобках с разделителем ","
+	///
+	/// \param[in,out] _stream ссылка на поток для вывода
+	/// \param[in] _pair константная ссылка на выводимую пару
+	/// \return ссылка на поток
+	inline std::ostream& operator<< (std::ostream& _stream, const std::pair<std::string, int>& _pair)
+	{
+		_stream << "( " << _pair.first << ", " << _pair.second << " )";
+		return _stream;
+	}//operator<<(...)
 
 
 
@@ -416,14 +462,46 @@ namespace VMlib
 	/// \return Значение ядра сглаживания в конкретной точке
 	double M4(double t);
 
+	/// \brief Модифицирует массив квадратов расстояний до ближайших вихрей из wake
+	///
+	/// \param[out] ee2 массив расстояний до трех ближайших вихрей
+	/// \param[in] dst2 новое расстояние (заменит одно из расстояний в ee2, если меньше)
+	void ModifyE2(double* ee2, double dst2);
+
+
+	/// \brief Вспомогательная функция вычисления угла между векторами
+	///
+	/// \param[in] p константная ссылка на первый вектор
+	/// \param[in] s константная ссылка на второй вектор
+	/// \return угол между векторами в диапазоне \f$ (-\pi; \pi] \f$
+	double Alpha(const Point2D& p, const Point2D& s);
+
+	/// \brief Вспомогательная функция вычисления логарифма отношения норм векторов
+	///
+	/// \param[in] p константная ссылка на первый вектор
+	/// \param[in] s константная ссылка на второй вектор
+	/// \return логарифм отношения норм векторов
+	double Lambda(const Point2D& p, const Point2D& s);
+
+	/// \brief Вспомогательная функция вычисления величины \f$ (\vec a \cdot \vec b) \cdot \vec c + (\vec a \times \vec b) \times \vec c \f$
+	///
+	/// Для оптимизации все векторы считаются двумерными
+	///
+	/// \param[in] a константная ссылка на первый вектор
+	/// \param[in] b константная ссылка на второй вектор
+	/// \param[in] c константная ссылка на третий вектор
+	/// \return логарифм отношения норм векторов
+	Point2D Omega(const Point2D& a, const Point2D& b, const Point2D& c);
+
+
 	/// \brief Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба)
 	inline double boundDenom(double r2, double eps2)
 	{
 #ifndef LAMBVORTEX
-		return fmax(r2, eps2);
+		return std::max(r2, eps2);
 #else
 		if (r2 > eps2)
-			return fmax(r2, eps2);
+			return std::max(r2, eps2);
 		else
 			return (r2 < 1e-10) ? 1e-10 : r2 / (1.0 - exp(-6.0*r2 / eps2));
 #endif

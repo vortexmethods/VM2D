@@ -1,5 +1,5 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
 | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/20/28     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
@@ -20,10 +20,12 @@ nu = 0.005;
 //timeStart = 0.0;             //by default = 0.0
 timeStop = 500.0001;
 dt = 0.01;
-timeAccel = 1.0;               //by default = 0.0
-saveTXT = 0;                   //by default = 1
-saveVTK = 100;                 //by default = 0
+accelVel = Impulse;            //by default = RampLin(0.0)
+
+saveTXT = 0;                   //by default = 0
+saveVTK = 100;                 //by default = 100
 saveVP = 100;                  //by default = 0
+nameLength = 5;                //by default = 5
 
 //Wake Discretization Properties
 eps = 0.0075;
@@ -31,15 +33,14 @@ epscol = 0.0050;
 distFar = 20.0;                 //by default = 10.0
 delta = 5.e-6;                  //by default = 1.e-5
 vortexPerPanel = 1;             //by default = 1
+maxGamma = 0.0;                 //by default = 0.0
 
 //Numerical Schemes
-linearSystemSolver = 0;                     //0 is only available now 
-velocityComputation = velocityBiotSavart;   //velocityBiotSavart is only available now
-wakeMotionIntegrator = 0;                   //0 is only available now
+linearSystemSolver = linearSystemGauss;     
+velocityComputation = velocityBiotSavart;   
+panelsType = panelsRectilinear; 
+boundaryConditionSatisfaction = boundaryConstantLayerAverage;
 
 //Files and parameters
-airfoil = { "circle200"(basePoint = {0.0, 0.0}, 
-                        panelsType = panelsRectilinear, 
-                        boundaryConditionSatisfaction = boundaryConstantLayerAverage,
-                        mechanicalSystem=mech0) };
+airfoil = {"circle200"(basePoint = {0.0, 0.0}, mechanicalSystem=mech0) };
 //fileWake = { "OblakoV1000" };              //by default={}

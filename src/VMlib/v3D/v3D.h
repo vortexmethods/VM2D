@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -29,8 +29,8 @@
 \file
 \brief Заголовочный файл с описанием класса v3D
 \author Марчевский Илья Константинович
-\version 1.6
-\date 28 октября 2019 г.
+\version 1.7
+\date 22 ноября 2019 г.
 */
 
 #ifndef V3D_H_
@@ -53,8 +53,8 @@ namespace VMlib
 	- генерируется MPI-описатель для возможности его пересылки как единичного объекта.
 
 	\author Марчевский Илья Константинович
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	class v3D : public numvector<double, 3>
 	{
@@ -101,6 +101,15 @@ namespace VMlib
 		static void CreateMpiType();
 #endif
 	};
+
+        /// \todo Исследовать целесообразность наличия явной перегрузки оператора умножения
+	inline v3D operator*(double c, const v3D& x)
+	{
+		v3D res(x);
+		for (size_t i = 0; i < 3; ++i)
+			res[i] *= c;
+		return res;
+	}//operator*(...)
 
 
 	inline std::pair<v3D, v3D>& operator+=(std::pair<v3D, v3D>& a, const std::pair<v3D, v3D>& b)

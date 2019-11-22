@@ -1,13 +1,13 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
 | Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
-| File name: Mechanics2DRigidOscillMon.h                                      |
+| File name: Tree2D.h                                                         |
 | Info: Source code of VM2D                                                   |
 |                                                                             |
 | This file is part of VM2D.                                                  |
@@ -28,83 +28,76 @@
 
 /*!
 \file
-\brief Заголовочный файл с описанием класса MechanicsRigidOscillMon
+\brief Заголовочный файл с описанием класса Tree
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7
+\date 22 ноября 2019 г.
 */
 
-#ifndef MECHANICSRIGIDOSCILLMON_H
-#define MECHANICSRIGIDOSCILLMON_H
+#ifndef TREE_H
+#define TREE_H
 
-#include "Mechanics2D.h"
+#include "Cell2D.h"
 
 namespace VM2D
 {
 
 	class World2D;
+	struct PointsCopy;
+
 
 	/*!
-	\brief Класс, определяющий вид механической системы
+	\brief Класс, описывающий дерево для вычисления скоростей методом Барнса --- Хата
 
-	Жесткое тело, движущееся по заданному закону
+	// Корень дерева
 
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
-
-	class MechanicsRigidOscillMon :
-		public Mechanics
+	class Tree
 	{
-	private:
-		//плотность и площадь круга (радиус 0.5) для вычисления массы
-		//	const double rhoAfl = 30.0;
-		//	const double SAfl = 0.7853981633974483;
-		double m;
-		const double b;
-
-		double k;
-
-
 	public:
 
-		/// \brief Конструктор
-		/// 
-		/// \param[in] W_ константная ссылка на решаемую задачу
-		/// \param[in] numberInPassport_ номер профиля в паспорте задачи	
-		MechanicsRigidOscillMon(const World2D& W_, size_t numberInPassport_)
-			: Mechanics(W_, numberInPassport_, 1, true, false, false, { 0.0, 0.0 }, { 0.0, 0.0 }, 0.0, 0.0), m(39.15), b(0.0 * 0.731)
-		{
+		/// Константная ссылка на решаемую задачу
+		const World2D& W;
 
-			ReadSpecificParametersFromDictionary();
-		};
+		/// Параметр точности 
+		const double theta = 0.3;
+
+		/// Максимальное количество уровней дерева
+		const double numOfLevels = 10;
+
+		/// Минимальный размер ячейки (сумма длины и ширины)
+		double minDist;
+
+		/// Минимальное количество вихрей в ячейке
+		const double minNumOfVort = 1;
+
+		/// Вектор умных указателей на ячейки нижнего уровня 
+		std::vector<std::shared_ptr<Cell>> lowCells; 
+
+		/// Умный указатель на корень
+		std::shared_ptr<Cell> rootCell;	/// ????	
+
+		/// \brief Конструктор
+		///
+		/// \param[in] W_ константная ссылка на решаемую задачу
+		Tree(const World2D& W_);
 
 		/// Деструктор
-		~MechanicsRigidOscillMon() {};
+		virtual ~Tree();
 
-
-		//далее -- реализации виртуальных функций
-		virtual void GetHydroDynamForce(timePeriod& time) override;
-		virtual Point2D VeloOfAirfoilRcm(double currTime) override;
-		virtual Point2D PositionOfAirfoilRcm(double currTime) override;
-		virtual void VeloOfAirfoilPanels(double currTime) override;
-		virtual void ReadSpecificParametersFromDictionary() override;
-
-		/// \todo реализовать --- не понял
-		virtual void FillMechanicsRowsAndCross(Eigen::MatrixXd& row, Eigen::MatrixXd& cross) override;
-		virtual void FillMechanicsRhs(std::vector<double>& rhs) override;
-		virtual void FillAtt(Eigen::MatrixXd& row, Eigen::MatrixXd& rhs) override;
-		virtual void SolutionToMechanicalSystem(Eigen::VectorXd& col) override;
-		virtual void Move() override;
-
+		///  \brief Построение корня дерева на основе заданных вихрей
+		///
+		/// \param[in] pointsCopy вектор из копий вихрей, на основе которых строится дерево
+		void BuildTree(std::vector<PointsCopy>& pointsCopy);
 	};
-
 }//namespace VM2D
 
 #endif

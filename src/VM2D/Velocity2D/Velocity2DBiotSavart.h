@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #ifndef VELOCITYBIOTSAVART_H
@@ -56,8 +56,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	class VelocityBiotSavart : public Velocity
 	{
@@ -70,17 +70,42 @@ namespace VM2D
 		/// Деструктор
 		virtual ~VelocityBiotSavart();
 
-		//реализация виртуальных функций
-		virtual void CalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool onlyRadius = false) override;
-		virtual void CalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2) override;
-		virtual void CalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2) override;
 
+		/// Вычисление скоростей в точках wakeVP
+		void CalcVeloToWakeVP();
 
+		/// \brief Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа
+		///
+		/// \param[in] pointsDb константная ссылка на базу данных пелены из вихрей, в которых надо сосчитать конвективные скорости
+		/// \param[out] velo ссылка на вектор скоростей в требуемых точках
+		/// \param[out] domainRadius ссылка на вектор радиусов вихревых доменов
+		/// \param[in] calcVelo признак вычисления скоростей в точках
+		/// \param[in] calcRadius признак вычисления радиусов доменов
+		/// \warning Использует OMP, MPI
+		/// \ingroup Parallel
+		void CalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool calcVelo, bool calcRadius);
 #if defined (USE_CUDA)
-		virtual void GPUCalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool onlyRadius = false) override;
-		virtual void GPUCalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false) override;
-		virtual void GPUCalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false) override;
+		void GPUCalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool calcVelo, bool calcRadius);
 #endif	
+
+		//реализация виртуальных функций
+		virtual void CalcConvVelo(timePeriod& convWakeTime, timePeriod& convVPTime) override;
+
+		virtual void FillRhs(Eigen::VectorXd& rhs) const override;
+
+
+		/// \brief Генерация вектора влияния вихревого следа на профиль
+		///
+		/// Генерирует вектор влияния вихревого следа на профиль, используемый затем для расчета вектора правой части.
+		/// 
+		/// \param[in] afl константная ссылка на профиль, правая часть для которого вычисляется
+		/// \param[out] wakeRhs ссылка на вектор влияния вихревого следа на ОДИН профиль
+		/// \warning Использует OMP, MPI
+		/// \ingroup Parallel
+		void GetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeRhs) const;
+#if defined(USE_CUDA)
+		void GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeRhs) const;
+#endif
 	};
 
 }//namespace VM2D

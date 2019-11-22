@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N VM2D_Marchevsky
+#PBS -N VM2D_User
 #PBS -S /bin/bash
 #PBS -l walltime=48:00:00
 #PBS -l nodes=2:ppn=12

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #ifndef MEASUREVP_H
@@ -55,8 +55,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 
 	class MeasureVP
@@ -70,7 +70,7 @@ namespace VM2D
 
 		/// \brief Умный указатель на точки, в которых нужно вычислять в данный момент времени 
 		/// Хранятся в виде "мнимой" системы вихрей, чтобы воспользоваться методом CalcConvVeloToSetOfPoints(...)
-		std::unique_ptr<WakeDataBase> additionalWake;
+		std::unique_ptr<WakeDataBase> wakeVP;
 
 		/// Скорости в нужных точках
 		std::vector<Point2D> velocity;
@@ -107,7 +107,46 @@ namespace VM2D
 		/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
 		/// \param[in] step номер кадра для сохранения
 		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void CalcSaveVP(const std::string& dir, size_t step, timePeriod& time);
+		//void CalcSaveVP(const std::string& dir, size_t step, timePeriod& time);
+
+		/// \brief Инициализация векторов для вычисления скоростей и давлений
+		/// Вызывается только на тех шагах расчета, когда это необходимо 
+		void Initialization();
+
+		/// \brief Расчет поля давления
+		void CalcPressure();
+
+		/// \brief Сохранение в файл вычисленных скоростей и давлений
+		///
+		/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
+		/// \param[in] step номер кадра для сохранения
+		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+		void SaveVP(const std::string& dir, size_t step, timePeriod& time);
+
+		/// \brief Возврат wakeVP
+		///
+		/// \return константную ссылку на вихревой след
+		const WakeDataBase& getWakeVP() const { return *wakeVP; };
+
+		/// \brief Возврат velocity
+		///
+		/// \return константную ссылку на velocity
+		const std::vector<Point2D>& getVelocity() const { return velocity; };
+
+		/// \brief Возврат velocity
+		///
+		/// \return неконстантную ссылку на velocity
+		std::vector<Point2D>& getNonConstVelocity() { return velocity; };
+
+		/// \brief Возврат domainRadius
+		///
+		/// \return константную ссылку на начало domainRadius
+		const std::vector<double>& getDomainRadius() const { return domainRadius; };
+
+		/// \brief Возврат domainRadius
+		///
+		/// \return неконстантную ссылку на начало domainRadius
+		std::vector<double>& getNonConstDomainRadius() { return domainRadius; };
 
 	};
 

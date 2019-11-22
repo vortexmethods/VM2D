@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -14,8 +14,12 @@
 angle = 0.0;
 scale = 1.0;
 basePoint = {0.0, 0.0};
-panelsType = panelsRectilinear;                             //panelsRectilinear is only available now
-boundaryConditionSatisfaction = boundaryConstLayerAverage;  //boundaryConstantLayerAverage is only available now
+
+linearSystemSolver = linearSystemGauss;
+velocityComputation = velocityBiotSavart;
+panelsType = panelsRectilinear; 
+boundaryConditionSatisfaction = boundaryConstantLayerAverage;
+
 mechanicalSystem = mechanicsRigidImmovable;
 np = 1;
 

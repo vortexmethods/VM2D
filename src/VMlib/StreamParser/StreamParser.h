@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.6    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/10/28     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса StreamParser
 \author Марчевский Илья Константинович
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #ifndef STREAMPARSER_H
@@ -51,8 +51,8 @@ namespace VMlib
 	/*!
 	\brief Класс, позволяющий выполнять разбор файлов и строк с настройками и параметрами	
 	\author Марчевский Илья Константинович
-	\version 1.6
-	\date 28 октября 2019 г.
+	\version 1.7
+	\date 22 ноября 2019 г.
 	*/
 	class StreamParser
 	{
@@ -185,13 +185,15 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя устанавливаемого параметра (необходимо только для отображения в лог)
 		/// \param[in] res ссылка на задаваемый параметр
 		/// \param[in] defValue указатель на константу --- значение по умолчанию
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию
 		template <typename T>
-		void SetDefault(const std::string& name, T& res, const T* defValue) const
+		void SetDefault(const std::string& name, T& res, const T* defValue, bool echoDefault) const
 		{
 			if (defValue != nullptr)
 			{
 				res = *defValue;
-				info('i') << "parameter <" << name << " = " << res << "> set as default" << std::endl;
+				if (echoDefault)
+					info('i') << "parameter <" << name << " = " << res << "> set as default" << std::endl;
 			}
 			else
 			{
@@ -206,8 +208,12 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на значение, считываемое из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
-		void get(const std::string& name, std::vector<Point2D>& res, const std::vector<Point2D>* defValue = nullptr) const
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
+		bool get(const std::string& name, std::vector<Point2D>& res, const std::vector<Point2D>* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			res.resize(0);
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
@@ -225,9 +231,11 @@ namespace VMlib
 					std::stringstream(s.substr(pos + 1, s.length() - pos)) >> elem[1];
 					res.push_back(elem);
 				}
+				boolRes = true;
 			}
 			//else
-			//	SetDefault(name, res, defValue);
+			//	SetDefault(name, res, defValue, echoDefault);
+			return boolRes;
 		};
 
 
@@ -237,8 +245,12 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на значение, считываемое из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
-		void get(const std::string& name, std::vector<v3D>& res, const std::vector<v3D>* defValue = nullptr) const
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
+		bool get(const std::string& name, std::vector<v3D>& res, const std::vector<v3D>* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			res.resize(0);
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
@@ -258,20 +270,27 @@ namespace VMlib
 					std::stringstream(s.substr(pos2 + 1, s.length() - pos)) >> elem[2];
 					res.push_back(elem);
 				}
+				boolRes = true;
 			}
 			//else
-			//	SetDefault(name, res, defValue);
+			//	SetDefault(name, res, defValue, echoDefault);
+
+			return boolRes;
 		};
 
 		/// \brief Считывание вектора из пар чисел из базы данных
 		/// 
-                /// Переопределение метода get() для ситывания вектора из пар чисел (std::pair) из базы данных
+        /// Переопределение метода get() для ситывания вектора из пар чисел (std::pair) из базы данных
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на значение, считываемое из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
 		template<typename T, typename P>
-		void get(const std::string& name, std::vector<std::pair<T,P>>& res, const std::vector<std::pair<T, P>>* defValue = nullptr) const
+		bool get(const std::string& name, std::vector<std::pair<T,P>>& res, const std::vector<std::pair<T, P>>* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			res.resize(0);
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
@@ -289,9 +308,12 @@ namespace VMlib
 					std::stringstream(s.substr(pos + 1, s.length() - pos)) >> elem.second;
 					res.push_back(elem);
 				}
+				boolRes = true;
 			}
 			//else
-			//	SetDefault(name, res, defValue);
+			//	SetDefault(name, res, defValue, echoDefault);
+
+			return boolRes;
 		};
 
 
@@ -301,9 +323,13 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на значение, считываемое из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
 		template<typename T>
-		void get(const std::string& name, std::vector<numvector<T,2>>& res, const std::vector<numvector<T, 2>>* defValue = nullptr) const
+		bool get(const std::string& name, std::vector<numvector<T,2>>& res, const std::vector<numvector<T, 2>>* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			res.resize(0);
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
@@ -321,9 +347,12 @@ namespace VMlib
 					std::stringstream(s.substr(pos + 1, s.length() - pos)) >> elem[1];
 					res.push_back(elem);
 				}
+				boolRes = true;
 			}
 			//else
-			//	SetDefault(name, res, defValue);
+			//	SetDefault(name, res, defValue, echoDefault);
+
+			return boolRes;
 		};
 
 
@@ -333,8 +362,12 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на вектор из вихрей, считываемый из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
-		void get(const std::string& name, std::vector<Vortex2D>& res, const std::vector<Vortex2D>* defValue = nullptr) const
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
+		bool get(const std::string& name, std::vector<Vortex2D>& res, const std::vector<Vortex2D>* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			res.resize(0);
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
@@ -358,9 +391,12 @@ namespace VMlib
 
 					res.push_back(elem);
 				}
+				boolRes = true;
 			}
 			//else
-			//	SetDefault(name, res, defValue);
+			//	SetDefault(name, res, defValue, echoDefault);
+
+			return boolRes;
 		};
 
 		/// \brief Считывание вектора из простых типов из базы данных
@@ -370,9 +406,13 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на вектор из данных, считываемый из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
 		template <typename T>
-		void get(const std::string& name, std::vector<T>& res, const std::vector<T>* defValue = nullptr) const
+		bool get(const std::string& name, std::vector<T>& res, const std::vector<T>* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			res.resize(0);
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
@@ -394,10 +434,68 @@ namespace VMlib
 					}
 					res.push_back(elem);
 				}
+				boolRes = true;
 			}
 			else
-				SetDefault(name, res, defValue);
+				SetDefault(name, res, defValue, echoDefault);
+			
+			return boolRes;
 		};
+
+
+		/// \brief Считывание пары (строка, скаляр) из базы данных
+		/// 
+		/// Шаблонный метод get() для считывания пары (строка, скаляр) из базы данных
+		/// \tparam T тип считываемых данных
+		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
+		/// \param[out] res ссылка данные, считываемые из базы данных
+		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
+		template <typename T>
+		bool get(const std::string& name, std::pair<std::string, T>& res, const std::pair<std::string, T>* defValue = nullptr, bool echoDefault = true) const
+		{
+			bool boolRes = false;
+
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+
+			//поиск ключа в базе и, если нет, то в базе умолчаний
+			if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
+				(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))
+			{
+				if ((search_it->second).size() == 1)
+				{
+					std::string s = (search_it->second)[0];
+					res.first = s;
+
+					//проверка на значение-переключатель
+					if (((search_it = switchers.find(UpperCase(s))) != switchers.end()) && ((search_it->second).size() > 0))
+						s = search_it->second[0];
+
+					std::stringstream ss(s);
+					T elem;
+					ss >> elem;
+					if (typeid(elem).name() == typeid(std::string("TestString")).name())
+					{
+						std::string* str = reinterpret_cast<std::string*>(&elem);
+						str->erase(remove(str->begin(), str->end(), '\"'), str->end());
+					}
+					res.second = elem;
+					boolRes = true;
+				}
+				else
+				{
+					info('e') << "parameter " << name << " is list (only scalar is available)" << std::endl;
+					exit(-1);
+				}
+			}
+			else
+				SetDefault(name, res, defValue, echoDefault);
+
+			return boolRes;
+		};
+
+
+
 
 		/// \brief Считывание скаляра из базы данных
 		/// 
@@ -406,9 +504,12 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка данные, считываемые из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
 		template <typename T>
-		void get(const std::string& name, T& res, const T* defValue = nullptr) const
+		bool get(const std::string& name, T& res, const T* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
@@ -432,6 +533,7 @@ namespace VMlib
 						str->erase(remove(str->begin(), str->end(), '\"'), str->end());
 					}
 					res = elem;
+					boolRes = true;
 				}
 				else
 				{
@@ -440,8 +542,12 @@ namespace VMlib
 				}
 			}
 			else
-				SetDefault(name, res, defValue);
+				SetDefault(name, res, defValue, echoDefault);
+			
+			return boolRes;
 		};
+
+			   
 
 		/// \brief Считывание точки из базы данных
 		/// 
@@ -449,8 +555,12 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на точку, считываемую из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
-		void get(const std::string& name, Point2D& res, const Point2D* defValue = nullptr) const
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
+		bool get(const std::string& name, Point2D& res, const Point2D* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
@@ -468,6 +578,7 @@ namespace VMlib
 						ss >> elem;
 						res[i] = elem;
 					}
+					boolRes = true;
 				}
 				else
 				{
@@ -477,7 +588,9 @@ namespace VMlib
 
 			}
 			else
-				SetDefault(name, res, defValue);
+				SetDefault(name, res, defValue, echoDefault);
+
+			return boolRes;
 		}
 
 
@@ -487,8 +600,12 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на точку, считываемую из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
-		void get(const std::string& name, v3D& res, const v3D* defValue = nullptr) const
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
+		bool get(const std::string& name, v3D& res, const v3D* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
@@ -506,6 +623,7 @@ namespace VMlib
 						ss >> elem;
 						res[i] = elem;
 					}
+					boolRes = true;
 				}
 				else
 				{
@@ -515,7 +633,9 @@ namespace VMlib
 
 			}
 			else
-				SetDefault(name, res, defValue);
+				SetDefault(name, res, defValue, echoDefault);
+
+			return boolRes;
 		}
 
 
@@ -525,8 +645,12 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на логическую переменную, считываемую из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
-		void get(const std::string& name, bool& res, const bool* defValue = nullptr) const
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
+		bool get(const std::string& name, bool& res, const bool* defValue = nullptr, bool echoDefault = true) const
 		{
+			bool boolRes = false;
+
 			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
@@ -545,6 +669,8 @@ namespace VMlib
 						res = false;
 					else
 						res = true;
+
+					boolRes = true;
 				}
 				else
 				{
@@ -553,8 +679,81 @@ namespace VMlib
 				}
 			}
 			else
-				SetDefault(name, res, defValue);
+				SetDefault(name, res, defValue, echoDefault);
+
+			return boolRes;
 		};//get(...)
+
+			   		 	  
+		/// \brief Считывание пары: ((строка, целое число), строка) вида ((str1, int), string) из базы данных
+		/// 
+		/// Метод get() для считывания пары: ((строка, целое число), строка) из базы данных
+		///
+		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
+		/// \param[out] res ссылка данные, считываемые из базы данных
+		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
+		bool get(const std::string& name, std::pair<std::pair<std::string, int>, std::string>& res, const std::pair<std::pair<std::string, int>, std::string>* defValue = nullptr, bool echoDefault = true) const
+		{
+			bool boolRes = false;
+
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+
+			//поиск ключа в базе и, если нет, то в базе умолчаний
+			if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
+				(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))
+			{
+				if ((search_it->second).size() == 1)
+				{
+					std::string s = (search_it->second)[0];
+
+					size_t posBegin = s.find('(');
+					size_t posEnd = s.find(')');
+
+					if ((posBegin != -1) && (posEnd == -1))
+					{
+						info('e') << "parameter " << name << " is given incorrectly" << std::endl;
+						exit(-1);
+					}
+					else
+					{
+						std::string str1a, str1b, str2;
+						str1a = s.substr(0, posBegin);
+
+						if (((search_it = switchers.find(UpperCase(str1a))) != switchers.end()) && ((search_it->second).size() > 0))
+							str1b = search_it->second[0];
+						else
+							str1b = "-1";
+
+						std::stringstream ssStr1b;
+						ssStr1b << str1b;
+						int res1b;
+						ssStr1b >> res1b;
+									
+						str2 = s.substr(posBegin + 1, posEnd - posBegin - 1);
+					
+						if ((posBegin == -1) && (posEnd == -1))
+							res = { {str1a, res1b}, "" };
+						else
+							res = { {str1a, res1b}, str2 };
+
+						boolRes = true;
+					}
+				}
+				else
+				{
+					info('e') << "parameter " << name << " is list (only scalar is available)" << std::endl;
+					exit(-1);
+				}
+			}
+			else
+				SetDefault(name, res, defValue, echoDefault);
+
+			return boolRes;
+		};
+
+
 
 	};
 

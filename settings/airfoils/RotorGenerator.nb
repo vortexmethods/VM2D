@@ -1488,8 +1488,8 @@ Cell[BoxData[
      RowBox[{
      "\"\</*--------------------------------*- VM2D \
 -*-----------------*---------------*\\\\\n| ##  ## ##   ##  ####  #####   |   \
-                         | Version 1.6    |\n| ##  ## ### ### ##  ## ##  ##  \
-|  VM2D: Vortex Method       | 2019/10/28     |\n| ##  ## ## # ##    ##  ##  \
+                         | Version 1.7    |\n| ##  ## ### ### ##  ## ##  ##  \
+|  VM2D: Vortex Method       | 2019/11/22     |\n| ##  ## ## # ##    ##  ##  \
 ##  |  for 2D Flow Simulation    *----------------*\n|  ####  ##   ##   ##   \
 ##  ##  |  Open Source Code                           |\n|   ##   ##   ## \
 ###### #####   |  https://www.github.com/vortexmethods/VM2D  |\n|             \

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.6    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/10/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.6   
-\date 28 октября 2019 г.
+\version 1.7   
+\date 22 ноября 2019 г.
 */
 
 #include "Mechanics2D.h"
@@ -90,9 +90,9 @@ void Mechanics::GenerateForcesHeader()
 
 	VMlib::PrintLogoToTextFile(newForcesFile, forceFileName.str(), "Hydrodynamic loads for the airfoil " + W.getPassport().airfoilParams[numberInPassport].fileAirfoil);
 
-	VMlib::PrintHeaderToTextFile(newForcesFile, "currentStep     currentTime     Fx     Fy     Mz");
+	VMlib::PrintHeaderToTextFile(newForcesFile, "currentStep     currentTime     Fx     Fy     Mz     Ftaux     Ftauy");
 
-	newForcesFileCsv << "t,Fx,Fy,Mz";
+	newForcesFileCsv << "t,Fx,Fy,Mz,Ftaux,Ftauy";
 
 	newForcesFile.close();
 	newForcesFile.clear();
@@ -138,11 +138,11 @@ void Mechanics::GenerateForcesString()
 	forceFileNameCsv << W.getPassport().dir << "forces-airfoil-" << numberInPassport << ".csv";
 
 	std::ofstream forcesFile(forceFileName.str(), std::ios::app);
-	forcesFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1] << "	" << hydroDynamMoment;
+	forcesFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1] << "	" << hydroDynamMoment << "	" << viscousStress[0] << "	" << viscousStress[1];
 	forcesFile.close();
 
 	std::ofstream forcesFileCsv(forceFileNameCsv.str(), std::ios::app);
-	forcesFileCsv << std::endl << W.getPassport().physicalProperties.getCurrTime() << "," << hydroDynamForce[0] << "," << hydroDynamForce[1] << "," << hydroDynamMoment;
+	forcesFileCsv << std::endl << W.getPassport().physicalProperties.getCurrTime() << "," << hydroDynamForce[0] << "," << hydroDynamForce[1] << "," << hydroDynamMoment << "," << viscousStress[0] << "," << viscousStress[1];
 	forcesFileCsv.close();
 }//GenerateForcesString()
 
