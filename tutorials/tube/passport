@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/20/28     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: passport                                                         |
 | Info: Parameters of the problem to be solved                                |
@@ -23,7 +23,6 @@ timeStop = 250.0001;
 dt = 0.004;
 accelVel = RampLin(1.0);       //by default = RampLin(0.0)
 
-saveTXT = 0;                   //by default = 0
 saveVTK = 10;                  //by default = 100
 saveVP = 100;                  //by default = 0
 nameLength = 5;                //by default = 5

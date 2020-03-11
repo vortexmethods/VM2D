@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: MeasureVP2D.h                                                    |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef MEASUREVP_H
@@ -55,8 +55,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 
 	class MeasureVP
@@ -101,14 +101,7 @@ namespace VM2D
 		///
 		/// \param[in] dir константная ссылка на строку --- имя каталога, где лежит cчитываемый файл
 		void ReadPointsFromFile(const std::string& dir);
-
-		/// \brief Расчет и сохранение в файл поля скоростей и давления
-		///
-		/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
-		/// \param[in] step номер кадра для сохранения
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		//void CalcSaveVP(const std::string& dir, size_t step, timePeriod& time);
-
+				
 		/// \brief Инициализация векторов для вычисления скоростей и давлений
 		/// Вызывается только на тех шагах расчета, когда это необходимо 
 		void Initialization();
@@ -116,12 +109,8 @@ namespace VM2D
 		/// \brief Расчет поля давления
 		void CalcPressure();
 
-		/// \brief Сохранение в файл вычисленных скоростей и давлений
-		///
-		/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
-		/// \param[in] step номер кадра для сохранения
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void SaveVP(const std::string& dir, size_t step, timePeriod& time);
+		/// Сохранение в файл вычисленных скоростей и давлений
+		void SaveVP();
 
 		/// \brief Возврат wakeVP
 		///

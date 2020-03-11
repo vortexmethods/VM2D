@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.8    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/03/09     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: defs.cpp                                                         |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Описание базовых вспомогательных функций
 \author Марчевский Илья Константинович
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #include "defs.h"
@@ -107,13 +107,13 @@ void VMlib::PrintLogoToStream(std::ostream& str)
 #ifdef CODE2D
 		str <<
 			"/*--------------------------------*- VM2D -*-----------------*---------------*\\" << '\n' << \
-			"| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |" << '\n' << \
-			"| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |" << '\n' << \
+			"| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |" << '\n' << \
+			"| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |" << '\n' << \
 			"| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*" << '\n' << \
 			"|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |" << '\n' << \
 			"|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |" << '\n' << \
 			"|                                                                             |" << '\n' << \
-			"| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |" << '\n' << \
+			"| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |" << '\n' << \
 			"*-----------------------------------------------------------------------------*" << '\n';
 #endif
 
@@ -258,17 +258,17 @@ void VMlib::ModifyE2(double* ee2, double dst2)
 // Вспомогательная функция вычисления угла между векторами
 double VMlib::Alpha(const Point2D& p, const Point2D& s)
 {
-	return atan2(cross3(p, s), p*s);
+	return atan2(cross3(p, s), p & s);
 }
 
 // Вспомогательная функция вычисления логарифма отношения норм векторов
 double VMlib::Lambda(const Point2D& p, const Point2D& s)
 {
-	return 0.5*log((s*s) / (p*p));
+	return 0.5*log((s & s) / (p & p));
 }
 
 // Вспомогательная функция вычисления величины \f$ (\vec a \cdot \vec b) \cdot \vec c + (\vec a \times \vec b) \times \vec c \f$
 Point2D VMlib::Omega(const Point2D& a, const Point2D& b, const Point2D& c)
 {
-	return (a * b) * c + (Point2D({ -c[1], c[0] }))*cross3(a, b);
+	return (a & b) * c + (Point2D({ -c[1], c[0] }))*cross3(a, b);
 }

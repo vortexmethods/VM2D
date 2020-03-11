@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: WakeDataBase2D.cpp                                               |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #include "WakeDataBase2D.h"
@@ -72,6 +72,8 @@ void WakeDataBase::ReadFromFile(const std::string& dir, const std::string& fileN
 //MPI-синхронизация вихревого следа
 void WakeDataBase::WakeSynchronize()
 {
+	W.getTimestat().timeOther.first += omp_get_wtime();
+	
 	int nV;
 	if (W.getParallel().myidWork == 0)
 		nV = (int)vtx.size();
@@ -81,4 +83,6 @@ void WakeDataBase::WakeSynchronize()
 		vtx.resize(nV);
 
 	MPI_Bcast(vtx.data(), nV, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
+
+	W.getTimestat().timeOther.second += omp_get_wtime();
 }//WakeSinchronize()

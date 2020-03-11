@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.8    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/03/09     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: numvector.h                                                      |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Описание класса numvector
 \author Марчевский Илья Константинович
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef NUMVECTOR_H_
@@ -56,6 +56,7 @@
 
 #define DEPRECATED
 
+#include <array>
 #include <cmath>
 #include <cstring>
 #include <initializer_list>
@@ -78,40 +79,17 @@ namespace VMlib
 	\tparam n длина вектора
 
 	\author Марчевский Илья Константинович
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
-
+		
 
 	template<typename T, size_t n>
-	class numvector
+	class numvector : public std::array<T, n>
 	{
 	protected:
 
-		/// Собственно, вектор с данными
-		T r[n];
 	public:
-
-		/// \brief Оператор "[]" доступа к элементу
-		///
-		/// \tparam T тип данных компонент вектора
-		/// \param[in] j номер элемента, к которому происходит обращение
-		/// \return Ссылка на элемент
-		T& operator[](size_t j)
-		{
-			return r[j];
-		}//operator[](...)
-
-
-		/// \brief Оператор "[]" доступа к элементу
-		///
-		/// \tparam T тип данных компонент вектора
-		/// \param[in] j номер элемента, к которому происходит обращение
-		/// \return Константная ссылка на элемент
-		const T& operator[](size_t j) const
-		{
-			return r[j];
-		}//operator[](...)
 
 
 		/// \brief Оператор "&" скалярного умножения
@@ -121,11 +99,11 @@ namespace VMlib
 		/// \param[in] y константная ссылка на второй множитель
 		/// \return результат вычисления скалярного произведения, приведенный к нужному типу	
 		template <typename P>
-		auto operator& (const numvector<P, n>& y) const -> typename std::remove_const<decltype(r[0] * y[0])>::type
+		auto operator& (const numvector<P, n>& y) const -> typename std::remove_const<decltype(this->data()[0] * y[0])>::type
 		{
-			typename std::remove_const<decltype(r[0] * y[0])>::type res = 0;
+			typename std::remove_const<decltype(this->data()[0] * y[0])>::type res = 0;
 			for (size_t j = 0; j < n; ++j)
-				res += r[j] * y[j];
+				res += this->data()[j] * y[j];
 			return res;
 		}//operator&(...)
 
@@ -138,12 +116,12 @@ namespace VMlib
 		/// \param[in] y константная ссылка на второй множитель
 		/// \return результат вычисления векторного произведения, приведенный к нужному типу
 		template <typename P>
-		auto operator^(const numvector<P, 3>& y) const -> numvector<typename std::remove_const<decltype(r[1] * y[2])>::type, 3>
+		auto operator^(const numvector<P, 3>& y) const -> numvector<typename std::remove_const<decltype(this->data()[1] * y[2])>::type, 3>
 		{
-			numvector<typename std::remove_const<decltype(r[1] * y[2])>::type, 3> vec;
-			vec[0] = r[1] * y[2] - r[2] * y[1];
-			vec[1] = r[2] * y[0] - r[0] * y[2];
-			vec[2] = r[0] * y[1] - r[1] * y[0];
+			numvector<typename std::remove_const<decltype(this->data()[1] * y[2])>::type, 3> vec;
+			vec[0] = this->data()[1] * y[2] - this->data()[2] * y[1];
+			vec[1] = this->data()[2] * y[0] - this->data()[0] * y[2];
+			vec[2] = this->data()[0] * y[1] - this->data()[1] * y[0];
 			return vec;
 		}//operator^(...)
 
@@ -156,9 +134,9 @@ namespace VMlib
 		/// \param[in] y константная ссылка на второй множитель
 		/// \return результат вычисления третьей компоненты векторного произведения двух двумерных векторов, приведенный к нужному типу
 		template <typename P>
-		auto operator^ (const numvector<P, 2>& y) const -> typename std::remove_const<decltype(r[0] * y[1])>::type
+		auto operator^ (const numvector<P, 2>& y) const -> typename std::remove_const<decltype(this->data()[0] * y[1])>::type
 		{
-			return (r[0] * y[1] - r[1] * y[0]);
+			return (this->data()[0] * y[1] - this->data()[1] * y[0]);
 		}//operator^(...)
 
 
@@ -173,7 +151,7 @@ namespace VMlib
 		numvector<T, n>& operator*=(P c)
 		{
 			for (size_t i = 0; i < n; ++i)
-				r[i] *= c;
+				this->data()[i] *= c;
 			return *this;
 		}//operator*=(...)
 
@@ -189,7 +167,7 @@ namespace VMlib
 		numvector<T, n>& operator/=(P c)
 		{
 			for (size_t i = 0; i < n; ++i)
-				r[i] /= c;
+				this->data()[i] /= c;
 			return *this;
 		}//operator/=(...)
 
@@ -205,7 +183,7 @@ namespace VMlib
 		numvector<T, n>& operator+=(const numvector<P, n>& y)
 		{
 			for (size_t i = 0; i < n; ++i)
-				r[i] += y[i];
+				this->data()[i] += y[i];
 			return *this;
 		}//operator+=(...)
 
@@ -221,7 +199,7 @@ namespace VMlib
 		numvector<T, n>& operator-=(const numvector<P, n>& y)
 		{
 			for (size_t i = 0; i < n; ++i)
-				r[i] -= y[i];
+				this->data()[i] -= y[i];
 			return *this;
 		}//operator-=(...)
 
@@ -233,11 +211,11 @@ namespace VMlib
 		/// \param[in] y константная ссылка на прибавляемый вектор
 		/// \return результат сложения двух векторов, приведенный к нужному типу
 		template <typename P>
-		auto operator+(const numvector<P, n>& y) const -> numvector<typename std::remove_const<decltype(r[0] + y[0])>::type, n>
+		auto operator+(const numvector<P, n>& y) const -> numvector<typename std::remove_const<decltype(this->data()[0] + y[0])>::type, n>
 		{
-			numvector<typename std::remove_const<decltype(r[0] + y[0])>::type, n> res;
+			numvector<typename std::remove_const<decltype(this->data()[0] + y[0])>::type, n> res;
 			for (size_t i = 0; i < n; ++i)
-				res[i] = r[i] + y[i];
+				res[i] = this->data()[i] + y[i];
 			return res;
 		}//operator+(...)
 
@@ -249,11 +227,11 @@ namespace VMlib
 		/// \param[in] y константная ссылка на вычитаемый вектор
 		/// \return результат вычитания двух векторов, приведенный к нужному типу
 		template <typename P>
-		auto operator-(const numvector<P, n>& y) const -> numvector<typename std::remove_const<decltype(r[0] - y[0])>::type, n>
+		auto operator-(const numvector<P, n>& y) const -> numvector<typename std::remove_const<decltype(this->data()[0] - y[0])>::type, n>
 		{
-			numvector<typename std::remove_const<decltype(r[0] - y[0])>::type, n> res;
+			numvector<typename std::remove_const<decltype(this->data()[0] - y[0])>::type, n> res;
 			for (size_t i = 0; i < n; ++i)
-				res[i] = r[i] - y[i];
+				res[i] = this->data()[i] - y[i];
 			return res;
 		}//operator-(...)
 
@@ -265,11 +243,11 @@ namespace VMlib
 		/// \param[in] c число-множитель
 		/// \return результат умножения вектора на число, приведенный к соответствующему типу
 		template <typename P>
-		auto operator*(const P c) const -> numvector<typename std::remove_const<decltype(r[0] * c)>::type, n>
+		auto operator*(const P c) const -> numvector<typename std::remove_const<decltype(this->data()[0] * c)>::type, n>
 		{
-			numvector<typename std::remove_const<decltype(r[0] * c)>::type, n> res;
+			numvector<typename std::remove_const<decltype(this->data()[0] * c)>::type, n> res;
 			for (size_t i = 0; i < n; ++i)
-				res[i] = c * r[i];
+				res[i] = c * this->data()[i];
 			return res;
 		}//operator*(...)
 
@@ -283,7 +261,7 @@ namespace VMlib
 		{
 			numvector<T, n> res;
 			for (size_t i = 0; i < n; ++i)
-				res[i] = -r[i];
+				res[i] = -this->data()[i];
 			return res;
 		}//operator-()
 
@@ -309,7 +287,7 @@ namespace VMlib
 		bool operator==(const numvector<P, n>& y) const
 		{
 			for (size_t i = 0; i < n; ++i)
-				if (r[i] != y[i])
+				if (this->data()[i] != y[i])
 					return false;
 			return true;
 		}//operator==(...)
@@ -328,13 +306,6 @@ namespace VMlib
 		}//operator!=(...)
 
 
-		/// \brief Вычисление размерности вектора (числа элементов в нем)
-		///
-		/// \return размерность вектора (число элементов в нем)
-		size_t size() const
-		{
-			return n;
-		}//size(...)
 
 
 		/// \brief Вычисление 1-нормы вектора
@@ -342,11 +313,11 @@ namespace VMlib
 		/// Сумма модулей компонент вектора
 		///
 		/// \return 1-норма вектора
-		auto norm1() const -> typename std::remove_const<typename std::remove_reference<decltype(r[0])>::type>::type
+		auto norm1() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type
 		{
-			typename std::remove_const<typename std::remove_reference<decltype(r[0])>::type>::type res = 0;
+			typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type res = 0;
 			for (size_t i = 0; i < n; ++i)
-				res += abs(r[i]);
+				res += abs(this->data()[i]);
 			return res;
 		}//norm1()
 
@@ -356,13 +327,13 @@ namespace VMlib
 		/// Наибольшая по модулю компонента вектора
 		///
 		/// \return inf-норма вектора
-		auto norminf() const -> typename std::remove_const<typename std::remove_reference<decltype(r[0])>::type>::type
+		auto norminf() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type
 		{
-			typename std::remove_const<typename std::remove_reference<decltype(r[0])>::type>::type res = 0;
+			typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type res = 0;
 			for (size_t i = 0; i < n; ++i)
 			{
-				if (abs(r[i]) > res)
-					res = abs(r[i]);
+				if (abs(this->data()[i]) > res)
+					res = abs(this->data()[i]);
 			}
 			return res;
 		}//norminf()
@@ -388,7 +359,7 @@ namespace VMlib
 		/// Скалярный квадрат вектора
 		///
 		/// \return квадрат нормы (длины) вектора того же типа, что и компоненты вектора
-		auto length2() const -> typename std::remove_const<typename std::remove_reference<decltype(r[0])>::type>::type
+		auto length2() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type
 		{
 			return (*this & *this);
 		}//length2()
@@ -404,11 +375,12 @@ namespace VMlib
 		///
 		/// \warning для получения float-орта от вектора с компонентами типа float или целыми нужно явно указать параметр 1.0f
 		template <typename P = double>
-		auto unit(P newlen = 1) const -> numvector<typename std::remove_const<decltype(r[0] * newlen)>::type, n>
+		auto unit(P newlen = 1) const -> numvector<typename std::remove_const<decltype(this->data()[0] * newlen)>::type, n>
 		{
-			auto ilen = static_cast<decltype(r[0] * newlen)>(newlen / std::max(this->length(), 1e-16));
+			auto ilen = static_cast<decltype(this->data()[0] * newlen)>(newlen / std::max(this->length(), 1e-16));
 			return (*this * ilen);
 		}//unit(...)
+
 
 
 		/// \brief Нормирование вектора на заданную длину
@@ -422,9 +394,10 @@ namespace VMlib
 		template <typename P = double>
 		void normalize(P newlen = 1.0)
 		{
-			auto ilen = static_cast<decltype(r[0] * newlen)>(newlen / this->length());
+			auto ilen = static_cast<decltype(this->data()[0] * newlen)>(newlen / std::max(this->length(), 1e-16));
 			*this *= ilen;
 		}//normalize(...)
+
 
 
 		/// \brief Проверка вхождения элемента в вектор
@@ -436,11 +409,12 @@ namespace VMlib
 		size_t member(const P& s) const
 		{
 			for (size_t i = 0; i < n; ++i)
-				if (r[i] == s)
+				if (this->data()[i] == s)
 					return i;
 
 			return static_cast<size_t>(-1);
 		}//member(...)
+
 
 
 		/// \brief Приведение вектора к типу std::set
@@ -452,7 +426,7 @@ namespace VMlib
 		{
 			std::set<P> newset;
 			for (size_t i = 0; i < n; ++i)
-				newset.insert(r[i]);
+				newset.insert(this->data()[i]);
 			return newset;
 		}//toSet()
 
@@ -467,7 +441,7 @@ namespace VMlib
 			std::vector<P> vec;
 			vec.reserve(n);
 			for (size_t i = 0; i < n; ++i)
-				vec.push_back(r[i]);
+				vec.push_back(this->data()[i]);
 			return vec;
 		}
 
@@ -482,11 +456,20 @@ namespace VMlib
 		/// \return вектор, полученный "вращением" исходного на k позиций влево
 		numvector<T, n> rotateLeft(size_t k) const
 		{
+			if (k >= n)
+				throw;
 			numvector<T, n> res;
-			for (size_t i = 0; i < n; ++i)
-				res[i] = r[(i + k) % n];
+
+			//for (size_t i = 0; i < n; ++i) 
+			//	res[i] = r[(i + k) % n];
+
+			for (size_t i = 0; i < n - k; ++i)
+				res[i] = this->data()[i + k];
+			for (size_t i = n - k + 1; i < n; ++i)
+				res[i] = this->data()[i + k - n];
 			return res;
 		}//rotateLeft(...)
+
 
 
 		/// \brief Геометрический поворот двумерного вектора на 90 градусов
@@ -499,8 +482,8 @@ namespace VMlib
 		numvector<T, 2> kcross() const
 		{
 			numvector<T, 2> res;
-			res[0] = -r[1];
-			res[1] = r[0];
+			res[0] = -this->data()[1];
+			res[1] =  this->data()[0];
 			return res;
 		}//kcross()
 
@@ -516,7 +499,7 @@ namespace VMlib
 		numvector<T, n>& toZero(P val = 0)
 		{
 			for (size_t i = 0; i < n; ++i)
-				r[i] = val;
+				this->data()[i] = val;
 			return *this;
 		}
 
@@ -527,7 +510,7 @@ namespace VMlib
 		/// \param[in] y константная ссылка на радиус-вектор второй точки
 		/// \return квадрат расстояния между точками
 		template<typename P>
-		auto dist2To(const numvector<P, n>& y) const -> typename std::remove_const<decltype(r[0] - y[0])>::type
+		auto dist2To(const numvector<P, n>& y) const -> typename std::remove_const<decltype(this->data()[0] - y[0])>::type
 		{
 			return (*this - y).length2();
 		}//dist2To(...)
@@ -559,8 +542,9 @@ namespace VMlib
 		explicit numvector(const P c)
 		{
 			for (size_t i = 0; i < n; ++i)
-				r[i] = c;
+				this->data()[i] = c;
 		}//numvector(...)
+		
 
 
 		/// \brief Нешаблонный конструктор копирования
@@ -572,7 +556,7 @@ namespace VMlib
 		{
 			//for (size_t i = 0; i < n; ++i)
 			//	r[i] = vec[i];
-			memcpy(r, vec.r, n * sizeof(T));
+			memcpy(this->data(), vec.data(), n * sizeof(T));
 		}//numvector(...)
 
 
@@ -585,7 +569,7 @@ namespace VMlib
 		numvector(const numvector<P, n>& vec)
 		{
 			for (size_t i = 0; i < n; ++i)
-				r[i] = vec[i];
+				this->data()[i] = vec[i];
 		}//numvector(...)
 
 
@@ -602,7 +586,7 @@ namespace VMlib
 			if (vec.size() != n)
 				throw;
 			for (size_t i = 0; i < n; ++i)
-				r[i] = vec[i];
+				this->data()[i] = vec[i];
 		}//numvector(...)
 
 
@@ -618,8 +602,9 @@ namespace VMlib
 			if (z.size() != n)
 				throw;
 			for (size_t i = 0; i < n; ++i)
-				r[i] = *(z.begin() + i);
+				this->data()[i] = *(z.begin() + i);
 		}//numvector(...)
+
 
 
 		/// \brief Шаблонный конструктор инициализации списком
@@ -634,7 +619,7 @@ namespace VMlib
 			if (z.size() != n)
 				throw;
 			for (size_t i = 0; i < n; ++i)
-				r[i] = *(z.begin() + i);
+				this->data()[i] = *(z.begin() + i);
 		}//numvector(...)
 #endif 
 
@@ -653,62 +638,81 @@ namespace VMlib
 		{
 			size_t minPN = (p < n) ? p : n;
 			for (size_t i = 0; i < minPN; ++i)
-				r[i] = vec[i];
+				this->data()[i] = vec[i];
 			for (size_t i = minPN; i < n; ++i)
-				r[i] = add;
+				this->data()[i] = add;
 		}//numvector(...)	
 
 
-		////////////////////////////////////////////////////////////////////////////
-		//// Далее deprecate-функции для ПОЛНОЙ СОВМЕСТИМОСТИ со старой версией ////
-		////                             --------------------                   ////
-		////////////////////////////////////////////////////////////////////////////
-
-		/// \brief Оператор присваивания всем компонентам вектора одного и того же числа
-		DEPRECATED numvector<T, n> operator=(double c)
-		{
-			return numvector<T, n>(c);
-		}//operator(...)
-
-
-		/// \brief Построение множества std::set на основе вектора
-		///
-		/// \return множество типа std::set, состоящее из тех же элементов, что исходный вектор
-		DEPRECATED std::set<T> toSet() const
-		{
-			//(deprecate: use implicit type conversion)
-
-			std::set<T> newset;
-			for (size_t i = 0; i < n; ++i)
-				newset.insert(r[i]);
-			return newset;
-		}//toSet()
+//		////////////////////////////////////////////////////////////////////////////
+//		//// Далее deprecate-функции для ПОЛНОЙ СОВМЕСТИМОСТИ со старой версией ////
+//		////                             --------------------                   ////
+//		////////////////////////////////////////////////////////////////////////////
+//
+//		/// \brief Оператор присваивания всем компонентам вектора одного и того же числа
+//		DEPRECATED numvector<T, n>& operator=(double c)
+//		{
+//			toZero(c);
+//			return *this;			
+//		}//operator(...)
 
 
-		/// \brief Построение вектора std::vector на основе вектора
-		///
-		/// \return вектор типа std::vector, состоящий из тех же элементов, что исходный вектор
-		DEPRECATED std::vector<T> toVector() const
-		{
-			//(deprecate: use implicit type conversion)
+//		/// \brief Построение множества std::set на основе вектора
+//		///
+//		/// \return множество типа std::set, состоящее из тех же элементов, что исходный вектор
+//		DEPRECATED std::set<T> toSet() const
+//		{
+//			//(deprecate: use implicit type conversion)
+//
+//			std::set<T> newset;
+//			for (size_t i = 0; i < n; ++i)
+//				newset.insert(this->data()[i]);
+//			return newset;
+//		}//toSet()
 
-			std::vector<T> vec;
-			vec.reserve(n);
-			for (size_t i = 0; i < n; ++i)
-				vec.push_back(r[i]);
-			return vec;
-		}
+
+//		/// \brief Построение вектора std::vector на основе вектора
+//		///
+//		/// \return вектор типа std::vector, состоящий из тех же элементов, что исходный вектор
+//		DEPRECATED std::vector<T> toVector() const
+//		{
+//			//(deprecate: use implicit type conversion)
+//
+//			std::vector<T> vec;
+//			vec.reserve(n);
+//			for (size_t i = 0; i < n; ++i)
+//				vec.push_back(this->data()[i]);
+//			return vec;
+//		}
 
 	}; //class numvector
 
-        /// \todo Исследовать целесообразность наличия нешаблонного умножения
-	inline numvector<double, 3> operator*(double c, const numvector<double, 3>& x)
+//    /// \todo Исследовать целесообразность наличия нешаблонного умножения
+//	inline numvector<double, 3> operator*(double c, const numvector<double, 3>& x)
+//	{
+//		numvector<double, 3> res(x);
+//		for (size_t i = 0; i < 3; ++i)
+//			res[i] *= c;
+//		return res;
+//	}//operator*(...)
+	
+	/// \brief Оператор "*" умножения вектора на число (число слева, вектор справа)
+	///
+	/// \tparam T тип данных компонент вектора и множителя	
+	/// \tparam n длина вектора
+	/// \param[in] c числовой множитель
+	/// \param[in] x константная ссылка на умножаемый вектор
+	/// \return результат умножения вектора на число, приведенный к соответствующему типу
+	template<typename T, size_t n>
+	inline numvector<T, n> operator*(double c, const numvector<T, n>& x)
 	{
-		numvector<double, 3> res(x);
-		for (size_t i = 0; i < 3; ++i)
+		numvector<T, n> res(x);
+		for (size_t i = 0; i < n; ++i)
 			res[i] *= c;
 		return res;
 	}//operator*(...)
+
+
 	/// \brief Оператор "*" умножения вектора на число (число слева, вектор справа)
 	///
 	/// \tparam T тип данных компонент вектора
@@ -923,103 +927,102 @@ namespace VMlib
 	//                             --------------------                   //
 	////////////////////////////////////////////////////////////////////////
 
-	/// \brief Умножение квадратной матрицы на вектор (без приведения типов)
-	///
-	/// \tparam T тип данных компонент матрицы и вектора
-	/// \tparam n размерность матрицы и вектора
-	/// \param[in] A константная ссылка на матрицу
-	/// \param[in] x константная ссылка на вектор
-	/// \return вектор результат умножения матрицы на вектор
-	template<typename T, size_t n>
-	DEPRECATED inline numvector<T, n> dot(const numvector<numvector<T, n>, n>& A, const numvector<T, n>& x)
-	{
-		//deprecate: use nummatrix.operator& instead of dot(numvector<numvector<>>, numvector<>)
-
-		numvector<T, n> res;
-		for (size_t i = 0; i < n; ++i)
-			res[i] = A[i] & x;
-		return res;
-	}//dot(...)
-
-
-	/// \brief Умножение вектора на квадратную матрицу (без приведения типов)
-	///
-	/// \tparam T тип данных компонент матрицы и вектора
-	/// \tparam n размерность матрицы и вектора
-	/// \param[in] A константная ссылка на матрицу
-	/// \param[in] x константная ссылка на вектор
-	/// \return вектор результат умножения матрицы на вектор
-	template<typename T, size_t n>
-	DEPRECATED inline numvector<T, n> dot(const numvector<T, n>& x, const numvector<numvector<T, n>, n>& A)
-	{
-		//deprecate: use operator&(numvector<>, nummatrix<>) instead of dot(numvector<>, numvector<numvector<>>)
-
-		numvector<T, n> res;
-		for (size_t i = 0; i < n; ++i)
-		{
-			res[i] = 0.0;
-			for (size_t j = 0; j < n; ++j)
-				res[i] += x[j] * A[j][i];
-		}
-		return res;
-	}//dot(...)
+//	/// \brief Умножение квадратной матрицы на вектор (без приведения типов)
+//	///
+//	/// \tparam T тип данных компонент матрицы и вектора
+//	/// \tparam n размерность матрицы и вектора
+//	/// \param[in] A константная ссылка на матрицу
+//	/// \param[in] x константная ссылка на вектор
+//	/// \return вектор результат умножения матрицы на вектор
+//	template<typename T, size_t n>
+//	DEPRECATED inline numvector<T, n> dot(const numvector<numvector<T, n>, n>& A, const numvector<T, n>& x)
+//	{
+//		//deprecate: use nummatrix.operator& instead of dot(numvector<numvector<>>, numvector<>)
+//
+//		numvector<T, n> res;
+//		for (size_t i = 0; i < n; ++i)
+//			res[i] = A[i] & x;
+//		return res;
+//	}//dot(...)
 
 
-	/// \brief Умножение квадратной матрицы на вектор
-	///
-	/// \tparam T тип данных вектора и матрицы
-	/// \tparam n длина вектора и размерность матрицы
-	/// \param[in] A константная ссылка на матрицу
-	/// \param[in] x константная ссылка на вектор
-	/// \return вектор --- результат умножения матрицы на вектор
-	template<typename T, size_t n>
-	DEPRECATED inline numvector<T, n> matDotVec(const numvector<numvector<T, n>, n>& A, const numvector<T, n>& x)
-	{
-		//deprecate: use nummatrix.operator& instead of matDotVec(numvector<numvector<>>, numvector<>)
-
-		numvector<T, n> res;
-		for (size_t i = 0; i < n; ++i)
-			res[i] = A[i] * x;
-		return res;
-	}//dot(...)
-
-
-	/// \brief Умножение вектора на вектор той же размерности внешним образом
-	///
-	/// \tparam T тип данных компонент векторов
-	/// \tparam n размерность векторов
-	/// \param[in] x константная ссылка на первый вектор
-	/// \param[in] y константная ссылка на второй вектор
-	/// \return матрицу ранга 1, являющюуся внешним (кронекеровым) произведением двух векторов
-	template<typename T, size_t n>
-	DEPRECATED inline numvector<numvector<T, n>, n> KronProd(const numvector<T, n>& x, const numvector<T, n>& y)
-	{
-		//deprecate: use operator|(numvector<>, numvector<>) instead of KronProd(numvector<>, numvector<>)
-
-		numvector<numvector<T, n>, n> res;
-		for (size_t i = 0; i < n; ++i)
-			for (size_t j = 0; j < n; ++j)
-				res[i][j] = x[i] * y[j];
-		return res;
-	}//KronProd(...)
+//	/// \brief Умножение вектора на квадратную матрицу (без приведения типов)
+//	///
+//	/// \tparam T тип данных компонент матрицы и вектора
+//	/// \tparam n размерность матрицы и вектора
+//	/// \param[in] A константная ссылка на матрицу
+//	/// \param[in] x константная ссылка на вектор
+//	/// \return вектор результат умножения матрицы на вектор
+//	template<typename T, size_t n>
+//	DEPRECATED inline numvector<T, n> dot(const numvector<T, n>& x, const numvector<numvector<T, n>, n>& A)
+//	{
+//		//deprecate: use operator&(numvector<>, nummatrix<>) instead of dot(numvector<>, numvector<numvector<>>)
+//
+//		numvector<T, n> res;
+//		for (size_t i = 0; i < n; ++i)
+//		{
+//			res[i] = 0.0;
+//			for (size_t j = 0; j < n; ++j)
+//				res[i] += x[j] * A[j][i];
+//		}
+//		return res;
+//	}//dot(...)
 
 
-	/// \brief Транспонирование квадратной матрицы
-	///
-	/// \tparam T тип данных компонент матрицы
-	/// \tparam n размерность матрицы
-	/// \return транспонированную матрицу
-	template<typename T, size_t n>
-	DEPRECATED inline numvector<numvector<T, n>, n> Transpose(const numvector<numvector<T, n>, n>& A)
-	{
-		//deprecate: use member class nummatrix.transpose() instead of Transpose(numvector<numvector>)
+//	/// \brief Умножение квадратной матрицы на вектор
+//	///
+//	/// \tparam T тип данных вектора и матрицы
+//	/// \tparam n длина вектора и размерность матрицы
+//	/// \param[in] A константная ссылка на матрицу
+//	/// \param[in] x константная ссылка на вектор
+//	/// \return вектор --- результат умножения матрицы на вектор
+//	template<typename T, size_t n>
+//	DEPRECATED inline numvector<T, n> matDotVec(const numvector<numvector<T, n>, n>& A, const numvector<T, n>& x)
+//	{
+//		//deprecate: use nummatrix.operator& instead of matDotVec(numvector<numvector<>>, numvector<>)
+//
+//		numvector<T, n> res;
+//		for (size_t i = 0; i < n; ++i)
+//			res[i] = A[i] * x;
+//		return res;
+//	}//dot(...)
 
-		numvector<numvector<T, n>, n> res;
-		for (size_t i = 0; i < n; ++i)
-			for (size_t j = 0; j < n; ++j)
-				res[i][j] = A[j][i];
-		return res;
-	}
+
+//	/// \brief Умножение вектора на вектор той же размерности внешним образом
+//	///
+//	/// \tparam T тип данных компонент векторов
+//	/// \tparam n размерность векторов
+//	/// \param[in] x константная ссылка на первый вектор
+//	/// \param[in] y константная ссылка на второй вектор
+//	/// \return матрицу ранга 1, являющюуся внешним (кронекеровым) произведением двух векторов
+//	template<typename T, size_t n>
+//	DEPRECATED inline numvector<numvector<T, n>, n> KronProd(const numvector<T, n>& x, const numvector<T, n>& y)
+//	{
+//		//deprecate: use nummatrix.operator|(numvector<>, numvector<>) instead of KronProd(numvector<>, numvector<>)
+//		numvector<numvector<T, n>, n> res;
+//		for (size_t i = 0; i < n; ++i)
+//			for (size_t j = 0; j < n; ++j)
+//				res[i][j] = x[i] * y[j];
+//		return res;
+//	}//KronProd(...)
+
+
+//	/// \brief Транспонирование квадратной матрицы
+//	///
+//	/// \tparam T тип данных компонент матрицы
+//	/// \tparam n размерность матрицы
+//	/// \return транспонированную матрицу
+//	template<typename T, size_t n>
+//	DEPRECATED inline numvector<numvector<T, n>, n> Transpose(const numvector<numvector<T, n>, n>& A)
+//	{
+//		//deprecate: use member class nummatrix.transpose() instead of Transpose(numvector<numvector>)
+//
+//		numvector<numvector<T, n>, n> res;
+//		for (size_t i = 0; i < n; ++i)
+//			for (size_t j = 0; j < n; ++j)
+//				res[i][j] = A[j][i];
+//		return res;
+//	}
 
 
 	/// \brief Вычисление третьей компоненты векторного произведения
@@ -1041,118 +1044,118 @@ namespace VMlib
 	}//cross3(...)
 
 
-	/// \brief Скалярное умножение двух векторов
-	/// 
-	/// \param[in] x константная ссылка на первый множитель
-	/// \param[in] y константная ссылка на второй множитель
-	/// \return результат скалярного умножения
-	DEPRECATED inline double operator*(const Point2D& x, const Point2D& y)
-	{
-		//deprecate: use numvector.operator& instead of operator*
-
-		const numvector<double, 2> xx = *(reinterpret_cast<const numvector<double, 2>*>(&x));
-		const numvector<double, 2> yy = *(reinterpret_cast<const numvector<double, 2>*>(&y));
-		return (xx & yy);
-	}//operator*(...)
-
-
-	/// \brief Скалярное умножение двух векторов
-	/// 
-	/// \param[in] x константная ссылка на первый множитель
-	/// \param[in] y константная ссылка на второй множитель
-	/// \return результат скалярного умножения
-	DEPRECATED inline double operator*(const numvector<double, 2>& x, const Point2D& y)
-	{
-		//deprecate: use numvector.operator& instead of operator*
-
-		const numvector<double, 2> yy = *(reinterpret_cast<const numvector<double, 2>*>(&y));
-		return (x & yy);
-	}//operator*(...)
+//	/// \brief Скалярное умножение двух векторов
+//	/// 
+//	/// \param[in] x константная ссылка на первый множитель
+//	/// \param[in] y константная ссылка на второй множитель
+//	/// \return результат скалярного умножения
+//	DEPRECATED inline double operator*(const Point2D& x, const Point2D& y)
+//	{
+//		//deprecate: use numvector.operator& instead of operator*
+//
+//		const numvector<double, 2> xx = *(reinterpret_cast<const numvector<double, 2>*>(&x));
+//		const numvector<double, 2> yy = *(reinterpret_cast<const numvector<double, 2>*>(&y));
+//		return (xx & yy);
+//	}//operator*(...)
 
 
-	/// \brief Скалярное умножение двух векторов
-	/// 
-	/// \param[in] x константная ссылка на первый множитель
-	/// \param[in] y константная ссылка на второй множитель
-	/// \return результат скалярного умножения
-	DEPRECATED inline double operator*(const Point2D& x, const numvector<double, 2>& y)
-	{
-		//deprecate: use numvector.operator& instead of operator*
-
-		const numvector<double, 2> xx = *(reinterpret_cast<const numvector<double, 2>*>(&x));
-		return (xx & y);
-	}//operator*(...)
-
-
-	/// \brief Скалярное умножение двух векторов
-	/// 
-	/// \param[in] x константная ссылка на первый множитель
-	/// \param[in] y константная ссылка на второй множитель
-	/// \return результат скалярного умножения
-	DEPRECATED inline double operator*(const Point& x, const Point& y)
-	{
-		//deprecate: use numvector.operator& instead of operator*
-
-		const numvector<double, 2> xx = *(reinterpret_cast<const numvector<double, 2>*>(&x));
-		const numvector<double, 2> yy = *(reinterpret_cast<const numvector<double, 2>*>(&y));
-		return (xx & yy);
-	}//operator*(...)
+//	/// \brief Скалярное умножение двух векторов
+//	/// 
+//	/// \param[in] x константная ссылка на первый множитель
+//	/// \param[in] y константная ссылка на второй множитель
+//	/// \return результат скалярного умножения
+//	DEPRECATED inline double operator*(const numvector<double, 2>& x, const Point2D& y)
+//	{
+//		//deprecate: use numvector.operator& instead of operator*
+//
+//		const numvector<double, 2> yy = *(reinterpret_cast<const numvector<double, 2>*>(&y));
+//		return (x & yy);
+//	}//operator*(...)
 
 
-	/// \brief Скалярное умножение двух векторов
-	/// 
-	/// \param[in] x константная ссылка на первый множитель
-	/// \param[in] y константная ссылка на второй множитель
-	/// \return результат скалярного умножения
-	DEPRECATED inline double operator*(const numvector<double, 2>& x, const Point& y)
-	{
-		//deprecate: use numvector.operator& instead of operator*
-
-		const numvector<double, 2> yy = *(reinterpret_cast<const numvector<double, 2>*>(&y));
-		return (x & yy);
-	}//operator*(...)
-
-
-	/// \brief Скалярное умножение двух векторов
-	/// 
-	/// \param[in] x константная ссылка на первый множитель
-	/// \param[in] y константная ссылка на второй множитель
-	/// \return результат скалярного умножения
-	DEPRECATED inline double operator*(const Point& x, const numvector<double, 2>& y)
-	{
-		//deprecate: use numvector.operator& instead of operator*
-
-		const numvector<double, 2> xx = *(reinterpret_cast<const numvector<double, 2>*>(&x));
-		return (xx & y);
-	}//operator*(...)
+//	/// \brief Скалярное умножение двух векторов
+//	/// 
+//	/// \param[in] x константная ссылка на первый множитель
+//	/// \param[in] y константная ссылка на второй множитель
+//	/// \return результат скалярного умножения
+//	DEPRECATED inline double operator*(const Point2D& x, const numvector<double, 2>& y)
+//	{
+//		//deprecate: use numvector.operator& instead of operator*
+//
+//		const numvector<double, 2> xx = *(reinterpret_cast<const numvector<double, 2>*>(&x));
+//		return (xx & y);
+//	}//operator*(...)
 
 
+//	/// \brief Скалярное умножение двух векторов
+//	/// 
+//	/// \param[in] x константная ссылка на первый множитель
+//	/// \param[in] y константная ссылка на второй множитель
+//	/// \return результат скалярного умножения
+//	DEPRECATED inline double operator*(const Point& x, const Point& y)
+//	{
+//		//deprecate: use numvector.operator& instead of operator*
+//
+//		const numvector<double, 2> xx = *(reinterpret_cast<const numvector<double, 2>*>(&x));
+//		const numvector<double, 2> yy = *(reinterpret_cast<const numvector<double, 2>*>(&y));
+//		return (xx & yy);
+//	}//operator*(...)
 
 
-	/// \brief Скалярное умножение двух векторов
-	/// 
-	/// \param[in] x константная ссылка на первый множитель
-	/// \param[in] y константная ссылка на второй множитель
-	/// \return результат скалярного умножения
-	DEPRECATED inline double operator*(const numvector<double, 2>& x, const numvector<double, 2>& y)
-	{
-		//deprecate: use numvector.operator& instead of operator*
+//	/// \brief Скалярное умножение двух векторов
+//	/// 
+//	/// \param[in] x константная ссылка на первый множитель
+//	/// \param[in] y константная ссылка на второй множитель
+//	/// \return результат скалярного умножения
+//	DEPRECATED inline double operator*(const numvector<double, 2>& x, const Point& y)
+//	{
+//		//deprecate: use numvector.operator& instead of operator*
+//
+//		const numvector<double, 2> yy = *(reinterpret_cast<const numvector<double, 2>*>(&y));
+//		return (x & yy);
+//	}//operator*(...)
 
-		return (x & y);
-	}//operator*(...)
+
+//	/// \brief Скалярное умножение двух векторов
+//	/// 
+//	/// \param[in] x константная ссылка на первый множитель
+//	/// \param[in] y константная ссылка на второй множитель
+//	/// \return результат скалярного умножения
+//	DEPRECATED inline double operator*(const Point& x, const numvector<double, 2>& y)
+//	{
+//		//deprecate: use numvector.operator& instead of operator*
+//
+//		const numvector<double, 2> xx = *(reinterpret_cast<const numvector<double, 2>*>(&x));
+//		return (xx & y);
+//	}//operator*(...)
 
 
-	/// \brief Скалярное умножение двух векторов
-	/// 
-	/// \param[in] x константная ссылка на первый множитель
-	/// \param[in] y константная ссылка на второй множитель
-	/// \return результат скалярного умножения
-	DEPRECATED inline double operator*(const numvector<double, 3>& x, const numvector<double, 3>& y)
-	{
-		//deprecate: use numvector.operator& instead of operator*
 
-		return (x & y);
-	}//operator*(...)
+
+//	/// \brief Скалярное умножение двух векторов
+//	/// 
+//	/// \param[in] x константная ссылка на первый множитель
+//	/// \param[in] y константная ссылка на второй множитель
+//	/// \return результат скалярного умножения
+//	DEPRECATED inline double operator*(const numvector<double, 2>& x, const numvector<double, 2>& y)
+//	{
+//		//deprecate: use numvector.operator& instead of operator*
+//
+//		return (x & y);
+//	}//operator*(...)
+
+
+//	/// \brief Скалярное умножение двух векторов
+//	/// 
+//	/// \param[in] x константная ссылка на первый множитель
+//	/// \param[in] y константная ссылка на второй множитель
+//	/// \return результат скалярного умножения
+//	DEPRECATED inline double operator*(const numvector<double, 3>& x, const numvector<double, 3>& y)
+//	{
+//		//deprecate: use numvector.operator& instead of operator*
+//
+//		return (x & y);
+//	}//operator*(...)
 
 }//namespace VMlib
 

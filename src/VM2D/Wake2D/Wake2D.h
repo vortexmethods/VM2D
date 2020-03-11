@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Wake2D.h                                                         |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef WAKE_H
@@ -51,8 +51,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class Wake : public WakeDataBase
 	{
@@ -73,21 +73,16 @@ namespace VM2D
 		/// Деструктор
 		~Wake() { };
 
-		/// \brief Сохранение вихревого следа в файл 
-		/// 
-		/// \param[in] outVtx константная ссылка на вектор вихрей, которые нужно вывести в файл
-		/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
-		/// \param[in] step номер кадра для сохранения
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void SaveKadr(const std::vector<Vortex2D>& outVtx, const std::string& dir, size_t step, timePeriod& time) const;
+		// \brief Сохранение вихревого следа в файл 
+		// 
+		// \param[in] outVtx константная ссылка на вектор вихрей, которые нужно вывести в файл
+		// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
+		// \param[in] step номер кадра для сохранения
+		// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
+		//void SaveKadr(const std::vector<Vortex2D>& outVtx, const std::string& dir, size_t step, timePeriod& time) const;
 
 		/// \brief Сохранение вихревого следа в файл .vtk
-		/// 
-		/// \param[in] outVtx константная ссылка на вектор вихрей, которые нужно вывести в файл
-		/// \param[in] dir константная ссылка на строку, задающую каталог, куда сохранять файл с вихревым следом
-		/// \param[in] step номер кадра для сохранения
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void SaveKadrVtk(const std::vector<Vortex2D>& outVtx, const std::string& dir, size_t step, timePeriod& time) const;
+		void SaveKadrVtk() const;
 
 
 		/// \brief Проверка пересечения вихрями следа профиля при перемещении
@@ -107,9 +102,8 @@ namespace VM2D
 		///
 		/// Исполняется сразу для всех вихрей в пелене
 		/// \n Вихри, находящиеся далеко от профилей, удаляются
-		/// \n Вихри, которые сильно сблизились, коллапсируются
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void Restruct(timePeriod& time);
+		/// \n Вихри, которые сильно сблизились, коллапсируются		
+		void Restruct();
 
 		/// \brief Зануление далеко улетевших вихрей
 		/// \return число вихрей в дальнем следе, которые занулены

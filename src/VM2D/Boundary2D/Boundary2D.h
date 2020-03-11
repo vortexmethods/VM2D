@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2D.h                                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef BOUNDARY_H
@@ -54,8 +54,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 
 	class Boundary
@@ -76,18 +76,13 @@ namespace VM2D
 		/// Минимальное число вихрей, рождаемых на панели профиля и формирующих виртуальный вихревой след 
 		int minVortexPerPanel;
 
+		/// \todo непонятный комментарий. Видимо, не число, а первый и последний номера. Так?
 		/// Число вихрей, рождаемых на каждой панели профиля (формируется после решения СЛАУ)
-		std::vector<std::pair<std::vector<Vortex2D>::iterator, std::vector<Vortex2D>::iterator>> vortexBeginEnd;
+		std::vector<std::pair<int, int>> vortexBeginEnd;
+//		std::vector<std::pair<std::vector<Vortex2D>::iterator, std::vector<Vortex2D>::iterator>> vortexBeginEnd;
 
 		/// Виртуальный вихревой след конкретного профиля
 		VirtualWake virtualWake;
-
-		/// \brief MPI-синхронизация виртуального вихревого следа
-		///
-		/// Рассылка следа на все процессоры локальной группы процессоров, занятых решением данной задачи
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
-		void VirtualWakeSynchronize();
 
 		/// \brief Размерность параметров каждого из слоев на каждой из панелей
 		///
@@ -121,14 +116,12 @@ namespace VM2D
 		/// 
 		/// \param[out] matr ссылка на генерируемую матрицу
 		/// \param[out] lastLine ссылка на нижнюю строку
-		/// \param[out] lactCol ссылка на правый столбец
-		/// \param[in] currentRow номер строки (или столбца), с которого начинается текущий блок в общей матрице
+		/// \param[out] lactCol ссылка на правый столбец		
 		virtual void FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol) = 0;
 
 		/// \brief Генерация блока матрицы, состоящей из интегралов от (r-xi)/|r-xi|^2, влияние профиля самого на себя
 		///
 		/// \param[out] IQ ссылка на генерируемую матрицу
-		/// \param[in] currentRow номер строки (или столбца), с которого начинается текущий блок в общей матрице
 		virtual void FillIQSelf(std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& IQ) = 0;
 
 		/// \brief Генерация блока матрицы влияния от другого профиля того же типа
@@ -137,8 +130,6 @@ namespace VM2D
 		/// 
 		/// \param[in] otherBoundary константная ссылка на граничное условие на втором профиле
 		/// \param[out] matr ссылка на генерируемый блок матрицы
-		/// \param[in] currentRow номер строки, с которого начинается текущий блок в общей матрице
-		/// \param[in] currentCol номер столбца, с которого начинается текущий блок в общей матрице
 		/// \todo Пока считается, что граничные условия одинаковые
 		virtual void FillMatrixFromOther(const Boundary& otherBoundary, Eigen::MatrixXd& matr) = 0;
 
@@ -147,37 +138,24 @@ namespace VM2D
 		/// Генерирует блок матрицы влияния от другого профиля того же типа
 		/// 
 		/// \param[in] otherBoundary константная ссылка на граничное условие на втором профиле
-		/// \param[out] matr ссылка на генерируемый блок матрицы
-		/// \param[in] currentRow номер строки, с которого начинается текущий блок в общей матрице
-		/// \param[in] currentCol номер столбца, с которого начинается текущий блок в общей матрице
+		/// \param[out] IQ ссылка на пару матриц, выражающих взаимные влияния (касательные и нормальные) панелей профиля 
 		/// \todo Пока считается, что граничные условия одинаковые
 		virtual void FillIQFromOther(const Boundary& otherBoundary, std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& IQ) = 0;
 
-		/// \brief Вычисление конвективных скоростей в наборе точек, вызываемых наличием завихренности и источников на профиле как от слоев
-		///
-		/// Вычисляет конвективные скорости в наборе точек, которые вызваны влиянием завихренности и источников на профиле как от слоев
-		/// 
-		/// \param[in] points константная ссылка на набор точек, в которых вычисляются скорости
-		/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния завихренности и источников на профиле
-		/// 
-		/// \warning velo --- накапливается!
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
-		virtual void GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const = 0;
 
-		/// \brief Вычисление конвективных скоростей в наборе точек, вызываемых наличием завихренности и источников на профиле как виртуальных вихрей
+		/// \brief Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на профиле
 		///
-		/// Вычисляет конвективные скорости в наборе точек, которые вызваны влиянием завихренности и источников на профиле как виртуальных вихрей
+		/// Вычисляет конвективные скорости в наборе точек, которые вызваны влиянием слоев вихрей и источников на профиле
 		/// 
 		/// \param[in] pointsDb константная ссылка на базу данных вихрей, в точках которых вычисляются скорости
-		/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния завихренности и источников на профиле
+		/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния слоев вихрей и источников на профиле
 		/// 
 		/// \warning velo --- накапливается!
 		/// \warning Использует OMP, MPI
 		/// \ingroup Parallel
-		virtual void GetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const = 0;
+		virtual void CalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const = 0;
 #if defined(USE_CUDA)
-		virtual void GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const = 0;
+		virtual void GPUCalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const = 0;
 #endif
 
 		/// \brief Вычисление конвективной скорости в точках расположения виртуальных вихрей
@@ -188,19 +166,7 @@ namespace VM2D
 		///
 		/// \param[out] velo ссылка на заполняемый список скоростей
 		/// \warning Массив velo заполняется путем присвоения, а не прибавления значений
-		virtual void GetConvVelocityAtVirtualVortexes(std::vector<Point2D>& velo) const = 0;
-
-		/// \brief Заполнение в правой части влияния присоединенных слоев, действующих на один профиль от другого
-		///
-		/// Заполняет блок правой части матрицы СЛАУ, обеспечивающий удовлетворение граничного условия, .
-		/// Учитывается влияние присоединенных слоев от другого профиля
-		/// 	
-		/// \param[out] otherAirfoil константная ссылка профиль, вклад от которого в правую часть требуется вычислить
-		/// \param[out] rhs ссылка на блок вектора правой части, соответствующего профилю, на который учитывается влияние
-		///
-		/// \todo Пока считается, что граничные условия одинаковые
-		/// \warning Меняет rhs путем прибавления
-		virtual void FillRhsFromOther(const Airfoil& otherAirfoil, Eigen::VectorXd& rhs) = 0;
+		virtual void CalcConvVelocityAtVirtualVortexes(std::vector<Point2D>& velo) const = 0;
 
 
 		/// \brief Возврат размерности вектора решения 
@@ -234,6 +200,7 @@ namespace VM2D
 		/// \param[in] ptr указатель на начало диапазона вихрей
 		/// \param[in] count длина диапазона вихрей
 		/// \param[out] wakeRhs ссылка на вектор полученных влияние для правой части СЛАУ
+
 		virtual void GetInfluenceFromVorticesToRectPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& wakeRhs) const = 0;
 	
 		/// \brief Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой части
@@ -267,7 +234,33 @@ namespace VM2D
 		/// \param[out] wakeRhs ссылка на вектор полученных влияние для правой части СЛАУ
 		virtual void GetInfluenceFromSourcesToCurvPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& wakeRhs) const = 0;
 
+		/// \brief Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вихрь в области течения	///
+		///
+		/// \param[in] panel номер панели профиля, от которой считается влияние
+		/// \param[in] vtx ссылка на вихрь
+		/// \param[out] vel ссылка на вектор полученной скорости
+		virtual void GetInfluenceFromVortexSheetAtRectPanelToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const = 0;
 
+		/// \brief Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения
+		///
+		/// \param[in] panel номер панели профиля, от которой считается влияние
+		/// \param[in] vtx ссылка на вихрь
+		/// \param[out] vel ссылка на вектор полученной скорости
+		virtual void GetInfluenceFromSourceSheetAtRectPanelToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const = 0;
+
+		/// \brief Вычисление влияния набегающего потока на прямолинейную панель для правой части
+		///
+		/// Вычисляет влияния набегающего потока на прямолинейную панель для правой части
+		/// 
+		/// \param[out] vInfRhs ссылка на вектор полученных влияние для правой части СЛАУ
+		virtual void GetInfluenceFromVInfToRectPanel(std::vector<double>& vInfRhs) const = 0;
+
+		/// \brief Вычисление влияния набегающего потока на криволинейную панель для правой части
+		///
+		/// Вычисляет влияния набегающего потока на криволинейную панель для правой части
+		/// 
+		/// \param[out] vInfRhs ссылка на вектор полученных влияние для правой части СЛАУ
+		virtual void GetInfluenceFromVInfToCurvPanel(std::vector<double>& vInfRhs) const = 0;
 };
 
 }//namespace VM2D

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Tree2D.h                                                         |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7
-\date 22 ноября 2019 г.
+\version 1.8
+\date 09 марта 2020 г.
 */
 
 #ifndef TREE_H
@@ -45,7 +45,6 @@ namespace VM2D
 {
 
 	class World2D;
-	struct PointsCopy;
 
 
 	/*!
@@ -57,8 +56,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class Tree
 	{
@@ -68,7 +67,7 @@ namespace VM2D
 		const World2D& W;
 
 		/// Параметр точности 
-		const double theta = 0.3;
+		const double theta = 0.1;
 
 		/// Максимальное количество уровней дерева
 		const double numOfLevels = 10;
@@ -79,24 +78,25 @@ namespace VM2D
 		/// Минимальное количество вихрей в ячейке
 		const double minNumOfVort = 1;
 
-		/// Вектор умных указателей на ячейки нижнего уровня 
-		std::vector<std::shared_ptr<Cell>> lowCells; 
-
+		/// Вектор указателей на ячейки нижнего уровня 
+		std::vector<Cell*> lowCells; 
+		
 		/// Умный указатель на корень
-		std::shared_ptr<Cell> rootCell;	/// ????	
+		Cell rootCell;		
+
+		/// Ссылка на объект PointsCopy, содержащий все точки, их скорости, eps*, type
+		PointsCopy& allPnt;
 
 		/// \brief Конструктор
 		///
+		/// Включает в себя построение корня дерева на основе заданных вихрей
 		/// \param[in] W_ константная ссылка на решаемую задачу
-		Tree(const World2D& W_);
+		/// \param[in, out] pointsCopy_ ссылка на вектор из элементов PointsCopy
+		Tree(const World2D& W_, PointsCopy& pointsCopy_);
 
 		/// Деструктор
 		virtual ~Tree();
 
-		///  \brief Построение корня дерева на основе заданных вихрей
-		///
-		/// \param[in] pointsCopy вектор из копий вихрей, на основе которых строится дерево
-		void BuildTree(std::vector<PointsCopy>& pointsCopy);
 	};
 }//namespace VM2D
 

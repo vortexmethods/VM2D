@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil2D.cpp                                                    |
 | Info: Source code of VM2D                                                   |
@@ -32,18 +32,22 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #include "Airfoil2D.h"
 
+#include "Boundary2D.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
 #include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
+#include "Velocity2D.h"
 #include "WakeDataBase2D.h"
+#include "World2D.h"
+#include "Wake2D.h"
 
 using namespace VM2D;
 
@@ -61,11 +65,6 @@ bool Airfoil::isAfter(size_t i, size_t j) const
 }//isAfter(...)
 
 
-
-
-
-
-
 //Определяет, находится ли точка с радиус-вектором r внутри габаритного прямоугольника профиля
 bool Airfoil::isInsideGabarits(const Point2D& r) const
 {
@@ -79,3 +78,30 @@ bool Airfoil::isOutsideGabarits(const Point2D& r) const
 	return (r[0] > upRight[0] || (r[0] < lowLeft[0] || r[1] < lowLeft[1] || r[1] > upRight[1]));
 }//isOutsideGabarits(...)
 
+//Вычисление средних значений eps на панелях
+void Airfoil::calcMeanEpsOverPanel()
+{
+
+	meanEpsOverPanel.clear();
+	meanEpsOverPanel.resize(getNumberOfPanels());
+
+	double midEps;
+		
+	const Boundary& bnd = W.getBoundary(numberInPassport);
+	auto vtxBegin = bnd.vortexBeginEnd[0].first;
+	auto virtVortParams = W.getVelocity().virtualVortexesParams[numberInPassport];
+
+	for (size_t i = 0; i < getNumberOfPanels(); ++i)
+	{
+		midEps = 0.0;
+
+		for (int j = bnd.vortexBeginEnd[i].first; j < bnd.vortexBeginEnd[i].second;  ++j)
+		{
+			midEps += virtVortParams.epsastWake[j];
+		}
+		midEps /= (bnd.vortexBeginEnd[i].second - bnd.vortexBeginEnd[i].first);
+
+		meanEpsOverPanel[i] = midEps;
+	}
+
+}

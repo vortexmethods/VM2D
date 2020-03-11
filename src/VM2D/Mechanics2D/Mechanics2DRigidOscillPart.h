@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidOscillPart.h                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef MECHANICSRIGIDOSCILLPART_H
@@ -55,8 +55,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 
 	class MechanicsRigidOscillPart :
@@ -86,12 +86,22 @@ namespace VM2D
 		double m;
 
 		/// параметр демпфирования механической системы
-		const double b;
+		double b;
 
 		/// параметр жесткости механической системы
 		double k;
 
 	public:
+
+
+		/// текущая скорость профиля
+		double& getU(){ return u; };
+		double& getUOld(){ return uOld; };
+
+		/// текущее отклонение профиля
+		double& getY(){ return y; };
+		double& getYOld(){ return yOld; };
+
 
 		/// \brief Конструктор
 		/// 
@@ -112,7 +122,7 @@ namespace VM2D
 
 
 		//далее -- реализации виртуальных функций
-		virtual void GetHydroDynamForce(timePeriod& time) override;
+		virtual void GetHydroDynamForce() override;
 		virtual Point2D VeloOfAirfoilRcm(double currTime) override;
 		virtual Point2D PositionOfAirfoilRcm(double currTime) override;
 		virtual void VeloOfAirfoilPanels(double currTime) override;

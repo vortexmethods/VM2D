@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Cell2D.h                                                         |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7
-\date 22 ноября 2019 г.
+\version 1.8
+\date 09 марта 2020 г.
 */
 
 #ifndef CELL_H
@@ -43,12 +43,12 @@
 
 #include "Point2D.h"
 #include "Vortex2D.h"
+#include "PointsCopy2D.h"
 
 namespace VM2D
 {
 
 	class Tree;
-	struct PointsCopy;
 	/*!
 	\brief Класс, описывающий ячейку дерева для вычисления скоростей методом Барнса --- Хата
 
@@ -56,8 +56,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class Cell
 	{
@@ -69,8 +69,7 @@ namespace VM2D
 		bool lowLevel = false;
 
 		/// Массив из двух умных указателей на дочерние ячейки
-		std::shared_ptr<Cell> mChildren[2];
-
+		std::unique_ptr<Cell> mChildren[2];
 		
 		/// Суммарные циркуляции вихрей, находящихся внутри данного прямоугольника
 		//  sumGam[0] --- сумма положительных циркуляций
@@ -88,41 +87,42 @@ namespace VM2D
 		double c = 0.0;
 		double d = 0.0;
 
+		/// Расстояния до трех ближайших ячеек (необходимо для корректного вычисления eps*)
+		numvector<double, 3> closestCellDist = { 10000.0, 10000.0, 10000.0 };
+
 	public:
 
 		/// Номер уровня данной ячейки
 		int level;
 
-		/// Вектор умных указателей на ячейки в ближней зоне (там, где надо считать влияние "напрямую") 
+		/// Вектор указателей на ячейки в ближней зоне (там, где надо считать влияние "напрямую") 
 		//имеет смысл только для ячеек нижнего уровня
-		std::vector<std::shared_ptr<Cell>> closeCells;
+		std::vector<Cell*> closeCells;
 
-		/// Итераторы начала и конца вектора PointsCopy
-		std::vector<PointsCopy>::iterator itBegin;
-		std::vector<PointsCopy>::iterator itEnd;
-
+		/// Итераторы начала и конца объекта PointsCopy
+		PointsCopy::iterator itBegin;
+		PointsCopy::iterator itEnd;
 
 		/// Ссылка на дерево целиком
 		Tree& tree;
 
-		/// Конструктор инициализации
-		Cell(Tree& Tree_);
-		Cell(const Point2D leftDown_, const Point2D rightUp_, Tree& Tree_);
-		
+		/// \brief Конструктор инициализации
+		///
+		/// Включает в себя построение корня дерева на основе заданных вихрей
+		/// \param[in] Tree_ ссылка на дерево целиком
+		/// \param[in] pointsCopy ссылка на элементы, на основе которых строится прямоугольник
+		Cell(Tree& Tree_, PointsCopy& pointsCopy);
+		Cell(Tree& Tree_, const Point2D leftDown_, const Point2D rightUp_);
+
 		/// Деструктор
 		virtual ~Cell();
-
-		///  \brief Построение корня дерева на основе заданных вихрей
-		///
-		/// \param[in] pointsCopy вектор копий вихрей, на основе которых строится прямоугольник
-		void MakeRootCell(std::vector<PointsCopy>& pointsCopy);
 
 		///  \brief Построение иерархической структуры ячеек (дерева)
 		///
 		/// Рекурсивная процедура
 		/// \param[in] itBegin ссылка на итератор начала списка вихрей в данной ячейке
 		/// \param[in] itEnd ссылка на итератор конца списка вихрей в данной ячейке
-		void CreateAllCells(std::vector<PointsCopy>::iterator &itBegin, std::vector<PointsCopy>::iterator &itEnd);
+		void CreateAllCells(PointsCopy::iterator& itBegin, PointsCopy::iterator& itEnd);
 
 		/// \brief Вычисление параметров всех ячеек дерева (циркуляций и центров завихренности)			
 		///
@@ -130,30 +130,63 @@ namespace VM2D
 		// для нижних уровней считается по набору вихрей, для остальных --- по потомкам
 		void CalculateCellsParams();
 
-		/// \brief Расчет коэффициентов a,b,c,d для ячейки нижнего уровня
+		/// \brief Обнуление коэффициентов a,b,c,d для ячейки нижнего уровня 
+		///
+		/// Рекурсивная процедура
+		/// Вызывается перед накоплением коэффициентов процедурой CalcABCDandCloseCellsToLowLevel
+		void ClearABCD();
+
+
+		/// \brief Расчет коэффициентов a,b,c,d для ячейки нижнего уровня и определение ячеек ближней зоны 
 		///
 		/// Рекурсивная процедура
 		/// Вызывается внутри цикла по ячейкам нижнего уровня
 		/// \param[in] infCell указатель на влияющую ячейку (при первом витке рекурсии передается rootCell, затем - ее потомки)
-		void CalcCoeffToLowLevel(std::shared_ptr<Cell> infCell);
+		/// \param[in] calcCoef = true, если нужно считать коэффициенты a,b,c,d (не нужно только для виртуальных вихрей)
+		void CalcABCDandCloseCellsToLowLevel(Cell& infCell, bool calcCoef);
 
 		/// Расчет конвективных скоростей вихрей внутри одной ячейки от вихрей внутри всех ближних ячеек
-		void CalcConvVeloByBiotSavart();
+		///
+		/// Вызывается дважды: для wake и VP
+		/// \param[in] calcRadius = true, если нужно вычислять eps*
+		/// \param[out] savedEe2 - вектор, сохраняющий расстояние до трех ближайших вихрей (имеет смысл при calcRadius = true)
+		void CalcConvVeloByBiotSavartFromVortices(bool calcRadius, std::vector<numvector<double, 3>>& savedEe2);
+		
+		/// Расчет конвективных скоростей вихрей внутри одной ячейки от вихревых слоев (присоединенный + свободный) внутри всех ближних ячеек
+		///
+		/// Вызывается дважды: для wake и VP
+		/// \param[in] calcRadius = true, если нужно вычислять eps* от виртуальных вихрей
+		/// \param[in, out] savedEe2 - вектор, сохраняющий расстояние до трех ближайших вихрей (имеет смысл при calcRadius = true)
+		void CalcConvVeloByBiotSavartFromSheets(bool calcRadius, std::vector<numvector<double, 3>>& savedEe2);
+
+		/// Расчет eps* по сохраненным расстояниям до трех ближайших элементов
+		///
+		/// \param[in] savedEe2 - вектор, содержащий расстояние до трех ближайших вихрей
+		void SetDomainRadius(const std::vector<numvector<double, 3>>& savedEe2);
+
+		/// Расчет eps* для виртуальных вихрей от всех вихрей (в пелене и виртуальных) внутри всех ближних ячеек
+		/// 
+		/// Проход по ближней зоне от treeWake и сохранение расстояний до трех ближайших вихрей
+		/// Проход по дереву treeSheet, определение ближних ячеек, расчет расстояний до трех ближайших вихрей
+		/// Определение eps* 
+		void CalcDomainRadiusForVirtualWake();
+
+		/// Расчет конвективных скоростей вихрей внутри одной ячейки от источников внутри всех ближних ячеек
+		void CalcConvVeloByBiotSavartFromSources();
 
 		/// \brief Расчет приближенного влияния от вихрей на элемент it внутри ячейки нижнего уровня
 		/// Вызывается внутри цикла по вихрям ячеек нижнего уровня
 		///
-		/// \param[in] it итератор на конкретный элемент, на который рассчитывается влияние
-		void CalcInfluenceFromVortexFarCells(std::vector<PointsCopy>::iterator it);
+		/// \param[in, out] it итератор на конкретный элемент, на который рассчитывается влияние
+		void CalcInfluenceFromVortexFarCells(PointsCopy::iterator it);
 
 		/// \brief Расчет приближенного влияния от источников на элемент it внутри ячейки нижнего уровня
 		/// Вызывается внутри цикла по вихрям ячеек нижнего уровня
 		///
 		/// \param[in] it итератор на конкретный элемент, на который рассчитывается влияние
-		void CalcInfluenceFromSourceFarCells(std::vector<PointsCopy>::iterator it);
+		void CalcInfluenceFromSourceFarCells(PointsCopy::iterator it);
 
 		void PrintTree();
-		void PrintMyVortexes();
 	};
 }//namespace VM2D
 

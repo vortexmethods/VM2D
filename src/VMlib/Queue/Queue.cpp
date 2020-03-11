@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.8    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/03/09     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: Queue.cpp                                                        |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса Queue
 \author Марчевский Илья Константинович
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #if defined(_WIN32)
@@ -129,7 +129,7 @@ void Queue::TaskSplit()
 		numberOfTask.prepared = 0;
 
 		//считаем число свободных процессоров
-		for (int i = 0; i < nProcAll; i++)
+		for (int i = 0; i < nProcAll; ++i)
 		if (procState[i] == MPI_UNDEFINED)
 			nfree++;
 	
@@ -187,7 +187,7 @@ void Queue::TaskSplit()
 	{
 		info.endl();
 		info('i') << "ProcStates: " << std::endl;
-		for (int i = 0; i < nProcAll; i++)
+		for (int i = 0; i < nProcAll; ++i)
 			info('-') << "proc[" << i << "] <=> problem[" << procState[i] << "]" << std::endl;
 		info.endl();
 	}
@@ -286,7 +286,7 @@ void Queue::TaskSplit()
 		//далее ищем считающие задачи (в том числе только что стартующие)
 		//и собираем номера их головных процессоров
 		//(собираем в порядке просмотра номеров процессоров))
-		for (int s = 0; s<nProcAll; s++)
+		for (int s = 0; s<nProcAll; ++s)
 		if ((procState[s] != MPI_UNDEFINED) && (task[procState[s]].state == TaskState::running) && (task[procState[s]].proc[0] == s))
 			solvList.push_back(s);
 
@@ -452,7 +452,7 @@ void Queue::TaskUpdate()//Обновление состояния задач и 
 
 		//если состояние "считается" запоминаем эту задачу
 		//задачи запоминаются в порядке просмотра процессоров
-		for (int s = 0; s<nProcAll; s++)
+		for (int s = 0; s<nProcAll; ++s)
 		if ( (procState[s] != MPI_UNDEFINED) && (task[procState[s]].state == TaskState::running) && (task[procState[s]].proc[0] == s) )
 			taskList.push_back(procState[s]);
 			
@@ -464,14 +464,14 @@ void Queue::TaskUpdate()//Обновление состояния задач и 
 		//(в этом случае sizeCommSolving как раз будет на 1 больше, чем taskSolving, см. выше)
 		//если же нулевой процесс занят решением задачи, то смещения нет,
 		//поскольку в этом случае sizeCommSolving и taskSolving равны
-		for (int i = 0; i < numberOfTask.solving; i++)
+		for (int i = 0; i < numberOfTask.solving; ++i)
 		if (flagFinish[i + sizeCommSolving - numberOfTask.solving] == 1)
 			task[taskList[i]].state = TaskState::finishing;
 	} //if myid==0
 
 	if (myidAll == 0)
 	{
-		for (size_t i = 0; i < task.size(); i++)
+		for (size_t i = 0; i < task.size(); ++i)
 		{
 			//освобождаем процессоры от сосчитавшихся задач
 			if (task[i].state == TaskState::finishing)
@@ -512,20 +512,20 @@ void Queue::ConstructProcStateVar()
 
 	prFlag.resize(nProcAll, true); //их надо просматривать
 
-	for (int i = 0; i<nProcAll; i++)
+	for (int i = 0; i<nProcAll; ++i)
 	if (procState[i] == MPI_UNDEFINED)
 	{
 		prFlag[i] = false;  //уже просмотрели
 		procStateVar[i] = MPI_UNDEFINED;
 	} //if (ProcState[i]==MPI_UNDEFINED)
 
-	for (int i = 0; i<nProcAll; i++)
+	for (int i = 0; i<nProcAll; ++i)
 	if (prFlag[i])
 	{
 		prFlag[i] = false;
 		number++;
 		
-		for (int s = i; s<nProcAll; s++)
+		for (int s = i; s<nProcAll; ++s)
 		if (procState[s] == procState[i])
 		{
 			procStateVar[s] = number;

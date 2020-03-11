@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil2DRect.cpp                                                |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #include "Airfoil2DRect.h"
@@ -41,6 +41,7 @@
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
+#include "nummatrix.h"
 #include "Parallel.h"
 #include "Passport2D.h"
 #include "Preprocessor.h"
@@ -117,7 +118,7 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 	std::vector<Vortex2D> locPoints;
 	locPoints.resize(par.myLen);
 
-	MPI_Scatterv(const_cast<std::vector<Vortex2D>&>(pointsDb.vtx).data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, \
+	MPI_Scatterv(const_cast<std::vector<Vortex2D/*, VM2D::MyAlloc<VMlib::Vortex2D>*/>&>(pointsDb.vtx).data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, \
 		locPoints.data(), par.myLen, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
 
 	std::vector<double> locI0(par.myLen, 0.0);
@@ -138,26 +139,25 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 	double s, d;
 
 	double vs;
-	double iDDomRad, expon;
+	double iDDomRad, domRad, expon;
 #pragma warning (pop)
-
-	double iDPIeps2 = 1.0 / (PI * sqr(2.0*W.getPassport().wakeDiscretizationProperties.epscol));
-
+	
 #pragma omp parallel for \
 	default(none) \
-	shared(locI0, locI3, domainRadius, locPoints, id, iDPIeps2, par, locViscousStress) \
-	private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, iDDomRad) schedule(dynamic, DYN_SCHEDULE)
+	shared(locI0, locI3, domainRadius, locPoints, id, par, locViscousStress) \
+	private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, domRad, iDDomRad) schedule(dynamic, DYN_SCHEDULE)
 	for (int i = 0; i < par.myLen; ++i)
 	{
-		iDDomRad = 1.0 / domainRadius[i + par.myDisp];
+		domRad = std::max(domainRadius[i + par.myDisp], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+		iDDomRad = 1.0 / domRad;
 
-		for (size_t j = 0; j < r_.size() - 1; j++)
+		for (size_t j = 0; j < r_.size(); ++j)
 		{
 			vs = 0.0;
-			q = locPoints[i].r() - 0.5 * (r_[j] + r_[j + 1]);
+			q = locPoints[i].r() - 0.5 * (getR(j) + getR(j + 1));
 			vec = tau[j];
 
-			s = q * vec;
+			s = q & vec;
 			d = q.length();
 
 			if (d < 50.0 * len[j])	//Почему зависит от длины панели???
@@ -172,13 +172,13 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 					expon = exp(-lxi) * len[j];
 					mn = nrm[j] * expon;
 
-					if (locI0[i] != -PI * domainRadius[i + par.myDisp])
+					if (locI0[i] != -PI * domRad)
 					{
-						locI0[i] += xi * mn * (lxi + 1.0) / (lxi*lxi);
+						locI0[i] += (xi & mn) * (lxi + 1.0) / (lxi*lxi);
 						locI3[i] += mn;
 					}
 
-					vs = locPoints[i].g() * expon * iDPIeps2;
+					vs = locPoints[i].g() * expon / (PI * sqr(meanEpsOverPanel[j]));
 				}
 				else if ((d <= 5.0 * len[j]) && (d >= 0.1 * len[j]))
 				{
@@ -187,57 +187,52 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 					//new_n = 100;
 					h = v0 * (1.0 / new_n);
 
-					for (int m = 0; m < new_n; m++)
+					for (int m = 0; m < new_n; ++m)
 					{
-						xi_m = (locPoints[i].r() - (r_[j] + h * (m + 0.5))) * iDDomRad;
+						xi_m = (locPoints[i].r() - (getR(j) + h * (m + 0.5))) * iDDomRad;
 						lxi_m = xi_m.length();
 					
 						lenj_m = len[j] / new_n;
 						expon = exp(-lxi_m) * lenj_m;
 
 						mn = nrm[j] * expon;
-						if (locI0[i] != -PI * domainRadius[i + par.myDisp])
+						if (locI0[i] != -PI * domRad)
 						{
-							locI0[i] += xi_m*  mn * (lxi_m + 1.0) / (lxi_m*lxi_m);
+							locI0[i] += (xi_m & mn) * (lxi_m + 1.0) / (lxi_m*lxi_m);
 							locI3[i] += mn;
 						}
 						vs += expon;
 					}//for m
-					vs *= locPoints[i].g() * iDPIeps2;
+					vs *= locPoints[i].g() / (PI * sqr(meanEpsOverPanel[j]));
 				}
 				else if (d <= 0.1 * len[j])
 				{
-					if (locI0[i] != -PI * domainRadius[i + par.myDisp])
+					if (locI0[i] != -PI * domRad)
 					{
-						locI0[i] = -PI * domainRadius[i + par.myDisp];
+						locI0[i] = -PI * domRad;
 						
+						//Здесь именно =, а не +=
 						if (fabs(s) > 0.5 * len[j])
-						{
-							locI3[i] = 2.0 * nrm[j] * domainRadius[i + par.myDisp] * (exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0));
-							//viscousStress[j] += 2.0 * locPoints[i].g()*(exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0))  * iDDomRad / (PI * len[j]);
-						}
+							locI3[i] = 2.0 * nrm[j] * domRad * (exp(-fabs(s)  * iDDomRad) * sinh(len[j] * iDDomRad / 2.0));						
 						else
-						{
-							locI3[i] = 2.0 * nrm[j] * domainRadius[i + par.myDisp] * (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
-							//viscousStress[j] += 2.0 * locPoints[i].g()* (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s)  * iDDomRad))  * iDDomRad / (PI * len[j]);
-						}
+							locI3[i] = 2.0 * nrm[j] * domRad * (1.0 - exp(-len[j] * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));					
 					}
 
 					vs = 0.0;
-					new_n = static_cast<int>(ceil(5.0 * len[j] / d));
-					//new_n = 100;
+					//new_n = static_cast<int>(ceil(5.0 * len[j] / d));
+					new_n = 1;
 					h = v0 * (1.0 / new_n);
 
-					for (int m = 0; m < new_n; m++)
+					for (int m = 0; m < new_n; ++m)
 					{
-						xi_m = (locPoints[i].r() - (r_[j] + h * (m + 0.5))) * iDDomRad;
+						xi_m = (locPoints[i].r() - (getR(j) + h * (m + 0.5))) * iDDomRad;
 						lxi_m = xi_m.length();
 
 						lenj_m = len[j] / new_n;
 						expon = exp(-lxi_m) * lenj_m;													
 						vs += expon;
 					}//for m
-					vs *= locPoints[i].g() * iDPIeps2;
+					vs *= locPoints[i].g() / (PI * sqr(meanEpsOverPanel[j]));
 
 					//break;
 					
@@ -262,18 +257,23 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 	MPI_Reduce(locViscousStress.data(), currViscousStress.data(), (int)getNumberOfPanels(), MPI_DOUBLE, MPI_SUM, 0, W.getParallel().commWork);
 	
 	if (id == 0)
-	for (size_t i = 0; i < viscousStress.size(); ++i)
 	{
-		viscousStress[i] += currViscousStress[i];
+		if (&pointsDb == &(W.getWake()))
+		for (size_t i = 0; i < viscousStress.size(); ++i)
+		{
+			viscousStress[i] += currViscousStress[i];
+		}
 	}
 
 
 	if (id == 0)
 	for (size_t i = 0; i < I0.size(); ++i)
 	{
-		if (I0[i] != -PI * domainRadius[i])
+		domRad = std::max(domainRadius[i], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+
+		if (I0[i] != -PI * domRad)
 		{
-			if (selfI0[i] == -PI * domainRadius[i])
+			if (selfI0[i] == -PI * domRad)
 			{
 				I0[i] = selfI0[i];
 				I3[i] = selfI3[i];
@@ -287,99 +287,126 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 	}
 }; //GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(...)
 
+
 #if defined(USE_CUDA)
 void AirfoilRect::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3)
 {
-	const size_t npt = pointsDb.vtx.size();
-	double*& dev_ptr_pt = pointsDb.devVtxPtr;
-	double*& dev_ptr_rad = pointsDb.devRadPtr;
-	const size_t nr = r_.size();
-	double*& dev_ptr_r = devRPtr; 
-	std::vector<double>& loci0 = pointsDb.tmpI0;
-	std::vector<Point2D>& loci3 = pointsDb.tmpI3;
-	double*& dev_ptr_i0 = pointsDb.devI0Ptr;
-	double*& dev_ptr_i3 = pointsDb.devI3Ptr;
+	std::vector<double> newViscousStress;
 
-	double*& dev_ptr_visstr = devViscousStressesPtr;
-	std::vector<double>& locvisstr = tmpViscousStresses;
-
-
-
-	const int& id = W.getParallel().myidWork;
-	VMlib::parProp par = W.getParallel().SplitMPI(npt, true);
-
-	double tCUDASTART = 0.0, tCUDAEND = 0.0;
-
-	tCUDASTART = omp_get_wtime();
-
-
+	//Обнуление вязких напряжений
 	if (&pointsDb == &(W.getWake()))
 	{
 		viscousStress.clear();
 		viscousStress.resize(r_.size(), 0.0);
 	}
 
-	std::vector<double> zeroVec(r_.size(), 0.0);
-	cuCopyFixedArray(devViscousStressesPtr, zeroVec.data(), zeroVec.size() * sizeof(double));
-	
-
-	W.getCuda().CopyMemFromDev<double, 1>(nr, dev_ptr_visstr, &locvisstr[0]);
-
-
-	if ((npt > 0) && (nr > 0))
+	//CUDA-ядро вызывается 1 раз и учитывает влияние сразу всех профилей
+	if ((numberInPassport == 0) && ( (&pointsDb == &(W.getWake())) || (&pointsDb == &(W.getBoundary(0).virtualWake)) ))
 	{
-		cuCalculateSurfDiffVeloWake(par.myDisp, par.myLen, dev_ptr_pt, nr, dev_ptr_r, dev_ptr_i0, dev_ptr_i3, dev_ptr_rad, dev_ptr_visstr);
-			
-		W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_i3, (double*)&loci3[0]);
-		W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_i0, &loci0[0]);
-		W.getCuda().CopyMemFromDev<double, 1>(nr, dev_ptr_visstr, &locvisstr[0]);
-
-		std::vector<Point2D> newI3;
-		std::vector<double> newI0;
-		std::vector<double> newViscousStress;
-		
-		if (id == 0)
+		size_t npt = pointsDb.vtx.size();
+				
+		if (&pointsDb == &(W.getBoundary(0).virtualWake))
 		{
-			newI3.resize(I3.size());
-			newI0.resize(I0.size());
-			newViscousStress.resize(nr);			
+			for (size_t q = 1; q < W.getNumberOfAirfoil(); ++q)
+				npt += W.getBoundary(q).virtualWake.vtx.size();
 		}
+		
+		double*& dev_ptr_pt = pointsDb.devVtxPtr;
+		double*& dev_ptr_rad = pointsDb.devRadPtr;
+		double*& dev_ptr_meanEps = devMeanEpsOverPanelPtr;
+		const size_t nr = r_.size();
+		double*& dev_ptr_r = devRPtr;
+		std::vector<double> loci0(npt); 
+		std::vector<Point2D> loci3(npt); 
+		double*& dev_ptr_i0 = pointsDb.devI0Ptr;
+		double*& dev_ptr_i3 = pointsDb.devI3Ptr;
+		double minRad = W.getPassport().wakeDiscretizationProperties.getMinEpsAst();
 
-		MPI_Gatherv(loci3.data(), par.myLen, Point2D::mpiPoint2D, newI3.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-		MPI_Gatherv(loci0.data(), par.myLen, MPI_DOUBLE, newI0.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
+		size_t nTotPan = 0;
+		for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+			nTotPan += W.getAirfoil(s).getNumberOfPanels();
 
-		MPI_Reduce(locvisstr.data(), newViscousStress.data(), nr, MPI_DOUBLE, MPI_SUM, 0, W.getParallel().commWork);
+		const int& id = W.getParallel().myidWork;
+		VMlib::parProp par = W.getParallel().SplitMPI(npt, true);	
+		
+		if ((npt > 0) && (nr > 0))
+		{
+			double*& dev_ptr_visstr = devViscousStressesPtr;
 
+			std::vector<double> locvisstr(nTotPan);
 
-		if (id == 0)
-			for (size_t i = 0; i < viscousStress.size(); ++i)
+			std::vector<double> zeroVec(nTotPan, 0.0);
+			cuCopyFixedArray(dev_ptr_visstr, zeroVec.data(), nTotPan * sizeof(double));
+
+			cuCalculateSurfDiffVeloWake(par.myDisp, par.myLen, dev_ptr_pt, nTotPan, dev_ptr_r, dev_ptr_i0, dev_ptr_i3, dev_ptr_rad, dev_ptr_meanEps, minRad, dev_ptr_visstr);
+			
+			W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_i3, (double*)&loci3[0]);
+			W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_i0, &loci0[0]);
+			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_visstr, &locvisstr[0]);
+
+			std::vector<Point2D> newI3;
+			std::vector<double> newI0;			
+
+			if (id == 0)
 			{
-				viscousStress[i] += newViscousStress[i];
+				newI3.resize(npt); //(I3.size());
+				newI0.resize(npt); //(I0.size());
+				newViscousStress.resize(nTotPan);
 			}
 
-		if (id == 0)
-			for (size_t q = 0; q < I3.size(); ++q)
+			MPI_Gatherv(loci3.data(), par.myLen, Point2D::mpiPoint2D, newI3.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
+			MPI_Gatherv(loci0.data(), par.myLen, MPI_DOUBLE, newI0.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
+
+			MPI_Reduce(locvisstr.data(), newViscousStress.data(), (int)nTotPan, MPI_DOUBLE, MPI_SUM, 0, W.getParallel().commWork);
+			
+			if (id == 0)
 			{
-				if (I0[q] != -PI * domainRadius[q])
+				if (&pointsDb == &(W.getWake()))
 				{
-					I0[q] = newI0[q];
-					I3[q] = newI3[q];
+					for (size_t q = 0; q < I3.size(); ++q)
+					{
+						I0[q] += newI0[q];
+						I3[q] += newI3[q];
+					}
 				}
-				else
+
+				if (&pointsDb == &(W.getBoundary(0).virtualWake))
 				{
-					I0[q] += newI0[q];
-					I3[q] += newI3[q];
+					size_t curCounter = 0;
+					for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+						for (size_t q = 0; q < W.getBoundary(s).virtualWake.vtx.size(); ++q)
+						{
+							//std::cout << "s = " << s << ", q = " << q << std::endl;
+							W.getNonConstVelocity().virtualVortexesParams[s].I0[q] += newI0[curCounter];
+							W.getNonConstVelocity().virtualVortexesParams[s].I3[q] += newI3[curCounter];
+							++curCounter;
+						}
 				}
 			}
-	}
 
-	tCUDAEND = omp_get_wtime();
+			if (id == 0)
+			{
+				size_t curGlobPnl = 0;
+				for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s) //W.getNumberOfAirfoil()
+				{
+					std::vector<double>& tmpVisStress = W.getNonConstAirfoil(s).tmpViscousStresses;
+					const size_t& np = W.getAirfoil(s).getNumberOfPanels();
+					tmpVisStress.resize(0);
+					tmpVisStress.insert(tmpVisStress.end(), newViscousStress.begin() + curGlobPnl, newViscousStress.begin() + curGlobPnl + np);
+					curGlobPnl += np;
+				}
+			}
+		}	
+	}//if numberInPassport==0
 
-	//W.info('t') << "DIFF_SURF_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
 	
-
+	if ( (W.getParallel().myidWork == 0) && ((&pointsDb == &(W.getWake())) || (&pointsDb == &(W.getBoundary(0).virtualWake))) )
+		for (size_t i = 0; i < viscousStress.size(); ++i)
+			viscousStress[i] += tmpViscousStresses[i];		
+	
 }//GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses
 #endif
+
 
 bool AirfoilRect::IsPointInAirfoil(const Point2D& point) const
 {
@@ -387,11 +414,11 @@ bool AirfoilRect::IsPointInAirfoil(const Point2D& point) const
 
 	Point2D v1, v2;
 
-	for (size_t i = 0; i < r_.size(); i++)
+	for (size_t i = 0; i < r_.size(); ++i)
 	{
 		v1 = getR(i) - point;
 		v2 = getR(i+1) - point;
-		angle += atan2(v1^v2, v1 * v2);
+		angle += atan2(v1^v2, v1 & v2);
 	}
 
 	if (fabs(angle) < 0.1)
@@ -403,7 +430,7 @@ bool AirfoilRect::IsPointInAirfoil(const Point2D& point) const
 //Перемещение профиля 
 void AirfoilRect::Move(const Point2D& dr)	//перемещение профиля как единого целого на вектор dr
 {
-	for (size_t i = 0; i < r_.size(); i++)
+	for (size_t i = 0; i < r_.size(); ++i)
 		r_[i] += dr;
 	rcm += dr;
 	CalcNrmTauLen();
@@ -415,10 +442,11 @@ void AirfoilRect::Move(const Point2D& dr)	//перемещение профил�
 void AirfoilRect::Rotate(double alpha)	//поворот профиля на угол alpha вокруг центра масс
 {
 	phiAfl += alpha;
-	numvector<numvector<double, 2>, 2> rotMatrix = { { cos(alpha), sin(alpha) }, { -sin(alpha), cos(alpha) } };
+	//numvector<numvector<double, 2>, 2> rotMatrix = { { cos(alpha), sin(alpha) }, { -sin(alpha), cos(alpha) } };
+	nummatrix<double, 2, 2> rotMatrix = { { cos(alpha), sin(alpha) }, { -sin(alpha), cos(alpha) } };
 
-	for (size_t i = 0; i < r_.size(); i++)
-		r_[i] = rcm + dot(rotMatrix, r_[i] - rcm);
+	for (size_t i = 0; i < r_.size(); ++i)
+		r_[i] = rcm + (rotMatrix & (r_[i] - rcm));
 
 	CalcNrmTauLen();
 	GetGabarits();
@@ -428,7 +456,7 @@ void AirfoilRect::Rotate(double alpha)	//поворот профиля на уг
 //Масштабирование профиля
 void AirfoilRect::Scale(double factor)	//масштабирование профиля на коэффициент factor относительно центра масс
 {
-	for (size_t i = 0; i < r_.size(); i++)
+	for (size_t i = 0; i < r_.size(); ++i)
 		r_[i] = rcm + factor*(r_[i] - rcm);
 
 	CalcNrmTauLen(); //строго говоря, меняются при этом только длины, нормали и касательные - без изменения
@@ -468,7 +496,7 @@ void AirfoilRect::GetGabarits(double gap)	//определение габари�
 	lowLeft = { 1E+10, 1E+10 };
 	upRight = { -1E+10, -1E+10 };
 
-	for (size_t i = 0; i < r_.size(); i++)
+	for (size_t i = 0; i < r_.size(); ++i)
 	{
 		lowLeft[0] = std::min(lowLeft[0], r_[i][0]);
 		lowLeft[1] = std::min(lowLeft[1], r_[i][1]);
@@ -484,14 +512,12 @@ void AirfoilRect::GetGabarits(double gap)	//определение габари�
 
 
 
-//Вычисление коэффициентов матрицы A для расчета влияния профиля самого на себя
-std::vector<double> AirfoilRect::getA(size_t p, size_t i, const Airfoil& otherAirfoil, size_t j) const
+//Вычисление коэффициентов матрицы A для расчета влияния панели на панель
+std::vector<double> AirfoilRect::getA(size_t p, size_t i, const Airfoil& airfoil, size_t j) const
 {
 	std::vector<double> res(p*p, 0.0);
 
-	bool self = (&otherAirfoil == this);
-
-	if ( (i == j) && self )
+	if ( (i == j) && (&airfoil == this))
 	{
 		res[0] = 0.5 * (tau[i] ^ nrm[i]);
 		if (p == 1)
@@ -508,16 +534,19 @@ std::vector<double> AirfoilRect::getA(size_t p, size_t i, const Airfoil& otherAi
 		
 	const Point2D& taui = tau[i];
 
-	res[0] = W.getIQ(numberInPassport, otherAirfoil.numberInPassport).first(i, j);
+
+	const auto& miq = W.getIQ(numberInPassport, airfoil.numberInPassport);
+
+	res[0] = miq.first(i, j);
 
 	if (p == 1)
 		return res;
 
-	res[1] = W.getIQ(numberInPassport, otherAirfoil.numberInPassport).first(i, otherAirfoil.getNumberOfPanels() + j);
+	res[1] = miq.first(i, airfoil.getNumberOfPanels() + j);
 
-	res[2] = W.getIQ(numberInPassport, otherAirfoil.numberInPassport).first(getNumberOfPanels() + i, j);
+	res[2] = miq.first(getNumberOfPanels() + i, j);
 
-	res[3] = W.getIQ(numberInPassport, otherAirfoil.numberInPassport).first(getNumberOfPanels() + i, otherAirfoil.getNumberOfPanels() + j);
+	res[3] = miq.first(getNumberOfPanels() + i, airfoil.getNumberOfPanels() + j);
 
 	if (p == 2)
 		return res;
@@ -527,8 +556,6 @@ std::vector<double> AirfoilRect::getA(size_t p, size_t i, const Airfoil& otherAi
 	
 	//Хотя сюда никогда и не попадем
 	return res;
-
-
 }//getA(...)
 
 //Вычисление коэффициентов матрицы A для расчета влияния профиля самого на себя
@@ -553,158 +580,136 @@ void AirfoilRect::calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen:
 	default(none) \
 	shared(otherAirfoil, self, aflNSelf, aflNOther, matrPair, p) \
 	private(npI, npJ, alpha, lambda, p1, s1, p2, s2, di, dj, i00, i01, i10, i11, v00, v11, v01, v10) schedule(dynamic, DYN_SCHEDULE)
-	for(int i = 0; i < getNumberOfPanels(); ++i)
-	for (int j = 0; j < otherAirfoil.getNumberOfPanels(); ++j)
-	{
-		npI = getNumberOfPanels();
-		npJ = otherAirfoil.getNumberOfPanels();
-
-		if ((i == j) && self)
+	for(int i = 0; i < (int)getNumberOfPanels(); ++i)
+		for (int j = 0; j < (int)otherAirfoil.getNumberOfPanels(); ++j)
 		{
-			
-			matrPair.first(i, j) = 0.0;
-			matrPair.second(i, j) = 0.0;
+			npI = getNumberOfPanels();
+			npJ = otherAirfoil.getNumberOfPanels();
 
-			if (p == 2)
+			if ((i == j) && self)
 			{
-				matrPair.first(i, npJ + j) = -0.5 * IDPI * len[i] * tau[i] & nrm[i];
-				matrPair.first(npI + i, j) = -0.5 * IDPI * len[i] * tau[i] & nrm[i];
 
-				matrPair.second(i, npJ + j) = -0.5 * IDPI * len[i] * tau[i] & tau[i];
-				matrPair.second(npI + i, j) = -0.5 * IDPI * len[i] * tau[i] & tau[i];
+				matrPair.first(i, j) = 0.0;
+				matrPair.second(i, j) = 0.0;
 
-				matrPair.first(npI + i, npJ + j) = 0.0;
-				matrPair.second(npI + i, npJ + j) = 0.0;
+				if (p == 2)
+				{
+					matrPair.first(i, npJ + j) = 0.0;
+					matrPair.first(npI + i, j) = 0.0;
 
-			}
+					matrPair.second(i, npJ + j) = -IQPI;
+					matrPair.second(npI + i, j) = IQPI;
+
+					matrPair.first(npI + i, npJ + j) = 0.0;
+					matrPair.second(npI + i, npJ + j) = 0.0;
+
+				}
 				if (p == 2)
 					throw (-42);
-		}//if i==j
+			}//if i==j
+			else
+			{
+				const Point2D& taui = tau[i];
+				const Point2D& tauj = otherAirfoil.tau[j];
+
+				p1 = getR(i + 1) - otherAirfoil.getR(j + 1);
+				s1 = getR(i + 1) - otherAirfoil.getR(j);
+				p2 = getR(i) - otherAirfoil.getR(j + 1);
+				s2 = getR(i) - otherAirfoil.getR(j);
+				di = getR(i + 1) - getR(i);
+				dj = otherAirfoil.getR(j + 1) - otherAirfoil.getR(j);
+
+				alpha = { \
+					(self && isAfter(j, i)) ? 0.0 : VMlib::Alpha(s2, s1), \
+					VMlib::Alpha(s2, p1), \
+					(self && isAfter(i, j)) ? 0.0 : VMlib::Alpha(p1, p2) \
+				};
+
+				lambda = { \
+					(self && isAfter(j, i)) ? 0.0 : VMlib::Lambda(s2, s1), \
+					VMlib::Lambda(s2, p1), \
+					(self && isAfter(i, j)) ? 0.0 : VMlib::Lambda(p1, p2) \
+				};
+
+				v00 = {
+					VMlib::Omega(s1, taui, tauj),
+					-VMlib::Omega(di, taui, tauj),
+					VMlib::Omega(p2, taui, tauj)
+				};
+
+				i00 = IDPI / len[i] * (-(alpha[0] * v00[0] + alpha[1] * v00[1] + alpha[2] * v00[2]).kcross() \
+					+ (lambda[0] * v00[0] + lambda[1] * v00[1] + lambda[2] * v00[2]));
+
+				matrPair.first(i, j) = i00 & nrm[i];
+				matrPair.second(i, j) = i00 & tau[i];
 
 
-		const Point2D& taui = tau[i];
-		const Point2D& tauj = otherAirfoil.tau[j];
+				if (p == 2)
+				{
+					/// \todo проверить формулу
+					//было: 
+					//v01 = {
+					//	0.5 / (dj.length()) * ((p1 + s1) * tauj * VMlib::Omega(s1, taui, tauj) - s1.length2() * taui),
+					//	-0.5 * di.length() / dj.length() * VMlib::Omega(s1 + p2, tauj, tauj)
+					//};
+					v01 = {
+						0.5 / (dj.length()) * (((p1 + s1) & tauj) * VMlib::Omega(s1, taui, tauj) - s1.length2() * taui),
+						-0.5 * di.length() / dj.length() * VMlib::Omega(s1 + p2, tauj, tauj)
+					};
 
-		p1 = getR(i + 1) - otherAirfoil.getR(j + 1);
-		s1 = getR(i + 1) - otherAirfoil.getR(j);
-		p2 = getR(i) - otherAirfoil.getR(j + 1);
-		s2 = getR(i) - otherAirfoil.getR(j);
-		di = getR(i + 1) - getR(i);
-		dj = otherAirfoil.getR(j + 1) - otherAirfoil.getR(j);
+					i01 = IDPI / len[i] * (-((alpha[0] + alpha[2]) * v01[0] + (alpha[1] + alpha[2]) * v01[1]).kcross() \
+						+ ((lambda[0] + lambda[2]) * v01[0] + (lambda[1] + lambda[2]) * v01[1]) - 0.5 * di.length() * tau[j]);
 
-		alpha = { \
-			(self && isAfter(j, i)) ? 0.0 : VMlib::Alpha(s2, s1), \
-			VMlib::Alpha(s2, p1), \
-			(self && isAfter(i, j)) ? 0.0 : VMlib::Alpha(p1, p2) \
-		};
+					matrPair.first(i, npJ + j) = i01 & nrm[i];
+					matrPair.second(i, npJ + j) = i01 & tau[i];
 
-		lambda = { \
-			(self && isAfter(j, i)) ? 0.0 : VMlib::Lambda(s2, s1), \
-			VMlib::Lambda(s2, p1), \
-			(self && isAfter(i, j)) ? 0.0 : VMlib::Lambda(p1, p2) \
-		};
+					/// \todo Аналогично
+					//было:
+					//v10 = {
+					//	0.5 / di.length() * ((s1 + s2) * taui * VMlib::Omega(s1, taui, tauj) - s1.length2() * tauj),
+					//	0.5 * dj.length() / di.length() * VMlib::Omega(s1 + p2, taui, taui)
+					//};
 
-		v00 = {
-			VMlib::Omega(s1, taui, tauj),
-			-VMlib::Omega(di, taui, tauj),
-			VMlib::Omega(p2, taui, tauj)
-		};
+					v10 = {
+						0.5 / di.length() * (((s1 + s2) & taui) * VMlib::Omega(s1, taui, tauj) - s1.length2() * tauj),
+						0.5 * dj.length() / di.length() * VMlib::Omega(s1 + p2, taui, taui)
+					};
 
-		i00 = IDPI / len[i] * (-(alpha[0] * v00[0] + alpha[1] * v00[1] + alpha[2] * v00[2]).kcross() \
-			+ (lambda[0] * v00[0] + lambda[1] * v00[1] + lambda[2] * v00[2]));
+					i10 = IDPI / len[i] * (-((alpha[0] + alpha[2]) * v10[0] + alpha[2] * v10[1]).kcross() \
+						+ ((lambda[0] + lambda[2]) * v10[0] + lambda[2] * v10[1]) + 0.5 * dj.length() * tau[i]);
 
-		matrPair.first(i, j) = i00 & nrm[i];
-		matrPair.second(i, j) = i00 & tau[i];
+					matrPair.first(npI + i, j) = i10 & nrm[i];
+					matrPair.second(npI + i, j) = i10 & tau[i];
 
+					/// \todo Аналогично
+					//было:
+					//v11 = {
+					//	1.0 / (12.0 * di.length() * dj.length()) * (2.0 * (s1 * VMlib::Omega(s1 - 3.0 * p2, taui, tauj)) * VMlib::Omega(s1, taui, tauj) - s1.length2() * (s1 - 3.0 * p2)) - 0.25 * VMlib::Omega(s1, taui, tauj),
+					//	-di.length() / (12.0 * dj.length()) * VMlib::Omega(di, tauj, tauj),
+					//	-dj.length() / (12.0 * di.length()) * VMlib::Omega(dj, taui, taui)
+					//};
 
-		if (p == 2)
-		{
+					v11 = {
+						1.0 / (12.0 * di.length() * dj.length()) * (2.0 * (s1 & VMlib::Omega(s1 - 3.0 * p2, taui, tauj)) * VMlib::Omega(s1, taui, tauj) - s1.length2() * (s1 - 3.0 * p2)) - 0.25 * VMlib::Omega(s1, taui, tauj),
+						-di.length() / (12.0 * dj.length()) * VMlib::Omega(di, tauj, tauj),
+						-dj.length() / (12.0 * di.length()) * VMlib::Omega(dj, taui, taui)
+					};
 
-			v01 = {
-				0.5 / (dj.length()) * ((p1 + s1) * tauj * VMlib::Omega(s1, taui, tauj) - s1.length2() * taui),
-				-0.5 * di.length() / dj.length() * VMlib::Omega(s1 + p2, tauj, tauj)
-			};
+					i11 = IDPI / len[i] * (-((alpha[0] + alpha[2]) * v11[0] + (alpha[1] + alpha[2]) * v11[1] + alpha[2] * v11[2]).kcross()\
+						+ (lambda[0] + lambda[2]) * v11[0] + (lambda[1] + lambda[2]) * v11[1] + lambda[2] * v11[2] \
+						+ 1.0 / 12.0 * (dj.length() * taui + di.length() * tauj - 2.0 * VMlib::Omega(s1, taui, tauj)));
 
-			i01 = IDPI / len[i] * (-((alpha[0] + alpha[2]) * v01[0] + (alpha[1] + alpha[2]) * v01[1]).kcross() \
-				+ ((lambda[0] + lambda[2]) * v01[0] + (lambda[1] + lambda[2]) * v01[1]) - 0.5 * di.length() * tau[j]);
-
-			matrPair.first(i, npJ + j) = i01 & nrm[i];
-			matrPair.second(i, npJ + j) = i01 & tau[i];
-
-			v10 = {
-				0.5 / di.length() * ((s1 + s2) * taui * VMlib::Omega(s1, taui, tauj) - s1.length2() * tauj),
-				0.5 * dj.length() / di.length() * VMlib::Omega(s1 + p2, taui, taui)
-			};
-
-			i10 = IDPI / len[i] * (-((alpha[0] + alpha[2]) * v10[0] + alpha[2] * v10[1]).kcross() \
-				+ ((lambda[0] + lambda[2]) * v10[0] + lambda[2] * v10[1]) + 0.5 * dj.length() * tau[i]);
-
-			matrPair.first(npI + i, j) = i10 & nrm[i];
-			matrPair.second(npI + i, j) = i10 & tau[i];
-
-
-			v11 = {
-				1.0 / (12.0 * di.length() * dj.length()) * (2.0 * (s1 * VMlib::Omega(s1 - 3.0 * p2, taui, tauj)) * VMlib::Omega(s1, taui, tauj) - s1.length2() * (s1 - 3.0 * p2)) - 0.25 * VMlib::Omega(s1, taui, tauj),
-				-di.length() / (12.0 * dj.length()) * VMlib::Omega(di, tauj, tauj),
-				-dj.length() / (12.0 * di.length()) * VMlib::Omega(dj, taui, taui)
-			};
-
-			i11 = IDPI / len[i] * (-((alpha[0] + alpha[2]) * v11[0] + (alpha[1] + alpha[2]) * v11[1] + alpha[2] * v11[2]).kcross()\
-				+ (lambda[0] + lambda[2]) * v11[0] + (lambda[1] + lambda[2]) * v11[1] + lambda[2] * v11[2] \
-				+ 1.0 / 12.0 * (dj.length() * taui + di.length() * tauj - 2.0 * VMlib::Omega(s1, taui, tauj)));
-
-			matrPair.first(npI + i, npJ + j) = i11 & nrm[i];
-			matrPair.second(npI + i, npJ + j) = i11 & tau[i];
-		}
+					matrPair.first(npI + i, npJ + j)  = i11 & nrm[i];
+					matrPair.second(npI + i, npJ + j) = i11 & tau[i];
+				}
 
 
-		if (p > 2)
-			throw (-42);
-	}
+				if (p > 2)
+					throw (-42);
+			}//else(i == j)
 
-
+		}//for(...)
 }//getIQ(...)
-
-
-
-//Вычисление влияния присоединенных слоев от другого профиля (константные базисные функции)
-void AirfoilRect::getInfAttFromOther0(std::vector<double>& attOtherVelo, const Airfoil& otherAirfoil, size_t currentRow, size_t currentCol) const
-{
-	attOtherVelo.resize(getNumberOfPanels(), 0.0);
-	for (size_t i = 0; i < getNumberOfPanels(); ++i)
-	{
-		for (size_t j = 0; j < otherAirfoil.getNumberOfPanels(); j++)
-		{
-			Point2D di = getR(i + 1) - getR(i);
-			Point2D dj = otherAirfoil.getR(j + 1) - otherAirfoil.getR(j);
-			Point2D s1 = getR(i + 1) - otherAirfoil.getR(j);
-			Point2D s2 = getR(i) - otherAirfoil.getR(j);
-			Point2D p1 = getR(i + 1) - otherAirfoil.getR(j + 1);
-			Point2D p2 = getR(i) - otherAirfoil.getR(j + 1);
-
-			double a1 = VMlib::Alpha(s2, s1);
-			double a2 = VMlib::Alpha(s2, p1);
-			double a3 = VMlib::Alpha(p1, p2);
-
-			double lambda1 = VMlib::Lambda(s1, s2);
-			double lambda2 = VMlib::Lambda(p1, s2);
-			double lambda3 = VMlib::Lambda(p2, p1);
-
-			Point2D v1 = VMlib::Omega(s1, tau[i], otherAirfoil.tau[j]);
-			Point2D v2 = -VMlib::Omega(di, tau[i], otherAirfoil.tau[j]);
-			Point2D v3 = VMlib::Omega(p2, tau[i], otherAirfoil.tau[j]);
-
-			attOtherVelo[i] += -IDPI / len[i] * W.getBoundary(W.getNumberOfAirfoil()).sheets.attachedVortexSheet(j, 0) * tau[i] * (((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3).kcross());
-			attOtherVelo[i] += -IDPI / len[i] * W.getBoundary(W.getNumberOfAirfoil()).sheets.attachedSourceSheet(j, 0) * tau[i] * (((-(a1 * v1 + a2 * v2 + a3 * v3).kcross()) + lambda1 * v1 + lambda2 * v2 + lambda3 * v3));
-		}//for j
-	}//for i
-}//getInfAttFromOther0(...)
-
-//Вычисление влияния присоединенных слоев от другого профиля (константные и линейные базисные функции)
-void AirfoilRect::getInfAttFromOther1(std::vector<double>& attOtherVelo, const Airfoil& otherAirfoil, size_t currentRow, size_t currentCol) const
-{
-
-}//getInfAttFromOther1(...)
 
 
 void AirfoilRect::GetInfluenceFromVorticesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const
@@ -718,3 +723,20 @@ void AirfoilRect::GetInfluenceFromSourcesToPanel(size_t panel, const Vortex2D* p
 {
 	W.getBoundary(numberInPassport).GetInfluenceFromSourcesToRectPanel(panel, ptr, count, panelRhs);
 }//GetInfluenceFromSourcesToPanel(...)
+
+//Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения
+void AirfoilRect::GetInfluenceFromSourceSheetToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const
+{
+	W.getBoundary(numberInPassport).GetInfluenceFromSourceSheetAtRectPanelToVortex(panel, vtx, vel);
+}//GetInfluenceFromSourceSheetToVortex(...)
+
+//Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вихрь в области течения
+void AirfoilRect::GetInfluenceFromVortexSheetToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const
+{
+	W.getBoundary(numberInPassport).GetInfluenceFromVortexSheetAtRectPanelToVortex(panel, vtx, vel);
+}//GetInfluenceFromVortexSheetToVortex(...)
+
+void AirfoilRect::GetInfluenceFromVInfToPanel(std::vector<double>& vInfRhs) const
+{
+	W.getBoundary(numberInPassport).GetInfluenceFromVInfToRectPanel(vInfRhs);
+}//GetInfluenceFromVInfToPanel(...)

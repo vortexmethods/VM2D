@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Sheet2D.h                                                        |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef SHEET_H
@@ -53,8 +53,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class Sheet
 	{
@@ -78,7 +78,7 @@ namespace VM2D
 		/// \brief Конструктор 
 		///
 		/// \param[in] W_ константная ссылка на решаемую задачу	
-		/// \param[in] in dim_ число параметров в описании каждого слоя (1 - кусочно-постоянное решение, 2 - кусочно-линейное и т.п.)
+		/// \param[in] dim_ число параметров в описании каждого слоя (1 - кусочно-постоянное решение, 2 - кусочно-линейное и т.п.)
 		Sheet(const World2D& W_, int dim_);
 
 		/// Деструктор
@@ -86,8 +86,7 @@ namespace VM2D
 
 		/// \brief Установка pазмерностей всех векторов и их обнуление
 		///
-		/// \param[in] np число панелей на профиле (внешняя размерность списков)
-		/// \param[in] layerDim количество чисел, которыми характеризуются слои на каждой из панелей
+		/// \param[in] np число панелей на профиле (внешняя размерность списков)		
 		void SetLayers(size_t np);
 
 		size_t getSheetSize() const

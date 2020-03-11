@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.8    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/03/09     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: PassportGen.h                                                    |
 | Info: Source code of VMlib                                                  |
@@ -29,8 +29,8 @@
 \file
 \brief Заголовочный файл с описанием класса PasportGen
 \author Марчевский Илья Константинович
-\version 1.7
-\date 22 ноября 2019 г.
+\version 1.8
+\date 09 марта 2020 г.
 */
 
 #ifndef PASSPORTGEN_H
@@ -47,8 +47,8 @@ namespace VMlib
 	/*!
 	\brief Структура, задающая параметры процесса интегрирования по времени
 	\author Марчевский Илья Константинович
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	struct TimeDiscretizationProperties
 	{
@@ -67,9 +67,6 @@ namespace VMlib
 		/// Число разрядов в имени файла
 		int nameLength;
 
-		/// Шаг сохранения кадров в текстовые файлы
-		int saveTXT;
-
 		/// Шаг сохранения кадров в бинарные файлы	
 		int saveVTK;
 
@@ -81,8 +78,8 @@ namespace VMlib
 	/*!
 	\brief Абстрактный класс, опеделяющий паспорт задачи
 	\author Марчевский Илья Константинович
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class PassportGen
 	{

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: WakeDataBase2D.h                                                 |
 | Info: Source code of VM2D                                                   |
@@ -32,14 +32,15 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef WAKEDATABASE_H
 #define WAKEDATABASE_H
 
 #include "defs.h"
+#include "Gpu2D.h"
 
 namespace VM2D
 {
@@ -50,8 +51,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 
 	class WakeDataBase
@@ -66,46 +67,26 @@ namespace VM2D
 		/// \param[in] W_ константная ссылка на решаемую задачу	
 		WakeDataBase(const World2D& W_)
 			: W(W_) 
-		{
-#if defined(__CUDACC__) || defined(USE_CUDA)
-			devNWake = 0;
-			/// \todo Что имелось в виду? Зачем 2 раза?
-			//devNWake = 0;
-#endif
-		};
+		{};
 
 		/// Список вихревых элементов
-		std::vector<Vortex2D> vtx;
+		std::vector<Vortex2D/*, VM2D::MyAlloc<Vortex2D>*/> vtx;
 
 #if defined(USE_CUDA)
-
-		/// Число вихрей, под хранение которых зарезервирована память на видеокарте
-		mutable size_t devNWake;
 
 		/// Адрес на видеокарте, где будет храниться копия массива вихрей
 		mutable double* devVtxPtr;
 
 		/// Векторы для возврата вычисленных значений на хост и адреса для хранения результатов на видеокарте
-		mutable std::vector<Point2D> tmpVel;
 		mutable double* devVelPtr;
-
-		mutable std::vector<double> tmpRad;
 		mutable double* devRadPtr;
 
-		mutable std::vector<double> tmpI0;
 		mutable double* devI0Ptr;
-
-		mutable std::vector<double> tmpI1;
 		mutable double* devI1Ptr;
-
-		mutable std::vector<Point2D> tmpI2;
 		mutable double* devI2Ptr;
-
-		mutable std::vector<Point2D> tmpI3;
 		mutable double* devI3Ptr;
 
 		//Данные для коллапса
-		mutable std::vector<int> tmpNei;
 		mutable int* devMeshPtr;
 		mutable int* devNeiPtr;
 

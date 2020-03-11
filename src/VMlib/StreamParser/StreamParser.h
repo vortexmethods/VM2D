@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.8    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/03/09     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: StreamParser.h                                                   |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса StreamParser
 \author Марчевский Илья Константинович
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef STREAMPARSER_H
@@ -45,14 +45,16 @@
 
 #include "defs.h"
 
+#include "Gpu2D.h"
+
 namespace VMlib
 {
 
 	/*!
 	\brief Класс, позволяющий выполнять разбор файлов и строк с настройками и параметрами	
 	\author Марчевский Илья Константинович
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class StreamParser
 	{
@@ -364,7 +366,7 @@ namespace VMlib
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
 		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
 		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
-		bool get(const std::string& name, std::vector<Vortex2D>& res, const std::vector<Vortex2D>* defValue = nullptr, bool echoDefault = true) const
+		bool get(const std::string& name, std::vector<Vortex2D/*, VM2D::MyAlloc<VMlib::Vortex2D>*/>& res, const std::vector<Vortex2D>* defValue = nullptr, bool echoDefault = true) const
 		{
 			bool boolRes = false;
 
@@ -450,6 +452,7 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка данные, считываемые из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
 		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
 		template <typename T>
 		bool get(const std::string& name, std::pair<std::string, T>& res, const std::pair<std::string, T>* defValue = nullptr, bool echoDefault = true) const
@@ -504,6 +507,7 @@ namespace VMlib
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка данные, считываемые из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
 		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
 		template <typename T>
 		bool get(const std::string& name, T& res, const T* defValue = nullptr, bool echoDefault = true) const

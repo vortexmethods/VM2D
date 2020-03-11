@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: World2D.h                                                        |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef WORLD2D_H
@@ -65,17 +65,14 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class World2D : public VMlib::WorldGen
 	{
 	private:
 		/// Список умных казателей на обтекаемые профили
 		std::vector<std::unique_ptr<Airfoil>> airfoil;
-
-		/// Список умных казателей на обтекаемые профили для сохранения старого положения
-		std::vector<std::unique_ptr<Airfoil>> oldAirfoil;
 
 		/// Список умных указателей на формирователи граничных условий на профилях
 		std::vector<std::unique_ptr<Boundary>> boundary;
@@ -181,6 +178,11 @@ namespace VM2D
 		/// \return константную ссылку на вихревой след
 		const Wake& getWake() const { return *wake; };
 
+		/// \brief Возврат неконстантной ссылки на вихревой след
+		///
+		/// \return неконстантную ссылку на вихревой след
+		Wake& getNonConstWake() const { return *wake; };
+
 		/// \brief Возврат константной ссылки на источники в области течения
 		///
 		/// \return константную ссылку на источники в области течения
@@ -219,13 +221,14 @@ namespace VM2D
 		/// \brief Возврат ссылки на временную статистику выполнения шага расчета по времени
 		///
 		/// \return ссылку на временную статистику выполнения шага расчета по времени
-		Times& getTimestat() { return dynamic_cast<Times&>(*timestat); };
+		Times& getTimestat() const { return dynamic_cast<Times&>(*timestat); };
+
+		bool ifDivisible(int val) const { return ((val > 0) && (!(currentStep % val))); };
 
 		/// \brief Решение системы линейных алгебраических уравнений
 		///
-		/// Вызывается в Step()
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void SolveLinearSystem(timePeriod& time);
+		/// Вызывается в Step()		
+		void SolveLinearSystem();
 
 		/// \brief Заполнение матрицы, состоящей из интегралов от (r-xi) / |r-xi|^2
 		///
@@ -234,38 +237,47 @@ namespace VM2D
 
 		/// \brief Заполнение матрицы системы для всех профилей
 		///
-		/// Вызывается в Step()
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void FillMatrixAndRhs(timePeriod& time);
+		/// Вызывается в Step()		
+		void FillMatrixAndRhs();
 
 		/// \brief Вычисляем размер матрицы и резервируем память под нее и под правую часть
 		///
-		/// Вызывается в Step()
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void ReserveMemoryForMatrixAndRhs(timePeriod& time);
+		/// Вызывается в Step()		
+		void ReserveMemoryForMatrixAndRhs();
 
-		/// \brief Вычисляем скорости вихрей (в пелене и виртуальных)
+		/// \brief Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных), а также в точках вычисления VP 
 		///
 		/// Вызывается в Step()
-		/// \param[in] dt шаг по времени
-		/// \param[out] convTime ссылка на промежуток времени для вычисления конвективных скоростей --- пару чисел (время начала и время конца операции)
-		/// \param[out] diffTime ссылка на промежуток времени для вычисления диффузионных скоростей --- пару чисел (время начала и время конца операции)
-		void CalcVortexVelo(double dt, timePeriod& convTime, timePeriod& diffTime, timePeriod& vpTime);
+		void CalcVortexVelo();
+
+		/// \brief Вычисление скоростей панелей и интенсивностей присоединенных слоев вихрей и источников
+		///
+		/// Вызывается в Step()
+		void CalcPanelsVeloAndAttachedSheets();
+		
+		/// \brief Набор матрицы, правой части и решение СЛАУ
+		///
+		/// Вызывается в Step()
+		void CalcAndSolveLinearSystem();
 
 		/// \brief Вычисляем новые положения вихрей (в пелене и виртуальных)
 		///
 		/// Вызывается в Step()
-		/// \param[in] dt шаг по времени
 		/// \param[out] newPos новые позиции вихрей
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void MoveVortexes(double dt, std::vector<Point2D>& newPos, timePeriod& time);
+		void MoveVortexes(std::vector<Point2D>& newPos);
 
 		/// \brief Проверка проникновения вихрей внутрь  профиля
 		///
 		/// Вызывается в Step()
 		/// \param[in] newPos новые позиции вихрей
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		void CheckInside(std::vector<Point2D>& newPos, timePeriod& time);
+		/// \param[in] oldAirfoil константная ссылка на вектор из умных указателей на старые положения профилей
+		void CheckInside(std::vector<Point2D>& newPos, const std::vector<std::unique_ptr<Airfoil>>& oldAirfoil);
+
+		/// \brief Перемещение вихрей и профилей на шаге
+		///
+		/// Вызывается в Step()
+		void WakeAndAirfoilsMotion();
+
 
 		/// \brief Конструктор
 		///

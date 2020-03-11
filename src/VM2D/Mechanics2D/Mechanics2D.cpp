@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2D.cpp                                                  |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #include "Mechanics2D.h"
@@ -90,9 +90,9 @@ void Mechanics::GenerateForcesHeader()
 
 	VMlib::PrintLogoToTextFile(newForcesFile, forceFileName.str(), "Hydrodynamic loads for the airfoil " + W.getPassport().airfoilParams[numberInPassport].fileAirfoil);
 
-	VMlib::PrintHeaderToTextFile(newForcesFile, "currentStep     currentTime     Fx     Fy     Mz     Ftaux     Ftauy");
+	VMlib::PrintHeaderToTextFile(newForcesFile, "currentStep     currentTime     Fx     Fy     Mz     Ftaux     Ftauy     Mtau");
 
-	newForcesFileCsv << "t,Fx,Fy,Mz,Ftaux,Ftauy";
+	newForcesFileCsv << "t,Fx,Fy,Mz,Ftaux,Ftauy,Mtau";
 
 	newForcesFile.close();
 	newForcesFile.clear();
@@ -133,23 +133,29 @@ void Mechanics::GeneratePositionHeader()
 //Сохранение строки со статистикой в файл нагрузок
 void Mechanics::GenerateForcesString()
 {
+	W.getTimestat().timeOther.first += omp_get_wtime();
+
 	std::stringstream forceFileName, forceFileNameCsv;
 	forceFileName << W.getPassport().dir << "forces-airfoil-" << numberInPassport;
 	forceFileNameCsv << W.getPassport().dir << "forces-airfoil-" << numberInPassport << ".csv";
 
 	std::ofstream forcesFile(forceFileName.str(), std::ios::app);
-	forcesFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1] << "	" << hydroDynamMoment << "	" << viscousStress[0] << "	" << viscousStress[1];
+	forcesFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1] << "	" << hydroDynamMoment << "	" << viscousForce[0] << "	" << viscousForce[1] << "	" << viscousMoment;
 	forcesFile.close();
 
 	std::ofstream forcesFileCsv(forceFileNameCsv.str(), std::ios::app);
-	forcesFileCsv << std::endl << W.getPassport().physicalProperties.getCurrTime() << "," << hydroDynamForce[0] << "," << hydroDynamForce[1] << "," << hydroDynamMoment << "," << viscousStress[0] << "," << viscousStress[1];
+	forcesFileCsv << std::endl << W.getPassport().physicalProperties.getCurrTime() << "," << hydroDynamForce[0] << "," << hydroDynamForce[1] << "," << hydroDynamMoment << "," << viscousForce[0] << "," << viscousForce[1] << "," << viscousMoment;
 	forcesFileCsv.close();
+
+	W.getTimestat().timeOther.second += omp_get_wtime();
 }//GenerateForcesString()
 
 
 //Сохранение строки со статистикой в файл положения
 void Mechanics::GeneratePositionString()
 {
+	W.getTimestat().timeOther.first += omp_get_wtime();
+
 	if (isMoves)
 	{
 		std::stringstream positionFileName, positionFileNameCsv;
@@ -164,4 +170,6 @@ void Mechanics::GeneratePositionString()
 		forcesFileCsv << std::endl << W.getPassport().physicalProperties.getCurrTime() << "," << afl.rcm[0] << "," << afl.rcm[1] << "," << Phi << "," << Vcm[0] << "," << Vcm[1] << "," << Wcm;
 		forcesFileCsv.close();
 	}
+
+	W.getTimestat().timeOther.second += omp_get_wtime();
 }//GeneratePositionString()

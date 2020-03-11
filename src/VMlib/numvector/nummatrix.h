@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.8    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/03/09     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: nummatrix.h                                                      |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Описание класса nummatrix
 \author Марчевский Илья Константинович
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef NUMMATRIX_H_
@@ -53,18 +53,17 @@ namespace VMlib
 	\tparam m число столбцов
 
 	\author Марчевский Илья Константинович
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 
 
 	template<typename T, size_t n, size_t m>
-	class nummatrix
+	class nummatrix : public std::array<T, n*m>
 	{
+
 	public:
 
-		/// Собственно, вектор с данными
-		T r[n*m];
 	public:
 
 		/// \brief Перегрузка оператора "[]" доступа к строке
@@ -74,7 +73,7 @@ namespace VMlib
 		/// \return Ссылка на numvector, соответствующий i-й строке матрицы
 		numvector<T, m>& operator[](size_t i)
 		{
-			return *(reinterpret_cast<numvector<T, m>*>(r + (i*m)));
+			return *(reinterpret_cast<numvector<T, m>*>(this->data() + (i*m)));
 		}
 
 		/// \brief Перегрузка оператора "[]" доступа к строке
@@ -84,24 +83,9 @@ namespace VMlib
 		/// \return Константная сылка на numvector, соответствующий i-й строке матрицы
 		const numvector<T, m>& operator[](size_t i) const
 		{
-			return *(reinterpret_cast<const numvector<T, m>*>(r + (i*m)));
+			return *(reinterpret_cast<const numvector<T, m>*>(this->data() + (i*m)));
 		}
 
-
-		// \brief Перегрузка оператора "=" присваивания
-		//
-		// \tparam T тип данных
-		// \tparam n длина вектора
-		// \param[in] vec константная ссылка на присваиваемую матрицу
-		// \return ссылка на саму себя
-		//template<typename P>
-		//nummatrix<T, n, m>& operator=(const nummatrix<P, n, m>& vec)
-		//{
-		//	for (size_t i = 0; i < n; ++i)
-		//	for (size_t j = 0; j < m; ++j)
-		//		r[i*m+j] = vec[i][j];
-		//	return *this;
-		//}//operator=
 
 
 		/// \brief Перегрузка оператора "*=" домножения матрицы на действительное число 
@@ -116,7 +100,7 @@ namespace VMlib
 		nummatrix<T, n, m>& operator*=(const P c)
 		{
 			for (size_t i = 0; i < n*m; ++i)
-				r[i] *= c;
+				this->data()[i] *= c;
 			return *this;
 		}//operator*=
 
@@ -133,7 +117,7 @@ namespace VMlib
 		nummatrix<T, n, m>& operator/=(const P c)
 		{
 			for (size_t i = 0; i < n*m; ++i)
-				r[i] /= c;
+				this->data()[i] /= c;
 			return *this;
 		}//operator/=
 
@@ -150,7 +134,7 @@ namespace VMlib
 		nummatrix<T, n, m>& operator+=(const nummatrix<P, n, m>& y)
 		{
 			for (size_t i = 0; i < n*m; ++i)
-				r[i] += y.r[i];
+				this->data()[i] += y.r[i];
 			return *this;
 		}//operator+=
 
@@ -167,7 +151,7 @@ namespace VMlib
 		nummatrix<T, n, m>& operator-=(const nummatrix<P, n, m>& y)
 		{
 			for (size_t i = 0; i < n*m; ++i)
-				r[i] -= y.r[i];
+				this->data()[i] -= y.data()[i];
 			return *this;
 		}//operator-=
 
@@ -181,11 +165,11 @@ namespace VMlib
 		/// \param[in] y константная ссылка на прибавляемую матрицу
 		/// \return результат сложения двух матриц, приведенный к нужному типу
 		template <typename P>
-		auto operator+(const nummatrix<P, n, m>& y) const -> nummatrix<typename std::remove_const<decltype(r[0] + y.r[0])>::type, n, m>
+		auto operator+(const nummatrix<P, n, m>& y) const -> nummatrix<typename std::remove_const<decltype(this->data()[0] + y.data()[0])>::type, n, m>
 		{
-			nummatrix<typename std::remove_const<decltype(r[0] + y.r[0])>::type, n, m> res;
+			nummatrix<typename std::remove_const<decltype(this->data()[0] + y.data()[0])>::type, n, m> res;
 			for (size_t i = 0; i < n*m; ++i)
-				res[0][i] = r[i] + y.r[i];
+				res.data()[i] = this->data()[i] + y.data()[i];
 			return res;
 		}//operator+
 
@@ -199,28 +183,26 @@ namespace VMlib
 		/// \param[in] y константная ссылка на вычитаемую матрицу
 		/// \return результат вычитания двух матриц, приведенный к нужному типу
 		template <typename P>
-		auto operator-(const nummatrix<P, n, m>& y) const -> nummatrix<typename std::remove_const<decltype(r[0] - y.r[0])>::type, n, m>
+		auto operator-(const nummatrix<P, n, m>& y) const -> nummatrix<typename std::remove_const<decltype(this->data()[0] - y.data()[0])>::type, n, m>
 		{
-			nummatrix<typename std::remove_const<decltype(r[0] - y.r[0])>::type, n, m> res;
+			nummatrix<typename std::remove_const<decltype(this->data()[0] - y.data()[0])>::type, n, m> res;
 			for (size_t i = 0; i < n*m; ++i)
-				res[0][i] = r[i] - y.r[i];
+				res.data()[i] = this->data()[i] - y.data()[i];
 			return res;
 		}//operator-
 
 
 		/// \brief Перегрузка оператора "*" умножения матрицы справа на число
 		///
-		/// \tparam T тип данных
-		/// \tparam n число строк
-		/// \tparam m число столбцов
-		/// \param[in] с число-множитель
+		/// \tparam P тип данных
+		/// \param[in] c число-множитель
 		/// \return результат умножения вектора на число, приведенный к соответствующему типу
 		template <typename P>
-		auto operator*(const P c) const -> nummatrix<typename std::remove_const<decltype(r[0] * c)>::type, n, m>
+		auto operator*(const P c) const -> nummatrix<typename std::remove_const<decltype(this->data()[0] * c)>::type, n, m>
 		{
-			nummatrix<typename std::remove_const<decltype(r[0] * c)>::type, n, m> res;
+			nummatrix<typename std::remove_const<decltype(this->data()[0] * c)>::type, n, m> res;
 			for (size_t i = 0; i < n*m; ++i)
-				res[0][i] = c * r[i];
+				res.data()[i] = c * this->data()[i];
 			return res;
 		}//operator*
 
@@ -236,7 +218,7 @@ namespace VMlib
 		{
 			nummatrix<T, n, m> res;
 			for (size_t i = 0; i < n*m; ++i)
-				res[0][i] = -r[i];
+				res.data()[i] = -this->data()[i];
 			return res;
 		}//operator-
 
@@ -253,7 +235,7 @@ namespace VMlib
 		bool operator==(const nummatrix<P, n, m>& y) const
 		{
 			for (size_t i = 0; i < n*m; ++i)
-				if (r[i] != y.r[i])
+				if (this->data()[i] != y.data()[i])
 					return false;
 			return true;
 		}//operator==
@@ -283,24 +265,24 @@ namespace VMlib
 		/// \brief Вычисление 1-нормы матрицы
 		///
 		/// \return 1-норма матрицы
-		auto norm1() const -> typename std::remove_const<typename std::remove_reference<decltype(r[0])>::type>::type
+		auto norm1() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type
 		{
-			std::vector<typename std::remove_const<std::remove_reference<decltype(r[0])>::type>::type> ms(m, 0);
+			std::vector<typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type> ms(m, 0);
 			for (size_t i = 0; i < m; ++i)
 				for (size_t j = 0; j < n; ++j)
-					ms[i] += abs(r[j*m + i]);
+					ms[i] += abs(this->data()[j*m + i]);
 			return std::max_element(ms.begin(), ms.end());
 		}
 
 		/// \brief Вычисление inf-нормы матрицы
 		///
 		/// \return inf-норма матрицы
-		auto norminf() const -> typename std::remove_const<typename std::remove_reference<decltype(r[0])>::type>::type
+		auto norminf() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type
 		{
-			std::vector<typename std::remove_const<typename std::remove_reference<decltype(r[0])>::type>::type> ms(n, 0);
+			std::vector<typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type> ms(n, 0);
 			for (size_t i = 0; i < n; ++i)
 				for (size_t j = 0; j < m; ++j)
-					ms[i] += abs(r[i*m + j]);
+					ms[i] += abs(this->data()[i*m + j]);
 			return std::max_element(ms.begin(), ms.end());
 		}
 
@@ -315,7 +297,7 @@ namespace VMlib
 		nummatrix<T, n, m>& toZero(T val = 0.0)
 		{
 			for (size_t i = 0; i < n*m; ++i)
-				r[i] = val;
+				this->data()[i] = val;
 			return *this;
 		}
 
@@ -329,7 +311,7 @@ namespace VMlib
 		{
 			for (size_t i = 0; i < n; ++i)
 				for (size_t j = 0; j < m; ++j)
-					r[i*m + j] = (i == j) ? 1 : 0;
+					this->data()[i*m + j] = (i == j) ? 1 : 0;
 			return *this;
 		}
 
@@ -343,10 +325,10 @@ namespace VMlib
 		/// \tparam P тип данных инициализирующей константы
 		/// \param[in] z значение, которым инициализируются все компоненты матрицы
 		template <typename P>
-		explicit nummatrix(const T z)
+		explicit nummatrix(const P z)
 		{
 			for (size_t i = 0; i < n*m; ++i)
-				r[i] = z;
+				this->data()[i] = z;
 		}//nummatrix(...)
 
 
@@ -360,7 +342,7 @@ namespace VMlib
 		nummatrix(const nummatrix<P, n, m>& mtr)
 		{
 			for (size_t i = 0; i < n*m; ++i)
-				r[i] = mtr.r[i];
+				this->data()[i] = mtr.data()[i];
 		}//nummatrix(...)
 
 
@@ -377,7 +359,7 @@ namespace VMlib
 				throw;
 			for (size_t i = 0; i < n; ++i)
 				for (size_t j = 0; j < m; ++j)
-					r[i*m + j] = vec[i][j];
+					this->data()[i*m + j] = vec[i][j];
 		}//nummatrix(...)
 
 
@@ -392,7 +374,7 @@ namespace VMlib
 		{
 			for (size_t i = 0; i < n; ++i)
 				for (size_t j = 0; j < m; ++j)
-					r[i*m + j] = mtr[i][j];
+					this->data()[i*m + j] = mtr[i][j];
 		}//nummatrix(...)
 
 
@@ -410,7 +392,7 @@ namespace VMlib
 			{
 				const numvector<T, m>& numv = *(z.begin() + i);
 				for (size_t j = 0; j < m; ++j)
-					r[i*m + j] = numv[j];
+					this->data()[i*m + j] = numv[j];
 			}
 		}//nummatrix(...)
 
@@ -429,7 +411,7 @@ namespace VMlib
 			{
 				const numvector<T, m>& numv = *(z.begin() + i);
 				for (size_t j = 0; j < m; ++j)
-					r[i*m + j] = numv[j];
+					this->data()[i*m + j] = numv[j];
 			}
 		}//nummatrix(...)
 #endif 
@@ -446,7 +428,7 @@ namespace VMlib
 			{
 				vec[i].reserve(m);
 				for (size_t j = 0; j < m; ++j)
-					vec[i].push_back(r[i*m + j]);
+					vec[i].push_back(this->data()[i*m + j]);
 			}
 			return vec;
 		}
@@ -458,7 +440,7 @@ namespace VMlib
 			nummatrix<T, m, n> res;
 			for (size_t i = 0; i < n; ++i)
 				for (size_t j = 0; j < m; ++j)
-					res[j][i] = r[i*m + j];
+					res[j][i] = this->data()[i*m + j];
 			return res;
 		}//Transpose(...)
 
@@ -472,9 +454,9 @@ namespace VMlib
 		/// \return вектор --- результат умножения матрицы на вектор
 		template<typename P>
 		auto operator&(const numvector<P, m>& x) -> \
-			numvector<typename std::remove_const<decltype(r[0] * x[0])>::type, n>
+			numvector<typename std::remove_const<decltype(this->data()[0] * x[0])>::type, n>
 		{
-			numvector<typename std::remove_const<decltype(r[0] * x[0])>::type, n> res;
+			numvector<typename std::remove_const<decltype(this->data()[0] * x[0])>::type, n> res;
 
 			for (size_t i = 0; i < n; ++i)
 				res[i] = (*this)[i] & x;
@@ -491,9 +473,14 @@ namespace VMlib
 		/// \return вектор --- результат умножения матрицы на вектор
 		template<typename P, size_t p>
 		auto operator&(const nummatrix<P, m, p>& B) -> \
-			nummatrix<typename std::remove_const<decltype(r[0] * B.r[0])>::type, n, p>
+			nummatrix<typename std::remove_const<decltype(this->data()[0] * B.data()[0])>::type, n, p>
 		{
-			nummatrix<typename std::remove_const<decltype(r[0] * B.r[0])>::type, n, p> res(0);
+			/// \todo напрашивается сразу инициализация нулем, а не последующее зануление всей матрицы
+			nummatrix<typename std::remove_const<decltype(this->data()[0] * B.data()[0])>::type, n, p> res;
+
+			for (size_t i = 0; i < n; ++i)
+				for (size_t j = 0; j < n; ++j)
+					res[i][j] = 0;
 
 			for (size_t i = 0; i < n; ++i)
 				for (size_t j = 0; j < n; ++j)
@@ -516,9 +503,9 @@ namespace VMlib
 	/// \return вектор --- результат умножения матрицы на вектор
 	template<typename T, typename P, size_t n, size_t m>
 	auto operator&(const numvector<P, n>& x, const nummatrix<T, n, m>& A) -> \
-		numvector<typename std::remove_const<decltype(x[0] * A.r[0])>::type, m>
+		numvector<typename std::remove_const<decltype(x[0] * A.data()[0])>::type, m>
 	{
-		numvector<typename std::remove_const<decltype(x[0] * A.r[0])>::type, m> res;
+		numvector<typename std::remove_const<decltype(x[0] * A.data()[0])>::type, m> res;
 		for (size_t i = 0; i < m; ++i)
 		{
 			res[i] = 0;

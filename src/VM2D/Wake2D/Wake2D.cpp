@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Wake2D.cpp                                                       |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #if defined(_WIN32)
@@ -60,115 +60,76 @@
 
 using namespace VM2D;
 
-//Сохранение вихревого следа в файл
-void Wake::SaveKadr(const std::vector<Vortex2D>& outVtx, const std::string& dir, size_t step, timePeriod& time) const
+void Wake::SaveKadrVtk() const
 {
-	time.first = omp_get_wtime();
+	W.getTimestat().timeSaveKadr.first += omp_get_wtime();
 
-	std::string fname = VMlib::fileNameStep("Kadr", W.getPassport().timeDiscretizationProperties.nameLength, step, "txt");
-
-	std::ofstream outfile;
-	size_t numberNonZero = 0;
-	
-	for (size_t q = 0; q < outVtx.size(); ++q)
+	if ((W.getParallel().myidWork == 0) && (W.ifDivisible(W.getPassport().timeDiscretizationProperties.saveVTK)))
 	{
-		if (outVtx[q].g() != 0.0)
-			numberNonZero++;
+		std::string fname = VMlib::fileNameStep("Kadr", W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "vtk");
+
+		std::ofstream outfile;
+		size_t numberNonZero = 0;
+
+		if (vtx.size() > 0)
+			numberNonZero += vtx.size();
+		else
+			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+				numberNonZero += W.getAirfoil(q).getNumberOfPanels();
+
+		VMlib::CreateDirectory(W.getPassport().dir, "snapshots");
+
+		outfile.open(W.getPassport().dir + "snapshots/" + fname);
+
+		outfile << "# vtk DataFile Version 2.0" << std::endl;
+		outfile << "VM2D VTK result: " << (W.getPassport().dir + "snapshots/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
+		outfile << "ASCII" << std::endl;
+		outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
+		outfile << "POINTS " << numberNonZero << " float" << std::endl;
+
+
+		if (vtx.size() > 0)
+			for (auto& v : vtx)
+			{
+				const Point2D& r = v.r();
+				outfile << r[0] << " " << r[1] << " " << "0.0" << std::endl;
+			}//for v		
+		else
+			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+				for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
+				{
+					const Point2D& r = W.getAirfoil(q).getR(s);
+					outfile << r[0] << " " << r[1] << " " << "0.0" << std::endl;					
+				}			
+
+		outfile << "CELLS " << numberNonZero << " " << 2 * numberNonZero << std::endl;
+		for (size_t i = 0; i < numberNonZero; ++i)
+			outfile << "1 " << i << std::endl;
+
+		outfile << "CELL_TYPES " << numberNonZero << std::endl;
+		for (size_t i = 0; i < numberNonZero; ++i)
+			outfile << "1" << std::endl;
+
+		outfile << std::endl;
+		outfile << "POINT_DATA " << numberNonZero << std::endl;
+		outfile << "SCALARS Gamma float 1" << std::endl;
+		outfile << "LOOKUP_TABLE default" << std::endl;
+
+		if (vtx.size() > 0)
+			for (auto& v : vtx)
+				outfile << v.g() << std::endl;
+		else
+			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+				for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
+				{
+					const Point2D& r = W.getAirfoil(q).getR(s);
+					outfile << "0.0" << std::endl;					
+				}		
+		outfile.close();
 	}
 
-	VMlib::CreateDirectory(dir, "snapshots");
-
-	outfile.open(dir + "snapshots/" + fname);
-//  PrintLogoToTextFile(outfile, dir + "snapshots/" + fname, W.getPassport().worldType, "Positions and circulations of vortices in the wake");
-
-//	PrintHeaderToTextFile(outfile, "Number of vortices");
-	outfile << numberNonZero << std::endl; //Сохранение числа вихрей в пелене
-//	outfile << std::endl << "// " << numberNonZero << std::endl; //Сохранение числа вихрей в пелене
-
-//	PrintHeaderToTextFile(outfile, "x_i     y_i     G_i");
-
-	for (size_t i = 0; i < outVtx.size(); i++)
-	{
-		const Point2D& r = outVtx[i].r();
-		double gi = outVtx[i].g();
-
-		if (gi != 0.0)
-		{
-			outfile << static_cast<int>(i) << " " << W.getPassport().wakeDiscretizationProperties.eps << " " << r[0] << " " << r[1] << " " << "0.0" << " " << "0.0" << " " << "0.0" << " " << gi << std::endl;
-			//нули пишутся для совместимости с трехмерной программой и обработчиком ConMDV	
-			//outfile << std::endl << xi << " " << yi << " " << gi;
-		}
-	}//for i	
-	outfile.close();
-
-	time.second = omp_get_wtime();
-}//SaveKadr(...)
-
-
-
-void Wake::SaveKadrVtk(const std::vector<Vortex2D>& outVtx, const std::string& dir, size_t step, timePeriod& time) const
-{
-	time.first = omp_get_wtime();
-
-	std::string fname = VMlib::fileNameStep("Kadr", W.getPassport().timeDiscretizationProperties.nameLength, step, "vtk");
-
-	std::ofstream outfile;
-	size_t numberNonZero = 0;
-	
-	for (size_t q = 0; q < outVtx.size(); ++q)
-	{
-		//if (outVtx[q].g() != 0.0)
-			numberNonZero++;
-	}
-
-	VMlib::CreateDirectory(dir, "snapshots");
-
-	outfile.open(dir + "snapshots/" + fname);
-	
-	outfile << "# vtk DataFile Version 2.0" << std::endl;
-	outfile << "VM2D VTK result: " << (dir + "snapshots/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
-	outfile << "ASCII" << std::endl;
-	outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
-	outfile << "POINTS " << numberNonZero << " float" << std::endl;
-	
-	
-	for (size_t i = 0; i < outVtx.size(); i++)
-	{
-		Point2D rrr = outVtx[i].r();
-		
-		double xi = (outVtx[i].r())[0];
-		double yi = (outVtx[i].r())[1];
-		double gi =outVtx[i].g();
-
-		//if (gi != 0.0)
-		{
-			outfile << xi << " " << yi << " " << "0.0"  << std::endl;
-		}
-	}//for i
-	
-	outfile << "CELLS " << numberNonZero << " " << 2*numberNonZero << std::endl;
-	for (size_t i=0; i<numberNonZero; ++i)
-	    outfile << "1 " << i << std::endl;
-	    
-	outfile << "CELL_TYPES " << numberNonZero << std::endl;
-	for (size_t i=0; i<numberNonZero; ++i)
-	    outfile << "1" << std::endl;
-	
-	outfile << std::endl;
-	outfile << "POINT_DATA " << numberNonZero << std::endl;
-	outfile << "SCALARS Gamma float 1" << std::endl;
-	outfile << "LOOKUP_TABLE default" << std::endl;
-	
-	for (size_t i = 0; i < outVtx.size(); i++)
-	{
-	    outfile << outVtx[i].g() << std::endl;
-	}//for i
-	
-	
-	outfile.close();
-
-	time.second = omp_get_wtime();
-}//SaveKadrVtk(...)
+	W.getTimestat().timeSaveKadr.second += omp_get_wtime();
+}//SaveKadrVtk()
 
 
 bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough)
@@ -307,7 +268,7 @@ bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos
 
 	double dist2 = 1000000000.0;
 
-	for (int i = 0; i<afl.getNumberOfPanels(); i++)
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
 		Point2D v1, v2, vv;
 		v1 = afl.getR(i) - newPos;
@@ -323,7 +284,7 @@ bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos
 			panThrough = i;
 		}
 
-		cs = v1 * v2;
+		cs = v1 & v2;
 		sn = v1 ^ v2;
 		
 		angle += atan2(sn, cs);
@@ -351,7 +312,7 @@ bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos
 //
 //	double dist2 = 1000000000.0;
 //
-//	for (int i = 0; i < afl.getNumberOfPanels(); i++)
+//	for (int i = 0; i < afl.getNumberOfPanels(); ++i)
 //	{
 //		Point2D v1, v2, vv;
 //		v1 = afl.getR(i) - newPos;
@@ -475,7 +436,7 @@ void Wake::GetPairs(int type)
 		const double& cSP = collapseScaleParameter;
 		const double& cRBP = collapseRightBorderParameter;
 
-		while ( (!found) && ( s < vtx.size() -1 ) )
+		while ( (!found) && ( s + 1 < (int)vtx.size() ) )
 		{
 			s++;
 			const Vortex2D& vtxK = vtx[s];
@@ -528,21 +489,21 @@ void Wake::GPUGetPairs(int type)
 
 	double tCUDASTART = 0.0, tCUDAEND = 0.0;
 	
-	tCUDASTART = omp_get_wtime();
-	tmpNei.resize(npt, 0);
+	tCUDASTART += omp_get_wtime();
+	std::vector<int> tnei(npt, 0);
 	neighb.resize(npt, 0);
 	
 	if (npt > 0)
 	{
 		cuCalculatePairs(par.myDisp, par.myLen, npt, devVtxPtr, devMeshPtr, devNeiPtr, 2.0*W.getPassport().wakeDiscretizationProperties.epscol, sqr(W.getPassport().wakeDiscretizationProperties.epscol), type);
 		
-		W.getCuda().CopyMemFromDev<int, 1>(par.myLen, devNeiPtr, &tmpNei[0]);
+		W.getCuda().CopyMemFromDev<int, 1>(par.myLen, devNeiPtr, &tnei[0]);
 
 		std::vector<int> newNei;
 
 		newNei.resize(neighb.size());
 
-		MPI_Allgatherv(tmpNei.data(), par.myLen, MPI_INT, newNei.data(), par.len.data(), par.disp.data(), MPI_INT, W.getParallel().commWork);
+		MPI_Allgatherv(tnei.data(), par.myLen, MPI_INT, newNei.data(), par.len.data(), par.disp.data(), MPI_INT, W.getParallel().commWork);
 
 		for (size_t q = 0; q < neighb.size(); ++q)
 		{
@@ -551,7 +512,7 @@ void Wake::GPUGetPairs(int type)
 		}
 	}
 
-	tCUDAEND = omp_get_wtime();
+	tCUDAEND += omp_get_wtime();
 
 	//W.getInfo('t') << "GPU_Pairs: " << (tCUDAEND - tCUDASTART) << std::endl;
 }
@@ -571,7 +532,7 @@ int Wake::Collaps(int type, int times)
 	
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_PAIRS))	
 		//W.getInfo('t') << "nvtx (" << parallel.myidWork << ") = " << vtx.size() << std::endl;
-		const_cast<Gpu&>(W.getCuda()).RefreshWake();
+		const_cast<Gpu&>(W.getCuda()).RefreshWake(3);
 		GPUGetPairs(type);
 #else
 		GetPairs(type);
@@ -623,7 +584,7 @@ int Wake::Collaps(int type, int times)
 						//double Ch1[2];
 						size_t hitpan = -1;
 
-						for(size_t afl = 0; afl < W.getNumberOfAirfoil(); afl++)
+						for(size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
 						{
 							//проверим, не оказался ли новый вихрь внутри контура
 							if (MoveInside(sumVtx.r(), vtxI.r(), W.getAirfoil(afl), hitpan) || MoveInside(sumVtx.r(), vtxK.r(), W.getAirfoil(afl), hitpan))
@@ -674,7 +635,7 @@ size_t Wake::RemoveZero()
 {
 	const double porog_g = 1e-15;
 
-	std::vector<Vortex2D> newWake;
+	std::vector<Vortex2D/*, VM2D::MyAlloc<VMlib::Vortex2D>*/> newWake;
 
 	newWake.reserve(vtx.size());
 
@@ -693,9 +654,37 @@ size_t Wake::RemoveZero()
 
 
 //Реструктуризация вихревого следа
-void Wake::Restruct(timePeriod& time)
+void Wake::Restruct()
 {
-	time.first = omp_get_wtime();
+	W.getTimestat().timeRestruct.first += omp_get_wtime();
+
+
+	// Определение параметров, отвечающих за увеличение радиуса коллапса
+	std::vector<double> rightBorder, horizSpan;
+	rightBorder.reserve(W.getNumberOfAirfoil());
+	horizSpan.reserve(W.getNumberOfAirfoil());
+
+	for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+	{
+		
+		rightBorder.emplace_back(W.getAirfoil(q).upRight[0]);
+		horizSpan.emplace_back(W.getAirfoil(q).upRight[0] - W.getAirfoil(q).lowLeft[0]);
+	}
+
+	if (W.getNumberOfAirfoil() > 0)
+	{
+		W.getNonConstWake().collapseRightBorderParameter = *std::max_element(rightBorder.begin(), rightBorder.end());
+		W.getNonConstWake().collapseScaleParameter = *std::max_element(horizSpan.begin(), horizSpan.end());
+	}
+	else
+	{
+		W.getNonConstWake().collapseRightBorderParameter = 0.0;
+		W.getNonConstWake().collapseScaleParameter = 1.0;
+	}
+#if defined(__CUDACC__) || defined(USE_CUDA)
+	W.getNonConstCuda().setCollapseCoeff(W.getWake().collapseRightBorderParameter, W.getWake().collapseScaleParameter);
+#endif 
+	
 
 	WakeSynchronize();
 
@@ -705,8 +694,8 @@ void Wake::Restruct(timePeriod& time)
 	RemoveFar();
 	RemoveZero();
 
-	time.second = omp_get_wtime();
-}//Restruct(...)
+	W.getTimestat().timeRestruct.second += omp_get_wtime();
+}//Restruct()
 
 
 //bool Wake::isPointInsideAirfoil(const Point2D& pos, const Airfoil& afl)

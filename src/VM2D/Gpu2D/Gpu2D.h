@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Gpu2D.h                                                          |
 | Info: Source code of VM2D                                                   |
@@ -32,18 +32,20 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 
 #ifndef GPU_H
 #define GPU_H
 
+#include <limits>
 #include <memory>
 
 #include "cuLib2D.cuh"
 #include "Gpudefs.h"
+
 
 namespace VM2D
 {
@@ -56,8 +58,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class Gpu
 	{
@@ -67,7 +69,19 @@ namespace VM2D
 
 	public:
 
+		//static int nReserve; //Для контроля паритета выделения и освобождения памяти
+
 #if defined(__CUDACC__) || defined(USE_CUDA)
+
+		/// \brief Освобождение видеопамяти на графической карте
+		/// \todo Откомментировать
+		template<typename T>
+		void ReleaseDevMem(T* ptr, int code)
+		{
+			cuDeleteFromDev(ptr, 44);
+			//--nReserve;
+		}
+
 
 		/// \brief Резервирование видеопамяти на графической карте
 		///
@@ -90,7 +104,8 @@ namespace VM2D
 
 			void* ptr;
 
-			cuReserveDevMem(ptr, new_n * dim * sizeof(T));
+			cuReserveDevMem(ptr, new_n * dim * sizeof(T));			
+			//++nReserve;
 
 			return (T*)ptr;
 		} //ReserveDevMem(...)
@@ -111,6 +126,8 @@ namespace VM2D
 			void* dev_ptr;
 
 			cuReserveDevMem(dev_ptr, n * sizeof(T));
+			//++nReserve;
+
 			cuCopyFixedArray(dev_ptr, host_src, sizeof(T) * n);
 
 			return (T*)dev_ptr;
@@ -130,16 +147,29 @@ namespace VM2D
 			cuCopyMemFromDev((void*)host_ptr, (void*)dev_ptr, sizeof(T) * n * dim);
 		};//CopyMemFromDev(...)
 
+		/// \brief Копирование данных в видеопамять на графической карте с хоста
+		///
+		/// \tparam T тип данных
+		/// \tparam dim внутренняя размерность массива
+		/// \param[in] n длина массива (внешняя размерность), который требуется скопировать
+		/// \param[in] dev_ptr адрес на графической карте - указатель на начало массива
+		/// \param[in] host_ptr адрес на хосте, куда требуется скопировать массив
+		template<typename T, size_t dim>
+		void CopyMemToDev(size_t n, T* host_ptr, T* dev_ptr) const
+		{
+			cuCopyFixedArray((void*)dev_ptr, (void*)host_ptr, sizeof(T) * n * dim);
+		};//CopyMemToDev(...)
+
 
 		/// Синхронизация состояния следа с графической картой
-		void RefreshWake();
+		void RefreshWake(int code = 0);
 		
 		/// Синхронизация состояния профилей с графической картой
-		void RefreshAfls();
-		void RefreshVirtualWakes();
+		void RefreshAfls(int code = 0);
+		void RefreshVirtualWakes(int code = 0);
 
 		/// Обновление состояния сетки для вычисления VP
-		void RefreshVP();
+		void RefreshVP(int code = 0);
 
 
 		// Ниже - данные для вычисления скоростей	
@@ -154,12 +184,12 @@ namespace VM2D
 
 		//Переменная, которая лежит на хосте и хранит адрес на видеокарте массива, в котором хранятся указатели на соответствующие массивы
 		double** dev_ptr_ptr_vtx;
+		double** dev_ptr_ptr_vel;
+		double** dev_ptr_ptr_rad;
 		double** dev_ptr_ptr_i0;
 		double** dev_ptr_ptr_i1;
 		double** dev_ptr_ptr_i2;
 		double** dev_ptr_ptr_i3;
-		double** dev_ptr_ptr_rad;
-		double** dev_ptr_ptr_vel;
 
 		double** dev_ptr_ptr_r;
 		double** dev_ptr_ptr_rhs;
@@ -168,13 +198,13 @@ namespace VM2D
 		double** dev_ptr_ptr_attachedVortexSheet;
 		double** dev_ptr_ptr_attachedSourceSheet;
 
+		double** dev_ptr_ptr_meanEpsOverPanel;
+
 		double** dev_ptr_ptr_viscousStresses;
 
 		/// Массив на хосте, содержащий число виртуальных вихрей на профилях; его длина равна числу профилей
 		std::vector<size_t> n_CUDA_virtWake;
-
-		/// Массив на хосте, содержащий число вершин на профилях (на единицу больше, чем число панелей); его длина равна числу профилей
-		std::vector<size_t> n_CUDA_r;
+		size_t n_CUDA_totalVirtWake;
 
 		/// Массив на хосте, содержащий число панелей на профилях; его длина равна числу профилей
 		std::vector<size_t> n_CUDA_panel;
@@ -231,20 +261,148 @@ namespace VM2D
 #if defined(__CUDACC__) || defined(USE_CUDA)		
 			cuSetMaxGamma(gam_);
 #endif
-		}
-
-		/// \brief Установка минимального epsAst
-		///
-		/// \param[in] gam_ максимально возможное значение epsAst
-		void setMinEpsAst2(double minEpsAst2_)
-		{
-#if defined(__CUDACC__) || defined(USE_CUDA)		
-			cuSetMinEpsAst2(minEpsAst2_);
-#endif
-		}
-
+		}	
 	};
 
 }//namespace VM2D
+
+
+
+
+namespace VM2D 
+{
+	template <class T>
+	class MyAlloc {
+	public:
+		// type definitions
+		typedef T              value_type;
+		typedef T*             pointer;
+		typedef const T*       const_pointer;
+		typedef T&             reference;
+		typedef const T&       const_reference;
+		typedef std::size_t    size_type;
+		typedef std::ptrdiff_t difference_type;
+
+		// rebind allocator to type U
+		template <class U>
+		struct rebind {
+			typedef MyAlloc<U> other;
+		};
+
+		// return address of values
+		pointer address(reference value) const {
+			return &value;
+		}
+		const_pointer address(const_reference value) const {
+			return &value;
+		}
+
+		/* constructors and destructor
+		 * - nothing to do because the allocator has no state
+		 */
+		MyAlloc() throw() {
+		}
+		MyAlloc(const MyAlloc&) throw() {
+		}
+		template <class U>
+		MyAlloc(const MyAlloc<U>&) throw() {
+		}
+		~MyAlloc() throw() {
+		}
+
+		// return maximum number of elements that can be allocated
+		size_type max_size() const throw() {
+			return std::numeric_limits<std::size_t>::max() / sizeof(T);
+		}
+
+		// allocate but don't initialize num elements of type T
+		pointer allocate(size_type num, const void* = 0) {
+			// print message and allocate memory with global new
+			//std::cerr << "allocate " << num << " element(s)" 	<< " of size " << sizeof(T) << std::endl;
+			
+			pointer ret = (pointer)(::operator new(num * sizeof(T)));
+
+			//pointer ret;
+			//cudaHostAlloc((void**)&ret, num * sizeof(T), cudaHostAllocDefault);
+			cuAlloc((void**)&ret, num * sizeof(T));
+
+			//std::cerr << " allocated at: " << (void*)ret << std::endl;
+			return ret;
+		}
+
+		// initialize elements of allocated storage p with value value
+		void construct(pointer p, const T& value) {
+			// initialize memory with placement new
+			new((void*)p)T(value);
+			//std::cerr << " construct " << std::endl;
+		}
+
+		// destroy elements of initialized storage p
+		void destroy(pointer p) {
+			// destroy objects by calling their destructor
+			p->~T();
+			//std::cerr << " destroy " << std::endl;
+		}
+
+		// deallocate storage p of deleted elements
+		void deallocate(pointer p, size_type num) {
+			// print message and deallocate memory with global delete
+			
+			//std::cerr << "deallocate " << num << " element(s)" << " of size " << sizeof(T) << " at: " << (void*)p << std::endl;
+			
+			//::operator delete((void*)p);
+			cuDalloc((void*)p);
+		}
+	};
+
+	// return that all specializations of this allocator are interchangeable
+	template <class T1, class T2>
+	bool operator== (const MyAlloc<T1>&,
+		const MyAlloc<T2>&) throw() {
+		return true;
+	}
+	template <class T1, class T2>
+	bool operator!= (const MyAlloc<T1>&,
+		const MyAlloc<T2>&) throw() {
+		return false;
+	}
+
+
+	/*{
+		// create a vector, using MyAlloc<> as allocator
+		std::vector<int, VM2D::MyAlloc<int> > v(5, 37);
+
+		v.resize(0);
+
+		// insert elements
+		// - causes reallocations
+		v.push_back(42);
+		v.push_back(56);
+
+		v.reserve(10);
+
+		v.push_back(11);
+		v.push_back(22);
+		v.push_back(33);
+		v.push_back(44);
+	}
+	*/
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #endif

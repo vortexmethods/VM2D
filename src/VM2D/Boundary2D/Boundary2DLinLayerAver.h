@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2DLinLayerAver.h                                         |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.5
-\date 20 февраля 2019 г.
+\version 1.8
+\date 09 марта 2020 г.
 */
 #ifndef BOUNDARYLINLAYERAVER_H
 #define BOUNDARYLINLAYERAVER_H
@@ -57,8 +57,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.5
-	\date 20 февраля 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class BoundaryLinLayerAver : public Boundary
 	{
@@ -83,16 +83,14 @@ namespace VM2D
 		virtual void FillIQFromOther(const Boundary& otherBoundary, std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& IQ) override;
 		virtual void SolutionToFreeVortexSheetAndVirtualVortex(const Eigen::VectorXd& sol) override;
 
-		virtual void GetConvVelocityToSetOfPoints(const std::vector<Vortex2D>& points, std::vector<Point2D>& velo) const;
-		virtual void GetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const;
+		virtual void CalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const;
 #if defined(USE_CUDA)
-		virtual void GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const;
+		virtual void GPUCalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const;
 #endif
 
-		virtual void GetConvVelocityAtVirtualVortexes(std::vector<Point2D>& velo) const;
+		virtual void CalcConvVelocityAtVirtualVortexes(std::vector<Point2D>& velo) const;
 
-		virtual void ComputeAttachedSheetsIntensity();
-		virtual void FillRhsFromOther(const Airfoil& otherAirfoil, Eigen::VectorXd& rhs, size_t currentRow, size_t currentCol);
+		virtual void ComputeAttachedSheetsIntensity();		
 	
 		virtual void GetInfluenceFromVorticesToRectPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& wakeRhs) const override;
 		virtual void GetInfluenceFromVorticesToCurvPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& wakeRhs) const override {};
@@ -100,7 +98,13 @@ namespace VM2D
 		virtual void GetInfluenceFromSourcesToRectPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& wakeRhs) const override;
 		virtual void GetInfluenceFromSourcesToCurvPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& wakeRhs) const override {};
 
-	};
+		virtual void GetInfluenceFromVortexSheetAtRectPanelToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const;
+		virtual void GetInfluenceFromSourceSheetAtRectPanelToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const;
+	
+		virtual void GetInfluenceFromVInfToRectPanel(std::vector<double>& vInfRhs) const;
+		virtual void GetInfluenceFromVInfToCurvPanel(std::vector<double>& vInfRhs) const;
+
+        };
 
 }//namespace VM2D
 

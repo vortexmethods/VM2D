@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil2DRect.h                                                  |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7
-\date 22 ноября 2019 г.
+\version 1.8
+\date 09 марта 2020 г.
 */
 
 #ifndef AIRFOILCURV_H
@@ -55,8 +55,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 
 	class AirfoilCurv :
@@ -110,25 +110,8 @@ namespace VM2D
 
 		virtual bool IsPointInAirfoil(const Point2D& point) const override;
 
-		virtual std::vector<double> getA(size_t p, size_t i, const Airfoil& otherAirfoil, size_t j) const override { return { 0.0 }; };
-		virtual void calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& matrPair) const override {};
-
-		double getA00(size_t i, size_t j) const ;
-		double getA00FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const ;
-		double getA01(size_t i, size_t j) const ;
-		double getA01FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const ;
-		double getA02(size_t i, size_t j) const ;
-		double getA02FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const ;
-		double getA10(size_t i, size_t j) const ;
-		double getA10FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const ;
-		double getA11(size_t i, size_t j) const ;
-		double getA11FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const ;
-		double getA20(size_t i, size_t j) const ;
-		double getA20FromOther(size_t i, const Airfoil* otherAirfoil, size_t j) const ;
-		double getA22(size_t i) const ;
-
-		virtual void getInfAttFromOther0(std::vector<double>& attOtherVelo, const Airfoil& otherAirfoil, size_t currentRow, size_t currentCol) const override {};
-		virtual void getInfAttFromOther1(std::vector<double>& attOtherVelo, const Airfoil& otherAirfoil, size_t currentRow, size_t currentCol) const override {};
+		virtual std::vector<double> getA(size_t p, size_t i, const Airfoil& otherAirfoil, size_t j) const override;
+		virtual void calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& matrPair) const override;
 
 
 		///\brief Возврат константной ссылки на координату центра панели
@@ -140,7 +123,11 @@ namespace VM2D
 		/// return константную ссылку на координату центра панели
 		const Point2D& getRc(size_t q) const
 		{
-			return rc_[q % rc_.size()];
+			const size_t& sz = rc_.size();
+			if (q < sz)
+				return rc_[q];
+			else
+				return rc_[q-sz];
 		};
 
 		///\brief Возврат константной ссылки на кривизну в центре панели
@@ -152,7 +139,11 @@ namespace VM2D
 		/// return константную ссылку на кривизну в центре панели 
 		const double& getKc(size_t q) const
 		{
-			return kc_[q % kc_.size()];
+			const size_t& sz = kc_.size();
+			if (q < sz)
+				return kc_[q];
+			else
+				return kc_[q - sz];
 		};
 
 		///\brief Возврат константной ссылки на производную кривизны в центре панели
@@ -164,7 +155,11 @@ namespace VM2D
 		/// return константную ссылку на производную кривизны в центре панели 
 		const double& getDkc(size_t q) const
 		{
-			return dkc_[q % dkc_.size()];
+			const size_t& sz = dkc_.size();
+			if (q < sz)
+				return dkc_[q];
+			else
+				return dkc_[q - sz];			
 		};
 
 		///\brief Возврат константной ссылки на вторую производную кривизны в центре панели
@@ -175,8 +170,12 @@ namespace VM2D
 		/// \param[in] q номер панели профиля
 		/// return константную ссылку на вторую производную кривизны в центре панели 
 		const double& getDdkc(size_t q) const
-		{
-			return ddkc_[q % ddkc_.size()];
+		{		
+			const size_t& sz = ddkc_.size();
+			if (q < sz)
+				return ddkc_[q];
+			else
+				return ddkc_[q - sz];
 		};
 
 		///\brief Возврат константной ссылки на кривизну в вершине профиля
@@ -187,7 +186,11 @@ namespace VM2D
 		/// return константную ссылку на кривизну в вершине профиля
 		const double& getK(size_t q) const
 		{
-			return k_[q % k_.size()];
+			const size_t& sz = k_.size();
+			if (q < sz)
+				return k_[q];
+			else
+				return k_[q - sz];			
 		};
 
 		///\brief Возврат константной ссылки на производную кривизны в вершине профиля
@@ -197,8 +200,12 @@ namespace VM2D
 		/// \param[in] q номер панели профиля
 		/// return константную ссылку на производную кривизны в вершине профиля
 		const double& getDk(size_t q) const
-		{
-			return dk_[q % dk_.size()];
+		{			
+			const size_t& sz = dk_.size();
+			if (q < sz)
+				return dk_[q];
+			else
+				return dk_[q - sz];
 		};
 
 		///\brief Возврат константной ссылки на вторую производную кривизны в вершине профиля
@@ -210,7 +217,11 @@ namespace VM2D
 		/// return константную ссылку на вторую производную кривизны в вершине профиля
 		const double& getDdk(size_t q) const
 		{
-			return ddk_[q % ddk_.size()];
+			const size_t& sz = ddk_.size();
+			if (q < sz)
+				return ddk_[q];
+			else
+				return ddk_[q - sz];
 		};
 
 
@@ -220,10 +231,15 @@ namespace VM2D
 		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) override;
 #endif
 		
-		virtual void GetInfluenceFromVorticesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const override {};
+		virtual void GetInfluenceFromVorticesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const override;
 
 		virtual void GetInfluenceFromSourcesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const override {};
 
+		virtual void GetInfluenceFromSourceSheetToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const override {};
+
+		virtual void GetInfluenceFromVortexSheetToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const override {};
+
+        virtual void GetInfluenceFromVInfToPanel(std::vector<double>& vInfRhs) const;
 	};
 
 } //namespace VM2D

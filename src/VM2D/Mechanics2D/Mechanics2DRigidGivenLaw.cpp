@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidGivenLaw.cpp                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #include <algorithm>
@@ -58,16 +58,16 @@ using namespace VM2D;
 
 
 //Вычисление гидродинамической силы, действующей на профиль
-void MechanicsRigidGivenLaw::GetHydroDynamForce(timePeriod& time)
+void MechanicsRigidGivenLaw::GetHydroDynamForce()
 {
-	time.first = omp_get_wtime();
+	W.getTimestat().timeGetHydroDynamForce.first += omp_get_wtime();
 
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
 	hydroDynamForce = { 0.0, 0.0 };
 	hydroDynamMoment = 0.0;
 
-	viscousStress = { 0.0, 0.0 };
+	viscousForce = { 0.0, 0.0 };
 	viscousMoment = 0.0;
 
 	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
@@ -79,22 +79,26 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce(timePeriod& time)
 	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
 		/// \todo Учитываем только нулевой момент решения. Надо ли учитывать остальные?
-		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + deltaVstep * afl.tau[i] * afl.len[i];
+		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + (deltaVstep & afl.tau[i]) * afl.len[i];
 		Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
 
 		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
-		hDMdelta += 0.5 * deltaK * (rK * rK);
+		hDMdelta += 0.5 * deltaK * rK.length2();
 	}
 
 	hydroDynamForce = hDFdelta * (1.0 / dt);
 	hydroDynamMoment = hDMdelta / dt;
 
-	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
-		viscousStress += afl.viscousStress[i] * afl.tau[i];
+	if (W.getPassport().physicalProperties.nu > 0.0)
+		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
+		{
+			Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
+			viscousForce += afl.viscousStress[i] * afl.tau[i];
+			viscousMoment += (afl.viscousStress[i] * afl.tau[i]) & rK;
+		}
 
-
-	time.second = omp_get_wtime();
-}// GetHydroDynamForce(...)
+	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
+}// GetHydroDynamForce()
 
 
 const double accelStop = 1000.0;

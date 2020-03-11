@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidOscillPart.cpp                                   |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #include "mpi.h"
@@ -53,15 +53,18 @@
 using namespace VM2D;
 
 //Вычисление гидродинамической силы, действующей на профиль
-void MechanicsRigidOscillPart::GetHydroDynamForce(timePeriod& time)
+void MechanicsRigidOscillPart::GetHydroDynamForce()
 {
-	time.first = omp_get_wtime();
+	W.getTimestat().timeGetHydroDynamForce.first += omp_get_wtime();
 
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
 	hydroDynamForce = { 0.0, 0.0 };
 	hydroDynamMoment = 0.0;
 
+	viscousForce = { 0.0, 0.0 };
+	viscousMoment = 0.0;
+	
 	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
 	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные delta_k
 	double hDMdelta = 0.0;
@@ -72,18 +75,26 @@ void MechanicsRigidOscillPart::GetHydroDynamForce(timePeriod& time)
 	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
 		/// \todo Учитываем только нулевой момент решения. Надо ли учитывать остальные?
-		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + deltaVstep * afl.tau[i] * afl.len[i];
+		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + (deltaVstep & afl.tau[i]) * afl.len[i];
 		Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
 
 		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
-		hDMdelta += 0.5 * deltaK * (rK * rK);
+		hDMdelta += 0.5 * deltaK * rK.length2();
 	}
 
 	hydroDynamForce = hDFdelta * (1.0 / dt);
 	hydroDynamMoment = hDMdelta / dt;
 
-	time.second = omp_get_wtime();
-}// GetHydroDynamForce(...)
+	if (W.getPassport().physicalProperties.nu > 0.0)
+		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
+		{
+			Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
+			viscousForce += afl.viscousStress[i] * afl.tau[i];
+			viscousMoment += (afl.viscousStress[i] * afl.tau[i]) & rK;
+		}
+	
+	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
+}// GetHydroDynamForce()
 
 // Вычисление скорости центра масс
 Point2D MechanicsRigidOscillPart::VeloOfAirfoilRcm(double currTime)
@@ -140,6 +151,30 @@ void MechanicsRigidOscillPart::Move()
 }//Move()
 
 
+#ifdef BRIDGE
+void MechanicsRigidOscillPart::ReadSpecificParametersFromDictionary()
+{
+        mechParamsParser->get("m", m);
+
+        W.getInfo('i') << "mass " << "m = " << m << std::endl;
+
+        mechParamsParser->get("b", b);
+
+        W.getInfo('i') << "damping " << "b = " << b << std::endl;
+
+
+        mechParamsParser->get("k", k);
+
+//      std::vector<double> sh;
+//      mechParamsParser->get("sh", sh);
+
+//      k = m * 4.0 * PI * PI * sh[1] * sh[1] * W.getPassport().physicalProperties.vInf.length2();
+
+        W.getInfo('i') << "rigidity k = " << k << std::endl;
+}//ReadSpecificParametersFromDictionary()
+#endif
+
+#ifdef INITIAL
 void MechanicsRigidOscillPart::ReadSpecificParametersFromDictionary()
 {
 	mechParamsParser->get("m", m);
@@ -153,3 +188,4 @@ void MechanicsRigidOscillPart::ReadSpecificParametersFromDictionary()
 
 	W.getInfo('i') << "rigidity k = " << k << std::endl;
 }//ReadSpecificParametersFromDictionary()
+#endif

@@ -8,11 +8,11 @@ VM2D: Vortex method for 2D flow simulation
 ![License](https://img.shields.io/github/license/vortexmethods/VM2D.svg)
 
 
-Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina
+Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina
 
 Программная реализация (с открытым исходным кодом) вихревых методов вычислительной гидродинамики для моделирования течений вязкой несжимаемой среды. 
 
-Версия 1.7 от 22 ноября 2019 г.
+Версия 1.8 от 09 марта 2020 г.
 
 ЛИЦЕНЗИЯ
 --------
@@ -144,6 +144,8 @@ Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina
 * Версия 1.6 представлена 28 октября 2019 г. на конференции [Particles](https://congress.cimne.com/particles2019/) (Барселона). 
 
 * Версия 1.7 представлена 22 ноября 2019 г. на конференции [ISPRASOpen](https://www.isprasopen.ru/) (Москва). 
+
+* Версия 1.8 представлена 09 марта 2020 г. 
 
 ВОПРОСЫ, ПРЕДЛОЖЕНИЯ И ЗАМЕЧАНИЯ
 --------------------------------

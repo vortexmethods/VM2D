@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2D.h                                                    |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef MECHANICS_H
@@ -62,8 +62,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 
 	class Mechanics
@@ -101,9 +101,19 @@ namespace VM2D
 		/// Начальное положение профиля
 		const Point2D Rcm0; double Phi0;
 
+#ifdef INITIAL 	
 		/// Текущие скорость центра и угловая скорость
 		Point2D Vcm; double Wcm;
+#endif
 
+#ifdef BRIDGE 	
+	public:
+		/// Текущие скорость центра и угловая скорость
+		Point2D Vcm; double Wcm;
+#endif
+
+
+	protected:
 		/// Текущие положение профиля
 		Point2D Rcm; double Phi;
 
@@ -131,7 +141,7 @@ namespace VM2D
 		double hydroDynamMoment;
 
 		/// Вектор силы и момент вязкого трения, действующие на профиль
-		Point2D viscousStress;
+		Point2D viscousForce;
 		double viscousMoment;
 
 
@@ -157,10 +167,8 @@ namespace VM2D
 		virtual ~Mechanics() { };
 
 
-		/// \brief Вычисление гидродинамической силы, действующей на профиль
-		///
-		/// \param[out] time ссылка на промежуток времени --- пару чисел (время начала и время конца операции)
-		virtual void GetHydroDynamForce(timePeriod& time) = 0;
+		/// Вычисление гидродинамической силы, действующей на профиль
+		virtual void GetHydroDynamForce() = 0;
 
 		/// Генерация заголовка файла нагрузок
 		void GenerateForcesHeader();

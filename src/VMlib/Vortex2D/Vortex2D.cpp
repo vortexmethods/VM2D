@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.7    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2019/11/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.8    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/03/09     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: Vortex2D.cpp                                                     |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса Vortex2D
 \author Марчевский Илья Константинович
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #include <stddef.h>
@@ -47,6 +47,17 @@ size_t Vortex2D::offsGam;
 
 void Vortex2D::CreateMpiType()
 {
+	int          len[2] = { 2, 1 };
+	MPI_Aint     pos[2] = { offsetof(Vortex2D, pos), offsetof(Vortex2D, gam) };
+	MPI_Datatype typ[2] = { MPI_DOUBLE, MPI_DOUBLE };
+
+	MPI_Type_create_struct(2, len, pos, typ, &mpiVortex2D);
+	MPI_Type_commit(&mpiVortex2D);
+
+	offsPos = offsetof(Vortex2D, pos);
+	offsGam = offsetof(Vortex2D, gam);
+
+	/*
 	int          len[4] = { 1, 2, 1, 1 };
 	MPI_Aint     pos[4] = { 0, offsetof(Vortex2D, pos), offsetof(Vortex2D, gam), sizeof(Vortex2D) };
 	MPI_Datatype typ[4] = { MPI_LB, MPI_DOUBLE, MPI_DOUBLE, MPI_UB };
@@ -56,4 +67,5 @@ void Vortex2D::CreateMpiType()
 
 	offsPos = offsetof(Vortex2D, pos);
 	offsGam = offsetof(Vortex2D, gam);
+	*/
 }//CreateMpiType()

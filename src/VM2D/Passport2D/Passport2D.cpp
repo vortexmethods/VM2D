@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Passport2D.cpp                                                   |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #include "Passport2D.h"
@@ -175,7 +175,6 @@ void Passport::GetAllParamsFromParser
 	parser->get("timeStop", timeDiscretizationProperties.timeStop);
 	parser->get("dt", timeDiscretizationProperties.dt);
 	parser->get("nameLength", timeDiscretizationProperties.nameLength, &defaults::defaultNameLength);
-	parser->get("saveTXT", timeDiscretizationProperties.saveTXT, &defaults::defaultSaveTXT);
 	parser->get("saveVTK", timeDiscretizationProperties.saveVTK, &defaults::defaultSaveVTK);
 	parser->get("saveVP",  timeDiscretizationProperties.saveVP,  &defaults::defaultSaveVP);
 
@@ -193,7 +192,7 @@ void Passport::GetAllParamsFromParser
 	parser->get("linearSystemSolver", numericalSchemes.linearSystemSolver, &defaults::defaultLinearSystemSolver);
 	parser->get("velocityComputation", numericalSchemes.velocityComputation, &defaults::defaultVelocityComputation);
 	//parser->get("wakeMotionIntegrator", numericalSchemes.wakeMotionIntegrator);
-	parser->get("panelsType", numericalSchemes.panelsType, &defaults::defaultPanelsType, &defaults::defaultPanelsType);
+	parser->get("panelsType", numericalSchemes.panelsType, &defaults::defaultPanelsType);
 	parser->get("boundaryConditionSatisfaction", numericalSchemes.boundaryCondition, &defaults::defaultBoundaryCondition);
 	
 	parser->get("airfoilsDir", airfoilsDir, &defaults::defaultAirfoilsDir);
@@ -287,7 +286,6 @@ void Passport::PrintAllParams()
 	info('-') << "timeStop = " << timeDiscretizationProperties.timeStop << std::endl;
 	info('-') << "dt = " << timeDiscretizationProperties.dt << std::endl;
 	info('-') << "nameLength = " << timeDiscretizationProperties.nameLength << std::endl;
-	info('-') << "saveTXT = " << timeDiscretizationProperties.saveTXT << std::endl;
 	info('-') << "saveVTK = " << timeDiscretizationProperties.saveVTK << std::endl;
 	info('-') << "saveVP = " << timeDiscretizationProperties.saveVP << std::endl;
 	info('-') << "eps = " << wakeDiscretizationProperties.eps << std::endl;

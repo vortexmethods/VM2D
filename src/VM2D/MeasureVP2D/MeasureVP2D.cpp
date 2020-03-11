@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: MeasureVP2D.cpp                                                  |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #if defined(_WIN32)
@@ -93,7 +93,7 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 
 			VMlib::PrintHeaderToTextFile(VPFileList, "No.     FileName      X     Y");
 
-			for (int q = 0; q < historyPoints.size(); ++q)
+			for (size_t q = 0; q < historyPoints.size(); ++q)
 			{
 				VPFileList << '\n' << q << '\t' << VMlib::fileNameStep("VP-atPoint-", 2, q, "csv") << '\t' << historyPoints[q][0] << '\t' << historyPoints[q][1];
 
@@ -116,62 +116,68 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 // Инициализация векторов для вычисления скоростей и давлений
 void MeasureVP::Initialization()
 {
+	W.getTimestat().timeVP.first += omp_get_wtime();
 
-	if (W.getParallel().myidWork == 0)
+	if ((W.getPassport().timeDiscretizationProperties.saveVP > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVP)))
 	{
-		wakeVP->vtx.clear();
-		wakeVP->vtx.resize(0);
+		W.getInfo('i') << "Preparing VP points " << std::endl;
 
-		Vortex2D addvtx;
-
-		velocity.clear();
-		velocity.resize(0);
-
-		pressure.clear();
-		pressure.resize(0);
-
-		domainRadius.clear();
-		domainRadius.resize(0);
-
-
-	//отключаем проверку того, что точки расположены вне профиля
-	/*
-	//определяем точки, которые не находятся внутри профилей
-	bool inside;
-	for (size_t i = 0; i < initialPoints.size(); i++)
-	{
-		inside = false;
-		for (size_t j = 0; j < W.getNumberOfAirfoil(); j++)
+		if (W.getParallel().myidWork == 0)
 		{
-			if (W.getAirfoil(j).isInsideGabarits(initialPoints[i]) && W.getAirfoil(j).IsPointInAirfoil(initialPoints[i]))
+			wakeVP->vtx.clear();
+			wakeVP->vtx.resize(0);
+
+			Vortex2D addvtx;
+
+			velocity.clear();
+			velocity.resize(0);
+
+			pressure.clear();
+			pressure.resize(0);
+
+			domainRadius.clear();
+			domainRadius.resize(0);
+
+
+			//отключаем проверку того, что точки расположены вне профиля
+			/*
+			//определяем точки, которые не находятся внутри профилей
+			bool inside;
+			for (size_t i = 0; i < initialPoints.size(); ++i)
 			{
-				inside = true;
-				break;
+				inside = false;
+				for (size_t j = 0; j < W.getNumberOfAirfoil(); ++j)
+				{
+					if (W.getAirfoil(j).isInsideGabarits(initialPoints[i]) && W.getAirfoil(j).IsPointInAirfoil(initialPoints[i]))
+					{
+						inside = true;
+						break;
+					}
+				}
+				if (!inside)
+				{
+					addvtx.r() = initialPoints[i];
+					wakeVP.vtx.push_back(addvtx);
+				}
 			}
-		}
-		if (!inside)
-		{
-			addvtx.r() = initialPoints[i];
-			wakeVP.vtx.push_back(addvtx);
+			*/
+
+			//добавляем все точки, а не только те, которые вне профиля
+			for (size_t i = 0; i < initialPoints.size(); ++i)
+			{
+				addvtx.r() = initialPoints[i];
+				wakeVP->vtx.push_back(addvtx);
+			}
+
+			for (size_t i = 0; i < historyPoints.size(); ++i)
+			{
+				addvtx.r() = historyPoints[i];
+				wakeVP->vtx.push_back(addvtx);
+			}
+
 		}
 	}
-	*/
-
-		//добавляем все точки, а не только те, которые вне профиля
-		for (size_t i = 0; i < initialPoints.size(); i++)
-		{
-			addvtx.r() = initialPoints[i];
-			wakeVP->vtx.push_back(addvtx);
-		}
-
-		for (size_t i = 0; i < historyPoints.size(); i++)
-		{
-			addvtx.r() = historyPoints[i];
-			wakeVP->vtx.push_back(addvtx);
-		}
-
-	}
-
+	W.getTimestat().timeVP.second += omp_get_wtime();
 
 }//Initialization()
 
@@ -205,18 +211,18 @@ void MeasureVP::CalcPressure()
 	W.getNonConstVelocity().wakeVortexesParams.convVelo.resize(W.getWake().vtx.size());
 	MPI_Bcast(W.getNonConstVelocity().wakeVortexesParams.convVelo.data(), (int)(W.getVelocity().wakeVortexesParams.convVelo.size()), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
 
-	for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
+	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 		W.getNonConstBoundary(bou).sheets.FreeSheetSynchronize();
 
 
-	for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
+	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 	{
 		int sz = (int)(W.getAirfoil(bou).gammaThrough.size());
 		MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
 		MPI_Bcast(W.getNonConstAirfoil(bou).gammaThrough.data(), sz, MPI_DOUBLE, 0, W.getParallel().commWork);
 	}
 
-	for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
+	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 	{
 		int sz = (int)(W.getBoundary(bou).virtualWake.vecHalfGamma.size());
 		MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
@@ -235,7 +241,7 @@ void MeasureVP::CalcPressure()
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
 
-	double P0 = /*1*/ 0.5 * V0 * V0;
+	double P0 = /*1*/ 0.5 * V0.length2();
 
 
 	Point2D cPan;
@@ -251,11 +257,11 @@ void MeasureVP::CalcPressure()
 	{
 		//int i = locI + par.myDisp;
 		locPressure[locI] = P0;
-		locPressure[locI] -= 0.5 * (locVelocity[locI] * locVelocity[locI]); //2
+		locPressure[locI] -= 0.5 * locVelocity[locI].length2(); //2
 
 		const Point2D& pt = locWakeVP.vtx[locI].r();
 
-		for (int j = 0; j < W.getWake().vtx.size(); j++)
+		for (size_t j = 0; j < W.getWake().vtx.size(); ++j)
 		{
 			dri = pt - W.getWake().vtx[j].r();
 			Vi = W.getVelocity().wakeVortexesParams.convVelo[j] + V0;
@@ -263,11 +269,11 @@ void MeasureVP::CalcPressure()
 			dst2eps = VMlib::boundDenom(dri.length2(), eps2);
 
 			vi = IDPI * W.getWake().vtx[j].g() / dst2eps * dri.kcross();
-			locPressure[locI] += vi * Vi; //3
+			locPressure[locI] += vi & Vi; //3
 		}
 
-		for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
-			for (int j = 0; j < W.getBoundary(bou).virtualWake.vtx.size(); j++)
+		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
+			for (size_t j = 0; j < W.getBoundary(bou).virtualWake.vtx.size(); ++j)
 			{
 				dri = pt - W.getBoundary(bou).virtualWake.vtx[j].r();
 
@@ -276,17 +282,17 @@ void MeasureVP::CalcPressure()
 				Vi = W.getBoundary(bou).virtualWake.vecHalfGamma[j];
 				vi = IDPI * W.getBoundary(bou).virtualWake.vtx[j].g() / dst2eps * dri.kcross();
 
-				locPressure[locI] += vi * Vi; //4
+				locPressure[locI] += vi & Vi; //4
 			}
 
-		for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
+		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 		{
 			const Point2D& rcm = W.getAirfoil(bou).rcm;
 
-			for (int j = 0; j < W.getAirfoil(bou).getNumberOfPanels(); j++)
+			for (size_t j = 0; j < W.getAirfoil(bou).getNumberOfPanels(); ++j)
 			{
 				cPan = 0.5 * (W.getAirfoil(bou).getR(j) + W.getAirfoil(bou).getR(j + 1));
-				alpha = atan2((cPan - pt) ^ (rcm - pt), (cPan - pt)*(rcm - pt));
+				alpha = atan2((cPan - pt) ^ (rcm - pt), (cPan - pt)&(rcm - pt));
 
 				/// \todo Пока используем только средние значения свободного слоя на панелях
 				locPressure[locI] += IDPI * alpha *	W.getBoundary(bou).sheets.freeVortexSheet(j, 0) * W.getAirfoil(bou).len[j] / dt;
@@ -303,24 +309,25 @@ void MeasureVP::CalcPressure()
 
 
 //Сохранение в файл вычисленных скоростей и давлений
-void MeasureVP::SaveVP(const std::string& dir, size_t step, timePeriod& time)
+void MeasureVP::SaveVP()
 {
+	W.getTimestat().timeSaveKadr.first += omp_get_wtime();
 	if (W.getParallel().myidWork == 0)
 	{
-		std::string fname = VMlib::fileNameStep("VelPres", W.getPassport().timeDiscretizationProperties.nameLength, step, "vtk");
+		std::string fname = VMlib::fileNameStep("VelPres", W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "vtk");
 
 		std::ofstream outfile;
 
-		VMlib::CreateDirectory(dir, "velPres");
-		outfile.open(dir + "velPres/" + fname);
+		VMlib::CreateDirectory(W.getPassport().dir, "velPres");
+		outfile.open(W.getPassport().dir + "velPres/" + fname);
 
 		outfile << "# vtk DataFile Version 2.0" << std::endl;
-		outfile << "VM2D VTK result: " << (dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
+		outfile << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
 		outfile << "ASCII" << std::endl;
 		outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
 		outfile << "POINTS " << wakeVP->vtx.size() << " float" << std::endl;
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); i++)
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
 		{
 			double xi = (wakeVP->vtx[i].r())[0];
 			double yi = (wakeVP->vtx[i].r())[1];
@@ -339,7 +346,7 @@ void MeasureVP::SaveVP(const std::string& dir, size_t step, timePeriod& time)
 		outfile << "POINT_DATA " << wakeVP->vtx.size() << std::endl;
 
 		outfile << "VECTORS V float" << std::endl;
-		for (size_t i = 0; i < wakeVP->vtx.size(); i++)
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
 		{
 			outfile << velocity[i][0] << " " << velocity[i][1] << " 0.0" << std::endl;
 		}//for i
@@ -349,7 +356,7 @@ void MeasureVP::SaveVP(const std::string& dir, size_t step, timePeriod& time)
 		outfile << "SCALARS P float 1" << std::endl;
 		outfile << "LOOKUP_TABLE default" << std::endl;
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); i++)
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
 		{
 			outfile << pressure[i] << std::endl;
 		}//for i
@@ -357,7 +364,7 @@ void MeasureVP::SaveVP(const std::string& dir, size_t step, timePeriod& time)
 		outfile.close();
 
 		//Вывод в csv-файлы
-		for (int q = 0; q < historyPoints.size(); ++q)
+		for (size_t q = 0; q < historyPoints.size(); ++q)
 		{
 			std::string VPFileNameCsv;
 			VPFileNameCsv = W.getPassport().dir + "velPres/" + VMlib::fileNameStep("VP-atPoint-", 2, q, "csv");
@@ -370,305 +377,6 @@ void MeasureVP::SaveVP(const std::string& dir, size_t step, timePeriod& time)
 				<< pressure[initialPoints.size() + q] << std::endl;
 			VPFileCsv.close();
 		}
-
 	}
-}//SaveVP(...)
-
-
-//Расчет и сохранение в файл поля скоростей и давления
-/*
-void MeasureVP::CalcSaveVP(const std::string& dir, size_t step, timePeriod& time)
-{
-	time.first = omp_get_wtime();
-	std::vector<Point2D> velConvWake;
-	std::vector<std::vector<Point2D>> velConvBou;
-
-	if (W.getParallel().myidWork == 0)
-	{
-		wakeVP->vtx.clear();
-		wakeVP->vtx.resize(0);
-
-		Vortex2D addvtx;
-
-		velocity.clear();
-		velocity.resize(0);
-
-		pressure.clear();
-		pressure.resize(0);
-
-		domainRadius.clear();
-		domainRadius.resize(0);
-
-
-	//	//отключаем проверку того, что точки расположены вне профиля
-	//	
-	//	//определяем точки, которые не находятся внутри профилей
-	//	bool inside;
-	//	for (size_t i = 0; i < initialPoints.size(); i++)
-	//	{
-	//		inside = false;
-	//		for (size_t j = 0; j < W.getNumberOfAirfoil(); j++)
-	//		{
-	//			if (W.getAirfoil(j).isInsideGabarits(initialPoints[i]) && W.getAirfoil(j).IsPointInAirfoil(initialPoints[i]))
-	//			{
-	//				inside = true;
-	//				break;
-	//			}
-	//		}
-	//		if (!inside)
-	//		{
-	//			addvtx.r() = initialPoints[i];
-	//			wakeVP.vtx.push_back(addvtx);
-	//		}
-	//	}
-		
-
-		//добавляем все точки, а не только те, которые вне профиля
-		for (size_t i = 0; i < initialPoints.size(); i++)
-		{
-			addvtx.r() = initialPoints[i];
-			wakeVP->vtx.push_back(addvtx);
-		}
-
-		for (size_t i = 0; i < historyPoints.size(); i++)
-		{
-			addvtx.r() = historyPoints[i];
-			wakeVP->vtx.push_back(addvtx);
-		}
-
-		velConvWake.resize(wakeVP->vtx.size(), { 0.0, 0.0 });
-	}
-
-
-	int addWSize = (int)wakeVP->vtx.size();
-	MPI_Bcast(&addWSize, 1, MPI_INT, 0, W.getParallel().commWork);
-
-	velConvBou.resize(W.getNumberOfBoundary());
-	for (size_t i = 0; i < W.getNumberOfBoundary(); i++)
-		velConvBou[i].resize(wakeVP->vtx.size(), { 0.0, 0.0 });
-
-
-
-	
-	//#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_CONV_TOWAKE))
-	//	{
-	//		W.getNonConstVelocity().GPUCalcConvVeloToSetOfPoints(*wakeVP, velConvWake, domainRadius);
-	//		for (size_t i = 0; i < W.getNumberOfBoundary(); i++)
-	//		{
-	//			W.getNonConstBoundary(i).GPUGetConvVelocityToSetOfPointsFromVirtualVortexes(*wakeVP, velConvBou[i]);
-	//		}
-	//	}
-	//#else	
-	{
-		/// \todo Сделать GPU-версию вычисления скорости и давления
-		W.getNonConstVelocity().CalcConvVeloToSetOfPoints(*wakeVP, velConvWake, domainRadius);
-
-		for (size_t i = 0; i < W.getNumberOfBoundary(); i++)
-		{
-			W.getNonConstBoundary(i).GetConvVelocityToSetOfPointsFromVirtualVortexes(*wakeVP, velConvBou[i]);
-		}
-	}
-	//#endif
-
-
-	if (W.getParallel().myidWork == 0)
-	{
-		velocity.assign(addWSize, W.getPassport().physicalProperties.V0());
-		pressure.resize(addWSize);
-
-		for (size_t i = 0; i < wakeVP->vtx.size(); i++)
-			velocity[i] += velConvWake[i];
-
-		for (size_t bou = 0; bou < velConvBou.size(); bou++)
-			for (size_t j = 0; j < wakeVP->vtx.size(); j++)
-				velocity[j] += velConvBou[bou][j];
-	}
-
-	int id = W.getParallel().myidWork;
-	VMlib::parProp par = W.getParallel().SplitMPI(addWSize);
-
-	/// \todo Для успокоения добавить WakeSyncronize(), но после обучения его проверке hash
-
-	std::vector<Point2D> locVelocity;
-	locVelocity.resize(par.myLen);
-	MPI_Scatterv(velocity.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, locVelocity.data(), par.myLen, Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-
-	std::vector<double> locPressure;
-	locPressure.resize(par.myLen, 0.0);
-
-	WakeDataBase locWakeVP(W);
-	locWakeVP.vtx.resize(par.myLen);
-	MPI_Scatterv(wakeVP->vtx.data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, locWakeVP.vtx.data(), par.myLen, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
-
-
-	W.getNonConstVelocity().wakeVortexesParams.convVelo.resize(W.getWake().vtx.size());
-	MPI_Bcast(W.getNonConstVelocity().wakeVortexesParams.convVelo.data(), (int)(W.getVelocity().wakeVortexesParams.convVelo.size()), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-
-	for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
-	{
-		W.getNonConstBoundary(bou).sheets.FreeSheetSynchronize();
-	}
-
-	for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
-	{
-		int sz = (int)(W.getAirfoil(bou).gammaThrough.size());
-		MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
-		MPI_Bcast(W.getNonConstAirfoil(bou).gammaThrough.data(), sz, MPI_DOUBLE, 0, W.getParallel().commWork);
-	}
-
-	for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
-	{
-		int sz = (int)(W.getBoundary(bou).virtualWake.vecHalfGamma.size());
-		MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
-		if (id > 0)
-			W.getNonConstBoundary(bou).virtualWake.vecHalfGamma.resize(sz);
-		MPI_Bcast(W.getNonConstBoundary(bou).virtualWake.vecHalfGamma.data(), sz, Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-	}
-
-	Point2D dri;
-	Point2D Vi;
-	Point2D vi;
-
-
-	const Point2D& V0 = W.getPassport().physicalProperties.V0();
-	const double& eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
-	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
-
-
-	double P0 =  0.5 * V0 * V0;
-
-
-	Point2D cPan;
-
-#pragma warning (push)
-#pragma warning (disable: 4101)
-	double alpha;
-	double dst2eps;
-#pragma warning (pop)
-
-#pragma omp parallel for default(none) private(alpha, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, eps2, V0, id, locWakeVP, locPressure, locVelocity, par, std::cout) 
-	for (int locI = 0; locI < par.myLen; ++locI)
-	{
-		//int i = locI + par.myDisp;
-		locPressure[locI] = P0;
-		locPressure[locI] -= 0.5 * (locVelocity[locI] * locVelocity[locI]); //2
-
-		const Point2D& pt = locWakeVP.vtx[locI].r();
-
-		for (int j = 0; j < W.getWake().vtx.size(); j++)
-		{
-			dri = pt - W.getWake().vtx[j].r();
-			Vi = W.getVelocity().wakeVortexesParams.convVelo[j] + V0;
-
-			dst2eps = VMlib::boundDenom(dri.length2(), eps2);
-
-			vi = IDPI * W.getWake().vtx[j].g() / dst2eps * dri.kcross();
-			locPressure[locI] += vi * Vi; //3
-		}
-
-		for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
-			for (int j = 0; j < W.getBoundary(bou).virtualWake.vtx.size(); j++)
-			{
-				dri = pt - W.getBoundary(bou).virtualWake.vtx[j].r();
-
-				dst2eps = VMlib::boundDenom(dri.length2(), eps2);
-
-				Vi = W.getBoundary(bou).virtualWake.vecHalfGamma[j];
-				vi = IDPI * W.getBoundary(bou).virtualWake.vtx[j].g() / dst2eps * dri.kcross();
-
-				locPressure[locI] += vi * Vi; //4
-			}
-
-		for (int bou = 0; bou < W.getNumberOfBoundary(); bou++)
-		{
-			const Point2D& rcm = W.getAirfoil(bou).rcm;
-
-			for (int j = 0; j < W.getAirfoil(bou).getNumberOfPanels(); j++)
-			{
-				cPan = 0.5 * (W.getAirfoil(bou).getR(j) + W.getAirfoil(bou).getR(j + 1));
-				alpha = atan2((cPan - pt) ^ (rcm - pt), (cPan - pt)*(rcm - pt));
-
-				/// \todo Пока используем только средние значения свободного слоя на панелях
-				locPressure[locI] += IDPI * alpha *	W.getBoundary(bou).sheets.freeVortexSheet(j, 0) * W.getAirfoil(bou).len[j] / dt;
-
-				locPressure[locI] -= IDPI * alpha * W.getAirfoil(bou).gammaThrough[j] / dt;
-			}
-		}//for bou
-	}//for i
-
-	MPI_Gatherv(locPressure.data(), par.myLen, MPI_DOUBLE, pressure.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
-
-
-	if (W.getParallel().myidWork == 0)
-	{
-		std::string fname = VMlib::fileNameStep("VelPres", W.getPassport().timeDiscretizationProperties.nameLength, step, "vtk");
-
-		std::ofstream outfile;
-
-		VMlib::CreateDirectory(dir, "velPres");
-		outfile.open(dir + "velPres/" + fname);
-
-		outfile << "# vtk DataFile Version 2.0" << std::endl;
-		outfile << "VM2D VTK result: " << (dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
-		outfile << "ASCII" << std::endl;
-		outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
-		outfile << "POINTS " << wakeVP->vtx.size() << " float" << std::endl;
-
-		for (size_t i = 0; i < wakeVP->vtx.size(); i++)
-		{
-			double xi = (wakeVP->vtx[i].r())[0];
-			double yi = (wakeVP->vtx[i].r())[1];
-			outfile << xi << " " << yi << " " << "0.0" << std::endl;
-		}//for i
-
-		outfile << "CELLS " << wakeVP->vtx.size() << " " << 2 * wakeVP->vtx.size() << std::endl;
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			outfile << "1 " << i << std::endl;
-
-		outfile << "CELL_TYPES " << wakeVP->vtx.size() << std::endl;
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			outfile << "1" << std::endl;
-
-		outfile << std::endl;
-		outfile << "POINT_DATA " << wakeVP->vtx.size() << std::endl;
-
-		outfile << "VECTORS V float" << std::endl;
-		for (size_t i = 0; i < wakeVP->vtx.size(); i++)
-		{
-			outfile << velocity[i][0] << " " << velocity[i][1] << " 0.0" << std::endl;
-		}//for i
-
-		outfile << std::endl;
-
-		outfile << "SCALARS P float 1" << std::endl;
-		outfile << "LOOKUP_TABLE default" << std::endl;
-
-		for (size_t i = 0; i < wakeVP->vtx.size(); i++)
-		{
-			outfile << pressure[i] << std::endl;
-		}//for i
-
-		outfile.close();
-
-		//Вывод в csv-файлы
-		for (int q = 0; q < historyPoints.size(); ++q)
-		{
-			std::string VPFileNameCsv;
-			VPFileNameCsv = W.getPassport().dir + "velPres/" + VMlib::fileNameStep("VP-atPoint-", 2, q, "csv");
-
-			std::ofstream VPFileCsv(VPFileNameCsv.c_str(), std::ios::app);
-
-			VPFileCsv << W.getPassport().physicalProperties.getCurrTime() << ","
-				<< velocity[initialPoints.size() + q][0] << ","
-				<< velocity[initialPoints.size() + q][1] << ","
-				<< pressure[initialPoints.size() + q] << std::endl;
-			VPFileCsv.close();
-		}
-
-	}
-
-
-	time.second = omp_get_wtime();
-
-}//CalcSaveVP()
-*/
+	W.getTimestat().timeSaveKadr.second += omp_get_wtime();
+}//SaveVP()

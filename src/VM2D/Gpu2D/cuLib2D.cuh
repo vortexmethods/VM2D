@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM    |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: cuLib2D.cuh                                                      |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef CUVELOCITYBIOTSAVART_CUH
@@ -47,35 +47,42 @@
 
 void cuDevice(int n);
 
-void cuSetConstants(size_t pos_, size_t posR_, size_t posG_);
-void cuSetAccelCoeff(double cft_);
-void cuSetCollapseCoeff(double pos_, double refLength_);
-void cuSetMaxGamma(double gam_);
-void cuSetMinEpsAst2(double ninEpsAst2_);
+void cuSetConstants(size_t pos_, size_t posR_, size_t posG_, int code = 0);
+void cuSetAccelCoeff(double cft_, int code = 0);
+void cuSetCollapseCoeff(double pos_, double refLength_, int code = 0);
+void cuSetMaxGamma(double gam_, int code = 0);
 
-void cuReserveDevMem(void*& ptr, size_t nBytes);
-void cuClearWakeMem(size_t new_n, double* dev_ptr);
-void cuCopyWakeToDev(size_t n, const Vortex2D* host_src, double* dev_ptr);
-void cuCopyRsToDev(size_t n, const Point2D* host_src, double* dev_ptr);
-void cuCopyFixedArray(void* dev_ptr, void* host_src, size_t nBytes);
-void cuCopyMemFromDev(void* host_ptr, void* dev_ptr, size_t nBytes);
-void cuDeleteFromDev(void* devPtr);
+void cuReserveDevMem(void*& ptr, size_t nBytes, int code = 0);
+void cuClearWakeMem(size_t new_n, double* dev_ptr, int code = 0);
+void cuCopyWakeToDev(size_t n, const Vortex2D* host_src, double* dev_ptr, int code = 0);
+void cuCopyWakeToDevAsync(size_t n, const Vortex2D* host_src, double* dev_ptr, int code = 0);
+
+void cuCopyFixedArray(void* dev_ptr, void* host_src, size_t nBytes, int code = 0);
+void cuCopyFixedArrayPoint2D(double* dev_ptr, const Point2D* host_src, size_t npts, int code = 0);
+void cuCopyFixedArrayPoint4D(double* dev_ptr, const Point2D* host_src, size_t npts, int code = 0);
+
+void cuCopyMemFromDev(void* host_ptr, void* dev_ptr, size_t nBytes, int code = 0);
+void cuDeleteFromDev(void* devPtr, int code = 0);
 
 ////////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double minRd, double eps2, bool calcVelo, bool calcRadius);
+void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double eps2, bool calcVelo, bool calcRadius);
 void cuCalculateConvVeloWakeFromVirtual(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* attgamma, double* attsource, double* vel, double eps2);
 
-void cuCalculateDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd);
+void cuCalculateDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd, double minRad);
 void cuCalculateDiffVeloWakeMesh(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, int* mesh, double meshStep, double* i1, double* i2, double* rd);
-void cuCalculateDiffVeloWakeFromPanels(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* i1, double* i2, double* rd);
+void cuCalculateDiffVeloWakeFromPanels(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* i1, double* i2, double* rd, double minRad);
 
-void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* visstr);
+void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr);
 void cuCalculateRhs(size_t myDisp, size_t myLen, size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double* rhs);
 
 void cuCalculatePairs(size_t myDisp, size_t myLen, size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 
 
 //void cuTEST(const std::string& str);
+
+void cuAlloc(void** ptr, size_t numBytes);
+void cuDalloc(void* ptr);
+
 
 #endif
 

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.7    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2019/11/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2019 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2D.h                                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.7   
-\date 22 ноября 2019 г.
+\version 1.8   
+\date 09 марта 2020 г.
 */
 
 #ifndef VELOCITY_H
@@ -56,8 +56,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	struct VortexesParams
 	{
@@ -88,8 +88,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.7
-	\date 22 ноября 2019 г.
+	\version 1.8
+	\date 09 марта 2020 г.
 	*/
 	class Velocity
 	{
@@ -114,30 +114,13 @@ namespace VM2D
 			virtualVortexesParams.resize(0);
 		};
 
-		/// \brief Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа
-		///
-		/// \param[in] pointsDb константная ссылка на базу данных пелены из вихрей, в которых надо сосчитать конвективные скорости
-		/// \param[out] velo ссылка на вектор скоростей в требуемых точках
-		/// \param[out] domainRadius ссылка на вектор радиусов вихревых доменов
-		/// \param[in] onlyRadius признак вычисления только радиусов доменом, иначе и скоростей тоже (по умолчанию false)
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
-		//virtual void CalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool onlyRadius = false) = 0;
-//#if defined(USE_CUDA)	
-//		virtual void GPUCalcConvVeloToSetOfPoints(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool onlyRadius = false) = 0;
-//#endif
-
-
 		/// \brief Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wakeVP
 		///
-		/// \param[out] convWakeTime время, затраченное на вычисление конвективных скоростей в следе
-		/// \param[out] convVPTime время, затраченное на вычисление конвективных скоростей в точках VP
 		/// \warning скорости приплюсовываются к уже имеющимся
-		virtual void CalcConvVelo(timePeriod& convWakeTime, timePeriod& convVPTime) = 0;
+		virtual void CalcConvVelo() = 0;
 
-
-
-
+		/// Подготовительные операции для вычисления скоростей
+		virtual void Initialization() = 0;
 
 
 		/// \brief Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек
@@ -149,12 +132,12 @@ namespace VM2D
 		/// \param[out] I2 ссылка на вектор величин I2 (числителей в диффузионных скоростях) в требуемых точках
 		/// \warning Использует OMP, MPI
 		/// \ingroup Parallel
-		void CalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2);
-		void CalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2);
+		void CalcDiffVeloI1I2ToSetOfPointsFromWake(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2);
+		void CalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2);
 
 #if defined(USE_CUDA)
-		void GPUCalcDiffVeloI1I2ToSetOfPoints(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false);
-		void GPUCalcDiffVeloI1I2ToSetOfPointsFromPanels(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false);
+		void GPUCalcDiffVeloI1I2ToSetOfPointsFromWake(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false);
+		void GPUCalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2, bool useMesh = false);
 #endif
 
 		/// \brief Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе
@@ -162,7 +145,24 @@ namespace VM2D
 		/// Вызывает 4 раза функцию CalcDiffVeloToSetOfPoints
 		///
 		/// \warning скорости приплюсовываются к уже имеющимся
+		void CalcDiffVeloI1I2();
+		void CalcDiffVeloI0I3();
+
+
+		/// \brief Контроль больших значений диффузионных скоростей
+		/// 
+		/// \param[in, out] diffVel ссылка на вектор диффузионных скоростей
+		void LimitDiffVelo(std::vector<Point2D>& diffVel);
+
+		/// \brief Вычисление диффузионных скоростей
+		///
+		/// Вызывается в CalcVortexVelo()
 		void CalcDiffVelo();
+
+		/// \brief Очистка старых массивов под хранение скоростей, выделение новой памяти и обнуление
+		///
+		/// Вызывается в CalcVortexVelo() на каждом шаге расчета перед непосредственно расчетом скоростей
+		void ResizeAndZero();
 
 		/// \brief Расчет вектора правой части (всего)
 		///
