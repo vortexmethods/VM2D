@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8
-\date 09 марта 2020 г.
+\version 1.9
+\date 22 июля 2020 г.
 */
 
 #include "Airfoil2DCurv.h"
@@ -45,6 +45,7 @@
 #include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -145,7 +146,6 @@ void AirfoilCurv::Move(const Point2D& dr)	//перемещение профил�
 void AirfoilCurv::Rotate(double alpha)	//поворот профиля на угол alpha вокруг центра масс
 {
 	phiAfl += alpha;
-	//numvector<numvector<double, 2>, 2> rotMatrix = { { cos(alpha), sin(alpha) }, { -sin(alpha), cos(alpha) } };
 	nummatrix<double, 2, 2> rotMatrix = { { cos(alpha), sin(alpha) }, { -sin(alpha), cos(alpha) } };
 
 	for (size_t i = 0; i < r_.size(); ++i)
@@ -154,6 +154,7 @@ void AirfoilCurv::Rotate(double alpha)	//поворот профиля на уг
 		rc_[i] = rcm + (rotMatrix & (rc_[i] - rcm));
 		tau[i] = (rotMatrix & tau[i]);
 	}	
+
 
 	CalcNrm();
 
@@ -295,7 +296,7 @@ void AirfoilCurv::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 
 #pragma omp parallel for \
 	default(none) \
-	shared(locI0, locI3, domainRadius, locPoints, id, par, locViscousStress, midEpsOverPanel) \
+	shared(locI0, locI3, domainRadius, locPoints, id, par, locViscousStress, midEpsOverPanel, PI) \
 	private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, domRad, iDDomRad) schedule(dynamic, DYN_SCHEDULE)
 	for (int i = 0; i < par.myLen; ++i)
 	{
@@ -580,8 +581,6 @@ std::vector<double> AirfoilCurv::getA(size_t p, size_t i, const Airfoil& airfoil
 
 	}//if i==j
 
-	const Point2D& taui = tau[i];
-
 	res[0] = W.getIQ(numberInPassport, airfoil.numberInPassport).first(i, j);
 
 	if (p == 1)
@@ -622,7 +621,7 @@ void AirfoilCurv::calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen:
 	size_t npJ = otherAirfoil.getNumberOfPanels();
 #pragma omp parallel for \
 	default(none) \
-	shared(otherAirfoil, self, aflNSelf, aflNOther, matrPair, p, npI, npJ) \
+	shared(otherAirfoil, self, aflNSelf, aflNOther, matrPair, p, npI, npJ, PI) \
 	private(alpha, beta, a00, a01, a02, a10, a11, a20) schedule(dynamic, DYN_SCHEDULE)
 	for (int i = 0; i < (int)npI; ++i)
 		for (int j = 0; j < (int)npJ; ++j)
@@ -664,15 +663,19 @@ void AirfoilCurv::calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen:
 			double d = dij.length();
 
 			if (isAfter(i, j))
+			{
 				if (self)
 					a00 = len[j] / (288.0 * PI) * (72.0 * k_[i] - 12.0 * (len[j] - 2.0 * len[i]) * dk_[i] + \
-					(6.0 * len[i] * len[i] - 3.0 * len[i] * len[j] + 2.0 * len[i] * len[j] + 2.0 * len[j] * len[j]) * ddk_[i]);
+						(6.0 * len[i] * len[i] - 3.0 * len[i] * len[j] + 2.0 * len[i] * len[j] + 2.0 * len[j] * len[j]) * ddk_[i]);
 				else a00 = 0;
+			}
 			if (isAfter(j, i))
+			{
 				if (self)
 					a00 = len[j] / (288.0 * PI) * (72.0 * k_[j] + 12.0 * (len[j] - 2.0 * len[i]) * dk_[j] + \
-					(6.0 * len[i] * len[i] - 3.0 * len[i] * len[j] + 2.0 * len[i] * len[j] + 2.0 * len[j] * len[j]) * ddk_[j]);
+						(6.0 * len[i] * len[i] - 3.0 * len[i] * len[j] + 2.0 * len[i] * len[j] + 2.0 * len[j] * len[j]) * ddk_[j]);
 				else a00 = 0;
+			}
 			else
 			{
 				alpha = VMlib::Alpha(dij, taui);
@@ -691,13 +694,17 @@ void AirfoilCurv::calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen:
 			{
 
 				if (isAfter(i, j))
+				{
 					if (self)
 						a01 = (len[j] * len[j]) / (576.0 * PI) * (4.0 * dk_[i] - (len[j] - len[i]) * ddk_[i]);
 					else a01 = 0;
+				}
 				else if (isAfter(j, i))
+				{
 					if (self)
 						a01 = (len[j] * len[j]) / (576.0 * PI) * (4.0 * dk_[j] + (len[j] - len[i]) * ddk_[j]);
 					else a01 = 0;
+				}
 			else
 			{
 				alpha = VMlib::Alpha(dij, tau[i]);
@@ -710,13 +717,17 @@ void AirfoilCurv::calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen:
 				matrPair.second(i, npJ + j) = a01;
 
 				if (isAfter(i, j))
+				{
 					if (self)
 						a10 = (len[j] * len[j]) / (576.0 * PI) * (8.0 * dk_[i] - (len[j] - 3.0 * len[i]) * ddk_[i]);
 					else a10 = 0;
+				}
 				else if (isAfter(j, i))
+				{
 					if (self)
 						a10 = (len[j] * len[j]) / (576.0 * PI) * (8.0 * dk_[j] - (len[j] - 3.0 * len[i]) * ddk_[j]);
 					else a10 = 0;
+				}
 			else
 			{
 				alpha = VMlib::Alpha(dij, tau[i]);
@@ -730,13 +741,17 @@ void AirfoilCurv::calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen:
 
 
 				if (isAfter(i, j))
+				{
 					if (self)
 						a11 = (len[i] * len[j] * len[j] * ddkc_[i]) / (3456.0 * PI);
 					else a11 = 0;
+				}
 				else if (isAfter(j, i))
+				{
 					if (self)
 						a11 = (len[i] * len[j] * len[j] * ddkc_[j]) / (3456.0 * PI);
 					else a11 = 0;
+				}
 			else
 			{
 				alpha = VMlib::Alpha(dij, tau[i]);
@@ -755,13 +770,17 @@ void AirfoilCurv::calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen:
 			{
 
 				if (isAfter(i, j))
+				{
 					if (self)
 						a02 = (len[j] * len[j] * len[j]) / (2160.0 * PI) * ddk_[i];
 					else a02 = 0;
+				}
 				else if (isAfter(j, i))
+				{
 					if (self)
 						a02 = (len[j] * len[j] * len[j]) / (2160.0 * PI) * ddk_[j];
 					else a02 = 0;
+				}
 				else
 				{
 					alpha = VMlib::Alpha(dij, tau[i]);
@@ -775,13 +794,17 @@ void AirfoilCurv::calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen:
 				matrPair.second(i, 2 * npJ + j) = a02;
 
 				if (isAfter(i, j))
+				{
 					if (self)
 						a20 = (len[i] * len[i] * len[j] * ddk_[i]) / (720.0 * PI);
 					else a20 = 0;
+				}
 				else if (isAfter(j, i))
+				{
 					if (self)
 						a20 = (len[i] * len[i] * len[j] * ddk_[j]) / (720.0 * PI);
 					else a20 = 0;
+				}
 				else
 				{
 					alpha = VMlib::Alpha(dij, tau[i]);

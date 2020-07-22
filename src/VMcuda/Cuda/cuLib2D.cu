@@ -1,39 +1,37 @@
-/*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
-| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
-|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
-|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+/*-------------------------------*- VMcuda -*----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2020/07/22     |
+| ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
+|  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: cuLib2D.cu                                                       |
-| Info: Source code of VM2D                                                   |
+| Info: Source code of VMcuda                                                 |
 |                                                                             |
-| This file is part of VM2D.                                                  |
-| VM2D is free software: you can redistribute it and/or modify it             |
+| This file is part of VMcuda.                                                |
+| VMcuda is free software: you can redistribute it and/or modify it           |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VMcuda is distributed in the hope that it will be useful, but WITHOUT       |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
-| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+| along with VMcuda.  If not, see <http://www.gnu.org/licenses/>.             |
 \*---------------------------------------------------------------------------*/
 
 
 /*!
 \file
-\brief Файл с реализацией функций библиотеки cuLib для работы с CUDA
+\brief Файл с реализацией функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
-\author Рятина Евгения Павловна
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */
 
 #include <iostream>
@@ -144,7 +142,7 @@ __global__ void CU_calc_conv_epsast(
 	double* vel, double* rad,
 	size_t nAfls, size_t* nVtxs, double** ptrVtxs,
 	bool calcVelo, bool calcRadius)
-{
+{	
 	__shared__ double shx[CUBLOCK];
 	__shared__ double shy[CUBLOCK];
 	__shared__ double shg[CUBLOCK];
@@ -297,10 +295,10 @@ __global__ void CU_calc_conv_epsast(
 		if (calcRadius)
 		{
 #ifndef TESTONLYVELO
-			rad[locI] = sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
+			rad[locI] =  sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
 #endif
 		}
-	}
+	}	
 }
 
 
@@ -457,6 +455,8 @@ __global__ void CU_calc_I1I2(
 		__syncthreads();
 	}
 
+	//printf("thread = %d, ptx = %f, rd[i] = %f\n", (int)locI, ptx, rd[i]);
+
 	if (locI < len)
 	{
 		i1[locI] = val1;
@@ -581,7 +581,7 @@ __global__ void CU_calc_I1I2FromPanels(
 	double left = ptx - diffRadius;
 	double right = ptx + diffRadius;
 
-	const int nQuadPt = 3;
+	const int nQuadPt = 30;
 
 	for (size_t j = 0; j < npnl; j += CUBLOCK)
 	{
@@ -1157,7 +1157,6 @@ void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt
 	cudaEventCreate(&stop);
 	cudaEventRecord(start, 0); 
 	*/
-
 
 	CU_calc_conv_epsast <<< blocks, threads >>> (myDisp, myLen, pt, nvt, vt, nsr, sr, eps2, vel, rd, nAfls, nVtxs, ptrVtxs, calcVelo, calcRadius);
 

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */
 
 #include <algorithm>
@@ -48,6 +48,7 @@
 #include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -70,24 +71,54 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce()
 	viscousForce = { 0.0, 0.0 };
 	viscousMoment = 0.0;
 
-	Point2D hDFGam = { 0.0, 0.0 };	//гидродинамические силы, обусловленные Gamma_k
-	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные delta_k
-	double hDMdelta = 0.0;
+	Point2D hDFGam = { 0.0, 0.0 };	    //гидродинамические силы, обусловленные присоед.завихренностью
+	Point2D hDFdelta = { 0.0, 0.0 };	//гидродинамические силы, обусловленные проростом завихренности
+	Point2D hDFQ = { 0.0, 0.0 };		//гидродинамические силы, обусловленные присоед.источниками
+	
+	double hDMGam = 0.0;				//гидродинамический момент, обусловленный присоед.завихренностью
+	double hDMdelta = 0.0;				//гидродинамический момент, обусловленный проростом завихренности
+	double hDMQ = 0.0;					//гидродинамический момент, обусловленный присоед.источниками
 
-	Point2D deltaVstep = VeloOfAirfoilRcm(W.getCurrentStep() * dt) - VeloOfAirfoilRcm((std::max(W.getCurrentStep(), (size_t)1) - 1) * dt);
 		
 	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
-		/// \todo Учитываем только нулевой момент решения. Надо ли учитывать остальные?
-		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + (deltaVstep & afl.tau[i]) * afl.len[i];
-		Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
+		Point2D Vcm = VeloOfAirfoilRcm(W.getCurrentStep() * dt);
+		Point2D VcmOld = VeloOfAirfoilRcm((std::max(W.getCurrentStep(), (size_t)1) - 1) * dt);
+		
+		double Wcm = AngularVelocityOfAirfoil(W.getCurrentStep() * dt);
+		double WcmOld = AngularVelocityOfAirfoil((std::max(W.getCurrentStep(), (size_t)1) - 1) * dt);
 
-		hDFdelta += deltaK * Point2D({ -rK[1], rK[0] });
-		hDMdelta += 0.5 * deltaK * rK.length2();
+		Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i));
+		
+		Point2D dr = rK - afl.rcm;
+
+		Point2D velK = { -Wcm * dr[1], Wcm * dr[0] };
+		velK += Vcm;
+
+		double gAtt = Wcm * (dr ^ afl.tau[i]) + (Vcm & afl.tau[i]);
+		double gAttOld = WcmOld * (dr ^ afl.tau[i]) + (VcmOld & afl.tau[i]);
+		double deltaGAtt = gAtt - gAttOld;
+
+		double qAtt = Wcm * (dr ^ afl.nrm[i]) + (Vcm & afl.nrm[i]);
+	
+		/// \todo Учитываем только нулевой момент решения. Надо ли учитывать остальные?
+		double deltaK = boundary.sheets.freeVortexSheet(i, 0) * afl.len[i] - afl.gammaThrough[i] + deltaGAtt * afl.len[i];
+		
+		/*1*/
+		hDFdelta += deltaK * Point2D({ -dr[1], dr[0] });
+		hDMdelta += 0.5 * deltaK * dr.length2();
+
+		/*2*/
+		hDFGam += 0.25 * (afl.getV(i) + afl.getV(i+1)).kcross() * gAtt * afl.len[i];
+		hDMGam += 0.25 * dr ^ (afl.getV(i) + afl.getV(i + 1)).kcross() * gAtt * afl.len[i];
+
+		/*3*/
+		hDFQ -= 0.25 * (afl.getV(i) + afl.getV(i + 1)) * qAtt * afl.len[i];
+		hDMQ -= 0.25 * dr ^ (afl.getV(i) + afl.getV(i + 1)) * qAtt * afl.len[i];		
 	}
 
-	hydroDynamForce = hDFdelta * (1.0 / dt);
-	hydroDynamMoment = hDMdelta / dt;
+	hydroDynamForce = hDFGam + hDFdelta * (1.0 / dt) + hDFQ;
+	hydroDynamMoment = hDMGam + hDMdelta / dt + hDMQ;
 
 	if (W.getPassport().physicalProperties.nu > 0.0)
 		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
@@ -101,71 +132,78 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce()
 }// GetHydroDynamForce()
 
 
-const double accelStop = 1000.0;
-
-
 // Вычисление скорости центра масс
 Point2D MechanicsRigidGivenLaw::VeloOfAirfoilRcm(double currTime)
 {
-//	if(Comega * currTime < accelStop * 2. * PI)
-//	{
-//	    return{ CA * Comega * cos(Comega * currTime), 0.0 };
-//	}
-//	else return{ CA * Comega * cos(accelStop * 2. * PI), 0.0 };
-	
-	return{ CA*Comega*cos(Comega*currTime), 0.0 };
-	//return { 1.0, 0.0 };
-	
-	//Тестовый вариант 
-	//if (currTime < 10.0)
-	//	return { -currTime / 10.0, 0.0 };
-	//else return { -1.0, 0.0};
-
-
+	return VelocityOfCenterOfMass(currTime);
 }//VeloOfAirfoilRcm(...)
+
 
 // Вычисление положения центра масс
 Point2D MechanicsRigidGivenLaw::PositionOfAirfoilRcm(double currTime)
-{
-
-//	if(Comega * currTime < accelStop * 2. * PI)
-//	{
-//	    return{ CA * sin(Comega * currTime), 0.0 };
-//	}
-//	else return{ CA * sin(accelStop * 2. * PI) + CA * Comega * cos(accelStop * 2. * PI) * (currTime - accelStop * 2. * PI / Comega), 0.0 };
-	return{ CA*sin(Comega*currTime), 0.0};
-	
-	//return { 1.0*currTime, 0.0 };
-
-	//Тестовый вариант
-	//if (currTime < 10.0)
-	//	return { -currTime / 10.0 * currTime * 0.5, 0.0 };
-	//else return { -5.0 - (currTime - 10.0), 0.0 };
-
+{	
+	return PositionOfCenterOfMass(currTime);
 }//PositionOfAirfoilRcm(...)
+
+
+// Вычисление угла поворота профиля вокруг центра масс
+double MechanicsRigidGivenLaw::AngleOfAirfoil(double currTime)
+{
+	return RotationAngle(currTime);	
+}//AngleOfAirfoil(...)
+
+// Вычисление угловой скорости профиля вокруг центра масс
+double MechanicsRigidGivenLaw::AngularVelocityOfAirfoil(double currTime)
+{
+	return AngularVelocity(currTime);
+}//AngularVelocityOfAirfoil(...)
+
+
+
+
 
 // Вычисление скоростей начал панелей
 void MechanicsRigidGivenLaw::VeloOfAirfoilPanels(double currTime)
 {
 	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
-	afl.setV(veloRcm);	
+
+	std::vector<Point2D> vel(afl.getNumberOfPanels(), { 0.0, 0.0 });
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
+	{
+		vel[i][0] = (afl.getR(i) - afl.rcm).kcross()[0] * Wcm;
+		vel[i][1] = (afl.getR(i) - afl.rcm).kcross()[1] * Wcm;
+		vel[i] += veloRcm;
+	}
+	
+	afl.setV(vel);
 }//VeloOfAirfoilPanels(...)
 
 void MechanicsRigidGivenLaw::Move()
 {
-	//Point2D airfoilVelo = VeloOfAirfoilRcm(W.getPassport().physicalProperties.getCurrTime());
+	double t = W.getPassport().physicalProperties.getCurrTime();
+	double dt = W.getPassport().timeDiscretizationProperties.dt;
+
+	//Point2D airfoilVelo = VeloOfAirfoilRcm(t);
 	Point2D aflRcmOld = afl.rcm;
-	afl.Move(PositionOfAirfoilRcm(W.getPassport().physicalProperties.getCurrTime() + W.getPassport().timeDiscretizationProperties.dt) - aflRcmOld);
+	double aflPhiOld = afl.phiAfl;
+	afl.Move(PositionOfAirfoilRcm(t + dt) - aflRcmOld);
+	afl.Rotate(AngleOfAirfoil(t + dt) - aflPhiOld);
+
+	Vcm = VeloOfAirfoilRcm(t + dt);
+	Phi = AngleOfAirfoil(t + dt);
+	Wcm = AngularVelocityOfAirfoil(t + dt);
 }//Move()
 
 
 void MechanicsRigidGivenLaw::ReadSpecificParametersFromDictionary()
 {
-    mechParamsParser->get("Comega", Comega);
+   /*
+	mechParamsParser->get("Comega", Comega);
     
     W.getInfo('i') << "frequency " << "Comega = " << Comega << std::endl;
 	
     mechParamsParser->get("CA", CA);
 		
     W.getInfo('i') << "Amplitude CA = " << CA << std::endl;
+	*/
 }//ReadSpecificParametersFromDictionary()

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8
-\date 09 марта 2020 г.
+\version 1.9
+\date 22 июля 2020 г.
 */
 
 #include "Cell2D.h"
@@ -58,7 +58,7 @@ using std::ofstream;
 using namespace VM2D;
 
 /// Конструктор
-Cell::Cell(Tree& Tree_, PointsCopy& pointsCopy)
+Cell::Cell(Tree& Tree_)
 	: tree(Tree_)
 {
 	leftDown = { 0.0, 0.0 };
@@ -77,6 +77,23 @@ Cell::Cell(Tree& Tree_, PointsCopy& pointsCopy)
 	c = 0.0;
 	d = 0.0;
 
+};
+
+/// Конструктор
+Cell::Cell(Tree& Tree_, const Point2D leftDown_, const Point2D rightUp_)
+	: leftDown(leftDown_), rightUp(rightUp_), tree(Tree_)
+{
+
+}
+
+/// Деструктор
+Cell::~Cell()
+{
+
+};
+
+void Cell::CreateRootCell(PointsCopy& pointsCopy)
+{
 	auto spanY = std::minmax_element(pointsCopy.begin(), pointsCopy.end(), PointsCopy_iterator::LessYrr);
 	auto spanX = std::minmax_element(pointsCopy.begin(), pointsCopy.end(), PointsCopy_iterator::LessXrr);
 
@@ -88,20 +105,7 @@ Cell::Cell(Tree& Tree_, PointsCopy& pointsCopy)
 
 	itBegin = pointsCopy.begin();
 	itEnd = pointsCopy.end();
-};
-
-/// Конструктор
-Cell::Cell(Tree& Tree_, const Point2D leftDown_, const Point2D rightUp_)
-	: tree(Tree_), leftDown(leftDown_), rightUp(rightUp_)
-{
-
-}
-
-/// Деструктор
-Cell::~Cell()
-{
-
-};
+}//CreateRootCell(...)
 
 // Построение иерархической структуры ячеек (дерева)
 void Cell::CreateAllCells(PointsCopy::iterator& itBegin, PointsCopy::iterator& itEnd)
@@ -109,105 +113,113 @@ void Cell::CreateAllCells(PointsCopy::iterator& itBegin, PointsCopy::iterator& i
 	double w = rightUp[0] - leftDown[0];
 	double h = rightUp[1] - leftDown[1];
 
-	if (w > h)
+	if (std::distance(itBegin, itEnd) > 1)
 	{
-		double midX = (rightUp[0] + leftDown[0]) / 2.0;
-
-		mChildren[0].reset(new Cell(tree, leftDown, { midX, rightUp[1] }));
-		mChildren[1].reset(new Cell(tree, { midX, leftDown[0] }, rightUp));
-
-		// сортировка по х
-		std::sort(itBegin, itEnd, PointsCopy_iterator::LessXcc);
-		
-		PointsCopy::iterator itDop(itBegin);
-
-		mChildren[0]->itBegin = itBegin;
-		mChildren[1]->itEnd = itEnd;
-
-		bool flag = true;
-
-		while (flag)
+		if (w > h)
 		{
-			if (itDop.getVtx().r()[0] < midX)
-				itDop++;
-			else
+			double midX = (rightUp[0] + leftDown[0]) / 2.0;
+
+			mChildren[0].reset(new Cell(tree, leftDown, { midX, rightUp[1] }));
+			mChildren[1].reset(new Cell(tree, { midX, leftDown[0] }, rightUp));
+
+			// сортировка по х
+			std::sort(itBegin, itEnd, PointsCopy_iterator::LessXcc);
+
+			PointsCopy::iterator itDop(itBegin);
+
+			mChildren[0]->itBegin = itBegin;
+			mChildren[1]->itEnd = itEnd;
+
+			bool flag = true;
+
+			while (flag)
 			{
-				flag = false;
-				mChildren[0]->itEnd = itDop;
-				mChildren[1]->itBegin = itDop;
+				if (itDop.getVtx().r()[0] < midX)
+					itDop++;
+				else
+				{
+					flag = false;
+					mChildren[0]->itEnd = itDop;
+					mChildren[1]->itBegin = itDop;
 
-				//обрезаем по вихрям
-				mChildren[0]->rightUp[0] = (itDop - 1).getVtx().r()[0];
-				mChildren[1]->leftDown[0] = itDop.getVtx().r()[0];
-			}
-		}//while (flag)
+					//обрезаем по вихрям
+					mChildren[0]->rightUp[0] = (itDop - 1).getVtx().r()[0];
+					mChildren[1]->leftDown[0] = itDop.getVtx().r()[0];
+				}
+			}//while (flag)
 
-		// для границ по горизонтали
-		for (int i = 0; i < 2; ++i)
-		{
-			auto spanY = std::minmax_element(mChildren[i]->itBegin, mChildren[i]->itEnd, PointsCopy_iterator::LessYrr);
-				
-			mChildren[i]->leftDown[1] = spanY.first.getVtx().r()[1];
-			mChildren[i]->rightUp[1] = spanY.second.getVtx().r()[1];
-		}// for i
-	} //if (w > h)
-	else
-	{
-		double midY = (leftDown[1] + rightUp[1]) / 2.0;
-
-		mChildren[0].reset(new Cell(tree, leftDown, { rightUp[0], midY }));
-		mChildren[1].reset(new Cell(tree, { leftDown[0], midY }, rightUp));
-
-		//сортировка по у 
-		std::sort(itBegin, itEnd, PointsCopy_iterator::LessYcc);
-
-		PointsCopy::iterator itDop = itBegin;
-
-		mChildren[0]->itBegin = itBegin;
-		mChildren[1]->itEnd = itEnd;
-
-		bool flag = true;
-		
-		while (flag)
-		{
-			if (itDop.getVtx().r()[1] < midY)
-				itDop++;		
-			else
+			// для границ по горизонтали
+			for (int i = 0; i < 2; ++i)
 			{
-				flag = false;
-				mChildren[0]->itEnd = itDop;
-				mChildren[1]->itBegin = itDop;
+				auto spanY = std::minmax_element(mChildren[i]->itBegin, mChildren[i]->itEnd, PointsCopy_iterator::LessYrr);
 
-				//обрезаем по вихрям
-				mChildren[0]->rightUp[1] = (itDop - 1).getVtx().r()[1];
-				mChildren[1]->leftDown[1] = itDop.getVtx().r()[1];
-			}
-		}//while (flag)
-
-
-		//для границ по вертикали
-		for (int i = 0; i < 2; ++i)
-		{
-			auto spanX = std::minmax_element(mChildren[i]->itBegin, mChildren[i]->itEnd, PointsCopy_iterator::LessXrr);
-
-			mChildren[i]->leftDown[0] = spanX.first.getVtx().r()[0];
-			mChildren[i]->rightUp[0] = spanX.second.getVtx().r()[0];
-		}
-	} //else
-
-	// номер уровня потомков 
-	for (int j = 0; j < 2; ++j)
-	{
-		mChildren[j]->level = level + 1;
-
-		if ((mChildren[j]->level < tree.numOfLevels) && ((mChildren[j]->itEnd - mChildren[j]->itBegin) > tree.minNumOfVort) && \
-			(std::max(fabs(mChildren[j]->rightUp[0] - mChildren[j]->leftDown[0]), fabs(mChildren[j]->rightUp[1] - mChildren[j]->leftDown[1])) > tree.minDist))
-			mChildren[j]->CreateAllCells(mChildren[j]->itBegin, mChildren[j]->itEnd);
+				mChildren[i]->leftDown[1] = spanY.first.getVtx().r()[1];
+				mChildren[i]->rightUp[1] = spanY.second.getVtx().r()[1];
+			}// for i
+		} //if (w > h)
 		else
 		{
-			mChildren[j]->lowLevel = true;
-			tree.lowCells.push_back(mChildren[j].get());
+			double midY = (leftDown[1] + rightUp[1]) / 2.0;
+
+			mChildren[0].reset(new Cell(tree, leftDown, { rightUp[0], midY }));
+			mChildren[1].reset(new Cell(tree, { leftDown[0], midY }, rightUp));
+
+			//сортировка по у 
+			std::sort(itBegin, itEnd, PointsCopy_iterator::LessYcc);
+
+			PointsCopy::iterator itDop = itBegin;
+
+			mChildren[0]->itBegin = itBegin;
+			mChildren[1]->itEnd = itEnd;
+
+			bool flag = true;
+
+			while (flag)
+			{
+				if (itDop.getVtx().r()[1] < midY)
+					itDop++;
+				else
+				{
+					flag = false;
+					mChildren[0]->itEnd = itDop;
+					mChildren[1]->itBegin = itDop;
+
+					//обрезаем по вихрям
+					mChildren[0]->rightUp[1] = (itDop - 1).getVtx().r()[1];
+					mChildren[1]->leftDown[1] = itDop.getVtx().r()[1];
+				}
+			}//while (flag)
+
+
+			//для границ по вертикали
+			for (int i = 0; i < 2; ++i)
+			{
+				auto spanX = std::minmax_element(mChildren[i]->itBegin, mChildren[i]->itEnd, PointsCopy_iterator::LessXrr);
+
+				mChildren[i]->leftDown[0] = spanX.first.getVtx().r()[0];
+				mChildren[i]->rightUp[0] = spanX.second.getVtx().r()[0];
+			}
+		} //else
+
+		// номер уровня потомков 
+		for (int j = 0; j < 2; ++j)
+		{
+			mChildren[j]->level = level + 1;
+
+			if ((mChildren[j]->level < tree.numOfLevels) && ((mChildren[j]->itEnd - mChildren[j]->itBegin) > tree.minNumOfVort) && \
+				(std::max(fabs(mChildren[j]->rightUp[0] - mChildren[j]->leftDown[0]), fabs(mChildren[j]->rightUp[1] - mChildren[j]->leftDown[1])) > tree.minDist))
+				mChildren[j]->CreateAllCells(mChildren[j]->itBegin, mChildren[j]->itEnd);
+			else
+			{
+				mChildren[j]->lowLevel = true;
+				tree.lowCells.push_back(mChildren[j].get());
+			}
 		}
+	}
+	else
+	{
+		lowLevel = true;
+		tree.lowCells.push_back(this);
 	}
 }//CreateAllCells(...)
 
@@ -270,6 +282,43 @@ void Cell::ClearABCD()
 	a = b = c = d = 0.0;
 }// ClearABCD()
 
+void Cell::CalcCloseZone(Cell& infCell, double distance)
+{
+	if (&infCell != this)
+	{
+		//сумма габаритов ячейки, на которую считается влияние (h0), и влияющей (h)
+		double h0, h;
+		h0 = fabs(rightUp[0] - leftDown[0]) + fabs(rightUp[1] - leftDown[1]);
+		h = fabs(infCell.rightUp[0] - infCell.leftDown[0]) + fabs(infCell.rightUp[1] - infCell.leftDown[1]);
+
+		//r0 --- нижний уровень, r1 --- влияющий
+		Point2D r0, r1;
+
+		// центры прямоугольников
+		r0 = 0.5 * (rightUp + leftDown);
+		r1 = 0.5 * (infCell.rightUp + infCell.leftDown);
+
+		double dc = dist(r0, r1);
+
+		// если выполнен критерий дальности => считаем коэффициенты
+		if (dc - 0.5 * (h + h0) > distance)
+		{
+			
+		}//if crit
+		else // если не выполнен критерий, то рекурсия 
+		{
+			if (!(infCell.lowLevel))
+			{
+				CalcCloseZone(*(infCell.mChildren[0]), distance);
+				CalcCloseZone(*(infCell.mChildren[1]), distance);
+			}
+			else
+				closeCells.push_back(&infCell);
+		}
+	}//if (lowTree != this)
+	else closeCells.push_back(&infCell); 
+
+}//CalcCloseZone(...)
 
 //Расчет коэффициентов a,b,c,d для ячейки нижнего уровня
 void Cell::CalcABCDandCloseCellsToLowLevel(Cell& infCell, bool calcCoef)
@@ -289,40 +338,44 @@ void Cell::CalcABCDandCloseCellsToLowLevel(Cell& infCell, bool calcCoef)
 		r1 = 0.5 * (infCell.rightUp + infCell.leftDown);
 
 		double crit = dist(r0, r1);
+		//double crit = sqrt(sqr(r0[0] - r1[0]) + sqr(r0[1] - r1[1]));
 		
 		// если выполнен критерий дальности => считаем коэффициенты
-		if ((crit >= (h0 + h + tree.W.getPassport().wakeDiscretizationProperties.eps) / tree.theta) && calcCoef)
+		if ((crit >= (h0 + h + tree.W.getPassport().wakeDiscretizationProperties.eps) / tree.theta))
 		{ 
-			if ((itEnd - itBegin) == 1)
-				VMlib::ModifyE2(closestCellDist.data(), crit);
+			if (calcCoef)
+			{
+				if ((itEnd - itBegin) <= 3)
+					VMlib::ModifyE2(closestCellDist.data(), crit);
 
-			//центры завихренностей
-			r1p = infCell.centerGam[0];
-			r1m = infCell.centerGam[1];
+				//центры завихренностей
+				r1p = infCell.centerGam[0];
+				r1m = infCell.centerGam[1];
 
-			//суммарные циркуляции
-			double gam[2];
-			gam[0] = infCell.sumGam[0];
-			gam[1] = infCell.sumGam[1];
+				//суммарные циркуляции
+				double gam[2];
+				gam[0] = infCell.sumGam[0];
+				gam[1] = infCell.sumGam[1];
 
-			Point2D  rrP, rrM;
-			rrP = r0 - r1p;
-			rrM = r0 - r1m;
+				Point2D  rrP, rrM;
+				rrP = r0 - r1p;
+				rrM = r0 - r1m;
 
-			double nrmP2 = rrP.length2();
-			double nrmM2 = rrM.length2();
+				double nrmP2 = rrP.length2();
+				double nrmM2 = rrM.length2();
 
-			a += -IDPI * (gam[0] * rrP[1] / nrmP2 + gam[1] * rrM[1] / nrmM2);
-			b += IDPI * (gam[0] * rrP[0] / nrmP2 + gam[1] * rrM[0] / nrmM2);
+				a += -IDPI * (gam[0] * rrP[1] / nrmP2 + gam[1] * rrM[1] / nrmM2);
+				b += IDPI * (gam[0] * rrP[0] / nrmP2 + gam[1] * rrM[0] / nrmM2);
 
-			double nrmP4 = nrmP2 * nrmP2;
-			double nrmM4 = nrmM2 * nrmM2;
+				double nrmP4 = nrmP2 * nrmP2;
+				double nrmM4 = nrmM2 * nrmM2;
 
-			c += 2.0 * IDPI * (gam[0] * rrP[0] * rrP[1] / nrmP4 + \
-				gam[1] * rrM[0] * rrM[1] / nrmM4);
+				c += 2.0 * IDPI * (gam[0] * rrP[0] * rrP[1] / nrmP4 + \
+					gam[1] * rrM[0] * rrM[1] / nrmM4);
 
-			d += IDPI * (gam[0] * (rrP[1] * rrP[1] - rrP[0] * rrP[0]) / nrmP4 + \
-				gam[1] * (rrM[1] * rrM[1] - rrM[0] * rrM[0]) / nrmM4);
+				d += IDPI * (gam[0] * (rrP[1] * rrP[1] - rrP[0] * rrP[0]) / nrmP4 + \
+					gam[1] * (rrM[1] * rrM[1] - rrM[0] * rrM[0]) / nrmM4);
+			}
 		}//if crit
 		else // если не выполнен критерий, то рекурсия 
 		{
@@ -431,6 +484,9 @@ void Cell::CalcDomainRadiusForVirtualWake()
 						VMlib::ModifyE2(&tempEe2[0], dst2);
 				}//for it2
 
+			for (size_t i = 0; i < tempEe2.size(); ++i)
+				VMlib::ModifyE2(tempEe2.data(), sqr(closestCellDist[i]));
+
 			savedEe2.push_back(tempEe2);			
 		}// for virt
 	}// for it
@@ -462,7 +518,10 @@ void Cell::CalcDomainRadiusForVirtualWake()
 
 					}
 				}//for it2			
-
+			
+			for (size_t i = 0; i < savedEe2[currI].size(); ++i)
+				VMlib::ModifyE2(savedEe2[currI].data(), sqr(closestCellDist[i]));			
+			
 			tree.W.getNonConstVelocity().virtualVortexesParams[it.getAflPnl().first].epsastWake[virt] = \
 				sqrt((savedEe2[currI][0] + savedEe2[currI][1] + savedEe2[currI][2]) / 3.0);
 			currI++;
@@ -539,7 +598,6 @@ void Cell::CalcConvVeloByBiotSavartFromSheets(bool calcRadius, std::vector<numve
 			{
 				const Boundary& bou = tree.W.getBoundary(it2.getAflPnl().first);
 
-				const Point2D& posJ = it2.getVtx().r();
 
 				tree.W.getAirfoil(it2.getAflPnl().first).GetInfluenceFromVortexSheetToVortex(it2.getAflPnl().second, it.getVtx(), velSheet);
 				velI += velSheet;		
@@ -568,8 +626,9 @@ void Cell::CalcConvVeloByBiotSavartFromSheets(bool calcRadius, std::vector<numve
 void Cell::SetDomainRadius(const std::vector<numvector<double, 3>>& savedEe2)
 {
 	int i = 0;
-	for(auto it = itBegin; it != itEnd; ++it, ++i)
+	for (auto it = itBegin; it != itEnd; ++it, ++i)
 		tree.allPnt.domainRadius[it.getNum()] = sqrt((savedEe2[i][0] + savedEe2[i][1] + savedEe2[i][2]) / 3.0);
+	
 }
 
 // Расчет приближенного влияния от вихрей на элемент it внутри ячейки нижнего уровня
@@ -610,8 +669,7 @@ void Cell::PrintTree()
 	else outfile.open(tree.W.getPassport().dir + "tree.txt", std::ios_base::app);
 	
 	if (lowLevel)
-	for (size_t i = 0; i < closeCells.size(); ++i)
-		outfile << closeCells[i]->leftDown[0] << " " << closeCells[i]->leftDown[1] << " " << closeCells[i]->rightUp[0] << " " << closeCells[i]->rightUp[1] << std::endl;
+		outfile << leftDown[0] << " " << leftDown[1] << " " << rightUp[0] << " " << rightUp[1] << std::endl;
 
 	outfile.close();
 	if (!lowLevel)

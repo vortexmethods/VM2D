@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */
 
 #include "Gpu2D.h"
@@ -45,6 +45,7 @@
 #include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -76,8 +77,8 @@ Gpu::Gpu(const World2D& W_)
 // IT IS STRONGLY RECOMMENDED TO CHOOSE THE NUMBER OF TASKS EXACTLY EQUAL TO TOTAL VIDEO CARDs NUMBERS,
 // i.e. to start all the tasks simultaneously.
 										
-cuDevice(W.getPassport().problemNumber % 4); //The index of the used video card will be equal to the task number
-												// in the task list (to modulo 4 --- number of graphic cards on each node)
+//cuDevice(W.getPassport().problemNumber % 4); //The index of the used video card will be equal to the task number
+                                             // in the task list (to modulo 4 --- number of graphic cards on each node) 
 
 
 	
@@ -97,6 +98,7 @@ cuDevice(W.getPassport().problemNumber % 4); //The index of the used video card 
 // number of problems can be arbitrary, they will be executed in turn.
 
 // cuDevice(W.getParallel().myidWork);          //The index of the used video card will be equal to the number of MPI-thread
+
 
 	   
 	cuSetConstants(sizeof(Vortex2D)/sizeof(double), Vortex2D::offsPos / sizeof(double), Vortex2D::offsGam / sizeof(double) );
@@ -185,8 +187,6 @@ Gpu::~Gpu()
 //Обновление состояния следа wake
 void Gpu::RefreshWake(int code) 
 {
-	const int& id = W.getParallel().myidWork;
-
 	if (W.getWake().vtx.size() > 0)
 	{		
 		//Если зарезервировано меньше, чем вихрей в пелене
@@ -280,9 +280,7 @@ void Gpu::RefreshWake(int code)
 
 //Обновление состояния сетки для вычисления VP
 void Gpu::RefreshVP(int code)
-{
-	const int& id = W.getParallel().myidWork;
-
+{	
 	if (W.getMeasureVP().getWakeVP().vtx.size() > 0)
 	{
 		//Если зарезервировано меньше, чем вихрей в пелене
@@ -324,7 +322,7 @@ void Gpu::RefreshVP(int code)
 void Gpu::RefreshAfls(int code)
 {
 	//std::cout << "RefreshAfls (code = " << code << ") start" << std::endl;
-	const int& id = W.getParallel().myidWork;
+
 	if (W.getNumberOfBoundary() > 0)
 	{
 		if (W.getNumberOfBoundary() > n_CUDA_afls)
@@ -514,9 +512,7 @@ void Gpu::RefreshVirtualWakes(int code)
 		n_CUDA_virtWake.resize(W.getNumberOfBoundary(), 0);
 		n_CUDA_totalVirtWake = 0;
 	}
-
-	const int& id = W.getParallel().myidWork;
-
+	
 	size_t totnVirt = 0, totnPan = 0;
 	for (size_t s = 0; s < W.getNumberOfBoundary(); ++s)
 	{

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */
 
 #include "Mechanics2D.h"
@@ -44,6 +44,7 @@
 #include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -54,8 +55,20 @@ using namespace VM2D;
 
 //Конструктор
 Mechanics::Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_, Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_)
-: W(W_), numberInPassport(numberInPassport_), afl(W_.getNonConstAirfoil(numberInPassport_)), boundary(W_.getBoundary(numberInPassport_)), virtVortParams(W_.getVelocity().virtualVortexesParams[numberInPassport_]), degOfFreedom(degOfFreedom_), isMoves(isMoves_), isDeform(isDeform_), isRotate(isRotate_),\
-Vcm0(Vcm0_), Rcm0(Rcm0_), Wcm0(Wcm0_), Phi0(Phi0_)
+: 
+	W(W_), 
+	numberInPassport(numberInPassport_), 
+	afl(W_.getNonConstAirfoil(numberInPassport_)), 
+	boundary(W_.getBoundary(numberInPassport_)), 
+	virtVortParams(W_.getVelocity().virtualVortexesParams[numberInPassport_]), 	
+	Vcm0(Vcm0_),
+	Wcm0(Wcm0_),
+	Rcm0(Rcm0_),
+	Phi0(Phi0_),	
+	isMoves(isMoves_), 
+	isDeform(isDeform_), 
+	isRotate(isRotate_),	
+	degOfFreedom(degOfFreedom_)	
 {
 	Vcm = Vcm0;
 	Wcm = Wcm0;
@@ -139,12 +152,14 @@ void Mechanics::GenerateForcesString()
 	forceFileName << W.getPassport().dir << "forces-airfoil-" << numberInPassport;
 	forceFileNameCsv << W.getPassport().dir << "forces-airfoil-" << numberInPassport << ".csv";
 
+	double cShock = (W.getPassport().physicalProperties.getCurrTime() > W.getPassport().physicalProperties.timeAccel + 2.0 * W.getPassport().timeDiscretizationProperties.dt) ? 1.0 : 0.0;
+
 	std::ofstream forcesFile(forceFileName.str(), std::ios::app);
-	forcesFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << hydroDynamForce[0] << "	" << hydroDynamForce[1] << "	" << hydroDynamMoment << "	" << viscousForce[0] << "	" << viscousForce[1] << "	" << viscousMoment;
+	forcesFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << cShock * hydroDynamForce[0] << "	" << cShock * hydroDynamForce[1] << "	" << cShock * hydroDynamMoment << "	" << cShock * viscousForce[0] << "	" << cShock * viscousForce[1] << "	" << cShock * viscousMoment;
 	forcesFile.close();
 
 	std::ofstream forcesFileCsv(forceFileNameCsv.str(), std::ios::app);
-	forcesFileCsv << std::endl << W.getPassport().physicalProperties.getCurrTime() << "," << hydroDynamForce[0] << "," << hydroDynamForce[1] << "," << hydroDynamMoment << "," << viscousForce[0] << "," << viscousForce[1] << "," << viscousMoment;
+	forcesFileCsv << std::endl << W.getPassport().physicalProperties.getCurrTime() << "," << cShock * hydroDynamForce[0] << "," << cShock * hydroDynamForce[1] << "," << cShock * hydroDynamMoment << "," << cShock * viscousForce[0] << "," << cShock * viscousForce[1] << "," << cShock * viscousMoment;
 	forcesFileCsv.close();
 
 	W.getTimestat().timeOther.second += omp_get_wtime();
@@ -162,13 +177,13 @@ void Mechanics::GeneratePositionString()
 		positionFileName << W.getPassport().dir << "position-airfoil-" << numberInPassport;
 		positionFileNameCsv << W.getPassport().dir << "position-airfoil-" << numberInPassport << ".csv";
 
-		std::ofstream forcesFile(positionFileName.str(), std::ios::app);
-		forcesFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << afl.rcm[0] << "	" << afl.rcm[1] << "	" << Phi << "	" << Vcm[0] << "	" << Vcm[1] << "	" << Wcm;
-		forcesFile.close();
+		std::ofstream positionFile(positionFileName.str(), std::ios::app);
+		positionFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << afl.rcm[0] << "	" << afl.rcm[1] << "	" << Phi << "	" << Vcm[0] << "	" << Vcm[1] << "	" << Wcm;
+		positionFile.close();
 
-		std::ofstream forcesFileCsv(positionFileNameCsv.str(), std::ios::app);
-		forcesFileCsv << std::endl << W.getPassport().physicalProperties.getCurrTime() << "," << afl.rcm[0] << "," << afl.rcm[1] << "," << Phi << "," << Vcm[0] << "," << Vcm[1] << "," << Wcm;
-		forcesFileCsv.close();
+		std::ofstream positionFileCsv(positionFileNameCsv.str(), std::ios::app);
+		positionFileCsv << std::endl << W.getPassport().physicalProperties.getCurrTime() << "," << afl.rcm[0] << "," << afl.rcm[1] << "," << Phi << "," << Vcm[0] << "," << Vcm[1] << "," << Wcm;
+		positionFileCsv.close();
 	}
 
 	W.getTimestat().timeOther.second += omp_get_wtime();

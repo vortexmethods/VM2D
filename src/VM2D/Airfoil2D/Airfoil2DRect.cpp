@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */
 
 #include "Airfoil2DRect.h"
@@ -46,9 +46,12 @@
 #include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
+
+#include "Velocity2DBarnesHut.h"
 
 using namespace VM2D;
 
@@ -96,20 +99,12 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 {
 	std::vector<double> selfI0;
 	std::vector<Point2D> selfI3;
-
-	if (&pointsDb == &(W.getWake()))
-	{
-		viscousStress.clear();
-		viscousStress.resize(r_.size(), 0.0);
-	}
 	
 	std::vector<double> locViscousStress;
 	locViscousStress.resize(r_.size(), 0.0);
-
 	
 	std::vector<double> currViscousStress;
 	currViscousStress.resize(r_.size(), 0.0);
-
 
 	const int& id = W.getParallel().myidWork;
 
@@ -144,7 +139,7 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 	
 #pragma omp parallel for \
 	default(none) \
-	shared(locI0, locI3, domainRadius, locPoints, id, par, locViscousStress) \
+	shared(locI0, locI3, domainRadius, locPoints, id, par, locViscousStress, PI) \
 	private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, domRad, iDDomRad) schedule(dynamic, DYN_SCHEDULE)
 	for (int i = 0; i < par.myLen; ++i)
 	{
@@ -286,6 +281,209 @@ void AirfoilRect::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeD
 		}
 	}
 }; //GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(...)
+
+
+void AirfoilRect::GetDiffVelocityI0I3ToWakeAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3)
+{
+	const int& id = W.getParallel().myidWork;
+	if (id == 0)
+	{
+		if (&pointsDb == &(W.getWake()))
+		{
+			viscousStress.clear();
+			viscousStress.resize(r_.size(), 0.0);
+		}
+	}
+
+	if (W.treeWake)
+	{
+		if (id == 0)
+		{
+			std::vector<double> selfI0;
+			std::vector<Point2D> selfI3;
+
+			selfI0.resize(pointsDb.vtx.size(), 0.0);
+			selfI3.resize(pointsDb.vtx.size(), { 0.0, 0.0 });
+
+			std::vector<double> locViscousStress;
+			locViscousStress.resize(r_.size(), 0.0);
+
+
+			std::vector<double> currViscousStress;
+			currViscousStress.resize(r_.size(), 0.0);
+
+#pragma warning (push)
+#pragma warning (disable: 4101)
+			//Локальные переменные для цикла
+			Point2D q, xi, xi_m, v0;
+			double lxi, lxi_m, lenj_m;
+
+			Point2D mn;
+			int new_n;
+			Point2D h;
+
+			Point2D vec;
+			double s, d;
+
+			double vs;
+			double iDDomRad, domRad, expon;
+#pragma warning (pop)
+
+			auto& treeW = *(W.treeWake);
+			auto& treeSh = *(W.treeSheetsGam);
+
+			double maxLen = *std::max_element(len.begin(), len.end());
+
+
+
+#pragma omp parallel for default(none) \
+shared(domainRadius, id, locViscousStress, treeW, treeSh, selfI0, selfI3, maxLen, PI) \
+private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, domRad, iDDomRad) \
+schedule(dynamic, 16)
+			for (int k = 0; k < (int)treeW.lowCells.size(); ++k)
+			{
+				treeW.lowCells[k]->closeCells.clear();
+				treeW.lowCells[k]->CalcCloseZone(treeSh.rootCell, 50.0 * maxLen);
+
+
+				for (int ss = 0; ss < (int)treeW.lowCells[k]->closeCells.size(); ++ss)
+				{
+
+					for (auto itW = treeW.lowCells[k]->itBegin; itW != treeW.lowCells[k]->itEnd; ++itW)
+					{
+
+						int i = itW.getNum();
+						domRad = std::max(domainRadius[i], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+						iDDomRad = 1.0 / domRad;
+
+						for (auto it = treeW.lowCells[k]->closeCells[ss]->itBegin; it != treeW.lowCells[k]->closeCells[ss]->itEnd; ++it)
+						{
+							if (numberInPassport == it.getAflPnl().first)
+							{
+								int j = it.getAflPnl().second;
+								vs = 0.0;
+								q = itW.getVtx().r() - 0.5 * (getR(j) + getR(j + 1));
+								vec = tau[j];
+
+								s = q & vec;
+								d = q.length();
+
+								if (d < 50.0 * len[j])	//Почему зависит от длины панели???
+								{
+									v0 = vec * len[j];
+
+									if (d > 5.0 * len[j])
+									{
+										xi = q * iDDomRad;
+										lxi = xi.length();
+
+										expon = exp(-lxi) * len[j];
+										mn = nrm[j] * expon;
+
+										if (selfI0[i] != -PI * domRad)
+										{
+											selfI0[i] += (xi & mn) * (lxi + 1.0) / (lxi * lxi);
+											selfI3[i] += mn;
+										}
+
+										vs = itW.getVtx().g() * expon / (PI * sqr(meanEpsOverPanel[j]));
+									}
+									else if ((d <= 5.0 * len[j]) && (d >= 0.1 * len[j]))
+									{
+										vs = 0.0;
+										new_n = static_cast<int>(ceil(5.0 * len[j] / d));
+										//new_n = 100;
+										h = v0 * (1.0 / new_n);
+
+										for (int m = 0; m < new_n; ++m)
+										{
+											xi_m = (itW.getVtx().r() - (getR(j) + h * (m + 0.5))) * iDDomRad;
+											lxi_m = xi_m.length();
+
+											lenj_m = len[j] / new_n;
+											expon = exp(-lxi_m) * lenj_m;
+
+											mn = nrm[j] * expon;
+											if (selfI0[i] != -PI * domRad)
+											{
+												selfI0[i] += (xi_m & mn) * (lxi_m + 1.0) / (lxi_m * lxi_m);
+												selfI3[i] += mn;
+											}
+											vs += expon;
+										}//for m
+										vs *= itW.getVtx().g() / (PI * sqr(meanEpsOverPanel[j]));
+									}
+									else if (d <= 0.1 * len[j])
+									{
+										if (selfI0[i] != -PI * domRad)
+										{
+											selfI0[i] = -PI * domRad;
+
+											//Здесь именно =, а не +=
+											if (fabs(s) > 0.5 * len[j])
+												selfI3[i] = 2.0 * nrm[j] * domRad * (exp(-fabs(s) * iDDomRad) * sinh(len[j] * iDDomRad / 2.0));
+											else
+												selfI3[i] = 2.0 * nrm[j] * domRad * (1.0 - exp(-len[j] * iDDomRad / 2.0) * cosh(fabs(s) * iDDomRad));
+										}
+
+										vs = 0.0;
+										//new_n = static_cast<int>(ceil(5.0 * len[j] / d));
+										new_n = 1;
+										h = v0 * (1.0 / new_n);
+
+										for (int m = 0; m < new_n; ++m)
+										{
+											xi_m = (itW.getVtx().r() - (getR(j) + h * (m + 0.5))) * iDDomRad;
+											lxi_m = xi_m.length();
+
+											lenj_m = len[j] / new_n;
+											expon = exp(-lxi_m) * lenj_m;
+											vs += expon;
+										}//for m
+										vs *= itW.getVtx().g() / (PI * sqr(meanEpsOverPanel[j]));
+
+										//break;
+
+									}
+								}//if d<50 len 
+
+#pragma omp atomic
+								locViscousStress[j] += vs;
+							}
+						}//for it
+					}//for itW
+				}//for k
+			}//for s
+
+			if (&pointsDb == &(W.getWake()))
+				for (size_t i = 0; i < viscousStress.size(); ++i)
+				{
+					viscousStress[i] += currViscousStress[i];
+				}
+
+			for (size_t i = 0; i < I0.size(); ++i)
+			{
+				domRad = std::max(domainRadius[i], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+
+				if (I0[i] != -PI * domRad)
+				{
+					if (selfI0[i] == -PI * domRad)
+					{
+						I0[i] = selfI0[i];
+						I3[i] = selfI3[i];
+					}
+					else
+					{
+						I0[i] += selfI0[i];
+						I3[i] += selfI3[i];
+					}
+				}
+			}
+		}
+	}
+	else
+	GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(pointsDb, domainRadius, I0, I3);
+}//GetDiffVelocityI0I3ToWakeAndViscousStresses(...)
 
 
 #if defined(USE_CUDA)
@@ -442,11 +640,11 @@ void AirfoilRect::Move(const Point2D& dr)	//перемещение профил�
 void AirfoilRect::Rotate(double alpha)	//поворот профиля на угол alpha вокруг центра масс
 {
 	phiAfl += alpha;
-	//numvector<numvector<double, 2>, 2> rotMatrix = { { cos(alpha), sin(alpha) }, { -sin(alpha), cos(alpha) } };
 	nummatrix<double, 2, 2> rotMatrix = { { cos(alpha), sin(alpha) }, { -sin(alpha), cos(alpha) } };
 
 	for (size_t i = 0; i < r_.size(); ++i)
 		r_[i] = rcm + (rotMatrix & (r_[i] - rcm));
+
 
 	CalcNrmTauLen();
 	GetGabarits();
@@ -531,10 +729,7 @@ std::vector<double> AirfoilRect::getA(size_t p, size_t i, const Airfoil& airfoil
 			throw (-42);
 
 	}//if i==j
-		
-	const Point2D& taui = tau[i];
-
-
+	
 	const auto& miq = W.getIQ(numberInPassport, airfoil.numberInPassport);
 
 	res[0] = miq.first(i, j);
@@ -578,7 +773,7 @@ void AirfoilRect::calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen:
 
 #pragma omp parallel for \
 	default(none) \
-	shared(otherAirfoil, self, aflNSelf, aflNOther, matrPair, p) \
+	shared(otherAirfoil, self, aflNSelf, aflNOther, matrPair, p, IDPI, IQPI) \
 	private(npI, npJ, alpha, lambda, p1, s1, p2, s2, di, dj, i00, i01, i10, i11, v00, v11, v01, v10) schedule(dynamic, DYN_SCHEDULE)
 	for(int i = 0; i < (int)getNumberOfPanels(); ++i)
 		for (int j = 0; j < (int)otherAirfoil.getNumberOfPanels(); ++j)

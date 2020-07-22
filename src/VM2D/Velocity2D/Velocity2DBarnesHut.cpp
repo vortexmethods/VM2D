@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8
-\date 09 марта 2020 г.
+\version 1.9
+\date 22 июля 2020 г.
 */
 
 #include "Velocity2DBarnesHut.h"
@@ -62,92 +62,59 @@ VelocityBarnesHut::~VelocityBarnesHut()
 {
 };
 
-// Создание массива указателей на массив точек (для сортировки), используется для массивов pointsCopyVP и pointsCopyWake
-void VelocityBarnesHut::CreatePointsCopy(PointsCopy& pointsCopy, const WakeDataBase& points, const PointType type)
-{
-	pointsCopy.reserve(pointsCopy.size() + points.vtx.size());
-
-	for (int i = 0; i < (int)points.vtx.size(); ++i) 
-		pointsCopy.emplace_back(points.vtx[i], {-1, -1}, i, type);
-}//CreatePointsCopy(...)
-
-
-// Создание массива указателей на массив точек (для сортировки), используется для массива sheetsCopy
-void VelocityBarnesHut::CreateSheetsCopy(PointsCopy& pointsCopy, const PointType type)
-{
-	size_t nSh = 0;
-	for (size_t i = 0; i < W.getNumberOfBoundary(); ++i)
-		nSh += W.getBoundary(i).sheets.getSheetSize();
-	
-	pointsCopy.reserve(pointsCopy.size() + nSh);
-	int num;
-	switch (type)
-	{
-	case PointType::sheetGam:
-		num = 0;
-		for (int i = 0; i < (int)(W.getNumberOfBoundary()); ++i)
-			for (int j = 0; j < (int)(W.getBoundary(i).sheets.getSheetSize()); ++j)
-			{
-				pointsCopy.emplace_back(Vortex2D{ 0.5 * (W.getAirfoil(i).getR(j) + W.getAirfoil(i).getR(j + 1)), W.getBoundary(i).sheets.attachedVortexSheet(j, 0) * W.getAirfoil(i).len[j] }, { i, j }, num, type);
-				num++;
-			}
-		break;
-	case PointType::source:
-		num = 0;
-		for (int i = 0; i < (int)(W.getNumberOfBoundary()); ++i)
-			for (int j = 0; j < (int)(W.getBoundary(i).sheets.getSheetSize()); ++j)
-			{
-				pointsCopy.emplace_back(Vortex2D{ 0.5 * (W.getAirfoil(i).getR(j) + W.getAirfoil(i).getR(j + 1)), W.getBoundary(i).sheets.attachedSourceSheet(j, 0) * W.getAirfoil(i).len[j] }, { i, j }, num, type);
-				num++;
-			}
-		break;
-	}
-}//CreateSheetsCopy(...)
 
 //Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wakeVP
 void VelocityBarnesHut::CalcConvVelo()
 {
-
 	/// \todo Реализовать засечки времени и разобраться с вычисление скоростей в самих виртуальных вихрях (надо вызывать функцию CalcConvVelocityAtVirtualVortexes)
 	
 	W.getTimestat().timeCalcVortexConvVelo.first += omp_get_wtime();
 	
+	Tree& treeWakeRef = W.getNonConstTree(PointType::wake);
+	Tree& treeSheetsGamRef = W.getNonConstTree(PointType::sheetGam);
+	//Tree& treeVPRef = W.getNonConstTree(PointType::wakeVP);
+	Tree& treeSheetsSourceRef = W.getNonConstTree(PointType::source);
+	Tree& treeSourceWakeRef = W.getNonConstTree(PointType::sourceWake);
+
+
 	int bou, pan;
-	for (size_t i = 0; i < sheetsGamCopy.size(); ++i)
+
+	if (W.treeSheetsGam)
+	for (size_t i = 0; i < treeSheetsGamRef.allPnt.size(); ++i)
 	{
-		bou = sheetsGamCopy.aflPnl[i].first;
-		pan = sheetsGamCopy.aflPnl[i].second;
-		sheetsGamCopy.vtx[i].g() += W.getBoundary(bou).sheets.freeVortexSheet(pan, 0) * W.getAirfoil(bou).len[pan];
+		bou = treeSheetsGamRef.allPnt.aflPnl[i].first;
+		pan = treeSheetsGamRef.allPnt.aflPnl[i].second;
+		treeSheetsGamRef.allPnt.vtx[i].g() += W.getBoundary(bou).sheets.freeVortexSheet(pan, 0) * W.getAirfoil(bou).len[pan];
 	}
 
-	if (treeSheetsGam)
-		treeSheetsGam->rootCell.CalculateCellsParams();
+	if (W.treeSheetsGam)
+		treeSheetsGamRef.rootCell.CalculateCellsParams();
 
 	double timeCoeff, timeBiot, timeSum;
 
 	timeCoeff = timeBiot = timeSum = 0.0;
 
 	// WAKE:
-	if (treeWake)
+	if (W.treeWake)
 	{
-#pragma omp parallel for reduction(+:timeCoeff, timeBiot, timeSum) schedule(dynamic, 16)
-		for (int i = 0; i < (int)(treeWake->lowCells.size()); ++i)
+#pragma omp parallel for  reduction(+:timeCoeff, timeBiot, timeSum) schedule(dynamic, 16)
+		for (int i = 0; i < (int)(treeWakeRef.lowCells.size()); ++i)
 		{
 			std::vector<numvector<double, 3>> savedEe2;
-			auto& lowCellI = *(treeWake->lowCells[i]);
+			auto& lowCellI = *(treeWakeRef.lowCells[i]);
 			
 			lowCellI.ClearABCD();
 
 			// расчет влияния на wake от wake 
-			lowCellI.CalcABCDandCloseCellsToLowLevel(treeWake->rootCell, true);
+			lowCellI.CalcABCDandCloseCellsToLowLevel(treeWakeRef.rootCell, true);
 			lowCellI.CalcConvVeloByBiotSavartFromVortices(true, savedEe2);
 
 			lowCellI.closeCells.clear();
 
 			// расчет влияния на wake от sheets 
-			if (treeSheetsGam)
+			if (W.treeSheetsGam)
 			{
-				lowCellI.CalcABCDandCloseCellsToLowLevel(treeSheetsGam->rootCell, true);
+				lowCellI.CalcABCDandCloseCellsToLowLevel(treeSheetsGamRef.rootCell, true);
 				lowCellI.CalcConvVeloByBiotSavartFromSheets(true, savedEe2);
 			}
 			
@@ -155,26 +122,34 @@ void VelocityBarnesHut::CalcConvVelo()
 
 			lowCellI.closeCells.clear();
 			
+			for (auto it = lowCellI.itBegin; it != lowCellI.itEnd; ++it)
+				lowCellI.CalcInfluenceFromVortexFarCells(it);
+
+			lowCellI.ClearABCD();
+
 			// расчет влияния на wake от sources 
-			if (treeSources)
+			if (W.treeSheetsSource)
 			{
-				lowCellI.CalcABCDandCloseCellsToLowLevel(treeSources->rootCell, true);
+				lowCellI.CalcABCDandCloseCellsToLowLevel(treeSheetsSourceRef.rootCell, true);
 				lowCellI.CalcConvVeloByBiotSavartFromSources();
 			}
 			lowCellI.closeCells.clear();
 			
+			// расчет влияния на wake от sourcesWake 
+			if (W.treeSourcesWake)
+			{
+				lowCellI.CalcABCDandCloseCellsToLowLevel(treeSourceWakeRef.rootCell, true);
+				lowCellI.CalcConvVeloByBiotSavartFromSources();
+			}
+			lowCellI.closeCells.clear();
+
 			for (auto it = lowCellI.itBegin; it != lowCellI.itEnd; ++it)
-				lowCellI.CalcInfluenceFromVortexFarCells(it);
-
+				lowCellI.CalcInfluenceFromSourceFarCells(it);
 		}
-		//treeWake->rootCell->PrintTree();
+	}//if(W.treeWake)
 
-		//std::cout << "CalcCoeffToLowLevel: " << timeCoeff << std::endl;
-		//std::cout << "CalcConvVeloByBiotSavart: " << timeBiot << std::endl;
-		//std::cout << "CalcConvVeloToLowLevelCell: " << timeSum << std::endl;
-	}
-
-	// расчет скоростей самих виртуальных вихрей и их влияния на wake
+	
+	// расчет скоростей самих виртуальных вихрей
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 		W.getBoundary(bou).CalcConvVelocityAtVirtualVortexes(virtualVortexesParams[bou].convVelo);
 	
@@ -182,18 +157,31 @@ void VelocityBarnesHut::CalcConvVelo()
 
 	// вычисление eps* для виртуальных вихрей 
 	W.getTimestat().timeCalcVortexDiffVelo.first += omp_get_wtime();
-	if(treeSheetsGam)
-	for (size_t i = 0; i < treeSheetsGam->lowCells.size(); ++i)
-	{		
-		//if(treeWake)
-			//treeSheetsGam->lowCells[i]->CalcABCDandCloseCellsToLowLevel(treeWake->rootCell, false); // закомментировать!!! 23.01
-		treeSheetsGam->lowCells[i]->CalcDomainRadiusForVirtualWake();
+
+	if(W.treeSheetsGam)
+		for (size_t i = 0; i < treeSheetsGamRef.lowCells.size(); ++i)
+		{
+			treeSheetsGamRef.lowCells[i]->closeCells.clear();
+			if (W.treeWake)
+				treeSheetsGamRef.lowCells[i]->CalcABCDandCloseCellsToLowLevel(treeWakeRef.rootCell, false);
+			treeSheetsGamRef.lowCells[i]->CalcDomainRadiusForVirtualWake();
+		}
+
+#if (defined(USE_CUDA))
+	{
+		for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
+		{
+			auto& ref = W.getNonConstVelocity().virtualVortexesParams[afl].epsastWake;
+			cuCopyFixedArray(W.getBoundary(afl).virtualWake.devRadPtr, ref.data(), sizeof(double) * ref.size());
+		}
 	}
+#endif
+
 	W.getTimestat().timeCalcVortexDiffVelo.second += omp_get_wtime();
 
 	W.getTimestat().timeVP.first += omp_get_wtime();
 
-
+	/// \todo сделать по аналогии с Wake 
 	// WAKEVP:
 	// если нужно, расчет влияния на pointsCopyVP
 	//if ((W.getPassport().timeDiscretizationProperties.saveVP > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVP)))
@@ -241,135 +229,76 @@ void VelocityBarnesHut::CalcConvVelo()
 	W.getTimestat().timeCalcVortexConvVelo.first += omp_get_wtime();
 	
 	//раздача копий в оригинальные значения 
-	wakeVortexesParams.convVelo.swap(pointsCopyWake.velo);
-	wakeVortexesParams.epsastWake.swap(pointsCopyWake.domainRadius);
+	if (W.treeWake)
+	{
+		wakeVortexesParams.convVelo.swap(W.treeWake->allPnt.velo);
+		wakeVortexesParams.epsastWake.swap(W.treeWake->allPnt.domainRadius);
 
+#if (defined(USE_CUDA))
+		{
+			auto& ref = wakeVortexesParams.epsastWake;
+			cuCopyFixedArray(W.getWake().devRadPtr, ref.data(), sizeof(double) * ref.size());
+		}
+#endif
+	}
 	W.getTimestat().timeCalcVortexConvVelo.second += omp_get_wtime();
 	
 }//CalcConvVelo()
 
-void VelocityBarnesHut::BuildTrees(PointType type)
-{
-	switch (type)
-	{
-		case PointType::wake: 
-		{
-			pointsCopyWake.clear();
-			CreatePointsCopy(pointsCopyWake, W.getWake(), PointType::wake);
-			if (pointsCopyWake.size() > 0)
-				treeWake.reset(new Tree(W, pointsCopyWake));
-			else 
-				treeWake = nullptr;
-			break;
-		}
-		case PointType::sheetGam:
-		{
-			sheetsGamCopy.clear();
-			CreateSheetsCopy(sheetsGamCopy, PointType::sheetGam);
-			if (sheetsGamCopy.size() > 0)
-				treeSheetsGam.reset(new Tree(W, sheetsGamCopy));
-			else
-				treeSheetsGam = nullptr;
-			break;
-		}
-		case PointType::wakeVP:
-		{
-			pointsCopyVP.clear();
-			CreatePointsCopy(pointsCopyVP, W.getMeasureVP().getWakeVP(), PointType::wakeVP);
-			if (pointsCopyVP.size() > 0)
-				treeVP.reset(new Tree(W, pointsCopyVP));
-			else
-				treeVP = nullptr;
-			break;
-		}
-		case PointType::sourceWake :
-		{
-			sourcesCopy.clear();
-			CreateSheetsCopy(sourcesCopy, PointType::source);
-			CreatePointsCopy(sourcesCopy, W.getSource(), PointType::sourceWake);
-			if (sourcesCopy.size() > 0)
-				treeSources.reset(new Tree(W, sourcesCopy));
-			else 
-				treeSources = nullptr;
-			break;
-		}
-	default:
-		break;
-	}
-}//BuildTrees(...)
-
-
-void VelocityBarnesHut::Initialization()
-{
-	W.getTimestat().timeCalcVortexConvVelo.first += omp_get_wtime();
-
-	BuildTrees(PointType::wake);
-	if (treeWake)
-		treeWake->rootCell.CalculateCellsParams();
-
-	BuildTrees(PointType::sourceWake);
-	if (treeSources)
-		treeSources->rootCell.CalculateCellsParams();
-
-	if (W.getNumberOfAirfoil() > 0)
-		BuildTrees(PointType::sheetGam);
-
-	W.getTimestat().timeCalcVortexConvVelo.second += omp_get_wtime();
-
-	W.getTimestat().timeVP.first += omp_get_wtime();
-	if ((W.getPassport().timeDiscretizationProperties.saveVP > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVP)))
-		BuildTrees(PointType::wakeVP);
-	W.getTimestat().timeVP.second += omp_get_wtime();
-}//Initialization()
-
 void VelocityBarnesHut::GetWakeInfluenceToRhs(std::vector<double>& wakeRhs) const
 {
+	Tree& treeWakeRef = W.getNonConstTree(PointType::wake);
+	Tree& treeSheetsGamRef = W.getNonConstTree(PointType::sheetGam);
+	Tree& treeSheetsSourceRef = W.getNonConstTree(PointType::source);
+	//Tree& treeSourceWakeRef = W.getNonConstTree(PointType::sourceWake);
+
 	//Здесь предполагается, что тип схемы у всех профилей одинаковый
 	size_t shDim = W.getBoundary(0).sheetDim;
 	std::vector<double> velI(shDim, 0.0);
 
 	Point2D approxVel;
-	for (size_t i = 0; i < treeSheetsGam->lowCells.size(); ++i)
+	for (size_t i = 0; i < treeSheetsGamRef.lowCells.size(); ++i)
 	{
 
-		if (treeSources)
+		if (W.treeSheetsSource)
 		{
-			treeSheetsGam->lowCells[i]->ClearABCD();
-			treeSheetsGam->lowCells[i]->closeCells.clear();
-			treeSheetsGam->lowCells[i]->CalcABCDandCloseCellsToLowLevel(treeSources->rootCell, true);
+			treeSheetsGamRef.lowCells[i]->ClearABCD();
+			treeSheetsGamRef.lowCells[i]->closeCells.clear();
+			treeSheetsGamRef.lowCells[i]->CalcABCDandCloseCellsToLowLevel(treeSheetsSourceRef.rootCell, true);
 
-			for (auto it = treeSheetsGam->lowCells[i]->itBegin; it != treeSheetsGam->lowCells[i]->itEnd; ++it) // цикл по панелям
+			for (auto it = treeSheetsGamRef.lowCells[i]->itBegin; it != treeSheetsGamRef.lowCells[i]->itEnd; ++it) // цикл по панелям
 			{
 				int aflN = it.getAflPnl().first;
 				int panNum = it.getAflPnl().second;
 
 				velI.assign(shDim, 0.0);
 
-				for (size_t j = 0; j < treeSheetsGam->lowCells[i]->closeCells.size(); ++j)
-					W.getAirfoil(aflN).GetInfluenceFromSourcesToPanel(panNum, &(treeSheetsGam->lowCells[i]->closeCells[j]->itBegin.getVtx()), \
-						std::distance(treeSheetsGam->lowCells[i]->closeCells[j]->itBegin, treeSheetsGam->lowCells[i]->closeCells[j]->itEnd), velI);
+				for (size_t j = 0; j < treeSheetsGamRef.lowCells[i]->closeCells.size(); ++j)
+					W.getAirfoil(aflN).GetInfluenceFromSourcesToPanel(panNum, &(treeSheetsGamRef.lowCells[i]->closeCells[j]->itBegin.getVtx()), \
+						std::distance(treeSheetsGamRef.lowCells[i]->closeCells[j]->itBegin, treeSheetsGamRef.lowCells[i]->closeCells[j]->itEnd), velI);
 				
 				for (size_t j = 0; j < shDim; ++j)
 					velI[j] *= IDPI / W.getAirfoil(aflN).len[panNum];
 
 				// результат приближенного влияния записывается в veloCopy конкретной панели (там уже есть накопленные влияния от дальних источников)
-				treeSheetsGam->lowCells[i]->CalcInfluenceFromSourceFarCells(it);
+				treeSheetsGamRef.lowCells[i]->CalcInfluenceFromSourceFarCells(it);
 
-				velI[0] += treeSheetsGam->allPnt.velo[it.getNum()] & W.getAirfoil(aflN).tau[panNum];
+				velI[0] += treeSheetsGamRef.allPnt.velo[it.getNum()] & W.getAirfoil(aflN).tau[panNum];
 
 				for (size_t k = 0; k < shDim; ++k)
 					wakeRhs[W.getDispBoundaryInSystem(aflN) + panNum + k * W.getAirfoil(aflN).getNumberOfPanels()] = velI[k];
 			}
 		}//if(treeSources)
 
+		treeSheetsGamRef.lowCells[i]->ClearABCD();
+		treeSheetsGamRef.lowCells[i]->closeCells.clear();
+
 		// аналогично для wake		
-		if (treeWake)
-		{
-			treeSheetsGam->lowCells[i]->ClearABCD();
-			treeSheetsGam->lowCells[i]->closeCells.clear();
-			treeSheetsGam->lowCells[i]->CalcABCDandCloseCellsToLowLevel(treeWake->rootCell, true);
-			int count = 0; 
-			for (auto it = treeSheetsGam->lowCells[i]->itBegin; it != treeSheetsGam->lowCells[i]->itEnd; ++it) // цикл по панелям
+		if (W.treeWake)
+		{			
+			treeSheetsGamRef.lowCells[i]->CalcABCDandCloseCellsToLowLevel(treeWakeRef.rootCell, true);
+			//int count = 0; 
+			for (auto it = treeSheetsGamRef.lowCells[i]->itBegin; it != treeSheetsGamRef.lowCells[i]->itEnd; ++it) // цикл по панелям
 			{
 				//if (count == 0)
 					//std::cout << treeSheetsGam->lowCells[i]->itEnd - treeSheetsGam->lowCells[i]->itBegin << std::endl;
@@ -378,17 +307,17 @@ void VelocityBarnesHut::GetWakeInfluenceToRhs(std::vector<double>& wakeRhs) cons
 
 				velI.assign(shDim, 0.0);
 
-				for (size_t j = 0; j < treeSheetsGam->lowCells[i]->closeCells.size(); ++j)
-					W.getAirfoil(aflN).GetInfluenceFromVorticesToPanel(panNum, &(treeSheetsGam->lowCells[i]->closeCells[j]->itBegin.getVtx()), \
-						std::distance(treeSheetsGam->lowCells[i]->closeCells[j]->itBegin, treeSheetsGam->lowCells[i]->closeCells[j]->itEnd), velI);
+				for (size_t j = 0; j < treeSheetsGamRef.lowCells[i]->closeCells.size(); ++j)
+					W.getAirfoil(aflN).GetInfluenceFromVorticesToPanel(panNum, &(treeSheetsGamRef.lowCells[i]->closeCells[j]->itBegin.getVtx()), \
+						std::distance(treeSheetsGamRef.lowCells[i]->closeCells[j]->itBegin, treeSheetsGamRef.lowCells[i]->closeCells[j]->itEnd), velI);
 				
 				for (size_t j = 0; j < shDim; ++j)
 					velI[j] *= IDPI / W.getAirfoil(aflN).len[panNum];
 
 				// результат приближенного влияния записывается в velo конкретной панели (там уже есть накопленные влияния от дальних источников)
-				treeSheetsGam->lowCells[i]->CalcInfluenceFromVortexFarCells(it);
+				treeSheetsGamRef.lowCells[i]->CalcInfluenceFromVortexFarCells(it);
 
-				velI[0] += treeSheetsGam->allPnt.velo[it.getNum()] & W.getAirfoil(aflN).tau[panNum];
+				velI[0] += treeSheetsGamRef.allPnt.velo[it.getNum()] & W.getAirfoil(aflN).tau[panNum];
 				
 				for (size_t k = 0; k < shDim; ++k)
 					wakeRhs[W.getDispBoundaryInSystem(aflN) + panNum + k * W.getAirfoil(aflN).getNumberOfPanels()] += velI[k];
@@ -462,10 +391,60 @@ void VelocityBarnesHut::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector
 }//GPUGetWakeInfluenceToRhs(...)
 #endif
 
-///Заполнение правой части СЛАУ 
+void VelocityBarnesHut::GetWakeInfluenceToRhsBS(const Airfoil& afl, std::vector<double>& wakeRhs) const
+{
+	size_t np = afl.getNumberOfPanels();
+	int id = W.getParallel().myidWork;
+	VMlib::parProp par = W.getParallel().SplitMPI(np);
+
+	std::vector<double> locVeloWake, locVeloWakeLin;
+	locVeloWake.resize(par.myLen);
+
+	size_t shDim = W.getBoundary(afl.numberInPassport).sheetDim;
+
+	if (shDim != 1)
+		locVeloWakeLin.resize(par.myLen);
+
+	//локальные переменные для цикла	
+	std::vector<double> velI(shDim, 0.0);
+
+#pragma omp parallel for default(none) shared(locVeloWake, par, shDim, afl, locVeloWakeLin, IDPI) private(velI)
+	for (int i = 0; i < par.myLen; ++i)
+	{
+		velI.assign(shDim, 0.0);
+
+		if (W.getWake().vtx.size() > 0)
+		{
+			//Учет влияния следа
+			afl.GetInfluenceFromVorticesToPanel(par.myDisp + i, &(*W.getWake().vtx.begin()), std::distance(W.getWake().vtx.begin(), W.getWake().vtx.end()), velI);
+		}
+
+		if (W.getSource().vtx.size() > 0)
+		{
+			//Учет влияния источников
+			afl.GetInfluenceFromSourcesToPanel(par.myDisp + i, &(*W.getSource().vtx.begin()), std::distance(W.getSource().vtx.begin(), W.getSource().vtx.end()), velI);
+		}
+
+		for (size_t j = 0; j < shDim; ++j)
+			velI[j] *= IDPI / afl.len[par.myDisp + i];
+
+		locVeloWake[i] = velI[0];
+
+		if (shDim != 1)
+			locVeloWakeLin[i] = velI[1];
+	}
+
+	if (id == 0)
+		wakeRhs.resize(W.getBoundary(afl.numberInPassport).GetUnknownsSize());
+
+	MPI_Gatherv(locVeloWake.data(), par.myLen, MPI_DOUBLE, wakeRhs.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
+
+	if (shDim != 1)
+		MPI_Gatherv(locVeloWakeLin.data(), par.myLen, MPI_DOUBLE, wakeRhs.data() + np, par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
+}//GetWakeInfluenceToRhsBS(...)
+
 void VelocityBarnesHut::FillRhs(Eigen::VectorXd& rhs) const
 {
-#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_RHS))
 	Eigen::VectorXd locRhs;
 	std::vector<double> lastRhs(W.getNumberOfBoundary());
 
@@ -490,7 +469,12 @@ void VelocityBarnesHut::FillRhs(Eigen::VectorXd& rhs) const
 
 		std::vector<double> wakeRhs;
 
+
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_RHS))
 		GPUGetWakeInfluenceToRhs(afl, wakeRhs);
+#else
+		GetWakeInfluenceToRhsBS(afl, wakeRhs);
+#endif				
 
 		std::vector<double> vInfRhs;
 		afl.GetInfluenceFromVInfToPanel(vInfRhs);
@@ -546,18 +530,20 @@ void VelocityBarnesHut::FillRhs(Eigen::VectorXd& rhs) const
 		}// if (parallel.myidWork == 0)
 
 	}// for bou
-#else
+}
+
+///Заполнение правой части СЛАУ 
+/*void VelocityBarnesHut::FillRhs(Eigen::VectorXd& rhs) const
+{
 
 	std::vector<double> wakeRhs;
 	wakeRhs.resize(rhs.size());
-
 
 //#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_RHS))
 	//GPUGetWakeInfluenceToRhs(wakeRhs); //\todo это задел 
 //#else
 	GetWakeInfluenceToRhs(wakeRhs);
 //#endif
-	
 	size_t currentRow = 0;
 
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
@@ -580,7 +566,7 @@ void VelocityBarnesHut::FillRhs(Eigen::VectorXd& rhs) const
 				
 				/// \todo ВАЖНО!!!
 				//Здесь учет скорости профиля и присоединенных слоев источников сделан только для прямолинейных панелей
-				rhs(currentRow + i) = -vInfRhs[i] - wakeRhs[currentRow + i] + 0.25 * ((afl.getV(i) + afl.getV(i + 1)) & afl.tau[i]);
+				rhs(currentRow + i) = -vInfRhs[i] -wakeRhs[currentRow + i] + 0.25 * ((afl.getV(i) + afl.getV(i + 1)) & afl.tau[i]);
 
 				//влияние присоединенных слоев от самого себя и от других профилей				
 				for (int q = 0; q < W.getNumberOfBoundary(); ++q)
@@ -611,7 +597,7 @@ void VelocityBarnesHut::FillRhs(Eigen::VectorXd& rhs) const
 			{
 #pragma omp parallel for \
 	default(none) \
-	shared(afl, bou, wakeRhs, currentRow) \
+	shared(afl, bou, wakeRhs, currentRow, rhs) \
 	schedule(dynamic, DYN_SCHEDULE)
 				for (int i = 0; i < afl.getNumberOfPanels(); ++i)
 				{
@@ -647,7 +633,7 @@ void VelocityBarnesHut::FillRhs(Eigen::VectorXd& rhs) const
 			{
 #pragma omp parallel for \
 	default(none) \
-	shared(afl, bou, wakeRhs) \
+	shared(afl, bou, wakeRhs, rhs, currentRow) \
 	schedule(dynamic, DYN_SCHEDULE)
 				for (int i = 0; i < afl.getNumberOfPanels(); ++i)
 				{
@@ -685,5 +671,212 @@ void VelocityBarnesHut::FillRhs(Eigen::VectorXd& rhs) const
 		}// if (parallel.myidWork == 0)
 
 	}// for bou
-#endif
 }//FillRhs(...)
+*/
+//Вычисление числителей и знаменателей диффузионных скоростей в вихревом следе
+void VelocityBarnesHut::CalcDiffVeloI1I2ToWakeFromWake(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2)
+{
+	if (W.treeWake)
+	{
+		const int& id = W.getParallel().myidWork;
+		if (id == 0)
+		{
+			double tCPUSTART, tCPUEND;
+
+			tCPUSTART = omp_get_wtime();
+
+			std::vector<double> selfI1;
+			std::vector<Point2D> selfI2;
+
+			selfI1.resize(pointsDb.vtx.size(), 0.0);
+			selfI2.resize(pointsDb.vtx.size(), { 0.0, 0.0 });
+
+#pragma warning (push)
+#pragma warning (disable: 4101)
+			//Локальные переменные для цикла
+			Point2D Rij;
+			double rij;
+			double diffRadius, domRad;
+			double posJx;
+			double prd;
+#pragma warning (pop)
+
+			auto& tree = *(W.treeWake);
+			std::vector<double> domRadinI;
+			double distance;
+
+#pragma omp parallel for private(Rij, rij, prd, diffRadius, domRad, posJx, domRadinI, distance) schedule(dynamic, 16)
+			for (int s = 0; s < (int)tree.lowCells.size(); ++s)
+			{
+				domRadinI.resize(tree.lowCells[s]->itEnd - tree.lowCells[s]->itBegin);
+
+				int cnt = 0;
+				for (auto it = tree.lowCells[s]->itBegin; it != tree.lowCells[s]->itEnd; ++it)
+				{
+					int i = it.getNum();
+					domRadinI[cnt] = std::max(domainRadius[i], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+					++cnt;
+				}
+				/// \todo Понять природу магической константы 8.0 и синхронизировать с GPU
+				distance = 8.0 * *std::max_element(domRadinI.begin(), domRadinI.end());
+
+				tree.lowCells[s]->CalcCloseZone(tree.rootCell, distance);
+
+				for (size_t k = 0; k < tree.lowCells[s]->closeCells.size(); ++k)
+				{
+					int cntr = 0;
+					for (auto it = tree.lowCells[s]->itBegin; it != tree.lowCells[s]->itEnd; ++it)
+					{
+						const Vortex2D& vtxI = it.getVtx();
+						int i = it.getNum();
+
+						domRad = domRadinI[cntr];
+						++cntr;
+
+						/// \todo Понять природу магической константы 8.0 и синхронизировать с GPU
+						diffRadius = 8.0 * domRad;
+
+
+						for (auto itCl = tree.lowCells[s]->closeCells[k]->itBegin; itCl != tree.lowCells[s]->closeCells[k]->itEnd; ++itCl)
+						{
+							const Vortex2D& vtxJ = itCl.getVtx();
+							posJx = vtxJ.r()[0];
+
+							Rij = vtxI.r() - vtxJ.r();
+							rij = Rij.length();
+
+							if (rij < diffRadius && rij > 1.e-10)
+							{
+								prd = vtxJ.g() * exp(-rij / domRad);
+								selfI2[i] += (prd / rij) * Rij;
+								selfI1[i] += prd;
+							}
+						}//for j
+					}
+				}
+			}
+
+			for (size_t i = 0; i < I1.size(); ++i)
+			{
+				I1[i] += selfI1[i];
+				I2[i] += selfI2[i];
+			}
+
+			tCPUEND = omp_get_wtime();
+		}
+	}
+}//CalcDiffVeloI1I2ToWakeFromWake(...)
+
+void VelocityBarnesHut::CalcDiffVeloI1I2ToWakeFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2)
+{
+	if (W.treeWake)
+	{
+		const int& id = W.getParallel().myidWork;
+		if (id == 0)
+		{
+			double tCPUSTART, tCPUEND;
+
+			tCPUSTART = omp_get_wtime();
+
+			std::vector<double> selfI1;
+			std::vector<Point2D> selfI2;
+
+			selfI1.resize(pointsDb.vtx.size(), 0.0);
+			selfI2.resize(pointsDb.vtx.size(), { 0.0, 0.0 });
+
+			//синхронизация свободного вихревого слоя ???
+			bnd.sheets.FreeSheetSynchronize();
+
+#pragma warning (push)
+#pragma warning (disable: 4101)
+			//Локальные переменные для цикла
+			Point2D Rij;
+			double rij;
+			double diffRadius;
+			//double left;
+			//double right;
+			double posJx;
+			double domRad;
+			double prd;
+#pragma warning (pop)
+
+			auto& tree = *(W.treeWake);
+			std::vector<double> domRadinI;
+			double distance;
+
+#pragma omp parallel for private(Rij, rij, prd, diffRadius, domRad, posJx, domRadinI, distance) schedule(dynamic, 16)
+			for (int s = 0; s < (int)tree.lowCells.size(); ++s)
+			{
+				domRadinI.resize(tree.lowCells[s]->itEnd - tree.lowCells[s]->itBegin);
+
+				int cnt = 0;
+				for (auto it = tree.lowCells[s]->itBegin; it != tree.lowCells[s]->itEnd; ++it)
+				{
+					int i = it.getNum();
+					domRadinI[cnt] = std::max(domainRadius[i], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+					++cnt;
+				}
+				/// \todo Понять природу магической константы 8.0 и синхронизировать с GPU		
+				distance = 8.0 * *std::max_element(domRadinI.begin(), domRadinI.end());
+
+				tree.lowCells[s]->closeCells.clear();
+				tree.lowCells[s]->CalcCloseZone(W.treeSheetsGam->rootCell, distance);
+
+				for (size_t k = 0; k < tree.lowCells[s]->closeCells.size(); ++k)
+				{
+					int cntr = 0;
+					for (auto it = tree.lowCells[s]->itBegin; it != tree.lowCells[s]->itEnd; ++it)
+					{
+						const Vortex2D& vtxI = it.getVtx();
+						int i = it.getNum();
+
+						domRad = domRadinI[cntr];
+						++cntr;
+
+						/// \todo Понять природу магической константы 8.0 и синхронизировать с GPU
+						diffRadius = 8.0 * domRad;
+
+						for (auto itCl = tree.lowCells[s]->closeCells[k]->itBegin; itCl != tree.lowCells[s]->closeCells[k]->itEnd; ++itCl)
+						{
+							/// \todo Сделать переменной и синхронизировать с GPU
+							const int nQuadPt = 3;
+							int j = itCl.getAflPnl().second;
+							auto& bndCl = W.getBoundary(itCl.getAflPnl().first);
+							if (&bndCl == &bnd)
+								/// \todo Учитываем пока только нулевой момент решения
+							{
+								const double ptG = bndCl.sheets.freeVortexSheet(j, 0) * bndCl.afl.len[j] / nQuadPt;
+
+								for (int q = 0; q < nQuadPt; ++q)
+								{
+									const Point2D& ptJ = bndCl.afl.getR(j) + bndCl.afl.tau[j] * (q + 0.5) * bndCl.afl.len[j] * (1.0 / nQuadPt);  // vorticesDb.vtx[j];
+									posJx = ptJ[0];
+
+									Rij = vtxI.r() - ptJ;
+									rij = Rij.length();
+									if (rij < diffRadius && rij > 1.e-10)
+									{
+										prd = ptG * exp(-rij / domRad);
+										selfI2[i] += (prd / rij) * Rij;
+										selfI1[i] += prd;
+									}
+								}//for q
+							}
+						}//for itCL
+					}//for it
+				}//for k
+			}//for s
+
+
+			for (size_t i = 0; i < I1.size(); ++i)
+			{
+				I1[i] += selfI1[i];
+				I2[i] += selfI2[i];
+			}
+
+			tCPUEND = omp_get_wtime();
+
+
+		}//if(id == 0)
+	}
+}//CalcDiffVeloI1I2ToWakeFromSheets(...)

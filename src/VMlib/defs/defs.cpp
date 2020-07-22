@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.8    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/03/09     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.9    |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/07/22     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Описание базовых вспомогательных функций
 \author Марчевский Илья Константинович
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */
 
 #include "defs.h"
@@ -107,8 +107,8 @@ void VMlib::PrintLogoToStream(std::ostream& str)
 #ifdef CODE2D
 		str <<
 			"/*--------------------------------*- VM2D -*-----------------*---------------*\\" << '\n' << \
-			"| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |" << '\n' << \
-			"| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |" << '\n' << \
+			"| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |" << '\n' << \
+			"| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |" << '\n' << \
 			"| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*" << '\n' << \
 			"|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |" << '\n' << \
 			"|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |" << '\n' << \

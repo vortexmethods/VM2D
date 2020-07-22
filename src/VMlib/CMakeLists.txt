@@ -3,7 +3,8 @@ link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 SUBDIRLIST(VMlibSubdir_VM2D ${CMAKE_SOURCE_DIR}/src/VM2D)
 SUBDIRLIST(VMlibSubdir_VM3D ${CMAKE_SOURCE_DIR}/src/VM3D)
 SUBDIRLIST(VMlibSubdir_VMlib ${CMAKE_CURRENT_SOURCE_DIR})
-LIST(APPEND VMlibDirs ${VMlibSubdir_VMlib} ${VMlibSubdir_VM2D} ${VMlibSubdir_VM3D})
+SUBDIRLIST(VMlibSubdir_VMcuda ${CMAKE_SOURCE_DIR}/src/VMcuda)
+LIST(APPEND VMlibDirs ${VMlibSubdir_VMlib} ${VMlibSubdir_VM2D} ${VMlibSubdir_VM3D} ${VMlibSubdir_VMcuda})
 
 #message(STATUS "VMlib_Dirs: ${VMlibDirs}")
 
@@ -13,17 +14,23 @@ include_directories(${VMlibDirs})
 FILE(GLOB VMlib_ALLFILES
     ${CMAKE_CURRENT_SOURCE_DIR}/*/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/*/*.h
-	${CMAKE_CURRENT_SOURCE_DIR}/*/*.cu
-    ${CMAKE_CURRENT_SOURCE_DIR}/*/*.cuh
-  )
+    )
 
 #MPI
-if(WIN32)
-   set(MPI_GUESS_LIBRARY_NAME "MSMPI" CACHE STRING "Override MPI library name, e.g., MSMPI, MPICH2")
+if (WIN32)
+   if (${CMAKE_VS_PLATFORM_TOOLSET} MATCHES "Intel")
+      #message(STATUS "INTEL COMPILER")
+	  #message(STATUS "CXX: " ${CXX})
+   else()
+      set(MPI_GUESS_LIBRARY_NAME "MSMPI" CACHE STRING "Override MPI library name, e.g., MSMPI, MPICH2")
+	  #message(STATUS "NOT INTEL COMPILER")
+	  #message(STATUS "CXX: " ${CXX})
+   endif()
 endif()
-   find_package(MPI REQUIRED)   
-   include_directories(${MPI_CXX_INCLUDE_PATH})
-   link_libraries(${MPI_CXX_LIBRARIES})
+  
+find_package(MPI REQUIRED)   
+include_directories(${MPI_CXX_INCLUDE_PATH})
+link_libraries(${MPI_CXX_LIBRARIES})
 
 
 #OpenMP

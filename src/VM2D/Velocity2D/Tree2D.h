@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,14 +32,15 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8
-\date 09 марта 2020 г.
+\version 1.9
+\date 22 июля 2020 г.
 */
 
 #ifndef TREE_H
 #define TREE_H
 
 #include "Cell2D.h"
+#include "WakeDataBase2D.h"
 
 namespace VM2D
 {
@@ -56,8 +57,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.8
-	\date 09 марта 2020 г.
+	\version 1.9
+	\date 22 июля 2020 г.
 	*/
 	class Tree
 	{
@@ -67,10 +68,10 @@ namespace VM2D
 		const World2D& W;
 
 		/// Параметр точности 
-		const double theta = 0.1;
+		const double theta = 0.5;
 
 		/// Максимальное количество уровней дерева
-		const double numOfLevels = 10;
+		double numOfLevels; 
 
 		/// Минимальный размер ячейки (сумма длины и ширины)
 		double minDist;
@@ -81,22 +82,46 @@ namespace VM2D
 		/// Вектор указателей на ячейки нижнего уровня 
 		std::vector<Cell*> lowCells; 
 		
-		/// Умный указатель на корень
+		/// Корень дерева
 		Cell rootCell;		
 
-		/// Ссылка на объект PointsCopy, содержащий все точки, их скорости, eps*, type
-		PointsCopy& allPnt;
+		/// Объект PointsCopy, содержащий все точки, их скорости, eps*, type
+		PointsCopy allPnt;
 
 		/// \brief Конструктор
 		///
 		/// Включает в себя построение корня дерева на основе заданных вихрей
 		/// \param[in] W_ константная ссылка на решаемую задачу
-		/// \param[in, out] pointsCopy_ ссылка на вектор из элементов PointsCopy
-		Tree(const World2D& W_, PointsCopy& pointsCopy_);
+		/// \param[in] points константная ссылка на набор точек, по которым строится дерево (treeWake, treeWakeVP, treeSourcesWake)
+		/// \param[in] type тип точек, по которым строится дерево
+		/// \param[in] numOfLevels_ максимальное количество уровней дерева
+		Tree(const World2D& W_, const WakeDataBase& points, const PointType type, int numOfLevels_);
+		
+		/// \brief Конструктор
+		///
+		/// Включает в себя построение корня дерева на основе заданных вихрей
+		/// \param[in] W_ константная ссылка на решаемую задачу
+		/// \param[in] type тип точек, по которым строится дерево (treeSheetsGam, treeSheetsSource)
+		/// \param[in] numOfLevels_ максимальное количество уровней дерева
+		Tree(const World2D& W_, const PointType type, int numOfLevels_);
 
 		/// Деструктор
 		virtual ~Tree();
 
+		/// \brief Создание копии данных для точек (для сортировки) 
+		///
+		/// Используется для заполнения allPnt в конструкторе для деревьев treeWake, treeWakeVP, treeSourceWake
+		///
+		/// \param[in] points массив точек, указатели на которые необходимо запомнить
+		/// \param[in] type тип массива точек (wake, sourceWake или wakeVP)
+		void CreatePointsCopy(const WakeDataBase& points, const PointType type);
+
+		/// \brief Создание массива указателей на массив точек (для сортировки)
+		///
+		/// Используется для заполнения allPnt в конструкторе для деревьев treeSheetsGam, treeSource
+		///
+		/// \param[in] type тип массива точек (sheetGam, source)
+		void CreateSheetsCopy(const PointType type);
 	};
 }//namespace VM2D
 

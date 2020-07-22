@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     14626,        350]
-NotebookOptionsPosition[     13945,        322]
-NotebookOutlinePosition[     14318,        338]
-CellTagsIndexPosition[     14275,        335]
+NotebookDataLength[     15195,        351]
+NotebookOptionsPosition[     13992,        323]
+NotebookOutlinePosition[     14393,        339]
+CellTagsIndexPosition[     14350,        336]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -235,8 +235,8 @@ Cell[BoxData[
      RowBox[{
      "\"\</*--------------------------------*- VM2D \
 -*-----------------*---------------*\\\\\n| ##  ## ##   ##  ####  #####   |   \
-                         | Version 1.8    |\n| ##  ## ### ### ##  ## ##  ##  \
-|  VM2D: Vortex Method       | 2020/03/09     |\n| ##  ## ## # ##    ##  ##  \
+                         | Version 1.9    |\n| ##  ## ### ### ##  ## ##  ##  \
+|  VM2D: Vortex Method       | 2020/07/22     |\n| ##  ## ## # ##    ##  ##  \
 ##  |  for 2D Flow Simulation    *----------------*\n|  ####  ##   ##   ##   \
 ##  ##  |  Open Source Code                           |\n|   ##   ##   ## \
 ###### #####   |  https://www.github.com/vortexmethods/VM2D  |\n|             \
@@ -300,8 +300,9 @@ Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |\
    3.730741063625867*^9, 3.7307413173777313`*^9}, 3.731264353382409*^9, 
    3.7312650220035443`*^9, {3.737961945963458*^9, 3.737961953240308*^9}, {
    3.7457319113977666`*^9, 3.7457319311868443`*^9}, {3.747470606566287*^9, 
-   3.7474706104412737`*^9}, 3.759160184768257*^9},
- ExpressionUUID -> "0a3fb2c6-bda4-4752-9929-484f04836e4e"],
+   3.7474706104412737`*^9}, 3.759160184768257*^9, {3.804392692652873*^9, 
+   3.80439269698426*^9}},ExpressionUUID->"0a3fb2c6-bda4-4752-9929-\
+484f04836e4e"],
 
 Cell[BoxData["\<\"V12wing400\"\>"], "Output",
  CellChangeTimes->{
@@ -320,11 +321,11 @@ Cell[BoxData["\<\"V12wing400\"\>"], "Output",
 ac1c83bd7472"]
 }, Open  ]]
 },
-WindowSize->{1920, 997},
-WindowMargins->{{-8, Automatic}, {Automatic, -8}},
-Magnification:>1.9 Inherited,
-FrontEndVersion->"11.0 for Microsoft Windows (64-bit) (July 28, 2016)",
-StyleDefinitions->"Default.nb"
+WindowSize->{1141.2, 582.6},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 19, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"96021989-d7af-44d8-8abd-87c5c09900d0"
 ]
 (* End of Notebook Content *)
 
@@ -337,20 +338,20 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 308, 6, 57, "Input"],
-Cell[869, 28, 1027, 33, 206, "Input"],
-Cell[1899, 63, 383, 11, 57, "Input"],
+Cell[558, 20, 308, 6, 44, "Input",ExpressionUUID->"91cc50ad-c361-4845-8103-23fb8efa9fda"],
+Cell[869, 28, 1027, 33, 124, "Input",ExpressionUUID->"91ad67be-4c19-40c6-b97b-06e4ba2001de"],
+Cell[1899, 63, 383, 11, 44, "Input",ExpressionUUID->"70510874-6495-4cdd-8d17-a06648c50244"],
 Cell[CellGroupData[{
-Cell[2307, 78, 210, 5, 57, "Input"],
-Cell[2520, 85, 134, 3, 57, "Output"]
+Cell[2307, 78, 210, 5, 44, "Input",ExpressionUUID->"7e8a432d-737d-4806-9d9e-41dcff8b3aac"],
+Cell[2520, 85, 134, 3, 32, "Output",ExpressionUUID->"82e9eaf4-f025-42ad-b260-d2886fe654ab"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[2691, 93, 260, 6, 57, "Input"],
-Cell[2954, 101, 6431, 121, 129, "Output"]
+Cell[2691, 93, 260, 6, 44, "Input",ExpressionUUID->"a6595ca7-6f90-4079-a101-349f6cd1d49a"],
+Cell[2954, 101, 6431, 121, 69, "Output",ExpressionUUID->"80638660-bb15-4a63-b554-ab7a69221316"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[9422, 227, 3571, 76, 576, "Input"],
-Cell[12996, 305, 933, 14, 57, "Output"]
+Cell[9422, 227, 3618, 77, 383, "Input",ExpressionUUID->"0a3fb2c6-bda4-4752-9929-484f04836e4e"],
+Cell[13043, 306, 933, 14, 32, "Output",ExpressionUUID->"6d990845-45b6-41cb-b954-ac1c83bd7472"]
 }, Open  ]]
 }
 ]

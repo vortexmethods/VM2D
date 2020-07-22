@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */
 
 
@@ -47,6 +47,7 @@
 #include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -158,9 +159,7 @@ void BoundaryConstLayerAver::FillIQFromOther(const Boundary& otherBoundary, std:
 void BoundaryConstLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
 {	
 	std::vector<Point2D> selfVelo;
-
-	size_t np = afl.getNumberOfPanels();
-
+	
 	int id = W.getParallel().myidWork;
 
 	VMlib::parProp par = W.getParallel().SplitMPI(pointsDb.vtx.size());
@@ -265,9 +264,12 @@ void BoundaryConstLayerAver::GPUCalcConvVelocityToSetOfPointsFromSheets(const Wa
 
 		//Явная синхронизация слоев не нужна, т.к. она выполняется в Gpu::RefreshAfls() 
 		if (npt > 0)
-		{			
+		{
+			//double tt1 = omp_get_wtime();
 			cuCalculateConvVeloWakeFromVirtual(par.myDisp, par.myLen, dev_ptr_pt, npnl, dev_ptr_r, dev_ptr_freeVortexSheet, dev_ptr_attachedVortexSheet, dev_ptr_attachedSourceSheet, dev_ptr_vel, eps2);
-		
+			//double tt2 = omp_get_wtime();
+			//std::cout << "SHEET: " << tt2 - tt1 << std::endl;
+
 			W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_vel, (double*)&locvel[0]);
 
 			std::vector<Point2D> newV;
@@ -452,7 +454,7 @@ void BoundaryConstLayerAver::GetInfluenceFromVorticesToCurvPanel(size_t panel, c
 	{
 		const Vortex2D& vt = ptr[it];
 		const Point2D& posJ = vt.r();
-		const double& gamJ = vt.g();
+		//const double& gamJ = vt.g();
 		
 		Point2D hiw = posC- posJ;
 		double hiwL = hiw.length();
@@ -469,27 +471,29 @@ void BoundaryConstLayerAver::GetInfluenceFromVorticesToCurvPanel(size_t panel, c
 //Вычисляет влияния набегающего потока на прямолинейную панель для правой части
 void BoundaryConstLayerAver::GetInfluenceFromVInfToRectPanel(std::vector<double>& vInfRhs) const
 {
-	size_t np = afl.getNumberOfPanels();
-	int id = W.getParallel().myidWork;
+	size_t np = afl.getNumberOfPanels();	
 	VMlib::parProp par = W.getParallel().SplitMPI(np);
 	
+	std::vector<double> locVInfRhs(par.myLen);
 
-	vInfRhs.resize(np);
-
-#pragma omp parallel for default(none) shared(vInfRhs, par)
+#pragma omp parallel for default(none) shared(locVInfRhs, par)
 	for (int i = 0; i < par.myLen; ++i)
 	{
-		vInfRhs[par.myDisp + i] = afl.tau[par.myDisp + i] & W.getPassport().physicalProperties.V0();
+		locVInfRhs[i] = afl.tau[par.myDisp + i] & W.getPassport().physicalProperties.V0();
 	}
+
+	if (W.getParallel().myidWork == 0)
+		vInfRhs.resize(np);
+
+	MPI_Gatherv(locVInfRhs.data(), (int)locVInfRhs.size(), MPI_DOUBLE, vInfRhs.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
+
 }// GetInfluenceFromVInfToRectPanel(...)
 
 //Вычисляет влияния набегающего потока на криволинейную панель для правой части
 void BoundaryConstLayerAver::GetInfluenceFromVInfToCurvPanel(std::vector<double>& vInfRhs) const
 {
-	size_t np = afl.getNumberOfPanels();
-	int id = W.getParallel().myidWork;
+	size_t np = afl.getNumberOfPanels();	
 	VMlib::parProp par = W.getParallel().SplitMPI(np);
-
 
 	vInfRhs.resize(np);
 

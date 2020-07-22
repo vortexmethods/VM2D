@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */ 
 
 #include "Velocity2D.h"
@@ -43,12 +43,14 @@
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Wake2D.h"
 #include "WakeDataBase2D.h"
 #include "World2D.h"
 #include "Parallel.h"
 #include "Passport2D.h"
 
+#include "Velocity2DBarnesHut.h"
 using namespace VM2D;
 
 //Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе
@@ -56,34 +58,36 @@ void Velocity::CalcDiffVeloI1I2()
 {	
 	// !!! пелена на пелену
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I1I2))	
-	GPUCalcDiffVeloI1I2ToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);
+	if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
+		GPUCalcDiffVeloI1I2ToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);
+	else
+		CalcDiffVeloI1I2ToWakeFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);
 #else
-	CalcDiffVeloI1I2ToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);
+	CalcDiffVeloI1I2ToWakeFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);	
 #endif
 	
-
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 	{
 		//не нужно, т.к. сделано выше перед началом вычисления скоростей
 		//W.getNonConstBoundary(bou).virtualWake.WakeSynchronize();
 		
-
-		//виртуальные на границе на след
+		
+	//виртуальные на границе на след
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I1I2))				
-		GPUCalcDiffVeloI1I2ToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
+		if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
+			GPUCalcDiffVeloI1I2ToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
+		else
+			CalcDiffVeloI1I2ToWakeFromSheets(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
 #else			
-		CalcDiffVeloI1I2ToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
-#endif		
+		CalcDiffVeloI1I2ToWakeFromSheets(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
+#endif	
 
-
-		// !!! след на виртуальные		
+	// !!! след на виртуальные		
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I1I2))					
 		GPUCalcDiffVeloI1I2ToSetOfPointsFromWake(W.getBoundary(bou).virtualWake, virtualVortexesParams[bou].epsastWake, W.getWake(), virtualVortexesParams[bou].I1, virtualVortexesParams[bou].I2);
 #else
 		CalcDiffVeloI1I2ToSetOfPointsFromWake(W.getBoundary(bou).virtualWake, virtualVortexesParams[bou].epsastWake, W.getWake(), virtualVortexesParams[bou].I1, virtualVortexesParams[bou].I2);
 #endif
-
-		
 		for (size_t targetBou = 0; targetBou < W.getNumberOfBoundary(); ++targetBou)
 		{
 		// виртуальные на виртуальные
@@ -93,6 +97,7 @@ void Velocity::CalcDiffVeloI1I2()
 			CalcDiffVeloI1I2ToSetOfPointsFromSheets(W.getBoundary(targetBou).virtualWake, virtualVortexesParams[targetBou].epsastWake, W.getBoundary(bou), virtualVortexesParams[targetBou].I1, virtualVortexesParams[targetBou].I2);
 #endif	
 		}	
+		
 	} //for bou
 
 	Point2D I2;
@@ -127,9 +132,12 @@ void Velocity::CalcDiffVeloI0I3()
 	for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
 	{
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I0I3))		
-		W.getNonConstAirfoil(afl).GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);
+		if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
+			W.getNonConstAirfoil(afl).GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);
+		else
+			W.getNonConstAirfoil(afl).GetDiffVelocityI0I3ToWakeAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);
 #else
-		W.getNonConstAirfoil(afl).GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);
+		W.getNonConstAirfoil(afl).GetDiffVelocityI0I3ToWakeAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);		
 #endif
 	}	
 
@@ -144,7 +152,6 @@ void Velocity::CalcDiffVeloI0I3()
 			W.getNonConstAirfoil(afl).GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(W.getBoundary(bou).virtualWake, virtualVortexesParams[bou].epsastWake, virtualVortexesParams[bou].I0, virtualVortexesParams[bou].I3);
 #endif			
 	}
-
 	//влияние поверхности
 	Point2D I3;
 	double I0;
@@ -164,7 +171,6 @@ void Velocity::CalcDiffVeloI0I3()
 		if (fabs(I0) > 1.e-8)
 			wakeVortexesParams.diffVelo[vt] += I3 * (1.0 / I0);
 	}
-
 
 	for (size_t targetBou = 0; targetBou < W.getNumberOfBoundary(); ++targetBou)
 		for (size_t vt = 0; vt < virtualVortexesParams[targetBou].diffVelo.size(); ++vt)
@@ -190,8 +196,8 @@ void Velocity::LimitDiffVelo(std::vector<Point2D>& diffVel)
 
 		diffV *= W.getPassport().physicalProperties.nu;
 
-		if (diffV.length() > 1.5*W.getPassport().physicalProperties.vRef)
-			diffV.normalize(1.5*W.getPassport().physicalProperties.vRef);
+		if (diffV.length() > 2.0*W.getPassport().physicalProperties.vRef)
+			diffV.normalize(2.0*W.getPassport().physicalProperties.vRef);
 	}
 }
 
@@ -339,7 +345,6 @@ void Velocity::CalcDiffVeloI1I2ToSetOfPointsFromWake(const WakeDataBase& pointsD
 }//CalcDiffVeloI1I2ToSetOfPointsFromWake(...)
 
 
-
 //Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек
 void Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2)
 {
@@ -451,7 +456,7 @@ void Velocity::GPUCalcDiffVeloI1I2ToSetOfPointsFromWake(const WakeDataBase& poin
 	{
 		size_t npt = pointsDb.vtx.size();
 
-		if ((W.getNumberOfBoundary() > 0) && (&pointsDb == &W.getBoundary(0).virtualWake))			
+		if ((W.getNumberOfBoundary() > 0) && (&pointsDb == &W.getBoundary(0).virtualWake))
 		{
 			for (size_t q = 1; q < W.getNumberOfBoundary(); ++q)
 				npt += W.getBoundary(q).virtualWake.vtx.size();
@@ -481,8 +486,8 @@ void Velocity::GPUCalcDiffVeloI1I2ToSetOfPointsFromWake(const WakeDataBase& poin
 			else
 				cuCalculateDiffVeloWakeMesh(par.myDisp, par.myLen, dev_ptr_pt, nvt, dev_ptr_vt, W.getWake().devMeshPtr, W.getPassport().wakeDiscretizationProperties.epscol, dev_ptr_i1, dev_ptr_i2, dev_ptr_dr);
 
-			W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_i2, (double*)&loci2[0]);
-			W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_i1, &loci1[0]);
+			W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_i2, (double*)&loci2[0], 10);
+			W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_i1, &loci1[0], 11);
 
 			std::vector<Point2D> newI2;
 			std::vector<double> newI1;
@@ -567,8 +572,8 @@ void Velocity::GPUCalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& po
 				//else
 				//	cuCalculateDiffVeloWakeMesh(par.myDisp, par.myLen, dev_ptr_pt, nvt, dev_ptr_vt, W.getWake().devMeshPtr, W.getPassport().wakeDiscretizationProperties.epscol, dev_ptr_i1, dev_ptr_i2, dev_ptr_dr);
 
-				W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_i2, (double*)&loci2[0]);
-				W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_i1, &loci1[0]);
+				W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_i2, (double*)&loci2[0], 12);
+				W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_i1, &loci1[0], 13);
 
 				std::vector<Point2D> newI2;
 				std::vector<double> newI1;

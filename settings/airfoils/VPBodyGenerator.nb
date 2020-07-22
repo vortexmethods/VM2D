@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     20979,        531]
-NotebookOptionsPosition[     19284,        496]
-NotebookOutlinePosition[     19661,        512]
-CellTagsIndexPosition[     19618,        509]
+NotebookDataLength[     21054,        532]
+NotebookOptionsPosition[     19336,        497]
+NotebookOutlinePosition[     19737,        513]
+CellTagsIndexPosition[     19694,        510]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -349,7 +349,7 @@ yPp1xt4fUdr7J3m/ytj7L+EK/g9r+ovc
   GridLinesStyle->Directive[
     GrayLevel[0.5, 0.4]],
   ImagePadding->All,
-  ImageSize->{313.999999999999, Automatic},
+  ImageSize->{99.7999999999991, Automatic},
   Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
         (Identity[#]& )[
          Part[#, 1]], 
@@ -411,8 +411,8 @@ Cell[BoxData[
      RowBox[{
      "\"\</*--------------------------------*- VM2D \
 -*-----------------*---------------*\\\\\n| ##  ## ##   ##  ####  #####   |   \
-                         | Version 1.8    |\n| ##  ## ### ### ##  ## ##  ##  \
-|  VM2D: Vortex Method       | 2020/03/09     |\n| ##  ## ## # ##    ##  ##  \
+                         | Version 1.9    |\n| ##  ## ### ### ##  ## ##  ##  \
+|  VM2D: Vortex Method       | 2020/07/22     |\n| ##  ## ## # ##    ##  ##  \
 ##  |  for 2D Flow Simulation    *----------------*\n|  ####  ##   ##   ##   \
 ##  ##  |  Open Source Code                           |\n|   ##   ##   ## \
 ###### #####   |  https://www.github.com/vortexmethods/VM2D  |\n|             \
@@ -478,8 +478,9 @@ Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |\
    3.7580353132933207`*^9}, 3.759160155176564*^9, {3.778818433637988*^9, 
    3.778818559215254*^9}, {3.7788210027744555`*^9, 3.778821016327162*^9}, {
    3.7788210689587264`*^9, 3.7788211226168504`*^9}, {3.778821159615019*^9, 
-   3.7788211690824013`*^9}, {3.7788212182570515`*^9, 
-   3.778821220552831*^9}},ExpressionUUID->"26dcfe40-3157-4844-88c8-\
+   3.7788211690824013`*^9}, {3.7788212182570515`*^9, 3.778821220552831*^9}, {
+   3.804392789866784*^9, 
+   3.8043927951418543`*^9}},ExpressionUUID->"26dcfe40-3157-4844-88c8-\
 3ab5287dcb65"],
 
 Cell[BoxData["\<\"pointsVP\"\>"], "Output",
@@ -494,11 +495,11 @@ Cell[BoxData["\<\"pointsVP\"\>"], "Output",
 39295436156f"]
 }, Open  ]]
 },
-WindowSize->{1920, 988},
-WindowMargins->{{-4, Automatic}, {Automatic, 0}},
-Magnification:>1.5 Inherited,
-FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (September 10, 2017)",
-StyleDefinitions->"Default.nb"
+WindowSize->{1141.2, 574.8},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 19, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"759392cd-58af-414f-9b42-ce6e413296f9"
 ]
 (* End of Notebook Content *)
 
@@ -511,27 +512,27 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 253, 4, 43, "Input",ExpressionUUID->"821a9b89-bcb6-441a-b3f6-a2601e888598"],
-Cell[814, 26, 1825, 49, 316, "Input",ExpressionUUID->"ac8c1d64-df1f-4241-a81b-8ddcaccfe461"],
-Cell[2642, 77, 2145, 59, 112, "Input",ExpressionUUID->"a5ecb9f6-f352-4420-ab4b-35b18b0018ad"],
-Cell[4790, 138, 2355, 66, 197, "Input",ExpressionUUID->"41cefec6-1266-4d1e-925b-1d2231955484"],
+Cell[558, 20, 253, 4, 28, "Input",ExpressionUUID->"821a9b89-bcb6-441a-b3f6-a2601e888598"],
+Cell[814, 26, 1825, 49, 260, "Input",ExpressionUUID->"ac8c1d64-df1f-4241-a81b-8ddcaccfe461"],
+Cell[2642, 77, 2145, 59, 73, "Input",ExpressionUUID->"a5ecb9f6-f352-4420-ab4b-35b18b0018ad"],
+Cell[4790, 138, 2355, 66, 125, "Input",ExpressionUUID->"41cefec6-1266-4d1e-925b-1d2231955484"],
 Cell[CellGroupData[{
-Cell[7170, 208, 264, 6, 43, "Input",ExpressionUUID->"68b537da-de87-4f1c-bbae-1bb135ac35a3"],
-Cell[7437, 216, 1642, 42, 674, "Output",ExpressionUUID->"e7a9d941-0b5e-42ea-80da-97c25e8d3279"]
+Cell[7170, 208, 264, 6, 44, "Input",ExpressionUUID->"68b537da-de87-4f1c-bbae-1bb135ac35a3"],
+Cell[7437, 216, 1642, 42, 449, "Output",ExpressionUUID->"e7a9d941-0b5e-42ea-80da-97c25e8d3279"]
 }, Open  ]],
-Cell[9094, 261, 812, 23, 43, "Input",ExpressionUUID->"0e4413e5-123b-4ada-a7dd-4beecace1767"],
+Cell[9094, 261, 812, 23, 44, "Input",ExpressionUUID->"0e4413e5-123b-4ada-a7dd-4beecace1767"],
 Cell[CellGroupData[{
-Cell[9931, 288, 267, 6, 43, "Input",ExpressionUUID->"3682115b-db96-4ae6-a30e-d68a0e8e7fd5"],
-Cell[10201, 296, 3785, 78, 5017, "Output",ExpressionUUID->"f038c710-09ca-4608-8890-cd42675406c5"]
+Cell[9931, 288, 267, 6, 44, "Input",ExpressionUUID->"3682115b-db96-4ae6-a30e-d68a0e8e7fd5"],
+Cell[10201, 296, 3785, 78, 1063, "Output",ExpressionUUID->"f038c710-09ca-4608-8890-cd42675406c5"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[14023, 379, 313, 6, 43, "Input",ExpressionUUID->"0f353afa-f705-40d9-8547-12bb8e6efed7"],
-Cell[14339, 387, 205, 4, 49, "Output",ExpressionUUID->"17c0ba95-b3a5-4c5c-9c1f-9b2b3f9e1710"]
+Cell[14023, 379, 313, 6, 44, "Input",ExpressionUUID->"0f353afa-f705-40d9-8547-12bb8e6efed7"],
+Cell[14339, 387, 205, 4, 32, "Output",ExpressionUUID->"17c0ba95-b3a5-4c5c-9c1f-9b2b3f9e1710"]
 }, Open  ]],
-Cell[14559, 394, 304, 7, 43, "Input",ExpressionUUID->"8a08c970-9344-488e-9d06-8b79edbf2af6"],
+Cell[14559, 394, 304, 7, 44, "Input",ExpressionUUID->"8a08c970-9344-488e-9d06-8b79edbf2af6"],
 Cell[CellGroupData[{
-Cell[14888, 405, 3809, 77, 624, "Input",ExpressionUUID->"26dcfe40-3157-4844-88c8-3ab5287dcb65"],
-Cell[18700, 484, 568, 9, 49, "Output",ExpressionUUID->"1a042695-0436-4137-9836-39295436156f"]
+Cell[14888, 405, 3861, 78, 552, "Input",ExpressionUUID->"26dcfe40-3157-4844-88c8-3ab5287dcb65"],
+Cell[18752, 485, 568, 9, 33, "Output",ExpressionUUID->"1a042695-0436-4137-9836-39295436156f"]
 }, Open  ]]
 }
 ]

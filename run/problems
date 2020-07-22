@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -14,15 +14,15 @@
 problems = 
 {
 circle200,
-//cylPlate(),
-//rectNuriev(),
-//boatNuriev(),
 //blasius(np=4),
+//blasius5k,
+//cylPlate(),
 //twoCircle(np=1),
 //twoCircleRut1(np=1),
 //tube(np=1),
+//squareGivenLaw,
 //oscilCircle(np=4, m=1.0, sh=0.2),
-//rotor(np=4, J=10.0, k=0.0, Mz=0.0, tRotateAccel=0.1, tMomentAccel=0.1),
+//rotor(),
 
 //wing00(angle=0.0, copyPspFile="wingBase/passport"),
 //wing02(angle=2.0, copyPspFile="wingBase/passport"),

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8
-\date 9 марта 2020 г.
+\version 1.9
+\date 22 июля 2020 г.
 */
 
 
@@ -42,9 +42,7 @@
 
 #include "Point2D.h"
 #include "Vortex2D.h"
-
-/// Класс перечисления для определения типа набора точек (пелена/виртуальные вихри/точки для вычисления скорости и давления)
-enum class PointType { wake, wakeVP, sheetGam, sourceWake, source };
+#include "defs.h"
 
 namespace PointsCopy_iterator
 {
@@ -52,7 +50,6 @@ namespace PointsCopy_iterator
 	struct all_copy;
 	struct all_iterator;
 }
-
 namespace VM2D
 {
 	/*!
@@ -60,15 +57,15 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.8
-	\date 09 марта 2020 г.
+	\version 1.9
+	\date 22 июля 2020 г.
 	*/
-	class PointsCopy
-	{
+class PointsCopy
+{
 	public:
 		/// Список из самих объектов, приведенных к типу Vortex2D 
 		std::vector<Vortex2D> vtx;
-
+		
 		///\brief Список из пар значений - номер рассматриваемого профиля и номер панели на нем
 		/// Для wake, sourceWake или wakeVP не задается 
 		std::vector<std::pair<int, int>> aflPnl;
@@ -108,7 +105,7 @@ namespace PointsCopy_iterator
 		all_reference() = delete;
 		all_reference(all_reference const&) = default;
 		all_reference(Vortex2D& _vtx, std::pair<int, int>& _aflPnl, int& _num) : vtx(_vtx), aflPnl(_aflPnl), num(_num) {};
-
+		
 		~all_reference() = default;
 
 		all_reference(all_reference&& other) = default;
@@ -139,11 +136,11 @@ namespace PointsCopy_iterator
 		Vortex2D vtx;
 		std::pair<int, int> aflPnl;
 		int num;
-
+		
 		all_copy(all_reference const& ptr) : vtx(ptr.vtx), aflPnl(ptr.aflPnl), num(ptr.num) {};
 		all_copy(all_reference&& ptr) : vtx(std::move(ptr.vtx)), aflPnl(std::move(ptr.aflPnl)), num(std::move(ptr.num)) {};
-
-
+		
+	
 	};
 
 	struct all_iterator : public std::iterator< std::random_access_iterator_tag, all_copy >
@@ -158,15 +155,15 @@ namespace PointsCopy_iterator
 
 	public:
 		all_iterator(ItVtx _iVtx, ItAflPnl _iAflPnl, ItNum _iNum) : iVtx(_iVtx), iAflPnl(_iAflPnl), iNum(_iNum) {};
-
-		all_iterator(all_iterator const&) = default;
+		
+		all_iterator(all_iterator const&) = default;            
 		all_iterator& operator= (all_iterator const&) = default;
 		~all_iterator() = default;
 
 		using reference = all_reference;
 		using pointer = all_reference;
 
-		void swap(all_iterator& other)
+		void swap(all_iterator& other)                          
 		{
 			std::swap(iVtx, other.iVtx);
 			std::swap(iAflPnl, other.iAflPnl);
@@ -178,7 +175,7 @@ namespace PointsCopy_iterator
 			return { *iVtx, *iAflPnl, *iNum };
 		}
 
-		all_reference const operator* () const
+		all_reference const operator* () const 
 		{
 			return { *iVtx, *iAflPnl, *iNum };
 		}
@@ -193,14 +190,14 @@ namespace PointsCopy_iterator
 			return { *iVtx, *iAflPnl, *iNum };
 		}
 
-		bool operator==(all_iterator const& other) const
+		bool operator==(all_iterator const& other) const        
 		{
-			return iVtx == other.iVtx;
+			return iVtx  == other.iVtx;  
 		}
 
-		bool operator!=(all_iterator const& other) const
+		bool operator!=(all_iterator const& other) const        
 		{
-			return iVtx != other.iVtx;
+			return iVtx != other.iVtx; 
 		}
 
 		all_iterator& operator++()
@@ -218,7 +215,7 @@ namespace PointsCopy_iterator
 			return temp;
 		}
 
-		all_iterator() = default;
+		all_iterator() = default;                            
 
 		all_iterator& operator--()                              // --r
 		{
@@ -233,7 +230,7 @@ namespace PointsCopy_iterator
 			--(*this);
 			return temp;
 		}
-
+		
 		all_iterator& operator+=(difference_type p)             // r += n
 		{
 			iVtx += p;
@@ -248,7 +245,7 @@ namespace PointsCopy_iterator
 			temp += p;
 			return temp;
 		}
-
+		
 		friend all_iterator operator+(difference_type p, all_iterator temp)         // n + a
 		{
 			temp += p;
@@ -271,7 +268,7 @@ namespace PointsCopy_iterator
 
 		difference_type operator-(all_iterator const& p) const       // b - a
 		{
-			return iVtx - p.iVtx;
+			return iVtx - p.iVtx;  
 		}
 
 		all_reference operator[](difference_type p)             // a[n]
@@ -285,19 +282,19 @@ namespace PointsCopy_iterator
 
 		bool operator<(all_iterator const& p) const             // a < b
 		{
-			return iVtx < p.iVtx;
+			return iVtx < p.iVtx;   
 		}
 		bool operator>(all_iterator const& p) const             // a > b
 		{
-			return iVtx > p.iVtx;
+			return iVtx > p.iVtx;   
 		}
 		bool operator>=(all_iterator const& p) const            // a >= b
 		{
-			return iVtx >= p.iVtx;
+			return iVtx >= p.iVtx; 
 		}
 		bool operator<=(all_iterator const& p) const            // a >= b
 		{
-			return iVtx <= p.iVtx;
+			return iVtx <= p.iVtx;  
 		}
 
 		const Vortex2D& getVtx() const
@@ -330,9 +327,5 @@ namespace PointsCopy_iterator
 	bool LessYcc(all_copy const& lhs, all_copy const& rhs);
 }
 
-
-
-
 using VM2D::PointsCopy;
-
 #endif

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */
 
 #include "Airfoil2D.h"
@@ -44,6 +44,7 @@
 #include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "WakeDataBase2D.h"
 #include "World2D.h"
@@ -80,28 +81,29 @@ bool Airfoil::isOutsideGabarits(const Point2D& r) const
 
 //Вычисление средних значений eps на панелях
 void Airfoil::calcMeanEpsOverPanel()
-{
-
+{	
 	meanEpsOverPanel.clear();
 	meanEpsOverPanel.resize(getNumberOfPanels());
 
-	double midEps;
-		
-	const Boundary& bnd = W.getBoundary(numberInPassport);
-	auto vtxBegin = bnd.vortexBeginEnd[0].first;
-	auto virtVortParams = W.getVelocity().virtualVortexesParams[numberInPassport];
-
-	for (size_t i = 0; i < getNumberOfPanels(); ++i)
+	if (W.getParallel().myidWork == 0)
 	{
-		midEps = 0.0;
+		double midEps;
 
-		for (int j = bnd.vortexBeginEnd[i].first; j < bnd.vortexBeginEnd[i].second;  ++j)
+		const Boundary& bnd = W.getBoundary(numberInPassport);
+		VortexesParams virtVortParams = W.getVelocity().virtualVortexesParams[numberInPassport];
+				
+		for (size_t i = 0; i < getNumberOfPanels(); ++i)
 		{
-			midEps += virtVortParams.epsastWake[j];
+			midEps = 0.0;
+
+			for (int j = bnd.vortexBeginEnd[i].first; j < bnd.vortexBeginEnd[i].second; ++j)
+				midEps += virtVortParams.epsastWake[j];
+			
+			midEps /= (bnd.vortexBeginEnd[i].second - bnd.vortexBeginEnd[i].first);
+
+			meanEpsOverPanel[i] = midEps;
 		}
-		midEps /= (bnd.vortexBeginEnd[i].second - bnd.vortexBeginEnd[i].first);
+	}//if id==0
 
-		meanEpsOverPanel[i] = midEps;
-	}
-
+	MPI_Bcast(meanEpsOverPanel.data(), (int)meanEpsOverPanel.size(), MPI_DOUBLE, 0, W.getParallel().commWork);
 }

@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8
-\date 09 марта 2020 г.
+\version 1.9
+\date 22 июля 2020 г.
 */
 
 #ifndef CELL_H
@@ -56,8 +56,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.8
-	\date 09 марта 2020 г.
+	\version 1.9
+	\date 22 июля 2020 г.
 	*/
 	class Cell
 	{
@@ -110,12 +110,13 @@ namespace VM2D
 		///
 		/// Включает в себя построение корня дерева на основе заданных вихрей
 		/// \param[in] Tree_ ссылка на дерево целиком
-		/// \param[in] pointsCopy ссылка на элементы, на основе которых строится прямоугольник
-		Cell(Tree& Tree_, PointsCopy& pointsCopy);
+		Cell(Tree& Tree_);
 		Cell(Tree& Tree_, const Point2D leftDown_, const Point2D rightUp_);
 
 		/// Деструктор
 		virtual ~Cell();
+
+		void CreateRootCell(PointsCopy& pointsCopy);
 
 		///  \brief Построение иерархической структуры ячеек (дерева)
 		///
@@ -144,6 +145,8 @@ namespace VM2D
 		/// \param[in] infCell указатель на влияющую ячейку (при первом витке рекурсии передается rootCell, затем - ее потомки)
 		/// \param[in] calcCoef = true, если нужно считать коэффициенты a,b,c,d (не нужно только для виртуальных вихрей)
 		void CalcABCDandCloseCellsToLowLevel(Cell& infCell, bool calcCoef);
+		
+		void CalcCloseZone(Cell& infCell, double distance);
 
 		/// Расчет конвективных скоростей вихрей внутри одной ячейки от вихрей внутри всех ближних ячеек
 		///
@@ -185,6 +188,16 @@ namespace VM2D
 		///
 		/// \param[in] it итератор на конкретный элемент, на который рассчитывается влияние
 		void CalcInfluenceFromSourceFarCells(PointsCopy::iterator it);
+
+		Point2D GetR() const
+		{
+			return 0.5 * (rightUp + leftDown);
+		};
+
+		Point2D GetDiag() const
+		{
+			return rightUp - leftDown;
+		};
 
 		void PrintTree();
 	};

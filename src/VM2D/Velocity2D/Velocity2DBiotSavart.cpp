@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8   
-\date 09 марта 2020 г.
+\version 1.9   
+\date 22 июля 2020 г.
 */
 
 #include "Velocity2DBiotSavart.h"
@@ -45,6 +45,7 @@
 #include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
 
@@ -67,14 +68,14 @@ VelocityBiotSavart::~VelocityBiotSavart()
 void VelocityBiotSavart::CalcConvVelo()
 {
 	//double tt1 = omp_get_wtime();
-
+	
 	W.getTimestat().timeCalcVortexConvVelo.first += omp_get_wtime();
-#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_CONV_TOWAKE))
-	GPUCalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_CONV_TOWAKE))	
+	GPUCalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);	
 #else
 	CalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
 #endif
-
+		
 	//double tt2 = omp_get_wtime();
 
 	std::vector<Point2D> nullVector(0);
@@ -87,13 +88,12 @@ void VelocityBiotSavart::CalcConvVelo()
 		CalcConvVeloToSetOfPointsFromWake(W.getBoundary(bou).virtualWake, nullVector, virtualVortexesParams[bou].epsastWake, false, true);
 #endif
 	}
-
+	
 	//double tt3 = omp_get_wtime();
 
 //вычисление конвективных скоростей по закону Био-Савара от виртуальных вихрей
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 	{
-
 		//Влияние на пелену от виртуальных вихрей
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_CONVVIRT))
 		W.getBoundary(bou).GPUCalcConvVelocityToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.convVelo);
@@ -101,7 +101,7 @@ void VelocityBiotSavart::CalcConvVelo()
 		W.getBoundary(bou).CalcConvVelocityToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.convVelo);
 #endif
 	}
-	
+		
 	//double tt4 = omp_get_wtime();
 
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
@@ -115,13 +115,12 @@ void VelocityBiotSavart::CalcConvVelo()
 	//std::cout << tt2 - tt1 << " " << tt3 - tt2 << " " << tt4 - tt3 << " " << tt5 - tt4 << std::endl;
 
 	W.getTimestat().timeCalcVortexConvVelo.second += omp_get_wtime();
-
-
+	
 	W.getTimestat().timeVP.first += omp_get_wtime();
 	//вычисление скоростей в заданных точках только на соответствующем шаге по времени
 	if ((W.getPassport().timeDiscretizationProperties.saveVP > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVP)))
 		CalcVeloToWakeVP();	
-	W.getTimestat().timeVP.second += omp_get_wtime();
+	W.getTimestat().timeVP.second += omp_get_wtime();	
 }//CalcConvVelo()
 
 //Вычисление конвективных скоростей вихрей в точках wakeVP
@@ -138,8 +137,7 @@ void VelocityBiotSavart::CalcVeloToWakeVP()
 	velConvBou.resize(W.getNumberOfBoundary());
 	for (size_t i = 0; i < W.getNumberOfBoundary(); ++i)
 		velConvBou[i].resize(addWSize, { 0.0, 0.0 });	   
-
-	
+		
 #if (defined(USE_CUDA))
 		W.getNonConstCuda().RefreshVP();
 #endif
@@ -150,16 +148,12 @@ void VelocityBiotSavart::CalcVeloToWakeVP()
 		CalcConvVeloToSetOfPointsFromWake(W.getMeasureVP().getWakeVP(), velConvWake, W.getNonConstMeasureVP().getNonConstDomainRadius(), true, false);
 #endif			   
 
-
 		for (size_t i = 0; i < W.getNumberOfBoundary(); ++i)
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_VP))		
 			W.getNonConstBoundary(i).GPUCalcConvVelocityToSetOfPointsFromSheets(W.getMeasureVP().getWakeVP(), velConvBou[i]);
 #else
 			W.getNonConstBoundary(i).CalcConvVelocityToSetOfPointsFromSheets(W.getMeasureVP().getWakeVP(), velConvBou[i]);
 #endif			   
-	
-	
-
 
 	if (W.getParallel().myidWork == 0)
 	{
@@ -173,7 +167,6 @@ void VelocityBiotSavart::CalcVeloToWakeVP()
 			for (int j = 0; j < addWSize; ++j)
 				velocityRef[j] += velConvBou[bou][j];
 	}
-
 }// CalcVeloToWakeVP()
  
 inline void ModifyE2(double* ee2, double dst2)
@@ -234,7 +227,7 @@ void VelocityBiotSavart::CalcConvVeloToSetOfPointsFromWake(const WakeDataBase& p
 	double dst2eps, dst2;	
 #pragma warning (pop)
 
-	const double eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
+	double eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
 	
 	if (calcVelo)
 	{
@@ -372,7 +365,7 @@ void VelocityBiotSavart::CalcConvVeloToSetOfPointsFromWake(const WakeDataBase& p
 void VelocityBiotSavart::GPUCalcConvVeloToSetOfPointsFromWake(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool calcVelo, bool calcRadius)
 {	
 	if ((&pointsDb == &W.getWake()) || (&pointsDb == &W.getBoundary(0).virtualWake) || (&pointsDb == &W.getMeasureVP().getWakeVP()))
-	{
+	{		
 		size_t npt = pointsDb.vtx.size();
 		double*& dev_ptr_pt = pointsDb.devVtxPtr;
 
@@ -381,16 +374,15 @@ void VelocityBiotSavart::GPUCalcConvVeloToSetOfPointsFromWake(const WakeDataBase
 			for (size_t q = 1; q < W.getNumberOfBoundary(); ++q)
 			npt += W.getBoundary(q).virtualWake.vtx.size();
 		}
-
+		
 		const size_t nvt = W.getWake().vtx.size();
 		double*& dev_ptr_vt = W.getWake().devVtxPtr;
 		const size_t nsr = W.getSource().vtx.size();
 		double*& dev_ptr_sr = W.getSource().devVtxPtr;
 		const size_t nbou = W.getNumberOfBoundary();
 
-		size_t* const& dev_nPanels = W.getCuda().dev_ptr_nPanels;
+		//size_t* const& dev_nPanels = W.getCuda().dev_ptr_nPanels;
 		size_t* const& dev_nVortices = W.getCuda().dev_ptr_nVortices;
-
 
 		double** const& dev_ptr_ptr_vtx = W.getCuda().dev_ptr_ptr_vtx;
 
@@ -406,20 +398,20 @@ void VelocityBiotSavart::GPUCalcConvVeloToSetOfPointsFromWake(const WakeDataBase
 
 		const int& id = W.getParallel().myidWork;
 		VMlib::parProp par = W.getParallel().SplitMPI(npt, true);
-
+		
 		if (npt > 0)
 		{
 			//double t1 = omp_get_wtime();
 			cuCalculateConvVeloWake(par.myDisp, par.myLen, dev_ptr_pt, nvt, dev_ptr_vt, nsr, dev_ptr_sr, nbou, dev_nVortices, dev_ptr_ptr_vtx, dev_ptr_vel, dev_ptr_rad, eps2, calcVelo, calcRadius);
 			//double t2 = omp_get_wtime();
 			//std::cout << "KERNEL_TIME = " << t2 - t1 << std::endl;
-
+			
 			if (calcVelo)
 			{
 				//double tt1 = omp_get_wtime();
 				
-				W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_vel, (double*)&locvel[0]);
-				
+				W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_vel, (double*)&locvel[0], 20);
+			
 				//double tt2 = omp_get_wtime();
 				//std::cout << "COPY_TIME = " << tt2 - tt1 << std::endl;
 				
@@ -432,7 +424,7 @@ void VelocityBiotSavart::GPUCalcConvVeloToSetOfPointsFromWake(const WakeDataBase
 				if (id == 0)
 					for (size_t q = 0; q < npt; ++q)
 						Vel[q] = newV[q];
-
+				
 				if (id == 0)
 					if ((&pointsDb == &W.getWake()) || (&pointsDb == &W.getMeasureVP().getWakeVP()))
 					{
@@ -445,8 +437,8 @@ void VelocityBiotSavart::GPUCalcConvVeloToSetOfPointsFromWake(const WakeDataBase
 					{
 						//Сюда в принципе не должно быть попадания
 						exit(123);
-					}//if &pointsDb
-				
+					}//if &pointsDb				
+
 				//double tt4 = omp_get_wtime();
 				//std::cout << "GATHER_TIME = " << tt4 - tt3 << std::endl;
 
@@ -456,7 +448,7 @@ void VelocityBiotSavart::GPUCalcConvVeloToSetOfPointsFromWake(const WakeDataBase
 
 			if (calcRadius)
 			{
-				W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_rad, &locrad[0]);
+				W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_rad, &locrad[0], 21);
 				Rad.resize(par.totalLen);
 				MPI_Allgatherv(locrad.data(), par.myLen, MPI_DOUBLE, Rad.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, W.getParallel().commWork);
 
@@ -512,7 +504,7 @@ void VelocityBiotSavart::GetWakeInfluenceToRhs(const Airfoil& afl, std::vector<d
 	//локальные переменные для цикла	
 	std::vector<double> velI(shDim, 0.0);
 
-#pragma omp parallel for default(none) shared(locVeloWake, par, shDim, afl, locVeloWakeLin) private(velI)
+#pragma omp parallel for default(none) shared(locVeloWake, par, shDim, afl, locVeloWakeLin, IDPI) private(velI)
 	for (int i = 0; i < par.myLen; ++i)
 	{
 		velI.assign(shDim, 0.0);
@@ -576,7 +568,7 @@ void VelocityBiotSavart::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vecto
 		{
 			cuCalculateRhs(par.myDisp, par.myLen, nTotPan, dev_ptr_pt, nvt, dev_ptr_vt, nsr, dev_ptr_sr, dev_ptr_rhs);
 
-			W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_rhs, (double*)&locrhs[0]);
+			W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_rhs, (double*)&locrhs[0], 22);
 				
 			std::vector<double> newRhs;
 			if (id == 0)
@@ -586,6 +578,10 @@ void VelocityBiotSavart::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vecto
 
 			if (id == 0)
 			{
+
+				//for (int qq = 0; qq < (int)newRhs.size(); ++qq)
+				//	std::cout << "qq = " << qq << ", " << newRhs[qq] << std::endl;
+
 				size_t curGlobPnl = 0;
 				for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
 				{
@@ -598,7 +594,8 @@ void VelocityBiotSavart::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vecto
 			}
 		}
 	}
-	
+
+
 	if (id == 0)
 	{
 		if ((nvt > 0) || (nsr > 0))
@@ -653,7 +650,7 @@ void VelocityBiotSavart::FillRhs(Eigen::VectorXd& rhs) const
 	shared(locRhs, afl, bou, wakeRhs, vInfRhs, np) \
 	schedule(dynamic, DYN_SCHEDULE)
 			for (int i = 0; i < (int)afl.getNumberOfPanels(); ++i)
-			{
+			{			
 				/// \todo ВАЖНО!!!
 				//Здесь учет скорости профиля и присоединенных слоев источников сделан только для прямолинейных панелей
 				locRhs(i) = - vInfRhs[i] - wakeRhs[i] + 0.25 * ((afl.getV(i) + afl.getV(i + 1)) & afl.tau[i]); //0.25 * (afl.getV(i) + afl.getV(i + 1))*afl.tau[i] - прямолинейные
@@ -698,3 +695,13 @@ void VelocityBiotSavart::FillRhs(Eigen::VectorXd& rhs) const
 
 	}// for bou
 }
+
+void VelocityBiotSavart::CalcDiffVeloI1I2ToWakeFromWake(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2)
+{
+	CalcDiffVeloI1I2ToSetOfPointsFromWake(pointsDb, domainRadius, vorticesDb, I1, I2);
+}//CalcDiffVeloI1I2ToWakeFromWake(...)
+
+void VelocityBiotSavart::CalcDiffVeloI1I2ToWakeFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2)
+{
+	CalcDiffVeloI1I2ToSetOfPointsFromSheets(pointsDb, domainRadius, bnd, I1, I2);
+}//CalcDiffVeloI1I2ToWakeFromSheets(...)

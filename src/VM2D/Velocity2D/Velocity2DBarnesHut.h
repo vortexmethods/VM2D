@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8
-\date 09 марта 2020 г.
+\version 1.9
+\date 22 июля 2020 г.
 */
 
 #ifndef VELOCITY2DBARNESHUT_H
@@ -58,8 +58,8 @@ namespace VM2D
 	\author Кузьмина Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.8
-	\date 09 марта 2020 г.
+	\version 1.9
+	\date 22 июля 2020 г.
 	*/
 	class VelocityBarnesHut : public Velocity
 	{
@@ -70,7 +70,7 @@ namespace VM2D
 		/// pointsCopyVP - в которых считается скорость и давление,	
 		/// sheetsGamCopy - маркеров для вихревых слоев,
 		/// sourcesCopy -  источников в области течения + маркеры для присоединенного слоя источников
-		PointsCopy pointsCopyWake, pointsCopyVP, sheetsGamCopy, sourcesCopy;
+		//PointsCopy pointsCopyWake, pointsCopyVP, sheetsGamCopy, sourcesCopy;
 
 	public:		
 
@@ -79,7 +79,7 @@ namespace VM2D
 		/// treeVP - точки, в которых считается скорость и давление, 
 		/// treeSheetsGam - маркеры для вихревых слоев,
 		/// treeSources - источники в области течения + маркеры для присоединенного слоя источников 
-		std::unique_ptr<Tree> treeWake, treeVP, treeSheetsGam, treeSources;
+		//std::unique_ptr<Tree> treeWake, treeVP, treeSheetsGam, treeSources;
 
 		/// \brief Конструктор
 		/// 
@@ -89,26 +89,7 @@ namespace VM2D
 		/// Деструктор
 		virtual ~VelocityBarnesHut();
 
-		/// \brief Создание копии данных для точек (для сортировки) 
-		///
-		/// Используется для массивов pointsCopyVP и pointsCopyWake
-		///
-		/// \param[out] pointsCopy вектор из указателей на массив точек (заполняется)
-		/// \param[in] points массив точек, указатели на которые необходимо запомнить
-		/// \param[in] type тип массива точек (wake, sourceWake или wakeVP)
-		void CreatePointsCopy(PointsCopy& pointsCopy, const WakeDataBase& points, const PointType type);
-
-		/// \brief Создание массива указателей на массив точек (для сортировки)
-		///
-		/// Используется для массива sheetsCopy
-		///
-		void CreateSheetsCopy(PointsCopy& pointsCopy, const PointType type);
-
-		/// Построение дерева treeWake и расчет его параметров
-		void BuildTrees(PointType type);
-
 		//реализация виртуальных функций
-		virtual void Initialization() override;
 		virtual void CalcConvVelo() override;
 		virtual void FillRhs(Eigen::VectorXd& rhs) const override;
 
@@ -124,10 +105,13 @@ namespace VM2D
 		/// \warning Использует OMP, MPI
 		/// \ingroup Parallel
 		void GetWakeInfluenceToRhs(std::vector<double>& wakeRhs) const;
+
+		void GetWakeInfluenceToRhsBS(const Airfoil& afl, std::vector<double>& wakeRhs) const;
 #if defined(USE_CUDA)
 		void GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeRhs) const;
 #endif
-
+		void CalcDiffVeloI1I2ToWakeFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2) override;
+		void CalcDiffVeloI1I2ToWakeFromWake(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2) override;
 	};
 
 

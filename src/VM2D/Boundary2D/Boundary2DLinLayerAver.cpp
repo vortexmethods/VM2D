@@ -1,6 +1,6 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.8    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/03/09     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
@@ -16,7 +16,7 @@
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VM is distributed in the hope that it will be useful, but WITHOUT           |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Кузьмина Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.8
-\date 09 марта 2020 г.
+\version 1.9
+\date 22 июля 2020 г.
 */
 
 
@@ -47,6 +47,7 @@
 #include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
+#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -176,7 +177,7 @@ void BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDat
 {
 	std::vector<Point2D> selfVelo;
 
-	size_t np = afl.getNumberOfPanels();
+	//size_t np = afl.getNumberOfPanels();
 
 	int id = W.getParallel().myidWork;
 
@@ -287,11 +288,6 @@ void BoundaryLinLayerAver::GPUCalcConvVelocityToSetOfPointsFromSheets(const Wake
 	VMlib::parProp par = W.getParallel().SplitMPI(npt, true);
 
 	//Явная синхронизация слоев не нужна, т.к. она выполняется в Gpu::RefreshAfls() 
-
-	double tCUDASTART = 0.0, tCUDAEND = 0.0;
-
-	tCUDASTART = omp_get_wtime();
-
 	if (npt > 0)
 	{
 		cuCalculateConvVeloWakeFromVirtual(par.myDisp, par.myLen, dev_ptr_pt, npnl, dev_ptr_r, dev_ptr_freeVortexSheet, dev_ptr_attachedVortexSheet, dev_ptr_attachedSourceSheet, dev_ptr_vel, eps2);
@@ -472,7 +468,7 @@ void BoundaryLinLayerAver::GetInfluenceFromVortexSheetAtRectPanelToVortex(size_t
 void BoundaryLinLayerAver::GetInfluenceFromVInfToRectPanel(std::vector<double>& vInfRhs) const
 {
 	size_t np = afl.getNumberOfPanels();
-	int id = W.getParallel().myidWork;
+	//int id = W.getParallel().myidWork;
 	VMlib::parProp par = W.getParallel().SplitMPI(np);
 
 
@@ -491,7 +487,7 @@ void BoundaryLinLayerAver::GetInfluenceFromVInfToRectPanel(std::vector<double>& 
 void BoundaryLinLayerAver::GetInfluenceFromVInfToCurvPanel(std::vector<double>& vInfRhs) const
 {
 	size_t np = afl.getNumberOfPanels();
-	int id = W.getParallel().myidWork;
+	//int id = W.getParallel().myidWork;
 	VMlib::parProp par = W.getParallel().SplitMPI(np);
 
 
