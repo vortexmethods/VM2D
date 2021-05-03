@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2DBarnesHut.cpp                                          |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса VelocityBarnesHut
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #include "Velocity2DBarnesHut.h"
@@ -349,13 +349,14 @@ void VelocityBarnesHut::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector
 		double*& dev_ptr_vt = W.getWake().devVtxPtr;
 		double*& dev_ptr_sr = W.getSource().devVtxPtr;
 		double*& dev_ptr_rhs = afl.devRhsPtr;
+		double*& dev_ptr_rhsLin = afl.devRhsLinPtr;
 		std::vector<double> locrhs(nTotPan);
 
 		VMlib::parProp par = W.getParallel().SplitMPI(nTotPan, true);
 
 		if ((nvt > 0) || (nsr > 0))
 		{
-			cuCalculateRhs(par.myDisp, par.myLen, nTotPan, dev_ptr_pt, nvt, dev_ptr_vt, nsr, dev_ptr_sr, dev_ptr_rhs);
+			cuCalculateRhs(par.myDisp, par.myLen, nTotPan, dev_ptr_pt, nvt, dev_ptr_vt, nsr, dev_ptr_sr, dev_ptr_rhs, dev_ptr_rhsLin);
 
 			W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_rhs, (double*)&locrhs[0]);
 

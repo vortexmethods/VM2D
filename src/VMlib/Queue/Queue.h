@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.9    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/07/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.10   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2021/05/17     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса Queue
 \author Марчевский Илья Константинович
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #ifndef QUEUE_H
@@ -66,8 +66,8 @@ namespace VMlib
 	Управляет распределением задач по процессорам, инициализацией их запуска и выгрузки
 
 	\author Марчевский Илья Константинович
-	\version 1.9
-	\date 22 июля 2020 г.
+	\version 1.10
+	\date 17 мая 2021 г.
 	*/
 	class Queue
 	{
@@ -196,7 +196,7 @@ namespace VMlib
 		/// В пределах кванта по времени не производится глобальной синхронизации всех процессоров, решающих все задачи.
 		/// Проверка состояния очереди и ее обновление производятся между квантами.
 		/// По исчерпании кванта времени выполнение шагов по времени всеми процессорами прекращается до обновления очереди
-		const double kvantTime = 1.0;
+		const double kvantTime = 10.0;
 
 		/// Номер текущего кванта времени
 		int currentKvant;
@@ -248,6 +248,11 @@ namespace VMlib
 		/// \param[in] _defaultsFile константная ссылка на имя файла с описанием параметров по умолчанию
 		/// \param[in] _switchersFile константная ссылка на имя файла со значениями параметров-переключателей
 		void LoadTasksList(const std::string& _tasksFile, const std::string& _mechanicsFile, const std::string& _defaultsFile, const std::string& _switchersFile);
+
+
+/* //POLARA
+		std::ofstream logFile;
+*/
 	};
 
 }//namespace VMlib

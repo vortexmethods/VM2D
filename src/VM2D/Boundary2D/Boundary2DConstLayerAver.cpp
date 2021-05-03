@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2DConstLayerAver.cpp                                     |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса BoundaryConstLayerAver
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 
@@ -159,7 +159,7 @@ void BoundaryConstLayerAver::FillIQFromOther(const Boundary& otherBoundary, std:
 void BoundaryConstLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
 {	
 	std::vector<Point2D> selfVelo;
-	
+
 	int id = W.getParallel().myidWork;
 
 	VMlib::parProp par = W.getParallel().SplitMPI(pointsDb.vtx.size());
@@ -329,8 +329,8 @@ void BoundaryConstLayerAver::ComputeAttachedSheetsIntensity()
 
 	for (size_t i = 0; i < sheets.getSheetSize(); ++i)
 	{
-		sheets.attachedVortexSheet(i, 0) = afl.getV(i) & afl.tau[i];
-		sheets.attachedSourceSheet(i, 0) = afl.getV(i) & afl.nrm[i];
+		sheets.attachedVortexSheet(i, 0) = 0.5 * (afl.getV(i) + afl.getV(i + 1)) & afl.tau[i];
+		sheets.attachedSourceSheet(i, 0) = 0.5 * (afl.getV(i) + afl.getV(i + 1)) & afl.nrm[i];
 	}	
 }//ComputeAttachedSheetsIntensity()
 
@@ -471,7 +471,7 @@ void BoundaryConstLayerAver::GetInfluenceFromVorticesToCurvPanel(size_t panel, c
 //Вычисляет влияния набегающего потока на прямолинейную панель для правой части
 void BoundaryConstLayerAver::GetInfluenceFromVInfToRectPanel(std::vector<double>& vInfRhs) const
 {
-	size_t np = afl.getNumberOfPanels();	
+	size_t np = afl.getNumberOfPanels();
 	VMlib::parProp par = W.getParallel().SplitMPI(np);
 	
 	std::vector<double> locVInfRhs(par.myLen);
@@ -492,7 +492,7 @@ void BoundaryConstLayerAver::GetInfluenceFromVInfToRectPanel(std::vector<double>
 //Вычисляет влияния набегающего потока на криволинейную панель для правой части
 void BoundaryConstLayerAver::GetInfluenceFromVInfToCurvPanel(std::vector<double>& vInfRhs) const
 {
-	size_t np = afl.getNumberOfPanels();	
+	size_t np = afl.getNumberOfPanels();
 	VMlib::parProp par = W.getParallel().SplitMPI(np);
 
 	vInfRhs.resize(np);

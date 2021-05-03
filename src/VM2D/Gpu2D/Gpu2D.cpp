@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Gpu2D.cpp                                                        |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса Gpu
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #include "Gpu2D.h"
@@ -141,6 +141,7 @@ Gpu::~Gpu()
 
 		ReleaseDevMem(W.getBoundary(s).afl.devRPtr, 18);
 		ReleaseDevMem(W.getBoundary(s).afl.devRhsPtr, 19);
+		ReleaseDevMem(W.getBoundary(s).afl.devRhsLinPtr, 191);
 
 		ReleaseDevMem(W.getBoundary(s).afl.devFreeVortexSheetPtr, 20);
 		ReleaseDevMem(W.getBoundary(s).afl.devAttachedVortexSheetPtr, 21);
@@ -175,9 +176,12 @@ Gpu::~Gpu()
 		ReleaseDevMem(dev_ptr_ptr_viscousStresses, 40);
 	}
 		
-	ReleaseDevMem(W.getMeasureVP().getWakeVP().devVtxPtr, 41);
-	ReleaseDevMem(W.getMeasureVP().getWakeVP().devVelPtr, 42);
-	ReleaseDevMem(W.getMeasureVP().getWakeVP().devRadPtr, 43);
+	if (W.getMeasureVP().getWakeVP().vtx.size())
+	{
+		ReleaseDevMem(W.getMeasureVP().getWakeVP().devVtxPtr, 41);
+		ReleaseDevMem(W.getMeasureVP().getWakeVP().devVelPtr, 42);
+		ReleaseDevMem(W.getMeasureVP().getWakeVP().devRadPtr, 43);
+	}
 #endif
 }
 
@@ -280,7 +284,7 @@ void Gpu::RefreshWake(int code)
 
 //Обновление состояния сетки для вычисления VP
 void Gpu::RefreshVP(int code)
-{	
+{
 	if (W.getMeasureVP().getWakeVP().vtx.size() > 0)
 	{
 		//Если зарезервировано меньше, чем вихрей в пелене
@@ -335,6 +339,7 @@ void Gpu::RefreshAfls(int code)
 				{
 					ReleaseDevMem(W.getBoundary(s).afl.devRPtr, 57);
 					ReleaseDevMem(W.getBoundary(s).afl.devRhsPtr, 58);
+					ReleaseDevMem(W.getBoundary(s).afl.devRhsLinPtr, 581);
 					ReleaseDevMem(W.getBoundary(s).afl.devMeanEpsOverPanelPtr, 59);
 
 					ReleaseDevMem(W.getBoundary(s).afl.devFreeVortexSheetPtr, 60);
@@ -347,7 +352,6 @@ void Gpu::RefreshAfls(int code)
 			if (n_CUDA_afls)
 			{
 				ReleaseDevMem(dev_ptr_nPanels, 64);
-
 				ReleaseDevMem(dev_ptr_ptr_r, 65);
 				ReleaseDevMem(dev_ptr_ptr_rhs, 66);
 
@@ -367,7 +371,7 @@ void Gpu::RefreshAfls(int code)
 
 			//Временный массив для агрегации числа панелей (без округления вверх до блока) на профилях для их последующей отправки в dev_ptr_nPanels
 			std::vector<size_t> host_nPanels(0);
-
+			
 			size_t totnPanels = 0, totnPanelsUP;
 			for (size_t s = 0; s < W.getNumberOfBoundary(); ++s)
 			{
@@ -377,13 +381,16 @@ void Gpu::RefreshAfls(int code)
 			}
 			dev_ptr_nPanels = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_nPanels.data());
 
+			const int totNVars = (int)totnPanels * (W.getPassport().numericalSchemes.boundaryCondition.second + 1);
+			
 			W.getBoundary(0).afl.devRPtr = ReserveDevMem<double, 4>(totnPanels, totnPanelsUP);
 			W.getBoundary(0).afl.devRhsPtr = ReserveDevMem<double, 1>(totnPanels, totnPanelsUP);
+			W.getBoundary(0).afl.devRhsLinPtr = ReserveDevMem<double, 1>(totnPanels, totnPanelsUP);
 			W.getBoundary(0).afl.devMeanEpsOverPanelPtr = ReserveDevMem<double, 1>(totnPanels, totnPanelsUP);//MeanEpsOverPanel
 
-			W.getBoundary(0).afl.devFreeVortexSheetPtr = ReserveDevMem<double, 1>(totnPanels, totnPanelsUP);//devFreeVortexSheetPtr
-			W.getBoundary(0).afl.devAttachedVortexSheetPtr = ReserveDevMem<double, 1>(totnPanels, totnPanelsUP);//devAttachedVortexSheetPtr
-			W.getBoundary(0).afl.devAttachedSourceSheetPtr = ReserveDevMem<double, 1>(totnPanels, totnPanelsUP);//devAttachedSourceSheetPtr
+			W.getBoundary(0).afl.devFreeVortexSheetPtr = ReserveDevMem<double, 1>(totNVars, totnPanelsUP);//devFreeVortexSheetPtr
+			W.getBoundary(0).afl.devAttachedVortexSheetPtr = ReserveDevMem<double, 1>(totNVars, totnPanelsUP);//devAttachedVortexSheetPtr
+			W.getBoundary(0).afl.devAttachedSourceSheetPtr = ReserveDevMem<double, 1>(totNVars, totnPanelsUP);//devAttachedSourceSheetPtr
 
 			W.getBoundary(0).afl.devViscousStressesPtr = ReserveDevMem<double, 1>(totnPanels, totnPanelsUP);//ViscousStress
 
@@ -391,6 +398,7 @@ void Gpu::RefreshAfls(int code)
 			{
 				W.getBoundary(s).afl.devRPtr = W.getBoundary(s - 1).afl.devRPtr + 4 * host_nPanels[s - 1];
 				W.getBoundary(s).afl.devRhsPtr = W.getBoundary(s - 1).afl.devRhsPtr + 1 * host_nPanels[s - 1];
+				W.getBoundary(s).afl.devRhsLinPtr = W.getBoundary(s - 1).afl.devRhsLinPtr + 1 * host_nPanels[s - 1];
 				W.getBoundary(s).afl.devMeanEpsOverPanelPtr = W.getBoundary(s - 1).afl.devMeanEpsOverPanelPtr + 1 * host_nPanels[s - 1];
 
 				W.getBoundary(s).afl.devFreeVortexSheetPtr = W.getBoundary(s - 1).afl.devFreeVortexSheetPtr + 1 * host_nPanels[s - 1];
@@ -402,13 +410,14 @@ void Gpu::RefreshAfls(int code)
 
 			for (size_t s = 0; s < W.getNumberOfBoundary(); ++s)
 			{
-				W.getBoundary(s).afl.tmpRhs.resize(W.getBoundary(s).afl.getNumberOfPanels(), 0.0);
+				W.getBoundary(s).afl.tmpRhs.resize(totNVars, 0.0);
 				W.getBoundary(s).afl.tmpViscousStresses.resize(W.getBoundary(s).afl.getNumberOfPanels(), 0.0);
 			}// for s
 
 			//Временные массивы для агрегации указателей на видеокарте
 			std::vector<double*> host_ptr_r;
 			std::vector<double*> host_ptr_rhs;
+			std::vector<double*> host_ptr_rhsLin;
 
 			std::vector<double*> host_ptr_freeVortexSheet;
 			std::vector<double*> host_ptr_attachedVortexSheet;
@@ -422,6 +431,7 @@ void Gpu::RefreshAfls(int code)
 			{
 				host_ptr_r.push_back(W.getBoundary(q).afl.devRPtr);
 				host_ptr_rhs.push_back(W.getBoundary(q).afl.devRhsPtr);
+				host_ptr_rhsLin.push_back(W.getBoundary(q).afl.devRhsLinPtr);
 
 				host_ptr_freeVortexSheet.push_back(W.getBoundary(q).afl.devFreeVortexSheetPtr);
 				host_ptr_attachedVortexSheet.push_back(W.getBoundary(q).afl.devAttachedVortexSheetPtr);
@@ -433,7 +443,6 @@ void Gpu::RefreshAfls(int code)
 			}
 
 			dev_ptr_ptr_r = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_r.data());
-
 			dev_ptr_ptr_rhs = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_rhs.data());
 
 			dev_ptr_ptr_freeVortexSheet = ReserveDevMemAndCopyFixedArray(W.getNumberOfBoundary(), host_ptr_freeVortexSheet.data());
@@ -463,6 +472,7 @@ void Gpu::RefreshAfls(int code)
 		for (size_t s = 0; s < W.getNumberOfBoundary(); ++s)
 		{
 			size_t np = W.getBoundary(s).afl.getNumberOfPanels();
+			size_t nv = W.getBoundary(s).GetUnknownsSize();
 
 			//Копирование вершин профиля на видеокарту			 
 			std::vector<double> rbegend(4 * np);
@@ -477,20 +487,31 @@ void Gpu::RefreshAfls(int code)
 			cuCopyFixedArrayPoint4D(W.getBoundary(s).afl.devRPtr, (Point2D*)rbegend.data(), np, code);
 			
 			//Копирование слоев на видеокарту			
-			std::vector<double> host_freeVortexSheet(np);
-			std::vector<double> host_attachedVortexSheet(np);
-			std::vector<double> host_attachedSourceSheet(np);
+			std::vector<double> host_freeVortexSheet(nv);
+			std::vector<double> host_attachedVortexSheet(nv);
+			std::vector<double> host_attachedSourceSheet(nv);
 
 			const Sheet& sh = W.getBoundary(s).sheets;
 
+			int sch = W.getPassport().numericalSchemes.boundaryCondition.second;
+
 			for (size_t p = 0; p < np; ++p)
 			{
-				/// \todo ПЕРЕДЕЛАТЬ пока работаем только со средними значениями
 				host_attachedVortexSheet[p] = sh.attachedVortexSheet(p, 0);
 				host_attachedSourceSheet[p] = sh.attachedSourceSheet(p, 0);
 
 				if (W.getParallel().myidWork == 0)
 					host_freeVortexSheet[p] = sh.freeVortexSheet(p, 0);
+			}//for p
+
+			if(sch == 1)
+			for (size_t p = 0; p < np; ++p)
+			{
+				host_attachedVortexSheet[np + p] = sh.attachedVortexSheet(p, 1);
+				host_attachedSourceSheet[np + p] = sh.attachedSourceSheet(p, 1);
+
+				if (W.getParallel().myidWork == 0)
+					host_freeVortexSheet[np + p] = sh.freeVortexSheet(p, 1);
 			}//for p
 
 			MPI_Bcast(host_freeVortexSheet.data(), (int)host_freeVortexSheet.size(), MPI_DOUBLE, 0, W.getParallel().commWork);
@@ -512,7 +533,7 @@ void Gpu::RefreshVirtualWakes(int code)
 		n_CUDA_virtWake.resize(W.getNumberOfBoundary(), 0);
 		n_CUDA_totalVirtWake = 0;
 	}
-	
+
 	size_t totnVirt = 0, totnPan = 0;
 	for (size_t s = 0; s < W.getNumberOfBoundary(); ++s)
 	{

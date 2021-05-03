@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: MeasureVP2D.cpp                                                  |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса MeasureVP
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #if defined(_WIN32)
@@ -332,49 +332,143 @@ void MeasureVP::SaveVP()
 		std::ofstream outfile;
 
 		VMlib::CreateDirectory(W.getPassport().dir, "velPres");
-		outfile.open(W.getPassport().dir + "velPres/" + fname);
 
-		outfile << "# vtk DataFile Version 2.0" << std::endl;
-		outfile << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
-		outfile << "ASCII" << std::endl;
-		outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
-		outfile << "POINTS " << wakeVP->vtx.size() << " float" << std::endl;
-
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		if (W.getPassport().timeDiscretizationProperties.fileType == 0)
 		{
-			double xi = (wakeVP->vtx[i].r())[0];
-			double yi = (wakeVP->vtx[i].r())[1];
-			outfile << xi << " " << yi << " " << "0.0" << std::endl;
-		}//for i
+			outfile.open(W.getPassport().dir + "velPres/" + fname);
 
-		outfile << "CELLS " << wakeVP->vtx.size() << " " << 2 * wakeVP->vtx.size() << std::endl;
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			outfile << "1 " << i << std::endl;
+			outfile << "# vtk DataFile Version 2.0" << std::endl;
+			outfile << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
+			outfile << "ASCII" << std::endl;
+			outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
+			outfile << "POINTS " << wakeVP->vtx.size() << " float" << std::endl;
 
-		outfile << "CELL_TYPES " << wakeVP->vtx.size() << std::endl;
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			outfile << "1" << std::endl;
+			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			{
+				double xi = (wakeVP->vtx[i].r())[0];
+				double yi = (wakeVP->vtx[i].r())[1];
+				outfile << xi << " " << yi << " " << "0.0" << std::endl;
+			}//for i
 
-		outfile << std::endl;
-		outfile << "POINT_DATA " << wakeVP->vtx.size() << std::endl;
+			outfile << "CELLS " << wakeVP->vtx.size() << " " << 2 * wakeVP->vtx.size() << std::endl;
+			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+				outfile << "1 " << i << std::endl;
 
-		outfile << "VECTORS V float" << std::endl;
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			outfile << "CELL_TYPES " << wakeVP->vtx.size() << std::endl;
+			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+				outfile << "1" << std::endl;
+
+			outfile << std::endl;
+			outfile << "POINT_DATA " << wakeVP->vtx.size() << std::endl;
+
+			outfile << "VECTORS V float" << std::endl;
+			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			{
+				outfile << velocity[i][0] << " " << velocity[i][1] << " 0.0" << std::endl;
+			}//for i
+
+			outfile << std::endl;
+
+			outfile << "SCALARS P float 1" << std::endl;
+			outfile << "LOOKUP_TABLE default" << std::endl;
+
+			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			{
+				outfile << pressure[i] << std::endl;
+			}//for i
+
+			outfile.close();
+		}
+		else
 		{
-			outfile << velocity[i][0] << " " << velocity[i][1] << " 0.0" << std::endl;
-		}//for i
+			//Тест способа хранения чисел
+			uint16_t x = 0x0001;
+			bool littleEndian = (*((uint8_t*)&x));
+			const char eolnBIN[] = "\n";
 
-		outfile << std::endl;
 
-		outfile << "SCALARS P float 1" << std::endl;
-		outfile << "LOOKUP_TABLE default" << std::endl;
+			outfile.open(W.getPassport().dir + "velPres/" + fname, std::ios::out | std::ios::binary);
+			
+			outfile << "# vtk DataFile Version 3.0" << "\r\n" << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << eolnBIN;
+			outfile << "BINARY" << eolnBIN;
+			outfile << "DATASET UNSTRUCTURED_GRID" << eolnBIN << "POINTS " << wakeVP->vtx.size() << " " << "float" << eolnBIN;
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-		{
-			outfile << pressure[i] << std::endl;
-		}//for i
 
-		outfile.close();
+			Eigen::VectorXf pData = Eigen::VectorXf::Zero(wakeVP->vtx.size());
+			Eigen::VectorXf vData = Eigen::VectorXf::Zero(wakeVP->vtx.size() * 3);
+			Eigen::VectorXf rData = Eigen::VectorXf::Zero(wakeVP->vtx.size() * 3);
+
+
+			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			{
+				rData(3 * i) = (float)(wakeVP->vtx[i].r())[0];
+				rData(3 * i + 1) = (float)(wakeVP->vtx[i].r())[1];
+			}//for i
+
+			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			{
+				vData(3 * i) = (float)velocity[i][0];
+				vData(3 * i + 1) = (float)velocity[i][1];
+			}//for i
+
+			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			{
+				pData(i) = (float)pressure[i];
+			}//for i
+
+			//POINTS
+			if (littleEndian)
+				for (int i = 0; i < wakeVP->vtx.size() * 3; ++i)
+					VMlib::SwapEnd(rData(i));
+			outfile.write(reinterpret_cast<char*>(rData.data()), wakeVP->vtx.size() * 3 * sizeof(float));
+
+			// CELLS
+			std::vector<int> cells(2 * wakeVP->vtx.size());
+			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			{
+				cells[2 * i] = 1;
+				cells[2 * i + 1] = (int)i;
+			}
+
+			std::vector<int> cellsTypes;
+			cellsTypes.resize(wakeVP->vtx.size(), 1);
+
+			if (littleEndian)
+			{
+				for (int i = 0; i < wakeVP->vtx.size() * 2; ++i)
+					VMlib::SwapEnd(cells[i]);
+
+				for (int i = 0; i < wakeVP->vtx.size(); ++i)
+					VMlib::SwapEnd(cellsTypes[i]);
+			}
+
+			outfile << eolnBIN << "CELLS " << wakeVP->vtx.size() << " " << wakeVP->vtx.size() * 2 << eolnBIN;
+			outfile.write(reinterpret_cast<char*>(cells.data()), wakeVP->vtx.size() * 2 * sizeof(int));
+			outfile << eolnBIN << "CELL_TYPES " << wakeVP->vtx.size() << eolnBIN;
+			outfile.write(reinterpret_cast<char*>(cellsTypes.data()), wakeVP->vtx.size() * sizeof(int));
+
+			//VECTORS V
+			if (littleEndian)
+				for (int i = 0; i < wakeVP->vtx.size() * 3; ++i)
+					VMlib::SwapEnd(vData(i));
+
+			outfile << eolnBIN << "POINT_DATA " << wakeVP->vtx.size() << eolnBIN;
+			outfile << "VECTORS V " << "float" << eolnBIN;
+			outfile.write(reinterpret_cast<char*>(vData.data()), wakeVP->vtx.size() * 3 * sizeof(float));
+
+			//SCALARS P	
+			if (littleEndian)
+				for (int i = 0; i < wakeVP->vtx.size(); ++i)
+					VMlib::SwapEnd(pData(i));
+
+			outfile << eolnBIN << "SCALARS P " << "float" << " 1" << eolnBIN;
+			outfile << "LOOKUP_TABLE default" << eolnBIN;
+			outfile.write(reinterpret_cast<char*>(pData.data()), wakeVP->vtx.size() * sizeof(float));
+
+			outfile << eolnBIN;
+
+			outfile.close();
+		}
 
 		//Вывод в csv-файлы
 		for (size_t q = 0; q < historyPoints.size(); ++q)

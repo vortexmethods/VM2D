@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: World2D.cpp                                                      |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса World2D
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #include "World2D.h"
@@ -42,12 +42,14 @@
 #include "Airfoil2DCurv.h"
 
 #include "Boundary2DConstLayerAver.h"
+#include "Boundary2DLinLayerAver.h"
 
 #include "MeasureVP2D.h"
 
 #include "Mechanics2DRigidImmovable.h"
 #include "Mechanics2DRigidGivenLaw.h"
 #include "Mechanics2DRigidOscillPart.h"
+#include "Mechanics2DRigidRotatePart.h"
 
 #include "Parallel.h"
 
@@ -128,6 +130,10 @@ World2D::World2D(const VMlib::PassportGen& passport_, const VMlib::Parallel& par
 		case 0:
 			boundary.emplace_back(new BoundaryConstLayerAver(*this, i));
 			break;
+
+		case 1:
+			boundary.emplace_back(new BoundaryLinLayerAver(*this, i));
+			break;
 		
 		case 10:			
 			//boundary.emplace_back(new BoundaryMDV(*this, i));			
@@ -155,13 +161,17 @@ World2D::World2D(const VMlib::PassportGen& passport_, const VMlib::Parallel& par
 		case 2:
 			mechanics.emplace_back(new MechanicsRigidOscillPart(*this, i));
 			break;
-		/*
+
 		case 3:
+			mechanics.emplace_back(new MechanicsRigidRotatePart(*this, i));
+			break;
+		/*
+		case 4:
 			mechanics.emplace_back(new MechanicsRigidOscillMon(*this, i));
 			break;
-		case 4:
-			mechanics.emplace_back(new MechanicsRigidRotateMon(*this, i));
-			break;
+
+
+
 		*/
 		}
 
@@ -230,6 +240,8 @@ void World2D::Step()
 				mech->GenerateForcesString();
 				mech->GeneratePositionString();
 			}
+
+//		boundary[0]->virtualWake.SaveKadrVtk("VirtWake");
 		
 		//Движение вихрей (сброс вихрей + передвижение пелены)
 		WakeAndAirfoilsMotion();		
@@ -636,24 +648,27 @@ void World2D::CalcVortexVelo()
 		sss << "prmWake";
 		sss << currentStep;
 		std::ofstream prmtFile(passport.dir + "dbg/" + sss.str());
+		prmtFile << "i x y g epsast convVeloX convVeloY diffVeloX diffVeloY I0 I1 I2X I2Y I3X I3Y" << std::endl;
 		for (size_t i = 0; i < wake->vtx.size(); ++i)
 			prmtFile << i << " " \
 			<< wake->vtx[i].r()[0] << " " << wake->vtx[i].r()[1] << " " \
+			<< wake->vtx[i].g() << " " \
 			<< velocity->wakeVortexesParams.epsastWake[i] << " " \
 			<< velocity->wakeVortexesParams.convVelo[i][0] << " " << velocity->wakeVortexesParams.convVelo[i][1] << " "\
 			<< velocity->wakeVortexesParams.diffVelo[i][0] << " " << velocity->wakeVortexesParams.diffVelo[i][1] << " "\
 			//<< std::endl;
 			<< velocity->wakeVortexesParams.I0[i] << " " \
 			<< velocity->wakeVortexesParams.I1[i] << " " \
-			<< velocity->wakeVortexesParams.I2[i] << " " \
-			<< velocity->wakeVortexesParams.I3[i] << " " \
+			<< velocity->wakeVortexesParams.I2[i][0] << " " << velocity->wakeVortexesParams.I2[i][1] << " " \
+			<< velocity->wakeVortexesParams.I3[i][0] << " " << velocity->wakeVortexesParams.I3[i][1] << " " \
 			<< std::endl;
 
 		prmtFile.close();
 	}
-//*/
+*/
 
-/*	//Сохранение всех параметров для виртуальных вихрей
+/*
+	//Сохранение всех параметров для виртуальных вихрей
 	{
 		for (size_t b = 0; b < boundary.size(); ++b)
 		{
@@ -662,23 +677,25 @@ void World2D::CalcVortexVelo()
 			sss << b << "-";
 			sss << currentStep;
 			std::ofstream prmFileVirt(passport.dir + "dbg/" + sss.str());
+			prmFileVirt << "i x y g epsast convVeloX convVeloY diffVeloX diffVeloY I0 I1 I2X I2Y I3X I3Y" << std::endl;
 			for (size_t i = 0; i < boundary[b]->virtualWake.vtx.size(); ++i)
 				prmFileVirt << i << " " \
 				<< boundary[b]->virtualWake.vtx[i].r()[0] << " " << boundary[b]->virtualWake.vtx[i].r()[1] << " " \
+				<< boundary[b]->virtualWake.vtx[i].g() << " " \
 				<< velocity->virtualVortexesParams[b].epsastWake[i] << " " \
 				<< velocity->virtualVortexesParams[b].convVelo[i][0] << " " << velocity->virtualVortexesParams[b].convVelo[i][1] << " "\
 				<< velocity->virtualVortexesParams[b].diffVelo[i][0] << " " << velocity->virtualVortexesParams[b].diffVelo[i][1] << " "\
 				//<< std::endl;				
 				<< velocity->virtualVortexesParams[b].I0[i] << " " \
 				<< velocity->virtualVortexesParams[b].I1[i] << " " \
-				<< velocity->virtualVortexesParams[b].I2[i] << " " \
-				<< velocity->virtualVortexesParams[b].I3[i] << " " \
+				<< velocity->virtualVortexesParams[b].I2[i][0] << " " << velocity->virtualVortexesParams[b].I2[i][1] << " " \
+				<< velocity->virtualVortexesParams[b].I3[i][0] << " " << velocity->virtualVortexesParams[b].I3[i][1] << " " \
 				<< std::endl;
 			prmFileVirt.close();
 		}
 		//if (currentStep==2) exit(-123);
 	}
-//*/
+*/
 	getTimestat().timeSaveKadr.second += omp_get_wtime();
 }//CalcVortexVelo()
 
@@ -727,8 +744,8 @@ void World2D::MoveVortexes(std::vector<Point2D>& newPos)
 			{
 				wake->vtx.push_back(boundary[bou]->virtualWake.vtx[i]);
 				newPos.push_back(boundary[bou]->virtualWake.vtx[i].r() \
-					+ (velocity->virtualVortexesParams[bou].diffVelo[i] +
-					   velocity->virtualVortexesParams[bou].convVelo[i] +
+					+ (velocity->virtualVortexesParams[bou].convVelo[i] +
+					   velocity->virtualVortexesParams[bou].diffVelo[i] +
 					   passport.physicalProperties.V0())*passport.timeDiscretizationProperties.dt);
 			}
 
@@ -799,6 +816,16 @@ void World2D::CalcAndSolveLinearSystem()
 		cuda.setAccelCoeff(passport.physicalProperties.accelCft());
 		cuda.setMaxGamma(passport.wakeDiscretizationProperties.maxGamma);
 
+		int sch = passport.numericalSchemes.boundaryCondition.second;
+
+		if( (sch == 0) || (sch == 1) )
+			cuda.setSchemeSwitcher(sch + 1);
+		else
+		{
+			info('e') << "schemeSwitcher is not 0 or 1! " << std::endl;
+			exit(1);
+		}
+
 		cuda.RefreshWake(1);
 		cuda.RefreshAfls(1);
 		cuda.RefreshVirtualWakes(1);
@@ -806,6 +833,33 @@ void World2D::CalcAndSolveLinearSystem()
 
 		FillIQ();
 		FillMatrixAndRhs();
+
+		//{
+		//	std::stringstream ss;
+		//	ss << "IQ1-" << currentStep;
+		//	std::ofstream of(passport.dir + "dbg/" + ss.str());
+		//	for (size_t i = 0; i < (IQ[0][0]).first.rows(); ++i)
+		//	{
+		//		for (size_t j = 0; j < (IQ[0][0]).first.cols(); ++j)
+		//			of << (IQ[0][0]).first(i, j) << " ";
+		//		of << std::endl;
+		//	}
+		//	of.close();
+		//}
+
+
+		/*{
+			std::stringstream ss;
+			ss << "matr-" << currentStep;
+			std::ofstream of(passport.dir + "dbg/" + ss.str());
+			for (size_t i = 0; i < matr.rows(); ++i)
+			{
+				for (size_t j = 0; j < matr.cols(); ++j)
+					of << matr(i, j) << " ";
+				of << std::endl;
+			}
+			of.close();
+		}*/
 		
 		/*{
 			std::stringstream ss;
@@ -882,12 +936,12 @@ void World2D::WakeAndAirfoilsMotion()
 
 
 	getTimestat().timeOther.first += omp_get_wtime();
-	
-	/// Список умных казателей на обтекаемые профили для сохранения старого положения
-	std::vector<std::unique_ptr<Airfoil>> oldAirfoil;
+
 	
 	for (auto& afl : airfoil)
 	{
+		oldAirfoil.resize(0);
+
 		switch (passport.numericalSchemes.panelsType.second)
 		{
 		case 0:
@@ -946,6 +1000,7 @@ void World2D::WakeAndAirfoilsMotion()
 	if (parallel.myidWork == 0)
 		for (size_t i = 0; i < wake->vtx.size(); ++i)
 			wake->vtx[i].r() = newPos[i];
+//	getWake().SaveKadrVtk();
 	getTimestat().timeOther.second += omp_get_wtime();
 }//WakeAndAirfoilsMotion()
 
