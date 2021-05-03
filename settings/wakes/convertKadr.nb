@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     46578,       1187]
-NotebookOptionsPosition[     44434,       1141]
-NotebookOutlinePosition[     44835,       1157]
-CellTagsIndexPosition[     44792,       1154]
+NotebookDataLength[     46630,       1187]
+NotebookOptionsPosition[     44482,       1141]
+NotebookOutlinePosition[     44887,       1157]
+CellTagsIndexPosition[     44844,       1154]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1076,13 +1076,13 @@ Cell[BoxData[
      RowBox[{
      "\"\</*--------------------------------*- VM2D \
 -*-----------------*---------------*\\\\\n| ##  ## ##   ##  ####  #####   |   \
-                         | Version 1.9    |\n| ##  ## ### ### ##  ## ##  ##  \
-|  VM2D: Vortex Method       | 2020/07/22     |\n| ##  ## ## # ##    ##  ##  \
+                         | Version 1.10   |\n| ##  ## ### ### ##  ## ##  ##  \
+|  VM2D: Vortex Method       | 2021/05/17     |\n| ##  ## ## # ##    ##  ##  \
 ##  |  for 2D Flow Simulation    *----------------*\n|  ####  ##   ##   ##   \
 ##  ##  |  Open Source Code                           |\n|   ##   ##   ## \
 ###### #####   |  https://www.github.com/vortexmethods/VM2D  |\n|             \
                                                                 |\n| \
-Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |\
+Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |\
 \n*---------------------------------------------------------------------------\
 --*\n| File name: wakeBridge\>\"", "<>", 
       RowBox[{"ToString", "[", "n", "]"}], "<>", 
@@ -1127,8 +1127,8 @@ Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |\
  CellChangeTimes->{{3.7952676692346287`*^9, 3.795267692700287*^9}, {
   3.795267734164572*^9, 3.7952677454397273`*^9}, {3.795267783489689*^9, 
   3.79526780203953*^9}, {3.7952765116992865`*^9, 3.7952765161996303`*^9}, {
-  3.8043928547145805`*^9, 
-  3.804392858328006*^9}},ExpressionUUID->"55d00817-e2d5-4426-9e41-\
+  3.8043928547145805`*^9, 3.804392858328006*^9}, {3.8290335534009285`*^9, 
+  3.829033569662156*^9}},ExpressionUUID->"55d00817-e2d5-4426-9e41-\
 00d6ac47f285"],
 
 Cell[BoxData["\<\"wakeBridge51841\"\>"], "Output",
@@ -1141,7 +1141,7 @@ a17a8317e694"]
 },
 WindowSize->{1141.2, 574.8},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
-FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 19, 2020)",
+FrontEndVersion->"12.2 for Microsoft Windows (64-bit) (December 12, 2020)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"e87ee6d4-2c41-49fc-adb9-312084ee0077"
 ]
@@ -1186,8 +1186,8 @@ Cell[28763, 755, 362, 11, 28, "Input",ExpressionUUID->"6e894bb6-56f1-48e2-92a0-c
 Cell[29128, 768, 12005, 295, 224, "Output",ExpressionUUID->"95f367b7-9a67-48ac-b622-12fc5adaf636"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[41170, 1068, 2968, 63, 455, "Input",ExpressionUUID->"55d00817-e2d5-4426-9e41-00d6ac47f285"],
-Cell[44141, 1133, 277, 5, 32, "Output",ExpressionUUID->"6dc4b216-c668-4d69-a66b-a17a8317e694"]
+Cell[41170, 1068, 3016, 63, 455, "Input",ExpressionUUID->"55d00817-e2d5-4426-9e41-00d6ac47f285"],
+Cell[44189, 1133, 277, 5, 32, "Output",ExpressionUUID->"6dc4b216-c668-4d69-a66b-a17a8317e694"]
 }, Open  ]]
 }
 ]

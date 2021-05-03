@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.9    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/07/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.10   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2021/05/17     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса Queue
 \author Марчевский Илья Константинович
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #if defined(_WIN32)
@@ -100,6 +100,13 @@ Queue::Queue(int& argc, char**& argv, void (*_CreateMpiTypes)())
 		//текущий номер кванта времени
 		currentKvant = -1;
 	}//if myid==0 
+
+/* //POLARA
+
+	if (myidAll == 0)
+		logFile.open("log.txt");
+*/
+
 }//Queue()
 
 
@@ -107,6 +114,12 @@ Queue::Queue(int& argc, char**& argv, void (*_CreateMpiTypes)())
 Queue::~Queue()
 {
 	info('i') << "Goodbye!" << std::endl;
+
+/* //POLARA	
+	if (myidAll == 0)
+		logFile.close();
+*/
+
 	MPI_Finalize();
 }//~Queue()
 
@@ -544,13 +557,38 @@ void Queue::RunConveyer()
 		double kvantStartWallTime; //Время на главном процессоре, когда начался очередной квант
 		double deltaWallTime;
 
+/* //POLARA
+		double stepStartTime, stepFinishTime;
+*/
+
 		if (parallel.myidWork == 0)
 			kvantStartWallTime = MPI_Wtime();
 		
 		do
 		{
+/* //POLARA
+			if (myidAll == 0)
+				stepStartTime = MPI_Wtime();
+*/
 			if (!world->isFinished())
 				world->Step();
+
+/* //POLARA
+			//if (commSolving != MPI_COMM_NULL)
+			//{
+			//	MPI_Barrier(commSolving);
+			//}
+
+			//MPI_Barrier(parallel.commWork);
+			//MPI_Barrier(commSolving);
+			MPI_Barrier(MPI_COMM_WORLD);
+			
+			if (myidAll == 0)
+			{
+				stepFinishTime = MPI_Wtime();
+				logFile << world->currentStep << " " << stepFinishTime - stepStartTime << std::endl;
+			}
+*/
 					
 			if (parallel.myidWork == 0)
 				deltaWallTime = MPI_Wtime() - kvantStartWallTime;

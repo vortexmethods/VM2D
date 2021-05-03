@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2D.h                                                     |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Заголовочный файл с описанием класса Velocity
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #ifndef VELOCITY_H
@@ -54,10 +54,10 @@ namespace VM2D
 	/*!
 	\brief Структура, определяющая параметры виртуальных вихрей для отдельного профиля
 	\author Марчевский Илья Константинович
-	\author Кузьмина Ксения Сергеевна
+	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.9
-	\date 22 июля 2020 г.
+	\version 1.10
+	\date 17 мая 2021 г.
 	*/
 	struct VortexesParams
 	{
@@ -86,10 +86,10 @@ namespace VM2D
 	/*!
 	\brief Абстрактный класс, определяющий способ вычисления скоростей
 	\author Марчевский Илья Константинович
-	\author Кузьмина Ксения Сергеевна
+	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.9
-	\date 22 июля 2020 г.
+	\version 1.10
+	\date 17 мая 2021 г.
 	*/
 	class Velocity
 	{
@@ -161,6 +161,11 @@ namespace VM2D
 		///
 		/// Вызывается в CalcVortexVelo() на каждом шаге расчета перед непосредственно расчетом скоростей
 		void ResizeAndZero();
+
+		/// \brief Сохранение вязких напряжений
+		///
+		/// Вызывается в CalcDiffVelo()
+		void SaveVisStress();
 
 		/// \brief Расчет вектора правой части (всего)
 		///

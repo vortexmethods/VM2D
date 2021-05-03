@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Gpu2D.h                                                          |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Заголовочный файл с описанием класса Gpu
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 
@@ -55,10 +55,10 @@ namespace VM2D
 	\brief Класс, обеспечивающий возможность выполнения вычислений на GPU по технологии Nvidia CUDA
 
 	\author Марчевский Илья Константинович
-	\author Кузьмина Ксения Сергеевна
+	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.9
-	\date 22 июля 2020 г.
+	\version 1.10
+	\date 17 мая 2021 г.
 	*/
 	class Gpu
 	{
@@ -77,7 +77,7 @@ namespace VM2D
 		template<typename T>
 		void ReleaseDevMem(T* ptr, int code)
 		{
-			cuDeleteFromDev(ptr, 44);
+			cuDeleteFromDev(ptr, code);
 			//--nReserve;
 		}
 
@@ -176,7 +176,7 @@ namespace VM2D
 		/// Число профилей в задаче
 		size_t n_CUDA_afls;
 
-		/// Указатели на массивы, которые хранятся на видеокарте и содержат число панелей и виртуальных вихрей на всех профилях
+		/// Указатели на массивы, которые хранятся на видеокарте и содержат число панелей и число виртуальных вихрей на всех профилях
 		size_t* dev_ptr_nPanels;
 		size_t* dev_ptr_nVortices;
 
@@ -261,6 +261,20 @@ namespace VM2D
 			cuSetMaxGamma(gam_);
 #endif
 		}	
+
+
+		/// \brief Установка переключателя расчетных схем 
+		///
+		/// \param[in] schemeSwitcher_ тип схемы
+		/// - schemeSwitcher = 1 -- кусочно-постоянная схема
+		/// - schemeSwitcher = 2 -- кусочно-линейная схема
+		/// - schemeSwitcher = 11 -- схема типа МДВ
+		void setSchemeSwitcher(int schemeSwitcher_)
+		{
+#if defined(__CUDACC__) || defined(USE_CUDA)		
+			cuSetSchemeSwitcher(schemeSwitcher_, 1);
+#endif
+		}
 	};
 
 }//namespace VM2D

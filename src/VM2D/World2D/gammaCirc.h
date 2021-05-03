@@ -1,4 +1,4 @@
-﻿// Вычисление количества завихренности, находящейся в круге заданного (довольно большого радиуса)
+// Вычисление количества завихренности, находящейся в круге заданного (довольно большого радиуса)
 //
 // Следует сделать #include "gammaCirc.h" в src/VM2D/World2D/World2D.cpp 
 // в функции Step() после строки, в которой вызывается CalcVortexVelo()
@@ -8,15 +8,18 @@
 //
 // Результат сохраняется в файл circ в рабочий каталог задачи
 
-#define radiuses { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, \
+//#define radiuses { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, \
 				        2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, \
                         3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, \
-                        4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0 }
+                        4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0 }						
+#define radiuses { 1.0, 2.0, 3.0, 4.0, 5.0 }
+						
 
-#define scales {0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5}
+//#define scales {0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5}
+#define scales { 1.0 }
 
 
-if (currentStep > 3900)
+if (currentStep%10 == 0)
 {
 
 	if (getParallel().myidWork == 0)
@@ -24,24 +27,27 @@ if (currentStep > 3900)
 		std::vector<double> rad = radiuses;
 		std::vector<double> scale = scales;
 
+
 		std::string circFileName = getPassport().dir + "circ";
+			
 
+		if (currentStep == 0)
+		{
+			std::ofstream circFile(circFileName.c_str());
 
-		std::ofstream circFile(circFileName.c_str());
+			VMlib::PrintLogoToTextFile(circFile, circFileName, "Circulations along the circles of fixed radius");
 
-		VMlib::PrintLogoToTextFile(circFile, circFileName, "Circulations along the circles of fixed radius");
+			std::stringstream ssCirc;
+			ssCirc << "step  time  scale";
+			for (auto r : rad)
+				ssCirc << "  R=" << r;
 
-		std::stringstream ssCirc;
-		ssCirc << "step  time  scale";
-		for (auto r : rad)
-			ssCirc << "  R=" << r;
+			VMlib::PrintHeaderToTextFile(circFile, ssCirc.str());
 
-		VMlib::PrintHeaderToTextFile(circFile, ssCirc.str());
-
-		circFile << std::endl;
-		circFile.close();
-		circFile.clear();
-
+			circFile << std::endl;
+			circFile.close();
+			circFile.clear();
+		}
 
 		for (int c = 0; c < scale.size(); ++c)
 		{

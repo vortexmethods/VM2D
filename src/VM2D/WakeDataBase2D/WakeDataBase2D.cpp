@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: WakeDataBase2D.cpp                                               |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса WakeDataBase
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #include "WakeDataBase2D.h"
@@ -43,6 +43,7 @@
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
 #include "Parallel.h"
+#include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
 #include "Tree2D.h"
@@ -69,6 +70,83 @@ void WakeDataBase::ReadFromFile(const std::string& dir, const std::string& fileN
 	}
 }//ReadFromFile(...)
 
+
+void WakeDataBase::SaveKadrVtk(const std::string& filePrefix) const
+{
+	W.getTimestat().timeSaveKadr.first += omp_get_wtime();
+
+	if ((W.getParallel().myidWork == 0) && (W.ifDivisible(W.getPassport().timeDiscretizationProperties.saveVTK)))
+	{
+		std::string fname = VMlib::fileNameStep(filePrefix, W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "vtk");
+
+		std::ofstream outfile;
+		size_t numberNonZero = 0;
+
+		if (vtx.size() > 0)
+			numberNonZero += vtx.size();
+		else
+			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+				numberNonZero += W.getAirfoil(q).getNumberOfPanels();
+		VMlib::CreateDirectory(W.getPassport().dir, "snapshots");
+
+		outfile.open(W.getPassport().dir + "snapshots/" + fname);
+
+		outfile << "# vtk DataFile Version 2.0" << std::endl;
+		outfile << "VM2D VTK result: " << (W.getPassport().dir + "snapshots/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
+		outfile << "ASCII" << std::endl;
+		outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
+		outfile << "POINTS " << numberNonZero << " float" << std::endl;
+
+
+		if (vtx.size() > 0)
+			for (auto& v : vtx)
+			{
+				const Point2D& r = v.r();
+
+
+
+
+				outfile << r[0] << " " << r[1] << " " << "0.0" << std::endl;
+
+			}//for v		
+		else
+			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+				for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
+				{
+					const Point2D& r = W.getAirfoil(q).getR(s);
+					outfile << r[0] << " " << r[1] << " " << "0.0" << std::endl;
+				}
+
+
+		outfile << "CELLS " << numberNonZero << " " << 2 * numberNonZero << std::endl;
+		for (size_t i = 0; i < numberNonZero; ++i)
+			outfile << "1 " << i << std::endl;
+
+		outfile << "CELL_TYPES " << numberNonZero << std::endl;
+		for (size_t i = 0; i < numberNonZero; ++i)
+			outfile << "1" << std::endl;
+
+		outfile << std::endl;
+		outfile << "POINT_DATA " << numberNonZero << std::endl;
+		outfile << "SCALARS Gamma float 1" << std::endl;
+		outfile << "LOOKUP_TABLE default" << std::endl;
+
+		if (vtx.size() > 0)
+			for (auto& v : vtx)
+				outfile << v.g() << std::endl;
+		else
+			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+				for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
+				{
+					//const Point2D& r = W.getAirfoil(q).getR(s);
+					outfile << "0.0" << std::endl;
+				}
+
+		outfile.close();
+	}
+
+	W.getTimestat().timeSaveKadr.second += omp_get_wtime();
+}//SaveKadrVtk()
 
 //MPI-синхронизация вихревого следа
 void WakeDataBase::WakeSynchronize()

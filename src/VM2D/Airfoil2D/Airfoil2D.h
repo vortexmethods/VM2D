@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil2D.h                                                      |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Заголовочный файл с описанием класса Airfoil
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #ifndef AIRFOIL_H
@@ -50,10 +50,10 @@ namespace VM2D
 	/*!
 	\brief Абстрактный класс, определяющий обтекаемый профиль
 	\author Марчевский Илья Константинович
-	\author Кузьмина Ксения Сергеевна
+	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.9
-	\date 22 июля 2020 г.
+	\version 1.10
+	\date 17 мая 2021 г.
 	*/
 	class Airfoil
 	{
@@ -139,8 +139,11 @@ namespace VM2D
 		/// Указатель на девайсе, где хранятся вершины профиля
 		IFCUDA(mutable double* devRPtr);
 
-		/// Указатель на девайсе, где хранится правая часть матрицы
+		/// Указатель на девайсе, где хранится правая часть (константная) матрицы
 		IFCUDA(mutable double* devRhsPtr);
+
+		/// Указатель на девайсе, где хранится правая часть (линейная) матрицы
+		IFCUDA(mutable double* devRhsLinPtr);
 
 		/// Указатель на хосте, где хранится временная часть матрицы, полученная с девайса
 		IFCUDA(mutable std::vector<double> tmpRhs);

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Passport2D.cpp                                                   |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса Passport
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #include "Passport2D.h"
@@ -175,8 +175,10 @@ void Passport::GetAllParamsFromParser
 	parser->get("timeStop", timeDiscretizationProperties.timeStop);
 	parser->get("dt", timeDiscretizationProperties.dt);
 	parser->get("nameLength", timeDiscretizationProperties.nameLength, &defaults::defaultNameLength);
+	parser->get("fileType", timeDiscretizationProperties.fileType, &defaults::defaultFileType);
 	parser->get("saveVTK", timeDiscretizationProperties.saveVTK, &defaults::defaultSaveVTK);
 	parser->get("saveVP",  timeDiscretizationProperties.saveVP,  &defaults::defaultSaveVP);
+	parser->get("saveVisStress", timeDiscretizationProperties.saveVisStress, &defaults::defaultSaveVisStress);
 
 
 	parser->get("eps", wakeDiscretizationProperties.eps);
@@ -286,8 +288,10 @@ void Passport::PrintAllParams()
 	info('-') << "timeStop = " << timeDiscretizationProperties.timeStop << std::endl;
 	info('-') << "dt = " << timeDiscretizationProperties.dt << std::endl;
 	info('-') << "nameLength = " << timeDiscretizationProperties.nameLength << std::endl;
+	info('-') << "fileType = " << timeDiscretizationProperties.fileType << std::endl;
 	info('-') << "saveVTK = " << timeDiscretizationProperties.saveVTK << std::endl;
 	info('-') << "saveVP = " << timeDiscretizationProperties.saveVP << std::endl;
+	info('-') << "saveVisStress = " << timeDiscretizationProperties.saveVisStress << std::endl;
 	info('-') << "eps = " << wakeDiscretizationProperties.eps << std::endl;
 	info('-') << "eps2 = " << wakeDiscretizationProperties.eps2 << std::endl;
 	info('-') << "epscol = " << wakeDiscretizationProperties.epscol << std::endl;

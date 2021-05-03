@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Cell2D.h                                                         |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Заголовочный файл с описанием класса Cell
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #ifndef CELL_H
@@ -53,11 +53,11 @@ namespace VM2D
 	\brief Класс, описывающий ячейку дерева для вычисления скоростей методом Барнса --- Хата
 
 	\author Марчевский Илья Константинович
-	\author Кузьмина Ксения Сергеевна
+	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.9
-	\date 22 июля 2020 г.
+	\version 1.10
+	\date 17 мая 2021 г.
 	*/
 	class Cell
 	{
@@ -65,43 +65,41 @@ namespace VM2D
 		/// Габариты прямоугольника
 		Point2D leftDown, rightUp;
 
+		/// Центр прямоугольника
+		Point2D posCentre;
+
+		/// Номер моего уровня (глубина дерева)
+		int level;
+		/// Номер потомка внутри уровня
+		int p;
+
 		/// Признак нижнего уровня (листа дерева)
 		bool lowLevel = false;
 
 		/// Массив из двух умных указателей на дочерние ячейки
 		std::unique_ptr<Cell> mChildren[2];
 		
-		/// Суммарные циркуляции вихрей, находящихся внутри данного прямоугольника
-		//  sumGam[0] --- сумма положительных циркуляций
-		//  sumGam[1] --- сумма отрицательных циркуляций
-		double sumGam[2];
+		/// Монопольный момент ячейки 
+		double mon;
+		/// Дипольный, квадрупольный, октупольный и гексадекапольный моменты ячейки 
+		Point2D dip, qua, oct, hex;
 
-		/// Центры завихренностей
-		//  centerGam[0] --- центр положительной завихренности 
-		//  centerGam[1] --- центр отрицательной завихренности 
-		Point2D centerGam[2];
-
-		/// Коэффициенты линейного разложения для вычисления скоростей
-		double a = 0.0;
-		double b = 0.0;
-		double c = 0.0;
-		double d = 0.0;
+		/// \brief Коэффициенты для вычисления скоростей
+		numvector<Point2D, 4> E;
 
 		/// Расстояния до трех ближайших ячеек (необходимо для корректного вычисления eps*)
 		numvector<double, 3> closestCellDist = { 10000.0, 10000.0, 10000.0 };
 
 	public:
-
-		/// Номер уровня данной ячейки
-		int level;
+		///Ссылка на вектор всех исходных точек 
+		std::vector<PointsCopy>& points;
 
 		/// Вектор указателей на ячейки в ближней зоне (там, где надо считать влияние "напрямую") 
 		//имеет смысл только для ячеек нижнего уровня
 		std::vector<Cell*> closeCells;
 
-		/// Итераторы начала и конца объекта PointsCopy
-		PointsCopy::iterator itBegin;
-		PointsCopy::iterator itEnd;
+		/// Индексы элементов в исходном массиве точек
+		std::vector<int> index;
 
 		/// Ссылка на дерево целиком
 		Tree& tree;
@@ -111,8 +109,7 @@ namespace VM2D
 		/// Включает в себя построение корня дерева на основе заданных вихрей
 		/// \param[in] Tree_ ссылка на дерево целиком
 		Cell(Tree& Tree_);
-		Cell(Tree& Tree_, const Point2D leftDown_, const Point2D rightUp_);
-
+		
 		/// Деструктор
 		virtual ~Cell();
 
@@ -121,31 +118,34 @@ namespace VM2D
 		///  \brief Построение иерархической структуры ячеек (дерева)
 		///
 		/// Рекурсивная процедура
-		/// \param[in] itBegin ссылка на итератор начала списка вихрей в данной ячейке
-		/// \param[in] itEnd ссылка на итератор конца списка вихрей в данной ячейке
-		void CreateAllCells(PointsCopy::iterator& itBegin, PointsCopy::iterator& itEnd);
+		void CreateAllCells();
 
 		/// \brief Вычисление параметров всех ячеек дерева (циркуляций и центров завихренности)			
 		///
 		/// Рекурсивная процедура
-		// для нижних уровней считается по набору вихрей, для остальных --- по потомкам
 		void CalculateCellsParams();
 
-		/// \brief Обнуление коэффициентов a,b,c,d для ячейки нижнего уровня 
+		/// Вычисление параметров нижней ячейки по набору вихрей (для расчета скоростей)
+		void CalcPointsParams();
+		/// Вычисление параметров нижней ячейки по набору панелей (для решения СЛАУ)
+		void CalcPanelsParams();
+
+		/// \brief Обнуление коэффициентов локальных разложений		
 		///
 		/// Рекурсивная процедура
 		/// Вызывается перед накоплением коэффициентов процедурой CalcABCDandCloseCellsToLowLevel
-		void ClearABCD();
+		void ClearCoeff();
 
-
-		/// \brief Расчет коэффициентов a,b,c,d для ячейки нижнего уровня и определение ячеек ближней зоны 
+		/// \brief Расчет коэффициентов локальных разложений для ячейки нижнего уровня и определение ячеек ближней зоны 
 		///
 		/// Рекурсивная процедура
 		/// Вызывается внутри цикла по ячейкам нижнего уровня
 		/// \param[in] infCell указатель на влияющую ячейку (при первом витке рекурсии передается rootCell, затем - ее потомки)
-		/// \param[in] calcCoef = true, если нужно считать коэффициенты a,b,c,d (не нужно только для виртуальных вихрей)
-		void CalcABCDandCloseCellsToLowLevel(Cell& infCell, bool calcCoef);
+		/// \param[in] calcCoef = true, если нужно считать коэффициенты локальных разложений (не нужно только для виртуальных вихрей)
+		/// \param[in] calcCloseTrees = true (по умолчанию), если нужно заполнить вектор ближних ячеек
+		void CalcLocalCoeffandCloseCellsToLowLevel(Cell& infCell, bool calcCoef= true, bool calcCloseTrees = true);
 		
+		/// \brief Нахождение ближних ячеек для расчета диффузионных скоростей - другой критерий
 		void CalcCloseZone(Cell& infCell, double distance);
 
 		/// Расчет конвективных скоростей вихрей внутри одной ячейки от вихрей внутри всех ближних ячеек
@@ -177,17 +177,26 @@ namespace VM2D
 		/// Расчет конвективных скоростей вихрей внутри одной ячейки от источников внутри всех ближних ячеек
 		void CalcConvVeloByBiotSavartFromSources();
 
-		/// \brief Расчет приближенного влияния от вихрей на элемент it внутри ячейки нижнего уровня
+		/// \brief Расчет приближенного влияния от вихрей на один элемент внутри ячейки нижнего уровня
 		/// Вызывается внутри цикла по вихрям ячеек нижнего уровня
 		///
-		/// \param[in, out] it итератор на конкретный элемент, на который рассчитывается влияние
-		void CalcInfluenceFromVortexFarCells(PointsCopy::iterator it);
+		void CalcInfluenceFromVortexFarCells();
 
-		/// \brief Расчет приближенного влияния от источников на элемент it внутри ячейки нижнего уровня
+		/// \brief Расчет приближенного влияния от источников на один элемент внутри ячейки нижнего уровня
 		/// Вызывается внутри цикла по вихрям ячеек нижнего уровня
-		///
-		/// \param[in] it итератор на конкретный элемент, на который рассчитывается влияние
-		void CalcInfluenceFromSourceFarCells(PointsCopy::iterator it);
+		void CalcInfluenceFromSourceFarCells();
+
+		/// Расчет влияния от слоев внутри одного уровня от панелей всех ближних уровней (для решения СЛАУ)
+		void CalcInfluenceFromPanels();
+		void CalcInfluenceFromPanelsToPoints();
+
+		/// Обновление влияния от слоев внутри одного уровня от панелей всех ближних уровней (для решения СЛАУ)
+		/// 
+		/// Вызывается внутри функции IterativeInfluenceComputation для всех итераций, кроме первой 
+		/// Коэффициенты СЛАУ не рассчитываются напрямую, а берутся из сохраненного массива velSave
+		void UpdateInfluence();
+
+		void PushbackLowTrees();
 
 		Point2D GetR() const
 		{
@@ -198,9 +207,24 @@ namespace VM2D
 		{
 			return rightUp - leftDown;
 		};
-
-		void PrintTree();
 	};
 }//namespace VM2D
 
+//умножение комплексных чисел
+inline Point2D multz(const Point2D& a, const Point2D& b)
+{
+#ifdef calcOp
+	op += 4;
+#endif
+	return Point2D({ a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0] });
+}
+
+// умножение a на комплексно сопряженноe к b
+inline Point2D multzA(const Point2D& a, const Point2D& b)
+{
+#ifdef calcOp
+	op += 4;
+#endif
+	return Point2D({ a[0] * b[0] + a[1] * b[1], a[1] * b[0] - a[0] * b[1] });
+}
 #endif

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2DLinLayerAver.cpp                                       |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса BoundaryLinLayerAver
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 
@@ -76,32 +76,123 @@ void BoundaryLinLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eigen
 	//Очистка и резервирование памяти
 	virtualWake.vtx.reserve(afl.getNumberOfPanels() * nVortPerPan);
 
+	//Очистка и резервирование памяти
+	vortexBeginEnd.clear();
+	vortexBeginEnd.reserve(afl.getNumberOfPanels());
+
 	double maxG = W.getPassport().wakeDiscretizationProperties.maxGamma;
+
+	std::pair<int, int> pair;
 
 	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
 		midNorm = afl.nrm[i] * delta;
 
-		//длина участков, на которые разбивается панель для сброса вихрей
+		//число участков, на которые разбивается панель для сброса вихрей
 		//определяется через наибольшее значение решения на профиле, т.е. в крайней точке
-		double lenSmallPan = maxG / (sol(i) + 0.5 * fabs(sol(afl.getNumberOfPanels() + i)) * afl.len[i]);
+		 
 
-		size_t NEWnVortPerPan = (size_t)std::max((int)std::ceil(afl.len[i] / lenSmallPan), nVortPerPan);
+		pair.first = (int)virtualWake.vtx.size();
 
-		Point2D dr = 1.0 / NEWnVortPerPan * (afl.getR(i + 1) - afl.getR(i));
+		double a = sol(i) - 0.5 * sol(afl.getNumberOfPanels() + i);
+		double b = sol(i) + 0.5 * sol(afl.getNumberOfPanels() + i);
 
-		for (size_t j = 0; j < NEWnVortPerPan; ++j)
+		if (fabs(a - b) < 1e-10)
 		{
-			virtVort.r() = afl.getR(i) + dr * (j * 1.0 + 0.5) + midNorm;
-			virtVort.g() = sol(i) + sol(afl.getNumberOfPanels() + i) * (-0.5 * afl.len[i] + lenSmallPan * (j * 1.0 + 0.5));
+			size_t NEWnVortPerPan = (size_t)std::max((int)std::ceil(fabs(sol(i)*afl.len[i]) / maxG), nVortPerPan);
+			Point2D dr = 1.0 / NEWnVortPerPan * (afl.getR(i + 1) - afl.getR(i));
 
+			for (size_t j = 0; j < NEWnVortPerPan; ++j)
+			{
+				virtVort.r() = afl.getR(i) + dr * (j * 1.0 + 0.5) + midNorm;
+				virtVort.g() = sol(i) * afl.len[i] / NEWnVortPerPan;
+				virtualWake.vtx.push_back(virtVort);
 
-			virtualWake.vtx.push_back(virtVort);
-
-			// пока как в константной схеме //todolin
-			virtualWake.vecHalfGamma.push_back(0.5 * sol(i)  * afl.tau[i]);
-			virtualWake.aflPan.push_back({ numberInPassport, i });
+				virtualWake.vecHalfGamma.push_back(0.5 * sol(i)  * afl.tau[i]);
+				virtualWake.aflPan.push_back({ numberInPassport, i });
+			}
 		}
+		else if (a * b >= 0.0)
+		{
+			size_t NEWnVortPerPan = (size_t)std::max((int)std::ceil(fabs(0.5*(a+b)*afl.len[i]) / maxG), nVortPerPan);
+			std::vector<double> ds(NEWnVortPerPan+1, 0.0);
+			
+			for (size_t k = 1; k <= NEWnVortPerPan; ++k)
+			{
+				if ((a > 0) || (b > 0))
+					ds[k] = afl.len[i] / (a - b) * (a - sqrt((b*b * k + a * a*(NEWnVortPerPan - k)) / NEWnVortPerPan));
+				else
+					ds[k] = afl.len[i] / (a - b) * (a + sqrt((b*b * k + a * a*(NEWnVortPerPan - k)) / NEWnVortPerPan));
+			}
+
+			for (size_t j = 0; j < NEWnVortPerPan; ++j)
+			{
+				virtVort.r() = afl.getR(i) + 0.5*(ds[j]+ds[j+1])*afl.tau[i] + midNorm;
+				virtVort.g() = 0.5 * (a+b) * afl.len[i] / NEWnVortPerPan;
+				virtualWake.vtx.push_back(virtVort);
+
+				virtualWake.vecHalfGamma.push_back(0.5 * (a + 0.5*(ds[j] + ds[j + 1]) * (b-a)/ afl.len[i])  * afl.tau[i]);
+				virtualWake.aflPan.push_back({ numberInPassport, i });
+			}
+		}
+		else
+		{
+			double sast = -a * afl.len[i] / (b - a);
+
+			//from 0 to sast
+			{
+				size_t NEWnVortPerPan = (size_t)std::max((int)std::ceil(fabs(0.5*(a + 0.0)*sast) / maxG), (int)std::ceil(nVortPerPan * sast / afl.len[i]));
+				std::vector<double> ds(NEWnVortPerPan + 1, 0.0);
+
+				for (size_t k = 1; k <= NEWnVortPerPan; ++k)
+				{
+					if (a > 0)
+						ds[k] = sast / (a - 0.0) * (a - sqrt((a * a*(NEWnVortPerPan - k)) / NEWnVortPerPan));
+					else
+						ds[k] = sast / (a - 0.0) * (a + sqrt((a * a*(NEWnVortPerPan - k)) / NEWnVortPerPan));
+				}
+
+				for (size_t j = 0; j < NEWnVortPerPan; ++j)
+				{
+					virtVort.r() = afl.getR(i) + 0.5*(ds[j] + ds[j + 1])*afl.tau[i] + midNorm;
+					virtVort.g() = 0.5 * (a + 0.0) * sast / NEWnVortPerPan;
+					virtualWake.vtx.push_back(virtVort);
+
+					virtualWake.vecHalfGamma.push_back(0.5 * (a + 0.5*(ds[j] + ds[j + 1]) * (0.0 - a) / sast)  * afl.tau[i]);
+					virtualWake.aflPan.push_back({ numberInPassport, i });
+				}
+			}
+
+			double sastast = afl.len[i] - sast;
+
+			//from sats to len
+			{
+				size_t NEWnVortPerPan = (size_t)std::max((int)std::ceil(fabs(0.5*(0.0 + b)*sastast) / maxG), (int)std::ceil(nVortPerPan * sastast / afl.len[i]));
+				std::vector<double> ds(NEWnVortPerPan + 1, 0.0);
+
+				for (size_t k = 1; k <= NEWnVortPerPan; ++k)
+				{
+					if (b > 0)
+						ds[k] = sastast / (0.0 - b) * (0.0 - sqrt((b*b * k) / NEWnVortPerPan));
+					else
+						ds[k] = sastast / (0.0 - b) * (0.0 + sqrt((b*b * k) / NEWnVortPerPan));
+				}
+
+				for (size_t j = 0; j < NEWnVortPerPan; ++j)
+				{
+					virtVort.r() = afl.getR(i) + sast * afl.tau[i] + 0.5*(ds[j] + ds[j + 1])*afl.tau[i] + midNorm;
+					virtVort.g() = 0.5 * (0.0 + b) * sastast / NEWnVortPerPan;
+					virtualWake.vtx.push_back(virtVort);
+
+					virtualWake.vecHalfGamma.push_back(0.5 * (0.0 + 0.5*(ds[j] + ds[j + 1]) * (b - 0.0) / sastast)  * afl.tau[i]);
+					virtualWake.aflPan.push_back({ numberInPassport, i });
+				}
+
+			}
+		}
+
+		pair.second = (int)virtualWake.vtx.size();
+		vortexBeginEnd.push_back(pair);
 	}
 
 
@@ -116,7 +207,7 @@ void BoundaryLinLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eigen
 
 
 //Генерация блока матрицы //Lin
-void BoundaryLinLayerAver::FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol)
+void BoundaryLinLayerAver::FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lastCol)
 {
 	size_t np = afl.getNumberOfPanels();
 
@@ -124,8 +215,10 @@ void BoundaryLinLayerAver::FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd
 
 	for (size_t i = 0; i < np; ++i)
 	{
-		lactCol(i) = 1.0;
+		lastCol(i) = 1.0;
 		lastLine(i) = afl.len[i];
+		lastCol(np + i) = 0.0;
+		lastLine(np + i) = 0.0;
 	}
 
 	for (size_t i = 0; i < np; ++i)
@@ -142,7 +235,7 @@ void BoundaryLinLayerAver::FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd
 //Генерация блока матрицы //Lin
 void BoundaryLinLayerAver::FillIQSelf(std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& IQ)
 {
-	afl.calcIQ(1, afl, IQ);
+	afl.calcIQ(2, afl, IQ);
 }//FillIQSelf(...)
 
 
@@ -168,7 +261,7 @@ void BoundaryLinLayerAver::FillMatrixFromOther(const Boundary& otherBoundary, Ei
 
 void BoundaryLinLayerAver::FillIQFromOther(const Boundary& otherBoundary, std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& IQ)
 {
-	afl.calcIQ(1, otherBoundary.afl, IQ);
+	afl.calcIQ(2, otherBoundary.afl, IQ);
 }//FillIQFromOther(...)
 
 
@@ -184,24 +277,28 @@ void BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDat
 	VMlib::parProp par = W.getParallel().SplitMPI(pointsDb.vtx.size());
 
 
+	sheets.FreeSheetSynchronize();
 
-	//синхронизация свободного вихревого слоя
-	std::vector<double> freeVortexSheetGamma;
-	int sz;
+	////синхронизация свободного вихревого слоя
+	//std::vector<double> freeVortexSheetGamma;
+	//int sz;
 
-	if (id == 0)
-	{
-		sz = (int)sheets.getSheetSize();
-		freeVortexSheetGamma.resize(sz, 0.0);
-		for (size_t j = 0; j < sheets.getSheetSize(); ++j)
-			freeVortexSheetGamma[j] = sheets.freeVortexSheet(j, 0);
-	}
-	MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
-	if (id != 0)
-		freeVortexSheetGamma.resize(sz, 0.0);
+	//if (id == 0)
+	//{
+	//	sz = (int)sheets.getSheetSize();
+	//	freeVortexSheetGamma.resize(sz, 0.0);
+	//	for (size_t j = 0; j < afl.getNumberOfPanels(); ++j)
+	//	{
+	//		freeVortexSheetGamma[j] = sheets.freeVortexSheet(j, 0);
+	//		freeVortexSheetGamma[afl.getNumberOfPanels() + j] = sheets.freeVortexSheet(j, 1);
+	//	}
+	//}
+	//MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
+	//if (id != 0)
+	//	freeVortexSheetGamma.resize(sz, 0.0);
 
-	MPI_Bcast(freeVortexSheetGamma.data(), (int)sz, MPI_DOUBLE, 0, W.getParallel().commWork);
-	//свободный вихревой слой синхронизирован
+	//MPI_Bcast(freeVortexSheetGamma.data(), (int)sz, MPI_DOUBLE, 0, W.getParallel().commWork);
+	////свободный вихревой слой синхронизирован
 
 
 
@@ -210,8 +307,6 @@ void BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDat
 
 	MPI_Scatterv(const_cast<std::vector<Vortex2D/*, VM2D::MyAlloc<VMlib::Vortex2D>*/>&>(pointsDb.vtx).data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, \
 		locPoints.data(), par.myLen, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
-
-	double cft = IDPI;
 
 	std::vector<Point2D> locConvVelo;
 	locConvVelo.resize(par.myLen);
@@ -224,7 +319,7 @@ void BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDat
 	//double dst2eps, dst2;
 #pragma warning (pop)
 
-#pragma omp parallel for default(none) shared(locConvVelo, locPoints, cft, par, freeVortexSheetGamma, std::cout) private(velI, tempVel/*, dst2, dst2eps*/)
+#pragma omp parallel for default(none) shared(locConvVelo, locPoints, par, std::cout) private(velI, tempVel/*, dst2, dst2eps*/)
 	for (int i = 0; i < par.myLen; ++i)
 	{
 		velI.toZero();
@@ -233,7 +328,7 @@ void BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDat
 
 		/// \todo Тут надо разобраться, как должно быть...
 		/// \todo сделать  if(move || deform)
-		for (size_t j = 0; j < sheets.getSheetSize(); ++j)
+		for (size_t j = 0; j < afl.getNumberOfPanels(); ++j)
 		{
 			Point2D dj = afl.getR(j + 1) - afl.getR(j);
 			Point2D tauj = dj.unit();
@@ -245,15 +340,18 @@ void BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDat
 
 			double lambda = VMlib::Lambda(p, s);
 
-			Point2D skos = -a * tauj.kcross() + lambda * tauj;
+			Point2D u1 = 0.5 / dj.length() * VMlib::Omega(p + s, tauj, tauj) ;
+
+			Point2D skos0 = -a * tauj.kcross() + lambda * tauj;
+			Point2D skos1 = -a * u1.kcross() + lambda * u1 - tauj;
 
 			/// \todo почему не sheets.freeVortexSheet(j, 0)?  
-			velI += freeVortexSheetGamma[j] * skos.kcross();
-			velI += sheets.attachedVortexSheet(j, 0) * skos.kcross();
-			velI += sheets.attachedSourceSheet(j, 0) * skos;
+			velI += sheets.freeVortexSheet(j, 0) * skos0.kcross() + sheets.freeVortexSheet(j, 1) * skos1.kcross();
+			velI += sheets.attachedVortexSheet(j, 0) * skos0.kcross() + sheets.attachedVortexSheet(j, 1) * skos1.kcross();
+			velI += sheets.attachedSourceSheet(j, 0) * skos0 + sheets.attachedSourceSheet(j, 1) * skos1;
 		}//for j
 
-		velI *= cft;
+		velI *= IDPI;
 		locConvVelo[i] = velI;
 	}//for i
 
@@ -334,16 +432,25 @@ void BoundaryLinLayerAver::CalcConvVelocityAtVirtualVortexes(std::vector<Point2D
 //Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников
 void BoundaryLinLayerAver::ComputeAttachedSheetsIntensity()
 {
-	for (size_t i = 0; i < sheets.getSheetSize(); ++i)
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
 		oldSheets.attachedVortexSheet(i, 0) = sheets.attachedVortexSheet(i, 0);
-		oldSheets.attachedSourceSheet(i, 0) = sheets.attachedVortexSheet(i, 0);
+		oldSheets.attachedVortexSheet(i, 1) = sheets.attachedVortexSheet(i, 1);
+		oldSheets.attachedSourceSheet(i, 0) = sheets.attachedSourceSheet(i, 0);
+		oldSheets.attachedSourceSheet(i, 1) = sheets.attachedSourceSheet(i, 1);
 	}
 
-	for (size_t i = 0; i < sheets.getSheetSize(); ++i)
+	const Airfoil* oldAfl = (W.getCurrentStep() == 0) ? &afl : &W.getOldAirfoil(numberInPassport);
+
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
-		sheets.attachedVortexSheet(i, 0) = afl.getV(i) & afl.tau[i];
-		sheets.attachedSourceSheet(i, 0) = afl.getV(i) & afl.nrm[i];
+		sheets.attachedVortexSheet(i, 0) = 0.5 * (afl.getV(i + 1) + afl.getV(i)) & afl.tau[i];
+		sheets.attachedVortexSheet(i, 1) = (afl.len[i] - oldAfl->len[i]) / W.getPassport().timeDiscretizationProperties.dt;			
+			
+		sheets.attachedSourceSheet(i, 0) = 0.5 * (afl.getV(i + 1) + afl.getV(i)) & afl.nrm[i];
+		sheets.attachedSourceSheet(i, 1) = -afl.len[i] * (afl.phiAfl - oldAfl->phiAfl) / W.getPassport().timeDiscretizationProperties.dt;
+                
+                 
 	}
 }//ComputeAttachedSheetsIntensity()
 

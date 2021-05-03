@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2D.cpp                                                  |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса Mechanics.cpp
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #include "Mechanics2D.h"
@@ -152,7 +152,8 @@ void Mechanics::GenerateForcesString()
 	forceFileName << W.getPassport().dir << "forces-airfoil-" << numberInPassport;
 	forceFileNameCsv << W.getPassport().dir << "forces-airfoil-" << numberInPassport << ".csv";
 
-	double cShock = (W.getPassport().physicalProperties.getCurrTime() > W.getPassport().physicalProperties.timeAccel + 2.0 * W.getPassport().timeDiscretizationProperties.dt) ? 1.0 : 0.0;
+	//double cShock = (W.getPassport().physicalProperties.getCurrTime() > W.getPassport().physicalProperties.timeAccel + 2.0 * W.getPassport().timeDiscretizationProperties.dt) ? 1.0 : 0.0;
+	double cShock = 1.0;
 
 	std::ofstream forcesFile(forceFileName.str(), std::ios::app);
 	forcesFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << cShock * hydroDynamForce[0] << "	" << cShock * hydroDynamForce[1] << "	" << cShock * hydroDynamMoment << "	" << cShock * viscousForce[0] << "	" << cShock * viscousForce[1] << "	" << cShock * viscousMoment;

@@ -1,6 +1,6 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.9    |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2020/07/22     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.10   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2021/05/17     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Описание базовых вспомогательных функций
 \author Марчевский Илья Константинович
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 
@@ -95,11 +95,17 @@ namespace defaults
 	const std::pair<std::pair<std::string, int>, std::string> defaultVelAccel = { {"RampLin", 1}, "" };
 	const double defaultTimeAccel = 0.0;
 	
-	/// Шаг сохранения в бинарный файл
+	/// Тип сохраняемого файла
+	const int defaultFileType = 0;
+
+	/// Шаг сохранения в файл
 	const int defaultSaveVTK = 100;
 
 	/// Шаг подсчета поля скорости и давления
 	const int defaultSaveVP = 0;
+
+	/// Шаг подсчета поля скорости и давления
+	const int defaultSaveVisStress = 0;
 
 	/// Число разрядов в имени файла
 	const int defaultNameLength = 5;
@@ -493,6 +499,17 @@ namespace VMlib
 	/// \return логарифм отношения норм векторов
 	Point2D Omega(const Point2D& a, const Point2D& b, const Point2D& c);
 
+	/// \brief Вспомогательная функция перестановки байт местами (нужно для сохранения бинарных VTK)
+	///
+	///
+	/// \param[in] var ссылка на переменную, у которой байты нужно поменять местами
+	template<typename T>
+	void SwapEnd(T& var)
+	{
+		char* varArray = reinterpret_cast<char*>(&var);
+		for (long i = 0; i < static_cast<long>(sizeof(var) / 2); ++i)
+			std::swap(varArray[sizeof(var) - 1 - i], varArray[i]);
+	}
 
 	/// \brief Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба)
 	inline double boundDenom(double r2, double eps2)

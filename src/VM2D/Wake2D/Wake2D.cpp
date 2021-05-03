@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Wake2D.cpp                                                       |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса Wake
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #if defined(_WIN32)
@@ -63,82 +63,6 @@
 
 using namespace VM2D;
 
-void Wake::SaveKadrVtk() const
-{
-	W.getTimestat().timeSaveKadr.first += omp_get_wtime();
-
-	if ((W.getParallel().myidWork == 0) && (W.ifDivisible(W.getPassport().timeDiscretizationProperties.saveVTK)))
-	{
-		std::string fname = VMlib::fileNameStep("Kadr", W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "vtk");
-
-		std::ofstream outfile;
-		size_t numberNonZero = 0;
-
-		if (vtx.size() > 0)
-			numberNonZero += vtx.size();
-		else
-			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
-				numberNonZero += W.getAirfoil(q).getNumberOfPanels();
-		VMlib::CreateDirectory(W.getPassport().dir, "snapshots");
-
-		outfile.open(W.getPassport().dir + "snapshots/" + fname);
-
-		outfile << "# vtk DataFile Version 2.0" << std::endl;
-		outfile << "VM2D VTK result: " << (W.getPassport().dir + "snapshots/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
-		outfile << "ASCII" << std::endl;
-		outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
-		outfile << "POINTS " << numberNonZero << " float" << std::endl;
-
-
-		if (vtx.size() > 0)
-			for (auto& v : vtx)
-			{
-				const Point2D& r = v.r();
-
-
-
-
-				outfile << r[0] << " " << r[1] << " " << "0.0" << std::endl;
-
-			}//for v		
-		else
-			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
-				for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
-				{
-					const Point2D& r = W.getAirfoil(q).getR(s);
-					outfile << r[0] << " " << r[1] << " " << "0.0" << std::endl;					
-				}			
-
-
-		outfile << "CELLS " << numberNonZero << " " << 2 * numberNonZero << std::endl;
-		for (size_t i = 0; i < numberNonZero; ++i)
-			outfile << "1 " << i << std::endl;
-
-		outfile << "CELL_TYPES " << numberNonZero << std::endl;
-		for (size_t i = 0; i < numberNonZero; ++i)
-			outfile << "1" << std::endl;
-
-		outfile << std::endl;
-		outfile << "POINT_DATA " << numberNonZero << std::endl;
-		outfile << "SCALARS Gamma float 1" << std::endl;
-		outfile << "LOOKUP_TABLE default" << std::endl;
-
-		if (vtx.size() > 0)
-			for (auto& v : vtx)
-				outfile << v.g() << std::endl;
-		else
-			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
-				for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
-				{
-					//const Point2D& r = W.getAirfoil(q).getR(s);
-					outfile << "0.0" << std::endl;					
-				}		
-
-		outfile.close();
-	}
-
-	W.getTimestat().timeSaveKadr.second += omp_get_wtime();
-}//SaveKadrVtk()
 
 
 bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough)
@@ -391,12 +315,13 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves
 
 	MPI_Gatherv(locThrough.data(), par.myLen, MPI_INT, through.data(), par.len.data(), par.disp.data(), MPI_INT, 0, W.getParallel().commWork);
 
-	//std::ostringstream sss;
-	//sss << "through_";
-	//std::ofstream throughFile(sss.str());
+
+	//std::stringstream sss;
+	//sss << "through_" << W.currentStep;
+	//std::ofstream of(W.getPassport().dir + "dbg/" + sss.str());
 	//for (size_t i = 0; i < gamma.size(); ++i)
-	//	throughFile << gamma[i] << std::endl;
-	//throughFile.close();
+	//	of << gamma[i] << std::endl;
+	//of.close();
 
 	if (W.getParallel().myidWork == 0)
 	{
@@ -464,26 +389,29 @@ void Wake::GetPairsBS(int type)
 
 			r2 = dist2(vtxI.r(), vtxK.r());
 
-			//линейное увеличение радиуса коллапса
-			double mnog = std::max(1.0, (vtxI.r()[0] - cRBP) / cSP);
+			//линейное увеличение радиуса коллапса				    
+			double mnog = std::max(1.0, /* 2.0 * */ (vtxI.r()[0] - cRBP) / cSP);
 
 			r2test = sqr( W.getPassport().wakeDiscretizationProperties.epscol * mnog );
 
 			if (type == 1)
 				r2test *= 4.0; //Увеличение радиуса коллапса в 2 раза для коллапса вихрей разных знаков			
 
+			//if (mnog > 1.0)    
+			//	r2test = sqr(0.005*cSP); 			
+
 			if (r2 < r2test)
 			{
 				switch (type)
 				{
-					case 0: 
-						found = ( fabs(vtxI.g()*vtxK.g()) != 0.0) && (fabs(vtxI.g() + vtxK.g()) < mnog * maxG);
+					case 0:
+						found = ( fabs(vtxI.g()*vtxK.g()) != 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG);
 						break;
 					case 1:
 						found = (vtxI.g()*vtxK.g() < 0.0);
 						break;
 					case 2:
-						found = (vtxI.g()*vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < mnog * maxG);
+						found = (vtxI.g()*vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG);
 						break;
 				}
 			}//if r2 < r2_test
@@ -503,6 +431,7 @@ void Wake::GetPairsBS(int type)
 
 void Wake::GetPairsBH(int type)
 {
+	/*
 	int id = W.getParallel().myidWork;
 
 	if (id == 0)
@@ -541,25 +470,29 @@ void Wake::GetPairsBH(int type)
 							r2 = dist2(vtxI.r(), vtxK.r());
 
 							//линейное увеличение радиуса коллапса
-							double mnog = std::max(1.0, (vtxI.r()[0] - cRBP) / cSP);
+							double mnog = std::max(1.0,  (vtxI.r()[0] - cRBP) / cSP);
+							                          //тут м.б. умножение на 2, см. выше
 
 							r2test = sqr(W.getPassport().wakeDiscretizationProperties.epscol * mnog);
 
 							if (type == 1)
 								r2test *= 4.0; //Увеличение радиуса коллапса в 2 раза для коллапса вихрей разных знаков			
 
+							//if (mnog > 1.0)     
+							//	r2test = sqr(0.005*cSP);
+
 							if (r2 < r2test)
 							{
 								switch (type)
 								{
 								case 0:
-									found = (fabs(vtxI.g() * vtxK.g()) != 0.0) && (fabs(vtxI.g() + vtxK.g()) < mnog * maxG);
+									found = (fabs(vtxI.g() * vtxK.g()) != 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG);
 									break;
 								case 1:
 									found = (vtxI.g() * vtxK.g() < 0.0);
 									break;
 								case 2:
-									found = (vtxI.g() * vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < mnog * maxG);
+									found = (vtxI.g() * vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG);
 									break;
 								}
 							}//if r2 < r2_test
@@ -571,6 +504,7 @@ void Wake::GetPairsBH(int type)
 			}//for locI
 		}
 	}// if (id == 0)
+	*/
 }//GetPairsBH(...)
 
 
@@ -627,13 +561,13 @@ int Wake::Collaps(int type, int times)
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_PAIRS))	
 		//W.getInfo('t') << "nvtx (" << parallel.myidWork << ") = " << vtx.size() << std::endl;
 
-		//if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
+		if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
 		{
 			const_cast<Gpu&>(W.getCuda()).RefreshWake(3);
 			GPUGetPairs(type);
 		}
-		//else
-		//	GetPairs(type);
+		else
+			GetPairs(type);
 #else
 		GetPairs(type);
 #endif		

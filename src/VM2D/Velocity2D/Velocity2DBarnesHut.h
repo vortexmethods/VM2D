@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2DBarnesHut.h                                            |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Заголовочный файл с описанием класса VelocityBiotSavart
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #ifndef VELOCITY2DBARNESHUT_H
@@ -55,31 +55,17 @@ namespace VM2D
 	- быстрый метод типа Барнса - Хата
 
 	\author Марчевский Илья Константинович
-	\author Кузьмина Ксения Сергеевна
+	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.9
-	\date 22 июля 2020 г.
+	\version 1.10
+	\date 17 мая 2021 г.
 	*/
 	class VelocityBarnesHut : public Velocity
 	{
 	private:
 
-		/// \brief Объекты из точек:
-		/// pointsCopyWake - вихрей в пелене и источников,
-		/// pointsCopyVP - в которых считается скорость и давление,	
-		/// sheetsGamCopy - маркеров для вихревых слоев,
-		/// sourcesCopy -  источников в области течения + маркеры для присоединенного слоя источников
-		//PointsCopy pointsCopyWake, pointsCopyVP, sheetsGamCopy, sourcesCopy;
-
 	public:		
-
-		/// \brief Умные указатели на деревья: 
-		/// treeWake содержит вихри из вихревого следа и источники,  
-		/// treeVP - точки, в которых считается скорость и давление, 
-		/// treeSheetsGam - маркеры для вихревых слоев,
-		/// treeSources - источники в области течения + маркеры для присоединенного слоя источников 
-		//std::unique_ptr<Tree> treeWake, treeVP, treeSheetsGam, treeSources;
 
 		/// \brief Конструктор
 		/// 
@@ -106,15 +92,9 @@ namespace VM2D
 		/// \ingroup Parallel
 		void GetWakeInfluenceToRhs(std::vector<double>& wakeRhs) const;
 
-		void GetWakeInfluenceToRhsBS(const Airfoil& afl, std::vector<double>& wakeRhs) const;
-#if defined(USE_CUDA)
-		void GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeRhs) const;
-#endif
 		void CalcDiffVeloI1I2ToWakeFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2) override;
 		void CalcDiffVeloI1I2ToWakeFromWake(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2) override;
 	};
-
-
 
 }//namespace VM2D
 

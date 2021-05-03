@@ -1,6 +1,6 @@
 /*-------------------------------*- VMcuda -*----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
 |  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл с реализацией функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #include <iostream>
@@ -54,6 +54,8 @@ __device__ __constant__ double collapseRightBorder;
 __device__ __constant__ double collapseScale;
 
 __device__ __constant__ double iDPIminEpsAst2;
+
+__device__ __constant__ int schemeSwitcher;
 
 
 #define invdpi (0.15915494309189533576888376337251)
@@ -101,6 +103,16 @@ __device__ inline double myMax(double x, double y)
 __device__ inline double myMin(double x, double y)
 {
 	return (x > y) ? y : x;
+}
+
+__device__ inline int sqr(int x)
+{
+	return x * x;
+}
+
+__device__ inline double sqr(double x)
+{
+	return x * x;
 }
 
 
@@ -295,7 +307,8 @@ __global__ void CU_calc_conv_epsast(
 		if (calcRadius)
 		{
 #ifndef TESTONLYVELO
-			rad[locI] =  sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
+			rad[locI] =  1.0 * sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
+			//rad[locI] =  4.0 * sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
 #endif
 		}
 	}	
@@ -322,6 +335,10 @@ __global__ void CU_calc_conv_From_Panels(
 	__shared__ double shattgamma[CUBLOCK];
 	__shared__ double shattsource[CUBLOCK];
 
+	__shared__ double shfreegammaLin[CUBLOCK];
+	__shared__ double shattgammaLin[CUBLOCK];
+	__shared__ double shattsourceLin[CUBLOCK];
+
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
 
@@ -331,7 +348,7 @@ __global__ void CU_calc_conv_From_Panels(
 	double velx = 0.0;
 	double vely = 0.0;
 
-	double sx, sy, px, py, s2, p2, alpha, lambda, taux, tauy, psix, psiy;	
+	double sx, sy, px, py, s2, p2, alpha, lambda, taux, tauy, u1x, u1y, skos0x, skos0y, skos1x, skos1y;
 
 	for (size_t j = 0; j < npnl; j += CUBLOCK)
 	{
@@ -346,6 +363,13 @@ __global__ void CU_calc_conv_From_Panels(
 		shfreegamma[threadIdx.x] = freegamma[j + threadIdx.x];
 		shattgamma[threadIdx.x] = attgamma[j + threadIdx.x];
 		shattsource[threadIdx.x] = attsource[j + threadIdx.x];
+
+		if (schemeSwitcher == 2)
+		{
+			shfreegammaLin[threadIdx.x] = freegamma[npnl + j + threadIdx.x];
+			shattgammaLin[threadIdx.x] = attgamma[npnl + j + threadIdx.x];
+			shattsourceLin[threadIdx.x] = attsource[npnl + j + threadIdx.x];
+		}
 
 		__syncthreads();
 
@@ -372,14 +396,33 @@ __global__ void CU_calc_conv_From_Panels(
 				taux = shdx[q] / shlen[q];
 				tauy = shdy[q] / shlen[q];
 
-				psix = alpha * tauy + lambda * taux;
-				psiy = -alpha * taux + lambda * tauy;
+
+				skos0x = alpha * tauy + lambda * taux;
+				skos0y = -alpha * taux + lambda * tauy;
+
+				if (schemeSwitcher == 2)
+				{
+				        u1x = 0.5 / shlen[q] * ((px + sx) * taux * taux \
+					     + 2.0 * (py + sy) * taux * tauy - (px + sx) * tauy * tauy);
+
+				        u1y = 0.5 / shlen[q] * (-(py + sy) * taux * taux \
+					     + 2.0 * (px + sx) * taux * tauy + (py + sy) * tauy * tauy);
+
+					skos1x = alpha * u1y + lambda * u1x - taux;
+					skos1y = -alpha * u1x + lambda * u1y - tauy;
+				}
 
 				//kpsix = -psiy;
 				//kpsiy =  psix;
 
-				velx += (shfreegamma[q] + shattgamma[q]) * (-psiy) + shattsource[q] * psix;
-				vely += (shfreegamma[q] + shattgamma[q]) * ( psix) + shattsource[q] * psiy;
+				velx += (shfreegamma[q] + shattgamma[q]) * (-skos0y) + shattsource[q] * skos0x;
+				vely += (shfreegamma[q] + shattgamma[q]) * ( skos0x) + shattsource[q] * skos0y;
+
+				if (schemeSwitcher == 2)
+				{
+					velx += (shfreegammaLin[q] + shattgammaLin[q]) * (-skos1y) + shattsourceLin[q] * skos1x;
+					vely += (shfreegammaLin[q] + shattgammaLin[q]) * ( skos1x) + shattsourceLin[q] * skos1y;
+				}
 			}
 		}
 		__syncthreads();
@@ -562,7 +605,7 @@ __global__ void CU_calc_I1I2FromPanels(
 
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
-	   
+
 	double ptx = pt[i*sizeVort + posR + 0];
 	double pty = pt[i*sizeVort + posR + 1];
 	double rdi = myMax(rd[i], minRd);
@@ -581,7 +624,7 @@ __global__ void CU_calc_I1I2FromPanels(
 	double left = ptx - diffRadius;
 	double right = ptx + diffRadius;
 
-	const int nQuadPt = 30;
+	const int nQuadPt = 3;
 
 	for (size_t j = 0; j < npnl; j += CUBLOCK)
 	{
@@ -604,13 +647,12 @@ __global__ void CU_calc_I1I2FromPanels(
 		{
 			if (j + q < npnl)
 			{
-				double xcnt = 0.5*(shx[q] + shxp1[q]);
-				if ((xcnt < right) && (xcnt > left))
-				{
-					for (int s = 0; s < nQuadPt; ++s)
+				for (int s = 0; s < nQuadPt; ++s)
 					{
-						mn = (s + 0.5) / nQuadPt;
-						x0 = shx[q] + shtaux[q] * mn;
+					mn = (s + 0.5) / nQuadPt;
+					x0 = shx[q] + shtaux[q] * mn;
+					if ((x0 < right) && (x0 > left))
+					{
 						y0 = shy[q] + shtauy[q] * mn;
 
 
@@ -633,7 +675,7 @@ __global__ void CU_calc_I1I2FromPanels(
 		}
 		__syncthreads();
 	}
-	
+
 	if (locI < len)
 	{
 		i1[locI] = val1;
@@ -677,6 +719,7 @@ __global__ void  CU_calc_I0I3(
 	double expon;
 	double mnx, mny;
 	int new_n;
+	double den;
 	double xi_mx, xi_my, lxi_m;
 	double mnog1;
 	double vs;
@@ -706,16 +749,16 @@ __global__ void  CU_calc_I0I3(
 			normx = tauy;
 			normy = -taux;
 					   
-			d = sqrt(qx*qx + qy * qy);
+			d = fabs(qx*normx + qy * normy);
 
 			meanepsj2 = meanEps[j] * meanEps[j];
 
-			if (d < 50.0 * lenj)	//Почему зависит от длины панели???
+			if ( (d < 50.0 * lenj) && (fabs(s) < 50.0 * lenj) )	//Почему зависит от длины панели???
 			{
 				v0x = taux * lenj;
 				v0y = tauy * lenj;
-
-				if (d > 5.0 * lenj)
+								
+				if ( (d > 5.0 * lenj) || (fabs(s) > 5.0 * lenj) )
 				{
 					xix = qx * iDDomRad;
 					xiy = qy * iDDomRad;
@@ -733,12 +776,17 @@ __global__ void  CU_calc_I0I3(
 					}
 
 					vs = ptg * expon / (pi * meanepsj2);
-				}
-				else if ((d <= 5.0 * lenj) && (d >= 0.1 * lenj))
+				}				
+				else if ( (d >= 0.1 * lenj) || (fabs(s) > 0.5 * lenj) )
 				{
 					vs = 0.0;
 					//new_n = 100;
-					new_n = (int)(ceil(5.0 * lenj / d));
+					//new_n = (int)(ceil(5.0 * lenj / d));
+
+					den = (fabs(s) < 0.5 * lenj) ? d : (fabs(s) + d - 0.5 * lenj);
+
+
+					new_n = (int)myMax(ceil(5.0 * lenj / den), 1.0);
 
 					hx = v0x / new_n;
 					hy = v0y / new_n;
@@ -767,52 +815,17 @@ __global__ void  CU_calc_I0I3(
 						vs += expon;
 					}//for m
 					vs *= ptg / (pi * meanepsj2);
-				}
-				else if (d <= 0.1 * lenj)
+				} 				
+				else
 				{
-					if (val0 != -pi * rdi)
-					{
+					
 						val0 = -pi * rdi;
 
-						if (fabs(s) > 0.5 * lenj)
-						{
-							mnog1 = 2.0 * rdi * (exp(-fabs(s)  * iDDomRad) * sinh(lenj * iDDomRad / 2.0));
-							val3x = mnog1 * normx;
-							val3y = mnog1 * normy;
-						}
-						else
-						{
+						
 							mnog1 = 2.0 * rdi * (1.0 - exp(-lenj * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
 							val3x = mnog1 * normx;
 							val3y = mnog1 * normy;
-						}
-					}
-
-					vs = 0.0;
-					
-					
-					new_n = 1;
-					//new_n = (int)(ceil(5.0 * lenj / d));
-
-					hx = v0x / new_n;
-					hy = v0y / new_n;
-
-					for (int m = 0; m < new_n; ++m)
-					{
-						xi_mx = (ptx - (begx + hx * (m + 0.5))) * iDDomRad;
-						xi_my = (pty - (begy + hy * (m + 0.5))) * iDDomRad;
-
-						lxi_m = sqrt(xi_mx*xi_mx + xi_my * xi_my);
-
-						lenj_m = lenj / new_n;
-						expon = exp(-lxi_m)*lenj_m;
-						vs += expon;
-					}//for m
-					vs *= ptg / (pi * meanepsj2);
-
-
-					//break;
-
+							vs = mnog1 * ptg / (pi * meanepsj2);
 				}
 			}//if d<50 len 
 
@@ -835,7 +848,9 @@ __global__ void CU_calc_RHS(
 	size_t npt, double* pt,
 	size_t nvt, double* vt,
 	size_t nsr, double* sr,
-	double* rhs)
+	double eps2,
+	double* rhs,
+	double* rhsLin)
 {
 	__shared__ double shx[CUBLOCK];
 	__shared__ double shy[CUBLOCK];
@@ -844,7 +859,7 @@ __global__ void CU_calc_RHS(
 	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t i = disp + locI;
 	   
-	double begx = 0.0, begy = 0.0, endx = 0.0, endy = 0.0, dlen = 0.0;
+	double begx = 0.0, begy = 0.0, endx = 0.0, endy = 0.0, dlen = 0.0, dix = 0.0, diy = 0.0, taux = 0.0, tauy = 0.0, u1x = 0.0, u1y = 0.0;
 	if (locI < len)
 	{
 		begx = pt[i * 4 + 0];
@@ -852,13 +867,20 @@ __global__ void CU_calc_RHS(
 		endx = pt[i * 4 + 2];
 		endy = pt[i * 4 + 3];
 
-		dlen = sqrt((endx - begx) * (endx - begx) + (endy - begy) * (endy - begy));
+		dix = endx - begx;
+		diy = endy - begy;
+
+		dlen = sqrt(dix * dix + diy * diy);
+
+		taux = dix / dlen;
+		tauy = diy / dlen;
 	}
 
 	double val = 0.0;
+	double valLin = 0.0;
 
 	double sx, sy, px, py;
-	double alpha, lambda, tempVel; //из двух к-тов alpha и lambda в принципе можно для экономии пользоваться одной и той же переменной
+	double alpha, lambda, tempVel, tempVelLin; //из двух к-тов alpha и lambda в принципе можно для экономии пользоваться одной и той же переменной
 
 	//vortices
 	for (size_t j = 0; j < nvt; j += CUBLOCK)
@@ -873,16 +895,39 @@ __global__ void CU_calc_RHS(
 		{
 			if (j + q < nvt)
 			{
-				sx = shx[q] - begx;
-				sy = shy[q] - begy;
+				if ((schemeSwitcher == 1) || (schemeSwitcher == 2))
+				{
+					sx = shx[q] - begx;
+					sy = shy[q] - begy;
 
-				px = shx[q] - endx;
-				py = shy[q] - endy;
+					px = shx[q] - endx;
+					py = shy[q] - endy;
 
-				alpha = atan2(px * sy - py * sx, px * sx + py * sy);
 
-				tempVel = shg[q] * alpha;
-				val -= tempVel;
+					alpha = atan2(px * sy - py * sx, px * sx + py * sy);
+
+					tempVel = shg[q] * alpha;
+					val -= tempVel;
+				}
+
+				if (schemeSwitcher == 11)
+				{
+					//todo
+				}
+				
+				if (schemeSwitcher == 2)
+				{
+					u1x = 0.5 / dlen * ((px + sx) * taux * taux \
+						+ 2.0 * (py + sy) * taux * tauy - (px + sx) * tauy * tauy);
+					u1y = 0.5 / dlen * (-(py + sy) * taux * taux \
+						+ 2.0 * (px + sx) * taux * tauy + (py + sy) * tauy * tauy);
+
+					lambda = 0.5 * log((sx * sx + sy * sy) / (px * px + py * py));
+
+					tempVelLin = shg[q] * (alpha * (u1x * taux + u1y * tauy) + lambda * (-u1y * taux + u1x * tauy));
+
+					valLin -= tempVelLin;
+				}
 			}
 		}
 		__syncthreads();
@@ -901,25 +946,55 @@ __global__ void CU_calc_RHS(
 		{
 			if (j + q < nsr)
 			{
-				sx = shx[q] - begx;
-				sy = shy[q] - begy;
+				if ((schemeSwitcher == 1) || (schemeSwitcher == 2))
+				{
+					sx = shx[q] - begx;
+					sy = shy[q] - begy;
 
-				px = shx[q] - endx;
-				py = shy[q] - endy;
+					px = shx[q] - endx;
+					py = shy[q] - endy;
 
-				lambda = 0.5 * log((sx * sx + sy * sy) / (px * px + py * py));
+					lambda = 0.5 * log((sx * sx + sy * sy) / (px * px + py * py));
 
-				tempVel = shg[q] * lambda;
-				val -= tempVel;
+					tempVel = shg[q] * lambda;
+					val -= tempVel;
+				}
+
+				if (schemeSwitcher == 11)
+				{
+					//todo
+				}
+
+				if (schemeSwitcher == 2)
+				{
+					u1x = 0.5 / dlen * ((px + sx) * taux * taux \
+						+ 2.0 * (py + sy) * taux * tauy - (px + sx) * tauy * tauy);
+					u1y = 0.5 / dlen * (-(px + sx) * taux * taux \
+						+ 2.0 * (px + sx) * taux * tauy + (py + sy) * tauy * tauy);
+
+					alpha = atan2(px * sy - py * sx, px * sx + py * sy);
+
+					tempVelLin = shg[q] * (alpha * (u1y * taux - u1x * tauy) + lambda * (u1x * taux + u1y * tauy) - 1.0);
+
+					valLin -= tempVelLin;
+				}
 			}
 		}
 		__syncthreads();
 	}
 
-	val *= invdpi / dlen;
 
 	if (locI < len)
+	{
+		val *= invdpi / dlen;
 		rhs[locI] = val;
+
+		if (schemeSwitcher == 2)
+		{
+			valLin *= invdpi / dlen;
+			rhsLin[locI] = valLin;
+		}
+	}
 }
 
 
@@ -964,13 +1039,18 @@ __global__ void CU_calc_nei(
 		double ig = pt[i*sizeVort + posG + 0];
 		double jg;
 
-		double cftmax = myMax(1.0, (ipx-collapseRightBorder) / collapseScale);
+				
+		double cftmax = myMax(1.0, /* 2.0 * */ (ipx-collapseRightBorder) / collapseScale);
+		//double cftmax = myMax(1.0, (ipx - 0.5) / 0.1);
 		
 		double cftmax2 = cftmax * cftmax;
 
 		r2test = (type == 1) ? 4.0*epsCol2 * cftmax2 : epsCol2 * cftmax2;
+		
+		//if (cftmax > 1)
+		//	r2test = sqr(0.005*collapseScale);
 
-		//r2test = epsCol2;
+		int fracMesh = (int)(r2test / epsCol2);
 
 		bool cond;
 
@@ -979,7 +1059,7 @@ __global__ void CU_calc_nei(
 			jx = dev_ptr_mesh[2 * j + 0];
 			jy = dev_ptr_mesh[2 * j + 1];
 
-			if ((abs(ix - jx) <= 1) && (abs(iy - jy) <= 1) && (j > i))
+			if ((sqr(abs(ix - jx)) <= fracMesh) && (sqr(abs(iy - jy)) <= fracMesh) && (j > i))
 			{
 				jpx = pt[j*sizeVort + posR + 0];
 				jpy = pt[j*sizeVort + posR + 1];
@@ -988,13 +1068,10 @@ __global__ void CU_calc_nei(
 				dy = ipy - jpy;
 
 				r2 = dx*dx + dy*dy;
-
 				jg = pt[j*sizeVort + posG + 0];
 
-				//printf("max+gamma=%f\n", maxGamma);
+				cond = (r2 < r2test) && ((type == 1) ? ig*jg < 0 : (ig*jg > 0) && (fabs(ig + jg) < cftmax2 * maxGamma) );
 
-				cond = (r2 < r2test) && ((type == 1) ? ig*jg < 0 : (ig*jg > 0) && (fabs(ig + jg) < cftmax * maxGamma));
-				//cond = (r2 < r2test);
 				if (cond)
 				{
 					dev_ptr_nei[locI] = j;
@@ -1066,6 +1143,14 @@ void cuSetMaxGamma(double gam_, int code)
 		std::cout << cudaGetErrorString(err1) << " (erSetMaxGamma01, code =" << code << ")" << std::endl;
 }
 
+void cuSetSchemeSwitcher(int schemeSwitcher_, int code)
+{
+	cudaError_t err1 = cudaMemcpyToSymbol(schemeSwitcher, &schemeSwitcher_, sizeof(int));
+
+	if (err1 != cudaSuccess)
+		std::cout << cudaGetErrorString(err1) << " (erSchemeSwitcher01, code =" << code << ")" << std::endl;
+}
+
 
 void cuReserveDevMem(void*& ptr, size_t nBytes, int code)
 {
@@ -1088,7 +1173,6 @@ void cuCopyWakeToDev(size_t n, const Vortex2D* host_src, double* dev_ptr, int co
 	if (err1 != cudaSuccess)
 	{
 		std::cout << cudaGetErrorString(err1) << " (erCopyWakeToDev01, code =" << code << ")" << std::endl;
-		//exit(1134);
 	}
 
 }
@@ -1100,7 +1184,6 @@ void cuCopyWakeToDevAsync(size_t n, const Vortex2D* host_src, double* dev_ptr, i
 	if (err1 != cudaSuccess)
 	{
 		std::cout << cudaGetErrorString(err1) << " (erCopyWakeToDevAsync01, code =" << code << ")" << std::endl;
-		//exit(1134);
 	}
 
 }
@@ -1240,11 +1323,11 @@ void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t
 }
 
 
-void cuCalculateRhs(size_t myDisp, size_t myLen, size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double* rhs)
+void cuCalculateRhs(size_t myDisp, size_t myLen, size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double eps2, double* rhs, double* rhsLin)
 {
 	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
 	
-	CU_calc_RHS << < blocks, threads >> > (myDisp, myLen, npt, pt, nvt, vt, nsr, sr, rhs);
+	CU_calc_RHS << < blocks, threads >> > (myDisp, myLen, npt, pt, nvt, vt, nsr, sr, eps2, rhs, rhsLin);
 	
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)

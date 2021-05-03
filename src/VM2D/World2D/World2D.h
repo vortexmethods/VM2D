@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: World2D.h                                                        |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Заголовочный файл с описанием класса World2D
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #ifndef WORLD2D_H
@@ -64,16 +64,19 @@ namespace VM2D
 	/*!
 	\brief Класс, опеделяющий текущую решаемую задачу
 	\author Марчевский Илья Константинович
-	\author Кузьмина Ксения Сергеевна
+	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.9
-	\date 22 июля 2020 г.
+	\version 1.10
+	\date 17 мая 2021 г.
 	*/
 	class World2D : public VMlib::WorldGen
 	{
 	private:
-		/// Список умных казателей на обтекаемые профили
+		/// Список умных указателей на обтекаемые профили
 		std::vector<std::unique_ptr<Airfoil>> airfoil;
+
+		/// Список умных указателей на обтекаемые профили для сохранения старого положения
+		std::vector<std::unique_ptr<Airfoil>> oldAirfoil;
 
 		/// Список умных указателей на формирователи граничных условий на профилях
 		std::vector<std::unique_ptr<Boundary>> boundary;
@@ -133,6 +136,12 @@ namespace VM2D
 		/// \param[in] i номер профиля, константная ссылка на который возвращается
 		/// \return константную ссылку на i-й профиль
 		const Airfoil& getAirfoil(size_t i) const { return *airfoil[i]; };
+
+		/// \brief Возврат константной ссылки на объект старого профиля
+		///
+		/// \param[in] i номер старого профиля, константная ссылка на который возвращается
+		/// \return константную ссылку на i-й старый профиль
+		const Airfoil& getOldAirfoil(size_t i) const { return *oldAirfoil[i]; };
 
 		/// \brief Возврат неконстантной ссылки на объект профиля
 		///

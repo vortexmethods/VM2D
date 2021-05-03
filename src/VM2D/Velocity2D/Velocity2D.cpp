@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2D.cpp                                                   |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса Velocity
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */ 
 
 #include "Velocity2D.h"
@@ -196,8 +196,8 @@ void Velocity::LimitDiffVelo(std::vector<Point2D>& diffVel)
 
 		diffV *= W.getPassport().physicalProperties.nu;
 
-		if (diffV.length() > 2.0*W.getPassport().physicalProperties.vRef)
-			diffV.normalize(2.0*W.getPassport().physicalProperties.vRef);
+		if (diffV.length() > 1.5 * W.getPassport().physicalProperties.vRef)
+			diffV.normalize(1.5 * W.getPassport().physicalProperties.vRef);
 	}
 }
 
@@ -225,33 +225,8 @@ void Velocity::CalcDiffVelo()
 			for (size_t i = 0; i < W.getAirfoil(afl).viscousStress.size(); ++i)
 				W.getNonConstAirfoil(afl).viscousStress[i] *= W.getPassport().physicalProperties.nu;
 
-/*
-		if ( (W.getPassport().timeDiscretizationProperties.saveVTK > 0) && (W.ifDivisible(W.getPassport().timeDiscretizationProperties.saveVTK)) )
-//		if ((W.getPassport().timeDiscretizationProperties.saveVTK > 0) && (W.ifDivisible(10)) && (W.getNumberOfAirfoil() > 0))
-		{
-			for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
-			{
-				if (q == 0)
-					VMlib::CreateDirectory(W.getPassport().dir, "visStress");
+		SaveVisStress();
 
-				std::stringstream ss;
-				ss << "VisStress_" << q << "-";
-				std::string fname = VMlib::fileNameStep(ss.str(), W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "txt");
-				std::ofstream outfile;				
-				outfile.open(W.getPassport().dir + "visStress/" + fname);
-
-				outfile << W.getAirfoil(q).viscousStress.size() << std::endl; //Сохранение числа вихрей в пелене
-
-				for (size_t i = 0; i < W.getAirfoil(q).viscousStress.size(); ++i)
-				{
-					const Point2D& r = 0.5 * (W.getAirfoil(q).getR(i + 1) + W.getAirfoil(q).getR(i));
-					double gi = W.getAirfoil(q).viscousStress[i];
-					outfile << static_cast<int>(i) << " " << r[0] << " " << r[1] << " " << gi << std::endl;
-				}//for i	
-				outfile.close();
-			}
-		}
-*/
 	}
 	W.getTimestat().timeCalcVortexDiffVelo.second += omp_get_wtime();
 }// CalcDiffVelo()
@@ -397,7 +372,7 @@ void Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& point
 		left = vtxI.r()[0] - diffRadius;
 		right = vtxI.r()[0] + diffRadius;
 
-		for (size_t j = 0; j < bnd.sheets.getSheetSize(); ++j)
+		for (size_t j = 0; j < bnd.afl.getNumberOfPanels(); ++j)
 		{
 			/// \todo Сделать переменной и синхронизировать с GPU
 			const int nQuadPt = 3;
@@ -684,3 +659,33 @@ void Velocity::ResizeAndZero()
 		}
 	}
 }//ResizeAndZero()
+
+
+void Velocity::SaveVisStress()
+{
+	if ((W.getPassport().timeDiscretizationProperties.saveVTK > 0) && (W.ifDivisible(W.getPassport().timeDiscretizationProperties.saveVisStress)))
+		//		if ((W.getPassport().timeDiscretizationProperties.saveVTK > 0) && (W.ifDivisible(10)) && (W.getNumberOfAirfoil() > 0))
+	{
+		for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+		{
+			if (q == 0)
+				VMlib::CreateDirectory(W.getPassport().dir, "visStress");
+
+			std::stringstream ss;
+			ss << "VisStress_" << q << "-";
+			std::string fname = VMlib::fileNameStep(ss.str(), W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "txt");
+			std::ofstream outfile;
+			outfile.open(W.getPassport().dir + "visStress/" + fname);
+
+			outfile << W.getAirfoil(q).viscousStress.size() << std::endl; //Сохранение числа вихрей в пелене
+
+			for (size_t i = 0; i < W.getAirfoil(q).viscousStress.size(); ++i)
+			{
+				const Point2D& r = 0.5 * (W.getAirfoil(q).getR(i + 1) + W.getAirfoil(q).getR(i));
+				double gi = W.getAirfoil(q).viscousStress[i];
+				outfile << static_cast<int>(i) << " " << r[0] << " " << r[1] << " " << gi << std::endl;
+			}//for i	
+			outfile.close();
+		}
+	}
+}//SaveVisStress()

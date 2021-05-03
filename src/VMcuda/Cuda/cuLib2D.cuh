@@ -1,6 +1,6 @@
 /*-------------------------------*- VMcuda -*----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
 |  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #ifndef CUVELOCITYBIOTSAVART_CUH
@@ -49,6 +49,7 @@ void cuSetConstants(size_t pos_, size_t posR_, size_t posG_, int code = 0);
 void cuSetAccelCoeff(double cft_, int code = 0);
 void cuSetCollapseCoeff(double pos_, double refLength_, int code = 0);
 void cuSetMaxGamma(double gam_, int code = 0);
+void cuSetSchemeSwitcher(int schemeSwitcher_, int code);
 
 void cuReserveDevMem(void*& ptr, size_t nBytes, int code = 0);
 void cuClearWakeMem(size_t new_n, double* dev_ptr, int code = 0);
@@ -71,8 +72,7 @@ void cuCalculateDiffVeloWakeMesh(size_t myDisp, size_t myLen, double* pt, size_t
 void cuCalculateDiffVeloWakeFromPanels(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* i1, double* i2, double* rd, double minRad);
 
 void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr);
-void cuCalculateRhs(size_t myDisp, size_t myLen, size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double* rhs);
-
+void cuCalculateRhs(size_t myDisp, size_t myLen, size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double eps2, double* rhs, double* rhsLin);
 void cuCalculatePairs(size_t myDisp, size_t myLen, size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 
 

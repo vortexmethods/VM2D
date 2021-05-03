@@ -18,7 +18,8 @@ addons:
  
 # Build your code e.g. by calling make
 script:
-  - cd doc
+  - cd docs
+  - cd _doxygen
 #  - touch .nojekyll 
   - doxygen Doxyfile 2>&1 | tee doxygen.log
 #  - echo $TRAVIS_BUILD_DIR 
@@ -30,7 +31,7 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
-  local-dir: doc/html
+  local-dir: docs/_doxygen/html
   github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
   on:
     branch: master

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: problems                                                         |
 | Info: Problems to be solved by using VM2D                                   |
@@ -24,12 +24,12 @@ circle200,
 //oscilCircle(np=4, m=1.0, sh=0.2),
 //rotor(),
 
-//wing00(angle=0.0, copyPspFile="wingBase/passport"),
-//wing02(angle=2.0, copyPspFile="wingBase/passport"),
-//wing04(angle=4.0, copyPspFile="wingBase/passport"),
-//wing06(angle=6.0, copyPspFile="wingBase/passport"),
-//wing08(angle=8.0, copyPspFile="wingBase/passport"),
-//wing10(angle=10.0, copyPspFile="wingBase/passport"),
-//wing12(angle=12.0, copyPspFile="wingBase/passport"),
-//wing14(angle=14.0, copyPspFile="wingBase/passport"),
+//wing00(angle=0.0, copyPath="wingBase/passport"),
+//wing02(angle=2.0, copyPath="wingBase/passport"),
+//wing04(angle=4.0, copyPath="wingBase/passport"),
+//wing06(angle=6.0, copyPath="wingBase/passport"),
+//wing08(angle=8.0, copyPath="wingBase/passport"),
+//wing10(angle=10.0, copyPath="wingBase/passport"),
+//wing12(angle=12.0, copyPath="wingBase/passport"),
+//wing14(angle=14.0, copyPath="wingBase/passport"),
 }

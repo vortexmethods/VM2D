@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.9    |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2020/07/22     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky, Kseniia Kuzmina, Evgeniya Ryatina  |
+| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2DBiotSavart.cpp                                         |
 | Info: Source code of VM2D                                                   |
@@ -30,10 +30,10 @@
 \file
 \brief Файл кода с описанием класса VelocityBiotSavart
 \author Марчевский Илья Константинович
-\author Кузьмина Ксения Сергеевна
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.9   
-\date 22 июля 2020 г.
+\version 1.10
+\date 17 мая 2021 г.
 */
 
 #include "Velocity2DBiotSavart.h"
@@ -294,7 +294,7 @@ void VelocityBiotSavart::CalcConvVeloToSetOfPointsFromWake(const WakeDataBase& p
 
 #ifndef TESTONLYVELO
 			if (calcRadius)
-				locDomRadius[i] = sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
+				locDomRadius[i] = 1.0 * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
 #endif
 		}
 	}
@@ -328,10 +328,20 @@ void VelocityBiotSavart::CalcConvVeloToSetOfPointsFromWake(const WakeDataBase& p
 
 					//Модифицируем массив квадратов расстояний до ближайших вихрей из virtualWake
 					ModifyE2(ee2, dst2);
+					/*
+					if (dst2 < ee2[0])
+					{
+						size_t pnl = W.getBoundary(s).virtualWake.aflPan[j].second;
+						ee2[0] = ee2[1] = ee2[2] = 0.5 * W.getBoundary(s).afl.len[pnl] / (W.getBoundary(s).vortexBeginEnd[pnl].second - W.getBoundary(s).vortexBeginEnd[pnl].first);						
+					}
+					else
+						ModifyE2(ee2, dst2);
+					*/
+
 				}
 			}
 
-			locDomRadius[i] = sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
+			locDomRadius[i] = 1.0 * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
 		}
 	} //else
 
@@ -545,10 +555,13 @@ void VelocityBiotSavart::GetWakeInfluenceToRhs(const Airfoil& afl, std::vector<d
 //Генерация вектора влияния вихревого следа на профиль
 void VelocityBiotSavart::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeVelo) const
 {
+	size_t shDim = W.getBoundary(afl.numberInPassport).sheetDim;
+
 	const int& id = W.getParallel().myidWork;	
 
 	const size_t& nvt = W.getWake().vtx.size();
 	const size_t& nsr = W.getSource().vtx.size();
+	const double eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
 		
 	if (afl.numberInPassport == 0)
 	{
@@ -560,21 +573,31 @@ void VelocityBiotSavart::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vecto
 		double*& dev_ptr_vt = W.getWake().devVtxPtr;
 		double*& dev_ptr_sr = W.getSource().devVtxPtr;
 		double*& dev_ptr_rhs = afl.devRhsPtr;
+		double*& dev_ptr_rhsLin = afl.devRhsLinPtr;
 		std::vector<double> locrhs(nTotPan);
+		std::vector<double> locrhsLin(nTotPan);
 
 		VMlib::parProp par = W.getParallel().SplitMPI(nTotPan, true);
 
 		if ((nvt > 0) || (nsr > 0))
 		{
-			cuCalculateRhs(par.myDisp, par.myLen, nTotPan, dev_ptr_pt, nvt, dev_ptr_vt, nsr, dev_ptr_sr, dev_ptr_rhs);
+			cuCalculateRhs(par.myDisp, par.myLen, nTotPan, dev_ptr_pt, nvt, dev_ptr_vt, nsr, dev_ptr_sr, eps2, dev_ptr_rhs, dev_ptr_rhsLin);
 
 			W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_rhs, (double*)&locrhs[0], 22);
+			W.getCuda().CopyMemFromDev<double, 1>(par.myLen, dev_ptr_rhsLin, (double*)&locrhsLin[0], 22);
 				
-			std::vector<double> newRhs;
+			std::vector<double> newRhs, newRhsLin;
 			if (id == 0)
+			{
 				newRhs.resize(nTotPan);
-
+				newRhsLin.resize(nTotPan);
+			}
+			
 			MPI_Gatherv(locrhs.data(), par.myLen, MPI_DOUBLE, newRhs.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);			
+
+			if (shDim != 1)
+				MPI_Gatherv(locrhsLin.data(), par.myLen, MPI_DOUBLE, newRhsLin.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
+				
 
 			if (id == 0)
 			{
@@ -589,19 +612,20 @@ void VelocityBiotSavart::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vecto
 					const size_t& np = W.getAirfoil(s).getNumberOfPanels();
 					tmpRhs.resize(0);
 					tmpRhs.insert(tmpRhs.end(), newRhs.begin() + curGlobPnl, newRhs.begin() + curGlobPnl + np);
+					tmpRhs.insert(tmpRhs.end(), newRhsLin.begin() + curGlobPnl, newRhsLin.begin() + curGlobPnl + np);
+					
 					curGlobPnl += np;
 				}
 			}
 		}
 	}
 
-
 	if (id == 0)
 	{
 		if ((nvt > 0) || (nsr > 0))
 			wakeVelo = std::move(afl.tmpRhs);
 		else
-			wakeVelo.resize(afl.getNumberOfPanels(), 0.0);		
+			wakeVelo.resize(afl.getNumberOfPanels() * (W.getPassport().numericalSchemes.boundaryCondition.second + 1), 0.0);		
 	}
 	
 }//GPUGetWakeInfluenceToRhs(...)
@@ -638,7 +662,7 @@ void VelocityBiotSavart::FillRhs(Eigen::VectorXd& rhs) const
 		GPUGetWakeInfluenceToRhs(afl, wakeRhs);
 #else
 		GetWakeInfluenceToRhs(afl, wakeRhs);
-#endif				
+#endif			
 
 		std::vector<double> vInfRhs;
 		afl.GetInfluenceFromVInfToPanel(vInfRhs);
