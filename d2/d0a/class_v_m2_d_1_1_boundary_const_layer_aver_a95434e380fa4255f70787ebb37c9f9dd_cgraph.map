@@ -1,0 +1,4 @@
+<map id="VM2D::BoundaryConstLayerAver::FillMatrixSelf" name="VM2D::BoundaryConstLayerAver::FillMatrixSelf">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="243,5,415,47"/>
+<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ad43d46b7011fb769751a6961ac8bc569" title="Вычисление коэффициентов матрицы A для расчета влияния панели на панель " alt="" coords="261,71,396,98"/>
+</map>

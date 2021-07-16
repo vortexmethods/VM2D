@@ -1,0 +1,9 @@
+<map id="VM2D::World2D::BuildTree" name="VM2D::World2D::BuildTree">
+<area shape="rect" id="node2" href="$df/d8f/class_v_m2_d_1_1_wake.html#ae342f6b32e4f2a76e7793dfd9f740a92" title="VM2D::Wake::GetPairsBH" alt="" coords="247,157,425,184"/>
+<area shape="rect" id="node7" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae7fb41b8694836b39aebc3a7e08c4c6d" title="VM2D::World2D::BuildAllTrees" alt="" coords="235,208,437,235"/>
+<area shape="rect" id="node3" href="$df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа " alt="" coords="485,107,645,133"/>
+<area shape="rect" id="node6" href="$df/d8f/class_v_m2_d_1_1_wake.html#a8445ca23e13732c4b7aa312c4e2c219d" title="Деструктор " alt="" coords="1101,81,1252,108"/>
+<area shape="rect" id="node4" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей " alt="" coords="693,56,847,83"/>
+<area shape="rect" id="node5" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа " alt="" coords="895,5,1053,32"/>
+<area shape="rect" id="node8" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Основная функция выполнения одного шага по времени " alt="" coords="489,208,642,235"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="VM2D::Wake::GetPairsBH" name="VM2D::Wake::GetPairsBH">
+<area shape="rect" id="node2" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="235,5,425,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a871e2fdd8ad0f1e8d221fcdd62c8b588" title="Построение дерева для точек типа type. " alt="" coords="239,56,421,83"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="232,107,428,133"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="285,157,375,184"/>
+<area shape="rect" id="node7" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ad172c980a018f61a40e19b7fc4861b2e" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="265,208,395,235"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="289,259,371,285"/>
+<area shape="rect" id="node9" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#a6308a955f7b9b99ce6135e42502451b1" title="Функция для доступа к циркуляции вихря " alt="" coords="263,309,397,336"/>
+<area shape="rect" id="node10" href="$dd/de1/class_v_mlib_1_1_parallel.html#a31daa8b6f5482131cda3a1ee5f45b670" title="Распределение задач по процессорам " alt="" coords="248,360,412,387"/>
+<area shape="rect" id="node11" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0c0e1a56d2270639e9dc27f700a49e53" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="243,411,417,437"/>
+<area shape="rect" id="node6" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="476,157,651,184"/>
+</map>

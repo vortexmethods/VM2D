@@ -1,0 +1,8 @@
+<map id="VM2D::BoundaryConstLayerAver::GetInfluenceFromVInfToRectPanel" name="VM2D::BoundaryConstLayerAver::GetInfluenceFromVInfToRectPanel">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="267,5,439,47"/>
+<area shape="rect" id="node3" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="258,71,449,98"/>
+<area shape="rect" id="node4" href="$dd/de1/class_v_mlib_1_1_parallel.html#a31daa8b6f5482131cda3a1ee5f45b670" title="Распределение задач по процессорам " alt="" coords="271,122,435,149"/>
+<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="255,173,451,199"/>
+<area shape="rect" id="node6" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="253,223,453,250"/>
+<area shape="rect" id="node7" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="501,216,677,257"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="VM2D::WakeDiscretizationProperties::getMinEpsAst" name="VM2D::WakeDiscretizationProperties::getMinEpsAst">
+<area shape="rect" id="node2" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a7f892348ed5d9de20ed6aa34f2ab7dc2" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения " alt="" coords="263,5,445,61"/>
+<area shape="rect" id="node4" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#ae66317e023311cd9bc216024357ab0b1" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения " alt="" coords="263,139,445,195"/>
+<area shape="rect" id="node5" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a28befac6a99c52bd38f699a5bb90921c" title="VM2D::AirfoilRect::\lGetDiffVelocityI0I3ToWakeAnd\lViscousStresses" alt="" coords="542,73,747,129"/>
+<area shape="rect" id="node7" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе " alt="" coords="559,335,730,377"/>
+<area shape="rect" id="node9" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e81fd75f2fa3af9ab43b50dcd970046" title="VM2D::Velocity::CalcDiff\lVeloI0I3" alt="" coords="559,205,730,246"/>
+<area shape="rect" id="node10" href="$df/dc0/group___parallel.html#ga9d62ab68ad9f30cb51837040128f5965" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек ..." alt="" coords="244,270,464,311"/>
+<area shape="rect" id="node12" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ab6875b58f381978e20135c90f77abfa3" title="VM2D::Velocity::CalcDiff\lVeloI1I2ToSetOfPointsFromSheets" alt="" coords="241,387,467,429"/>
+<area shape="rect" id="node14" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a4972c84baac7dcc8243e32d69348c523" title="Заполнение правой части СЛАУ " alt="" coords="235,453,473,494"/>
+<area shape="rect" id="node15" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a1cecab6b2201440b3853729bb89f27d1" title="VM2D::VelocityBarnesHut\l::CalcDiffVeloI1I2ToWakeFrom\lSheets" alt="" coords="251,517,457,573"/>
+<area shape="rect" id="node3" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a82ad9fcde4b6e7677847586e2b3568b1" title="Возврат константной ссылки на вторую производную кривизны в вершине профиля " alt="" coords="577,9,713,50"/>
+<area shape="rect" id="node6" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="846,114,982,155"/>
+<area shape="rect" id="node8" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="816,245,1012,272"/>
+<area shape="rect" id="node11" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#aba507495ba1d6c266ea95348eeb706a2" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromWake" alt="" coords="525,270,764,311"/>
+<area shape="rect" id="node13" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ac04ca51b096cd7f08703c45ebe00ad7e" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromSheets" alt="" coords="521,401,768,442"/>
+</map>

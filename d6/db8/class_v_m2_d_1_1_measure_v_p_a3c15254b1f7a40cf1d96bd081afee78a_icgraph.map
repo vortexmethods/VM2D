@@ -1,0 +1,7 @@
+<map id="VM2D::MeasureVP::getWakeVP" name="VM2D::MeasureVP::getWakeVP">
+<area shape="rect" id="node2" href="$d0/d75/class_v_m2_d_1_1_gpu.html#ac569e54b8579eacb3c3f252100324acc" title="VM2D::Gpu::~Gpu" alt="" coords="333,5,464,32"/>
+<area shape="rect" id="node3" href="$d8/d90/class_v_m2_d_1_1_tree.html#a24d8cbf96e99447b52276dbbfbffe514" title="Конструктор " alt="" coords="335,56,462,83"/>
+<area shape="rect" id="node4" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ad489af66ebe4cb6e9e8326e312562b55" title="Вычисление скоростей в точках wakeVP. " alt="" coords="579,99,753,141"/>
+<area shape="rect" id="node6" href="$df/dc0/group___parallel.html#ga7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="267,158,531,199"/>
+<area shape="rect" id="node5" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="801,129,976,170"/>
+</map>

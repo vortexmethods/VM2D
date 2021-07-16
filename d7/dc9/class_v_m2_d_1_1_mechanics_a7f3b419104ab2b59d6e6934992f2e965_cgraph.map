@@ -1,0 +1,5 @@
+<map id="VM2D::Mechanics::Mechanics" name="VM2D::Mechanics::Mechanics">
+<area shape="rect" id="node2" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#ac11619e267d87505be152e3bf79767fc" title="Парсинг списка параметров механической системы " alt="" coords="255,23,491,65"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="539,5,735,32"/>
+<area shape="rect" id="node4" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="552,56,721,83"/>
+</map>

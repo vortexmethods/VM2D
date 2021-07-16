@@ -1,0 +1,7 @@
+<map id="VM2D::Airfoil::Rotate" name="VM2D::Airfoil::Rotate">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af184136bf9207d4f00b1e93a8df974b2" title="Деструктор " alt="" coords="225,5,374,32"/>
+<area shape="rect" id="node3" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a647915f7ce1e3199d06943efa4e9baa7" title="Перемещение профиля в соответствии с законом " alt="" coords="202,57,397,98"/>
+<area shape="rect" id="node5" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a0f04a54700ffd113274d1ebc8f8be895" title="Перемещение профиля в соответствии с законом " alt="" coords="200,122,399,163"/>
+<area shape="rect" id="node4" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a5424e2694887408f886168734f490a7a" title="Деструктор " alt="" coords="449,57,663,98"/>
+<area shape="rect" id="node6" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a7b7a0d2367a91741daae89f90751db92" title="Деструктор " alt="" coords="447,122,665,163"/>
+</map>

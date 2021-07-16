@@ -1,0 +1,5 @@
+<map id="VM2D::AirfoilCurv::GetInfluenceFromVortexSheetToVortex" name="VM2D::AirfoilCurv::GetInfluenceFromVortexSheetToVortex">
+<area shape="rect" id="node2" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#abc3cff921897f6de7aabc02355c7845c" title="Вычисление влияния набегающего потока на панель для правой части " alt="" coords="252,27,451,69"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="501,5,700,32"/>
+<area shape="rect" id="node4" href="$df/da2/class_v_m2_d_1_1_boundary.html#a6491788bb2538d94b064713e6f9e6c05" title="Вычисление влияния набегающего потока на криволинейную панель для правой части " alt="" coords="499,57,703,98"/>
+</map>

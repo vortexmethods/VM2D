@@ -1,0 +1,2127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>VM2D: Шаблон класса VMlib::numvector&lt; T, n &gt;</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/NativeMML"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="../../LOGO.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VM2D
+   &#160;<span id="projectnumber">1.10</span>
+   </div>
+   <div id="projectbrief">Вихревые методы для решения двумерных задач</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="../../index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="../../pages.html"><span>Описания</span></a></li>
+      <li><a href="../../modules.html"><span>Группы</span></a></li>
+      <li><a href="../../namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../files.html"><span>Файлы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="../../search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="../../search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="../../inherits.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="../../functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('d6/dd4/class_v_mlib_1_1numvector.html','../../');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-attribs">Открытые атрибуты</a> &#124;
+<a href="../../d5/d73/class_v_mlib_1_1numvector-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Шаблон класса VMlib::numvector&lt; T, n &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Шаблонный класс, определяющий вектор фиксированной длины <br />
+ Фактически представляет собой массив, для которого определено большое количество различных операций. <br />
+ Для доступа к элементам массива используется оператор [].  
+ <a href="../../d6/dd4/class_v_mlib_1_1numvector.html#details">Подробнее...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>&gt;</code></p>
+<div class="dynheader">
+Граф наследования:VMlib::numvector&lt; T, n &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/db5/class_v_mlib_1_1numvector__inherit__graph.png" border="0" usemap="#_v_mlib_1_1numvector_3_01_t_00_01n_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_v_mlib_1_1numvector_3_01_t_00_01n_01_4_inherit__map" id="_v_mlib_1_1numvector_3_01_t_00_01n_01_4_inherit__map">
+<area shape="rect" id="node2" title="STL class. " alt="" coords="29,5,153,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">см. легенду</a>]</span></center></div>
+<div class="dynheader">
+Граф связей класса VMlib::numvector&lt; T, n &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d1/d8c/class_v_mlib_1_1numvector__coll__graph.png" border="0" usemap="#_v_mlib_1_1numvector_3_01_t_00_01n_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_v_mlib_1_1numvector_3_01_t_00_01n_01_4_coll__map" id="_v_mlib_1_1numvector_3_01_t_00_01n_01_4_coll__map">
+<area shape="rect" id="node2" title="STL class. " alt="" coords="29,95,153,121"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">см. легенду</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:ab2322b7c552eb70e5a67c0e67fadacef"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:ab2322b7c552eb70e5a67c0e67fadacef"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab2322b7c552eb70e5a67c0e67fadacef">operator&amp;</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y) const -&gt; typename std::remove_const&lt; decltype(this-&gt;data()[0]*y[0])&gt;::type</td></tr>
+<tr class="memdesc:ab2322b7c552eb70e5a67c0e67fadacef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "&amp;" скалярного умножения  <a href="#ab2322b7c552eb70e5a67c0e67fadacef">Подробнее...</a><br /></td></tr>
+<tr class="separator:ab2322b7c552eb70e5a67c0e67fadacef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8302c7f63e14e4ec1cfb97bc8e13d14"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:ab8302c7f63e14e4ec1cfb97bc8e13d14"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab8302c7f63e14e4ec1cfb97bc8e13d14">operator^</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, 3 &gt; &amp;y) const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(this-&gt;data()[1]*y[2])&gt;::type, 3 &gt;</td></tr>
+<tr class="memdesc:ab8302c7f63e14e4ec1cfb97bc8e13d14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "^" векторного произведения  <a href="#ab8302c7f63e14e4ec1cfb97bc8e13d14">Подробнее...</a><br /></td></tr>
+<tr class="separator:ab8302c7f63e14e4ec1cfb97bc8e13d14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ee6e3b00c87275f6cbeb593aac9240e"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a3ee6e3b00c87275f6cbeb593aac9240e"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a3ee6e3b00c87275f6cbeb593aac9240e">operator^</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, 2 &gt; &amp;y) const -&gt; typename std::remove_const&lt; decltype(this-&gt;data()[0]*y[1])&gt;::type</td></tr>
+<tr class="memdesc:a3ee6e3b00c87275f6cbeb593aac9240e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "^" вычисления третьей компоненты векторного произведения  <a href="#a3ee6e3b00c87275f6cbeb593aac9240e">Подробнее...</a><br /></td></tr>
+<tr class="separator:a3ee6e3b00c87275f6cbeb593aac9240e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67e9b5103551d7ff48554a4b74557457"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a67e9b5103551d7ff48554a4b74557457"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a67e9b5103551d7ff48554a4b74557457">operator*=</a> (P c)</td></tr>
+<tr class="memdesc:a67e9b5103551d7ff48554a4b74557457"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "*=" домножения вектора на действительное число  <a href="#a67e9b5103551d7ff48554a4b74557457">Подробнее...</a><br /></td></tr>
+<tr class="separator:a67e9b5103551d7ff48554a4b74557457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5a55d5c088f1837f74c612069dbedb3"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:ab5a55d5c088f1837f74c612069dbedb3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab5a55d5c088f1837f74c612069dbedb3">operator/=</a> (P c)</td></tr>
+<tr class="memdesc:ab5a55d5c088f1837f74c612069dbedb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "/=" деления вектора на действительное число  <a href="#ab5a55d5c088f1837f74c612069dbedb3">Подробнее...</a><br /></td></tr>
+<tr class="separator:ab5a55d5c088f1837f74c612069dbedb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78ecca9e8e5478ab0be3a5878445d43e"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a78ecca9e8e5478ab0be3a5878445d43e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a78ecca9e8e5478ab0be3a5878445d43e">operator+=</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y)</td></tr>
+<tr class="memdesc:a78ecca9e8e5478ab0be3a5878445d43e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "+=" прибавления другого вектора  <a href="#a78ecca9e8e5478ab0be3a5878445d43e">Подробнее...</a><br /></td></tr>
+<tr class="separator:a78ecca9e8e5478ab0be3a5878445d43e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6f1ae8bf8cc34f5c184ad71f8d67e5e"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:ae6f1ae8bf8cc34f5c184ad71f8d67e5e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ae6f1ae8bf8cc34f5c184ad71f8d67e5e">operator-=</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y)</td></tr>
+<tr class="memdesc:ae6f1ae8bf8cc34f5c184ad71f8d67e5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "-=" вычитания другого вектора  <a href="#ae6f1ae8bf8cc34f5c184ad71f8d67e5e">Подробнее...</a><br /></td></tr>
+<tr class="separator:ae6f1ae8bf8cc34f5c184ad71f8d67e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99a97651ad76c5dc12e60a728f967743"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a99a97651ad76c5dc12e60a728f967743"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a99a97651ad76c5dc12e60a728f967743">operator+</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y) const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(this-&gt;data()[0]+y[0])&gt;::type, n &gt;</td></tr>
+<tr class="memdesc:a99a97651ad76c5dc12e60a728f967743"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "+" сложения двух векторов  <a href="#a99a97651ad76c5dc12e60a728f967743">Подробнее...</a><br /></td></tr>
+<tr class="separator:a99a97651ad76c5dc12e60a728f967743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbc494b3d60cdfdb96f2887deda0754d"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:adbc494b3d60cdfdb96f2887deda0754d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#adbc494b3d60cdfdb96f2887deda0754d">operator-</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y) const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(this-&gt;data()[0]-y[0])&gt;::type, n &gt;</td></tr>
+<tr class="memdesc:adbc494b3d60cdfdb96f2887deda0754d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "-" вычитания двух векторов  <a href="#adbc494b3d60cdfdb96f2887deda0754d">Подробнее...</a><br /></td></tr>
+<tr class="separator:adbc494b3d60cdfdb96f2887deda0754d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82bd5c7685e80974a6573b3714352e6f"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a82bd5c7685e80974a6573b3714352e6f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a82bd5c7685e80974a6573b3714352e6f">operator*</a> (const P c) const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(this-&gt;data()[0]*c)&gt;::type, n &gt;</td></tr>
+<tr class="memdesc:a82bd5c7685e80974a6573b3714352e6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "*" умножения вектора на число (вектор слева, число справа)  <a href="#a82bd5c7685e80974a6573b3714352e6f">Подробнее...</a><br /></td></tr>
+<tr class="separator:a82bd5c7685e80974a6573b3714352e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e0a6f1820db84b2983204124ec06cde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a3e0a6f1820db84b2983204124ec06cde">operator-</a> () const </td></tr>
+<tr class="memdesc:a3e0a6f1820db84b2983204124ec06cde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "-" унарного минуса  <a href="#a3e0a6f1820db84b2983204124ec06cde">Подробнее...</a><br /></td></tr>
+<tr class="separator:a3e0a6f1820db84b2983204124ec06cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedc4c52450a3d1280bf1cebf29cdc17a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aedc4c52450a3d1280bf1cebf29cdc17a">operator+</a> () const </td></tr>
+<tr class="memdesc:aedc4c52450a3d1280bf1cebf29cdc17a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "+" унарного плюса  <a href="#aedc4c52450a3d1280bf1cebf29cdc17a">Подробнее...</a><br /></td></tr>
+<tr class="separator:aedc4c52450a3d1280bf1cebf29cdc17a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a449c222d042580be377c071f745b791f"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a449c222d042580be377c071f745b791f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a449c222d042580be377c071f745b791f">operator==</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y) const </td></tr>
+<tr class="memdesc:a449c222d042580be377c071f745b791f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "==" логического равенства  <a href="#a449c222d042580be377c071f745b791f">Подробнее...</a><br /></td></tr>
+<tr class="separator:a449c222d042580be377c071f745b791f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c78c7d3055bf95a2ace6d3ab89d5c83"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a3c78c7d3055bf95a2ace6d3ab89d5c83"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a3c78c7d3055bf95a2ace6d3ab89d5c83">operator!=</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y) const </td></tr>
+<tr class="memdesc:a3c78c7d3055bf95a2ace6d3ab89d5c83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Перегрузка оператора "!=" логического неравенства  <a href="#a3c78c7d3055bf95a2ace6d3ab89d5c83">Подробнее...</a><br /></td></tr>
+<tr class="separator:a3c78c7d3055bf95a2ace6d3ab89d5c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f09dbafe1d9c9a6223397405eb39c25"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a2f09dbafe1d9c9a6223397405eb39c25">norm1</a> () const -&gt; typename std::remove_const&lt; typename std::remove_reference&lt; decltype(this-&gt;data()[0])&gt;::type &gt;::type</td></tr>
+<tr class="memdesc:a2f09dbafe1d9c9a6223397405eb39c25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление 1-нормы вектора  <a href="#a2f09dbafe1d9c9a6223397405eb39c25">Подробнее...</a><br /></td></tr>
+<tr class="separator:a2f09dbafe1d9c9a6223397405eb39c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7981bbb5f2d59283b3b17c4f183d09b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ac7981bbb5f2d59283b3b17c4f183d09b">norminf</a> () const -&gt; typename std::remove_const&lt; typename std::remove_reference&lt; decltype(this-&gt;data()[0])&gt;::type &gt;::type</td></tr>
+<tr class="memdesc:ac7981bbb5f2d59283b3b17c4f183d09b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление inf-нормы вектора  <a href="#ac7981bbb5f2d59283b3b17c4f183d09b">Подробнее...</a><br /></td></tr>
+<tr class="separator:ac7981bbb5f2d59283b3b17c4f183d09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a1ef7e752852fd7a508497a037c2764"><td class="memTemplParams" colspan="2">template&lt;typename P  = double&gt; </td></tr>
+<tr class="memitem:a6a1ef7e752852fd7a508497a037c2764"><td class="memTemplItemLeft" align="right" valign="top">P&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764">length</a> () const </td></tr>
+<tr class="memdesc:a6a1ef7e752852fd7a508497a037c2764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление 2-нормы (длины) вектора  <a href="#a6a1ef7e752852fd7a508497a037c2764">Подробнее...</a><br /></td></tr>
+<tr class="separator:a6a1ef7e752852fd7a508497a037c2764"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09b90b5ede09d353b4a2f456ec6fb7ec"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec">length2</a> () const -&gt; typename std::remove_const&lt; typename std::remove_reference&lt; decltype(this-&gt;data()[0])&gt;::type &gt;::type</td></tr>
+<tr class="memdesc:a09b90b5ede09d353b4a2f456ec6fb7ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление квадрата нормы (длины) вектора  <a href="#a09b90b5ede09d353b4a2f456ec6fb7ec">Подробнее...</a><br /></td></tr>
+<tr class="separator:a09b90b5ede09d353b4a2f456ec6fb7ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4b6d9a6d317f3ce4e0df9777652938e"><td class="memTemplParams" colspan="2">template&lt;typename P  = double&gt; </td></tr>
+<tr class="memitem:ae4b6d9a6d317f3ce4e0df9777652938e"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ae4b6d9a6d317f3ce4e0df9777652938e">unit</a> (P newlen=1) const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(this-&gt;data()[0]*newlen)&gt;::type, n &gt;</td></tr>
+<tr class="memdesc:ae4b6d9a6d317f3ce4e0df9777652938e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление орта вектора или вектора заданной длины, коллинеарного данному  <a href="#ae4b6d9a6d317f3ce4e0df9777652938e">Подробнее...</a><br /></td></tr>
+<tr class="separator:ae4b6d9a6d317f3ce4e0df9777652938e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8ae47c439a962678170722c9b0801fb"><td class="memTemplParams" colspan="2">template&lt;typename P  = double&gt; </td></tr>
+<tr class="memitem:ad8ae47c439a962678170722c9b0801fb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ad8ae47c439a962678170722c9b0801fb">normalize</a> (P newlen=1.0)</td></tr>
+<tr class="memdesc:ad8ae47c439a962678170722c9b0801fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Нормирование вектора на заданную длину  <a href="#ad8ae47c439a962678170722c9b0801fb">Подробнее...</a><br /></td></tr>
+<tr class="separator:ad8ae47c439a962678170722c9b0801fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cf5ea7bab45b3f652204a2f84b77735"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a2cf5ea7bab45b3f652204a2f84b77735"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a2cf5ea7bab45b3f652204a2f84b77735">member</a> (const P &amp;s) const </td></tr>
+<tr class="memdesc:a2cf5ea7bab45b3f652204a2f84b77735"><td class="mdescLeft">&#160;</td><td class="mdescRight">Проверка вхождения элемента в вектор  <a href="#a2cf5ea7bab45b3f652204a2f84b77735">Подробнее...</a><br /></td></tr>
+<tr class="separator:a2cf5ea7bab45b3f652204a2f84b77735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a225ddf170d335ce1ceb3a9cf2be17c3b"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a225ddf170d335ce1ceb3a9cf2be17c3b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a225ddf170d335ce1ceb3a9cf2be17c3b">operator std::set&lt; P &gt;</a> () const </td></tr>
+<tr class="memdesc:a225ddf170d335ce1ceb3a9cf2be17c3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Приведение вектора к типу std::set.  <a href="#a225ddf170d335ce1ceb3a9cf2be17c3b">Подробнее...</a><br /></td></tr>
+<tr class="separator:a225ddf170d335ce1ceb3a9cf2be17c3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15fd8348ecc293a4b00d39a276a11330"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a15fd8348ecc293a4b00d39a276a11330"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a15fd8348ecc293a4b00d39a276a11330">operator std::vector&lt; P &gt;</a> () const </td></tr>
+<tr class="memdesc:a15fd8348ecc293a4b00d39a276a11330"><td class="mdescLeft">&#160;</td><td class="mdescRight">Приведение вектора к типу std::vector.  <a href="#a15fd8348ecc293a4b00d39a276a11330">Подробнее...</a><br /></td></tr>
+<tr class="separator:a15fd8348ecc293a4b00d39a276a11330"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2fd562f754fbfc929f28cdd22164056"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab2fd562f754fbfc929f28cdd22164056">rotateLeft</a> (size_t k) const </td></tr>
+<tr class="memdesc:ab2fd562f754fbfc929f28cdd22164056"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Вращение" вектора на несколько позиций влево  <a href="#ab2fd562f754fbfc929f28cdd22164056">Подробнее...</a><br /></td></tr>
+<tr class="separator:ab2fd562f754fbfc929f28cdd22164056"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1471ef55266b8e21d045c4f4e05912d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a1471ef55266b8e21d045c4f4e05912d9">kcross</a> () const </td></tr>
+<tr class="memdesc:a1471ef55266b8e21d045c4f4e05912d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Геометрический поворот двумерного вектора на 90 градусов  <a href="#a1471ef55266b8e21d045c4f4e05912d9">Подробнее...</a><br /></td></tr>
+<tr class="separator:a1471ef55266b8e21d045c4f4e05912d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab52c2bfa931d8533aae15b6999d718ab"><td class="memTemplParams" colspan="2">template&lt;typename P  = T&gt; </td></tr>
+<tr class="memitem:ab52c2bfa931d8533aae15b6999d718ab"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab52c2bfa931d8533aae15b6999d718ab">toZero</a> (P val=0)</td></tr>
+<tr class="memdesc:ab52c2bfa931d8533aae15b6999d718ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Установка всех компонент вектора в константу (по умолчанию &mdash; нуль)  <a href="#ab52c2bfa931d8533aae15b6999d718ab">Подробнее...</a><br /></td></tr>
+<tr class="separator:ab52c2bfa931d8533aae15b6999d718ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ef1c053d2c0321134c6773c1a6f47f8"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a4ef1c053d2c0321134c6773c1a6f47f8"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a4ef1c053d2c0321134c6773c1a6f47f8">dist2To</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y) const -&gt; typename std::remove_const&lt; decltype(this-&gt;data()[0]-y[0])&gt;::type</td></tr>
+<tr class="memdesc:a4ef1c053d2c0321134c6773c1a6f47f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление квадрата расстояния до другой точки  <a href="#a4ef1c053d2c0321134c6773c1a6f47f8">Подробнее...</a><br /></td></tr>
+<tr class="separator:a4ef1c053d2c0321134c6773c1a6f47f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24ade795d23ce7677c3001c6812f1d97"><td class="memTemplParams" colspan="2">template&lt;typename R  = double, typename P &gt; </td></tr>
+<tr class="memitem:a24ade795d23ce7677c3001c6812f1d97"><td class="memTemplItemLeft" align="right" valign="top">R&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a24ade795d23ce7677c3001c6812f1d97">distTo</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y)</td></tr>
+<tr class="memdesc:a24ade795d23ce7677c3001c6812f1d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление расстояния между двумя точками  <a href="#a24ade795d23ce7677c3001c6812f1d97">Подробнее...</a><br /></td></tr>
+<tr class="separator:a24ade795d23ce7677c3001c6812f1d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac6fee51fcadd02b1f41f23b491b5bfd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aac6fee51fcadd02b1f41f23b491b5bfd">numvector</a> ()</td></tr>
+<tr class="memdesc:aac6fee51fcadd02b1f41f23b491b5bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пустой конструктор  <a href="#aac6fee51fcadd02b1f41f23b491b5bfd">Подробнее...</a><br /></td></tr>
+<tr class="separator:aac6fee51fcadd02b1f41f23b491b5bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e5334cb39f3f21669181061c6580f9e"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a4e5334cb39f3f21669181061c6580f9e"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a4e5334cb39f3f21669181061c6580f9e">numvector</a> (const P c)</td></tr>
+<tr class="memdesc:a4e5334cb39f3f21669181061c6580f9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор, инициализирующий весь вектор одной и той же константой  <a href="#a4e5334cb39f3f21669181061c6580f9e">Подробнее...</a><br /></td></tr>
+<tr class="separator:a4e5334cb39f3f21669181061c6580f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52bc81f06ce94bad448a5df61632c59e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a52bc81f06ce94bad448a5df61632c59e">numvector</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;vec)</td></tr>
+<tr class="memdesc:a52bc81f06ce94bad448a5df61632c59e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Нешаблонный конструктор копирования  <a href="#a52bc81f06ce94bad448a5df61632c59e">Подробнее...</a><br /></td></tr>
+<tr class="separator:a52bc81f06ce94bad448a5df61632c59e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45133c13b7edc603b11ac28df74da597"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a45133c13b7edc603b11ac28df74da597"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a45133c13b7edc603b11ac28df74da597">numvector</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;vec)</td></tr>
+<tr class="memdesc:a45133c13b7edc603b11ac28df74da597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаблонный конструктор копирования  <a href="#a45133c13b7edc603b11ac28df74da597">Подробнее...</a><br /></td></tr>
+<tr class="separator:a45133c13b7edc603b11ac28df74da597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58996df337bb277546a5360a4e645bfa"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a58996df337bb277546a5360a4e645bfa"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a58996df337bb277546a5360a4e645bfa">numvector</a> (const std::vector&lt; P &gt; &amp;vec)</td></tr>
+<tr class="memdesc:a58996df337bb277546a5360a4e645bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор инициализации с помощью std::vector.  <a href="#a58996df337bb277546a5360a4e645bfa">Подробнее...</a><br /></td></tr>
+<tr class="separator:a58996df337bb277546a5360a4e645bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73ad1455b1b5d0669e86c5422620f60a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a73ad1455b1b5d0669e86c5422620f60a">numvector</a> (const std::initializer_list&lt; T &gt; &amp;z)</td></tr>
+<tr class="memdesc:a73ad1455b1b5d0669e86c5422620f60a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Нешаблонный конструктор инициализации списком  <a href="#a73ad1455b1b5d0669e86c5422620f60a">Подробнее...</a><br /></td></tr>
+<tr class="separator:a73ad1455b1b5d0669e86c5422620f60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ed51497ecd90d422b33d886000a72d4"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
+<tr class="memitem:a6ed51497ecd90d422b33d886000a72d4"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6ed51497ecd90d422b33d886000a72d4">numvector</a> (const std::initializer_list&lt; P &gt; &amp;z)</td></tr>
+<tr class="memdesc:a6ed51497ecd90d422b33d886000a72d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаблонный конструктор инициализации списком  <a href="#a6ed51497ecd90d422b33d886000a72d4">Подробнее...</a><br /></td></tr>
+<tr class="separator:a6ed51497ecd90d422b33d886000a72d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0ddf4d94ec38daf910240bcc60a7f2a"><td class="memTemplParams" colspan="2">template&lt;typename P , size_t p&gt; </td></tr>
+<tr class="memitem:ab0ddf4d94ec38daf910240bcc60a7f2a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab0ddf4d94ec38daf910240bcc60a7f2a">numvector</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, p &gt; &amp;vec, T add=0)</td></tr>
+<tr class="memdesc:ab0ddf4d94ec38daf910240bcc60a7f2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Явный конструктор инициализации вектором другой размерности  <a href="#ab0ddf4d94ec38daf910240bcc60a7f2a">Подробнее...</a><br /></td></tr>
+<tr class="separator:ab0ddf4d94ec38daf910240bcc60a7f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Открытые атрибуты</h2></td></tr>
+<tr class="memitem:a7b7fb76e56127f8b1ea203967a406d0a"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><b>elements</b></td></tr>
+<tr class="memdesc:a7b7fb76e56127f8b1ea203967a406d0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">STL member.  <a href="#a7b7fb76e56127f8b1ea203967a406d0a">Подробнее...</a><br /></td></tr>
+<tr class="separator:a7b7fb76e56127f8b1ea203967a406d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><h3>template&lt;typename T, size_t n&gt;<br />
+class VMlib::numvector&lt; T, n &gt;</h3>
+
+<p>Шаблонный класс, определяющий вектор фиксированной длины <br />
+ Фактически представляет собой массив, для которого определено большое количество различных операций. <br />
+ Для доступа к элементам массива используется оператор []. </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип элементов вектора </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section author"><dt>Автор</dt><dd>Марчевский Илья Константинович </dd></dl>
+<dl class="section version"><dt>Версия</dt><dd>1.10 </dd></dl>
+<dl class="section date"><dt>Дата</dt><dd>17 мая 2021 г. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00088">88</a></p>
+</div><h2 class="groupheader">Конструктор(ы)</h2>
+<a class="anchor" id="aac6fee51fcadd02b1f41f23b491b5bfd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::<a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Пустой конструктор </p>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00538">538</a></p>
+<div class="fragment"><div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;{ };</div></div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/dd4/class_v_mlib_1_1numvector_aac6fee51fcadd02b1f41f23b491b5bfd_icgraph.png" border="0" usemap="#d6/dd4/class_v_mlib_1_1numvector_aac6fee51fcadd02b1f41f23b491b5bfd_icgraph" alt=""/></div>
+<map name="d6/dd4/class_v_mlib_1_1numvector_aac6fee51fcadd02b1f41f23b491b5bfd_icgraph" id="d6/dd4/class_v_mlib_1_1numvector_aac6fee51fcadd02b1f41f23b491b5bfd_icgraph">
+<area shape="rect" id="node2" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a58996df337bb277546a5360a4e645bfa" title="Конструктор инициализации с помощью std::vector. " alt="" coords="247,5,401,47"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a4e5334cb39f3f21669181061c6580f9e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::<a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a> </td>
+          <td>(</td>
+          <td class="paramtype">const P&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор, инициализирующий весь вектор одной и той же константой </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных присваиваемой константы </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>значение, которым инициализируются все компоненты вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00546">546</a></p>
+<div class="fragment"><div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        {</div><div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;                this-&gt;data()[i] = c;</div><div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;        }<span class="comment">//numvector(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a52bc81f06ce94bad448a5df61632c59e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::<a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Нешаблонный конструктор копирования </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных компонент вектора </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">vec</td><td>константная ссылка на копируемый вектор </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00559">559</a></p>
+<div class="fragment"><div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;        {</div><div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;            <span class="comment">//for (size_t i = 0; i &lt; n; ++i)</span></div><div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;            <span class="comment">//  r[i] = vec[i];</span></div><div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;            memcpy(this-&gt;data(), vec.data(), n * <span class="keyword">sizeof</span>(T));</div><div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;        }<span class="comment">//numvector(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a45133c13b7edc603b11ac28df74da597"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::<a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Шаблонный конструктор копирования </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных копируемого вектора </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">vec</td><td>константная ссылка на копируемый вектор </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00573">573</a></p>
+<div class="fragment"><div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;        {</div><div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;                this-&gt;data()[i] = vec[i];</div><div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        }<span class="comment">//numvector(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a58996df337bb277546a5360a4e645bfa"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::<a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; P &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор инициализации с помощью std::vector. </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных инициализирующего std::vector </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">vec</td><td>константная ссылка на инициализирующий вектор</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Предупреждения</dt><dd>при несовпадении длины кидает исключение </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00588">588</a></p>
+<div class="fragment"><div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;        {</div><div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;            <span class="keywordflow">if</span> (vec.size() != n)</div><div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;                <span class="keywordflow">throw</span>;</div><div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;                this-&gt;data()[i] = vec[i];</div><div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        }<span class="comment">//numvector(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a73ad1455b1b5d0669e86c5422620f60a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::<a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::initializer_list&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>z</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Нешаблонный конструктор инициализации списком </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">z</td><td>константная ссылка на список инициализации</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Предупреждения</dt><dd>Длина списка инициализации проверяется, при несовпадении бросается исключение </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00604">604</a></p>
+<div class="fragment"><div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;        {</div><div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;            <span class="keywordflow">if</span> (z.size() != n)</div><div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;                <span class="keywordflow">throw</span>;</div><div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;                this-&gt;data()[i] = *(z.begin() + i);</div><div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;        }<span class="comment">//numvector(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6ed51497ecd90d422b33d886000a72d4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::<a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::initializer_list&lt; P &gt; &amp;&#160;</td>
+          <td class="paramname"><em>z</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Шаблонный конструктор инициализации списком </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных инициализирующего списка </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">z</td><td>константная ссылка на список инициализации</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Предупреждения</dt><dd>Длина списка инициализации проверяется, при несовпадении бросается исключение </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00621">621</a></p>
+<div class="fragment"><div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;        {</div><div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;            <span class="keywordflow">if</span> (z.size() != n)</div><div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;                <span class="keywordflow">throw</span>;</div><div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;                this-&gt;data()[i] = *(z.begin() + i);</div><div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        }<span class="comment">//numvector(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab0ddf4d94ec38daf910240bcc60a7f2a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P , size_t p&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::<a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, p &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>add</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Явный конструктор инициализации вектором другой размерности </p>
+<ul>
+<li>если новая размерность меньше старой &mdash; лишние элементы "отбрасываются"</li>
+<li>если новая размерность больше старой &mdash; новые элементы заполняются заданным элементом</li>
+</ul>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных инициализирующего вектора </td></tr>
+    <tr><td class="paramname">p</td><td>размерность инициализирующего вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">vec</td><td>константная ссылка на инициализирующий вектор </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">add</td><td>элемент для заполнения при необходимости недостающих компонент (по умолчанию 0) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00641">641</a></p>
+<div class="fragment"><div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;        {</div><div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;            <span class="keywordtype">size_t</span> minPN = (p &lt; n) ? p : n;</div><div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; minPN; ++i)</div><div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;                this-&gt;data()[i] = vec[i];</div><div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = minPN; i &lt; n; ++i)</div><div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;                this-&gt;data()[i] = add;</div><div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;        }<span class="comment">//numvector(...)   </span></div></div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a class="anchor" id="a4ef1c053d2c0321134c6773c1a6f47f8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::dist2To </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td> const -&gt; typename std::remove_const&lt;decltype(this-&gt;data()[0] - y[0])&gt;::type
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вычисление квадрата расстояния до другой точки </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных второй точки </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на радиус-вектор второй точки </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>квадрат расстояния между точками </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00517">517</a></p>
+<div class="fragment"><div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;        {</div><div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;            <span class="keywordflow">return</span> (*<span class="keyword">this</span> - y).length2();</div><div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        }<span class="comment">//dist2To(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a24ade795d23ce7677c3001c6812f1d97"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename R  = double, typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">R <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::distTo </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вычисление расстояния между двумя точками </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных второй точки </td></tr>
+    <tr><td class="paramname">R</td><td>тип данных результата (по умолчанию double) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на радиус-вектор второй точки </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>расстояние между точками </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00530">530</a></p>
+<div class="fragment"><div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;        {</div><div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;            R res = (*<span class="keyword">this</span> - y) &amp; (*<span class="keyword">this</span> - y);</div><div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;            <span class="keywordflow">return</span> sqrt(res);</div><div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;        }<span class="comment">//distTo(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a1471ef55266b8e21d045c4f4e05912d9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;T, 2&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::kcross </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Геометрический поворот двумерного вектора на 90 градусов </p>
+<p>Исходный вектор при этом не изменяется <br />
+ Эквивалентно умножению слева на орт третьей оси, т.е. \( \vec k \times \vec r \)</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>новый двумерный вектор, полученный поворотом исходного на 90 градусов </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00486">486</a></p>
+<div class="fragment"><div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;        {</div><div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;            <a class="code" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, 2&gt;</a> res;</div><div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;            res[0] = -this-&gt;data()[1];</div><div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;            res[1] =  this-&gt;data()[0];</div><div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;            <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        }<span class="comment">//kcross()</span></div><div class="ttc" id="class_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/dc5/numvector_8h_source.html#l00088">numvector.h:88</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/dd4/class_v_mlib_1_1numvector_a1471ef55266b8e21d045c4f4e05912d9_icgraph.png" border="0" usemap="#d6/dd4/class_v_mlib_1_1numvector_a1471ef55266b8e21d045c4f4e05912d9_icgraph" alt=""/></div>
+<map name="d6/dd4/class_v_mlib_1_1numvector_a1471ef55266b8e21d045c4f4e05912d9_icgraph" id="d6/dd4/class_v_mlib_1_1numvector_a1471ef55266b8e21d045c4f4e05912d9_icgraph">
+<area shape="rect" id="node2" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="248,5,459,61"/>
+<area shape="rect" id="node4" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6bca92af2a441ac0e8afe9196a24e37f" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="252,85,455,141"/>
+<area shape="rect" id="node6" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="254,165,453,221"/>
+<area shape="rect" id="node7" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="243,245,464,301"/>
+<area shape="rect" id="node9" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#af88cfc75a4e1c24666e35c5e80effcb0" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="224,325,483,366"/>
+<area shape="rect" id="node10" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ada4f7f36671817b207e42756b5180608" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="224,390,483,431"/>
+<area shape="rect" id="node12" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="242,455,465,511"/>
+<area shape="rect" id="node14" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="244,535,463,591"/>
+<area shape="rect" id="node3" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="553,13,767,54"/>
+<area shape="rect" id="node5" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="555,125,765,181"/>
+<area shape="rect" id="node8" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="561,289,759,330"/>
+<area shape="rect" id="node11" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ae7195e9abcb7c55a0a83915e8a8946bc" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на криволинейную панель для правой ч..." alt="" coords="531,390,789,431"/>
+<area shape="rect" id="node13" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="531,502,789,543"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a6a1ef7e752852fd7a508497a037c2764"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P  = double&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">P <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::length </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вычисление 2-нормы (длины) вектора </p>
+<p>Корень из скалярного квадрата вектора</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип результата (по умолчанию double)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>норма (длина) вектора </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00350">350</a></p>
+<div class="fragment"><div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        {</div><div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;            P res = *<span class="keyword">this</span> &amp; *<span class="keyword">this</span>;</div><div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;            <span class="keywordflow">return</span> sqrt(res);</div><div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        }<span class="comment">//length()</span></div></div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/dd4/class_v_mlib_1_1numvector_a6a1ef7e752852fd7a508497a037c2764_icgraph.png" border="0" usemap="#d6/dd4/class_v_mlib_1_1numvector_a6a1ef7e752852fd7a508497a037c2764_icgraph" alt=""/></div>
+<map name="d6/dd4/class_v_mlib_1_1numvector_a6a1ef7e752852fd7a508497a037c2764_icgraph" id="d6/dd4/class_v_mlib_1_1numvector_a6a1ef7e752852fd7a508497a037c2764_icgraph">
+<area shape="rect" id="node2" href="../../d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a7f892348ed5d9de20ed6aa34f2ab7dc2" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения " alt="" coords="258,5,441,61"/>
+<area shape="rect" id="node4" href="../../d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a03cf0755112e414626f25eddbe546662" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2. " alt="" coords="281,85,417,126"/>
+<area shape="rect" id="node6" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#ae66317e023311cd9bc216024357ab0b1" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения " alt="" coords="258,252,441,308"/>
+<area shape="rect" id="node7" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a28befac6a99c52bd38f699a5bb90921c" title="VM2D::AirfoilRect::\lGetDiffVelocityI0I3ToWakeAnd\lViscousStresses" alt="" coords="553,252,759,308"/>
+<area shape="rect" id="node9" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a86dac66802e3eccab1ea05eb7d6442b7" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин " alt="" coords="281,390,417,431"/>
+<area shape="rect" id="node14" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a6cce4d0da20e483f266fa7e8523cc1b2" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2. " alt="" coords="863,135,999,177"/>
+<area shape="rect" id="node15" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a9d753bfdd10a00775d0aa95dab27483d" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на криволинейную панель для правой ч..." alt="" coords="245,455,454,511"/>
+<area shape="rect" id="node17" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="239,535,460,591"/>
+<area shape="rect" id="node19" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#af88cfc75a4e1c24666e35c5e80effcb0" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="220,614,479,655"/>
+<area shape="rect" id="node20" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ada4f7f36671817b207e42756b5180608" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="220,679,479,721"/>
+<area shape="rect" id="node22" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="238,744,461,800"/>
+<area shape="rect" id="node24" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="240,824,459,880"/>
+<area shape="rect" id="node25" href="../../d2/d15/class_v_m2_d_1_1_passport.html#ae11560e6df417191603182d5b2c2ce09" title="Считывание всех параметров расчета из соответствующих потоков " alt="" coords="245,903,453,945"/>
+<area shape="rect" id="node27" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#a15b7ac1972093ca8c7a3e73ac8446abe" title="Контроль больших значений диффузионных скоростей " alt="" coords="557,969,755,996"/>
+<area shape="rect" id="node29" href="../../df/dc0/group___parallel.html#ga9d62ab68ad9f30cb51837040128f5965" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек ..." alt="" coords="239,1021,459,1062"/>
+<area shape="rect" id="node32" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#ab6875b58f381978e20135c90f77abfa3" title="VM2D::Velocity::CalcDiff\lVeloI1I2ToSetOfPointsFromSheets" alt="" coords="236,1086,463,1127"/>
+<area shape="rect" id="node34" href="../../d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a4972c84baac7dcc8243e32d69348c523" title="Заполнение правой части СЛАУ " alt="" coords="230,1151,469,1193"/>
+<area shape="rect" id="node35" href="../../d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a1cecab6b2201440b3853729bb89f27d1" title="VM2D::VelocityBarnesHut\l::CalcDiffVeloI1I2ToWakeFrom\lSheets" alt="" coords="247,1216,452,1272"/>
+<area shape="rect" id="node36" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ae4b6d9a6d317f3ce4e0df9777652938e" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному " alt="" coords="272,1295,427,1337"/>
+<area shape="rect" id="node37" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ad8ae47c439a962678170722c9b0801fb" title="Нормирование вектора на заданную длину " alt="" coords="272,1361,427,1402"/>
+<area shape="rect" id="node3" href="../../d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a82ad9fcde4b6e7677847586e2b3568b1" title="Возврат константной ссылки на вторую производную кривизны в вершине профиля " alt="" coords="588,13,724,54"/>
+<area shape="rect" id="node5" href="../../d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a55a33c98e28c9959fa4cd9aebe85775d" title="Деструктор " alt="" coords="588,85,724,126"/>
+<area shape="rect" id="node8" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="1077,321,1213,362"/>
+<area shape="rect" id="node10" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a47e772124cbf44d0ec8784f483797d53" title="Перемещение профиля " alt="" coords="572,397,740,424"/>
+<area shape="rect" id="node12" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a05811a761cdefc827cc8211efcd989ff" title="Поворот профиля " alt="" coords="588,449,724,490"/>
+<area shape="rect" id="node13" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a99d0b02780d7c3d2a20dce6046049088" title="Масштабирование профиля " alt="" coords="588,331,724,373"/>
+<area shape="rect" id="node11" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a9d64a95d5abba507e3c2d1f535a60338" title="Считывание профиля из файла " alt="" coords="863,405,999,446"/>
+<area shape="rect" id="node16" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="549,566,763,607"/>
+<area shape="rect" id="node18" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="557,631,755,673"/>
+<area shape="rect" id="node21" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ae7195e9abcb7c55a0a83915e8a8946bc" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на криволинейную панель для правой ч..." alt="" coords="527,697,785,738"/>
+<area shape="rect" id="node23" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="527,797,785,838"/>
+<area shape="rect" id="node26" href="../../d2/d15/class_v_m2_d_1_1_passport.html#a875604d311bcf3c17ce56f2f0ea0aa09" title="Конструктор " alt="" coords="567,911,745,937"/>
+<area shape="rect" id="node28" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="833,1031,1029,1057"/>
+<area shape="rect" id="node30" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе " alt="" coords="571,1086,741,1127"/>
+<area shape="rect" id="node31" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#aba507495ba1d6c266ea95348eeb706a2" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromWake" alt="" coords="537,1021,775,1062"/>
+<area shape="rect" id="node33" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ac04ca51b096cd7f08703c45ebe00ad7e" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromSheets" alt="" coords="533,1151,779,1193"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a09b90b5ede09d353b4a2f456ec6fb7ec"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::length2 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; typename std::remove_const&lt;typename std::remove_reference&lt;decltype(this-&gt;data()[0])&gt;::type&gt;::type
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вычисление квадрата нормы (длины) вектора </p>
+<p>Скалярный квадрат вектора</p>
+<dl class="section return"><dt>Возвращает</dt><dd>квадрат нормы (длины) вектора того же типа, что и компоненты вектора </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00362">362</a></p>
+<div class="fragment"><div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        {</div><div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;            <span class="keywordflow">return</span> (*<span class="keyword">this</span> &amp; *<span class="keyword">this</span>);</div><div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        }<span class="comment">//length2()</span></div></div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/dd4/class_v_mlib_1_1numvector_a09b90b5ede09d353b4a2f456ec6fb7ec_icgraph.png" border="0" usemap="#d6/dd4/class_v_mlib_1_1numvector_a09b90b5ede09d353b4a2f456ec6fb7ec_icgraph" alt=""/></div>
+<map name="d6/dd4/class_v_mlib_1_1numvector_a09b90b5ede09d353b4a2f456ec6fb7ec_icgraph" id="d6/dd4/class_v_mlib_1_1numvector_a09b90b5ede09d353b4a2f456ec6fb7ec_icgraph">
+<area shape="rect" id="node2" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a6cce4d0da20e483f266fa7e8523cc1b2" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2. " alt="" coords="1096,453,1232,494"/>
+<area shape="rect" id="node4" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="1059,1004,1269,1060"/>
+<area shape="rect" id="node6" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6bca92af2a441ac0e8afe9196a24e37f" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="1063,163,1265,219"/>
+<area shape="rect" id="node8" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="1065,83,1263,139"/>
+<area shape="rect" id="node9" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="1053,374,1275,430"/>
+<area shape="rect" id="node11" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="1055,294,1273,350"/>
+<area shape="rect" id="node12" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления " alt="" coords="229,932,451,959"/>
+<area shape="rect" id="node14" href="../../d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a24c694bf820524c2c0828f2c920328ab" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="243,992,437,1033"/>
+<area shape="rect" id="node16" href="../../da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a98f1a2f3b8065db981513c470c81cb34" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="228,1072,452,1113"/>
+<area shape="rect" id="node18" href="../../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a8e33f00ed56839ac4d103efb5534ca8b" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="243,1292,437,1333"/>
+<area shape="rect" id="node20" href="../../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#ac31474c4062bc76ec6bf97051515b084" title="Перемещение профиля в соответствии с законом " alt="" coords="243,1166,437,1208"/>
+<area shape="rect" id="node21" href="../../d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#afbd4195a0e64487f0e15fc5a0386356e" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="241,1477,439,1518"/>
+<area shape="rect" id="node23" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a41f2b336da76c4ee4151ea1a51637e99" title="Расчет коэффициентов a,b,c,d для ячейки нижнего уровня и определение ячеек ближней зоны ..." alt="" coords="231,702,449,744"/>
+<area shape="rect" id="node25" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a21ac26958c65e8189c740bcb1b8b7d10" title="Проверка проникновения точки через границу профиля " alt="" coords="523,257,741,298"/>
+<area shape="rect" id="node28" href="../../dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="295,878,385,904"/>
+<area shape="rect" id="node3" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="1403,453,1539,494"/>
+<area shape="rect" id="node5" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="1363,932,1578,973"/>
+<area shape="rect" id="node7" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="1366,123,1575,179"/>
+<area shape="rect" id="node10" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="1341,341,1600,382"/>
+<area shape="rect" id="node13" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="523,1234,741,1260"/>
+<area shape="rect" id="node15" href="../../d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a5424e2694887408f886168734f490a7a" title="Деструктор " alt="" coords="525,1285,739,1326"/>
+<area shape="rect" id="node17" href="../../da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#ad3c325c6687ee3722e752e74e5551e42" title="Деструктор " alt="" coords="520,1350,744,1392"/>
+<area shape="rect" id="node19" href="../../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a75eec602bb770e89e41d7773afe53948" title="Деструктор " alt="" coords="526,1416,738,1457"/>
+<area shape="rect" id="node22" href="../../d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a7b7a0d2367a91741daae89f90751db92" title="Деструктор " alt="" coords="523,1481,741,1522"/>
+<area shape="rect" id="node24" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a40e21254c71a77c647bde4b429f7c387" title="VM2D::Cell::CalcDomainRadius\lForVirtualWake" alt="" coords="527,702,737,744"/>
+<area shape="rect" id="node26" href="../../df/dc0/group___parallel.html#ga7aefd87785e7283ca55865c25ef37b4b" title="Проверка пересечения вихрями следа профиля при перемещении " alt="" coords="827,254,971,280"/>
+<area shape="rect" id="node27" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a8445ca23e13732c4b7aa312c4e2c219d" title="Деструктор " alt="" coords="1648,1176,1799,1203"/>
+<area shape="rect" id="node29" href="../../d6/daf/class_v_m2_d_1_1_cell.html#ad8ec4e5534ba17cfa23471c708d5b473" title="VM2D::Cell::CalcConvVelo\lByBiotSavartFromVortices" alt="" coords="541,870,723,912"/>
+<area shape="rect" id="node30" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a57bd413906e22118957c60162a0ed0ff" title="Расчет конвективных скоростей вихрей внутри одной ячейки от источников внутри всех ближних ячеек ..." alt="" coords="541,936,723,977"/>
+<area shape="rect" id="node31" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a027a7e15c6d05d5c654e66a951711492" title="VM2D::Cell::CalcConvVelo\lByBiotSavartFromSheets" alt="" coords="541,1001,723,1042"/>
+<area shape="rect" id="node32" href="../../df/dc0/group___parallel.html#ga7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="500,1066,764,1108"/>
+<area shape="rect" id="node35" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e" title="VM2D::Wake::GetPairsBS" alt="" coords="543,1132,721,1159"/>
+<area shape="rect" id="node39" href="../../df/d8f/class_v_m2_d_1_1_wake.html#ae342f6b32e4f2a76e7793dfd9f740a92" title="VM2D::Wake::GetPairsBH" alt="" coords="543,1183,721,1210"/>
+<area shape="rect" id="node40" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a4269347865d074b8446266868c333378" title="Зануление далеко улетевших вихрей " alt="" coords="1075,1084,1253,1111"/>
+<area shape="rect" id="node41" href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="581,768,683,795"/>
+<area shape="rect" id="node33" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="1077,1136,1251,1177"/>
+<area shape="rect" id="node34" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ad489af66ebe4cb6e9e8326e312562b55" title="Вычисление скоростей в точках wakeVP. " alt="" coords="812,1133,987,1174"/>
+<area shape="rect" id="node36" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа " alt="" coords="819,1252,979,1279"/>
+<area shape="rect" id="node37" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей " alt="" coords="1087,1252,1241,1279"/>
+<area shape="rect" id="node38" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа " alt="" coords="1391,1151,1550,1178"/>
+<area shape="rect" id="node42" href="../../dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами " alt="" coords="851,600,947,627"/>
+<area shape="rect" id="node54" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины . " alt="" coords="847,538,952,564"/>
+<area shape="rect" id="node43" href="../../d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a03cf0755112e414626f25eddbe546662" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2. " alt="" coords="1096,780,1232,821"/>
+<area shape="rect" id="node45" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae51b63e7ea4a0828fb9c9bbf379fe437" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="1059,844,1269,900"/>
+<area shape="rect" id="node46" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a9d753bfdd10a00775d0aa95dab27483d" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на криволинейную панель для правой ч..." alt="" coords="1059,924,1269,980"/>
+<area shape="rect" id="node47" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="1053,583,1275,639"/>
+<area shape="rect" id="node49" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#af88cfc75a4e1c24666e35c5e80effcb0" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="1035,518,1293,560"/>
+<area shape="rect" id="node50" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ada4f7f36671817b207e42756b5180608" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="1035,662,1293,704"/>
+<area shape="rect" id="node52" href="../../dd/d9a/namespace_v_mlib.html#ad8c062cbe3e278a78e187e957077d01d" title="Усовершенствованный сигнум " alt="" coords="1121,728,1207,755"/>
+<area shape="rect" id="node44" href="../../d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a55a33c98e28c9959fa4cd9aebe85775d" title="Деструктор " alt="" coords="1403,780,1539,821"/>
+<area shape="rect" id="node48" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="1371,554,1570,596"/>
+<area shape="rect" id="node51" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ae7195e9abcb7c55a0a83915e8a8946bc" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на криволинейную панель для правой ч..." alt="" coords="1341,662,1600,704"/>
+<area shape="rect" id="node53" href="../../dd/d9a/namespace_v_mlib.html#a335d2f33867d1fa571571118886c5a97" title="Усовершенствованный аркосинус " alt="" coords="1419,728,1522,755"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a2cf5ea7bab45b3f652204a2f84b77735"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::member </td>
+          <td>(</td>
+          <td class="paramtype">const P &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Проверка вхождения элемента в вектор </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных проверяемого элемента </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>проверяемый элемент </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>позиция первого вхождения элемента s; если не входит &mdash; возвращает (-1), приведенный к типу size_t </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00409">409</a></p>
+<div class="fragment"><div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        {</div><div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                <span class="keywordflow">if</span> (this-&gt;data()[i] == s)</div><div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                    <span class="keywordflow">return</span> i;</div><div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;</div><div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(-1);</div><div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        }<span class="comment">//member(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a2f09dbafe1d9c9a6223397405eb39c25"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::norm1 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; typename std::remove_const&lt;typename std::remove_reference&lt;decltype(this-&gt;data()[0])&gt;::type&gt;::type
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вычисление 1-нормы вектора </p>
+<p>Сумма модулей компонент вектора</p>
+<dl class="section return"><dt>Возвращает</dt><dd>1-норма вектора </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00316">316</a></p>
+<div class="fragment"><div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        {</div><div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            <span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">typename</span> std::remove_reference&lt;decltype(this-&gt;data()[0])&gt;::type&gt;::type res = 0;</div><div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                res += abs(this-&gt;data()[i]);</div><div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        }<span class="comment">//norm1()</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ad8ae47c439a962678170722c9b0801fb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P  = double&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::normalize </td>
+          <td>(</td>
+          <td class="paramtype">P&#160;</td>
+          <td class="paramname"><em>newlen</em> = <code>1.0</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Нормирование вектора на заданную длину </p>
+<p>Если в качестве новой длины указано отрицательное число &mdash; у вектора будет изменено направление</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип числа, задающего длину вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">newlen</td><td>новая длина вектора (по умолчанию 1.0)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Предупреждения</dt><dd>Работает корректно только для векторов с компонентами типа float и double </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00395">395</a></p>
+<div class="fragment"><div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        {</div><div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            <span class="keyword">auto</span> ilen = <span class="keyword">static_cast&lt;</span>decltype(this-<span class="keyword">&gt;</span>data()[0] * newlen)&gt;(newlen / std::max(this-&gt;<a class="code" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764">length</a>(), 1e-16));</div><div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            *<span class="keyword">this</span> *= ilen;</div><div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        }<span class="comment">//normalize(...)</span></div><div class="ttc" id="class_v_mlib_1_1numvector_html_a6a1ef7e752852fd7a508497a037c2764"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764">VMlib::numvector::length</a></div><div class="ttdeci">P length() const </div><div class="ttdoc">Вычисление 2-нормы (длины) вектора </div><div class="ttdef"><b>Definition:</b> <a href="../../df/dc5/numvector_8h_source.html#l00350">numvector.h:350</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/dd4/class_v_mlib_1_1numvector_ad8ae47c439a962678170722c9b0801fb_icgraph.png" border="0" usemap="#d6/dd4/class_v_mlib_1_1numvector_ad8ae47c439a962678170722c9b0801fb_icgraph" alt=""/></div>
+<map name="d6/dd4/class_v_mlib_1_1numvector_ad8ae47c439a962678170722c9b0801fb_icgraph" id="d6/dd4/class_v_mlib_1_1numvector_ad8ae47c439a962678170722c9b0801fb_icgraph">
+<area shape="rect" id="node2" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#a15b7ac1972093ca8c7a3e73ac8446abe" title="Контроль больших значений диффузионных скоростей " alt="" coords="241,5,439,32"/>
+<area shape="rect" id="node3" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="487,5,683,32"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ac7981bbb5f2d59283b3b17c4f183d09b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::norminf </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; typename std::remove_const&lt;typename std::remove_reference&lt;decltype(this-&gt;data()[0])&gt;::type&gt;::type
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вычисление inf-нормы вектора </p>
+<p>Наибольшая по модулю компонента вектора</p>
+<dl class="section return"><dt>Возвращает</dt><dd>inf-норма вектора </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00330">330</a></p>
+<div class="fragment"><div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        {</div><div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            <span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">typename</span> std::remove_reference&lt;decltype(this-&gt;data()[0])&gt;::type&gt;::type res = 0;</div><div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            {</div><div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                <span class="keywordflow">if</span> (abs(this-&gt;data()[i]) &gt; res)</div><div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                    res = abs(this-&gt;data()[i]);</div><div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;            }</div><div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        }<span class="comment">//norminf()</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a225ddf170d335ce1ceb3a9cf2be17c3b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator std::set&lt; P &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Приведение вектора к типу std::set. </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных компонент множества </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>множество типа std::set, состоящее из тех же элементов, что исходный вектор </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00425">425</a></p>
+<div class="fragment"><div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        {</div><div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;            std::set&lt;P&gt; newset;</div><div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                newset.insert(this-&gt;data()[i]);</div><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;            <span class="keywordflow">return</span> newset;</div><div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        }<span class="comment">//toSet()</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a15fd8348ecc293a4b00d39a276a11330"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator std::vector&lt; P &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Приведение вектора к типу std::vector. </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных компонент std::vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>вектор типа std::vector, состоящий из тех же элементов, что исходный вектор </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00439">439</a></p>
+<div class="fragment"><div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        {</div><div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;            std::vector&lt;P&gt; vec;</div><div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;            vec.reserve(n);</div><div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;                vec.push_back(this-&gt;data()[i]);</div><div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;            <span class="keywordflow">return</span> vec;</div><div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a3c78c7d3055bf95a2ace6d3ab89d5c83"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Перегрузка оператора "!=" логического неравенства </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных компонент вектора, с которым производится сравнение </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на сравниваемый вектор </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>true, если векторы различаются, false в противном случае </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00303">303</a></p>
+<div class="fragment"><div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        {</div><div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == y);</div><div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        }<span class="comment">//operator!=(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab2322b7c552eb70e5a67c0e67fadacef"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator&amp; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td> const -&gt; typename std::remove_const&lt;decltype(this-&gt;data()[0] * y[0])&gt;::type
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "&amp;" скалярного умножения </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных компонент вектора - второго сомножителя </td></tr>
+    <tr><td class="paramname">n</td><td>длина обоих векторов </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на второй множитель </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>результат вычисления скалярного произведения, приведенный к нужному типу </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00102">102</a></p>
+<div class="fragment"><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        {</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keyword">typename</span> std::remove_const&lt;decltype(this-&gt;data()[0] * y[0])&gt;::type res = 0;</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n; ++j)</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                res += this-&gt;data()[j] * y[j];</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }<span class="comment">//operator&amp;(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a82bd5c7685e80974a6573b3714352e6f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator* </td>
+          <td>(</td>
+          <td class="paramtype">const P&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;typename std::remove_const&lt;decltype(this-&gt;data()[0] * c)&gt;::type, n&gt;
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "*" умножения вектора на число (вектор слева, число справа) </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных множителя </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>число-множитель </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>результат умножения вектора на число, приведенный к соответствующему типу </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00246">246</a></p>
+<div class="fragment"><div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        {</div><div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <a class="code" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;decltype(this-&gt;data()[0] * c)&gt;::type, n&gt; res;</div><div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                res[i] = c * this-&gt;data()[i];</div><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        }<span class="comment">//operator*(...)</span></div><div class="ttc" id="class_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/dc5/numvector_8h_source.html#l00088">numvector.h:88</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a67e9b5103551d7ff48554a4b74557457"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;T, n&gt;&amp; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">P&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "*=" домножения вектора на действительное число </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных компонент вектора </td></tr>
+    <tr><td class="paramname">P</td><td>тип данных множителя </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>числовой множитель типа, приводимого к типу компонент вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>ссылку на самого себя после домножения на число </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00151">151</a></p>
+<div class="fragment"><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        {</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                this-&gt;data()[i] *= c;</div><div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        }<span class="comment">//operator*=(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a99a97651ad76c5dc12e60a728f967743"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td> const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;typename std::remove_const&lt;decltype(this-&gt;data()[0] + y[0])&gt;::type, n&gt;
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "+" сложения двух векторов </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных компонент вектора - второго слагаемого </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на прибавляемый вектор </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>результат сложения двух векторов, приведенный к нужному типу </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00214">214</a></p>
+<div class="fragment"><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        {</div><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <a class="code" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;decltype(this-&gt;data()[0] + y[0])&gt;::type, n&gt; res;</div><div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                res[i] = this-&gt;data()[i] + y[i];</div><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        }<span class="comment">//operator+(...)</span></div><div class="ttc" id="class_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/dc5/numvector_8h_source.html#l00088">numvector.h:88</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aedc4c52450a3d1280bf1cebf29cdc17a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;T, n&gt;&amp; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator+ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "+" унарного плюса </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных компонент вектора </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>константную ссылку на самого себя </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00274">274</a></p>
+<div class="fragment"><div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        {</div><div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        }<span class="comment">//operator+()</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a78ecca9e8e5478ab0be3a5878445d43e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;T, n&gt;&amp; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "+=" прибавления другого вектора </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных компонент вектора </td></tr>
+    <tr><td class="paramname">P</td><td>тип данных компонент прибавляемого вектора </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на прибавляемый вектор </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>ссылку на самого себя после сложения с другим вектором </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00183">183</a></p>
+<div class="fragment"><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        {</div><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                this-&gt;data()[i] += y[i];</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }<span class="comment">//operator+=(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="adbc494b3d60cdfdb96f2887deda0754d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator- </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td> const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;typename std::remove_const&lt;decltype(this-&gt;data()[0] - y[0])&gt;::type, n&gt;
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "-" вычитания двух векторов </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных компонент вектора - вычитаемого </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на вычитаемый вектор </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>результат вычитания двух векторов, приведенный к нужному типу </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00230">230</a></p>
+<div class="fragment"><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        {</div><div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            <a class="code" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;decltype(this-&gt;data()[0] - y[0])&gt;::type, n&gt; res;</div><div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                res[i] = this-&gt;data()[i] - y[i];</div><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        }<span class="comment">//operator-(...)</span></div><div class="ttc" id="class_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/dc5/numvector_8h_source.html#l00088">numvector.h:88</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a3e0a6f1820db84b2983204124ec06cde"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;T, n&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator- </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "-" унарного минуса </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных компонент вектора </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>противоположный вектор </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00260">260</a></p>
+<div class="fragment"><div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        {</div><div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <a class="code" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res;</div><div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                res[i] = -this-&gt;data()[i];</div><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        }<span class="comment">//operator-()</span></div><div class="ttc" id="class_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/dc5/numvector_8h_source.html#l00088">numvector.h:88</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ae6f1ae8bf8cc34f5c184ad71f8d67e5e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;T, n&gt;&amp; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "-=" вычитания другого вектора </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных компонент вектора </td></tr>
+    <tr><td class="paramname">P</td><td>тип данных компонент вычитаемого вектора </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на вычитаемый вектор </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>ссылка на самого себя после вычитания другого вектора </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00199">199</a></p>
+<div class="fragment"><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        {</div><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                this-&gt;data()[i] -= y[i];</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        }<span class="comment">//operator-=(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab5a55d5c088f1837f74c612069dbedb3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;T, n&gt;&amp; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">P&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "/=" деления вектора на действительное число </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных компонент вектора </td></tr>
+    <tr><td class="paramname">P</td><td>тип данных множителя </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>числовой делитель типа, приводимого к типу компонент вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>ссылку на самого себя после деления на число </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00167">167</a></p>
+<div class="fragment"><div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        {</div><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                this-&gt;data()[i] /= c;</div><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        }<span class="comment">//operator/=(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a449c222d042580be377c071f745b791f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "==" логического равенства </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных компонент вектора, с которым производится сравнение </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на сравниваемый вектор </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>true, если векторы одинаковые, false в противном случае </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00287">287</a></p>
+<div class="fragment"><div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        {</div><div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                <span class="keywordflow">if</span> (this-&gt;data()[i] != y[i])</div><div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        }<span class="comment">//operator==(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab8302c7f63e14e4ec1cfb97bc8e13d14"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator^ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, 3 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td> const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;typename std::remove_const&lt;decltype(this-&gt;data()[1] * y[2])&gt;::type, 3&gt;
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "^" векторного произведения </p>
+<p>Определен только для трехмерных векторов</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных компонент вектора - второго сомножителя </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на второй множитель </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>результат вычисления векторного произведения, приведенный к нужному типу </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00119">119</a></p>
+<div class="fragment"><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        {</div><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <a class="code" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;decltype(this-&gt;data()[1] * y[2])&gt;::type, 3&gt; vec;</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            vec[0] = this-&gt;data()[1] * y[2] - this-&gt;data()[2] * y[1];</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            vec[1] = this-&gt;data()[2] * y[0] - this-&gt;data()[0] * y[2];</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            vec[2] = this-&gt;data()[0] * y[1] - this-&gt;data()[1] * y[0];</div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">return</span> vec;</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        }<span class="comment">//operator^(...)</span></div><div class="ttc" id="class_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/dc5/numvector_8h_source.html#l00088">numvector.h:88</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a3ee6e3b00c87275f6cbeb593aac9240e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::operator^ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, 2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em></td><td>)</td>
+          <td> const -&gt; typename std::remove_const&lt;decltype(this-&gt;data()[0] * y[1])&gt;::type
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Оператор "^" вычисления третьей компоненты векторного произведения </p>
+<p>Определен только для двумерных векторов</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип данных компонент вектора - второго множителя </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>константная ссылка на второй множитель </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>результат вычисления третьей компоненты векторного произведения двух двумерных векторов, приведенный к нужному типу </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00137">137</a></p>
+<div class="fragment"><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        {</div><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keywordflow">return</span> (this-&gt;data()[0] * y[1] - this-&gt;data()[1] * y[0]);</div><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        }<span class="comment">//operator^(...)</span></div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab2fd562f754fbfc929f28cdd22164056"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;T, n&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::rotateLeft </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>k</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>"Вращение" вектора на несколько позиций влево </p>
+<p>Исходный вектор при этом не изменяется</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных компонент вектора </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">k</td><td>количество позиций, на которые производится "вращение" </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>вектор, полученный "вращением" исходного на k позиций влево </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00457">457</a></p>
+<div class="fragment"><div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        {</div><div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;            <span class="keywordflow">if</span> (k &gt; n)</div><div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;                <span class="keywordflow">throw</span>;</div><div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div><div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;            <span class="keywordflow">if</span> (k == n)</div><div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;                <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div><div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;            <a class="code" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res;</div><div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;</div><div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;            <span class="comment">//for (size_t i = 0; i &lt; n; ++i) </span></div><div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;            <span class="comment">//  res[i] = r[(i + k) % n];</span></div><div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;</div><div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n - k; ++i)</div><div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;                res[i] = this-&gt;data()[i + k];</div><div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = n - k; i &lt; n; ++i)</div><div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;                res[i] = this-&gt;data()[i + k - n];</div><div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;            <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;        }<span class="comment">//rotateLeft(...)</span></div><div class="ttc" id="class_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/dc5/numvector_8h_source.html#l00088">numvector.h:88</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab52c2bfa931d8533aae15b6999d718ab"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P  = T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;T, n&gt;&amp; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::toZero </td>
+          <td>(</td>
+          <td class="paramtype">P&#160;</td>
+          <td class="paramname"><em>val</em> = <code>0</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Установка всех компонент вектора в константу (по умолчанию &mdash; нуль) </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>тип данных компонент вектора </td></tr>
+    <tr><td class="paramname">P</td><td>тип данных константы </td></tr>
+    <tr><td class="paramname">n</td><td>длина вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td>константа, значению которой приравниваются все компоненты вектора (по умолчанию 0) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>ссылка на сам вектор </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00503">503</a></p>
+<div class="fragment"><div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        {</div><div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div><div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;                this-&gt;data()[i] = val;</div><div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        }</div></div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/dd4/class_v_mlib_1_1numvector_ab52c2bfa931d8533aae15b6999d718ab_icgraph.png" border="0" usemap="#d6/dd4/class_v_mlib_1_1numvector_ab52c2bfa931d8533aae15b6999d718ab_icgraph" alt=""/></div>
+<map name="d6/dd4/class_v_mlib_1_1numvector_ab52c2bfa931d8533aae15b6999d718ab_icgraph" id="d6/dd4/class_v_mlib_1_1numvector_ab52c2bfa931d8533aae15b6999d718ab_icgraph">
+<area shape="rect" id="node2" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="249,5,460,61"/>
+<area shape="rect" id="node4" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6bca92af2a441ac0e8afe9196a24e37f" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="253,85,456,141"/>
+<area shape="rect" id="node6" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="255,165,454,221"/>
+<area shape="rect" id="node7" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="244,245,465,301"/>
+<area shape="rect" id="node9" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="243,325,466,381"/>
+<area shape="rect" id="node11" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="245,405,464,461"/>
+<area shape="rect" id="node12" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a78c1092b0a83667f240302cca716be3f" title="Вычисление параметров всех ячеек дерева (циркуляций и центров завихренности) " alt="" coords="263,485,446,526"/>
+<area shape="rect" id="node14" href="../../d6/daf/class_v_m2_d_1_1_cell.html#ad8ec4e5534ba17cfa23471c708d5b473" title="VM2D::Cell::CalcConvVelo\lByBiotSavartFromVortices" alt="" coords="263,550,446,591"/>
+<area shape="rect" id="node15" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a57bd413906e22118957c60162a0ed0ff" title="Расчет конвективных скоростей вихрей внутри одной ячейки от источников внутри всех ближних ячеек ..." alt="" coords="263,615,446,657"/>
+<area shape="rect" id="node16" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a027a7e15c6d05d5c654e66a951711492" title="VM2D::Cell::CalcConvVelo\lByBiotSavartFromSheets" alt="" coords="263,681,446,722"/>
+<area shape="rect" id="node17" href="../../df/dc0/group___parallel.html#ga7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="223,746,487,787"/>
+<area shape="rect" id="node3" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="557,13,771,54"/>
+<area shape="rect" id="node5" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="559,125,769,181"/>
+<area shape="rect" id="node8" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="565,253,763,294"/>
+<area shape="rect" id="node10" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="535,373,793,414"/>
+<area shape="rect" id="node13" href="../../d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a7b55b68d171c1a5d7c65e7b1e03c8fc2" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="576,485,752,526"/>
+<area shape="rect" id="node18" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="841,746,1016,787"/>
+<area shape="rect" id="node19" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ad489af66ebe4cb6e9e8326e312562b55" title="Вычисление скоростей в точках wakeVP. " alt="" coords="577,775,751,817"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ae4b6d9a6d317f3ce4e0df9777652938e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, size_t n&gt; </div>
+<div class="memtemplate">
+template&lt;typename P  = double&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>&lt; T, n &gt;::unit </td>
+          <td>(</td>
+          <td class="paramtype">P&#160;</td>
+          <td class="paramname"><em>newlen</em> = <code>1</code></td><td>)</td>
+          <td> const -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;typename std::remove_const&lt;decltype(this-&gt;data()[0] * newlen)&gt;::type, n&gt;
+		</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вычисление орта вектора или вектора заданной длины, коллинеарного данному </p>
+<p>Если в качестве новой длины указано отрицательное число &mdash; вектор будет противоположно направленным</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">P</td><td>тип числа, задающего длину вектора </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">newlen</td><td>длина получаемого вектора (по умолчанию 1.0) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>вектор, коллинеарный исходному, заданной длины (по умолчанию 1.0)</dd></dl>
+<dl class="section warning"><dt>Предупреждения</dt><dd>для получения float-орта от вектора с компонентами типа float или целыми нужно явно указать параметр 1.0f </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00378">378</a></p>
+<div class="fragment"><div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        {</div><div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            <span class="keyword">auto</span> ilen = <span class="keyword">static_cast&lt;</span>decltype(this-<span class="keyword">&gt;</span>data()[0] * newlen)&gt;(newlen / std::max(this-&gt;<a class="code" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764">length</a>(), 1e-16));</div><div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            <span class="keywordflow">return</span> (*<span class="keyword">this</span> * ilen);</div><div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        }<span class="comment">//unit(...)</span></div><div class="ttc" id="class_v_mlib_1_1numvector_html_a6a1ef7e752852fd7a508497a037c2764"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764">VMlib::numvector::length</a></div><div class="ttdeci">P length() const </div><div class="ttdoc">Вычисление 2-нормы (длины) вектора </div><div class="ttdef"><b>Definition:</b> <a href="../../df/dc5/numvector_8h_source.html#l00350">numvector.h:350</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/dd4/class_v_mlib_1_1numvector_ae4b6d9a6d317f3ce4e0df9777652938e_icgraph.png" border="0" usemap="#d6/dd4/class_v_mlib_1_1numvector_ae4b6d9a6d317f3ce4e0df9777652938e_icgraph" alt=""/></div>
+<map name="d6/dd4/class_v_mlib_1_1numvector_ae4b6d9a6d317f3ce4e0df9777652938e_icgraph" id="d6/dd4/class_v_mlib_1_1numvector_ae4b6d9a6d317f3ce4e0df9777652938e_icgraph">
+<area shape="rect" id="node2" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a86dac66802e3eccab1ea05eb7d6442b7" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин " alt="" coords="250,84,386,126"/>
+<area shape="rect" id="node8" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="213,178,423,234"/>
+<area shape="rect" id="node10" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6bca92af2a441ac0e8afe9196a24e37f" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="217,338,419,394"/>
+<area shape="rect" id="node12" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="219,258,417,314"/>
+<area shape="rect" id="node13" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="207,418,429,474"/>
+<area shape="rect" id="node15" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="207,578,429,634"/>
+<area shape="rect" id="node17" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="209,498,427,554"/>
+<area shape="rect" id="node3" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a47e772124cbf44d0ec8784f483797d53" title="Перемещение профиля " alt="" coords="523,33,691,60"/>
+<area shape="rect" id="node5" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="968,76,1104,118"/>
+<area shape="rect" id="node6" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a05811a761cdefc827cc8211efcd989ff" title="Поворот профиля " alt="" coords="539,84,675,126"/>
+<area shape="rect" id="node7" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a99d0b02780d7c3d2a20dce6046049088" title="Масштабирование профиля " alt="" coords="539,150,675,191"/>
+<area shape="rect" id="node4" href="../../d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a9d64a95d5abba507e3c2d1f535a60338" title="Считывание профиля из файла " alt="" coords="784,135,920,176"/>
+<area shape="rect" id="node9" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="499,215,714,256"/>
+<area shape="rect" id="node11" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="502,324,711,380"/>
+<area shape="rect" id="node14" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="507,426,706,467"/>
+<area shape="rect" id="node16" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="477,546,736,587"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<h2 class="groupheader">Данные класса</h2>
+<a class="anchor" id="a7b7fb76e56127f8b1ea203967a406d0a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T std::array&lt; T &gt;::elements</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>STL member. </p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов класса находятся в файле:<ul>
+<li>VMlib/numvector/<a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dd/d9a/namespace_v_mlib.html">VMlib</a></li><li class="navelem"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a></li>
+    <li class="footer">Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
+  </ul>
+</div>
+</body>
+</html>

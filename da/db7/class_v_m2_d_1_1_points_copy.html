@@ -1,0 +1,585 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>VM2D: Класс VM2D::PointsCopy</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/NativeMML"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="../../LOGO.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VM2D
+   &#160;<span id="projectnumber">1.10</span>
+   </div>
+   <div id="projectbrief">Вихревые методы для решения двумерных задач</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="../../index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="../../pages.html"><span>Описания</span></a></li>
+      <li><a href="../../modules.html"><span>Группы</span></a></li>
+      <li><a href="../../namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../files.html"><span>Файлы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="../../search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="../../search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="../../inherits.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="../../functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('da/db7/class_v_m2_d_1_1_points_copy.html','../../');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Открытые типы</a> &#124;
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-attribs">Открытые атрибуты</a> &#124;
+<a href="../../d6/dc6/class_v_m2_d_1_1_points_copy-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Класс VM2D::PointsCopy</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Класс, опеделяющий копию для сортировки структуры данных следа (пелены), источников или "виртуальных" вихрей или источников  
+ <a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#details">Подробнее...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a>&gt;</code></p>
+<div class="dynheader">
+Граф связей класса VM2D::PointsCopy:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d1/d56/class_v_m2_d_1_1_points_copy__coll__graph.png" border="0" usemap="#_v_m2_d_1_1_points_copy_coll__map" alt="Collaboration graph"/></div>
+<map name="_v_m2_d_1_1_points_copy_coll__map" id="_v_m2_d_1_1_points_copy_coll__map">
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">см. легенду</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Открытые типы</h2></td></tr>
+<tr class="memitem:a9cd92e6def06c03678d657621b12541e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a9cd92e6def06c03678d657621b12541e">iterator</a> = <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">PointsCopy_iterator::all_iterator</a></td></tr>
+<tr class="separator:a9cd92e6def06c03678d657621b12541e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:a3437a79ea9616c3d3f71647576c919b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a3437a79ea9616c3d3f71647576c919b2">push_back</a> (<a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a> _vtx, std::pair&lt; int, int &gt; _aflPnl, int _num)</td></tr>
+<tr class="separator:a3437a79ea9616c3d3f71647576c919b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b3096da7e026ddfe2f52d606683c248"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a4b3096da7e026ddfe2f52d606683c248">reserve</a> (size_t <a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a808856c5b437d1a0d99d17a38d9dc057">size</a>)</td></tr>
+<tr class="separator:a4b3096da7e026ddfe2f52d606683c248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04cd63746b554e5a6f690f10ad7b97cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a04cd63746b554e5a6f690f10ad7b97cc">emplace_back</a> (<a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a> _vtx, std::pair&lt; int, int &gt; _aflPnl, int _num, <a class="el" href="../../d5/d64/defs_8h.html#a18ab7b7b419342201c07425bdcd420cd">PointType</a> _type, <a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> _velo={0.0, 0.0}, double _domainRadius=0.0)</td></tr>
+<tr class="separator:a04cd63746b554e5a6f690f10ad7b97cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe1244d1873ade272285b5c433f1fc32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#abe1244d1873ade272285b5c433f1fc32">clear</a> ()</td></tr>
+<tr class="separator:abe1244d1873ade272285b5c433f1fc32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d717b64888607edb8f6e3b078c7d319"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a9cd92e6def06c03678d657621b12541e">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a9d717b64888607edb8f6e3b078c7d319">begin</a> ()</td></tr>
+<tr class="separator:a9d717b64888607edb8f6e3b078c7d319"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed39a5e3471c32c274a6c23c9fed86f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a9cd92e6def06c03678d657621b12541e">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#aed39a5e3471c32c274a6c23c9fed86f1">end</a> ()</td></tr>
+<tr class="separator:aed39a5e3471c32c274a6c23c9fed86f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a808856c5b437d1a0d99d17a38d9dc057"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a808856c5b437d1a0d99d17a38d9dc057">size</a> () const </td></tr>
+<tr class="separator:a808856c5b437d1a0d99d17a38d9dc057"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Открытые атрибуты</h2></td></tr>
+<tr class="memitem:af4b32dfd01f1c0a71c2af6fa6e55d078"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">vtx</a></td></tr>
+<tr class="memdesc:af4b32dfd01f1c0a71c2af6fa6e55d078"><td class="mdescLeft">&#160;</td><td class="mdescRight">Список из самих объектов, приведенных к типу Vortex2D.  <a href="#af4b32dfd01f1c0a71c2af6fa6e55d078">Подробнее...</a><br /></td></tr>
+<tr class="separator:af4b32dfd01f1c0a71c2af6fa6e55d078"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae156b14032285b1103113a7ed5d96e74"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">aflPnl</a></td></tr>
+<tr class="memdesc:ae156b14032285b1103113a7ed5d96e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Список из пар значений - номер рассматриваемого профиля и номер панели на нем Для wake, sourceWake или wakeVP не задается  <a href="#ae156b14032285b1103113a7ed5d96e74">Подробнее...</a><br /></td></tr>
+<tr class="separator:ae156b14032285b1103113a7ed5d96e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a953b90424dc2fe513c84e123cdcabafb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">num</a></td></tr>
+<tr class="memdesc:a953b90424dc2fe513c84e123cdcabafb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Список из номеров элементов из vtx в исходном массиве точек  <a href="#a953b90424dc2fe513c84e123cdcabafb">Подробнее...</a><br /></td></tr>
+<tr class="separator:a953b90424dc2fe513c84e123cdcabafb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5863598df4085393799529fe55874295"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d64/defs_8h.html#a18ab7b7b419342201c07425bdcd420cd">PointType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a5863598df4085393799529fe55874295">type</a></td></tr>
+<tr class="separator:a5863598df4085393799529fe55874295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e96ea6264454d70000a8df0bdc90f9c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a0e96ea6264454d70000a8df0bdc90f9c">velo</a></td></tr>
+<tr class="memdesc:a0e96ea6264454d70000a8df0bdc90f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ниже - несортируемые списки:  <a href="#a0e96ea6264454d70000a8df0bdc90f9c">Подробнее...</a><br /></td></tr>
+<tr class="separator:a0e96ea6264454d70000a8df0bdc90f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afedba27ef59565355ddf1c7fb012237f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#afedba27ef59565355ddf1c7fb012237f">domainRadius</a></td></tr>
+<tr class="separator:afedba27ef59565355ddf1c7fb012237f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Класс, опеделяющий копию для сортировки структуры данных следа (пелены), источников или "виртуальных" вихрей или источников </p>
+<dl class="section author"><dt>Автор</dt><dd>Марчевский Илья Константинович </dd>
+<dd>
+Сокол Ксения Сергеевна </dd>
+<dd>
+Рятина Евгения Павловна </dd></dl>
+<dl class="section version"><dt>Версия</dt><dd>1.10 </dd></dl>
+<dl class="section date"><dt>Дата</dt><dd>17 мая 2021 г. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00063">63</a></p>
+</div><h2 class="groupheader">Определения типов</h2>
+<a class="anchor" id="a9cd92e6def06c03678d657621b12541e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a9cd92e6def06c03678d657621b12541e">VM2D::PointsCopy::iterator</a> =  <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">PointsCopy_iterator::all_iterator</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00087">87</a></p>
+
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a class="anchor" id="a9d717b64888607edb8f6e3b078c7d319"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a9cd92e6def06c03678d657621b12541e">PointsCopy::iterator</a> PointsCopy::begin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html">PointsCopy2D.cpp</a> строка <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html#l00086">86</a></p>
+<div class="fragment"><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;{</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">return</span> { <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">vtx</a>.begin(), <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">aflPnl</a>.begin(), <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">num</a>.begin() };</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}<span class="comment">//begin()</span></div><div class="ttc" id="class_v_m2_d_1_1_points_copy_html_ae156b14032285b1103113a7ed5d96e74"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">VM2D::PointsCopy::aflPnl</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; int, int &gt; &gt; aflPnl</div><div class="ttdoc">Список из пар значений - номер рассматриваемого профиля и номер панели на нем Для wake...</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00071">PointsCopy2D.h:71</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a953b90424dc2fe513c84e123cdcabafb"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">VM2D::PointsCopy::num</a></div><div class="ttdeci">std::vector&lt; int &gt; num</div><div class="ttdoc">Список из номеров элементов из vtx в исходном массиве точек </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00074">PointsCopy2D.h:74</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_af4b32dfd01f1c0a71c2af6fa6e55d078"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">VM2D::PointsCopy::vtx</a></div><div class="ttdeci">std::vector&lt; Vortex2D &gt; vtx</div><div class="ttdoc">Список из самих объектов, приведенных к типу Vortex2D. </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00067">PointsCopy2D.h:67</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../da/db7/class_v_m2_d_1_1_points_copy_a9d717b64888607edb8f6e3b078c7d319_icgraph.png" border="0" usemap="#da/db7/class_v_m2_d_1_1_points_copy_a9d717b64888607edb8f6e3b078c7d319_icgraph" alt=""/></div>
+<map name="da/db7/class_v_m2_d_1_1_points_copy_a9d717b64888607edb8f6e3b078c7d319_icgraph" id="da/db7/class_v_m2_d_1_1_points_copy_a9d717b64888607edb8f6e3b078c7d319_icgraph">
+<area shape="rect" id="node2" href="../../d6/daf/class_v_m2_d_1_1_cell.html#ae4e4e96c1f54d403befcc69b26df5601" title="VM2D::Cell::CreateRootCell" alt="" coords="228,5,416,32"/>
+<area shape="rect" id="node3" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a24d8cbf96e99447b52276dbbfbffe514" title="Конструктор " alt="" coords="464,5,591,32"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="abe1244d1873ade272285b5c433f1fc32"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PointsCopy::clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html">PointsCopy2D.cpp</a> строка <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html#l00071">71</a></p>
+<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;{</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">vtx</a>.clear();</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">aflPnl</a>.clear();</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">num</a>.clear();</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a0e96ea6264454d70000a8df0bdc90f9c">velo</a>.clear();</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#afedba27ef59565355ddf1c7fb012237f">domainRadius</a>.clear();</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}<span class="comment">//clear()</span></div><div class="ttc" id="class_v_m2_d_1_1_points_copy_html_ae156b14032285b1103113a7ed5d96e74"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">VM2D::PointsCopy::aflPnl</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; int, int &gt; &gt; aflPnl</div><div class="ttdoc">Список из пар значений - номер рассматриваемого профиля и номер панели на нем Для wake...</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00071">PointsCopy2D.h:71</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a953b90424dc2fe513c84e123cdcabafb"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">VM2D::PointsCopy::num</a></div><div class="ttdeci">std::vector&lt; int &gt; num</div><div class="ttdoc">Список из номеров элементов из vtx в исходном массиве точек </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00074">PointsCopy2D.h:74</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a0e96ea6264454d70000a8df0bdc90f9c"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a0e96ea6264454d70000a8df0bdc90f9c">VM2D::PointsCopy::velo</a></div><div class="ttdeci">std::vector&lt; Point2D &gt; velo</div><div class="ttdoc">Ниже - несортируемые списки: </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00079">PointsCopy2D.h:79</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_afedba27ef59565355ddf1c7fb012237f"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#afedba27ef59565355ddf1c7fb012237f">VM2D::PointsCopy::domainRadius</a></div><div class="ttdeci">std::vector&lt; double &gt; domainRadius</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00080">PointsCopy2D.h:80</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_af4b32dfd01f1c0a71c2af6fa6e55d078"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">VM2D::PointsCopy::vtx</a></div><div class="ttdeci">std::vector&lt; Vortex2D &gt; vtx</div><div class="ttdoc">Список из самих объектов, приведенных к типу Vortex2D. </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00067">PointsCopy2D.h:67</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../da/db7/class_v_m2_d_1_1_points_copy_abe1244d1873ade272285b5c433f1fc32_icgraph.png" border="0" usemap="#da/db7/class_v_m2_d_1_1_points_copy_abe1244d1873ade272285b5c433f1fc32_icgraph" alt=""/></div>
+<map name="da/db7/class_v_m2_d_1_1_points_copy_abe1244d1873ade272285b5c433f1fc32_icgraph" id="da/db7/class_v_m2_d_1_1_points_copy_abe1244d1873ade272285b5c433f1fc32_icgraph">
+<area shape="rect" id="node2" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a24d8cbf96e99447b52276dbbfbffe514" title="Конструктор " alt="" coords="224,5,351,32"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a04cd63746b554e5a6f690f10ad7b97cc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PointsCopy::emplace_back </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&#160;</td>
+          <td class="paramname"><em>_vtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::pair&lt; int, int &gt;&#160;</td>
+          <td class="paramname"><em>_aflPnl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d5/d64/defs_8h.html#a18ab7b7b419342201c07425bdcd420cd">PointType</a>&#160;</td>
+          <td class="paramname"><em>_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>&#160;</td>
+          <td class="paramname"><em>_velo</em> = <code>{&#160;0.0,&#160;0.0&#160;}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>_domainRadius</em> = <code>0.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html">PointsCopy2D.cpp</a> строка <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html#l00054">54</a></p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">vtx</a>.emplace_back(_vtx);</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">aflPnl</a>.emplace_back(_aflPnl);</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">num</a>.emplace_back(_num);</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a5863598df4085393799529fe55874295">type</a> = _type;</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a0e96ea6264454d70000a8df0bdc90f9c">velo</a>.emplace_back(_velo);</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#afedba27ef59565355ddf1c7fb012237f">domainRadius</a>.emplace_back(_domainRadius);</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}<span class="comment">//emplace_back(...)</span></div><div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a5863598df4085393799529fe55874295"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a5863598df4085393799529fe55874295">VM2D::PointsCopy::type</a></div><div class="ttdeci">PointType type</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00076">PointsCopy2D.h:76</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_ae156b14032285b1103113a7ed5d96e74"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">VM2D::PointsCopy::aflPnl</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; int, int &gt; &gt; aflPnl</div><div class="ttdoc">Список из пар значений - номер рассматриваемого профиля и номер панели на нем Для wake...</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00071">PointsCopy2D.h:71</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a953b90424dc2fe513c84e123cdcabafb"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">VM2D::PointsCopy::num</a></div><div class="ttdeci">std::vector&lt; int &gt; num</div><div class="ttdoc">Список из номеров элементов из vtx в исходном массиве точек </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00074">PointsCopy2D.h:74</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a0e96ea6264454d70000a8df0bdc90f9c"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a0e96ea6264454d70000a8df0bdc90f9c">VM2D::PointsCopy::velo</a></div><div class="ttdeci">std::vector&lt; Point2D &gt; velo</div><div class="ttdoc">Ниже - несортируемые списки: </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00079">PointsCopy2D.h:79</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_afedba27ef59565355ddf1c7fb012237f"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#afedba27ef59565355ddf1c7fb012237f">VM2D::PointsCopy::domainRadius</a></div><div class="ttdeci">std::vector&lt; double &gt; domainRadius</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00080">PointsCopy2D.h:80</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_af4b32dfd01f1c0a71c2af6fa6e55d078"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">VM2D::PointsCopy::vtx</a></div><div class="ttdeci">std::vector&lt; Vortex2D &gt; vtx</div><div class="ttdoc">Список из самих объектов, приведенных к типу Vortex2D. </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00067">PointsCopy2D.h:67</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../da/db7/class_v_m2_d_1_1_points_copy_a04cd63746b554e5a6f690f10ad7b97cc_icgraph.png" border="0" usemap="#da/db7/class_v_m2_d_1_1_points_copy_a04cd63746b554e5a6f690f10ad7b97cc_icgraph" alt=""/></div>
+<map name="da/db7/class_v_m2_d_1_1_points_copy_a04cd63746b554e5a6f690f10ad7b97cc_icgraph" id="da/db7/class_v_m2_d_1_1_points_copy_a04cd63746b554e5a6f690f10ad7b97cc_icgraph">
+<area shape="rect" id="node2" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a2ff780a42ecf408a00a8977a913b4258" title="Создание копии данных для точек (для сортировки) " alt="" coords="282,5,490,32"/>
+<area shape="rect" id="node4" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a6bddcd3bf70e5376de545292eeb0aacf" title="Создание массива указателей на массив точек (для сортировки) " alt="" coords="280,56,492,83"/>
+<area shape="rect" id="node3" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a24d8cbf96e99447b52276dbbfbffe514" title="Конструктор " alt="" coords="540,5,667,32"/>
+<area shape="rect" id="node5" href="../../d8/d90/class_v_m2_d_1_1_tree.html#af13fbf38acec5aa6356edcd7c6d70e20" title="Конструктор " alt="" coords="540,56,667,83"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="aed39a5e3471c32c274a6c23c9fed86f1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a9cd92e6def06c03678d657621b12541e">PointsCopy::iterator</a> PointsCopy::end </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html">PointsCopy2D.cpp</a> строка <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html#l00091">91</a></p>
+<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;{</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">return</span> { <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">vtx</a>.end(), <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">aflPnl</a>.end(), <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">num</a>.end() };</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}<span class="comment">//end()</span></div><div class="ttc" id="class_v_m2_d_1_1_points_copy_html_ae156b14032285b1103113a7ed5d96e74"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">VM2D::PointsCopy::aflPnl</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; int, int &gt; &gt; aflPnl</div><div class="ttdoc">Список из пар значений - номер рассматриваемого профиля и номер панели на нем Для wake...</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00071">PointsCopy2D.h:71</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a953b90424dc2fe513c84e123cdcabafb"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">VM2D::PointsCopy::num</a></div><div class="ttdeci">std::vector&lt; int &gt; num</div><div class="ttdoc">Список из номеров элементов из vtx в исходном массиве точек </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00074">PointsCopy2D.h:74</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_af4b32dfd01f1c0a71c2af6fa6e55d078"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">VM2D::PointsCopy::vtx</a></div><div class="ttdeci">std::vector&lt; Vortex2D &gt; vtx</div><div class="ttdoc">Список из самих объектов, приведенных к типу Vortex2D. </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00067">PointsCopy2D.h:67</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../da/db7/class_v_m2_d_1_1_points_copy_aed39a5e3471c32c274a6c23c9fed86f1_icgraph.png" border="0" usemap="#da/db7/class_v_m2_d_1_1_points_copy_aed39a5e3471c32c274a6c23c9fed86f1_icgraph" alt=""/></div>
+<map name="da/db7/class_v_m2_d_1_1_points_copy_aed39a5e3471c32c274a6c23c9fed86f1_icgraph" id="da/db7/class_v_m2_d_1_1_points_copy_aed39a5e3471c32c274a6c23c9fed86f1_icgraph">
+<area shape="rect" id="node2" href="../../d6/daf/class_v_m2_d_1_1_cell.html#ae4e4e96c1f54d403befcc69b26df5601" title="VM2D::Cell::CreateRootCell" alt="" coords="217,5,405,32"/>
+<area shape="rect" id="node3" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a24d8cbf96e99447b52276dbbfbffe514" title="Конструктор " alt="" coords="453,5,580,32"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a3437a79ea9616c3d3f71647576c919b2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PointsCopy::push_back </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&#160;</td>
+          <td class="paramname"><em>_vtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::pair&lt; int, int &gt;&#160;</td>
+          <td class="paramname"><em>_aflPnl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html">PointsCopy2D.cpp</a> строка <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html#l00064">64</a></p>
+<div class="fragment"><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;{</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">vtx</a>.push_back(_vtx);</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">aflPnl</a>.push_back(_aflPnl);</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">num</a>.push_back(_num);</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}<span class="comment">//push_back(...)</span></div><div class="ttc" id="class_v_m2_d_1_1_points_copy_html_ae156b14032285b1103113a7ed5d96e74"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">VM2D::PointsCopy::aflPnl</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; int, int &gt; &gt; aflPnl</div><div class="ttdoc">Список из пар значений - номер рассматриваемого профиля и номер панели на нем Для wake...</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00071">PointsCopy2D.h:71</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a953b90424dc2fe513c84e123cdcabafb"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">VM2D::PointsCopy::num</a></div><div class="ttdeci">std::vector&lt; int &gt; num</div><div class="ttdoc">Список из номеров элементов из vtx в исходном массиве точек </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00074">PointsCopy2D.h:74</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_af4b32dfd01f1c0a71c2af6fa6e55d078"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">VM2D::PointsCopy::vtx</a></div><div class="ttdeci">std::vector&lt; Vortex2D &gt; vtx</div><div class="ttdoc">Список из самих объектов, приведенных к типу Vortex2D. </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00067">PointsCopy2D.h:67</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a4b3096da7e026ddfe2f52d606683c248"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PointsCopy::reserve </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html">PointsCopy2D.cpp</a> строка <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html#l00045">45</a></p>
+<div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">vtx</a>.reserve(<a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a808856c5b437d1a0d99d17a38d9dc057">size</a>);</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">aflPnl</a>.reserve(<a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a808856c5b437d1a0d99d17a38d9dc057">size</a>);</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">num</a>.reserve(<a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a808856c5b437d1a0d99d17a38d9dc057">size</a>);</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a0e96ea6264454d70000a8df0bdc90f9c">velo</a>.reserve(<a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a808856c5b437d1a0d99d17a38d9dc057">size</a>);</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#afedba27ef59565355ddf1c7fb012237f">domainRadius</a>.reserve(<a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a808856c5b437d1a0d99d17a38d9dc057">size</a>);</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}<span class="comment">//reserve(...)</span></div><div class="ttc" id="class_v_m2_d_1_1_points_copy_html_ae156b14032285b1103113a7ed5d96e74"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#ae156b14032285b1103113a7ed5d96e74">VM2D::PointsCopy::aflPnl</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; int, int &gt; &gt; aflPnl</div><div class="ttdoc">Список из пар значений - номер рассматриваемого профиля и номер панели на нем Для wake...</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00071">PointsCopy2D.h:71</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a808856c5b437d1a0d99d17a38d9dc057"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a808856c5b437d1a0d99d17a38d9dc057">VM2D::PointsCopy::size</a></div><div class="ttdeci">size_t size() const </div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d08/_points_copy2_d_8cpp_source.html#l00080">PointsCopy2D.cpp:80</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a953b90424dc2fe513c84e123cdcabafb"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a953b90424dc2fe513c84e123cdcabafb">VM2D::PointsCopy::num</a></div><div class="ttdeci">std::vector&lt; int &gt; num</div><div class="ttdoc">Список из номеров элементов из vtx в исходном массиве точек </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00074">PointsCopy2D.h:74</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_a0e96ea6264454d70000a8df0bdc90f9c"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#a0e96ea6264454d70000a8df0bdc90f9c">VM2D::PointsCopy::velo</a></div><div class="ttdeci">std::vector&lt; Point2D &gt; velo</div><div class="ttdoc">Ниже - несортируемые списки: </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00079">PointsCopy2D.h:79</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_afedba27ef59565355ddf1c7fb012237f"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#afedba27ef59565355ddf1c7fb012237f">VM2D::PointsCopy::domainRadius</a></div><div class="ttdeci">std::vector&lt; double &gt; domainRadius</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00080">PointsCopy2D.h:80</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_points_copy_html_af4b32dfd01f1c0a71c2af6fa6e55d078"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">VM2D::PointsCopy::vtx</a></div><div class="ttdeci">std::vector&lt; Vortex2D &gt; vtx</div><div class="ttdoc">Список из самих объектов, приведенных к типу Vortex2D. </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00067">PointsCopy2D.h:67</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../da/db7/class_v_m2_d_1_1_points_copy_a4b3096da7e026ddfe2f52d606683c248_icgraph.png" border="0" usemap="#da/db7/class_v_m2_d_1_1_points_copy_a4b3096da7e026ddfe2f52d606683c248_icgraph" alt=""/></div>
+<map name="da/db7/class_v_m2_d_1_1_points_copy_a4b3096da7e026ddfe2f52d606683c248_icgraph" id="da/db7/class_v_m2_d_1_1_points_copy_a4b3096da7e026ddfe2f52d606683c248_icgraph">
+<area shape="rect" id="node2" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a2ff780a42ecf408a00a8977a913b4258" title="Создание копии данных для точек (для сортировки) " alt="" coords="242,5,450,32"/>
+<area shape="rect" id="node4" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a6bddcd3bf70e5376de545292eeb0aacf" title="Создание массива указателей на массив точек (для сортировки) " alt="" coords="240,56,452,83"/>
+<area shape="rect" id="node3" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a24d8cbf96e99447b52276dbbfbffe514" title="Конструктор " alt="" coords="500,5,627,32"/>
+<area shape="rect" id="node5" href="../../d8/d90/class_v_m2_d_1_1_tree.html#af13fbf38acec5aa6356edcd7c6d70e20" title="Конструктор " alt="" coords="500,56,627,83"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a808856c5b437d1a0d99d17a38d9dc057"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t PointsCopy::size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html">PointsCopy2D.cpp</a> строка <a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html#l00080">80</a></p>
+<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">vtx</a>.size();</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}<span class="comment">//size()</span></div><div class="ttc" id="class_v_m2_d_1_1_points_copy_html_af4b32dfd01f1c0a71c2af6fa6e55d078"><div class="ttname"><a href="../../da/db7/class_v_m2_d_1_1_points_copy.html#af4b32dfd01f1c0a71c2af6fa6e55d078">VM2D::PointsCopy::vtx</a></div><div class="ttdeci">std::vector&lt; Vortex2D &gt; vtx</div><div class="ttdoc">Список из самих объектов, приведенных к типу Vortex2D. </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00067">PointsCopy2D.h:67</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../da/db7/class_v_m2_d_1_1_points_copy_a808856c5b437d1a0d99d17a38d9dc057_icgraph.png" border="0" usemap="#da/db7/class_v_m2_d_1_1_points_copy_a808856c5b437d1a0d99d17a38d9dc057_icgraph" alt=""/></div>
+<map name="da/db7/class_v_m2_d_1_1_points_copy_a808856c5b437d1a0d99d17a38d9dc057_icgraph" id="da/db7/class_v_m2_d_1_1_points_copy_a808856c5b437d1a0d99d17a38d9dc057_icgraph">
+<area shape="rect" id="node2" href="../../d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a7b55b68d171c1a5d7c65e7b1e03c8fc2" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="220,5,396,47"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<h2 class="groupheader">Данные класса</h2>
+<a class="anchor" id="ae156b14032285b1103113a7ed5d96e74"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::pair&lt;int, int&gt; &gt; VM2D::PointsCopy::aflPnl</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Список из пар значений - номер рассматриваемого профиля и номер панели на нем Для wake, sourceWake или wakeVP не задается </p>
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00071">71</a></p>
+
+</div>
+</div>
+<a class="anchor" id="afedba27ef59565355ddf1c7fb012237f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; VM2D::PointsCopy::domainRadius</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00080">80</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a953b90424dc2fe513c84e123cdcabafb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int&gt; VM2D::PointsCopy::num</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Список из номеров элементов из vtx в исходном массиве точек </p>
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00074">74</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a5863598df4085393799529fe55874295"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/d64/defs_8h.html#a18ab7b7b419342201c07425bdcd420cd">PointType</a> VM2D::PointsCopy::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00076">76</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a0e96ea6264454d70000a8df0bdc90f9c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>&gt; VM2D::PointsCopy::velo</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ниже - несортируемые списки: </p>
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00079">79</a></p>
+
+</div>
+</div>
+<a class="anchor" id="af4b32dfd01f1c0a71c2af6fa6e55d078"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&gt; VM2D::PointsCopy::vtx</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Список из самих объектов, приведенных к типу Vortex2D. </p>
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00067">67</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов классов находятся в файлах:<ul>
+<li>VM2D/Velocity2D/<a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a></li>
+<li>VM2D/Velocity2D/<a class="el" href="../../dc/d08/_points_copy2_d_8cpp_source.html">PointsCopy2D.cpp</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../d9/dd7/namespace_v_m2_d.html">VM2D</a></li><li class="navelem"><a class="el" href="../../da/db7/class_v_m2_d_1_1_points_copy.html">PointsCopy</a></li>
+    <li class="footer">Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
+  </ul>
+</div>
+</body>
+</html>

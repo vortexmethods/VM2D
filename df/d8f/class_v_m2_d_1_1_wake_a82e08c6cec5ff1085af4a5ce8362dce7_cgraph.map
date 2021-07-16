@@ -1,0 +1,23 @@
+<map id="VM2D::Wake::Collaps" name="VM2D::Wake::Collaps">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="688,10,884,37"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0c0e1a56d2270639e9dc27f700a49e53" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="699,416,873,442"/>
+<area shape="rect" id="node4" href="$df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа " alt="" coords="222,180,382,206"/>
+<area shape="rect" id="node6" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="691,61,881,88"/>
+<area shape="rect" id="node10" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ad172c980a018f61a40e19b7fc4861b2e" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="721,264,851,290"/>
+<area shape="rect" id="node12" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#a6308a955f7b9b99ce6135e42502451b1" title="Функция для доступа к циркуляции вихря " alt="" coords="719,314,853,341"/>
+<area shape="rect" id="node15" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="207,467,397,508"/>
+<area shape="rect" id="node16" href="$df/d8f/class_v_m2_d_1_1_wake.html#a895bd16e9cf8ab8cad79a07be1c3a97a" title="Проверка проникновения точки через границу профиля " alt="" coords="214,533,390,560"/>
+<area shape="rect" id="node20" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="213,584,391,610"/>
+<area shape="rect" id="node21" href="$df/dc0/group___parallel.html#ga75fa9eab08bd59596c5e083b049f6a2d" title="MPI&#45;синхронизация вихревого следа " alt="" coords="223,248,381,290"/>
+<area shape="rect" id="node5" href="$df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e" title="VM2D::Wake::GetPairsBS" alt="" coords="453,162,632,189"/>
+<area shape="rect" id="node13" href="$df/d8f/class_v_m2_d_1_1_wake.html#ae342f6b32e4f2a76e7793dfd9f740a92" title="VM2D::Wake::GetPairsBH" alt="" coords="453,213,632,240"/>
+<area shape="rect" id="node7" href="$dd/de1/class_v_mlib_1_1_parallel.html#a31daa8b6f5482131cda3a1ee5f45b670" title="Распределение задач по процессорам " alt="" coords="704,162,868,189"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="741,213,831,240"/>
+<area shape="rect" id="node11" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="745,112,827,138"/>
+<area shape="rect" id="node9" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="932,213,1107,240"/>
+<area shape="rect" id="node14" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a871e2fdd8ad0f1e8d221fcdd62c8b588" title="Построение дерева для точек типа type. " alt="" coords="695,365,877,392"/>
+<area shape="rect" id="node17" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a8e7340245cfc3ba2a3d0cd05d9ba7519" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля ..." alt="" coords="461,467,624,508"/>
+<area shape="rect" id="node18" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="457,532,629,574"/>
+<area shape="rect" id="node19" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="475,598,611,625"/>
+<area shape="rect" id="node22" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="445,264,640,290"/>
+</map>

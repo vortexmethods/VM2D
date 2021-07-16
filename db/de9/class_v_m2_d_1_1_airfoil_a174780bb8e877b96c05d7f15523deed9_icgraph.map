@@ -1,0 +1,5 @@
+<map id="VM2D::Airfoil::calcMeanEpsOverPanel" name="VM2D::Airfoil::calcMeanEpsOverPanel">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af184136bf9207d4f00b1e93a8df974b2" title="Деструктор " alt="" coords="274,5,423,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a42a48cb3fcf4d65437fd954fae7a03d7" title="Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных), а также в точках вычисления VP. " alt="" coords="240,56,457,83"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Основная функция выполнения одного шага по времени " alt="" coords="505,56,659,83"/>
+</map>

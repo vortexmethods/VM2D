@@ -1,0 +1,6 @@
+<map id="VM2D::MechanicsRigidGivenLaw::VeloOfAirfoilRcm" name="VM2D::MechanicsRigidGivenLaw::VeloOfAirfoilRcm">
+<area shape="rect" id="node2" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a24c694bf820524c2c0828f2c920328ab" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="248,5,443,47"/>
+<area shape="rect" id="node3" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a5424e2694887408f886168734f490a7a" title="Деструктор " alt="" coords="491,93,704,135"/>
+<area shape="rect" id="node4" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#aa7da88dbafbb00e5c10c141b59afae8a" title="Вычисление скоростей начал панелей " alt="" coords="248,123,443,164"/>
+<area shape="rect" id="node5" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a647915f7ce1e3199d06943efa4e9baa7" title="Перемещение профиля в соответствии с законом " alt="" coords="248,188,443,229"/>
+</map>

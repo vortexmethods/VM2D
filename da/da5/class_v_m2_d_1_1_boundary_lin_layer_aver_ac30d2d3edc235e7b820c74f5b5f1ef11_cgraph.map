@@ -1,0 +1,22 @@
+<map id="VM2D::BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets" name="VM2D::BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets">
+<area shape="rect" id="node2" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="564,54,755,81"/>
+<area shape="rect" id="node3" href="$dd/de1/class_v_mlib_1_1_parallel.html#a31daa8b6f5482131cda3a1ee5f45b670" title="Распределение задач по процессорам " alt="" coords="313,54,477,81"/>
+<area shape="rect" id="node4" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a0237b60f4de86654f72c64b5e49029e5" title="VM2D::Sheet::FreeSheetSynchronize" alt="" coords="275,105,516,132"/>
+<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html#ab52c2bfa931d8533aae15b6999d718ab" title="Установка всех компонент вектора в константу (по умолчанию — нуль) " alt="" coords="311,156,480,182"/>
+<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="309,207,481,248"/>
+<area shape="rect" id="node7" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="327,273,463,300"/>
+<area shape="rect" id="node8" href="$d6/dd4/class_v_mlib_1_1numvector.html#ae4b6d9a6d317f3ce4e0df9777652938e" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному " alt="" coords="319,324,472,350"/>
+<area shape="rect" id="node9" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами " alt="" coords="347,374,443,401"/>
+<area shape="rect" id="node13" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов " alt="" coords="341,425,450,452"/>
+<area shape="rect" id="node14" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764" title="Вычисление 2&#45;нормы (длины) вектора " alt="" coords="312,476,479,502"/>
+<area shape="rect" id="node15" href="$dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины . " alt="" coords="343,526,448,553"/>
+<area shape="rect" id="node16" href="$d6/dd4/class_v_mlib_1_1numvector.html#a1471ef55266b8e21d045c4f4e05912d9" title="Геометрический поворот двумерного вектора на 90 градусов " alt="" coords="310,577,481,604"/>
+<area shape="rect" id="node17" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="294,628,497,654"/>
+<area shape="rect" id="node18" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a9431e357980548a5fabd5ffffb917665" title="VM2D::Sheet::attachedVortex\lSheet" alt="" coords="297,679,494,720"/>
+<area shape="rect" id="node19" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a49b7345512b924471bbac608c7129043" title="VM2D::Sheet::attachedSource\lSheet" alt="" coords="295,744,495,786"/>
+<area shape="rect" id="node20" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="297,810,493,837"/>
+<area shape="rect" id="node21" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0c0e1a56d2270639e9dc27f700a49e53" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="308,861,483,888"/>
+<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="608,450,711,477"/>
+<area shape="rect" id="node11" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="803,450,893,477"/>
+<area shape="rect" id="node12" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="941,450,1116,477"/>
+</map>

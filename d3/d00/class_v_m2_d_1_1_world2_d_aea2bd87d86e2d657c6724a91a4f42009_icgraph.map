@@ -1,0 +1,6 @@
+<map id="VM2D::World2D::getNonConstCuda" name="VM2D::World2D::getNonConstCuda">
+<area shape="rect" id="node2" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ad489af66ebe4cb6e9e8326e312562b55" title="Вычисление скоростей в точках wakeVP. " alt="" coords="288,5,463,47"/>
+<area shape="rect" id="node4" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа " alt="" coords="296,71,455,98"/>
+<area shape="rect" id="node3" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="511,5,685,47"/>
+<area shape="rect" id="node5" href="$df/d8f/class_v_m2_d_1_1_wake.html#a8445ca23e13732c4b7aa312c4e2c219d" title="Деструктор " alt="" coords="523,71,673,98"/>
+</map>

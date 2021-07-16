@@ -1,0 +1,8 @@
+<map id="VM2D::Cell::CalcConvVeloByBiotSavartFromSheets" name="VM2D::Cell::CalcConvVeloByBiotSavartFromSheets">
+<area shape="rect" id="node2" href="$d6/dd4/class_v_mlib_1_1numvector.html#ab52c2bfa931d8533aae15b6999d718ab" title="Установка всех компонент вектора в константу (по умолчанию — нуль) " alt="" coords="251,5,420,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="236,56,435,83"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="247,107,424,133"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="290,157,381,184"/>
+<area shape="rect" id="node7" href="$dd/d9a/namespace_v_mlib.html#a42960d06cf1001551b93dd8aedeff100" title="Модифицирует массив квадратов расстояний до ближайших вихрей из wake. " alt="" coords="276,208,395,235"/>
+<area shape="rect" id="node6" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="483,157,657,184"/>
+</map>

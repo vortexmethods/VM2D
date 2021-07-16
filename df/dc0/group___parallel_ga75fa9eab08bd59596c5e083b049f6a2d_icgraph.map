@@ -1,0 +1,9 @@
+<map id="VM2D::WakeDataBase::WakeSynchronize" name="VM2D::WakeDataBase::WakeSynchronize">
+<area shape="rect" id="node2" href="$df/dc0/group___parallel.html#ga7aefd87785e7283ca55865c25ef37b4b" title="Проверка пересечения вихрями следа профиля при перемещении " alt="" coords="451,5,595,32"/>
+<area shape="rect" id="node4" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей " alt="" coords="227,56,381,83"/>
+<area shape="rect" id="node5" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа " alt="" coords="444,107,603,133"/>
+<area shape="rect" id="node6" href="$df/d8f/class_v_m2_d_1_1_wake.html#a4269347865d074b8446266868c333378" title="Зануление далеко улетевших вихрей " alt="" coords="215,157,393,184"/>
+<area shape="rect" id="node7" href="$df/d8f/class_v_m2_d_1_1_wake.html#a762072f1b77f99c4297364f3567da941" title="Исключение нулевых и мелких вихрей " alt="" coords="212,208,396,235"/>
+<area shape="rect" id="node8" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html#a2b080303e7ab69526c8a74c70f299fdf" title="VM2D::WakeDataBase\l::~WakeDataBase" alt="" coords="225,259,383,301"/>
+<area shape="rect" id="node3" href="$df/d8f/class_v_m2_d_1_1_wake.html#a8445ca23e13732c4b7aa312c4e2c219d" title="Деструктор " alt="" coords="651,107,801,133"/>
+</map>

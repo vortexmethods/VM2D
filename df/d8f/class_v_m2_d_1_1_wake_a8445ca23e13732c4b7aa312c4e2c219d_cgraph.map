@@ -1,0 +1,33 @@
+<map id="VM2D::Wake::~Wake" name="VM2D::Wake::~Wake">
+<area shape="rect" id="node2" href="$df/dc0/group___parallel.html#ga7aefd87785e7283ca55865c25ef37b4b" title="Проверка пересечения вихрями следа профиля при перемещении " alt="" coords="457,99,601,126"/>
+<area shape="rect" id="node8" href="$df/d8f/class_v_m2_d_1_1_wake.html#a21ac26958c65e8189c740bcb1b8b7d10" title="Проверка проникновения точки через границу профиля " alt="" coords="696,178,915,220"/>
+<area shape="rect" id="node13" href="$df/d8f/class_v_m2_d_1_1_wake.html#a895bd16e9cf8ab8cad79a07be1c3a97a" title="Проверка проникновения точки через границу профиля " alt="" coords="717,247,893,274"/>
+<area shape="rect" id="node14" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа " alt="" coords="204,523,363,550"/>
+<area shape="rect" id="node21" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей " alt="" coords="453,707,606,734"/>
+<area shape="rect" id="node24" href="$df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа " alt="" coords="725,859,885,886"/>
+<area shape="rect" id="node25" href="$df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e" title="VM2D::Wake::GetPairsBS" alt="" coords="971,808,1149,835"/>
+<area shape="rect" id="node29" href="$df/d8f/class_v_m2_d_1_1_wake.html#ae342f6b32e4f2a76e7793dfd9f740a92" title="VM2D::Wake::GetPairsBH" alt="" coords="971,859,1149,886"/>
+<area shape="rect" id="node31" href="$df/d8f/class_v_m2_d_1_1_wake.html#a4269347865d074b8446266868c333378" title="Зануление далеко улетевших вихрей " alt="" coords="441,758,618,784"/>
+<area shape="rect" id="node32" href="$df/d8f/class_v_m2_d_1_1_wake.html#a762072f1b77f99c4297364f3567da941" title="Исключение нулевых и мелких вихрей " alt="" coords="437,251,621,278"/>
+<area shape="rect" id="node3" href="$df/dc0/group___parallel.html#ga75fa9eab08bd59596c5e083b049f6a2d" title="MPI&#45;синхронизация вихревого следа " alt="" coords="726,321,885,362"/>
+<area shape="rect" id="node5" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="1208,555,1399,582"/>
+<area shape="rect" id="node6" href="$dd/de1/class_v_mlib_1_1_parallel.html#a31daa8b6f5482131cda3a1ee5f45b670" title="Распределение задач по процессорам " alt="" coords="1221,606,1385,632"/>
+<area shape="rect" id="node7" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="974,178,1146,220"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="963,411,1157,438"/>
+<area shape="rect" id="node9" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a8e7340245cfc3ba2a3d0cd05d9ba7519" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля ..." alt="" coords="979,244,1141,285"/>
+<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="1258,656,1349,683"/>
+<area shape="rect" id="node11" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="1449,316,1624,343"/>
+<area shape="rect" id="node12" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="992,310,1128,336"/>
+<area shape="rect" id="node15" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="710,438,901,480"/>
+<area shape="rect" id="node16" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="717,504,894,531"/>
+<area shape="rect" id="node17" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a36ee1e0ac82725c33699d5fba6edcf97" title="Возврат неконстантной ссылки на вихревой след " alt="" coords="411,504,648,531"/>
+<area shape="rect" id="node18" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aea2bd87d86e2d657c6724a91a4f42009" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="412,555,647,582"/>
+<area shape="rect" id="node19" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a5279e671bedc8f19f2ec9c7d62581508" title="Установка правой границы самого правого профиля (для организации увеличения радиуса коллапса) ..." alt="" coords="429,606,629,632"/>
+<area shape="rect" id="node20" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a96f89cab550d0283c9991cd1867ffc2b" title="Возврат константной ссылки на вихревой след " alt="" coords="440,352,619,379"/>
+<area shape="rect" id="node22" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="1205,960,1401,987"/>
+<area shape="rect" id="node23" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0c0e1a56d2270639e9dc27f700a49e53" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="1216,707,1391,734"/>
+<area shape="rect" id="node26" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ad172c980a018f61a40e19b7fc4861b2e" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="1238,758,1369,784"/>
+<area shape="rect" id="node28" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#a6308a955f7b9b99ce6135e42502451b1" title="Функция для доступа к циркуляции вихря " alt="" coords="1237,808,1370,835"/>
+<area shape="rect" id="node27" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="1263,859,1344,886"/>
+<area shape="rect" id="node30" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a871e2fdd8ad0f1e8d221fcdd62c8b588" title="Построение дерева для точек типа type. " alt="" coords="1213,910,1394,936"/>
+</map>

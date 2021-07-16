@@ -1,0 +1,5 @@
+<map id="VM2D::WakeDataBase::ReadFromFile" name="VM2D::WakeDataBase::ReadFromFile">
+<area shape="rect" id="node2" href="$dd/d9a/namespace_v_mlib.html#ae3a5ec63fcc3cbe01aff37e15be7c559" title="Проверка существования файла " alt="" coords="229,5,365,32"/>
+<area shape="rect" id="node3" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="212,56,381,83"/>
+<area shape="rect" id="node4" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a9fae0e4418f1053a6633ca35408aff4b" title="Считывание вектора из двумерных точек из базы данных " alt="" coords="212,107,381,133"/>
+</map>

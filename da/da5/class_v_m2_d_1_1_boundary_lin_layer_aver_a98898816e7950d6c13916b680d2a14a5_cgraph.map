@@ -1,0 +1,27 @@
+<map id="VM2D::BoundaryLinLayerAver::GetInfluenceFromSourcesToCurvPanel" name="VM2D::BoundaryLinLayerAver::GetInfluenceFromSourcesToCurvPanel">
+<area shape="rect" id="node2" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="320,442,539,498"/>
+<area shape="rect" id="node16" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="318,290,541,346"/>
+<area shape="rect" id="node19" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ad5c57f263b9173f70bbb3700eecb21c5" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части " alt="" coords="312,788,547,829"/>
+<area shape="rect" id="node26" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a3c75b4043218c005c8abb8608eed8bb4" title="Вычисление влияния набегающего потока на криволинейную панель для правой части " alt="" coords="312,853,547,894"/>
+<area shape="rect" id="node3" href="$d6/dd4/class_v_mlib_1_1numvector.html#ab52c2bfa931d8533aae15b6999d718ab" title="Установка всех компонент вектора в константу (по умолчанию — нуль) " alt="" coords="611,431,781,458"/>
+<area shape="rect" id="node4" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ad172c980a018f61a40e19b7fc4861b2e" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="631,482,761,508"/>
+<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="628,532,764,559"/>
+<area shape="rect" id="node6" href="$d6/dd4/class_v_mlib_1_1numvector.html#ae4b6d9a6d317f3ce4e0df9777652938e" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному " alt="" coords="619,178,773,204"/>
+<area shape="rect" id="node7" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764" title="Вычисление 2&#45;нормы (длины) вектора " alt="" coords="613,228,779,255"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины . " alt="" coords="643,279,749,306"/>
+<area shape="rect" id="node11" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="1208,203,1383,230"/>
+<area shape="rect" id="node12" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов " alt="" coords="641,380,751,407"/>
+<area shape="rect" id="node13" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="595,634,797,660"/>
+<area shape="rect" id="node14" href="$d6/dd4/class_v_mlib_1_1numvector.html#a1471ef55266b8e21d045c4f4e05912d9" title="Геометрический поворот двумерного вектора на 90 градусов " alt="" coords="611,330,781,356"/>
+<area shape="rect" id="node15" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a9431e357980548a5fabd5ffffb917665" title="VM2D::Sheet::attachedVortex\lSheet" alt="" coords="597,685,795,726"/>
+<area shape="rect" id="node9" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="882,203,985,230"/>
+<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="1069,203,1160,230"/>
+<area shape="rect" id="node17" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами " alt="" coords="648,127,744,154"/>
+<area shape="rect" id="node18" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a49b7345512b924471bbac608c7129043" title="VM2D::Sheet::attachedSource\lSheet" alt="" coords="596,61,796,102"/>
+<area shape="rect" id="node20" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="610,904,782,945"/>
+<area shape="rect" id="node21" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="601,970,791,996"/>
+<area shape="rect" id="node22" href="$dd/de1/class_v_mlib_1_1_parallel.html#a31daa8b6f5482131cda3a1ee5f45b670" title="Распределение задач по процессорам " alt="" coords="614,751,778,778"/>
+<area shape="rect" id="node23" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="598,802,794,828"/>
+<area shape="rect" id="node24" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="596,852,796,879"/>
+<area shape="rect" id="node25" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="845,845,1021,886"/>
+</map>

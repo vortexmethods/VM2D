@@ -1,0 +1,11 @@
+<map id="VM2D::Cell::CalcDomainRadiusForVirtualWake" name="VM2D::Cell::CalcDomainRadiusForVirtualWake">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="274,5,473,32"/>
+<area shape="rect" id="node3" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="328,56,419,83"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a42960d06cf1001551b93dd8aedeff100" title="Модифицирует массив квадратов расстояний до ближайших вихрей из wake. " alt="" coords="569,112,688,139"/>
+<area shape="rect" id="node6" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="333,224,414,251"/>
+<area shape="rect" id="node7" href="$d6/daf/class_v_m2_d_1_1_cell.html#a41f2b336da76c4ee4151ea1a51637e99" title="Расчет коэффициентов a,b,c,d для ячейки нижнего уровня и определение ячеек ближней зоны ..." alt="" coords="264,158,483,199"/>
+<area shape="rect" id="node10" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#adca24eb07996f32373f768a1aba9ffb5" title="Возврат неконстантной ссылки на объект для вычисления скоростей " alt="" coords="272,275,475,317"/>
+<area shape="rect" id="node4" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="541,57,716,84"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c" title="Вычисление расстояния между двумя точками " alt="" coords="587,164,671,191"/>
+<area shape="rect" id="node9" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="531,215,727,241"/>
+</map>

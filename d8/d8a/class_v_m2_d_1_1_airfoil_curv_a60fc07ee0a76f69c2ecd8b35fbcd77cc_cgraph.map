@@ -1,0 +1,10 @@
+<map id="VM2D::AirfoilCurv::ReadFromFile" name="VM2D::AirfoilCurv::ReadFromFile">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="189,5,385,32"/>
+<area shape="rect" id="node3" href="$dd/d9a/namespace_v_mlib.html#ae3a5ec63fcc3cbe01aff37e15be7c559" title="Проверка существования файла " alt="" coords="219,56,355,83"/>
+<area shape="rect" id="node4" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="203,107,372,133"/>
+<area shape="rect" id="node5" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#ab0d3ba52bbd9bfd75e84b9b2731599fe" title="Перемещение профиля " alt="" coords="203,157,371,184"/>
+<area shape="rect" id="node7" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a06a85ab1d0e534dfbcb91b13ce9581d2" title="Масштабирование профиля " alt="" coords="219,209,355,250"/>
+<area shape="rect" id="node8" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#ab60d1fd316e98a1dad32ac93749a5ebf" title="Поворот профиля " alt="" coords="219,274,355,315"/>
+<area shape="rect" id="node6" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a8e4efe158d5146f3887af41ec5476038" title="Вычисляет габаритный прямоугольник профиля " alt="" coords="433,209,569,250"/>
+<area shape="rect" id="node9" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a97f4a2a1bae867f3eb58e11c3ed076e8" title="Вычисление нормалей " alt="" coords="433,274,569,315"/>
+</map>

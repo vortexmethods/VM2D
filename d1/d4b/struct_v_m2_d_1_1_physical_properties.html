@@ -1,0 +1,613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>VM2D: Структура VM2D::PhysicalProperties</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/NativeMML"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="../../LOGO.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VM2D
+   &#160;<span id="projectnumber">1.10</span>
+   </div>
+   <div id="projectbrief">Вихревые методы для решения двумерных задач</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="../../index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="../../pages.html"><span>Описания</span></a></li>
+      <li><a href="../../modules.html"><span>Группы</span></a></li>
+      <li><a href="../../namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../files.html"><span>Файлы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="../../search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="../../search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="../../inherits.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="../../functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('d1/d4b/struct_v_m2_d_1_1_physical_properties.html','../../');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-attribs">Открытые атрибуты</a> &#124;
+<a href="#pri-attribs">Закрытые данные</a> &#124;
+<a href="../../dc/d86/struct_v_m2_d_1_1_physical_properties-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Структура VM2D::PhysicalProperties</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Структура, задающая физические свойства задачи  
+ <a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#details">Подробнее...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a>&gt;</code></p>
+<div class="dynheader">
+Граф связей класса VM2D::PhysicalProperties:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/d8b/struct_v_m2_d_1_1_physical_properties__coll__graph.png" border="0" usemap="#_v_m2_d_1_1_physical_properties_coll__map" alt="Collaboration graph"/></div>
+<map name="_v_m2_d_1_1_physical_properties_coll__map" id="_v_m2_d_1_1_physical_properties_coll__map">
+<area shape="rect" id="node2" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени " alt="" coords="5,247,177,288"/>
+<area shape="rect" id="node3" href="../../da/dd5/class_v_mlib_1_1_point2_d.html" title="Класс, опеделяющий двумерный вектор " alt="" coords="201,254,312,281"/>
+<area shape="rect" id="node4" href="../../d6/dd4/class_v_mlib_1_1numvector.html" title="VMlib::numvector\&lt; double, 2 \&gt;" alt="" coords="156,171,357,197"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="179,95,334,121"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">см. легенду</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:a94ba48734ca04561c6aa3a45b6e01a2b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b">accelCft</a> () const </td></tr>
+<tr class="memdesc:a94ba48734ca04561c6aa3a45b6e01a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция-множитель, позволяющая моделировать разгон  <a href="#a94ba48734ca04561c6aa3a45b6e01a2b">Подробнее...</a><br /></td></tr>
+<tr class="separator:a94ba48734ca04561c6aa3a45b6e01a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77d30d43cb85aeb975fbcf49a8bf72cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb">V0</a> () const </td></tr>
+<tr class="memdesc:a77d30d43cb85aeb975fbcf49a8bf72cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция скорости набегающего потока с учетом разгона  <a href="#a77d30d43cb85aeb975fbcf49a8bf72cb">Подробнее...</a><br /></td></tr>
+<tr class="separator:a77d30d43cb85aeb975fbcf49a8bf72cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07acdb787188d8f83ae8587cc0b39df0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a07acdb787188d8f83ae8587cc0b39df0">getCurrTime</a> () const </td></tr>
+<tr class="memdesc:a07acdb787188d8f83ae8587cc0b39df0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает текуще время  <a href="#a07acdb787188d8f83ae8587cc0b39df0">Подробнее...</a><br /></td></tr>
+<tr class="separator:a07acdb787188d8f83ae8587cc0b39df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeac3c4a247f466bfc0716e79402beab3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aeac3c4a247f466bfc0716e79402beab3">setCurrTime</a> (double t_) const </td></tr>
+<tr class="memdesc:aeac3c4a247f466bfc0716e79402beab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Установка текущего времени  <a href="#aeac3c4a247f466bfc0716e79402beab3">Подробнее...</a><br /></td></tr>
+<tr class="separator:aeac3c4a247f466bfc0716e79402beab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa26243123bdee03525b782f07ea673df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aa26243123bdee03525b782f07ea673df">addCurrTime</a> (double dt_) const </td></tr>
+<tr class="memdesc:aa26243123bdee03525b782f07ea673df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавление шага к текущему времени  <a href="#aa26243123bdee03525b782f07ea673df">Подробнее...</a><br /></td></tr>
+<tr class="separator:aa26243123bdee03525b782f07ea673df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8f05bea78d4dcd53ba59a1561b7898f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#ad8f05bea78d4dcd53ba59a1561b7898f">PhysicalProperties</a> (const <a class="el" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html">VMlib::TimeDiscretizationProperties</a> &amp;timeProp_)</td></tr>
+<tr class="separator:ad8f05bea78d4dcd53ba59a1561b7898f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Открытые атрибуты</h2></td></tr>
+<tr class="memitem:adb08275d443935b41ac4f5eb2c1eb94b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#adb08275d443935b41ac4f5eb2c1eb94b">rho</a></td></tr>
+<tr class="memdesc:adb08275d443935b41ac4f5eb2c1eb94b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Плотность потока  <a href="#adb08275d443935b41ac4f5eb2c1eb94b">Подробнее...</a><br /></td></tr>
+<tr class="separator:adb08275d443935b41ac4f5eb2c1eb94b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefeb7bc7020ff248f0093cde76a5bc67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aefeb7bc7020ff248f0093cde76a5bc67">vInf</a></td></tr>
+<tr class="memdesc:aefeb7bc7020ff248f0093cde76a5bc67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скоростью набегающего потока  <a href="#aefeb7bc7020ff248f0093cde76a5bc67">Подробнее...</a><br /></td></tr>
+<tr class="separator:aefeb7bc7020ff248f0093cde76a5bc67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70dedce17f5321e1e8c64cd7ada97494"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a70dedce17f5321e1e8c64cd7ada97494">vRef</a></td></tr>
+<tr class="memdesc:a70dedce17f5321e1e8c64cd7ada97494"><td class="mdescLeft">&#160;</td><td class="mdescRight">Референсная скорость  <a href="#a70dedce17f5321e1e8c64cd7ada97494">Подробнее...</a><br /></td></tr>
+<tr class="separator:a70dedce17f5321e1e8c64cd7ada97494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09aef6a9db40dea083484d0d5e24c71e"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a09aef6a9db40dea083484d0d5e24c71e">typeAccel</a></td></tr>
+<tr class="memdesc:a09aef6a9db40dea083484d0d5e24c71e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Способ разгона потока  <a href="#a09aef6a9db40dea083484d0d5e24c71e">Подробнее...</a><br /></td></tr>
+<tr class="separator:a09aef6a9db40dea083484d0d5e24c71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cd506205f7fbfe5bac0840fb5754988"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8cd506205f7fbfe5bac0840fb5754988">timeAccel</a></td></tr>
+<tr class="memdesc:a8cd506205f7fbfe5bac0840fb5754988"><td class="mdescLeft">&#160;</td><td class="mdescRight">Время разгона потока  <a href="#a8cd506205f7fbfe5bac0840fb5754988">Подробнее...</a><br /></td></tr>
+<tr class="separator:a8cd506205f7fbfe5bac0840fb5754988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8307ab012072b009132ca661f8ad50d5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8307ab012072b009132ca661f8ad50d5">nu</a></td></tr>
+<tr class="memdesc:a8307ab012072b009132ca661f8ad50d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Коэффициент кинематической вязкости среды  <a href="#a8307ab012072b009132ca661f8ad50d5">Подробнее...</a><br /></td></tr>
+<tr class="separator:a8307ab012072b009132ca661f8ad50d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Закрытые данные</h2></td></tr>
+<tr class="memitem:a49e74e15dcf3313eac9e6f53f33b3443"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html">VMlib::TimeDiscretizationProperties</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">timeProp</a></td></tr>
+<tr class="separator:a49e74e15dcf3313eac9e6f53f33b3443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Структура, задающая физические свойства задачи </p>
+<dl class="section author"><dt>Автор</dt><dd>Марчевский Илья Константинович </dd>
+<dd>
+Сокол Ксения Сергеевна </dd>
+<dd>
+Рятина Евгения Павловна </dd></dl>
+<dl class="section version"><dt>Версия</dt><dd>1.10 </dd></dl>
+<dl class="section date"><dt>Дата</dt><dd>17 мая 2021 г. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00066">66</a></p>
+</div><h2 class="groupheader">Конструктор(ы)</h2>
+<a class="anchor" id="ad8f05bea78d4dcd53ba59a1561b7898f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">VM2D::PhysicalProperties::PhysicalProperties </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html">VMlib::TimeDiscretizationProperties</a> &amp;&#160;</td>
+          <td class="paramname"><em>timeProp_</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00117">117</a></p>
+<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            :<a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">timeProp</a>(timeProp_)</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        {};</div><div class="ttc" id="struct_v_m2_d_1_1_physical_properties_html_a49e74e15dcf3313eac9e6f53f33b3443"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">VM2D::PhysicalProperties::timeProp</a></div><div class="ttdeci">const VMlib::TimeDiscretizationProperties &amp; timeProp</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00069">Passport2D.h:69</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a class="anchor" id="a94ba48734ca04561c6aa3a45b6e01a2b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double PhysicalProperties::accelCft </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Функция-множитель, позволяющая моделировать разгон </p>
+
+<p>См. определение в файле <a class="el" href="../../db/d9f/_passport2_d_8cpp_source.html">Passport2D.cpp</a> строка <a class="el" href="../../db/d9f/_passport2_d_8cpp_source.html#l00050">50</a></p>
+<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">switch</span> (<a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a09aef6a9db40dea083484d0d5e24c71e">typeAccel</a>.second)</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    {</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">case</span> 0: <span class="comment">//импульсный старт</span></div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">return</span> 1.0;</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">case</span> 1: <span class="comment">//разгон потока по линейному закону</span></div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">timeProp</a>.<a class="code" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">currTime</a> &lt; <a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8cd506205f7fbfe5bac0840fb5754988">timeAccel</a>) ? (<a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">timeProp</a>.<a class="code" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">currTime</a> / <a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8cd506205f7fbfe5bac0840fb5754988">timeAccel</a>) : 1.0;</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">case</span> 2: <span class="comment">//разгон потока по косинусоиде</span></div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">timeProp</a>.<a class="code" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">currTime</a> &lt; <a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8cd506205f7fbfe5bac0840fb5754988">timeAccel</a>) ? 0.5 * (1.0 - cos(<a class="code" href="../../d5/d64/defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a> * <a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">timeProp</a>.<a class="code" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">currTime</a> / <a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8cd506205f7fbfe5bac0840fb5754988">timeAccel</a>)) : 1.0;</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">return</span> 1.0;</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}<span class="comment">//accelCft()</span></div><div class="ttc" id="defs_8h_html_a952eac791b596a61bba0a133a3bb439f"><div class="ttname"><a href="../../d5/d64/defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a></div><div class="ttdeci">const double PI</div><div class="ttdoc">Число . </div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d64/defs_8h_source.html#l00072">defs.h:72</a></div></div>
+<div class="ttc" id="struct_v_m2_d_1_1_physical_properties_html_a8cd506205f7fbfe5bac0840fb5754988"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8cd506205f7fbfe5bac0840fb5754988">VM2D::PhysicalProperties::timeAccel</a></div><div class="ttdeci">double timeAccel</div><div class="ttdoc">Время разгона потока </div><div class="ttdef"><b>Definition:</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00085">Passport2D.h:85</a></div></div>
+<div class="ttc" id="struct_v_mlib_1_1_time_discretization_properties_html_a87b3eeac1ee42e4a1a059c6d715d34f1"><div class="ttname"><a href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">VMlib::TimeDiscretizationProperties::currTime</a></div><div class="ttdeci">double currTime</div><div class="ttdoc">Текущее время </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d1c/_passport_gen_8h_source.html#l00056">PassportGen.h:56</a></div></div>
+<div class="ttc" id="struct_v_m2_d_1_1_physical_properties_html_a49e74e15dcf3313eac9e6f53f33b3443"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">VM2D::PhysicalProperties::timeProp</a></div><div class="ttdeci">const VMlib::TimeDiscretizationProperties &amp; timeProp</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00069">Passport2D.h:69</a></div></div>
+<div class="ttc" id="struct_v_m2_d_1_1_physical_properties_html_a09aef6a9db40dea083484d0d5e24c71e"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a09aef6a9db40dea083484d0d5e24c71e">VM2D::PhysicalProperties::typeAccel</a></div><div class="ttdeci">std::pair&lt; std::string, int &gt; typeAccel</div><div class="ttdoc">Способ разгона потока </div><div class="ttdef"><b>Definition:</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00082">Passport2D.h:82</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d1/d4b/struct_v_m2_d_1_1_physical_properties_a94ba48734ca04561c6aa3a45b6e01a2b_icgraph.png" border="0" usemap="#d1/d4b/struct_v_m2_d_1_1_physical_properties_a94ba48734ca04561c6aa3a45b6e01a2b_icgraph" alt=""/></div>
+<map name="d1/d4b/struct_v_m2_d_1_1_physical_properties_a94ba48734ca04561c6aa3a45b6e01a2b_icgraph" id="d1/d4b/struct_v_m2_d_1_1_physical_properties_a94ba48734ca04561c6aa3a45b6e01a2b_icgraph">
+<area shape="rect" id="node2" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="261,300,461,327"/>
+<area shape="rect" id="node20" href="../../df/dc0/group___parallel.html#ga7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="229,567,493,609"/>
+<area shape="rect" id="node21" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a5ff24012df7e7caa5bd13cd6552042ab" title="Набор матрицы, правой части и решение СЛАУ " alt="" coords="257,643,466,685"/>
+<area shape="rect" id="node3" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a5f495683656ee42c315403611e50946a" title="Вычисление конвективной скорости в точках расположения виртуальных вихрей " alt="" coords="554,112,766,168"/>
+<area shape="rect" id="node5" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a99112c1a4fd05113c87391f29d51f349" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части " alt="" coords="560,321,760,377"/>
+<area shape="rect" id="node7" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ad2c7e77134fdb70a7ee48427e17ebd77" title="Вычисление влияния набегающего потока на криволинейную панель для правой части " alt="" coords="560,401,760,457"/>
+<area shape="rect" id="node8" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a4da252873afe978f239c2e3844cb3806" title="Вычисление конвективной скорости в точках расположения виртуальных вихрей " alt="" coords="541,481,779,522"/>
+<area shape="rect" id="node10" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ad5c57f263b9173f70bbb3700eecb21c5" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части " alt="" coords="543,257,777,298"/>
+<area shape="rect" id="node12" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a3c75b4043218c005c8abb8608eed8bb4" title="Вычисление влияния набегающего потока на криволинейную панель для правой части " alt="" coords="543,191,777,233"/>
+<area shape="rect" id="node13" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления " alt="" coords="549,7,771,33"/>
+<area shape="rect" id="node15" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ad489af66ebe4cb6e9e8326e312562b55" title="Вычисление скоростей в точках wakeVP. " alt="" coords="573,546,747,587"/>
+<area shape="rect" id="node17" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a1e93757ef8a0bf80601cbb8022138af6" title="Вычисляем новые положения вихрей (в пелене и виртуальных) " alt="" coords="555,61,765,88"/>
+<area shape="rect" id="node4" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="849,122,1063,163"/>
+<area shape="rect" id="node6" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="851,341,1061,397"/>
+<area shape="rect" id="node9" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="857,481,1055,522"/>
+<area shape="rect" id="node11" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="827,237,1085,278"/>
+<area shape="rect" id="node14" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="847,5,1065,32"/>
+<area shape="rect" id="node16" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="869,571,1043,613"/>
+<area shape="rect" id="node18" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a082e883ac7900fd8b9880e78bf0b3961" title="Перемещение вихрей и профилей на шаге " alt="" coords="845,57,1067,98"/>
+<area shape="rect" id="node19" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Основная функция выполнения одного шага по времени " alt="" coords="1133,364,1287,391"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="aa26243123bdee03525b782f07ea673df"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VM2D::PhysicalProperties::addCurrTime </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt_</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Добавление шага к текущему времени </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00112">112</a></p>
+<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        {</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">timeProp</a>.<a class="code" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">currTime</a> += dt_;</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div><div class="ttc" id="struct_v_mlib_1_1_time_discretization_properties_html_a87b3eeac1ee42e4a1a059c6d715d34f1"><div class="ttname"><a href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">VMlib::TimeDiscretizationProperties::currTime</a></div><div class="ttdeci">double currTime</div><div class="ttdoc">Текущее время </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d1c/_passport_gen_8h_source.html#l00056">PassportGen.h:56</a></div></div>
+<div class="ttc" id="struct_v_m2_d_1_1_physical_properties_html_a49e74e15dcf3313eac9e6f53f33b3443"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">VM2D::PhysicalProperties::timeProp</a></div><div class="ttdeci">const VMlib::TimeDiscretizationProperties &amp; timeProp</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00069">Passport2D.h:69</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d1/d4b/struct_v_m2_d_1_1_physical_properties_aa26243123bdee03525b782f07ea673df_icgraph.png" border="0" usemap="#d1/d4b/struct_v_m2_d_1_1_physical_properties_aa26243123bdee03525b782f07ea673df_icgraph" alt=""/></div>
+<map name="d1/d4b/struct_v_m2_d_1_1_physical_properties_aa26243123bdee03525b782f07ea673df_icgraph" id="d1/d4b/struct_v_m2_d_1_1_physical_properties_aa26243123bdee03525b782f07ea673df_icgraph">
+<area shape="rect" id="node2" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Основная функция выполнения одного шага по времени " alt="" coords="229,13,383,39"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a07acdb787188d8f83ae8587cc0b39df0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double VM2D::PhysicalProperties::getCurrTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Возвращает текуще время </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00100">100</a></p>
+<div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">timeProp</a>.<a class="code" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">currTime</a>;</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div><div class="ttc" id="struct_v_mlib_1_1_time_discretization_properties_html_a87b3eeac1ee42e4a1a059c6d715d34f1"><div class="ttname"><a href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">VMlib::TimeDiscretizationProperties::currTime</a></div><div class="ttdeci">double currTime</div><div class="ttdoc">Текущее время </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d1c/_passport_gen_8h_source.html#l00056">PassportGen.h:56</a></div></div>
+<div class="ttc" id="struct_v_m2_d_1_1_physical_properties_html_a49e74e15dcf3313eac9e6f53f33b3443"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">VM2D::PhysicalProperties::timeProp</a></div><div class="ttdeci">const VMlib::TimeDiscretizationProperties &amp; timeProp</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00069">Passport2D.h:69</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d1/d4b/struct_v_m2_d_1_1_physical_properties_a07acdb787188d8f83ae8587cc0b39df0_icgraph.png" border="0" usemap="#d1/d4b/struct_v_m2_d_1_1_physical_properties_a07acdb787188d8f83ae8587cc0b39df0_icgraph" alt=""/></div>
+<map name="d1/d4b/struct_v_m2_d_1_1_physical_properties_a07acdb787188d8f83ae8587cc0b39df0_icgraph" id="d1/d4b/struct_v_m2_d_1_1_physical_properties_a07acdb787188d8f83ae8587cc0b39df0_icgraph">
+<area shape="rect" id="node2" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#a2131c97c4107890c515b240d96d4ae45" title="Сохранение в файл вычисленных скоростей и давлений " alt="" coords="233,5,424,32"/>
+<area shape="rect" id="node4" href="../../d7/dc9/class_v_m2_d_1_1_mechanics.html#a4bfd3c2c190d324cfde4e4e95e863f5f" title="Сохранение строки со статистикой в файл нагрузок " alt="" coords="233,57,424,98"/>
+<area shape="rect" id="node5" href="../../d7/dc9/class_v_m2_d_1_1_mechanics.html#a3a4267a1d202ce967d253509258940d4" title="Сохранение строки со статистикой в файл нагрузок " alt="" coords="233,122,424,163"/>
+<area shape="rect" id="node6" href="../../d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a647915f7ce1e3199d06943efa4e9baa7" title="Перемещение профиля в соответствии с законом " alt="" coords="231,187,426,229"/>
+<area shape="rect" id="node8" href="../../d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a0f04a54700ffd113274d1ebc8f8be895" title="Перемещение профиля в соответствии с законом " alt="" coords="229,253,428,294"/>
+<area shape="rect" id="node10" href="../../d8/da8/class_v_m2_d_1_1_times.html#a941dbe1bc8ff09712abc093399b98cda" title="Сохранение строки со статистикой в файл временной статистики " alt="" coords="235,318,423,359"/>
+<area shape="rect" id="node11" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Основная функция выполнения одного шага по времени " alt="" coords="509,355,662,381"/>
+<area shape="rect" id="node3" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="476,5,695,32"/>
+<area shape="rect" id="node7" href="../../d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a5424e2694887408f886168734f490a7a" title="Деструктор " alt="" coords="479,187,692,229"/>
+<area shape="rect" id="node9" href="../../d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a7b7a0d2367a91741daae89f90751db92" title="Деструктор " alt="" coords="476,253,695,294"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="aeac3c4a247f466bfc0716e79402beab3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VM2D::PhysicalProperties::setCurrTime </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t_</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Установка текущего времени </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00106">106</a></p>
+<div class="fragment"><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        {</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">timeProp</a>.<a class="code" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">currTime</a> = t_;</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div><div class="ttc" id="struct_v_mlib_1_1_time_discretization_properties_html_a87b3eeac1ee42e4a1a059c6d715d34f1"><div class="ttname"><a href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a87b3eeac1ee42e4a1a059c6d715d34f1">VMlib::TimeDiscretizationProperties::currTime</a></div><div class="ttdeci">double currTime</div><div class="ttdoc">Текущее время </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d1c/_passport_gen_8h_source.html#l00056">PassportGen.h:56</a></div></div>
+<div class="ttc" id="struct_v_m2_d_1_1_physical_properties_html_a49e74e15dcf3313eac9e6f53f33b3443"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a49e74e15dcf3313eac9e6f53f33b3443">VM2D::PhysicalProperties::timeProp</a></div><div class="ttdeci">const VMlib::TimeDiscretizationProperties &amp; timeProp</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00069">Passport2D.h:69</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d1/d4b/struct_v_m2_d_1_1_physical_properties_aeac3c4a247f466bfc0716e79402beab3_icgraph.png" border="0" usemap="#d1/d4b/struct_v_m2_d_1_1_physical_properties_aeac3c4a247f466bfc0716e79402beab3_icgraph" alt=""/></div>
+<map name="d1/d4b/struct_v_m2_d_1_1_physical_properties_aeac3c4a247f466bfc0716e79402beab3_icgraph" id="d1/d4b/struct_v_m2_d_1_1_physical_properties_aeac3c4a247f466bfc0716e79402beab3_icgraph">
+<area shape="rect" id="node2" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#adfc0f4bb5ad1c89cea413d0c7cfc9f58" title="Конструктор " alt="" coords="229,13,407,39"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a77d30d43cb85aeb975fbcf49a8bf72cb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> VM2D::PhysicalProperties::V0 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Функция скорости набегающего потока с учетом разгона </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00091">91</a></p>
+<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a><span class="keyword">&gt;</span>(<a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b">accelCft</a>()*<a class="code" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aefeb7bc7020ff248f0093cde76a5bc67">vInf</a>);</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        };</div><div class="ttc" id="struct_v_m2_d_1_1_physical_properties_html_a94ba48734ca04561c6aa3a45b6e01a2b"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b">VM2D::PhysicalProperties::accelCft</a></div><div class="ttdeci">double accelCft() const </div><div class="ttdoc">Функция-множитель, позволяющая моделировать разгон </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d9f/_passport2_d_8cpp_source.html#l00050">Passport2D.cpp:50</a></div></div>
+<div class="ttc" id="struct_v_m2_d_1_1_physical_properties_html_aefeb7bc7020ff248f0093cde76a5bc67"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aefeb7bc7020ff248f0093cde76a5bc67">VM2D::PhysicalProperties::vInf</a></div><div class="ttdeci">Point2D vInf</div><div class="ttdoc">Скоростью набегающего потока </div><div class="ttdef"><b>Definition:</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00076">Passport2D.h:76</a></div></div>
+<div class="ttc" id="class_v_mlib_1_1_point2_d_html"><div class="ttname"><a href="../../da/dd5/class_v_mlib_1_1_point2_d.html">VMlib::Point2D</a></div><div class="ttdoc">Класс, опеделяющий двумерный вектор </div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d27/_point2_d_8h_source.html#l00060">Point2D.h:60</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d1/d4b/struct_v_m2_d_1_1_physical_properties_a77d30d43cb85aeb975fbcf49a8bf72cb_cgraph.png" border="0" usemap="#d1/d4b/struct_v_m2_d_1_1_physical_properties_a77d30d43cb85aeb975fbcf49a8bf72cb_cgraph" alt=""/></div>
+<map name="d1/d4b/struct_v_m2_d_1_1_physical_properties_a77d30d43cb85aeb975fbcf49a8bf72cb_cgraph" id="d1/d4b/struct_v_m2_d_1_1_physical_properties_a77d30d43cb85aeb975fbcf49a8bf72cb_cgraph">
+<area shape="rect" id="node2" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="253,5,429,47"/>
+</map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d1/d4b/struct_v_m2_d_1_1_physical_properties_a77d30d43cb85aeb975fbcf49a8bf72cb_icgraph.png" border="0" usemap="#d1/d4b/struct_v_m2_d_1_1_physical_properties_a77d30d43cb85aeb975fbcf49a8bf72cb_icgraph" alt=""/></div>
+<map name="d1/d4b/struct_v_m2_d_1_1_physical_properties_a77d30d43cb85aeb975fbcf49a8bf72cb_icgraph" id="d1/d4b/struct_v_m2_d_1_1_physical_properties_a77d30d43cb85aeb975fbcf49a8bf72cb_icgraph">
+<area shape="rect" id="node2" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a5f495683656ee42c315403611e50946a" title="Вычисление конвективной скорости в точках расположения виртуальных вихрей " alt="" coords="266,5,478,61"/>
+<area shape="rect" id="node4" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a99112c1a4fd05113c87391f29d51f349" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части " alt="" coords="272,85,472,141"/>
+<area shape="rect" id="node6" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ad2c7e77134fdb70a7ee48427e17ebd77" title="Вычисление влияния набегающего потока на криволинейную панель для правой части " alt="" coords="272,165,472,221"/>
+<area shape="rect" id="node7" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a4da252873afe978f239c2e3844cb3806" title="Вычисление конвективной скорости в точках расположения виртуальных вихрей " alt="" coords="253,245,491,286"/>
+<area shape="rect" id="node9" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ad5c57f263b9173f70bbb3700eecb21c5" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части " alt="" coords="255,310,489,351"/>
+<area shape="rect" id="node11" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a3c75b4043218c005c8abb8608eed8bb4" title="Вычисление влияния набегающего потока на криволинейную панель для правой части " alt="" coords="255,375,489,417"/>
+<area shape="rect" id="node12" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления " alt="" coords="261,441,483,468"/>
+<area shape="rect" id="node14" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ad489af66ebe4cb6e9e8326e312562b55" title="Вычисление скоростей в точках wakeVP. " alt="" coords="285,493,459,534"/>
+<area shape="rect" id="node16" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a1e93757ef8a0bf80601cbb8022138af6" title="Вычисляем новые положения вихрей (в пелене и виртуальных) " alt="" coords="267,561,477,588"/>
+<area shape="rect" id="node3" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="561,13,775,54"/>
+<area shape="rect" id="node5" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="563,125,773,181"/>
+<area shape="rect" id="node8" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="569,245,767,286"/>
+<area shape="rect" id="node10" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="539,342,797,383"/>
+<area shape="rect" id="node13" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="559,441,777,468"/>
+<area shape="rect" id="node15" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="581,493,755,534"/>
+<area shape="rect" id="node17" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a082e883ac7900fd8b9880e78bf0b3961" title="Перемещение вихрей и профилей на шаге " alt="" coords="557,558,779,599"/>
+<area shape="rect" id="node18" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Основная функция выполнения одного шага по времени " alt="" coords="845,565,999,592"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<h2 class="groupheader">Данные класса</h2>
+<a class="anchor" id="a8307ab012072b009132ca661f8ad50d5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double VM2D::PhysicalProperties::nu</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Коэффициент кинематической вязкости среды </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00094">94</a></p>
+
+</div>
+</div>
+<a class="anchor" id="adb08275d443935b41ac4f5eb2c1eb94b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double VM2D::PhysicalProperties::rho</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Плотность потока </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00073">73</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a8cd506205f7fbfe5bac0840fb5754988"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double VM2D::PhysicalProperties::timeAccel</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Время разгона потока </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00085">85</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a49e74e15dcf3313eac9e6f53f33b3443"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html">VMlib::TimeDiscretizationProperties</a>&amp; VM2D::PhysicalProperties::timeProp</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00069">69</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a09aef6a9db40dea083484d0d5e24c71e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt;std::string, int&gt; VM2D::PhysicalProperties::typeAccel</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Способ разгона потока </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00082">82</a></p>
+
+</div>
+</div>
+<a class="anchor" id="aefeb7bc7020ff248f0093cde76a5bc67"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> VM2D::PhysicalProperties::vInf</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Скоростью набегающего потока </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00076">76</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a70dedce17f5321e1e8c64cd7ada97494"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double VM2D::PhysicalProperties::vRef</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Референсная скорость </p>
+
+<p>См. определение в файле <a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a> строка <a class="el" href="../../d7/db0/_passport2_d_8h_source.html#l00079">79</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов структур находятся в файлах:<ul>
+<li>VM2D/Passport2D/<a class="el" href="../../d7/db0/_passport2_d_8h_source.html">Passport2D.h</a></li>
+<li>VM2D/Passport2D/<a class="el" href="../../db/d9f/_passport2_d_8cpp_source.html">Passport2D.cpp</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../d9/dd7/namespace_v_m2_d.html">VM2D</a></li><li class="navelem"><a class="el" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html">PhysicalProperties</a></li>
+    <li class="footer">Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
+  </ul>
+</div>
+</body>
+</html>

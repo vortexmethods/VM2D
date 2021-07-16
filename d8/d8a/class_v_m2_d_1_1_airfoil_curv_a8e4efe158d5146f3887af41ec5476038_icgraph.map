@@ -1,0 +1,7 @@
+<map id="VM2D::AirfoilCurv::GetGabarits" name="VM2D::AirfoilCurv::GetGabarits">
+<area shape="rect" id="node2" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#ab0d3ba52bbd9bfd75e84b9b2731599fe" title="Перемещение профиля " alt="" coords="189,34,357,61"/>
+<area shape="rect" id="node4" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a55a33c98e28c9959fa4cd9aebe85775d" title="Деструктор " alt="" coords="589,77,725,119"/>
+<area shape="rect" id="node5" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#ab60d1fd316e98a1dad32ac93749a5ebf" title="Поворот профиля " alt="" coords="205,85,341,127"/>
+<area shape="rect" id="node6" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a06a85ab1d0e534dfbcb91b13ce9581d2" title="Масштабирование профиля " alt="" coords="205,151,341,192"/>
+<area shape="rect" id="node3" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a60fc07ee0a76f69c2ecd8b35fbcd77cc" title="Считывание профиля из файла " alt="" coords="405,136,541,177"/>
+</map>

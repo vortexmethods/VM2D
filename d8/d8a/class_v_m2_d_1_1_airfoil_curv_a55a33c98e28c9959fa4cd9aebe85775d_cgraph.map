@@ -1,0 +1,24 @@
+<map id="VM2D::AirfoilCurv::~AirfoilCurv" name="VM2D::AirfoilCurv::~AirfoilCurv">
+<area shape="rect" id="node2" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a97f4a2a1bae867f3eb58e11c3ed076e8" title="Вычисление нормалей " alt="" coords="644,5,780,47"/>
+<area shape="rect" id="node3" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a8e4efe158d5146f3887af41ec5476038" title="Вычисляет габаритный прямоугольник профиля " alt="" coords="644,275,780,316"/>
+<area shape="rect" id="node4" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a60fc07ee0a76f69c2ecd8b35fbcd77cc" title="Считывание профиля из файла " alt="" coords="203,195,339,236"/>
+<area shape="rect" id="node8" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#ab0d3ba52bbd9bfd75e84b9b2731599fe" title="Перемещение профиля " alt="" coords="414,253,582,279"/>
+<area shape="rect" id="node9" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a06a85ab1d0e534dfbcb91b13ce9581d2" title="Масштабирование профиля " alt="" coords="430,304,566,345"/>
+<area shape="rect" id="node10" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#ab60d1fd316e98a1dad32ac93749a5ebf" title="Поворот профиля " alt="" coords="430,35,566,76"/>
+<area shape="rect" id="node11" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a114d835304a846ef1daa226c3aa0a5b9" title="Определяет, находится ли точка с радиус&#45;вектором &#160;внутри профиля " alt="" coords="203,417,339,459"/>
+<area shape="rect" id="node13" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a182e8d955e8c9f0132dda3ce264589fc" title="Вычисление коэффициентов матрицы A для расчета влияния панели на панель " alt="" coords="189,483,352,510"/>
+<area shape="rect" id="node16" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a03cf0755112e414626f25eddbe546662" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2. " alt="" coords="203,611,339,652"/>
+<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="400,101,596,127"/>
+<area shape="rect" id="node6" href="$dd/d9a/namespace_v_mlib.html#ae3a5ec63fcc3cbe01aff37e15be7c559" title="Проверка существования файла " alt="" coords="430,151,566,178"/>
+<area shape="rect" id="node7" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="413,202,583,229"/>
+<area shape="rect" id="node12" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="430,421,566,447"/>
+<area shape="rect" id="node14" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab570f9e008ad8ccff6ee85add1a44ac9" title="Возврат константной ссылки на объект, связанный с матрицей интегралов от (r&#45;xi)/|r&#45;xi|^2. " alt="" coords="419,471,577,498"/>
+<area shape="rect" id="node15" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="412,523,584,564"/>
+<area shape="rect" id="node17" href="$d8/d8a/class_v_m2_d_1_1_airfoil_curv.html#a504a32f2b7efb0c290494e071af869b1" title="Возврат константной ссылки на координату центра панели " alt="" coords="430,640,566,681"/>
+<area shape="rect" id="node18" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764" title="Вычисление 2&#45;нормы (длины) вектора " alt="" coords="415,706,581,733"/>
+<area shape="rect" id="node19" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aac3c207224738442ef801e6248e15eda" title="Проверка, идет ли вершина i следом за вершиной j. " alt="" coords="425,757,571,783"/>
+<area shape="rect" id="node20" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами " alt="" coords="450,589,546,615"/>
+<area shape="rect" id="node21" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="661,589,763,615"/>
+<area shape="rect" id="node22" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="828,589,919,615"/>
+<area shape="rect" id="node23" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="967,589,1141,615"/>
+</map>

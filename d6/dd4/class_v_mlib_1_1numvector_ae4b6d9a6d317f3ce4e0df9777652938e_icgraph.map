@@ -1,0 +1,18 @@
+<map id="VMlib::numvector::unit" name="VMlib::numvector::unit">
+<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a86dac66802e3eccab1ea05eb7d6442b7" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин " alt="" coords="250,84,386,126"/>
+<area shape="rect" id="node8" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="213,178,423,234"/>
+<area shape="rect" id="node10" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6bca92af2a441ac0e8afe9196a24e37f" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="217,338,419,394"/>
+<area shape="rect" id="node12" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="219,258,417,314"/>
+<area shape="rect" id="node13" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="207,418,429,474"/>
+<area shape="rect" id="node15" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="207,578,429,634"/>
+<area shape="rect" id="node17" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="209,498,427,554"/>
+<area shape="rect" id="node3" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a47e772124cbf44d0ec8784f483797d53" title="Перемещение профиля " alt="" coords="523,33,691,60"/>
+<area shape="rect" id="node5" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="968,76,1104,118"/>
+<area shape="rect" id="node6" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a05811a761cdefc827cc8211efcd989ff" title="Поворот профиля " alt="" coords="539,84,675,126"/>
+<area shape="rect" id="node7" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a99d0b02780d7c3d2a20dce6046049088" title="Масштабирование профиля " alt="" coords="539,150,675,191"/>
+<area shape="rect" id="node4" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a9d64a95d5abba507e3c2d1f535a60338" title="Считывание профиля из файла " alt="" coords="784,135,920,176"/>
+<area shape="rect" id="node9" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="499,215,714,256"/>
+<area shape="rect" id="node11" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="502,324,711,380"/>
+<area shape="rect" id="node14" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="507,426,706,467"/>
+<area shape="rect" id="node16" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="477,546,736,587"/>
+</map>

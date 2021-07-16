@@ -1,0 +1,5 @@
+<map id="VM2D::Wake::RemoveZero" name="VM2D::Wake::RemoveZero">
+<area shape="rect" id="node2" href="$df/dc0/group___parallel.html#ga75fa9eab08bd59596c5e083b049f6a2d" title="MPI&#45;синхронизация вихревого следа " alt="" coords="237,23,396,65"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="444,5,639,32"/>
+<area shape="rect" id="node4" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="446,56,637,83"/>
+</map>

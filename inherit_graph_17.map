@@ -1,0 +1,5 @@
+<map id="Иерархия классов. Графический вид." name="Иерархия классов. Графический вид.">
+<area shape="rect" id="node1" href="$d7/dfe/class_v_m2_d_1_1_velocity.html" title="Абстрактный класс, определяющий способ вычисления скоростей " alt="" coords="5,31,120,57"/>
+<area shape="rect" id="node2" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html" title="Класс, определяющий способ вычисления скоростей " alt="" coords="168,5,344,32"/>
+<area shape="rect" id="node3" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html" title="Класс, определяющий способ вычисления скоростей " alt="" coords="169,56,343,83"/>
+</map>

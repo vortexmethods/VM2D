@@ -1,0 +1,4 @@
+<map id="VM2D::AirfoilCurv::getKc" name="VM2D::AirfoilCurv::getKc">
+<area shape="rect" id="node2" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ad2c7e77134fdb70a7ee48427e17ebd77" title="Вычисление влияния набегающего потока на криволинейную панель для правой части " alt="" coords="189,5,389,61"/>
+<area shape="rect" id="node3" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="437,5,647,61"/>
+</map>

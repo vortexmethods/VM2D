@@ -1,0 +1,11 @@
+<map id="ModifyE2" name="ModifyE2">
+<area shape="rect" id="node2" href="$d6/daf/class_v_m2_d_1_1_cell.html#a41f2b336da76c4ee4151ea1a51637e99" title="Расчет коэффициентов a,b,c,d для ячейки нижнего уровня и определение ячеек ближней зоны ..." alt="" coords="153,5,372,47"/>
+<area shape="rect" id="node3" href="$d6/daf/class_v_m2_d_1_1_cell.html#a40e21254c71a77c647bde4b429f7c387" title="VM2D::Cell::CalcDomainRadius\lForVirtualWake" alt="" coords="443,35,653,76"/>
+<area shape="rect" id="node4" href="$d6/daf/class_v_m2_d_1_1_cell.html#ad8ec4e5534ba17cfa23471c708d5b473" title="VM2D::Cell::CalcConvVelo\lByBiotSavartFromVortices" alt="" coords="171,123,354,164"/>
+<area shape="rect" id="node5" href="$d6/daf/class_v_m2_d_1_1_cell.html#a027a7e15c6d05d5c654e66a951711492" title="VM2D::Cell::CalcConvVelo\lByBiotSavartFromSheets" alt="" coords="171,188,354,229"/>
+<area shape="rect" id="node6" href="$df/dc0/group___parallel.html#ga7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="131,253,395,295"/>
+<area shape="rect" id="node9" href="$dd/d9a/namespace_v_mlib.html#ad8c062cbe3e278a78e187e957077d01d" title="Усовершенствованный сигнум " alt="" coords="219,319,306,346"/>
+<area shape="rect" id="node7" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="701,224,876,265"/>
+<area shape="rect" id="node8" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ad489af66ebe4cb6e9e8326e312562b55" title="Вычисление скоростей в точках wakeVP. " alt="" coords="461,253,635,295"/>
+<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#a335d2f33867d1fa571571118886c5a97" title="Усовершенствованный аркосинус " alt="" coords="497,319,599,346"/>
+</map>

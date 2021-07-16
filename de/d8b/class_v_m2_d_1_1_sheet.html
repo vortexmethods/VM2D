@@ -1,0 +1,888 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>VM2D: Класс VM2D::Sheet</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/NativeMML"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="../../LOGO.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VM2D
+   &#160;<span id="projectnumber">1.10</span>
+   </div>
+   <div id="projectbrief">Вихревые методы для решения двумерных задач</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="../../index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="../../pages.html"><span>Описания</span></a></li>
+      <li><a href="../../modules.html"><span>Группы</span></a></li>
+      <li><a href="../../namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../files.html"><span>Файлы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="../../search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="../../search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="../../inherits.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="../../functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('de/d8b/class_v_m2_d_1_1_sheet.html','../../');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-attribs">Открытые атрибуты</a> &#124;
+<a href="#pri-attribs">Закрытые данные</a> &#124;
+<a href="../../da/d5a/class_v_m2_d_1_1_sheet-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Класс VM2D::Sheet</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Класс, опеделяющий слои на поверхности обтекаемого профиля  
+ <a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#details">Подробнее...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a>&gt;</code></p>
+<div class="dynheader">
+Граф связей класса VM2D::Sheet:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d5/dfb/class_v_m2_d_1_1_sheet__coll__graph.png" border="0" usemap="#_v_m2_d_1_1_sheet_coll__map" alt="Collaboration graph"/></div>
+<map name="_v_m2_d_1_1_sheet_coll__map" id="_v_m2_d_1_1_sheet_coll__map">
+<area shape="rect" id="node50" href="../../df/da2/class_v_m2_d_1_1_boundary.html" title="Абстрактный класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле ..." alt="" coords="1895,892,2017,919"/>
+<area shape="rect" id="node2" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html" title="Класс, опеделяющий текущую решаемую задачу " alt="" coords="3324,1029,3443,1056"/>
+<area shape="rect" id="node17" href="../../d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей " alt="" coords="3543,652,3701,679"/>
+<area shape="rect" id="node22" href="../../d0/d75/class_v_m2_d_1_1_gpu.html" title="Класс, обеспечивающий возможность выполнения вычислений на GPU по технологии Nvidia CUDA..." alt="" coords="3577,1047,3667,1073"/>
+<area shape="rect" id="node24" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html" title="Абстрактный класс, определяющий способ вычисления скоростей " alt="" coords="3565,463,3679,489"/>
+<area shape="rect" id="node31" href="../../db/de9/class_v_m2_d_1_1_airfoil.html" title="Абстрактный класс, определяющий обтекаемый профиль " alt="" coords="3572,1420,3672,1447"/>
+<area shape="rect" id="node45" href="../../d7/dc9/class_v_m2_d_1_1_mechanics.html" title="Абстрактный класс, определяющий вид механической системы " alt="" coords="2215,1073,2345,1100"/>
+<area shape="rect" id="node58" href="../../d8/d90/class_v_m2_d_1_1_tree.html" title="Класс, описывающий дерево для вычисления скоростей методом Барнса — Хата " alt="" coords="3575,996,3669,1023"/>
+<area shape="rect" id="node68" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html" title="Класс, отвечающий за вычисление поля скорости и давления в заданых точках для вывода ..." alt="" coords="4087,675,4222,701"/>
+<area shape="rect" id="node3" href="../../d6/d3d/class_v_mlib_1_1_world_gen.html" title="Класс, опеделяющий текущую решаемую задачу " alt="" coords="1895,1528,2017,1555"/>
+<area shape="rect" id="node4" href="../../d1/dd8/class_v_mlib_1_1_log_stream.html" title="Класс, определяющий работу с потоком логов " alt="" coords="1135,1321,1261,1348"/>
+<area shape="rect" id="node12" href="../../d9/d9a/class_v_mlib_1_1_passport_gen.html" title="Абстрактный класс, опеделяющий паспорт задачи " alt="" coords="1552,1349,1691,1376"/>
+<area shape="rect" id="node47" href="../../db/d04/class_v_mlib_1_1_stream_parser.html" title="Класс, позволяющий выполнять разбор файлов и строк с настройками и параметрами " alt="" coords="1550,989,1693,1016"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="452,1129,532,1156"/>
+<area shape="rect" id="node37" href="../../d2/d15/class_v_m2_d_1_1_passport.html" title="Класс, опеделяющий паспорт двумерной задачи " alt="" coords="2221,1283,2339,1309"/>
+<area shape="rect" id="node40" href="../../d7/deb/struct_v_m2_d_1_1_airfoil_params.html" title="Структура, задающая параметры профиля " alt="" coords="1549,1401,1694,1428"/>
+<area shape="rect" id="node41" href="../../db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html" title="Структура, задающая параметры параметры дискретизации вихревого следа " alt="" coords="906,1122,1087,1163"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="169,1122,295,1163"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="733,1367,828,1393"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="425,1359,559,1401"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="155,1367,309,1393"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="5,1367,105,1393"/>
+<area shape="rect" id="node11" href="../../dd/de1/class_v_mlib_1_1_parallel.html" title="Класс, опеделяющий параметры исполнения задачи в параллельном MPI&#45;режиме " alt="" coords="1568,1452,1675,1479"/>
+<area shape="rect" id="node13" href="../../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени " alt="" coords="1112,1183,1284,1225"/>
+<area shape="rect" id="node42" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html" title="Структура, задающая физические свойства задачи " alt="" coords="1533,1299,1709,1325"/>
+<area shape="rect" id="node15" href="../../d8/de6/class_v_mlib_1_1_times_gen.html" title="Класс для сбора статистики времени исполнения основных шагов алгоритма и вывода ее в файл ..." alt="" coords="1137,1703,1259,1729"/>
+<area shape="rect" id="node20" href="../../df/d8f/class_v_m2_d_1_1_wake.html" title="Класс, опеделяющий вихревой след (пелену) " alt="" coords="3832,763,3933,789"/>
+<area shape="rect" id="node51" href="../../d4/d07/class_v_m2_d_1_1_virtual_wake.html" title="Класс, опеделяющий вихревой след (пелену) " alt="" coords="3813,271,3952,297"/>
+<area shape="rect" id="node59" href="../../da/db7/class_v_m2_d_1_1_points_copy.html" title="Класс, опеделяющий копию для сортировки структуры данных следа (пелены), источников или &quot;виртуальных&quot;..." alt="" coords="3316,755,3451,781"/>
+<area shape="rect" id="node62" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html" title="PointsCopy_iterator\l::all_iterator" alt="" coords="3315,529,3452,570"/>
+<area shape="rect" id="node26" href="../../d2/d48/struct_v_m2_d_1_1_vortexes_params.html" title="Структура, определяющая параметры виртуальных вихрей для отдельного профиля " alt="" coords="1874,321,2038,348"/>
+<area shape="rect" id="node32" href="../../da/dd5/class_v_mlib_1_1_point2_d.html" title="Класс, опеделяющий двумерный вектор " alt="" coords="1143,1535,1253,1561"/>
+<area shape="rect" id="node60" href="../../d6/daf/class_v_m2_d_1_1_cell.html" title="Класс, описывающий ячейку дерева для вычисления скоростей методом Барнса — Хата " alt="" coords="3837,1036,3928,1063"/>
+<area shape="rect" id="node33" href="../../d6/dd4/class_v_mlib_1_1numvector.html" title="VMlib::numvector\&lt; double, 2 \&gt;" alt="" coords="680,1573,881,1600"/>
+<area shape="rect" id="node34" title="STL class. " alt="" coords="415,1712,569,1739"/>
+<area shape="rect" id="node61" href="../../d6/dd4/class_v_mlib_1_1numvector.html" title="VMlib::numvector\&lt; double, 3 \&gt;" alt="" coords="1308,1788,1509,1815"/>
+<area shape="rect" id="node38" href="../../d2/d76/struct_v_m2_d_1_1_numerical_schemes.html" title="Структура, задающая используемые численные схемы " alt="" coords="1865,1247,2047,1273"/>
+<area shape="rect" id="node64" title="STL iterator class. " alt="" coords="2949,523,3113,549"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">см. легенду</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:adb2906094f8be587834c166d612eaf40"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adb2906094f8be587834c166d612eaf40">Sheet</a> (const <a class="el" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html">World2D</a> &amp;W_, int dim_)</td></tr>
+<tr class="memdesc:adb2906094f8be587834c166d612eaf40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор  <a href="#adb2906094f8be587834c166d612eaf40">Подробнее...</a><br /></td></tr>
+<tr class="separator:adb2906094f8be587834c166d612eaf40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dc6a0e144592bbb1e44edcb10215e12"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6dc6a0e144592bbb1e44edcb10215e12">~Sheet</a> ()</td></tr>
+<tr class="memdesc:a6dc6a0e144592bbb1e44edcb10215e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Деструктор  <a href="#a6dc6a0e144592bbb1e44edcb10215e12">Подробнее...</a><br /></td></tr>
+<tr class="separator:a6dc6a0e144592bbb1e44edcb10215e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cd1e3eaf9602ae80c726a2fa16116c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6cd1e3eaf9602ae80c726a2fa16116c6">SetLayers</a> (size_t np)</td></tr>
+<tr class="memdesc:a6cd1e3eaf9602ae80c726a2fa16116c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Установка pазмерностей всех векторов и их обнуление  <a href="#a6cd1e3eaf9602ae80c726a2fa16116c6">Подробнее...</a><br /></td></tr>
+<tr class="separator:a6cd1e3eaf9602ae80c726a2fa16116c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8016a5311758482564a0fcb0868477fa"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a8016a5311758482564a0fcb0868477fa">getSheetSize</a> () const </td></tr>
+<tr class="separator:a8016a5311758482564a0fcb0868477fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bbc9ae3758b8da52ec9e13994648dd6"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6">freeVortexSheet</a> (size_t n, size_t moment) const </td></tr>
+<tr class="separator:a5bbc9ae3758b8da52ec9e13994648dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9431e357980548a5fabd5ffffb917665"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a9431e357980548a5fabd5ffffb917665">attachedVortexSheet</a> (size_t n, size_t moment) const </td></tr>
+<tr class="separator:a9431e357980548a5fabd5ffffb917665"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49b7345512b924471bbac608c7129043"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a49b7345512b924471bbac608c7129043">attachedSourceSheet</a> (size_t n, size_t moment) const </td></tr>
+<tr class="separator:a49b7345512b924471bbac608c7129043"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb045fdc5654e433d4a0d0e6fe2c2f62"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adb045fdc5654e433d4a0d0e6fe2c2f62">freeVortexSheet</a> (size_t n, size_t moment)</td></tr>
+<tr class="separator:adb045fdc5654e433d4a0d0e6fe2c2f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d1c2516ce2ab68e4b74f93c18f8a261"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a0d1c2516ce2ab68e4b74f93c18f8a261">attachedVortexSheet</a> (size_t n, size_t moment)</td></tr>
+<tr class="separator:a0d1c2516ce2ab68e4b74f93c18f8a261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4e4afaeb14620034d85275bed37ad92"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#ac4e4afaeb14620034d85275bed37ad92">attachedSourceSheet</a> (size_t n, size_t moment)</td></tr>
+<tr class="separator:ac4e4afaeb14620034d85275bed37ad92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0237b60f4de86654f72c64b5e49029e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a0237b60f4de86654f72c64b5e49029e5">FreeSheetSynchronize</a> () const </td></tr>
+<tr class="separator:a0237b60f4de86654f72c64b5e49029e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Открытые атрибуты</h2></td></tr>
+<tr class="memitem:a42753fdfb03dbf01adfd5a64b1ad583f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html">World2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a42753fdfb03dbf01adfd5a64b1ad583f">W</a></td></tr>
+<tr class="memdesc:a42753fdfb03dbf01adfd5a64b1ad583f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Константная ссылка на решаемую задачу  <a href="#a42753fdfb03dbf01adfd5a64b1ad583f">Подробнее...</a><br /></td></tr>
+<tr class="separator:a42753fdfb03dbf01adfd5a64b1ad583f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcc776a5cafa224d1e4c61fb5998b62e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">dim</a></td></tr>
+<tr class="memdesc:adcc776a5cafa224d1e4c61fb5998b62e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Число параметров в описании каждого слоя  <a href="#adcc776a5cafa224d1e4c61fb5998b62e">Подробнее...</a><br /></td></tr>
+<tr class="separator:adcc776a5cafa224d1e4c61fb5998b62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Закрытые данные</h2></td></tr>
+<tr class="memitem:a6e77c58df3adee189df56adcd0ffb501"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">freeVortexSheet_</a></td></tr>
+<tr class="memdesc:a6e77c58df3adee189df56adcd0ffb501"><td class="mdescLeft">&#160;</td><td class="mdescRight">Список из характеристик свободного вихревого слоя на панелях  <a href="#a6e77c58df3adee189df56adcd0ffb501">Подробнее...</a><br /></td></tr>
+<tr class="separator:a6e77c58df3adee189df56adcd0ffb501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00a8cbdb7e007856e899eff92a94ede2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a00a8cbdb7e007856e899eff92a94ede2">attachedVortexSheet_</a></td></tr>
+<tr class="memdesc:a00a8cbdb7e007856e899eff92a94ede2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Список из характеристик присоединенного вихревого слоя на панелях  <a href="#a00a8cbdb7e007856e899eff92a94ede2">Подробнее...</a><br /></td></tr>
+<tr class="separator:a00a8cbdb7e007856e899eff92a94ede2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56b1f64cd3a1a8112c169bb197f355d3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a56b1f64cd3a1a8112c169bb197f355d3">attachedSourceSheet_</a></td></tr>
+<tr class="memdesc:a56b1f64cd3a1a8112c169bb197f355d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Список из характеристик присоединенного слоя источников на панелях  <a href="#a56b1f64cd3a1a8112c169bb197f355d3">Подробнее...</a><br /></td></tr>
+<tr class="separator:a56b1f64cd3a1a8112c169bb197f355d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Класс, опеделяющий слои на поверхности обтекаемого профиля </p>
+<dl class="section author"><dt>Автор</dt><dd>Марчевский Илья Константинович </dd>
+<dd>
+Сокол Ксения Сергеевна </dd>
+<dd>
+Рятина Евгения Павловна </dd></dl>
+<dl class="section version"><dt>Версия</dt><dd>1.10 </dd></dl>
+<dl class="section date"><dt>Дата</dt><dd>17 мая 2021 г. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00059">59</a></p>
+</div><h2 class="groupheader">Конструктор(ы)</h2>
+<a class="anchor" id="adb2906094f8be587834c166d612eaf40"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Sheet::Sheet </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html">World2D</a> &amp;&#160;</td>
+          <td class="paramname"><em>W_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim_</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Конструктор </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">W_</td><td>константная ссылка на решаемую задачу </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dim_</td><td>число параметров в описании каждого слоя (1 - кусочно-постоянное решение, 2 - кусочно-линейное и т.п.) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="../../d2/d24/_sheet2_d_8cpp_source.html">Sheet2D.cpp</a> строка <a class="el" href="../../d2/d24/_sheet2_d_8cpp_source.html#l00057">57</a></p>
+<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    : <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a42753fdfb03dbf01adfd5a64b1ad583f">W</a>(W_), <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">dim</a>(dim_)</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{ };</div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_adcc776a5cafa224d1e4c61fb5998b62e"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">VM2D::Sheet::dim</a></div><div class="ttdeci">const int dim</div><div class="ttdoc">Число параметров в описании каждого слоя </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00076">Sheet2D.h:76</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_a42753fdfb03dbf01adfd5a64b1ad583f"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a42753fdfb03dbf01adfd5a64b1ad583f">VM2D::Sheet::W</a></div><div class="ttdeci">const World2D &amp; W</div><div class="ttdoc">Константная ссылка на решаемую задачу </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00073">Sheet2D.h:73</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6dc6a0e144592bbb1e44edcb10215e12"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">VM2D::Sheet::~Sheet </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Деструктор </p>
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00085">85</a></p>
+<div class="fragment"><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;{ };</div></div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8b/class_v_m2_d_1_1_sheet_a6dc6a0e144592bbb1e44edcb10215e12_cgraph.png" border="0" usemap="#de/d8b/class_v_m2_d_1_1_sheet_a6dc6a0e144592bbb1e44edcb10215e12_cgraph" alt=""/></div>
+<map name="de/d8b/class_v_m2_d_1_1_sheet_a6dc6a0e144592bbb1e44edcb10215e12_cgraph" id="de/d8b/class_v_m2_d_1_1_sheet_a6dc6a0e144592bbb1e44edcb10215e12_cgraph">
+<area shape="rect" id="node2" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6cd1e3eaf9602ae80c726a2fa16116c6" title="Установка pазмерностей всех векторов и их обнуление " alt="" coords="204,5,372,32"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a class="anchor" id="a49b7345512b924471bbac608c7129043"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; VM2D::Sheet::attachedSourceSheet </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>moment</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00107">107</a></p>
+<div class="fragment"><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        {</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a56b1f64cd3a1a8112c169bb197f355d3">attachedSourceSheet_</a>[n*<a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">dim</a> + moment];</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_a56b1f64cd3a1a8112c169bb197f355d3"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a56b1f64cd3a1a8112c169bb197f355d3">VM2D::Sheet::attachedSourceSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; attachedSourceSheet_</div><div class="ttdoc">Список из характеристик присоединенного слоя источников на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00069">Sheet2D.h:69</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_adcc776a5cafa224d1e4c61fb5998b62e"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">VM2D::Sheet::dim</a></div><div class="ttdeci">const int dim</div><div class="ttdoc">Число параметров в описании каждого слоя </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00076">Sheet2D.h:76</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8b/class_v_m2_d_1_1_sheet_a49b7345512b924471bbac608c7129043_icgraph.png" border="0" usemap="#de/d8b/class_v_m2_d_1_1_sheet_a49b7345512b924471bbac608c7129043_icgraph" alt=""/></div>
+<map name="de/d8b/class_v_m2_d_1_1_sheet_a49b7345512b924471bbac608c7129043_icgraph" id="de/d8b/class_v_m2_d_1_1_sheet_a49b7345512b924471bbac608c7129043_icgraph">
+<area shape="rect" id="node2" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="275,5,485,61"/>
+<area shape="rect" id="node4" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a3564185641ce9f21f1b37d9af6006120" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников ..." alt="" coords="253,85,507,126"/>
+<area shape="rect" id="node5" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6bca92af2a441ac0e8afe9196a24e37f" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="279,149,481,205"/>
+<area shape="rect" id="node7" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="269,229,491,285"/>
+<area shape="rect" id="node9" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a1fac4135ea015759fb8f6f1a39796202" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников ..." alt="" coords="267,309,493,350"/>
+<area shape="rect" id="node10" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="269,373,491,429"/>
+<area shape="rect" id="node12" href="../../d0/d75/class_v_m2_d_1_1_gpu.html#ac569e54b8579eacb3c3f252100324acc" title="VM2D::Gpu::~Gpu" alt="" coords="315,453,445,480"/>
+<area shape="rect" id="node13" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a6bddcd3bf70e5376de545292eeb0aacf" title="Создание массива указателей на массив точек (для сортировки) " alt="" coords="274,504,486,531"/>
+<area shape="rect" id="node3" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="577,49,791,90"/>
+<area shape="rect" id="node6" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="579,149,789,205"/>
+<area shape="rect" id="node8" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="585,273,783,314"/>
+<area shape="rect" id="node11" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="555,381,813,422"/>
+<area shape="rect" id="node14" href="../../d8/d90/class_v_m2_d_1_1_tree.html#af13fbf38acec5aa6356edcd7c6d70e20" title="Конструктор " alt="" coords="621,504,747,531"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ac4e4afaeb14620034d85275bed37ad92"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double&amp; VM2D::Sheet::attachedSourceSheet </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>moment</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00122">122</a></p>
+<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        {</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a56b1f64cd3a1a8112c169bb197f355d3">attachedSourceSheet_</a>[n*<a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">dim</a> + moment];</div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        }</div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_a56b1f64cd3a1a8112c169bb197f355d3"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a56b1f64cd3a1a8112c169bb197f355d3">VM2D::Sheet::attachedSourceSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; attachedSourceSheet_</div><div class="ttdoc">Список из характеристик присоединенного слоя источников на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00069">Sheet2D.h:69</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_adcc776a5cafa224d1e4c61fb5998b62e"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">VM2D::Sheet::dim</a></div><div class="ttdeci">const int dim</div><div class="ttdoc">Число параметров в описании каждого слоя </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00076">Sheet2D.h:76</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8b/class_v_m2_d_1_1_sheet_ac4e4afaeb14620034d85275bed37ad92_cgraph.png" border="0" usemap="#de/d8b/class_v_m2_d_1_1_sheet_ac4e4afaeb14620034d85275bed37ad92_cgraph" alt=""/></div>
+<map name="de/d8b/class_v_m2_d_1_1_sheet_ac4e4afaeb14620034d85275bed37ad92_cgraph" id="de/d8b/class_v_m2_d_1_1_sheet_ac4e4afaeb14620034d85275bed37ad92_cgraph">
+<area shape="rect" id="node2" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a0237b60f4de86654f72c64b5e49029e5" title="VM2D::Sheet::FreeSheetSynchronize" alt="" coords="253,13,495,39"/>
+<area shape="rect" id="node3" href="../../d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="543,13,733,39"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a9431e357980548a5fabd5ffffb917665"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; VM2D::Sheet::attachedVortexSheet </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>moment</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00102">102</a></p>
+<div class="fragment"><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        {</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a00a8cbdb7e007856e899eff92a94ede2">attachedVortexSheet_</a>[n*<a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">dim</a> + moment];</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_a00a8cbdb7e007856e899eff92a94ede2"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a00a8cbdb7e007856e899eff92a94ede2">VM2D::Sheet::attachedVortexSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; attachedVortexSheet_</div><div class="ttdoc">Список из характеристик присоединенного вихревого слоя на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00066">Sheet2D.h:66</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_adcc776a5cafa224d1e4c61fb5998b62e"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">VM2D::Sheet::dim</a></div><div class="ttdeci">const int dim</div><div class="ttdoc">Число параметров в описании каждого слоя </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00076">Sheet2D.h:76</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8b/class_v_m2_d_1_1_sheet_a9431e357980548a5fabd5ffffb917665_icgraph.png" border="0" usemap="#de/d8b/class_v_m2_d_1_1_sheet_a9431e357980548a5fabd5ffffb917665_icgraph" alt=""/></div>
+<map name="de/d8b/class_v_m2_d_1_1_sheet_a9431e357980548a5fabd5ffffb917665_icgraph" id="de/d8b/class_v_m2_d_1_1_sheet_a9431e357980548a5fabd5ffffb917665_icgraph">
+<area shape="rect" id="node2" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="272,5,483,61"/>
+<area shape="rect" id="node4" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a3564185641ce9f21f1b37d9af6006120" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников ..." alt="" coords="251,85,504,126"/>
+<area shape="rect" id="node5" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="278,149,477,205"/>
+<area shape="rect" id="node7" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="267,229,488,285"/>
+<area shape="rect" id="node9" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a1fac4135ea015759fb8f6f1a39796202" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников ..." alt="" coords="264,309,491,350"/>
+<area shape="rect" id="node10" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="268,373,487,429"/>
+<area shape="rect" id="node12" href="../../d0/d75/class_v_m2_d_1_1_gpu.html#ac569e54b8579eacb3c3f252100324acc" title="VM2D::Gpu::~Gpu" alt="" coords="312,453,443,480"/>
+<area shape="rect" id="node13" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a6bddcd3bf70e5376de545292eeb0aacf" title="Создание массива указателей на массив точек (для сортировки) " alt="" coords="271,504,483,531"/>
+<area shape="rect" id="node3" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="574,49,789,90"/>
+<area shape="rect" id="node6" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="577,149,786,205"/>
+<area shape="rect" id="node8" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="582,273,781,314"/>
+<area shape="rect" id="node11" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="552,381,811,422"/>
+<area shape="rect" id="node14" href="../../d8/d90/class_v_m2_d_1_1_tree.html#af13fbf38acec5aa6356edcd7c6d70e20" title="Конструктор " alt="" coords="618,504,745,531"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a0d1c2516ce2ab68e4b74f93c18f8a261"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double&amp; VM2D::Sheet::attachedVortexSheet </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>moment</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00117">117</a></p>
+<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        {</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a00a8cbdb7e007856e899eff92a94ede2">attachedVortexSheet_</a>[n*<a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">dim</a> + moment];</div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_a00a8cbdb7e007856e899eff92a94ede2"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a00a8cbdb7e007856e899eff92a94ede2">VM2D::Sheet::attachedVortexSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; attachedVortexSheet_</div><div class="ttdoc">Список из характеристик присоединенного вихревого слоя на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00066">Sheet2D.h:66</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_adcc776a5cafa224d1e4c61fb5998b62e"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">VM2D::Sheet::dim</a></div><div class="ttdeci">const int dim</div><div class="ttdoc">Число параметров в описании каждого слоя </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00076">Sheet2D.h:76</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a0237b60f4de86654f72c64b5e49029e5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Sheet::FreeSheetSynchronize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d2/d24/_sheet2_d_8cpp_source.html">Sheet2D.cpp</a> строка <a class="el" href="../../d2/d24/_sheet2_d_8cpp_source.html#l00070">70</a></p>
+<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;{</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">//Синхронизировать размер не нужно, он и так синхронизирован</span></div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    MPI_Bcast(const_cast&lt;double*&gt;(<a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">freeVortexSheet_</a>.data()), (<span class="keywordtype">int</span>)<a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">freeVortexSheet_</a>.size(), MPI_DOUBLE, 0, <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a42753fdfb03dbf01adfd5a64b1ad583f">W</a>.getParallel().commWork);</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_a6e77c58df3adee189df56adcd0ffb501"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">VM2D::Sheet::freeVortexSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; freeVortexSheet_</div><div class="ttdoc">Список из характеристик свободного вихревого слоя на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00063">Sheet2D.h:63</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_a42753fdfb03dbf01adfd5a64b1ad583f"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a42753fdfb03dbf01adfd5a64b1ad583f">VM2D::Sheet::W</a></div><div class="ttdeci">const World2D &amp; W</div><div class="ttdoc">Константная ссылка на решаемую задачу </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00073">Sheet2D.h:73</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8b/class_v_m2_d_1_1_sheet_a0237b60f4de86654f72c64b5e49029e5_cgraph.png" border="0" usemap="#de/d8b/class_v_m2_d_1_1_sheet_a0237b60f4de86654f72c64b5e49029e5_cgraph" alt=""/></div>
+<map name="de/d8b/class_v_m2_d_1_1_sheet_a0237b60f4de86654f72c64b5e49029e5_cgraph" id="de/d8b/class_v_m2_d_1_1_sheet_a0237b60f4de86654f72c64b5e49029e5_cgraph">
+<area shape="rect" id="node2" href="../../d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="295,5,485,32"/>
+</map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8b/class_v_m2_d_1_1_sheet_a0237b60f4de86654f72c64b5e49029e5_icgraph.png" border="0" usemap="#de/d8b/class_v_m2_d_1_1_sheet_a0237b60f4de86654f72c64b5e49029e5_icgraph" alt=""/></div>
+<map name="de/d8b/class_v_m2_d_1_1_sheet_a0237b60f4de86654f72c64b5e49029e5_icgraph" id="de/d8b/class_v_m2_d_1_1_sheet_a0237b60f4de86654f72c64b5e49029e5_icgraph">
+<area shape="rect" id="node2" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="303,5,513,61"/>
+<area shape="rect" id="node4" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="297,85,519,141"/>
+<area shape="rect" id="node6" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления " alt="" coords="297,165,519,192"/>
+<area shape="rect" id="node8" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#ac4e4afaeb14620034d85275bed37ad92" title="VM2D::Sheet::attachedSource\lSheet" alt="" coords="308,217,508,258"/>
+<area shape="rect" id="node9" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#ab6875b58f381978e20135c90f77abfa3" title="VM2D::Velocity::CalcDiff\lVeloI1I2ToSetOfPointsFromSheets" alt="" coords="295,282,521,323"/>
+<area shape="rect" id="node13" href="../../d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a1cecab6b2201440b3853729bb89f27d1" title="VM2D::VelocityBarnesHut\l::CalcDiffVeloI1I2ToWakeFrom\lSheets" alt="" coords="305,347,511,403"/>
+<area shape="rect" id="node3" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="585,13,800,54"/>
+<area shape="rect" id="node5" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="593,93,792,134"/>
+<area shape="rect" id="node7" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="583,165,802,192"/>
+<area shape="rect" id="node10" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе " alt="" coords="607,250,778,291"/>
+<area shape="rect" id="node12" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ac04ca51b096cd7f08703c45ebe00ad7e" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromSheets" alt="" coords="569,315,816,357"/>
+<area shape="rect" id="node11" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="864,257,1060,284"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a5bbc9ae3758b8da52ec9e13994648dd6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; VM2D::Sheet::freeVortexSheet </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>moment</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00097">97</a></p>
+<div class="fragment"><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        {</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">freeVortexSheet_</a>[n*<a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">dim</a> + moment];</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_a6e77c58df3adee189df56adcd0ffb501"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">VM2D::Sheet::freeVortexSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; freeVortexSheet_</div><div class="ttdoc">Список из характеристик свободного вихревого слоя на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00063">Sheet2D.h:63</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_adcc776a5cafa224d1e4c61fb5998b62e"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">VM2D::Sheet::dim</a></div><div class="ttdeci">const int dim</div><div class="ttdoc">Число параметров в описании каждого слоя </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00076">Sheet2D.h:76</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8b/class_v_m2_d_1_1_sheet_a5bbc9ae3758b8da52ec9e13994648dd6_icgraph.png" border="0" usemap="#de/d8b/class_v_m2_d_1_1_sheet_a5bbc9ae3758b8da52ec9e13994648dd6_icgraph" alt=""/></div>
+<map name="de/d8b/class_v_m2_d_1_1_sheet_a5bbc9ae3758b8da52ec9e13994648dd6_icgraph" id="de/d8b/class_v_m2_d_1_1_sheet_a5bbc9ae3758b8da52ec9e13994648dd6_icgraph">
+<area shape="rect" id="node2" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae8187ac0ba509703fd8be02a7af16fbe" title="Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле ..." alt="" coords="273,5,490,61"/>
+<area shape="rect" id="node4" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="276,85,487,141"/>
+<area shape="rect" id="node5" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="282,165,481,221"/>
+<area shape="rect" id="node7" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a324a4b4c5f37e51c949534cdaff1151b" title="Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле ..." alt="" coords="256,245,507,301"/>
+<area shape="rect" id="node9" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="271,325,492,381"/>
+<area shape="rect" id="node10" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="272,405,491,461"/>
+<area shape="rect" id="node12" href="../../d0/d75/class_v_m2_d_1_1_gpu.html#ac569e54b8579eacb3c3f252100324acc" title="VM2D::Gpu::~Gpu" alt="" coords="316,485,447,512"/>
+<area shape="rect" id="node13" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления " alt="" coords="270,536,493,563"/>
+<area shape="rect" id="node15" href="../../d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a24c694bf820524c2c0828f2c920328ab" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="284,587,479,629"/>
+<area shape="rect" id="node17" href="../../da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a98f1a2f3b8065db981513c470c81cb34" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="269,653,493,694"/>
+<area shape="rect" id="node19" href="../../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a8e33f00ed56839ac4d103efb5534ca8b" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="285,718,478,759"/>
+<area shape="rect" id="node21" href="../../d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#afbd4195a0e64487f0e15fc5a0386356e" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="282,783,481,825"/>
+<area shape="rect" id="node23" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#ab6875b58f381978e20135c90f77abfa3" title="VM2D::Velocity::CalcDiff\lVeloI1I2ToSetOfPointsFromSheets" alt="" coords="268,849,495,890"/>
+<area shape="rect" id="node27" href="../../d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a7b55b68d171c1a5d7c65e7b1e03c8fc2" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="293,914,469,955"/>
+<area shape="rect" id="node28" href="../../d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a1cecab6b2201440b3853729bb89f27d1" title="VM2D::VelocityBarnesHut\l::CalcDiffVeloI1I2ToWakeFrom\lSheets" alt="" coords="279,979,484,1035"/>
+<area shape="rect" id="node3" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="577,53,791,94"/>
+<area shape="rect" id="node6" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab06e205e03b6a2c2e5e50502d6725255" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="579,165,789,221"/>
+<area shape="rect" id="node8" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="585,293,783,334"/>
+<area shape="rect" id="node11" href="../../da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a98898816e7950d6c13916b680d2a14a5" title="Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для прав..." alt="" coords="555,413,813,454"/>
+<area shape="rect" id="node14" href="../../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="575,536,793,563"/>
+<area shape="rect" id="node16" href="../../d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a5424e2694887408f886168734f490a7a" title="Деструктор " alt="" coords="577,587,791,629"/>
+<area shape="rect" id="node18" href="../../da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#ad3c325c6687ee3722e752e74e5551e42" title="Деструктор " alt="" coords="572,653,796,694"/>
+<area shape="rect" id="node20" href="../../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a75eec602bb770e89e41d7773afe53948" title="Деструктор " alt="" coords="578,718,790,759"/>
+<area shape="rect" id="node22" href="../../d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a7b7a0d2367a91741daae89f90751db92" title="Деструктор " alt="" coords="575,783,793,825"/>
+<area shape="rect" id="node24" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе " alt="" coords="599,849,769,890"/>
+<area shape="rect" id="node26" href="../../d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ac04ca51b096cd7f08703c45ebe00ad7e" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromSheets" alt="" coords="561,914,807,955"/>
+<area shape="rect" id="node25" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="861,856,1057,883"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="adb045fdc5654e433d4a0d0e6fe2c2f62"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double&amp; VM2D::Sheet::freeVortexSheet </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>moment</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00112">112</a></p>
+<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        {</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">freeVortexSheet_</a>[n*<a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">dim</a> + moment];</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_a6e77c58df3adee189df56adcd0ffb501"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">VM2D::Sheet::freeVortexSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; freeVortexSheet_</div><div class="ttdoc">Список из характеристик свободного вихревого слоя на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00063">Sheet2D.h:63</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_adcc776a5cafa224d1e4c61fb5998b62e"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">VM2D::Sheet::dim</a></div><div class="ttdeci">const int dim</div><div class="ttdoc">Число параметров в описании каждого слоя </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00076">Sheet2D.h:76</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a8016a5311758482564a0fcb0868477fa"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t VM2D::Sheet::getSheetSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00092">92</a></p>
+<div class="fragment"><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        {</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">freeVortexSheet_</a>.size();</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_a6e77c58df3adee189df56adcd0ffb501"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">VM2D::Sheet::freeVortexSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; freeVortexSheet_</div><div class="ttdoc">Список из характеристик свободного вихревого слоя на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00063">Sheet2D.h:63</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8b/class_v_m2_d_1_1_sheet_a8016a5311758482564a0fcb0868477fa_icgraph.png" border="0" usemap="#de/d8b/class_v_m2_d_1_1_sheet_a8016a5311758482564a0fcb0868477fa_icgraph" alt=""/></div>
+<map name="de/d8b/class_v_m2_d_1_1_sheet_a8016a5311758482564a0fcb0868477fa_icgraph" id="de/d8b/class_v_m2_d_1_1_sheet_a8016a5311758482564a0fcb0868477fa_icgraph">
+<area shape="rect" id="node2" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="261,5,472,61"/>
+<area shape="rect" id="node4" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a3564185641ce9f21f1b37d9af6006120" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников ..." alt="" coords="240,85,493,126"/>
+<area shape="rect" id="node5" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a6bddcd3bf70e5376de545292eeb0aacf" title="Создание массива указателей на массив точек (для сортировки) " alt="" coords="261,151,473,177"/>
+<area shape="rect" id="node3" href="../../d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="541,49,756,90"/>
+<area shape="rect" id="node6" href="../../d8/d90/class_v_m2_d_1_1_tree.html#af13fbf38acec5aa6356edcd7c6d70e20" title="Конструктор " alt="" coords="585,151,712,177"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a6cd1e3eaf9602ae80c726a2fa16116c6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Sheet::SetLayers </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>np</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Установка pазмерностей всех векторов и их обнуление </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">np</td><td>число панелей на профиле (внешняя размерность списков) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="../../d2/d24/_sheet2_d_8cpp_source.html">Sheet2D.cpp</a> строка <a class="el" href="../../d2/d24/_sheet2_d_8cpp_source.html#l00062">62</a></p>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">freeVortexSheet_</a>.resize(np * <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">dim</a>, 0.0);</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a00a8cbdb7e007856e899eff92a94ede2">attachedVortexSheet_</a>.resize(np * dim, 0.0);</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a56b1f64cd3a1a8112c169bb197f355d3">attachedSourceSheet_</a>.resize(np * dim, 0.0);</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;};<span class="comment">//SetLayers(...)</span></div><div class="ttc" id="class_v_m2_d_1_1_sheet_html_a6e77c58df3adee189df56adcd0ffb501"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6e77c58df3adee189df56adcd0ffb501">VM2D::Sheet::freeVortexSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; freeVortexSheet_</div><div class="ttdoc">Список из характеристик свободного вихревого слоя на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00063">Sheet2D.h:63</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_a56b1f64cd3a1a8112c169bb197f355d3"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a56b1f64cd3a1a8112c169bb197f355d3">VM2D::Sheet::attachedSourceSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; attachedSourceSheet_</div><div class="ttdoc">Список из характеристик присоединенного слоя источников на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00069">Sheet2D.h:69</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_a00a8cbdb7e007856e899eff92a94ede2"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a00a8cbdb7e007856e899eff92a94ede2">VM2D::Sheet::attachedVortexSheet_</a></div><div class="ttdeci">std::vector&lt; double &gt; attachedVortexSheet_</div><div class="ttdoc">Список из характеристик присоединенного вихревого слоя на панелях </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00066">Sheet2D.h:66</a></div></div>
+<div class="ttc" id="class_v_m2_d_1_1_sheet_html_adcc776a5cafa224d1e4c61fb5998b62e"><div class="ttname"><a href="../../de/d8b/class_v_m2_d_1_1_sheet.html#adcc776a5cafa224d1e4c61fb5998b62e">VM2D::Sheet::dim</a></div><div class="ttdeci">const int dim</div><div class="ttdoc">Число параметров в описании каждого слоя </div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d0a/_sheet2_d_8h_source.html#l00076">Sheet2D.h:76</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8b/class_v_m2_d_1_1_sheet_a6cd1e3eaf9602ae80c726a2fa16116c6_icgraph.png" border="0" usemap="#de/d8b/class_v_m2_d_1_1_sheet_a6cd1e3eaf9602ae80c726a2fa16116c6_icgraph" alt=""/></div>
+<map name="de/d8b/class_v_m2_d_1_1_sheet_a6cd1e3eaf9602ae80c726a2fa16116c6_icgraph" id="de/d8b/class_v_m2_d_1_1_sheet_a6cd1e3eaf9602ae80c726a2fa16116c6_icgraph">
+<area shape="rect" id="node2" href="../../df/da2/class_v_m2_d_1_1_boundary.html#aee6b852d79dd1afbe3bfc26389644877" title="Конструктор " alt="" coords="221,5,407,32"/>
+<area shape="rect" id="node3" href="../../de/d8b/class_v_m2_d_1_1_sheet.html#a6dc6a0e144592bbb1e44edcb10215e12" title="Деструктор " alt="" coords="239,56,389,83"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<h2 class="groupheader">Данные класса</h2>
+<a class="anchor" id="a56b1f64cd3a1a8112c169bb197f355d3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; VM2D::Sheet::attachedSourceSheet_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Список из характеристик присоединенного слоя источников на панелях </p>
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00069">69</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a00a8cbdb7e007856e899eff92a94ede2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; VM2D::Sheet::attachedVortexSheet_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Список из характеристик присоединенного вихревого слоя на панелях </p>
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00066">66</a></p>
+
+</div>
+</div>
+<a class="anchor" id="adcc776a5cafa224d1e4c61fb5998b62e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int VM2D::Sheet::dim</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Число параметров в описании каждого слоя </p>
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00076">76</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a6e77c58df3adee189df56adcd0ffb501"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; VM2D::Sheet::freeVortexSheet_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Список из характеристик свободного вихревого слоя на панелях </p>
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00063">63</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a42753fdfb03dbf01adfd5a64b1ad583f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html">World2D</a>&amp; VM2D::Sheet::W</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Константная ссылка на решаемую задачу </p>
+
+<p>См. определение в файле <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a> строка <a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html#l00073">73</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов классов находятся в файлах:<ul>
+<li>VM2D/Sheet2D/<a class="el" href="../../d3/d0a/_sheet2_d_8h_source.html">Sheet2D.h</a></li>
+<li>VM2D/Sheet2D/<a class="el" href="../../d2/d24/_sheet2_d_8cpp_source.html">Sheet2D.cpp</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../d9/dd7/namespace_v_m2_d.html">VM2D</a></li><li class="navelem"><a class="el" href="../../de/d8b/class_v_m2_d_1_1_sheet.html">Sheet</a></li>
+    <li class="footer">Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<map id="VM2D::MechanicsRigidOscillPart::Move" name="VM2D::MechanicsRigidOscillPart::Move">
+<area shape="rect" id="node2" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="266,5,457,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="263,56,459,83"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae77606bfe37d99ef15cefa876e284277" title="Перемещение профиля " alt="" coords="291,107,431,133"/>
+<area shape="rect" id="node5" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a5e6bfd0b3b87fb0f3bda513ebd0c2f96" title="Чтение параметров конкретной механической системы " alt="" coords="247,157,476,213"/>
+<area shape="rect" id="node6" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="277,237,446,264"/>
+<area shape="rect" id="node7" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="274,288,449,315"/>
+</map>

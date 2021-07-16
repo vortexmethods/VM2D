@@ -1,0 +1,5 @@
+<map id="VM2D::Airfoil::GetDiffVelocityI0I3ToWakeAndViscousStresses" name="VM2D::Airfoil::GetDiffVelocityI0I3ToWakeAndViscousStresses">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af184136bf9207d4f00b1e93a8df974b2" title="Деструктор " alt="" coords="279,5,428,32"/>
+<area shape="rect" id="node3" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e81fd75f2fa3af9ab43b50dcd970046" title="VM2D::Velocity::CalcDiff\lVeloI0I3" alt="" coords="268,57,439,98"/>
+<area shape="rect" id="node4" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="487,64,683,91"/>
+</map>

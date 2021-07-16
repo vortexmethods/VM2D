@@ -1,0 +1,1323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>VM2D: Структура PointsCopy_iterator::all_iterator</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/NativeMML"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="../../LOGO.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VM2D
+   &#160;<span id="projectnumber">1.10</span>
+   </div>
+   <div id="projectbrief">Вихревые методы для решения двумерных задач</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="../../index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="../../pages.html"><span>Описания</span></a></li>
+      <li><a href="../../modules.html"><span>Группы</span></a></li>
+      <li><a href="../../namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../files.html"><span>Файлы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="../../search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="../../search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li><a href="../../classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="../../inherits.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="../../functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('d6/d72/struct_points_copy__iterator_1_1all__iterator.html','../../');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Открытые типы</a> &#124;
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pri-types">Закрытые типы</a> &#124;
+<a href="#pri-attribs">Закрытые данные</a> &#124;
+<a href="#friends">Друзья</a> &#124;
+<a href="../../d5/df4/struct_points_copy__iterator_1_1all__iterator-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Структура PointsCopy_iterator::all_iterator</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a>&gt;</code></p>
+<div class="dynheader">
+Граф наследования:PointsCopy_iterator::all_iterator:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d7/db6/struct_points_copy__iterator_1_1all__iterator__inherit__graph.png" border="0" usemap="#_points_copy__iterator_1_1all__iterator_inherit__map" alt="Inheritance graph"/></div>
+<map name="_points_copy__iterator_1_1all__iterator_inherit__map" id="_points_copy__iterator_1_1all__iterator_inherit__map">
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">см. легенду</a>]</span></center></div>
+<div class="dynheader">
+Граф связей класса PointsCopy_iterator::all_iterator:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../df/d14/struct_points_copy__iterator_1_1all__iterator__coll__graph.png" border="0" usemap="#_points_copy__iterator_1_1all__iterator_coll__map" alt="Collaboration graph"/></div>
+<map name="_points_copy__iterator_1_1all__iterator_coll__map" id="_points_copy__iterator_1_1all__iterator_coll__map">
+<area shape="rect" id="node3" title="STL iterator class. " alt="" coords="8,85,172,112"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">см. легенду</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Открытые типы</h2></td></tr>
+<tr class="memitem:a6f064c4a7dff463caab54d9f31cc4fa7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a6f064c4a7dff463caab54d9f31cc4fa7">reference</a> = <a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a></td></tr>
+<tr class="separator:a6f064c4a7dff463caab54d9f31cc4fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a781880e1a9cf73fe59784c0796c756f2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a781880e1a9cf73fe59784c0796c756f2">pointer</a> = <a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a></td></tr>
+<tr class="separator:a781880e1a9cf73fe59784c0796c756f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:a9e2a5f344f73852b91b7ebe372974394"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a9e2a5f344f73852b91b7ebe372974394">all_iterator</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a5f43e9eec5cedb57ed01fd9f5a84357f">ItVtx</a> _iVtx, <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad7c335d0cec699b712add2c2a7b18f35">ItAflPnl</a> _iAflPnl, <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a07b2572d529483779017ade9470b1a8d">ItNum</a> _iNum)</td></tr>
+<tr class="separator:a9e2a5f344f73852b91b7ebe372974394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26f3485c30c6a27aa470838743575191"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a26f3485c30c6a27aa470838743575191">all_iterator</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;)=default</td></tr>
+<tr class="separator:a26f3485c30c6a27aa470838743575191"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a864232c6d8f527d5de8a429f82204751"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a864232c6d8f527d5de8a429f82204751">operator=</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;)=default</td></tr>
+<tr class="separator:a864232c6d8f527d5de8a429f82204751"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a299ce7b3b73ff529d2638b5858029908"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a299ce7b3b73ff529d2638b5858029908">~all_iterator</a> ()=default</td></tr>
+<tr class="separator:a299ce7b3b73ff529d2638b5858029908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f69b7fcbf66af5782563431d19e7b63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a8f69b7fcbf66af5782563431d19e7b63">swap</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> &amp;other)</td></tr>
+<tr class="separator:a8f69b7fcbf66af5782563431d19e7b63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac80abc44ba2886805e5455a4937ac80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#aac80abc44ba2886805e5455a4937ac80">operator*</a> ()</td></tr>
+<tr class="separator:aac80abc44ba2886805e5455a4937ac80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a798180312d44c6d5eb84d7c46bf4436b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a798180312d44c6d5eb84d7c46bf4436b">operator*</a> () const </td></tr>
+<tr class="separator:a798180312d44c6d5eb84d7c46bf4436b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa668ad635e164c9996a71ce3ddcf77e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#aa668ad635e164c9996a71ce3ddcf77e0">operator-&gt;</a> ()</td></tr>
+<tr class="separator:aa668ad635e164c9996a71ce3ddcf77e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c6e39be545a8818c6803bc1f8ff2979"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a2c6e39be545a8818c6803bc1f8ff2979">operator-&gt;</a> () const </td></tr>
+<tr class="separator:a2c6e39be545a8818c6803bc1f8ff2979"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac73a0f5a976f309284eeb4d13beb509b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ac73a0f5a976f309284eeb4d13beb509b">operator==</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;other) const </td></tr>
+<tr class="separator:ac73a0f5a976f309284eeb4d13beb509b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff791562d2a60715bb3ced397408bd0b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#aff791562d2a60715bb3ced397408bd0b">operator!=</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;other) const </td></tr>
+<tr class="separator:aff791562d2a60715bb3ced397408bd0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab030423ce2aaaf50c800efbe81a4fe68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ab030423ce2aaaf50c800efbe81a4fe68">operator++</a> ()</td></tr>
+<tr class="separator:ab030423ce2aaaf50c800efbe81a4fe68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13ee12696bfd1b411ac433bf16e758d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a13ee12696bfd1b411ac433bf16e758d1">operator++</a> (int)</td></tr>
+<tr class="separator:a13ee12696bfd1b411ac433bf16e758d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a682099a53e62f394291b31b0119894a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a682099a53e62f394291b31b0119894a2">all_iterator</a> ()=default</td></tr>
+<tr class="separator:a682099a53e62f394291b31b0119894a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e2687b660f87c31789c7e13bd2fb4fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4e2687b660f87c31789c7e13bd2fb4fb">operator--</a> ()</td></tr>
+<tr class="separator:a4e2687b660f87c31789c7e13bd2fb4fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac92f465bae79b184e796598518577738"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ac92f465bae79b184e796598518577738">operator--</a> (int)</td></tr>
+<tr class="separator:ac92f465bae79b184e796598518577738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af84a7ff6f9ca0e9f1c39a2200b83e6cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#af84a7ff6f9ca0e9f1c39a2200b83e6cd">operator+=</a> (difference_type p)</td></tr>
+<tr class="separator:af84a7ff6f9ca0e9f1c39a2200b83e6cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac54006ef86529e01862e51f4d3bac4ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ac54006ef86529e01862e51f4d3bac4ca">operator+</a> (difference_type p) const </td></tr>
+<tr class="separator:ac54006ef86529e01862e51f4d3bac4ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32d13d3b9378427dbdee2fdf5b03c1f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a32d13d3b9378427dbdee2fdf5b03c1f1">operator-=</a> (difference_type p)</td></tr>
+<tr class="separator:a32d13d3b9378427dbdee2fdf5b03c1f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d6f11875e4745e7fc6ce9df67861ef9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a0d6f11875e4745e7fc6ce9df67861ef9">operator-</a> (difference_type p) const </td></tr>
+<tr class="separator:a0d6f11875e4745e7fc6ce9df67861ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f37a0970ce6dd5cd6d4f0975a1aef19"><td class="memItemLeft" align="right" valign="top">difference_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a6f37a0970ce6dd5cd6d4f0975a1aef19">operator-</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;p) const </td></tr>
+<tr class="separator:a6f37a0970ce6dd5cd6d4f0975a1aef19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbb65776a5868d340380ef5c4104633a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#adbb65776a5868d340380ef5c4104633a">operator[]</a> (difference_type p)</td></tr>
+<tr class="separator:adbb65776a5868d340380ef5c4104633a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa14497b3bc594ecdee7e968cfb89cd1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#aa14497b3bc594ecdee7e968cfb89cd1d">operator[]</a> (difference_type p) const </td></tr>
+<tr class="separator:aa14497b3bc594ecdee7e968cfb89cd1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9428f9e24eed85f9aebb8db6c2e0ab1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a9428f9e24eed85f9aebb8db6c2e0ab1a">operator&lt;</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;p) const </td></tr>
+<tr class="separator:a9428f9e24eed85f9aebb8db6c2e0ab1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee64e9852f8406050fdbd6d5916dea7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#adee64e9852f8406050fdbd6d5916dea7">operator&gt;</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;p) const </td></tr>
+<tr class="separator:adee64e9852f8406050fdbd6d5916dea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3fcb57fa91124e1328675991da563ac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#af3fcb57fa91124e1328675991da563ac">operator&gt;=</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;p) const </td></tr>
+<tr class="separator:af3fcb57fa91124e1328675991da563ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c5b9b0d4b50e835587960f9cbd4527c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a3c5b9b0d4b50e835587960f9cbd4527c">operator&lt;=</a> (<a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;p) const </td></tr>
+<tr class="separator:a3c5b9b0d4b50e835587960f9cbd4527c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a563b9bbd690f5db541ac034d4bd5d315"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a563b9bbd690f5db541ac034d4bd5d315">getVtx</a> () const </td></tr>
+<tr class="separator:a563b9bbd690f5db541ac034d4bd5d315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a805572d44533db044cdb16ff967eaf83"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a805572d44533db044cdb16ff967eaf83">getNum</a> () const </td></tr>
+<tr class="separator:a805572d44533db044cdb16ff967eaf83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2852077e068a52c899b080ab9c69e5f"><td class="memItemLeft" align="right" valign="top">const std::pair&lt; int, int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#af2852077e068a52c899b080ab9c69e5f">getAflPnl</a> () const </td></tr>
+<tr class="separator:af2852077e068a52c899b080ab9c69e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-types"></a>
+Закрытые типы</h2></td></tr>
+<tr class="memitem:a5f43e9eec5cedb57ed01fd9f5a84357f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a5f43e9eec5cedb57ed01fd9f5a84357f">ItVtx</a> = std::vector&lt; <a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a> &gt;::iterator</td></tr>
+<tr class="separator:a5f43e9eec5cedb57ed01fd9f5a84357f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7c335d0cec699b712add2c2a7b18f35"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad7c335d0cec699b712add2c2a7b18f35">ItAflPnl</a> = std::vector&lt; std::pair&lt; int, int &gt;&gt;::iterator</td></tr>
+<tr class="separator:ad7c335d0cec699b712add2c2a7b18f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07b2572d529483779017ade9470b1a8d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a07b2572d529483779017ade9470b1a8d">ItNum</a> = std::vector&lt; int &gt;::iterator</td></tr>
+<tr class="separator:a07b2572d529483779017ade9470b1a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Закрытые данные</h2></td></tr>
+<tr class="memitem:a7de269778a99814c93f8fe0cf7c2101c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a5f43e9eec5cedb57ed01fd9f5a84357f">ItVtx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a></td></tr>
+<tr class="separator:a7de269778a99814c93f8fe0cf7c2101c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad999b8b89491e22a516c2b1f61f176d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad7c335d0cec699b712add2c2a7b18f35">ItAflPnl</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a></td></tr>
+<tr class="separator:ad999b8b89491e22a516c2b1f61f176d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cc6c663d95d9acc570f1ab7e8d52ecc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a07b2572d529483779017ade9470b1a8d">ItNum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a></td></tr>
+<tr class="separator:a4cc6c663d95d9acc570f1ab7e8d52ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Друзья</h2></td></tr>
+<tr class="memitem:a4c9fdf9edd7139dfb4d8ea874d66840b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4c9fdf9edd7139dfb4d8ea874d66840b">operator+</a> (difference_type p, <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> temp)</td></tr>
+<tr class="separator:a4c9fdf9edd7139dfb4d8ea874d66840b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock">
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00146">146</a></p>
+</div><h2 class="groupheader">Определения типов</h2>
+<a class="anchor" id="ad7c335d0cec699b712add2c2a7b18f35"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad7c335d0cec699b712add2c2a7b18f35">PointsCopy_iterator::all_iterator::ItAflPnl</a> =  std::vector&lt;std::pair&lt;int, int&gt;&gt;::iterator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00150">150</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a07b2572d529483779017ade9470b1a8d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a07b2572d529483779017ade9470b1a8d">PointsCopy_iterator::all_iterator::ItNum</a> =  std::vector&lt;int&gt;::iterator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00151">151</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a5f43e9eec5cedb57ed01fd9f5a84357f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a5f43e9eec5cedb57ed01fd9f5a84357f">PointsCopy_iterator::all_iterator::ItVtx</a> =  std::vector&lt;<a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&gt;::iterator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00149">149</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a781880e1a9cf73fe59784c0796c756f2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a781880e1a9cf73fe59784c0796c756f2">PointsCopy_iterator::all_iterator::pointer</a> =  <a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00164">164</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a6f064c4a7dff463caab54d9f31cc4fa7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a6f064c4a7dff463caab54d9f31cc4fa7">PointsCopy_iterator::all_iterator::reference</a> =  <a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00163">163</a></p>
+
+</div>
+</div>
+<h2 class="groupheader">Конструктор(ы)</h2>
+<a class="anchor" id="a9e2a5f344f73852b91b7ebe372974394"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PointsCopy_iterator::all_iterator::all_iterator </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a5f43e9eec5cedb57ed01fd9f5a84357f">ItVtx</a>&#160;</td>
+          <td class="paramname"><em>_iVtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad7c335d0cec699b712add2c2a7b18f35">ItAflPnl</a>&#160;</td>
+          <td class="paramname"><em>_iAflPnl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a07b2572d529483779017ade9470b1a8d">ItNum</a>&#160;</td>
+          <td class="paramname"><em>_iNum</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00157">157</a></p>
+<div class="fragment"><div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;: <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>(_iVtx), <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a>(_iAflPnl), <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a>(_iNum) {};</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a26f3485c30c6a27aa470838743575191"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PointsCopy_iterator::all_iterator::all_iterator </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a299ce7b3b73ff529d2638b5858029908"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PointsCopy_iterator::all_iterator::~all_iterator </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a682099a53e62f394291b31b0119894a2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PointsCopy_iterator::all_iterator::all_iterator </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a class="anchor" id="af2852077e068a52c899b080ab9c69e5f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::pair&lt;int, int&gt;&amp; PointsCopy_iterator::all_iterator::getAflPnl </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00310">310</a></p>
+<div class="fragment"><div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        {</div><div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            <span class="keywordflow">return</span> *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a>;</div><div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/d72/struct_points_copy__iterator_1_1all__iterator_af2852077e068a52c899b080ab9c69e5f_cgraph.png" border="0" usemap="#d6/d72/struct_points_copy__iterator_1_1all__iterator_af2852077e068a52c899b080ab9c69e5f_cgraph" alt=""/></div>
+<map name="d6/d72/struct_points_copy__iterator_1_1all__iterator_af2852077e068a52c899b080ab9c69e5f_cgraph" id="d6/d72/struct_points_copy__iterator_1_1all__iterator_af2852077e068a52c899b080ab9c69e5f_cgraph">
+<area shape="rect" id="node2" href="../../dd/daf/namespace_points_copy__iterator.html#a88530a3eeebcc9013beea63e1ed1293d" title="PointsCopy_iterator\l::LessXrr" alt="" coords="204,5,341,47"/>
+<area shape="rect" id="node4" href="../../dd/daf/namespace_points_copy__iterator.html#a00e20bd89f71b4706b667acb0d59130b" title="PointsCopy_iterator\l::LessYrr" alt="" coords="204,71,341,112"/>
+<area shape="rect" id="node5" href="../../dd/daf/namespace_points_copy__iterator.html#a6ebd517bc255d85a968adf16d91b5736" title="PointsCopy_iterator\l::LessXcr" alt="" coords="204,136,341,177"/>
+<area shape="rect" id="node6" href="../../dd/daf/namespace_points_copy__iterator.html#a4d8bfa715a9c063c862f68650a673cf9" title="PointsCopy_iterator\l::LessYcr" alt="" coords="204,201,341,243"/>
+<area shape="rect" id="node7" href="../../dd/daf/namespace_points_copy__iterator.html#a1b8013e31724493d8d4980ea6ece2c02" title="PointsCopy_iterator\l::LessXrc" alt="" coords="204,267,341,308"/>
+<area shape="rect" id="node8" href="../../dd/daf/namespace_points_copy__iterator.html#ab961155759dc59aed2fc878f01edb1db" title="PointsCopy_iterator\l::LessYrc" alt="" coords="204,332,341,373"/>
+<area shape="rect" id="node9" href="../../dd/daf/namespace_points_copy__iterator.html#af55900124639f3ec6ff1ee29b3ec8f3a" title="PointsCopy_iterator\l::LessXcc" alt="" coords="204,397,341,439"/>
+<area shape="rect" id="node10" href="../../dd/daf/namespace_points_copy__iterator.html#a538d6e64ef2253736052ff8990d3c173" title="PointsCopy_iterator\l::LessYcc" alt="" coords="204,463,341,504"/>
+<area shape="rect" id="node3" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html#ad172c980a018f61a40e19b7fc4861b2e" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="389,242,520,269"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a805572d44533db044cdb16ff967eaf83"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int PointsCopy_iterator::all_iterator::getNum </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00305">305</a></p>
+<div class="fragment"><div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        {</div><div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            <span class="keywordflow">return</span> *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a>;</div><div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/d72/struct_points_copy__iterator_1_1all__iterator_a805572d44533db044cdb16ff967eaf83_icgraph.png" border="0" usemap="#d6/d72/struct_points_copy__iterator_1_1all__iterator_a805572d44533db044cdb16ff967eaf83_icgraph" alt=""/></div>
+<map name="d6/d72/struct_points_copy__iterator_1_1all__iterator_a805572d44533db044cdb16ff967eaf83_icgraph" id="d6/d72/struct_points_copy__iterator_1_1all__iterator_a805572d44533db044cdb16ff967eaf83_icgraph">
+<area shape="rect" id="node2" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a0afa0d0e0831d9f09e1f0571e85174a5" title="Расчет приближенного влияния от вихрей на элемент it внутри ячейки нижнего уровня Вызывается внутри ц..." alt="" coords="197,5,376,47"/>
+<area shape="rect" id="node3" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a252969857b129eb15dd7d956c5a2737a" title="Расчет приближенного влияния от источников на элемент it внутри ячейки нижнего уровня Вызывается внут..." alt="" coords="197,71,376,112"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a563b9bbd690f5db541ac034d4bd5d315"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; PointsCopy_iterator::all_iterator::getVtx </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00300">300</a></p>
+<div class="fragment"><div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        {</div><div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            <span class="keywordflow">return</span> *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>;</div><div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/d72/struct_points_copy__iterator_1_1all__iterator_a563b9bbd690f5db541ac034d4bd5d315_icgraph.png" border="0" usemap="#d6/d72/struct_points_copy__iterator_1_1all__iterator_a563b9bbd690f5db541ac034d4bd5d315_icgraph" alt=""/></div>
+<map name="d6/d72/struct_points_copy__iterator_1_1all__iterator_a563b9bbd690f5db541ac034d4bd5d315_icgraph" id="d6/d72/struct_points_copy__iterator_1_1all__iterator_a563b9bbd690f5db541ac034d4bd5d315_icgraph">
+<area shape="rect" id="node2" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a8e4d179514ed084174f7b002ceab33dc" title="Построение иерархической структуры ячеек (дерева) " alt="" coords="191,5,373,32"/>
+<area shape="rect" id="node4" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a0afa0d0e0831d9f09e1f0571e85174a5" title="Расчет приближенного влияния от вихрей на элемент it внутри ячейки нижнего уровня Вызывается внутри ц..." alt="" coords="193,57,371,98"/>
+<area shape="rect" id="node5" href="../../d6/daf/class_v_m2_d_1_1_cell.html#a252969857b129eb15dd7d956c5a2737a" title="Расчет приближенного влияния от источников на элемент it внутри ячейки нижнего уровня Вызывается внут..." alt="" coords="193,122,371,163"/>
+<area shape="rect" id="node3" href="../../d8/d90/class_v_m2_d_1_1_tree.html#a24d8cbf96e99447b52276dbbfbffe514" title="Конструктор " alt="" coords="421,5,548,32"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="aff791562d2a60715bb3ced397408bd0b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PointsCopy_iterator::all_iterator::operator!= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00198">198</a></p>
+<div class="fragment"><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        {</div><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a> != other.iVtx; </div><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aac80abc44ba2886805e5455a4937ac80"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a> PointsCopy_iterator::all_iterator::operator* </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00173">173</a></p>
+<div class="fragment"><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        {</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            <span class="keywordflow">return</span> { *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>, *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a>, *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a> };</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a798180312d44c6d5eb84d7c46bf4436b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a> const PointsCopy_iterator::all_iterator::operator* </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00178">178</a></p>
+<div class="fragment"><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        {</div><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            <span class="keywordflow">return</span> { *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>, *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a>, *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a> };</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ac54006ef86529e01862e51f4d3bac4ca"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> PointsCopy_iterator::all_iterator::operator+ </td>
+          <td>(</td>
+          <td class="paramtype">difference_type&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00242">242</a></p>
+<div class="fragment"><div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        {</div><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a682099a53e62f394291b31b0119894a2">all_iterator</a> temp(*<span class="keyword">this</span>);</div><div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            temp += p;</div><div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            <span class="keywordflow">return</span> temp;</div><div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a682099a53e62f394291b31b0119894a2"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a682099a53e62f394291b31b0119894a2">PointsCopy_iterator::all_iterator::all_iterator</a></div><div class="ttdeci">all_iterator()=default</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab030423ce2aaaf50c800efbe81a4fe68"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&amp; PointsCopy_iterator::all_iterator::operator++ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00203">203</a></p>
+<div class="fragment"><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        {</div><div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            ++<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>;</div><div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            ++<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a>;</div><div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            ++<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a>;</div><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a13ee12696bfd1b411ac433bf16e758d1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> PointsCopy_iterator::all_iterator::operator++ </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00211">211</a></p>
+<div class="fragment"><div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        {</div><div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a682099a53e62f394291b31b0119894a2">all_iterator</a> temp(*<span class="keyword">this</span>);</div><div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            ++(*this);</div><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            <span class="keywordflow">return</span> temp;</div><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a682099a53e62f394291b31b0119894a2"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a682099a53e62f394291b31b0119894a2">PointsCopy_iterator::all_iterator::all_iterator</a></div><div class="ttdeci">all_iterator()=default</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af84a7ff6f9ca0e9f1c39a2200b83e6cd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&amp; PointsCopy_iterator::all_iterator::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">difference_type&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00234">234</a></p>
+<div class="fragment"><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        {</div><div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a> += p;</div><div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a> += p;</div><div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a> += p;</div><div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a0d6f11875e4745e7fc6ce9df67861ef9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> PointsCopy_iterator::all_iterator::operator- </td>
+          <td>(</td>
+          <td class="paramtype">difference_type&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00262">262</a></p>
+<div class="fragment"><div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        {</div><div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a682099a53e62f394291b31b0119894a2">all_iterator</a> temp(*<span class="keyword">this</span>);</div><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            temp -= p;</div><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">return</span> temp;</div><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a682099a53e62f394291b31b0119894a2"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a682099a53e62f394291b31b0119894a2">PointsCopy_iterator::all_iterator::all_iterator</a></div><div class="ttdeci">all_iterator()=default</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6f37a0970ce6dd5cd6d4f0975a1aef19"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">difference_type PointsCopy_iterator::all_iterator::operator- </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00269">269</a></p>
+<div class="fragment"><div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        {</div><div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a> - p.iVtx;  </div><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a4e2687b660f87c31789c7e13bd2fb4fb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&amp; PointsCopy_iterator::all_iterator::operator-- </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00220">220</a></p>
+<div class="fragment"><div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        {</div><div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            --<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>;</div><div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            --<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a>;</div><div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            --<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a>;</div><div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ac92f465bae79b184e796598518577738"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> PointsCopy_iterator::all_iterator::operator-- </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00227">227</a></p>
+<div class="fragment"><div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        {</div><div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a682099a53e62f394291b31b0119894a2">all_iterator</a> temp(*<span class="keyword">this</span>);</div><div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            --(*this);</div><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            <span class="keywordflow">return</span> temp;</div><div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a682099a53e62f394291b31b0119894a2"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a682099a53e62f394291b31b0119894a2">PointsCopy_iterator::all_iterator::all_iterator</a></div><div class="ttdeci">all_iterator()=default</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a32d13d3b9378427dbdee2fdf5b03c1f1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&amp; PointsCopy_iterator::all_iterator::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">difference_type&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00255">255</a></p>
+<div class="fragment"><div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        {</div><div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a> -= p;</div><div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a> -= p;</div><div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a> -= p;</div><div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div><div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aa668ad635e164c9996a71ce3ddcf77e0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a> PointsCopy_iterator::all_iterator::operator-&gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00183">183</a></p>
+<div class="fragment"><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        {</div><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            <span class="keywordflow">return</span> { *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>, *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a>, *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a> };</div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a2c6e39be545a8818c6803bc1f8ff2979"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a> const PointsCopy_iterator::all_iterator::operator-&gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00188">188</a></p>
+<div class="fragment"><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        {</div><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="keywordflow">return</span> { *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>, *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a>, *<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a> };</div><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9428f9e24eed85f9aebb8db6c2e0ab1a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PointsCopy_iterator::all_iterator::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00283">283</a></p>
+<div class="fragment"><div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        {</div><div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a> &lt; p.iVtx;   </div><div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a3c5b9b0d4b50e835587960f9cbd4527c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PointsCopy_iterator::all_iterator::operator&lt;= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00295">295</a></p>
+<div class="fragment"><div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        {</div><div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a> &lt;= p.iVtx;  </div><div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a864232c6d8f527d5de8a429f82204751"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&amp; PointsCopy_iterator::all_iterator::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac73a0f5a976f309284eeb4d13beb509b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PointsCopy_iterator::all_iterator::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00193">193</a></p>
+<div class="fragment"><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        {</div><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>  == other.iVtx;  </div><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="adee64e9852f8406050fdbd6d5916dea7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PointsCopy_iterator::all_iterator::operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00287">287</a></p>
+<div class="fragment"><div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        {</div><div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a> &gt; p.iVtx;   </div><div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af3fcb57fa91124e1328675991da563ac"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PointsCopy_iterator::all_iterator::operator&gt;= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00291">291</a></p>
+<div class="fragment"><div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        {</div><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a> &gt;= p.iVtx; </div><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="adbb65776a5868d340380ef5c4104633a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a> PointsCopy_iterator::all_iterator::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">difference_type&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00274">274</a></p>
+<div class="fragment"><div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        {</div><div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="keywordflow">return</span> *(*<span class="keyword">this</span> + p);</div><div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aa14497b3bc594ecdee7e968cfb89cd1d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d40/struct_points_copy__iterator_1_1all__reference.html">all_reference</a> const PointsCopy_iterator::all_iterator::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">difference_type&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00278">278</a></p>
+<div class="fragment"><div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        {</div><div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <span class="keywordflow">return</span> *(*<span class="keyword">this</span> + p);</div><div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a8f69b7fcbf66af5782563431d19e7b63"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PointsCopy_iterator::all_iterator::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00166">166</a></p>
+<div class="fragment"><div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        {</div><div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            std::swap(<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">iVtx</a>, other.iVtx);</div><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            std::swap(<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">iAflPnl</a>, other.iAflPnl);</div><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            std::swap(<a class="code" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">iNum</a>, other.iNum);</div><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        }</div><div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a4cc6c663d95d9acc570f1ab7e8d52ecc"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a4cc6c663d95d9acc570f1ab7e8d52ecc">PointsCopy_iterator::all_iterator::iNum</a></div><div class="ttdeci">ItNum iNum</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">PointsCopy2D.h:154</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_ad999b8b89491e22a516c2b1f61f176d4"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad999b8b89491e22a516c2b1f61f176d4">PointsCopy_iterator::all_iterator::iAflPnl</a></div><div class="ttdeci">ItAflPnl iAflPnl</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">PointsCopy2D.h:153</a></div></div>
+<div class="ttc" id="struct_points_copy__iterator_1_1all__iterator_html_a7de269778a99814c93f8fe0cf7c2101c"><div class="ttname"><a href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a7de269778a99814c93f8fe0cf7c2101c">PointsCopy_iterator::all_iterator::iVtx</a></div><div class="ttdeci">ItVtx iVtx</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">PointsCopy2D.h:152</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Документация по друзьям класса и функциям, относящимся к классу</h2>
+<a class="anchor" id="a4c9fdf9edd7139dfb4d8ea874d66840b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">difference_type&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a>&#160;</td>
+          <td class="paramname"><em>temp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00249">249</a></p>
+<div class="fragment"><div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        {</div><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            temp += p;</div><div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            <span class="keywordflow">return</span> temp;</div><div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Данные класса</h2>
+<a class="anchor" id="ad999b8b89491e22a516c2b1f61f176d4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#ad7c335d0cec699b712add2c2a7b18f35">ItAflPnl</a> PointsCopy_iterator::all_iterator::iAflPnl</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00153">153</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a4cc6c663d95d9acc570f1ab7e8d52ecc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a07b2572d529483779017ade9470b1a8d">ItNum</a> PointsCopy_iterator::all_iterator::iNum</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00154">154</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a7de269778a99814c93f8fe0cf7c2101c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html#a5f43e9eec5cedb57ed01fd9f5a84357f">ItVtx</a> PointsCopy_iterator::all_iterator::iVtx</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a> строка <a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html#l00152">152</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов структуры находятся в файле:<ul>
+<li>VM2D/Velocity2D/<a class="el" href="../../db/d0e/_points_copy2_d_8h_source.html">PointsCopy2D.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dd/daf/namespace_points_copy__iterator.html">PointsCopy_iterator</a></li><li class="navelem"><a class="el" href="../../d6/d72/struct_points_copy__iterator_1_1all__iterator.html">all_iterator</a></li>
+    <li class="footer">Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
+  </ul>
+</div>
+</body>
+</html>

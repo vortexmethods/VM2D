@@ -1,0 +1,6 @@
+<map id="VM2D::MechanicsRigidGivenLaw::VeloOfAirfoilPanels" name="VM2D::MechanicsRigidGivenLaw::VeloOfAirfoilPanels">
+<area shape="rect" id="node2" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a486b72e76c7712539adf50d68e3c557c" title="Вычисление скорости центра масс профиля " alt="" coords="248,5,443,47"/>
+<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="259,71,431,112"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="277,137,413,163"/>
+<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afaa4428c98211d798542f0636d1c9516" title="Установка постоянной скорости всех вершин профиля " alt="" coords="278,187,413,214"/>
+</map>

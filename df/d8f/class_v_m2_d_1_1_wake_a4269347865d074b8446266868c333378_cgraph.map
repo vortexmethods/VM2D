@@ -1,0 +1,9 @@
+<map id="VM2D::Wake::RemoveFar" name="VM2D::Wake::RemoveFar">
+<area shape="rect" id="node2" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="288,5,369,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="231,56,427,83"/>
+<area shape="rect" id="node4" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="283,107,374,133"/>
+<area shape="rect" id="node6" href="$df/dc0/group___parallel.html#ga75fa9eab08bd59596c5e083b049f6a2d" title="MPI&#45;синхронизация вихревого следа " alt="" coords="249,158,408,199"/>
+<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html#a09b90b5ede09d353b4a2f456ec6fb7ec" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="485,107,659,133"/>
+<area shape="rect" id="node7" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="475,161,669,188"/>
+<area shape="rect" id="node8" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="477,212,667,239"/>
+</map>

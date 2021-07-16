@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>VM2D: Файл VMlib/numvector/numvector.h</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/NativeMML"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="../../LOGO.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VM2D
+   &#160;<span id="projectnumber">1.10</span>
+   </div>
+   <div id="projectbrief">Вихревые методы для решения двумерных задач</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="../../index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="../../pages.html"><span>Описания</span></a></li>
+      <li><a href="../../modules.html"><span>Группы</span></a></li>
+      <li><a href="../../namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="../../files.html"><span>Файлы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="../../search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="../../search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="../../files.html"><span>Файлы</span></a></li>
+      <li><a href="../../globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('df/dc5/numvector_8h.html','../../');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Классы</a> &#124;
+<a href="#namespaces">Пространства имен</a> &#124;
+<a href="#define-members">Макросы</a> &#124;
+<a href="#func-members">Функции</a>  </div>
+  <div class="headertitle">
+<div class="title">Файл numvector.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Описание класса numvector.  
+<a href="#details">Подробнее...</a></p>
+<div class="textblock"><code>#include &lt;array&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
+<code>#include &lt;initializer_list&gt;</code><br />
+<code>#include &lt;ostream&gt;</code><br />
+<code>#include &lt;set&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Граф включаемых заголовочных файлов для numvector.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d5/d3a/numvector_8h__incl.png" border="0" usemap="#_v_mlib_2numvector_2numvector_8h" alt=""/></div>
+<map name="_v_mlib_2numvector_2numvector_8h" id="_v_mlib_2numvector_2numvector_8h">
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+Граф файлов, в которые включается этот файл:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d2/d68/numvector_8h__dep__incl.png" border="0" usemap="#_v_mlib_2numvector_2numvector_8hdep" alt=""/></div>
+<map name="_v_mlib_2numvector_2numvector_8hdep" id="_v_mlib_2numvector_2numvector_8hdep">
+<area shape="rect" id="node2" href="../../da/dbe/nummatrix_8h.html" title="Описание класса nummatrix. " alt="" coords="875,565,1071,591"/>
+<area shape="rect" id="node5" href="../../d2/dc6/_pair_int_8h.html" title="Файл кода с описанием класса PairInt. " alt="" coords="3127,80,3277,107"/>
+<area shape="rect" id="node64" href="../../d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D. " alt="" coords="3302,80,3470,107"/>
+<area shape="rect" id="node69" href="../../d6/d1e/v3_d_8h.html" title="Заголовочный файл с описанием класса v3D. " alt="" coords="3539,80,3662,107"/>
+<area shape="rect" id="node3" href="../../d9/d05/_airfoil2_d_curv_8cpp.html" title="Файл кода с описанием класса AirfoilRect. " alt="" coords="2568,654,2788,681"/>
+<area shape="rect" id="node4" href="../../de/d45/_airfoil2_d_rect_8cpp.html" title="Файл кода с описанием класса AirfoilRect. " alt="" coords="2020,654,2240,681"/>
+<area shape="rect" id="node6" href="../../d5/d64/defs_8h.html" title="Описание базовых вспомогательных функций " alt="" coords="3539,229,3663,256"/>
+<area shape="rect" id="node63" href="../../d4/dd7/_pair_int_8cpp.html" title="Файл кода с описанием класса v3D. " alt="" coords="2460,155,2624,181"/>
+<area shape="rect" id="node7" href="../../d0/d75/_airfoil2_d_8h.html" title="Заголовочный файл с описанием класса Airfoil. " alt="" coords="5850,483,6029,509"/>
+<area shape="rect" id="node31" href="../../d3/dc0/_measure_v_p2_d_8h.html" title="Заголовочный файл с описанием класса MeasureVP. " alt="" coords="5514,557,5717,599"/>
+<area shape="rect" id="node32" href="../../da/d3e/_mechanics2_d_8h.html" title="Заголовочный файл с описанием класса Mechanics. " alt="" coords="3847,483,4085,509"/>
+<area shape="rect" id="node37" href="../../db/d9f/_passport2_d_8cpp.html" title="Файл кода с описанием класса Passport. " alt="" coords="1581,647,1775,688"/>
+<area shape="rect" id="node38" href="../../db/d0e/_points_copy2_d_8h.html" title="Заголовочный файл с описанием класса PointsCopy. " alt="" coords="3897,311,4123,338"/>
+<area shape="rect" id="node43" href="../../dc/d81/_velocity2_d_8h.html" title="Заголовочный файл с описанием класса Velocity. " alt="" coords="6237,483,6444,509"/>
+<area shape="rect" id="node45" href="../../db/ddb/_wake_data_base2_d_8h.html" title="Заголовочный файл с описанием класса WakeDataBase. " alt="" coords="5943,304,6115,345"/>
+<area shape="rect" id="node51" href="../../da/ddd/defs_8cpp.html" title="Описание базовых вспомогательных функций " alt="" coords="3531,311,3670,338"/>
+<area shape="rect" id="node52" href="../../d7/d57/_passport_gen_8cpp.html" title="Файл кода с описанием класса PassportGen. " alt="" coords="5,647,196,688"/>
+<area shape="rect" id="node53" href="../../d0/dc4/_queue_8h.html" title="Заголовочный файл с описанием класса Queue. " alt="" coords="3028,311,3179,338"/>
+<area shape="rect" id="node56" href="../../d6/d75/_stream_parser_8h.html" title="Заголовочный файл с описанием класса StreamParser. " alt="" coords="3713,557,3851,599"/>
+<area shape="rect" id="node58" href="../../da/d3d/_times_gen_8h.html" title="Заголовочный файл с описанием класса TimesGen. " alt="" coords="3211,401,3406,427"/>
+<area shape="rect" id="node8" href="../../de/dac/_airfoil2_d_8cpp.html" title="Файл кода с описанием класса Airfoil. " alt="" coords="8410,654,8602,681"/>
+<area shape="rect" id="node9" href="../../df/db4/_airfoil2_d_curv_8h.html" title="Заголовочный файл с описанием класса AirfoilRect. " alt="" coords="4927,565,5133,591"/>
+<area shape="rect" id="node10" href="../../de/d6b/_boundary2_d_const_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryConstLayerAver. " alt="" coords="6468,647,6669,688"/>
+<area shape="rect" id="node11" href="../../dc/d7a/_boundary2_d_lin_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryLinLayerAver. " alt="" coords="5320,647,5521,688"/>
+<area shape="rect" id="node13" href="../../d2/df8/_airfoil2_d_rect_8h.html" title="Заголовочный файл с описанием класса AirfoilRect. " alt="" coords="2827,565,3033,591"/>
+<area shape="rect" id="node14" href="../../da/dee/_boundary2_d_8cpp.html" title="Файл кода с описанием класса Boundary. " alt="" coords="7848,647,8049,688"/>
+<area shape="rect" id="node15" href="../../d5/d1b/_gpu2_d_8cpp.html" title="Файл кода с описанием класса Gpu. " alt="" coords="6028,654,6203,681"/>
+<area shape="rect" id="node16" href="../../d5/d96/_measure_v_p2_d_8cpp.html" title="Файл кода с описанием класса MeasureVP. " alt="" coords="7253,647,7455,688"/>
+<area shape="rect" id="node17" href="../../df/dde/_mechanics2_d_8cpp.html" title="Файл кода с описанием класса Mechanics.cpp. " alt="" coords="5787,647,6004,688"/>
+<area shape="rect" id="node18" href="../../d0/d4f/_mechanics2_d_rigid_given_law_8cpp.html" title="Файл кода с описанием класса MechanicsRigidGivenLaw. " alt="" coords="4815,647,5032,688"/>
+<area shape="rect" id="node19" href="../../d0/dfa/_mechanics2_d_rigid_immovable_8cpp.html" title="Файл кода с описанием класса MechanicsRigidImmovable. " alt="" coords="6227,647,6444,688"/>
+<area shape="rect" id="node20" href="../../d1/da2/_mechanics2_d_rigid_oscill_part_8cpp.html" title="Файл кода с описанием класса MechanicsRigidOscillPart. " alt="" coords="5545,647,5763,688"/>
+<area shape="rect" id="node21" href="../../d5/d9d/_mechanics2_d_rigid_rotate_part_8cpp.html" title="Файл кода с описанием класса Mechanics2DRigidRotatePart. " alt="" coords="3673,647,3891,688"/>
+<area shape="rect" id="node22" href="../../d2/d24/_sheet2_d_8cpp.html" title="Файл кода с описанием класса Sheet. " alt="" coords="7598,654,7793,681"/>
+<area shape="rect" id="node23" href="../../d2/d5a/_times2_d_8cpp.html" title="Файл кода с описанием класса Times. " alt="" coords="2264,654,2463,681"/>
+<area shape="rect" id="node24" href="../../d1/dac/_cell2_d_8cpp.html" title="Файл кода с описанием класса Cell. " alt="" coords="1800,654,1996,681"/>
+<area shape="rect" id="node25" href="../../d8/df0/_tree2_d_8cpp.html" title="Файл кода с описанием класса Tree. " alt="" coords="3241,654,3440,681"/>
+<area shape="rect" id="node26" href="../../d2/dad/_velocity2_d_8cpp.html" title="Файл кода с описанием класса Velocity. " alt="" coords="6800,647,6985,688"/>
+<area shape="rect" id="node27" href="../../df/db2/_velocity2_d_barnes_hut_8cpp.html" title="Файл кода с описанием класса VelocityBarnesHut. " alt="" coords="2812,647,2997,688"/>
+<area shape="rect" id="node28" href="../../dd/d60/_velocity2_d_biot_savart_8cpp.html" title="Файл кода с описанием класса VelocityBiotSavart. " alt="" coords="3464,647,3649,688"/>
+<area shape="rect" id="node29" href="../../d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake. " alt="" coords="3022,654,3217,681"/>
+<area shape="rect" id="node30" href="../../dc/d69/_wake_data_base2_d_8cpp.html" title="Файл кода с описанием класса WakeDataBase. " alt="" coords="8116,647,8288,688"/>
+<area shape="rect" id="node12" href="../../d6/ddb/_world2_d_8cpp.html" title="Файл кода с описанием класса World2D. " alt="" coords="4369,654,4563,681"/>
+<area shape="rect" id="node33" href="../../d1/d21/_mechanics2_d_rigid_given_law_8h.html" title="Заголовочный файл с описанием класса MechanicsRigidGivenLaw. " alt="" coords="4116,557,4333,599"/>
+<area shape="rect" id="node34" href="../../d7/d0b/_mechanics2_d_rigid_immovable_8h.html" title="Заголовочный файл с описанием класса MechanicsRigidImmovable. " alt="" coords="6099,557,6316,599"/>
+<area shape="rect" id="node35" href="../../d6/de0/_mechanics2_d_rigid_oscill_part_8h.html" title="Заголовочный файл с описанием класса MechanicsRigidOscillPart. " alt="" coords="4357,557,4575,599"/>
+<area shape="rect" id="node36" href="../../d2/d66/_mechanics2_d_rigid_rotate_part_8h.html" title="Заголовочный файл с описанием класса MechanicsRigidRotatePart. " alt="" coords="3471,557,3688,599"/>
+<area shape="rect" id="node39" href="../../d0/d36/_cell2_d_8h.html" title="Заголовочный файл с описанием класса Cell. " alt="" coords="2813,401,2996,427"/>
+<area shape="rect" id="node42" href="../../dc/d08/_points_copy2_d_8cpp.html" title="Файл кода с описанием класса PointsCopy. " alt="" coords="3907,393,4113,435"/>
+<area shape="rect" id="node40" href="../../db/dde/_tree2_d_8h.html" title="Заголовочный файл с описанием класса Tree. " alt="" coords="5393,483,5579,509"/>
+<area shape="rect" id="node41" href="../../db/d37/_velocity2_d_barnes_hut_8h.html" title="Заголовочный файл с описанием класса VelocityBiotSavart. " alt="" coords="1957,557,2143,599"/>
+<area shape="rect" id="node44" href="../../d3/d60/_velocity2_d_biot_savart_8h.html" title="Заголовочный файл с описанием класса VelocityBiotSavart. " alt="" coords="3261,557,3447,599"/>
+<area shape="rect" id="node46" href="../../d5/d31/_virtual_wake2_d_8h.html" title="Заголовочный файл с описанием класса VirtualWake. " alt="" coords="5759,393,5909,435"/>
+<area shape="rect" id="node50" href="../../dc/d4d/_wake2_d_8h.html" title="Заголовочный файл с описанием класса Wake. " alt="" coords="5843,565,6023,591"/>
+<area shape="rect" id="node47" href="../../d6/d41/_boundary2_d_8h.html" title="Заголовочный файл с описанием класса Boundary. " alt="" coords="5603,483,5825,509"/>
+<area shape="rect" id="node48" href="../../d6/d56/_boundary2_d_const_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryConstLayerAver. " alt="" coords="7253,557,7455,599"/>
+<area shape="rect" id="node49" href="../../d1/d2e/_boundary2_d_lin_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryLinLayerAver. " alt="" coords="4701,557,4903,599"/>
+<area shape="rect" id="node54" href="../../d1/d0c/_v_m2_d_8cpp.html" title="Основной файл программы VM2D. " alt="" coords="3020,401,3187,427"/>
+<area shape="rect" id="node55" href="../../d9/dde/_queue_8cpp.html" title="Файл кода с описанием класса Queue. " alt="" coords="220,654,384,681"/>
+<area shape="rect" id="node57" href="../../d0/dad/_stream_parser_8cpp.html" title="Файл кода с описанием класса StreamParser. " alt="" coords="3915,647,4054,688"/>
+<area shape="rect" id="node59" href="../../da/db9/_times2_d_8h.html" title="Заголовочный файл с описанием класса Times. " alt="" coords="3217,483,3401,509"/>
+<area shape="rect" id="node61" href="../../d7/d50/_world_gen_8h.html" title="Заголовочный файл с описанием класса WorldGen. " alt="" coords="2427,483,2617,509"/>
+<area shape="rect" id="node60" href="../../d4/d87/_world2_d_8h.html" title="Заголовочный файл с описанием класса World2D. " alt="" coords="5157,565,5337,591"/>
+<area shape="rect" id="node62" href="../../d5/d1c/_world_gen_8cpp.html" title="Файл кода с описанием класса WorldGen. " alt="" coords="341,565,545,591"/>
+<area shape="rect" id="node65" href="../../d7/db0/_passport2_d_8h.html" title="Заголовочный файл с описанием класса Passport (двумерный) и cоответствующими структурами ..." alt="" coords="3875,565,4091,591"/>
+<area shape="rect" id="node66" href="../../de/d0c/_point2_d_8cpp.html" title="Файл кода с описанием класса Point2D. " alt="" coords="3380,155,3563,181"/>
+<area shape="rect" id="node67" href="../../d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D. " alt="" coords="3070,155,3254,181"/>
+<area shape="rect" id="node68" href="../../d5/d55/_vortex2_d_8cpp.html" title="Файл кода с описанием класса Vortex2D. " alt="" coords="3063,229,3261,256"/>
+<area shape="rect" id="node70" href="../../d0/df9/v3_d_8cpp.html" title="Файл кода с описанием класса v3D. " alt="" coords="6190,155,6326,181"/>
+</map>
+</div>
+</div>
+<p><a href="../../df/dc5/numvector_8h_source.html">См. исходные тексты.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Классы</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector&lt; T, n &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаблонный класс, определяющий вектор фиксированной длины <br />
+ Фактически представляет собой массив, для которого определено большое количество различных операций. <br />
+ Для доступа к элементам массива используется оператор [].  <a href="../../d6/dd4/class_v_mlib_1_1numvector.html#details">Подробнее...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Пространства имен</h2></td></tr>
+<tr class="memitem:dd/d9a/namespace_v_mlib"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html">VMlib</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Макросы</h2></td></tr>
+<tr class="memitem:ac1e8a42306d8e67cb94ca31c3956ee78"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dc5/numvector_8h.html#ac1e8a42306d8e67cb94ca31c3956ee78">DEPRECATED</a></td></tr>
+<tr class="separator:ac1e8a42306d8e67cb94ca31c3956ee78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Функции</h2></td></tr>
+<tr class="memitem:a1187bcb02612dadc913e2b5a5de81a5a"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t n&gt; </td></tr>
+<tr class="memitem:a1187bcb02612dadc913e2b5a5de81a5a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a1187bcb02612dadc913e2b5a5de81a5a">VMlib::operator*</a> (double c, const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;x)</td></tr>
+<tr class="memdesc:a1187bcb02612dadc913e2b5a5de81a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "*" умножения вектора на число (число слева, вектор справа)  <a href="../../dd/d9a/namespace_v_mlib.html#a1187bcb02612dadc913e2b5a5de81a5a">Подробнее...</a><br /></td></tr>
+<tr class="separator:a1187bcb02612dadc913e2b5a5de81a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d0599228ec9cc958980c7b8ca1ef8a9"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , size_t n&gt; </td></tr>
+<tr class="memitem:a4d0599228ec9cc958980c7b8ca1ef8a9"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a4d0599228ec9cc958980c7b8ca1ef8a9">VMlib::operator*</a> (const P c, const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;x) -&gt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(x[0]*c)&gt;::type, n &gt;</td></tr>
+<tr class="memdesc:a4d0599228ec9cc958980c7b8ca1ef8a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "*" умножения вектора на число (число слева, вектор справа)  <a href="../../dd/d9a/namespace_v_mlib.html#a4d0599228ec9cc958980c7b8ca1ef8a9">Подробнее...</a><br /></td></tr>
+<tr class="separator:a4d0599228ec9cc958980c7b8ca1ef8a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a383c34d2eb873d8868313324a391638b"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , typename R &gt; </td></tr>
+<tr class="memitem:a383c34d2eb873d8868313324a391638b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a383c34d2eb873d8868313324a391638b">VMlib::cross</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, 3 &gt; &amp;x, const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, 3 &gt; &amp;y, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; R, 3 &gt; &amp;z)</td></tr>
+<tr class="memdesc:a383c34d2eb873d8868313324a391638b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Быстрое вычисление векторного произведения  <a href="../../dd/d9a/namespace_v_mlib.html#a383c34d2eb873d8868313324a391638b">Подробнее...</a><br /></td></tr>
+<tr class="separator:a383c34d2eb873d8868313324a391638b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53a0c3504f463ab8fac683a8092aeb8a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , size_t n&gt; </td></tr>
+<tr class="memitem:a53a0c3504f463ab8fac683a8092aeb8a"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a">VMlib::dist2</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;x, const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y) -&gt; typename std::remove_const&lt; decltype(x[0]-y[0])&gt;::type</td></tr>
+<tr class="memdesc:a53a0c3504f463ab8fac683a8092aeb8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление квадрата расстояния между двумя точками  <a href="../../dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a">Подробнее...</a><br /></td></tr>
+<tr class="separator:a53a0c3504f463ab8fac683a8092aeb8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4707de62176aa2068f1f8628e0460f8c"><td class="memTemplParams" colspan="2">template&lt;typename R  = double, typename T , typename P , size_t n&gt; </td></tr>
+<tr class="memitem:a4707de62176aa2068f1f8628e0460f8c"><td class="memTemplItemLeft" align="right" valign="top">R&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">VMlib::dist</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;x, const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y)</td></tr>
+<tr class="memdesc:a4707de62176aa2068f1f8628e0460f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление расстояния между двумя точками  <a href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">Подробнее...</a><br /></td></tr>
+<tr class="separator:a4707de62176aa2068f1f8628e0460f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79e2151b8cf1a22875c703475e9bc7e6"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t n&gt; </td></tr>
+<tr class="memitem:a79e2151b8cf1a22875c703475e9bc7e6"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a79e2151b8cf1a22875c703475e9bc7e6">VMlib::operator&lt;&lt;</a> (std::ostream &amp;str, const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;x)</td></tr>
+<tr class="memdesc:a79e2151b8cf1a22875c703475e9bc7e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "&lt;&lt;" вывода вектора в поток  <a href="../../dd/d9a/namespace_v_mlib.html#a79e2151b8cf1a22875c703475e9bc7e6">Подробнее...</a><br /></td></tr>
+<tr class="separator:a79e2151b8cf1a22875c703475e9bc7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb2a14882b8f068971766a2033fe45f3"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , typename R , typename S , size_t n&gt; </td></tr>
+<tr class="memitem:acb2a14882b8f068971766a2033fe45f3"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#acb2a14882b8f068971766a2033fe45f3">VMlib::operator+=</a> (std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt;&gt; &amp;a, const std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; R, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; S, n &gt;&gt; &amp;b)</td></tr>
+<tr class="memdesc:acb2a14882b8f068971766a2033fe45f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор прибавления "+=" для пар векторов  <a href="../../dd/d9a/namespace_v_mlib.html#acb2a14882b8f068971766a2033fe45f3">Подробнее...</a><br /></td></tr>
+<tr class="separator:acb2a14882b8f068971766a2033fe45f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cd1dfeb1a2142f46306056318909471"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , typename R , typename S , size_t n&gt; </td></tr>
+<tr class="memitem:a0cd1dfeb1a2142f46306056318909471"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a0cd1dfeb1a2142f46306056318909471">VMlib::operator+</a> (const std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt;&gt; &amp;a, const std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; R, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; S, n &gt;&gt; &amp;b) -&gt; std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(a.first[0]+b.first[0])&gt;::type, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(a.second[0]+b.second[0])&gt;::type, n &gt;&gt;</td></tr>
+<tr class="memdesc:a0cd1dfeb1a2142f46306056318909471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор сложения "+" для пар векторов  <a href="../../dd/d9a/namespace_v_mlib.html#a0cd1dfeb1a2142f46306056318909471">Подробнее...</a><br /></td></tr>
+<tr class="separator:a0cd1dfeb1a2142f46306056318909471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89ebebfc03af747a64f5559a1d189b8c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , typename R , size_t n&gt; </td></tr>
+<tr class="memitem:a89ebebfc03af747a64f5559a1d189b8c"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a89ebebfc03af747a64f5559a1d189b8c">VMlib::operator*=</a> (std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt;&gt; &amp;a, R c)</td></tr>
+<tr class="memdesc:a89ebebfc03af747a64f5559a1d189b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор домножения "*=" пары векторов на число (пара слева, число справа)  <a href="../../dd/d9a/namespace_v_mlib.html#a89ebebfc03af747a64f5559a1d189b8c">Подробнее...</a><br /></td></tr>
+<tr class="separator:a89ebebfc03af747a64f5559a1d189b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64f0ee57ad4734ca6204a855365ce7b8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , typename R , size_t n&gt; </td></tr>
+<tr class="memitem:a64f0ee57ad4734ca6204a855365ce7b8"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a64f0ee57ad4734ca6204a855365ce7b8">VMlib::operator*</a> (R c, const std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt;&gt; &amp;a) -&gt; std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(c *a.first[0])&gt;::type, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(c *a.second[0])&gt;::type, n &gt;&gt;</td></tr>
+<tr class="memdesc:a64f0ee57ad4734ca6204a855365ce7b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор умножения "*" числа на пару векторов (число слева, пара справа)  <a href="../../dd/d9a/namespace_v_mlib.html#a64f0ee57ad4734ca6204a855365ce7b8">Подробнее...</a><br /></td></tr>
+<tr class="separator:a64f0ee57ad4734ca6204a855365ce7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9f059618451fbbc8973ba37bb645172"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , typename R , size_t n&gt; </td></tr>
+<tr class="memitem:af9f059618451fbbc8973ba37bb645172"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#af9f059618451fbbc8973ba37bb645172">VMlib::operator*</a> (const std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt;&gt; &amp;a, R c) -&gt; std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(a.first[0]*c)&gt;::type, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; typename std::remove_const&lt; decltype(a.second[0]*c)&gt;::type, n &gt;&gt;</td></tr>
+<tr class="memdesc:af9f059618451fbbc8973ba37bb645172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор умножения "*" пары векторов на число (пара слева, число справа)  <a href="../../dd/d9a/namespace_v_mlib.html#af9f059618451fbbc8973ba37bb645172">Подробнее...</a><br /></td></tr>
+<tr class="separator:af9f059618451fbbc8973ba37bb645172"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24f945504f9fd1748b6a8e270ca598fd"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , size_t n&gt; </td></tr>
+<tr class="memitem:a24f945504f9fd1748b6a8e270ca598fd"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a24f945504f9fd1748b6a8e270ca598fd">VMlib::operator&lt;&lt;</a> (std::ostream &amp;str, const std::pair&lt; <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt;, <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt;&gt; &amp;x)</td></tr>
+<tr class="memdesc:a24f945504f9fd1748b6a8e270ca598fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор "&lt;&lt;" вывода пары векторов в поток  <a href="../../dd/d9a/namespace_v_mlib.html#a24f945504f9fd1748b6a8e270ca598fd">Подробнее...</a><br /></td></tr>
+<tr class="separator:a24f945504f9fd1748b6a8e270ca598fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98540b7a51b343eb622b9bdc4749921d"><td class="memTemplParams" colspan="2">template&lt;typename T , typename P , size_t n&gt; </td></tr>
+<tr class="memitem:a98540b7a51b343eb622b9bdc4749921d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d">VMlib::cross3</a> (const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; T, n &gt; &amp;x, const <a class="el" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt; P, n &gt; &amp;y)</td></tr>
+<tr class="memdesc:a98540b7a51b343eb622b9bdc4749921d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление третьей компоненты векторного произведения  <a href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d">Подробнее...</a><br /></td></tr>
+<tr class="separator:a98540b7a51b343eb622b9bdc4749921d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Описание класса numvector. </p>
+<dl class="section author"><dt>Автор</dt><dd>Марчевский Илья Константинович </dd></dl>
+<dl class="section version"><dt>Версия</dt><dd>1.10 </dd></dl>
+<dl class="section date"><dt>Дата</dt><dd>17 мая 2021 г. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a></p>
+</div><h2 class="groupheader">Макросы</h2>
+<a class="anchor" id="ac1e8a42306d8e67cb94ca31c3956ee78"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEPRECATED</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>См. определение в файле <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a> строка <a class="el" href="../../df/dc5/numvector_8h_source.html#l00057">57</a></p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_a174265795d5eee350dc05a1e7839abb.html">VMlib</a></li><li class="navelem"><a class="el" href="../../dir_7224bd67555603c703dfbc0e093fae4d.html">numvector</a></li><li class="navelem"><a class="el" href="../../df/dc5/numvector_8h.html">numvector.h</a></li>
+    <li class="footer">Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>VM2D: Файл VM2D/Velocity2D/Velocity2D.h</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/NativeMML"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="../../LOGO.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VM2D
+   &#160;<span id="projectnumber">1.10</span>
+   </div>
+   <div id="projectbrief">Вихревые методы для решения двумерных задач</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="../../index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="../../pages.html"><span>Описания</span></a></li>
+      <li><a href="../../modules.html"><span>Группы</span></a></li>
+      <li><a href="../../namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="../../annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="../../files.html"><span>Файлы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="../../search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="../../search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="../../files.html"><span>Файлы</span></a></li>
+      <li><a href="../../globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('dc/d81/_velocity2_d_8h.html','../../');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Классы</a> &#124;
+<a href="#namespaces">Пространства имен</a>  </div>
+  <div class="headertitle">
+<div class="title">Файл Velocity2D.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Заголовочный файл с описанием класса Velocity.  
+<a href="#details">Подробнее...</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d9/d27/_point2_d_8h_source.html">Point2D.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Граф включаемых заголовочных файлов для Velocity2D.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/d1a/_velocity2_d_8h__incl.png" border="0" usemap="#_v_m2_d_2_velocity2_d_2_velocity2_d_8h" alt=""/></div>
+<map name="_v_m2_d_2_velocity2_d_2_velocity2_d_8h" id="_v_m2_d_2_velocity2_d_2_velocity2_d_8h">
+<area shape="rect" id="node2" href="../../d5/d64/defs_8h.html" title="Описание базовых вспомогательных функций " alt="" coords="587,80,645,107"/>
+<area shape="rect" id="node14" href="../../d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D. " alt="" coords="853,229,933,256"/>
+<area shape="rect" id="node9" href="../../d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем " alt="" coords="419,155,501,181"/>
+<area shape="rect" id="node10" href="../../d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream. " alt="" coords="525,155,621,181"/>
+<area shape="rect" id="node13" href="../../d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D. " alt="" coords="837,155,925,181"/>
+<area shape="rect" id="node23" href="../../d6/d1e/v3_d_8h.html" title="Заголовочный файл с описанием класса v3D. " alt="" coords="771,229,829,256"/>
+<area shape="rect" id="node24" href="../../d2/dc6/_pair_int_8h.html" title="Файл кода с описанием класса PairInt. " alt="" coords="677,229,747,256"/>
+<area shape="rect" id="node16" href="../../df/dc5/numvector_8h.html" title="Описание класса numvector. " alt="" coords="747,304,842,331"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+Граф файлов, в которые включается этот файл:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/ddc/_velocity2_d_8h__dep__incl.png" border="0" usemap="#_v_m2_d_2_velocity2_d_2_velocity2_d_8hdep" alt=""/></div>
+<map name="_v_m2_d_2_velocity2_d_2_velocity2_d_8hdep" id="_v_m2_d_2_velocity2_d_2_velocity2_d_8hdep">
+<area shape="rect" id="node2" href="../../de/dac/_airfoil2_d_8cpp.html" title="Файл кода с описанием класса Airfoil. " alt="" coords="118,87,310,114"/>
+<area shape="rect" id="node3" href="../../d9/d05/_airfoil2_d_curv_8cpp.html" title="Файл кода с описанием класса AirfoilRect. " alt="" coords="335,87,555,114"/>
+<area shape="rect" id="node4" href="../../de/d45/_airfoil2_d_rect_8cpp.html" title="Файл кода с описанием класса AirfoilRect. " alt="" coords="5,177,225,203"/>
+<area shape="rect" id="node5" href="../../da/dee/_boundary2_d_8cpp.html" title="Файл кода с описанием класса Boundary. " alt="" coords="1253,80,1455,121"/>
+<area shape="rect" id="node6" href="../../de/d6b/_boundary2_d_const_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryConstLayerAver. " alt="" coords="1479,80,1680,121"/>
+<area shape="rect" id="node7" href="../../dc/d7a/_boundary2_d_lin_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryLinLayerAver. " alt="" coords="1704,80,1905,121"/>
+<area shape="rect" id="node8" href="../../d5/d1b/_gpu2_d_8cpp.html" title="Файл кода с описанием класса Gpu. " alt="" coords="1929,87,2104,114"/>
+<area shape="rect" id="node9" href="../../d5/d96/_measure_v_p2_d_8cpp.html" title="Файл кода с описанием класса MeasureVP. " alt="" coords="2129,80,2331,121"/>
+<area shape="rect" id="node10" href="../../df/dde/_mechanics2_d_8cpp.html" title="Файл кода с описанием класса Mechanics.cpp. " alt="" coords="2356,80,2573,121"/>
+<area shape="rect" id="node11" href="../../d0/d4f/_mechanics2_d_rigid_given_law_8cpp.html" title="Файл кода с описанием класса MechanicsRigidGivenLaw. " alt="" coords="2597,80,2815,121"/>
+<area shape="rect" id="node12" href="../../d0/dfa/_mechanics2_d_rigid_immovable_8cpp.html" title="Файл кода с описанием класса MechanicsRigidImmovable. " alt="" coords="2839,80,3056,121"/>
+<area shape="rect" id="node13" href="../../d1/da2/_mechanics2_d_rigid_oscill_part_8cpp.html" title="Файл кода с описанием класса MechanicsRigidOscillPart. " alt="" coords="3080,80,3297,121"/>
+<area shape="rect" id="node14" href="../../d5/d9d/_mechanics2_d_rigid_rotate_part_8cpp.html" title="Файл кода с описанием класса Mechanics2DRigidRotatePart. " alt="" coords="3321,80,3539,121"/>
+<area shape="rect" id="node15" href="../../d2/d24/_sheet2_d_8cpp.html" title="Файл кода с описанием класса Sheet. " alt="" coords="3563,87,3758,114"/>
+<area shape="rect" id="node16" href="../../d2/d5a/_times2_d_8cpp.html" title="Файл кода с описанием класса Times. " alt="" coords="3783,87,3981,114"/>
+<area shape="rect" id="node17" href="../../d1/dac/_cell2_d_8cpp.html" title="Файл кода с описанием класса Cell. " alt="" coords="249,177,445,203"/>
+<area shape="rect" id="node18" href="../../db/d37/_velocity2_d_barnes_hut_8h.html" title="Заголовочный файл с описанием класса VelocityBiotSavart. " alt="" coords="732,80,917,121"/>
+<area shape="rect" id="node19" href="../../d8/df0/_tree2_d_8cpp.html" title="Файл кода с описанием класса Tree. " alt="" coords="469,177,668,203"/>
+<area shape="rect" id="node20" href="../../d2/dad/_velocity2_d_8cpp.html" title="Файл кода с описанием класса Velocity. " alt="" coords="901,169,1087,211"/>
+<area shape="rect" id="node22" href="../../d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake. " alt="" coords="1111,177,1306,203"/>
+<area shape="rect" id="node24" href="../../d3/d60/_velocity2_d_biot_savart_8h.html" title="Заголовочный файл с описанием класса VelocityBiotSavart. " alt="" coords="1044,80,1229,121"/>
+<area shape="rect" id="node26" href="../../dc/d69/_wake_data_base2_d_8cpp.html" title="Файл кода с описанием класса WakeDataBase. " alt="" coords="4005,80,4177,121"/>
+<area shape="rect" id="node21" href="../../df/db2/_velocity2_d_barnes_hut_8cpp.html" title="Файл кода с описанием класса VelocityBarnesHut. " alt="" coords="692,169,877,211"/>
+<area shape="rect" id="node23" href="../../d6/ddb/_world2_d_8cpp.html" title="Файл кода с описанием класса World2D. " alt="" coords="1330,177,1525,203"/>
+<area shape="rect" id="node25" href="../../dd/d60/_velocity2_d_biot_savart_8cpp.html" title="Файл кода с описанием класса VelocityBiotSavart. " alt="" coords="1549,169,1735,211"/>
+</map>
+</div>
+</div>
+<p><a href="../../dc/d81/_velocity2_d_8h_source.html">См. исходные тексты.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Классы</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d48/struct_v_m2_d_1_1_vortexes_params.html">VM2D::VortexesParams</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Структура, определяющая параметры виртуальных вихрей для отдельного профиля  <a href="../../d2/d48/struct_v_m2_d_1_1_vortexes_params.html#details">Подробнее...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html">VM2D::Velocity</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Абстрактный класс, определяющий способ вычисления скоростей  <a href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#details">Подробнее...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Пространства имен</h2></td></tr>
+<tr class="memitem:d9/dd7/namespace_v_m2_d"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd7/namespace_v_m2_d.html">VM2D</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Заголовочный файл с описанием класса Velocity. </p>
+<dl class="section author"><dt>Автор</dt><dd>Марчевский Илья Константинович </dd>
+<dd>
+Сокол Ксения Сергеевна </dd>
+<dd>
+Рятина Евгения Павловна </dd></dl>
+<dl class="section version"><dt>Версия</dt><dd>1.10 </dd></dl>
+<dl class="section date"><dt>Дата</dt><dd>17 мая 2021 г. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="../../dc/d81/_velocity2_d_8h_source.html">Velocity2D.h</a></p>
+</div></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_6fafd8481eb09d016152358e536fd7b4.html">VM2D</a></li><li class="navelem"><a class="el" href="../../dir_f70ac03506584013a9e797e560be3e56.html">Velocity2D</a></li><li class="navelem"><a class="el" href="../../dc/d81/_velocity2_d_8h.html">Velocity2D.h</a></li>
+    <li class="footer">Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
+  </ul>
+</div>
+</body>
+</html>

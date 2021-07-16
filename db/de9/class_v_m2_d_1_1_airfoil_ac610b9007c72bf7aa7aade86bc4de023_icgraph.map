@@ -1,0 +1,8 @@
+<map id="VM2D::Airfoil::GetInfluenceFromSourcesToPanel" name="VM2D::Airfoil::GetInfluenceFromSourcesToPanel">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af184136bf9207d4f00b1e93a8df974b2" title="Деструктор " alt="" coords="259,5,408,32"/>
+<area shape="rect" id="node3" href="$df/dc0/group___parallel.html#gab209406565fa53a34a405467bc901f4e" title="Генерация вектора влияния вихревого следа на профиль " alt="" coords="245,57,422,98"/>
+<area shape="rect" id="node4" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#af6bd8b1a4c5f3404f1aff39b99faa8b6" title="VM2D::VelocityBarnesHut\l::GetWakeInfluenceToRhsBS" alt="" coords="236,122,431,163"/>
+<area shape="rect" id="node6" href="$df/dc0/group___parallel.html#ga40e4cb03382b34abe8dd7dc82582490a" title="Генерация вектора влияния вихревого следа на профиль " alt="" coords="245,187,422,229"/>
+<area shape="rect" id="node5" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab7c31eb23cafaef0de2575d6cb4773fd" title="Расчет вектора правой части (всего) " alt="" coords="479,122,655,163"/>
+<area shape="rect" id="node7" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a54f3597cd4655c1211ffda53628b253a" title="Расчет вектора правой части (всего) " alt="" coords="479,187,654,229"/>
+</map>

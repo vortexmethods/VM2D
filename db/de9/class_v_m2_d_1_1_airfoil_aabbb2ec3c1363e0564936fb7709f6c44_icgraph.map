@@ -1,0 +1,9 @@
+<map id="VM2D::Airfoil::calcIQ" name="VM2D::Airfoil::calcIQ">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af184136bf9207d4f00b1e93a8df974b2" title="Деструктор " alt="" coords="225,5,374,32"/>
+<area shape="rect" id="node3" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a51d64e373aa01f143cc042a72f6112ba" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние профиля самого на себя ..." alt="" coords="205,57,394,98"/>
+<area shape="rect" id="node5" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87280c88f7c038e85d894dec4f6c22f0" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние одного профиля на другой..." alt="" coords="205,122,394,163"/>
+<area shape="rect" id="node6" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a82018fdbd050c54304a916b88ea575c8" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние профиля самого на себя ..." alt="" coords="200,187,399,229"/>
+<area shape="rect" id="node8" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a7c6b76a2e1f1b830a6a849bfd5e8c77d" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние одного профиля на другой..." alt="" coords="200,253,399,294"/>
+<area shape="rect" id="node4" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="447,106,661,147"/>
+<area shape="rect" id="node7" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="455,203,653,245"/>
+</map>

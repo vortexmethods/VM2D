@@ -1,0 +1,4 @@
+<map id="VM2D::AirfoilRect::GetInfluenceFromSourcesToPanel" name="VM2D::AirfoilRect::GetInfluenceFromSourcesToPanel">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="279,5,477,32"/>
+<area shape="rect" id="node3" href="$df/da2/class_v_m2_d_1_1_boundary.html#a265bd0626c5273a4e0b1534bb7fe5ece" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="276,57,480,98"/>
+</map>

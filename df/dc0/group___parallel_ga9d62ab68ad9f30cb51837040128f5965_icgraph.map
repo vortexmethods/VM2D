@@ -1,0 +1,5 @@
+<map id="VM2D::Velocity::CalcDiffVeloI1I2ToSetOfPointsFromWake" name="VM2D::Velocity::CalcDiffVeloI1I2ToSetOfPointsFromWake">
+<area shape="rect" id="node2" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе " alt="" coords="307,5,478,47"/>
+<area shape="rect" id="node4" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#aba507495ba1d6c266ea95348eeb706a2" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromWake" alt="" coords="273,71,512,112"/>
+<area shape="rect" id="node3" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="560,13,756,39"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="VM2D::BoundaryLinLayerAver::CalcConvVelocityAtVirtualVortexes" name="VM2D::BoundaryLinLayerAver::CalcConvVelocityAtVirtualVortexes">
+<area shape="rect" id="node2" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a5dab6ba8b33dffd34c2e9ff04a00b185" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="295,5,486,32"/>
+<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5b9bb928f446cad77a33ec6c01862d7a" title="Возврат константной ссылки на скорость вершины профиля " alt="" coords="323,56,458,83"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="293,107,489,133"/>
+<area shape="rect" id="node5" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="291,157,491,184"/>
+<area shape="rect" id="node6" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="539,150,715,191"/>
+</map>

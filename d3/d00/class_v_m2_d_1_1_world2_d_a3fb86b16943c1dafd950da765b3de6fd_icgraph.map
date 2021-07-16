@@ -1,0 +1,4 @@
+<map id="VM2D::World2D::getMechanics" name="VM2D::World2D::getMechanics">
+<area shape="rect" id="node2" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab7c31eb23cafaef0de2575d6cb4773fd" title="Расчет вектора правой части (всего) " alt="" coords="260,5,436,47"/>
+<area shape="rect" id="node3" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a54f3597cd4655c1211ffda53628b253a" title="Расчет вектора правой части (всего) " alt="" coords="261,71,435,112"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="VM2D::MechanicsRigidOscillPart::VeloOfAirfoilPanels" name="VM2D::MechanicsRigidOscillPart::VeloOfAirfoilPanels">
+<area shape="rect" id="node2" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a53546cdcbd437471d6f8496e34ae3c54" title="Вычисление скорости центра масс профиля " alt="" coords="247,5,440,47"/>
+<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afaa4428c98211d798542f0636d1c9516" title="Установка постоянной скорости всех вершин профиля " alt="" coords="276,71,411,98"/>
+</map>

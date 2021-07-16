@@ -1,0 +1,12 @@
+<map id="VM2D::World2D::WakeAndAirfoilsMotion" name="VM2D::World2D::WakeAndAirfoilsMotion">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a1e93757ef8a0bf80601cbb8022138af6" title="Вычисляем новые положения вихрей (в пелене и виртуальных) " alt="" coords="276,369,487,396"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="537,56,732,83"/>
+<area shape="rect" id="node7" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a4d49718689f49186edadbe0e46691deb" title="текущее отклонение профиля " alt="" coords="285,107,478,149"/>
+<area shape="rect" id="node8" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a0e817783b3da43723c571791136089ce" title="VM2D::MechanicsRigidOscill\lPart::getYOld" alt="" coords="285,173,478,214"/>
+<area shape="rect" id="node9" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a2c4846ca55943c71eabe315cde0278f8" title="текущая скорость профиля " alt="" coords="285,238,478,279"/>
+<area shape="rect" id="node10" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#ad5784b6626a172166804c432f9ece571" title="VM2D::MechanicsRigidOscill\lPart::getUOld" alt="" coords="285,303,478,345"/>
+<area shape="rect" id="node11" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aeb0fd46eee2aafc56d8f6a075da3673c" title="Проверка проникновения вихрей внутрь профиля " alt="" coords="282,5,481,32"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a088a7850b255847d4f0f25d652bc71e1" title="Возврат количества граничных условий в задаче " alt="" coords="539,333,730,374"/>
+<area shape="rect" id="node5" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="535,399,735,425"/>
+<area shape="rect" id="node6" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="783,391,959,433"/>
+</map>
