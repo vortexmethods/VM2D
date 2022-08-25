@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidOscillPart.cpp                                   |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include "mpi.h"
@@ -53,6 +53,23 @@
 
 using namespace VM2D;
 
+
+MechanicsRigidOscillPart::MechanicsRigidOscillPart(const World2D& W_, size_t numberInPassport_)
+	: 
+	Mechanics(W_, numberInPassport_, 0, true, false, false), 
+	u0(0.0), 
+	y0(W_.getAirfoil(numberInPassport_).rcm[1]), 
+	b(0.0 * 0.731)
+{
+	u = u0;
+	y = y0;
+	uOld = u0;
+	yOld = y0;
+		
+	ReadSpecificParametersFromDictionary();
+	Initialize({ 0.0, 0.0 }, W_.getAirfoil(numberInPassport_).rcm, 0.0, W_.getAirfoil(numberInPassport_).phiAfl);
+};
+
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidOscillPart::GetHydroDynamForce()
 {
@@ -71,7 +88,8 @@ void MechanicsRigidOscillPart::GetHydroDynamForce()
 	double hDMdelta = 0.0;
 
 
-	Point2D deltaVstep = { 0.0, u - uOld };
+	//Point2D deltaVstep = { 0.0, u - uOld };
+	Point2D deltaVstep = { 0.0, 0.0 };
 
 	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
@@ -83,15 +101,17 @@ void MechanicsRigidOscillPart::GetHydroDynamForce()
 		hDMdelta += 0.5 * deltaK * rK.length2();
 	}
 
-	hydroDynamForce = hDFdelta * (1.0 / dt);
-	hydroDynamMoment = hDMdelta / dt;
+	const double rho = W.getPassport().physicalProperties.rho;
+
+	hydroDynamForce = (rho / dt) * hDFdelta;
+	hydroDynamMoment = (rho / dt) * hDMdelta;
 
 	if (W.getPassport().physicalProperties.nu > 0.0)
 		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 		{
 			Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
-			viscousForce += afl.viscousStress[i] * afl.tau[i];
-			viscousMoment += (afl.viscousStress[i] * afl.tau[i]) & rK;
+			viscousForce += rho * afl.viscousStress[i] * afl.tau[i];
+			viscousMoment += rho * (afl.viscousStress[i] * afl.tau[i]) & rK;
 		}
 	
 	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
@@ -100,16 +120,26 @@ void MechanicsRigidOscillPart::GetHydroDynamForce()
 // Вычисление скорости центра масс
 Point2D MechanicsRigidOscillPart::VeloOfAirfoilRcm(double currTime)
 {
-	return {0.0, u};
+	return { 0.0, u};
 	//return{ 0.0, 0.0 };
 }//VeloOfAirfoilRcm(...)
 
 // Вычисление положения центра масс
 Point2D MechanicsRigidOscillPart::PositionOfAirfoilRcm(double currTime)
 {
-	return{ 0.0, y };
+	return{ afl.rcm[0], y};
 	//return{ 0.0, 0.0 };
 }//PositionOfAirfoilRcm(...)
+
+double MechanicsRigidOscillPart::AngularVelocityOfAirfoil(double currTime)
+{
+	return 0.0;
+}//AngularVelocityOfAirfoil(...)
+
+double MechanicsRigidOscillPart::AngleOfAirfoil(double currTime)
+{
+	return afl.phiAfl;
+}//AngleOfAirfoil(...)
 
 // Вычисление скоростей начал панелей
 void MechanicsRigidOscillPart::VeloOfAirfoilPanels(double currTime)
@@ -121,6 +151,12 @@ void MechanicsRigidOscillPart::VeloOfAirfoilPanels(double currTime)
 
 void MechanicsRigidOscillPart::Move()
 {
+	//#ifdef addm 
+	double meff = m + PI * 0.5 * 0.5;
+	//#else
+	//	double meff = m;
+	//#endif
+
 	uOld = u;
 	yOld = y;
 	
@@ -132,10 +168,10 @@ void MechanicsRigidOscillPart::Move()
 	{
 		double dt = W.getPassport().timeDiscretizationProperties.dt;		
 		numvector<double, 2> kk[4];
-		kk[0] = { u, (hydroDynamForce[1] - b*u - k*y) / m };
-		kk[1] = { u + 0.5*dt*kk[0][1], (hydroDynamForce[1] - b*(u + 0.5*dt*kk[0][1]) - k*(y + 0.5*dt*kk[0][0])) / m };
-		kk[2] = { u + 0.5*dt*kk[1][1], (hydroDynamForce[1] - b*(u + 0.5*dt*kk[1][1]) - k*(y + 0.5*dt*kk[1][0])) / m };
-		kk[3] = { u + dt*kk[2][1], (hydroDynamForce[1] - b*(u + dt*kk[2][1]) - k*(y + dt*kk[2][0])) / m };
+		kk[0] = { u, (hydroDynamForce[1] - b*u - k*y) / meff };
+		kk[1] = { u + 0.5*dt*kk[0][1], (hydroDynamForce[1] - b*(u + 0.5*dt*kk[0][1]) - k*(y + 0.5*dt*kk[0][0])) / meff };
+		kk[2] = { u + 0.5*dt*kk[1][1], (hydroDynamForce[1] - b*(u + 0.5*dt*kk[1][1]) - k*(y + 0.5*dt*kk[1][0])) / meff };
+		kk[3] = { u + dt*kk[2][1], (hydroDynamForce[1] - b*(u + dt*kk[2][1]) - k*(y + dt*kk[2][0])) / meff };
 
 		dy = dt * (kk[0][0] + 2. * kk[1][0] + 2. * kk[2][0] + kk[3][0]) / 6.0;
 		du = dt * (kk[0][1] + 2. * kk[1][1] + 2. * kk[2][1] + kk[3][1]) / 6.0;
@@ -150,6 +186,47 @@ void MechanicsRigidOscillPart::Move()
 	y += dy;
 	u += du;	
 }//Move()
+
+
+
+void MechanicsRigidOscillPart::RecalcU(Point2D forcePrev) //ИК
+{
+	double dy, du;
+
+	//#ifdef addm 
+	double meff = m + PI * 0.5 * 0.5;
+	//#else
+	//	double meff = m;
+	//#endif
+
+		//W.getInfo('t') << "k = " << k << std::endl;
+
+	Point2D force = 1.0 * forcePrev;// +0.5 * Qiter;
+
+	//Point2D force = hydroDynamForce;
+
+	if (W.getParallel().myidWork == 0)
+	{
+		double dt = W.getPassport().timeDiscretizationProperties.dt;
+		numvector<double, 2> kk[4];
+		kk[0] = { u, (force[1] - b * u - k * y) / meff };
+		kk[1] = { u + 0.5 * dt * kk[0][1], (force[1] - b * (u + 0.5 * dt * kk[0][1]) - k * (y + 0.5 * dt * kk[0][0])) / meff };
+		kk[2] = { u + 0.5 * dt * kk[1][1], (force[1] - b * (u + 0.5 * dt * kk[1][1]) - k * (y + 0.5 * dt * kk[1][0])) / meff };
+		kk[3] = { u + dt * kk[2][1], (force[1] - b * (u + dt * kk[2][1]) - k * (y + dt * kk[2][0])) / meff };
+
+		dy = dt * (kk[0][0] + 2. * kk[1][0] + 2. * kk[2][0] + kk[3][0]) / 6.0;
+		du = dt * (kk[0][1] + 2. * kk[1][1] + 2. * kk[2][1] + kk[3][1]) / 6.0;
+	}
+
+	MPI_Bcast(&dy, 1, MPI_DOUBLE, 0, W.getParallel().commWork);
+	MPI_Bcast(&du, 1, MPI_DOUBLE, 0, W.getParallel().commWork);
+
+	//afl.Move({ 0.0, dy });
+	//Vcm[1] += du;
+
+	//y += dy;
+	u = uiter + 0.5 * du;
+}//RecalcU()
 
 
 #ifdef BRIDGE

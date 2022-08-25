@@ -18,11 +18,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'VM2D'
-copyright = '2021, Марчевский И.К., Сокол К.С., Рятина Е.П.'
+copyright = '2022, Марчевский И.К., Сокол К.С., Рятина Е.П.'
 author = 'Марчевский И.К., Сокол К.С., Рятина Е.П.'
 
 # The full version, including alpha/beta/rc tags.
-release = '1.10'
+release = '1.11'
 
 
 # -- General configuration ---------------------------------------------------

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Passport2D.h                                                     |
 | Info: Source code of VM2D                                                   |
@@ -40,8 +40,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 
@@ -60,8 +60,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	struct PhysicalProperties
 	{
@@ -127,8 +127,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	struct WakeDiscretizationProperties
 	{
@@ -174,8 +174,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	struct NumericalSchemes
 	{
@@ -202,8 +202,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	struct AirfoilParams
 	{
@@ -214,7 +214,7 @@ namespace VM2D
 		Point2D basePoint;
 
 		/// Коэффициент масштабирования
-		double scale;
+		Point2D scale;
 
 		/// Угол поворота (угол атаки)
 		double angle;
@@ -237,8 +237,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	class Passport : public VMlib::PassportGen
 	{

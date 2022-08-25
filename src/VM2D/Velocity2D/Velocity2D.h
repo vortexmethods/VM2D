@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2D.h                                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #ifndef VELOCITY_H
@@ -56,8 +56,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	struct VortexesParams
 	{
@@ -88,8 +88,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	class Velocity
 	{
@@ -118,6 +118,9 @@ namespace VM2D
 		///
 		/// \warning скорости приплюсовываются к уже имеющимся
 		virtual void CalcConvVelo() = 0;
+
+		/// Вычисление скоростей в точках wakeVP
+		virtual void CalcVeloToWakeVP() = 0;
 
 		/// \brief Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек
 		///

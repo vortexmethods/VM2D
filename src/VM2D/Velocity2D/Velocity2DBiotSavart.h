@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2DBiotSavart.h                                           |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #ifndef VELOCITYBIOTSAVART_H
@@ -56,8 +56,8 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	class VelocityBiotSavart : public Velocity
 	{
@@ -71,8 +71,7 @@ namespace VM2D
 		virtual ~VelocityBiotSavart();
 
 
-		/// Вычисление скоростей в точках wakeVP
-		void CalcVeloToWakeVP();
+
 
 		/// \brief Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа
 		///
@@ -90,7 +89,8 @@ namespace VM2D
 
 		//реализация виртуальных функций
 		virtual void CalcConvVelo() override;
-		virtual void FillRhs(Eigen::VectorXd& rhs) const override;
+		virtual void FillRhs(Eigen::VectorXd& rhs) const override;		
+		virtual void CalcVeloToWakeVP() override;
 
 
 		/// \brief Генерация вектора влияния вихревого следа на профиль

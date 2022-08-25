@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2DConstLayerAver.cpp                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 
@@ -76,6 +76,7 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 	virtualWake.aflPan.reserve(np * nVortPerPan);
 
 	//Резервирование памяти
+	virtualWake.vtx.clear();
 	virtualWake.vtx.reserve(np * nVortPerPan);
 
 	//Очистка и резервирование памяти
@@ -90,7 +91,7 @@ void BoundaryConstLayerAver::SolutionToFreeVortexSheetAndVirtualVortex(const Eig
 	{
 		midNorm = afl.nrm[i] * delta;
 
-		size_t NEWnVortPerPan = (size_t)std::max((int)std::ceil(fabs(sol(i)*afl.len[i]) / maxG), nVortPerPan);
+		size_t NEWnVortPerPan = (size_t)std::max((int)std::ceil(fabs(sol(i) * afl.len[i]) / maxG), nVortPerPan);
 		
 		pair.first = (int)virtualWake.vtx.size();
 

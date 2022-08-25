@@ -9,11 +9,11 @@ VM2D: Vortex method for 2D flow simulation
 ![Read the Docs](https://img.shields.io/readthedocs/vm2d)
 
 
-Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina
+Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina
 
 Программная реализация (с открытым исходным кодом) вихревых методов вычислительной гидродинамики для моделирования течений вязкой несжимаемой среды. 
 
-Версия 1.10 от 17 мая 2021 г.
+Версия 1.11 от 07 августа 2022 г.
 
 ЛИЦЕНЗИЯ
 --------
@@ -71,6 +71,9 @@ Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina
 
 * Версия 1.10 представлена 17 мая 2021 г. на конференции [ParCFD](https://parcfd2020.sciencesconf.org/) (Ницца, Франция) 
 
+* Версия 1.11 представлена 08 августа 2022 г. на конференции [ICMAR](http://conf.nsc.ru/icmar2022/) (Новосибирск) 
+
+
 ВОПРОСЫ, ПРЕДЛОЖЕНИЯ И ЗАМЕЧАНИЯ
 --------------------------------
 
@@ -94,7 +97,7 @@ Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina
 </td>
 
 <td align="center" valign="center" width="20%">
-<img src="docs/_static/authors/Kuzmina.jpg" alt="Сокол К.С."/>
+<img src="docs/_static/authors/Sokol.jpg" alt="Сокол К.С."/>
 <br />
 Сокол Ксения Сергеевна
 </td>

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidImmovable.h                                      |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #ifndef MECHANICSRIGIDIMMOVABLE_H
@@ -55,8 +55,8 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 
 	class MechanicsRigidImmovable :
@@ -67,11 +67,7 @@ namespace VM2D
 		/// 
 		/// \param[in] W_ константная ссылка на решаемую задачу
 		/// \param[in] numberInPassport_ номер профиля в паспорте задачи	
-		MechanicsRigidImmovable(const World2D& W_, size_t numberInPassport_)
-			: Mechanics(W_, numberInPassport_, 0, false, false, false, { 0.0, 0.0 }, { 0.0, 0.0 }, 0.0, 0.0)
-		{
-			ReadSpecificParametersFromDictionary();
-		};
+		MechanicsRigidImmovable(const World2D& W_, size_t numberInPassport_);
 
 		/// Деструктор
 		~MechanicsRigidImmovable() {};
@@ -81,6 +77,9 @@ namespace VM2D
 		virtual void GetHydroDynamForce() override;
 		virtual Point2D VeloOfAirfoilRcm(double currTime) override;
 		virtual Point2D PositionOfAirfoilRcm(double currTime) override;
+		virtual double AngularVelocityOfAirfoil(double currTime) override;
+		virtual double AngleOfAirfoil(double currTime) override;
+
 		virtual void VeloOfAirfoilPanels(double currTime) override;
 		virtual void ReadSpecificParametersFromDictionary() override {};
 

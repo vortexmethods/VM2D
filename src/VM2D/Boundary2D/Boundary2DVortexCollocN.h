@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2DVortexCollocN.h                                        |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 
@@ -59,8 +59,8 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	class BoundaryVortexCollocN : public Boundary
 	{
@@ -71,11 +71,14 @@ namespace VM2D
 		/// 
 		/// \param[in] W_ константная ссылка на решаемую задачу
 		/// \param[in] numberInPassport_ номер профиля в паспорте задачи
-		BoundaryVortexCollocN(const World2D& W_, size_t numberInPassport_) :
-			Boundary(W_, numberInPassport_, 1) {};
+		BoundaryVortexCollocN(const World2D& W_, size_t numberInPassport_);
 
 		/// Деструктор
 		virtual ~BoundaryVortexCollocN() {};
+
+		/// Контрольные точки - центры панелей
+		std::vector<Point2D> c;
+
 
 		//далее -- реализации виртуальных функций
 		virtual void FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorXd& lastLine, Eigen::VectorXd& lactCol) override;

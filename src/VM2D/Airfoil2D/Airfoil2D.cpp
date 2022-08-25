@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil2D.cpp                                                    |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include "Airfoil2D.h"
@@ -105,6 +105,7 @@ void Airfoil::calcMeanEpsOverPanel()
 			meanEpsOverPanel[i] = midEps;		
 			*/
 			
+			/*
 			midEps = 0.0;
 			
 			for (int j = bnd.vortexBeginEnd[i].first; j < bnd.vortexBeginEnd[i].second; ++j)
@@ -112,7 +113,14 @@ void Airfoil::calcMeanEpsOverPanel()
 			
 			midEps /= (bnd.vortexBeginEnd[i].second - bnd.vortexBeginEnd[i].first);
 			meanEpsOverPanel[i] = midEps;
+			//*/
+
+			midEps = 0.0;			
+			for (int j = bnd.vortexBeginEnd[i].first; j < bnd.vortexBeginEnd[i].second; ++j)
+				midEps += virtVortParams.epsastWake[j];
 			
+			midEps /= (bnd.vortexBeginEnd[i].second - bnd.vortexBeginEnd[i].first);
+			meanEpsOverPanel[i] = midEps;
 		}
 	}//if id==0
 

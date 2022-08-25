@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.10   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2021/05/17     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: LogStream.h                                                      |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса LogStream
 \author Марчевский Илья Константинович
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #ifndef LOGSTREAM_H
@@ -46,8 +46,8 @@ namespace VMlib
 	/*!
 	\brief Класс, определяющий работу с потоком логов
 	\author Марчевский Илья Константинович
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 
 	class LogStream

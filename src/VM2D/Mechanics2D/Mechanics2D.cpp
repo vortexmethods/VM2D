@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2D.cpp                                                  |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include "Mechanics2D.h"
@@ -54,22 +54,46 @@
 using namespace VM2D;
 
 //Конструктор
-Mechanics::Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_, Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_)
-: 
-	W(W_), 
-	numberInPassport(numberInPassport_), 
-	afl(W_.getNonConstAirfoil(numberInPassport_)), 
-	boundary(W_.getBoundary(numberInPassport_)), 
-	virtVortParams(W_.getVelocity().virtualVortexesParams[numberInPassport_]), 	
-	Vcm0(Vcm0_),
+Mechanics::Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_)
+	:
+	W(W_),
+	numberInPassport(numberInPassport_),
+	afl(W_.getNonConstAirfoil(numberInPassport_)),
+	boundary(W_.getBoundary(numberInPassport_)),
+	virtVortParams(W_.getVelocity().virtualVortexesParams[numberInPassport_]),
+
+	Vcm0({ 0.0, 0.0 }),
+	Wcm0(0.0),
+	Rcm0({ 0.0, 0.0 }),
+	Phi0(0.0),
+
+	/*Vcm0(Vcm0_),
 	Wcm0(Wcm0_),
 	Rcm0(Rcm0_),
-	Phi0(Phi0_),	
+	Phi0(Phi0_),*/
+
 	isMoves(isMoves_), 
 	isDeform(isDeform_), 
 	isRotate(isRotate_),	
-	degOfFreedom(degOfFreedom_)	
+	degOfFreedom(degOfFreedom_),
+
+	hydroDynamForce({0.0, 0.0}),
+	hydroDynamMoment(0.0),
+	viscousForce({ 0.0, 0.0 }),
+	viscousMoment(0.0)
+
 {
+	ReadParametersFromDictionary();
+}; 
+
+//Задание начального положения и начальной скорости
+void Mechanics::Initialize(Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_)
+{
+	Vcm0 = Vcm0_;
+	Wcm0 = Wcm0_;
+	Rcm0 = Rcm0_;
+	Phi0 = Phi0_;
+
 	Vcm = Vcm0;
 	Wcm = Wcm0;
 	Rcm = Rcm0;
@@ -78,9 +102,10 @@ Mechanics::Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreed
 	WcmOld = Wcm0;
 	RcmOld = Rcm0;
 	PhiOld = Phi0;
-	ReadParametersFromDictionary();
-}; 
 
+	afl.Move(Rcm - W.getAirfoil(numberInPassport).rcm);
+	afl.Rotate(Phi - W.getAirfoil(numberInPassport).phiAfl);
+}//Initialize(...)
 
 //Парсинг списка параметров механической системы
 void Mechanics::ReadParametersFromDictionary()

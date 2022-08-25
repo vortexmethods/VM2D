@@ -1,11 +1,11 @@
 /*-------------------------------*- VMcuda -*----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
 |  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: cuLib2D.cu                                                       |
 | Info: Source code of VMcuda                                                 |
@@ -30,8 +30,8 @@
 \file
 \brief Файл с реализацией функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include <iostream>
@@ -911,10 +911,8 @@ __global__ void CU_calc_RHS(
 				}
 
 				if (schemeSwitcher == 11)
-				{
-					//todo
-				}
-				
+					val += 0.5*(shg[q] * dlen / myMax(dlen*dlen, eps2)) * (taux * (sx+px) + tauy * (sy+py));					
+								
 				if (schemeSwitcher == 2)
 				{
 					u1x = 0.5 / dlen * ((px + sx) * taux * taux \
@@ -962,7 +960,7 @@ __global__ void CU_calc_RHS(
 
 				if (schemeSwitcher == 11)
 				{
-					//todo
+					val += 0.5*(shg[q] * dlen / myMax(dlen*dlen, eps2)) * (-tauy * (sx+px) + taux * (sy+py));
 				}
 
 				if (schemeSwitcher == 2)

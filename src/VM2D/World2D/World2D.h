@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: World2D.h                                                        |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #ifndef WORLD2D_H
@@ -66,8 +66,8 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 	class World2D : public VMlib::WorldGen
 	{
@@ -184,7 +184,7 @@ namespace VM2D
 
 		/// \brief Возврат неконстантной ссылки на measureVP
 		///
-		/// \return константную ссылку на вихревой след
+		/// \return неконстантную ссылку на вихревой след
 		MeasureVP& getNonConstMeasureVP() const { return *measureVP; };
 
 		/// \brief Возврат константной ссылки на объект механики
@@ -192,6 +192,12 @@ namespace VM2D
 		/// \param[in] i номер механики, константная ссылка на который возвращается
 		/// \return константную ссылку на i-ю механику
 		const Mechanics& getMechanics(size_t i) const { return *mechanics[i]; };
+
+		/// \brief Возврат неконстантной ссылки на объект механики
+		///
+		/// \param[in] i номер механики, константная ссылка на который возвращается
+		/// \return неконстантную ссылку на i-ю механику
+		Mechanics& getNonConstMechanics(size_t i) const { return *mechanics[i]; };
 
 		/// \brief Возврат константной ссылки на вихревой след
 		///
@@ -302,7 +308,7 @@ namespace VM2D
 		/// \brief Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных), а также в точках вычисления VP 
 		///
 		/// Вызывается в Step()
-		void CalcVortexVelo();
+		void CalcVortexVelo(bool shiftTime);
 
 
 		/// \brief Вычисление скоростей панелей и интенсивностей присоединенных слоев вихрей и источников
@@ -351,6 +357,7 @@ namespace VM2D
 
 		// Реализация виртуальных функций
 		virtual void Step() override;
+		virtual void ZeroStep() override;
 	};
 
 }//namespace VM2D

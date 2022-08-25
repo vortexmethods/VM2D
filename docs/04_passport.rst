@@ -13,13 +13,13 @@
    :name: problemsRepeat
 	
    /*--------------------------------*- VM2D -*-----------------*---------------*\
-   | ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+   | ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
    | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
    |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
    |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
    |                                                                             |
-   | Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+   | Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
    *-----------------------------------------------------------------------------*
    | File name: problems                                                         |
    | Info: Problems to be solved by using VM2D                                   |
@@ -41,13 +41,13 @@
    :name: passport
 	
    /*--------------------------------*- VM2D -*-----------------*---------------*\
-   | ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+   | ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
    | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
    |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
    |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
    |                                                                             |
-   | Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+   | Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
    *-----------------------------------------------------------------------------*
    | File name: passport                                                         |
    | Info: Parameters of the problem to be solved                                |

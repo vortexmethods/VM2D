@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.10   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2021/05/17     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: Preprocessor.cpp                                                 |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса Preprocessor
 \author Марчевский Илья Константинович
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include <algorithm>
@@ -74,6 +74,11 @@ Preprocessor::Preprocessor(const std::string& fileName)
 
 		readline.erase(std::remove(readline.begin(), readline.end(), ' '), readline.end());
 		readline.erase(std::remove(readline.begin(), readline.end(), '\t'), readline.end());
+		
+#if defined(_WIN32)		
+#else
+		readline.erase(std::remove(readline.begin(), readline.end(), 0x0D), readline.end());
+#endif
 
 		resultStream << readline << std::endl;
 	}

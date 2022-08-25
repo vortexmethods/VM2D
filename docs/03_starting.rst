@@ -24,13 +24,13 @@
    :name: problems
 	
    /*--------------------------------*- VM2D -*-----------------*---------------*\
-   | ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+   | ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
    | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
    |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
    |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
    |                                                                             |
-   | Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+   | Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
    *-----------------------------------------------------------------------------*
    | File name: problems                                                         |
    | Info: Problems to be solved by using VM2D                                   |
@@ -78,13 +78,13 @@
    :name: defaults
 	
    /*--------------------------------*- VM2D -*-----------------*---------------*\
-   | ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+   | ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
    | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
    |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
    |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
    |                                                                             |
-   | Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+   | Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
    *-----------------------------------------------------------------------------*
    | File name: defaults                                                         |
    | Info: Default values for various parameters                                 |
@@ -98,7 +98,7 @@
    velocityComputation = velocityBiotSavart;
    panelsType = panelsRectilinear; 
    boundaryConditionSatisfaction = boundaryConstantLayerAverage;
-   fileType = text;
+   fileType = binary;
 
    mechanicalSystem = mechanicsRigidImmovable;
    np = 1;
@@ -124,13 +124,13 @@
    :name: switchers
 
    /*--------------------------------*- VM2D -*-----------------*---------------*\
-   | ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+   | ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
    | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
    |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
    |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
    |                                                                             |
-   | Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+   | Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
    *-----------------------------------------------------------------------------*
    | File name: switchers                                                        |
    | Info: Verbal notation for various parameters                                |
@@ -173,13 +173,13 @@
    :name: switchers
 
    /*--------------------------------*- VM2D -*-----------------*---------------*\
-   | ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+   | ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+   | ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
    | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
    |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
    |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
    |                                                                             |
-   | Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+   | Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
    *-----------------------------------------------------------------------------*
    | File name: mechanics                                                        |
    | Info: Dictionary with mechanical systems description                        |

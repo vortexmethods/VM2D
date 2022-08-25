@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2DVortexCollocN.cpp                                      |
 | Info: Source code of VM2D                                                   |
@@ -32,9 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\author ???                                      // Добро пожаловать в нашу компанию! :-)
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 
@@ -54,6 +53,15 @@
 #include "World2D.h"
 
 using namespace VM2D;
+
+//Конструктор
+BoundaryVortexCollocN::BoundaryVortexCollocN(const World2D& W_, size_t numberInPassport_) :
+	Boundary(W_, numberInPassport_, 1) 
+	{
+		c.reserve(afl.getNumberOfPanels());
+		for (size_t i=0; i < afl.getNumberOfPanels(); ++i)
+			c.push_back(0.5*(afl.getR(i)+afl.getR(i+1)));
+	};
 
 
 //Пересчет решения на интенсивность вихревого слоя
@@ -77,6 +85,7 @@ void BoundaryVortexCollocN::SolutionToFreeVortexSheetAndVirtualVortex(const Eige
 	virtualWake.aflPan.reserve(np * nVortPerPan);
 
 	//Резервирование памяти
+	virtualWake.vtx.clear();
 	virtualWake.vtx.reserve(np * nVortPerPan);
 
 	//Очистка и резервирование памяти
@@ -90,32 +99,36 @@ void BoundaryVortexCollocN::SolutionToFreeVortexSheetAndVirtualVortex(const Eige
 	for (size_t i = 0; i < np; ++i)
 	{
 		midNorm = afl.nrm[i] * delta;
+		size_t iNext = (i < np-1) ? i + 1 : 0;
+		size_t iPrev = (i > 0) ? i - 1 : np - 1;
 
-		size_t NEWnVortPerPan = 1; //todo
+		double Gamma = (sol(i) / (afl.len[iPrev] + afl.len[i]) + sol(iNext) / (afl.len[iNext] + afl.len[i])) * afl.len[i];
+		
+		size_t NEWnVortPerPan = std::max(static_cast<int>(std::ceil(fabs(Gamma) / W.getPassport().wakeDiscretizationProperties.maxGamma)), nVortPerPan);
 		
 		pair.first = (int)virtualWake.vtx.size();
 
 
 		Point2D dr = 1.0 / NEWnVortPerPan * (afl.getR(i + 1) - afl.getR(i));
-
+		virtVort.g() = Gamma / NEWnVortPerPan;
+		
 		for (size_t j = 0; j < NEWnVortPerPan; ++j)
 		{
-			virtVort.r() = Point2D({ 0.0, 0.0 }); //todo
-			virtVort.g() = 0.0; //todo
+			virtVort.r() = afl.getR(i) + (0.5 + j) * dr + delta * afl.nrm[i]; 
+			
 			virtualWake.vtx.push_back(virtVort);
 
-			virtualWake.vecHalfGamma.push_back(0.5 * 0.0 * afl.tau[i]); //todo
+			virtualWake.vecHalfGamma.push_back(0.5 * Gamma / afl.len[i] * afl.tau[i]); 
 			virtualWake.aflPan.push_back({ numberInPassport, i });
 		}
 
 		pair.second = (int)virtualWake.vtx.size();
 		vortexBeginEnd.push_back(pair);
+
+		sheets.freeVortexSheet(i, 0) = Gamma / afl.len[i]; 		
 	}
 	
 
-	for (size_t j = 0; j < np; ++j)
-		sheets.freeVortexSheet(j, 0) = 0.0; //todo
-		
 }//SolutionToFreeVortexSheetAndVirtualVortex(...)
 
 
@@ -135,7 +148,7 @@ void BoundaryVortexCollocN::FillMatrixSelf(Eigen::MatrixXd& matr, Eigen::VectorX
 	for (int i = 0; i < np; ++i)
 		for (size_t j = 0; j < np; ++j)
 		{						
-			matr(i, j) = 0.0; //todo
+			matr(i, j) = -(afl.tau[i] & (c[i]-afl.getR(j)) ) * IDPI / (c[i]-afl.getR(j)).length2();
 		}
 }//FillMatrixSelf(...)
 
@@ -152,7 +165,7 @@ void BoundaryVortexCollocN::FillMatrixFromOther(const Boundary& otherBoundary, E
 	for (size_t j = 0; j < otherBoundary.afl.getNumberOfPanels(); ++j)		
 	{
 		
-		matr(i, j) = 0.0; //todo
+		matr(i, j) = -(afl.tau[i] & (c[i]-otherBoundary.afl.getR(j)) ) * IDPI / (c[i]-otherBoundary.afl.getR(j)).length2();
 	}		
 }//FillMatrixFromOther(...)
 
@@ -339,7 +352,7 @@ void BoundaryVortexCollocN::GetInfluenceFromVorticesToRectPanel(size_t panel, co
 {
 	double& velI = wakeRhs[0];
 
-	const Point2D& posI = 0.5 * (afl.getR(panel) + afl.getR(panel + 1));
+	const Point2D& posI = c[panel];
 	
 	for (size_t it = 0; it != count; ++it)
 	{
@@ -349,8 +362,9 @@ void BoundaryVortexCollocN::GetInfluenceFromVorticesToRectPanel(size_t panel, co
 		const double& gamJ = vt.g();
 
 		Point2D d = posI - posJ;
+		//std::cout << "d = " << d << std::endl;
 
-		velI -= 0.0; //todo	
+		velI -= (gamJ * afl.len[panel] / std::max(d.length2(), W.getPassport().wakeDiscretizationProperties.eps2)) * (afl.tau[panel] & d);
 	}
 }// GetInfluenceFromVorticesToRectPanel(...)
 
@@ -372,7 +386,7 @@ void BoundaryVortexCollocN::GetInfluenceFromSourcesToRectPanel(size_t panel, con
 
 		Point2D d = posI - posJ;
 
-		velI += 0.0; //todo
+		velI += (gamJ * afl.len[panel] / std::max(d.length2(), W.getPassport().wakeDiscretizationProperties.eps2)) * (afl.nrm[panel] & d);
 	}	
 }// GetInfluenceFromSourcesToRectPanel(...)
 
@@ -445,7 +459,7 @@ void BoundaryVortexCollocN::GetInfluenceFromVInfToRectPanel(std::vector<double>&
 #pragma omp parallel for default(none) shared(locVInfRhs, par)
 	for (int i = 0; i < par.myLen; ++i)
 	{
-		locVInfRhs[i] = 0.0; //todo
+		locVInfRhs[i] = afl.nrm[i] & W.getPassport().physicalProperties.V0(); 
 	}
 
 	if (W.getParallel().myidWork == 0)

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2DBiotSavart.cpp                                         |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include "Velocity2DBiotSavart.h"
@@ -117,6 +117,7 @@ void VelocityBiotSavart::CalcConvVelo()
 	W.getTimestat().timeCalcVortexConvVelo.second += omp_get_wtime();
 	
 	W.getTimestat().timeVP.first += omp_get_wtime();
+
 	//вычисление скоростей в заданных точках только на соответствующем шаге по времени
 	if ((W.getPassport().timeDiscretizationProperties.saveVP > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVP)))
 		CalcVeloToWakeVP();	
@@ -707,6 +708,39 @@ void VelocityBiotSavart::FillRhs(Eigen::VectorXd& rhs) const
 			for (size_t q = 0; q < afl.gammaThrough.size(); ++q)
 				lastRhs[bou] += afl.gammaThrough[q];
 			
+
+
+
+			////////////////////////////////////////////////////////////////
+			 
+			double dwcm; //wcm0, wcm1, wcmOld0, wcmOld1, dwc0, dwc1;
+			const double currT = W.getPassport().timeDiscretizationProperties.currTime;
+			const double dt = W.getPassport().timeDiscretizationProperties.dt;
+
+			//wcm0 = W.getNonConstMechanics(bou).AngularVelocityOfAirfoil(currT);
+			//wcmOld0 = W.getNonConstMechanics(bou).AngularVelocityOfAirfoil(currT - dt);
+			//dwc0 = wcm0 - wcmOld0;
+
+			dwcm = W.getNonConstMechanics(bou).AngularVelocityOfAirfoil(currT) - W.getNonConstMechanics(bou).AngularVelocityOfAirfoil(currT - dt);
+			lastRhs[bou] += 2.0*dwcm * W.getAirfoil(bou).area * (W.getAirfoil(bou).inverse ? 1.0 : -1.0);
+			
+			/*
+			if (bou == 0)
+			{
+				lastRhs[bou] -= (2.0 * PI * 0.5) * dwc0 * 0.5;
+			}
+
+			if (bou == 1)
+			{				
+				wcm1 = W.getNonConstMechanics(bou).AngularVelocityOfAirfoil(currT);
+				wcmOld1 = W.getNonConstMechanics(bou).AngularVelocityOfAirfoil(currT - dt);
+				dwc1 = wcm1 - wcmOld1;
+				//std::cout << "dwc0,1 = " << dwc0 << " " << dwc1 << std::endl;
+				lastRhs[bou] += (2.0 * PI * 1.0) * (dwc1) * 1.0;
+			}
+			*/
+			////////////////////////////////////////////////////////////////
+
 			//размазываем правую часть		
 			for (size_t i = 0; i < nVars; ++i)
 				rhs(i + currentRow) = locRhs(i);

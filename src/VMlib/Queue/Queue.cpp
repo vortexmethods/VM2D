@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.10   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2021/05/17     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: Queue.cpp                                                        |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса Queue
 \author Марчевский Илья Константинович
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #if defined(_WIN32)
@@ -557,38 +557,17 @@ void Queue::RunConveyer()
 		double kvantStartWallTime; //Время на главном процессоре, когда начался очередной квант
 		double deltaWallTime;
 
-/* //POLARA
-		double stepStartTime, stepFinishTime;
-*/
-
 		if (parallel.myidWork == 0)
 			kvantStartWallTime = MPI_Wtime();
-		
+
+/////////////////////////////////// TASK 1: Согласование поля скоростей и поля	завихренности			
+		if (world->getCurrentStep() == 0)
+			world->ZeroStep();
+
 		do
 		{
-/* //POLARA
-			if (myidAll == 0)
-				stepStartTime = MPI_Wtime();
-*/
 			if (!world->isFinished())
 				world->Step();
-
-/* //POLARA
-			//if (commSolving != MPI_COMM_NULL)
-			//{
-			//	MPI_Barrier(commSolving);
-			//}
-
-			//MPI_Barrier(parallel.commWork);
-			//MPI_Barrier(commSolving);
-			MPI_Barrier(MPI_COMM_WORLD);
-			
-			if (myidAll == 0)
-			{
-				stepFinishTime = MPI_Wtime();
-				logFile << world->currentStep << " " << stepFinishTime - stepStartTime << std::endl;
-			}
-*/
 					
 			if (parallel.myidWork == 0)
 				deltaWallTime = MPI_Wtime() - kvantStartWallTime;
@@ -615,9 +594,6 @@ void Queue::AddTask(int _nProc, std::unique_ptr<PassportGen> _passport)
 	(task.end() - 1)->passport = std::move(_passport);
 	(task.end() - 1)->proc.resize(_nProc);
 	(task.end() - 1)->state = TaskState::waiting;
-
-
-
 }//AddTask(...)
 
 

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2D.h                                                    |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #ifndef MECHANICS_H
@@ -62,8 +62,8 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 
-	\version 1.10
-	\date 17 мая 2021 г.
+	\version 1.11
+	\date 07 августа 2022 г.
 	*/
 
 	class Mechanics
@@ -96,10 +96,10 @@ namespace VM2D
 		std::unique_ptr<VMlib::StreamParser> mechParamsParser;
 
 		/// Начальная скорость центра и угловая скорость
-		const Point2D Vcm0;	const double Wcm0;
+		Point2D Vcm0; double Wcm0;
 
 		/// Начальное положение профиля
-		const Point2D Rcm0; double Phi0;
+		Point2D Rcm0; double Phi0;
 
 #ifdef INITIAL 	
 		/// Текущие скорость центра и угловая скорость
@@ -157,14 +157,20 @@ namespace VM2D
 		/// \param[in] isMoves_ является ли профиль подвижным (1 - является, 0 - не является)
 		/// \param[in] isDeform_ является ли профиль деформируемым (1 - является, 0 - не является)
 		/// \param[in] isRotate_ является ли профиль вращающимся (1 - является, 0 - не является)
+		//Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_, Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_);
+		Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_);
+
+		/// Деструктор
+		virtual ~Mechanics() { };
+
+
+		/// \brief Задание начального положения и начальной скорости
+		/// 
 		/// \param[in] Vcm0_ - скорость центра масс
 		/// \param[in] Rcm0_ - положение центра масс
 		/// \param[in] Wcm0_ - угловая скорость центра масс 
 		/// \param[in] Phi0_ - угол поворота центра масс
-		Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_, Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_);
-
-		/// Деструктор
-		virtual ~Mechanics() { };
+		void Initialize(Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_);
 
 
 		/// Вычисление гидродинамической силы, действующей на профиль
@@ -192,6 +198,16 @@ namespace VM2D
 		///
 		/// \param[in] currTime текущее время
 		virtual Point2D PositionOfAirfoilRcm(double currTime) = 0;
+
+		/// \brief Вычисление угловой скорости профиля
+		///
+		/// \param[in] currTime текущее время
+		virtual double AngularVelocityOfAirfoil(double currTime) = 0;
+
+		/// \brief Вычисление угла поворота профиля
+		///
+		/// \param[in] currTime текущее время
+		virtual double AngleOfAirfoil(double currTime) = 0;
 
 		/// \brief Вычисление скоростей начал панелей
 		/// \param[in] currTime текущее время

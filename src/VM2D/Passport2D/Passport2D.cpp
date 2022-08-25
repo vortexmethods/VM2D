@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Passport2D.cpp                                                   |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include "Passport2D.h"
@@ -231,7 +231,26 @@ void Passport::GetAllParamsFromParser
 
 		//считываем нужные параметры с учетом default-значений
 		parserAirfoil->get("basePoint", prm.basePoint, &defaults::defaultBasePoint);
-		parserAirfoil->get("scale", prm.scale, &defaults::defaultScale);
+		
+		std::vector<double> tmpScale, defaultTmpScale = { defaults::defaultScale[0], defaults::defaultScale[1] };
+		
+		parserAirfoil->get("scale", tmpScale, &defaultTmpScale);
+		switch (tmpScale.size())
+		{
+		case 1:
+			prm.scale[0] = prm.scale[1] = tmpScale[0];
+			break;
+		case 2:
+			prm.scale[0] = tmpScale[0];
+			prm.scale[1] = tmpScale[1];
+			break;
+		default:
+			info('e') << "Error in _scale_ value for airfoil" << std::endl;
+			exit(1);
+		}		
+		//parserAirfoil->get("scale", prm.scalexy, &defaults::defaultScale);
+		
+		
 		parserAirfoil->get("angle", prm.angle, &defaults::defaultAngle);
 		prm.angle *= PI / 180.0;
 		

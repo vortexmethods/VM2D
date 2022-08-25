@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: World2D.cpp                                                      |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include "World2D.h"
@@ -170,9 +170,6 @@ World2D::World2D(const VMlib::PassportGen& passport_, const VMlib::Parallel& par
 		case 4:
 			mechanics.emplace_back(new MechanicsRigidOscillMon(*this, i));
 			break;
-
-
-
 		*/
 		}
 
@@ -191,66 +188,121 @@ World2D::World2D(const VMlib::PassportGen& passport_, const VMlib::Parallel& par
 }//World2D(...)
 
 
+
+/// Функция выполнения предварительного шага
+void World2D::ZeroStep()
+{
+	getTimestat().ToZero();
+	CalcPanelsVeloAndAttachedSheets();
+
+	getNonConstMeasureVP().Initialization();
+	BuildAllTrees();
+
+	CalcAndSolveLinearSystem();
+
+	getNonConstWake().WakeSynchronize();
+
+	for (size_t i = 0; i < getNumberOfBoundary(); ++i)
+		getNonConstBoundary(i).virtualWake.WakeSynchronize();
+}//ZeroStep()
+
+
+
 //Основная функция выполнения одного шага по времени
-void World2D::Step()
-{	
+void World2D::Step() // ЮИ
+{
 	try {
 		//double tt1, tt2;
-		
+
 		//Очистка статистики
 		getTimestat().ToZero();
 
 		//Засечка времени в начале шага
 		getTimestat().timeWholeStep.first += omp_get_wtime();
 
-		CalcPanelsVeloAndAttachedSheets();
-
-		measureVP->Initialization();
-		BuildAllTrees(); //Строго после measureVP->Initialization
-				
-		CalcAndSolveLinearSystem();
-
-		wake->WakeSynchronize();
-
-		for (auto& bou : boundary)
-			bou->virtualWake.WakeSynchronize();
+		CalcPanelsVeloAndAttachedSheets();	
+		CalcVortexVelo(true);				
 		
-		//tt1 = omp_get_wtime();
-		//Вычисление скоростей вихрей: для тех, которые в следе, и виртуальных, а также в точках wakeVP
-		CalcVortexVelo();
-		//tt2 = omp_get_wtime();
-		//std::cout << tt2 - tt1 << std::endl;
-
-		
-//#include "gammaCirc.h"
-
-
 		//Расчет и сохранение поля давления
-		if (ifDivisible(passport.timeDiscretizationProperties.saveVP))
+		if (currentStep > 0)
 		{
-			measureVP->CalcPressure();
-			measureVP->SaveVP();
-		}		
-		
+			--currentStep;
 
-		//Вычисление сил, действующих на профиль и сохранение в файл	
-		if (parallel.myidWork == 0)
-			for (auto& mech : mechanics)
+			if (ifDivisible(passport.timeDiscretizationProperties.saveVP))
 			{
-				mech->GetHydroDynamForce();
-				mech->GenerateForcesString();
-				mech->GeneratePositionString();
+				measureVP->CalcPressure();
+				measureVP->SaveVP();
 			}
 
-//		boundary[0]->virtualWake.SaveKadrVtk("VirtWake");
-		
+			//Вычисление сил, действующих на профиль и сохранение в файл	
+			if (parallel.myidWork == 0)
+				for (auto& mech : mechanics)
+				{
+					mech->GetHydroDynamForce();
+					mech->GenerateForcesString();
+					mech->GeneratePositionString();
+				}
+
+			++currentStep;
+		}
+
 		//Движение вихрей (сброс вихрей + передвижение пелены)
-		WakeAndAirfoilsMotion();		
-		
+		WakeAndAirfoilsMotion();
 
 		wake->Restruct();
+
+		//measureVP->Initialization();
+		//BuildAllTrees(); //Строго после measureVP->Initialization
+
+		auto mech = dynamic_cast<MechanicsRigidOscillPart*>(mechanics[0].get());
+		if (mech)//iterations
+		{
+
+			if (currentStep == 0)
+				mech->Qiter = { 0.0, 0.0 };
+
+			int q = 0;
+			Point2D forcePrev = { 0.0, 0.0 }, forceNext = mech->Qiter;
+			do
+			{
+				forcePrev = forceNext;
+
+				if (q == 0)
+					mech->uiter = mech->getU();
+
+				mech->RecalcU(forcePrev);
+
+				CalcPanelsVeloAndAttachedSheets();
+
+				measureVP->Initialization();
+				BuildAllTrees(); //Строго после measureVP->Initialization
+
+				CalcAndSolveLinearSystem();
+
+				mech->GetHydroDynamForce();
+
+				forceNext = mech->hydroDynamForce;
+				info('I') << "q = " << q << ", hydroDynamForce = " << forceNext << std::endl;
+				++q;
+			}
+			//while (false);
+			while ((forceNext - forcePrev).length() / (std::max(forceNext.length(), forcePrev.length()) + 1e-10) > 0.001);
+
+			mech->Qiter = forceNext;
+		}
+		else//no iterations
+		{
+			measureVP->Initialization();
+			BuildAllTrees(); //Строго после measureVP->Initialization
+
+			CalcAndSolveLinearSystem();
+		}
+
+		wake->WakeSynchronize();
+		for (auto& bou : boundary)
+			bou->virtualWake.WakeSynchronize();
+
 		wake->SaveKadrVtk();
-		
 
 		//Засечка времени в конце шага
 		getTimestat().timeWholeStep.second += omp_get_wtime();
@@ -260,15 +312,13 @@ void World2D::Step()
 		{
 			info('i') << "Step = " << currentStep \
 				<< " PhysTime = " << passport.physicalProperties.getCurrTime() \
-				<< " StepTime = " << Times::dT(getTimestat().timeWholeStep) << std::endl;				
+				<< " StepTime = " << Times::dT(getTimestat().timeWholeStep) << std::endl;
 
 			getTimestat().GenerateStatString();
 		}
 
 		passport.physicalProperties.addCurrTime(passport.timeDiscretizationProperties.dt);
-		currentStep++;
-
-
+		++currentStep;
 	}
 	catch (...)
 	{
@@ -316,8 +366,14 @@ void World2D::SolveLinearSystem()
 	}
 */
 
-	if (currentStep == 0)
-		invMatr = matr.inverse();
+/// 20/06/2023
+/*
+	if ( 
+		(currentStep == 0) ||
+		 (mechanics.size() > 1 && std::any_of(mechanics.begin(), mechanics.end(), [](const std::unique_ptr<Mechanics>& m) { return m->isMoves; }) ) 
+		)
+			invMatr = matr.inverse();
+*/
 
 
 /*
@@ -339,6 +395,7 @@ void World2D::SolveLinearSystem()
 	}
 */
 
+/*
 	if (currentStep == 0)
 	{
 		Eigen::MatrixXd mmul = matr * invMatr;
@@ -353,6 +410,7 @@ void World2D::SolveLinearSystem()
 
 		std::cout << "A*A^-1: MAX ELEMENT = " << maxElem << std::endl;
 	}
+*/
 	
 /*
 	if (currentStep == 0)
@@ -372,7 +430,9 @@ void World2D::SolveLinearSystem()
 	}
 */
 
-	sol = invMatr*rhs;
+/// 20/06/2023
+//	sol = invMatr*rhs;
+	sol = matr.partialPivLu().solve(rhs);
 
 	getTimestat().timeSolveLinearSystem.second += omp_get_wtime();
 }//SolveLinearSystem()
@@ -438,7 +498,10 @@ void World2D::FillMatrixAndRhs()
 			}
 
 			/// \todo пока матрица считается только на первом шаге
-			if (currentStep == 0)
+			if (
+				(currentStep == 0) ||
+				(mechanics.size() > 1 && std::any_of(mechanics.begin(), mechanics.end(), [](const std::unique_ptr<Mechanics>& m) { return m->isMoves; }))
+				)
 			{
 				size_t currentCol = 0;
 				for (size_t oth = 0; oth < boundary.size(); ++oth)
@@ -615,7 +678,7 @@ void World2D::BuildAllTrees()
 }//BuildAllTrees()
 
 // Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных), а также в точках вычисления VP 
-void World2D::CalcVortexVelo()
+void World2D::CalcVortexVelo(bool shiftTime)
 {
 	getTimestat().timeCalcVortexConvVelo.first += omp_get_wtime();
 	
@@ -631,7 +694,13 @@ void World2D::CalcVortexVelo()
 	getTimestat().timeCalcVortexConvVelo.second += omp_get_wtime();
 
 	//Вычисление конвективных скоростей вихрей (и в пелене, и виртуальных), а также в точках wakeVP
+	if (shiftTime)
+		--currentStep;
+	
 	velocity->CalcConvVelo();
+	
+	if (shiftTime)
+		++currentStep;
 
 	//Расчет средних значений eps для каждой панели и их передача на видеокарту
 	getTimestat().timeCalcVortexDiffVelo.first += omp_get_wtime();
@@ -723,6 +792,38 @@ void World2D::CalcPanelsVeloAndAttachedSheets()
 	getTimestat().timeOther.second += omp_get_wtime();
 }//CalcPanelsVeloAndAttachedSheets(...)
 
+
+// Ю.А. 2022.03.16
+/*
+// Вычисление скоростей панелей и интенсивностей присоединенных слоев вихрей и источников
+void World2D::CalcPanelsVeloAndAttachedSheets()
+{
+	getTimestat().timeOther.first += omp_get_wtime();
+
+	//вычисляем скорости панелей
+	for (size_t i = 0; i < airfoil.size(); ++i)
+		mechanics[i]->VeloOfAirfoilPanels(currentStep * passport.timeDiscretizationProperties.dt);
+
+	//вычисляем интенсивности присоединенных слоев
+	for (size_t i = 0; i < airfoil.size(); ++i)
+	{
+		for (size_t j = 0; j < boundary[i]->sheets.getSheetSize(); ++j)
+		{
+			boundary[i]->oldSheets.attachedVortexSheet(j, 0) = 0;
+			boundary[i]->oldSheets.attachedSourceSheet(j, 0) = 0;
+		}
+
+		for (size_t j = 0; j < boundary[i]->sheets.getSheetSize(); ++j)
+		{
+			boundary[i]->sheets.attachedVortexSheet(j, 0) = 0;
+			boundary[i]->sheets.attachedSourceSheet(j, 0) = 0;
+		}
+	}
+
+	getTimestat().timeOther.second += omp_get_wtime();
+}//CalcPanelsVeloAndAttachedSheets(...)
+*/
+
 //Вычисляем новые положения вихрей (в пелене и виртуальных)
 void World2D::MoveVortexes(std::vector<Point2D>& newPos)
 {	
@@ -791,7 +892,10 @@ void World2D::FillIQ()
 				{
 					//size_t nVarsOther = boundary[oth]->GetUnknownsSize();
 					if (bou != oth)
+					{	
+						//std::cout << "matr!" << std::endl;
 						boundary[bou]->FillIQFromOther(*boundary[oth], IQ[bou][oth]);
+					}
 				}// if (currentStep == 0 || mechanics[oth]->isMoves)
 #endif
 				
@@ -945,11 +1049,9 @@ void World2D::WakeAndAirfoilsMotion()
 
 	getTimestat().timeOther.first += omp_get_wtime();
 
-	
+	oldAirfoil.resize(0);
 	for (auto& afl : airfoil)
 	{
-		oldAirfoil.resize(0);
-
 		switch (passport.numericalSchemes.panelsType.second)
 		{
 		case 0:

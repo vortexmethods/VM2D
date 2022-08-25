@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidGivenLaw.cpp                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include <algorithm>
@@ -55,7 +55,12 @@
 
 using namespace VM2D;
 
-
+MechanicsRigidGivenLaw::MechanicsRigidGivenLaw(const World2D& W_, size_t numberInPassport_)
+	: Mechanics(W_, numberInPassport_, 0, true, false, false)
+{
+	ReadSpecificParametersFromDictionary();
+	Initialize(VelocityOfCenterOfMass(0.0), PositionOfCenterOfMass(0.0), AngularVelocity(0.0), RotationAngle(0.0));
+};
 
 
 //Вычисление гидродинамической силы, действующей на профиль
@@ -117,15 +122,17 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce()
 		hDMQ -= 0.25 * dr ^ (afl.getV(i) + afl.getV(i + 1)) * qAtt * afl.len[i];		
 	}
 
-	hydroDynamForce = hDFGam + hDFdelta * (1.0 / dt) + hDFQ;
-	hydroDynamMoment = hDMGam + hDMdelta / dt + hDMQ;
+	const double rho = W.getPassport().physicalProperties.rho;
+
+	hydroDynamForce = rho * (hDFGam + hDFdelta * (1.0 / dt) + hDFQ);
+	hydroDynamMoment = rho * (hDMGam + hDMdelta / dt + hDMQ);
 
 	if (W.getPassport().physicalProperties.nu > 0.0)
 		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 		{
 			Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
-			viscousForce += afl.viscousStress[i] * afl.tau[i];
-			viscousMoment += (afl.viscousStress[i] * afl.tau[i]) & rK;
+			viscousForce += rho * (afl.viscousStress[i] * afl.tau[i]);
+			viscousMoment += rho * (afl.viscousStress[i] * afl.tau[i]) & rK;
 		}
 
 	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
@@ -145,18 +152,19 @@ Point2D MechanicsRigidGivenLaw::PositionOfAirfoilRcm(double currTime)
 	return PositionOfCenterOfMass(currTime);
 }//PositionOfAirfoilRcm(...)
 
-
-// Вычисление угла поворота профиля вокруг центра масс
-double MechanicsRigidGivenLaw::AngleOfAirfoil(double currTime)
-{
-	return RotationAngle(currTime);	
-}//AngleOfAirfoil(...)
-
 // Вычисление угловой скорости профиля вокруг центра масс
 double MechanicsRigidGivenLaw::AngularVelocityOfAirfoil(double currTime)
 {
 	return AngularVelocity(currTime);
 }//AngularVelocityOfAirfoil(...)
+
+ //Вычисление угла поворота профиля
+double MechanicsRigidGivenLaw::AngleOfAirfoil(double currTime)
+{
+	return RotationAngle(currTime);
+}//AngleOfAirfoil(...)
+
+
 
 
 

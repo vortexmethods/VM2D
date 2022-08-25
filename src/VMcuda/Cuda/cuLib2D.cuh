@@ -1,11 +1,11 @@
 /*-------------------------------*- VMcuda -*----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
 |  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2020 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: cuLib2D.cuh                                                      |
 | Info: Source code of VMcuda                                                 |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #ifndef CUVELOCITYBIOTSAVART_CUH

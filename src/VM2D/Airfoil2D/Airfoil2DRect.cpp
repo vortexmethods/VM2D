@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.10   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2021/05/17     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2021 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil2DRect.cpp                                                |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,8 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.10
-\date 17 мая 2021 г.
+\version 1.11
+\date 07 августа 2022 г.
 */
 
 #include "Airfoil2DRect.h"
@@ -71,6 +71,8 @@ void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка про
 		m = 0.0; //TODO
 		J = 0.0; //TODO
 		rcm = { 0.0, 0.0 }; //TODO
+		phiAfl = 0.0;
+
 		inverse = param.inverse;
 		
 		
@@ -91,6 +93,16 @@ void AirfoilRect::ReadFromFile(const std::string& dir) //загрузка про
 
 		gammaThrough.clear();
 		gammaThrough.resize(r_.size(), 0.0);
+
+		//Вычисляем площадь
+		area = 0.0;
+		for (size_t q = 0; q < r_.size(); ++q)
+		{
+			const Point2D& cntq = 0.5 * (getR(q) + getR(q + 1));
+			const Point2D& drq = getR(q + 1) - getR(q);
+			area += fabs(cntq[0] * drq[1] - cntq[1] * drq[0]);
+		}
+		area *= 0.5;
 	}
 }//ReadFromFile(...)
 
@@ -613,12 +625,12 @@ void AirfoilRect::Rotate(double alpha)	//поворот профиля на уг
 
 
 //Масштабирование профиля
-void AirfoilRect::Scale(double factor)	//масштабирование профиля на коэффициент factor относительно центра масс
+void AirfoilRect::Scale(const Point2D& factor)	//масштабирование профиля на коэффициент factor относительно центра масс
 {
 	for (size_t i = 0; i < r_.size(); ++i)
-		r_[i] = rcm + factor*(r_[i] - rcm);
+		r_[i] = rcm + Point2D{ factor[0] * (r_[i] - rcm)[0], factor[1] * (r_[i] - rcm)[1] };
 
-	CalcNrmTauLen(); //строго говоря, меняются при этом только длины, нормали и касательные - без изменения
+	CalcNrmTauLen();
 	GetGabarits();
 }//Scale(...)
 
