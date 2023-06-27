@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: Parallel.cpp                                                     |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса Parallel
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #include "Parallel.h"
@@ -44,7 +44,10 @@ parProp Parallel::SplitMPIone(size_t n, bool bcastAll) const
 	parProp par;
 
 	par.totalLen = static_cast<int>(n);
+
+#ifdef USE_MPI
 	MPI_Bcast(&par.totalLen, 1, MPI_INT, 0, commWork);
+#endif
 
 	if (myidWork == 0)
 	{
@@ -61,9 +64,15 @@ parProp Parallel::SplitMPIone(size_t n, bool bcastAll) const
 		}
 	}
 
+#ifdef USE_MPI
 	MPI_Scatter(par.len.data(), 1, MPI_INT, &par.myLen, 1, MPI_INT, 0, commWork);
 	MPI_Scatter(par.disp.data(), 1, MPI_INT, &par.myDisp, 1, MPI_INT, 0, commWork);
+#else
+	par.myLen = par.len[0];
+	par.myDisp = par.disp[0];
+#endif
 
+#ifdef USE_MPI
 	if (bcastAll)
 	{
 		if (myidWork != 0)
@@ -74,6 +83,7 @@ parProp Parallel::SplitMPIone(size_t n, bool bcastAll) const
 		MPI_Bcast(par.len.data(), nProcWork, MPI_INT, 0, commWork);
 		MPI_Bcast(par.disp.data(), nProcWork, MPI_INT, 0, commWork);
 	}
+#endif
 
 	return par;
 
@@ -86,8 +96,11 @@ parProp Parallel::SplitMPI(size_t n, bool bcastAll) const
 	parProp par;
 	
 	par.totalLen = static_cast<int>(n);
+
+#ifdef USE_MPI
 	MPI_Bcast(&par.totalLen, 1, MPI_INT, 0, commWork);
-	
+#endif	
+
 	if (myidWork == 0)
 	{
 		par.len.clear();
@@ -105,9 +118,15 @@ parProp Parallel::SplitMPI(size_t n, bool bcastAll) const
 		par.disp.push_back(nPerP * (nProcWork - 1));
 	}
 
+#ifdef USE_MPI
 	MPI_Scatter(par.len.data(), 1, MPI_INT, &par.myLen, 1, MPI_INT, 0, commWork);
 	MPI_Scatter(par.disp.data(), 1, MPI_INT, &par.myDisp, 1, MPI_INT, 0, commWork);
-	
+#else
+	par.myLen = par.len[0];
+	par.myDisp = par.disp[0];
+#endif
+
+#ifdef USE_MPI
 	if (bcastAll)
 	{
 	    if (myidWork != 0)
@@ -118,6 +137,7 @@ parProp Parallel::SplitMPI(size_t n, bool bcastAll) const
 	    MPI_Bcast(par.len.data(),  nProcWork, MPI_INT, 0, commWork);
 	    MPI_Bcast(par.disp.data(), nProcWork, MPI_INT, 0, commWork);
 	}
+#endif
 	
 	return par;
 	

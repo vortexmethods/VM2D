@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: numvector.h                                                      |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Описание класса numvector
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef NUMVECTOR_H_
@@ -53,6 +53,12 @@
 #define DEPRECATED
 #endif
 */
+
+#if defined(__CUDACC__)
+ #define HD __host__ __device__
+#else
+ #define HD 
+#endif
 
 #define DEPRECATED
 
@@ -79,18 +85,33 @@ namespace VMlib
 	\tparam n длина вектора
 
 	\author Марчевский Илья Константинович
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 		
 
 	template<typename T, size_t n>
-	class numvector : public std::array<T, n>
+	//class numvector : public std::array<T, n>
+	class numvector
 	{
 	protected:
+		T data[n];			
 
 	public:
+		HD T& operator[](size_t i)
+		{
+			return this->data[i];
+		}
 
+		HD const T& operator[](size_t i) const
+		{
+			return this->data[i];
+		}
+
+		HD size_t size() const
+		{
+			return n;
+		}
 
 		/// \brief Оператор "&" скалярного умножения
 		///
@@ -99,11 +120,11 @@ namespace VMlib
 		/// \param[in] y константная ссылка на второй множитель
 		/// \return результат вычисления скалярного произведения, приведенный к нужному типу	
 		template <typename P>
-		auto operator& (const numvector<P, n>& y) const -> typename std::remove_const<decltype(this->data()[0] * y[0])>::type
+		HD auto operator& (const numvector<P, n>& y) const -> typename std::remove_const<decltype(this->data[0] * y[0])>::type
 		{
-			typename std::remove_const<decltype(this->data()[0] * y[0])>::type res = 0;
+			typename std::remove_const<decltype(this->data[0] * y[0])>::type res = 0;
 			for (size_t j = 0; j < n; ++j)
-				res += this->data()[j] * y[j];
+				res += this->data[j] * y[j];
 			return res;
 		}//operator&(...)
 
@@ -116,12 +137,12 @@ namespace VMlib
 		/// \param[in] y константная ссылка на второй множитель
 		/// \return результат вычисления векторного произведения, приведенный к нужному типу
 		template <typename P>
-		auto operator^(const numvector<P, 3>& y) const -> numvector<typename std::remove_const<decltype(this->data()[1] * y[2])>::type, 3>
+		HD auto operator^(const numvector<P, 3>& y) const -> numvector<typename std::remove_const<decltype(this->data[1] * y[2])>::type, 3>
 		{
-			numvector<typename std::remove_const<decltype(this->data()[1] * y[2])>::type, 3> vec;
-			vec[0] = this->data()[1] * y[2] - this->data()[2] * y[1];
-			vec[1] = this->data()[2] * y[0] - this->data()[0] * y[2];
-			vec[2] = this->data()[0] * y[1] - this->data()[1] * y[0];
+			numvector<typename std::remove_const<decltype(this->data[1] * y[2])>::type, 3> vec;
+			vec[0] = this->data[1] * y[2] - this->data[2] * y[1];
+			vec[1] = this->data[2] * y[0] - this->data[0] * y[2];
+			vec[2] = this->data[0] * y[1] - this->data[1] * y[0];
 			return vec;
 		}//operator^(...)
 
@@ -134,9 +155,9 @@ namespace VMlib
 		/// \param[in] y константная ссылка на второй множитель
 		/// \return результат вычисления третьей компоненты векторного произведения двух двумерных векторов, приведенный к нужному типу
 		template <typename P>
-		auto operator^ (const numvector<P, 2>& y) const -> typename std::remove_const<decltype(this->data()[0] * y[1])>::type
+		HD auto operator^ (const numvector<P, 2>& y) const -> typename std::remove_const<decltype(this->data[0] * y[1])>::type
 		{
-			return (this->data()[0] * y[1] - this->data()[1] * y[0]);
+			return (this->data[0] * y[1] - this->data[1] * y[0]);
 		}//operator^(...)
 
 
@@ -148,10 +169,10 @@ namespace VMlib
 		/// \param[in] c числовой множитель типа, приводимого к типу компонент вектора
 		/// \return ссылку на самого себя после домножения на число
 		template <typename P>
-		numvector<T, n>& operator*=(P c)
+		HD numvector<T, n>& operator*=(P c)
 		{
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] *= c;
+				this->data[i] *= c;
 			return *this;
 		}//operator*=(...)
 
@@ -164,10 +185,10 @@ namespace VMlib
 		/// \param[in] c числовой делитель типа, приводимого к типу компонент вектора
 		/// \return ссылку на самого себя после деления на число
 		template <typename P>
-		numvector<T, n>& operator/=(P c)
+		HD numvector<T, n>& operator/=(P c)
 		{
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] /= c;
+				this->data[i] /= c;
 			return *this;
 		}//operator/=(...)
 
@@ -180,10 +201,10 @@ namespace VMlib
 		/// \param[in] y константная ссылка на прибавляемый вектор
 		/// \return ссылку на самого себя после сложения с другим вектором
 		template <typename P>
-		numvector<T, n>& operator+=(const numvector<P, n>& y)
+		HD numvector<T, n>& operator+=(const numvector<P, n>& y)
 		{
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] += y[i];
+				this->data[i] += y[i];
 			return *this;
 		}//operator+=(...)
 
@@ -196,10 +217,10 @@ namespace VMlib
 		/// \param[in] y константная ссылка на вычитаемый вектор
 		/// \return ссылка на самого себя после вычитания другого вектора
 		template <typename P>
-		numvector<T, n>& operator-=(const numvector<P, n>& y)
+		HD numvector<T, n>& operator-=(const numvector<P, n>& y)
 		{
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] -= y[i];
+				this->data[i] -= y[i];
 			return *this;
 		}//operator-=(...)
 
@@ -211,11 +232,11 @@ namespace VMlib
 		/// \param[in] y константная ссылка на прибавляемый вектор
 		/// \return результат сложения двух векторов, приведенный к нужному типу
 		template <typename P>
-		auto operator+(const numvector<P, n>& y) const -> numvector<typename std::remove_const<decltype(this->data()[0] + y[0])>::type, n>
+		HD auto operator+(const numvector<P, n>& y) const -> numvector<typename std::remove_const<decltype(this->data[0] + y[0])>::type, n>
 		{
-			numvector<typename std::remove_const<decltype(this->data()[0] + y[0])>::type, n> res;
+			numvector<typename std::remove_const<decltype(this->data[0] + y[0])>::type, n> res;
 			for (size_t i = 0; i < n; ++i)
-				res[i] = this->data()[i] + y[i];
+				res[i] = this->data[i] + y[i];
 			return res;
 		}//operator+(...)
 
@@ -227,11 +248,11 @@ namespace VMlib
 		/// \param[in] y константная ссылка на вычитаемый вектор
 		/// \return результат вычитания двух векторов, приведенный к нужному типу
 		template <typename P>
-		auto operator-(const numvector<P, n>& y) const -> numvector<typename std::remove_const<decltype(this->data()[0] - y[0])>::type, n>
+		HD auto operator-(const numvector<P, n>& y) const -> numvector<typename std::remove_const<decltype(this->data[0] - y[0])>::type, n>
 		{
-			numvector<typename std::remove_const<decltype(this->data()[0] - y[0])>::type, n> res;
+			numvector<typename std::remove_const<decltype(this->data[0] - y[0])>::type, n> res;
 			for (size_t i = 0; i < n; ++i)
-				res[i] = this->data()[i] - y[i];
+				res[i] = this->data[i] - y[i];
 			return res;
 		}//operator-(...)
 
@@ -243,11 +264,11 @@ namespace VMlib
 		/// \param[in] c число-множитель
 		/// \return результат умножения вектора на число, приведенный к соответствующему типу
 		template <typename P>
-		auto operator*(const P c) const -> numvector<typename std::remove_const<decltype(this->data()[0] * c)>::type, n>
+		HD auto operator*(const P c) const -> numvector<typename std::remove_const<decltype(this->data[0] * c)>::type, n>
 		{
-			numvector<typename std::remove_const<decltype(this->data()[0] * c)>::type, n> res;
+			numvector<typename std::remove_const<decltype(this->data[0] * c)>::type, n> res;
 			for (size_t i = 0; i < n; ++i)
-				res[i] = c * this->data()[i];
+				res[i] = c * this->data[i];
 			return res;
 		}//operator*(...)
 
@@ -257,11 +278,11 @@ namespace VMlib
 		/// \tparam T тип данных компонент вектора
 		/// \tparam n длина вектора	
 		/// \return противоположный вектор
-		numvector<T, n> operator-() const
+		HD numvector<T, n> operator-() const
 		{
 			numvector<T, n> res;
 			for (size_t i = 0; i < n; ++i)
-				res[i] = -this->data()[i];
+				res[i] = -this->data[i];
 			return res;
 		}//operator-()
 
@@ -271,7 +292,7 @@ namespace VMlib
 		/// \tparam T тип данных компонент вектора
 		/// \tparam n длина вектора	
 		/// \return константную ссылку на самого себя
-		const numvector<T, n>& operator+() const
+		HD const numvector<T, n>& operator+() const
 		{
 			return *this;
 		}//operator+()
@@ -284,10 +305,10 @@ namespace VMlib
 		/// \param[in] y константная ссылка на сравниваемый вектор
 		/// \return true, если векторы одинаковые, false в противном случае
 		template <typename P>
-		bool operator==(const numvector<P, n>& y) const
+		HD bool operator==(const numvector<P, n>& y) const
 		{
 			for (size_t i = 0; i < n; ++i)
-				if (this->data()[i] != y[i])
+				if (this->data[i] != y[i])
 					return false;
 			return true;
 		}//operator==(...)
@@ -300,7 +321,7 @@ namespace VMlib
 		/// \param[in] y константная ссылка на сравниваемый вектор
 		/// \return true, если векторы различаются, false в противном случае
 		template <typename P>
-		bool operator!=(const numvector<P, n>& y) const
+		HD bool operator!=(const numvector<P, n>& y) const
 		{
 			return !(*this == y);
 		}//operator!=(...)
@@ -313,11 +334,11 @@ namespace VMlib
 		/// Сумма модулей компонент вектора
 		///
 		/// \return 1-норма вектора
-		auto norm1() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type
+		HD auto norm1() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data[0])>::type>::type
 		{
-			typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type res = 0;
+			typename std::remove_const<typename std::remove_reference<decltype(this->data[0])>::type>::type res = 0;
 			for (size_t i = 0; i < n; ++i)
-				res += abs(this->data()[i]);
+				res += abs(this->data[i]);
 			return res;
 		}//norm1()
 
@@ -327,13 +348,13 @@ namespace VMlib
 		/// Наибольшая по модулю компонента вектора
 		///
 		/// \return inf-норма вектора
-		auto norminf() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type
+		HD auto norminf() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data[0])>::type>::type
 		{
-			typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type res = 0;
+			typename std::remove_const<typename std::remove_reference<decltype(this->data[0])>::type>::type res = 0;
 			for (size_t i = 0; i < n; ++i)
 			{
-				if (abs(this->data()[i]) > res)
-					res = abs(this->data()[i]);
+				if (abs(this->data[i]) > res)
+					res = abs(this->data[i]);
 			}
 			return res;
 		}//norminf()
@@ -347,7 +368,7 @@ namespace VMlib
 		///
 		/// \return норма (длина) вектора
 		template <typename P = double>
-		P length() const
+		HD P length() const
 		{
 			P res = *this & *this;
 			return sqrt(res);
@@ -359,7 +380,7 @@ namespace VMlib
 		/// Скалярный квадрат вектора
 		///
 		/// \return квадрат нормы (длины) вектора того же типа, что и компоненты вектора
-		auto length2() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data()[0])>::type>::type
+		HD auto length2() const -> typename std::remove_const<typename std::remove_reference<decltype(this->data[0])>::type>::type
 		{
 			return (*this & *this);
 		}//length2()
@@ -375,9 +396,9 @@ namespace VMlib
 		///
 		/// \warning для получения float-орта от вектора с компонентами типа float или целыми нужно явно указать параметр 1.0f
 		template <typename P = double>
-		auto unit(P newlen = 1) const -> numvector<typename std::remove_const<decltype(this->data()[0] * newlen)>::type, n>
+		HD auto unit(P newlen = 1) const -> numvector<typename std::remove_const<decltype(this->data[0] * newlen)>::type, n>
 		{
-			auto ilen = static_cast<decltype(this->data()[0] * newlen)>(newlen / std::max(this->length(), 1e-16));
+			auto ilen = static_cast<decltype(this->data[0] * newlen)>(newlen / std::max(this->length(), 1e-16));
 			return (*this * ilen);
 		}//unit(...)
 
@@ -392,9 +413,9 @@ namespace VMlib
 		///
 		/// \warning Работает корректно только для векторов с компонентами типа float и double
 		template <typename P = double>
-		void normalize(P newlen = 1.0)
+		HD void normalize(P newlen = 1.0)
 		{
-			auto ilen = static_cast<decltype(this->data()[0] * newlen)>(newlen / std::max(this->length(), 1e-16));
+			auto ilen = static_cast<decltype(this->data[0] * newlen)>(newlen / std::max(this->length(), 1e-16));
 			*this *= ilen;
 		}//normalize(...)
 
@@ -406,10 +427,10 @@ namespace VMlib
 		/// \param[in] s проверяемый элемент
 		/// \return позиция первого вхождения элемента s; если не входит --- возвращает (-1), приведенный к типу size_t
 		template <typename P>
-		size_t member(const P& s) const
+		HD size_t member(const P& s) const
 		{
 			for (size_t i = 0; i < n; ++i)
-				if (this->data()[i] == s)
+				if (this->data[i] == s)
 					return i;
 
 			return static_cast<size_t>(-1);
@@ -426,7 +447,7 @@ namespace VMlib
 		{
 			std::set<P> newset;
 			for (size_t i = 0; i < n; ++i)
-				newset.insert(this->data()[i]);
+				newset.insert(this->data[i]);
 			return newset;
 		}//toSet()
 
@@ -441,7 +462,7 @@ namespace VMlib
 			std::vector<P> vec;
 			vec.reserve(n);
 			for (size_t i = 0; i < n; ++i)
-				vec.push_back(this->data()[i]);
+				vec.push_back(this->data[i]);
 			return vec;
 		}
 
@@ -454,7 +475,7 @@ namespace VMlib
 		/// \tparam n длина вектора	
 		/// \param[in] k количество позиций, на которые производится "вращение"
 		/// \return вектор, полученный "вращением" исходного на k позиций влево
-		numvector<T, n> rotateLeft(size_t k) const
+		HD numvector<T, n> rotateLeft(size_t k) const
 		{
 			if (k > n)
 				throw;
@@ -468,9 +489,9 @@ namespace VMlib
 			//	res[i] = r[(i + k) % n];
 
 			for (size_t i = 0; i < n - k; ++i)
-				res[i] = this->data()[i + k];
+				res[i] = this->data[i + k];
 			for (size_t i = n - k; i < n; ++i)
-				res[i] = this->data()[i + k - n];
+				res[i] = this->data[i + k - n];
 			return res;
 		}//rotateLeft(...)
 
@@ -483,11 +504,11 @@ namespace VMlib
 		///
 		/// \tparam T тип данных
 		/// \return новый двумерный вектор, полученный поворотом исходного на 90 градусов
-		numvector<T, 2> kcross() const
+		HD numvector<T, 2> kcross() const
 		{
 			numvector<T, 2> res;
-			res[0] = -this->data()[1];
-			res[1] =  this->data()[0];
+			res[0] = -this->data[1];
+			res[1] =  this->data[0];
 			return res;
 		}//kcross()
 
@@ -500,11 +521,28 @@ namespace VMlib
 		/// \param[in] val константа, значению которой приравниваются все компоненты вектора (по умолчанию 0)
 		/// \return ссылка на сам вектор
 		template <typename P = T>
-		numvector<T, n>& toZero(P val = 0)
+		HD numvector<T, n>& toZero(P val = 0)
 		{
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] = val;
+				this->data[i] = val;
 			return *this;
+		}
+
+
+		/// \brief Проекция вектора на вектор v
+		///
+		/// \tparam T тип данных компонент вектора
+		/// \tparam P тип данных константы
+		/// \tparam n длина вектора
+		/// \tparam v вектор, на который проецируем
+		/// \return результирующий вектор
+		template <typename P = T>
+		HD numvector<T, n> proj(const numvector<P, n>& v)
+		{
+			numvector<T, n> res;
+			res = ((*this & v) / (v & v))* v;
+			
+			return res;
 		}
 
 
@@ -514,7 +552,7 @@ namespace VMlib
 		/// \param[in] y константная ссылка на радиус-вектор второй точки
 		/// \return квадрат расстояния между точками
 		template<typename P>
-		auto dist2To(const numvector<P, n>& y) const -> typename std::remove_const<decltype(this->data()[0] - y[0])>::type
+		HD auto dist2To(const numvector<P, n>& y) const -> typename std::remove_const<decltype(this->data[0] - y[0])>::type
 		{
 			return (*this - y).length2();
 		}//dist2To(...)
@@ -527,7 +565,7 @@ namespace VMlib
 		/// \param[in] y константная ссылка на радиус-вектор второй точки
 		/// \return расстояние между точками
 		template<typename R = double, typename P>
-		R distTo(const numvector<P, n>& y)
+		HD R distTo(const numvector<P, n>& y)
 		{
 			R res = (*this - y) & (*this - y);
 			return sqrt(res);
@@ -535,7 +573,7 @@ namespace VMlib
 
 
 		/// Пустой конструктор
-		numvector() { };
+		HD numvector() { };
 
 
 		/// \brief Конструктор, инициализирующий весь вектор одной и той же константой
@@ -546,7 +584,7 @@ namespace VMlib
 		explicit numvector(const P c)
 		{
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] = c;
+				this->data[i] = c;
 		}//numvector(...)
 		
 
@@ -556,11 +594,11 @@ namespace VMlib
 		/// \tparam T тип данных компонент вектора
 		/// \tparam n длина вектора
 		/// \param[in] vec константная ссылка на копируемый вектор
-		numvector(const numvector<T, n>& vec)
+		HD numvector(const numvector<T, n>& vec)
 		{
 			//for (size_t i = 0; i < n; ++i)
 			//	r[i] = vec[i];
-			memcpy(this->data(), vec.data(), n * sizeof(T));
+			memcpy(this->data, vec.data, n * sizeof(T));
 		}//numvector(...)
 
 
@@ -570,10 +608,10 @@ namespace VMlib
 		/// \tparam n длина вектора
 		/// \param[in] vec константная ссылка на копируемый вектор
 		template <typename P>
-		numvector(const numvector<P, n>& vec)
+		HD numvector(const numvector<P, n>& vec)
 		{
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] = vec[i];
+				this->data[i] = vec[i];
 		}//numvector(...)
 
 
@@ -590,7 +628,7 @@ namespace VMlib
 			if (vec.size() != n)
 				throw;
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] = vec[i];
+				this->data[i] = vec[i];
 		}//numvector(...)
 
 
@@ -606,7 +644,7 @@ namespace VMlib
 			if (z.size() != n)
 				throw;
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] = *(z.begin() + i);
+				this->data[i] = *(z.begin() + i);
 		}//numvector(...)
 
 
@@ -623,7 +661,7 @@ namespace VMlib
 			if (z.size() != n)
 				throw;
 			for (size_t i = 0; i < n; ++i)
-				this->data()[i] = *(z.begin() + i);
+				this->data[i] = *(z.begin() + i);
 		}//numvector(...)
 #endif 
 
@@ -642,9 +680,9 @@ namespace VMlib
 		{
 			size_t minPN = (p < n) ? p : n;
 			for (size_t i = 0; i < minPN; ++i)
-				this->data()[i] = vec[i];
+				this->data[i] = vec[i];
 			for (size_t i = minPN; i < n; ++i)
-				this->data()[i] = add;
+				this->data[i] = add;
 		}//numvector(...)	
 
 
@@ -670,7 +708,7 @@ namespace VMlib
 //
 //			std::set<T> newset;
 //			for (size_t i = 0; i < n; ++i)
-//				newset.insert(this->data()[i]);
+//				newset.insert(this->data[i]);
 //			return newset;
 //		}//toSet()
 
@@ -685,7 +723,7 @@ namespace VMlib
 //			std::vector<T> vec;
 //			vec.reserve(n);
 //			for (size_t i = 0; i < n; ++i)
-//				vec.push_back(this->data()[i]);
+//				vec.push_back(this->data[i]);
 //			return vec;
 //		}
 
@@ -708,7 +746,7 @@ namespace VMlib
 	/// \param[in] x константная ссылка на умножаемый вектор
 	/// \return результат умножения вектора на число, приведенный к соответствующему типу
 	template<typename T, size_t n>
-	inline numvector<T, n> operator*(double c, const numvector<T, n>& x)
+	HD numvector<T, n> operator*(double c, const numvector<T, n>& x)
 	{
 		numvector<T, n> res(x);
 		for (size_t i = 0; i < n; ++i)
@@ -726,7 +764,7 @@ namespace VMlib
 	/// \param[in] x константная ссылка на умножаемый вектор
 	/// \return результат умножения вектора на число, приведенный к соответствующему типу
 	template<typename T, typename P, size_t n>
-	auto operator*(const P c, const numvector<T, n>& x) -> numvector<typename std::remove_const<decltype(x[0] * c)>::type, n>
+	HD auto operator*(const P c, const numvector<T, n>& x) -> numvector<typename std::remove_const<decltype(x[0] * c)>::type, n>
 	{
 		numvector<typename std::remove_const<decltype(x[0] * c)>::type, n> res;
 		for (size_t i = 0; i < n; ++i)
@@ -748,7 +786,7 @@ namespace VMlib
  /// \param[in] y константная ссылка на второй множитель
  /// \param[out] z ссылка на результат векторного умножения
 	template<typename T, typename P, typename R>
-	inline void cross(const numvector<T, 3>& x, const numvector<P, 3>& y, numvector<R, 3>& z)
+	HD void cross(const numvector<T, 3>& x, const numvector<P, 3>& y, numvector<R, 3>& z)
 	{
 		z = { x[1] * y[2] - x[2] * y[1], x[2] * y[0] - x[0] * y[2], x[0] * y[1] - x[1] * y[0] };
 	}//cross(...)
@@ -764,7 +802,7 @@ namespace VMlib
 /// \param[in] y константная ссылка на радиус-вектор второй точки
 /// \return квадрат расстояния между точками
 	template<typename T, typename P, size_t n>
-	inline auto dist2(const numvector<T, n>& x, const numvector<P, n>& y) -> typename std::remove_const<decltype(x[0] - y[0])>::type
+	HD auto dist2(const numvector<T, n>& x, const numvector<P, n>& y) -> typename std::remove_const<decltype(x[0] - y[0])>::type
 	{
 		numvector<typename std::remove_const<decltype(x[0] - y[0])>::type, n> p = x - y;
 		return p.length2();
@@ -780,7 +818,7 @@ namespace VMlib
 	/// \param[in] y константная ссылка на радиус-вектор второй точки
 	/// \return расстояние между точками
 	template<typename R = double, typename T, typename P, size_t n>
-	inline R dist(const numvector<T, n>& x, const numvector<P, n>& y)
+	HD R dist(const numvector<T, n>& x, const numvector<P, n>& y)
 	{
 		numvector<R, n> p = x - y;
 		return sqrt(p&p);
@@ -1040,7 +1078,7 @@ namespace VMlib
 	/// \param[in] y константная ссылка на второй множитель
 	/// \return третья компонента вектороного произведения
 	template<typename T, typename P, size_t n>
-	DEPRECATED inline double cross3(const numvector<T, n>& x, const numvector<P, n>& y)
+	DEPRECATED HD double cross3(const numvector<T, n>& x, const numvector<P, n>& y)
 	{
 		//deprecate: use numvector.operator^ instead of cross3(numvector<>,numvector<>)
 

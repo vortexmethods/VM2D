@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Gpu2D.h                                                          |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 
@@ -46,6 +47,8 @@
 #include "cuLib2D.cuh"
 #include "Gpudefs.h"
 
+#include "wrapper.h"
+
 namespace VM2D
 {
 
@@ -57,8 +60,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class Gpu
 	{
@@ -127,7 +131,7 @@ namespace VM2D
 			cuReserveDevMem(dev_ptr, n * sizeof(T));
 			//++nReserve;
 
-			cuCopyFixedArray(dev_ptr, host_src, sizeof(T) * n);
+			cuCopyFixedArray(dev_ptr, host_src, sizeof(T) * n, 116);
 
 			return (T*)dev_ptr;
 		}//ReserveDevMemAndCopyFixedArray(...)
@@ -156,7 +160,7 @@ namespace VM2D
 		template<typename T, size_t dim>
 		void CopyMemToDev(size_t n, T* host_ptr, T* dev_ptr) const
 		{
-			cuCopyFixedArray((void*)dev_ptr, (void*)host_ptr, sizeof(T) * n * dim);
+			cuCopyFixedArray((void*)dev_ptr, (void*)host_ptr, sizeof(T) * n * dim, 117);
 		};//CopyMemToDev(...)
 
 
@@ -186,9 +190,11 @@ namespace VM2D
 		double** dev_ptr_ptr_vel;
 		double** dev_ptr_ptr_rad;
 		double** dev_ptr_ptr_i0;
+		float** dev_ptr_ptr_i0f;
 		double** dev_ptr_ptr_i1;
 		double** dev_ptr_ptr_i2;
 		double** dev_ptr_ptr_i3;
+		float** dev_ptr_ptr_i3f;
 
 		double** dev_ptr_ptr_r;
 		double** dev_ptr_ptr_rhs;
@@ -210,12 +216,26 @@ namespace VM2D
 
 		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о следе (wake)
 		size_t n_CUDA_wake;
+		
 
 		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о следе (source)
 		size_t n_CUDA_source;
 
 		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о точках вычисления VP
 		size_t n_CUDA_velVP;
+
+		size_t n_CUDA_bodies;
+		BHcu::CUDApointers CUDAptrs;
+
+		std::vector<BHcu::CUDApointers> CUDAptrsAirfoilVrt;
+		std::vector<BHcu::CUDApointers> CUDAptrsAirfoilSrc;
+
+		void AllocateSolution(double*& dev_sol, size_t n);
+		void SetSolution(double* sol, double* dev_sol, size_t n);
+		void ReleaseSolution(double* dev_sol);
+
+		double* dev_sol;
+		double* dev_solLin;
 
 
 #endif
@@ -266,9 +286,9 @@ namespace VM2D
 		/// \brief Установка переключателя расчетных схем 
 		///
 		/// \param[in] schemeSwitcher_ тип схемы
+		/// - schemeSwitcher = 0 -- схема типа МДВ
 		/// - schemeSwitcher = 1 -- кусочно-постоянная схема
-		/// - schemeSwitcher = 2 -- кусочно-линейная схема
-		/// - schemeSwitcher = 11 -- схема типа МДВ
+		/// - schemeSwitcher = 2 -- кусочно-линейная схема		
 		void setSchemeSwitcher(int schemeSwitcher_)
 		{
 #if defined(__CUDACC__) || defined(USE_CUDA)		

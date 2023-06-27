@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: WorldGen.h                                                       |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса WorldGen
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef WORLDGEN_H
@@ -44,14 +44,13 @@
 namespace VMlib
 {
 	class PassportGen;
-	class Parallel;
 	class TimesGen;
 	
 	/*!
 	\brief Класс, опеделяющий текущую решаемую задачу
 	\author Марчевский Илья Константинович
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class WorldGen
 	{
@@ -61,9 +60,6 @@ namespace VMlib
 
 		/// Константная ссылка на паспорт конкретного расчета
 		const PassportGen& passportGen;
-
-		/// Константная ссылка на параметры исполнения задачи в параллельном MPI-режиме
-		const VMlib::Parallel& parallel;
 
 		/// Сведения о временах выполнения основных операций
 		std::unique_ptr<TimesGen> timestat;
@@ -87,7 +83,7 @@ namespace VMlib
 		/// \brief Возврат константной ссылки на параметры распараллеливания по MPI
 		///
 		/// \return константную ссылку на параметры распараллеливания по MPI
-		const Parallel& getParallel() const { return parallel; };
+		/// const Parallel& getParallel() const { return parallel; };
 
 		/// \brief Возврат номера текущего временного шага
 		///
@@ -104,14 +100,13 @@ namespace VMlib
 		/// \brief Конструктор
 		///
 		/// \param[in] passport_ константная ссылка на паспорт расчета
-		/// \param[in] parallel_ коенстантная ссылка на параметры исполнения задачи в параллельном MPI-режиме
-		WorldGen(const VMlib::PassportGen& passport_, const VMlib::Parallel& parallel_);
+		WorldGen(const VMlib::PassportGen& passport_);
 
 		/// Деструктор
 		virtual ~WorldGen() {};
 
 		/// Функция выполнения предварительного шага
-		virtual void ZeroStep() = 0;
+		//virtual void ZeroStep() = 0;
 
 		/// Основная функция выполнения одного шага по времени	
 		virtual void Step() = 0;

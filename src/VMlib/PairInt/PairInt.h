@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: PairInt.h                                                        |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса PairInt
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 
@@ -39,14 +39,12 @@
 \file
 \brief Заголовочный файл с описанием класса pairInt
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef PAIRINT_H_
 #define PAIRINT_H_
-
-#include "mpi.h"
 
 #include "numvector.h"
 
@@ -63,14 +61,15 @@ namespace VMlib
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class PairInt : public numvector<int, 2>
 	{
 	public:
-		/// MPI-описатель типа
-		static MPI_Datatype mpiPairInt;
+//		/// MPI-описатель типа
+//		static MPI_Datatype mpiPairInt;
 
 		/// Пустой конструктор
 		PairInt() { };
@@ -96,8 +95,8 @@ namespace VMlib
 		/// Деструктор
 		~PairInt() { };
 
-		/// Cоздание MPI-описателя типа
-		static void CreateMpiType();
+//		/// Cоздание MPI-описателя типа
+//		static void CreateMpiType();
 	};
 
 

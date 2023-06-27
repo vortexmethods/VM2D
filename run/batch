@@ -1,0 +1,8 @@
+#!/bin/sh
+#SBATCH --job-name=Marchevsky_M70
+#SBATCH --time=48:00:00
+#SBATCH --nodes=1 --cpus-per-task=18
+#SBATCH --partition release
+ulimit -l unlimited
+# mpirun -n 1 echo $HOSTNAME
+mpirun -n 1 /nethome/student/FS18/FS2-x1/Izmailova/VM2D-06-06/build/VM2Dfix

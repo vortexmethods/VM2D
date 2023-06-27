@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2DLinLayerAver.cpp                                       |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 
@@ -41,13 +42,10 @@
 #include "Boundary2DLinLayerAver.h"
 
 #include "Airfoil2D.h"
-#include "Airfoil2DCurv.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
-#include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
-#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -254,9 +252,9 @@ void BoundaryLinLayerAver::FillMatrixFromOther(const Boundary& otherBoundary, Ei
 		res = afl.getA(2, i, otherBoundary.afl, j);
 
 		matr(i, j) = res[0];
-		matr(i, np + j) = res[1];
+		matr(i, npOther + j) = res[1];
 		matr(np + i, j) = res[2];
-		matr(np + i, np + j) = res[3];
+		matr(np + i, npOther + j) = res[3];
 	}
 }//FillMatrixFromOther(...)
 
@@ -269,63 +267,21 @@ void BoundaryLinLayerAver::FillIQFromOther(const Boundary& otherBoundary, std::p
 //Вычисление скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на профиле
 void BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
 {
-	std::vector<Point2D> selfVelo;
-
-	//size_t np = afl.getNumberOfPanels();
-
-	int id = W.getParallel().myidWork;
-
-	VMlib::parProp par = W.getParallel().SplitMPI(pointsDb.vtx.size());
-
-
-	sheets.FreeSheetSynchronize();
-
-	////синхронизация свободного вихревого слоя
-	//std::vector<double> freeVortexSheetGamma;
-	//int sz;
-
-	//if (id == 0)
-	//{
-	//	sz = (int)sheets.getSheetSize();
-	//	freeVortexSheetGamma.resize(sz, 0.0);
-	//	for (size_t j = 0; j < afl.getNumberOfPanels(); ++j)
-	//	{
-	//		freeVortexSheetGamma[j] = sheets.freeVortexSheet(j, 0);
-	//		freeVortexSheetGamma[afl.getNumberOfPanels() + j] = sheets.freeVortexSheet(j, 1);
-	//	}
-	//}
-	//MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
-	//if (id != 0)
-	//	freeVortexSheetGamma.resize(sz, 0.0);
-
-	//MPI_Bcast(freeVortexSheetGamma.data(), (int)sz, MPI_DOUBLE, 0, W.getParallel().commWork);
-	////свободный вихревой слой синхронизирован
-
-
-
-	std::vector<Vortex2D> locPoints;
-	locPoints.resize(par.myLen);
-
-	MPI_Scatterv(const_cast<std::vector<Vortex2D/*, VM2D::MyAlloc<VMlib::Vortex2D>*/>&>(pointsDb.vtx).data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, \
-		locPoints.data(), par.myLen, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
-
-	std::vector<Point2D> locConvVelo;
-	locConvVelo.resize(par.myLen);
+	std::vector<Point2D> selfVelo(pointsDb.vtx.size());
 
 #pragma warning (push)
 #pragma warning (disable: 4101)
 	//Локальные переменные для цикла
 	Point2D velI;
 	Point2D tempVel;
-	//double dst2eps, dst2;
 #pragma warning (pop)
 
-#pragma omp parallel for default(none) shared(locConvVelo, locPoints, par, std::cout) private(velI, tempVel/*, dst2, dst2eps*/)
-	for (int i = 0; i < par.myLen; ++i)
+#pragma omp parallel for default(none) shared(selfVelo, pointsDb, std::cout) private(velI, tempVel)
+	for (int i = 0; i < pointsDb.vtx.size(); ++i)
 	{
 		velI.toZero();
 
-		const Point2D& posI = locPoints[i].r();
+		const Point2D& posI = pointsDb.vtx[i].r();
 
 		/// \todo Тут надо разобраться, как должно быть...
 		/// \todo сделать  if(move || deform)
@@ -353,15 +309,9 @@ void BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDat
 		}//for j
 
 		velI *= IDPI;
-		locConvVelo[i] = velI;
+		selfVelo[i] = velI;
 	}//for i
 
-	if (id == 0)
-		selfVelo.resize(pointsDb.vtx.size());
-
-	MPI_Gatherv(locConvVelo.data(), par.myLen, Point2D::mpiPoint2D, selfVelo.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-
-	if (id == 0)
 	for (size_t i = 0; i < velo.size(); ++i)
 		velo[i] += selfVelo[i];
 }//CalcConvVelocityToSetOfPointsFromSheets(...)
@@ -369,65 +319,146 @@ void BoundaryLinLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDat
 #if defined(USE_CUDA)
 void BoundaryLinLayerAver::GPUCalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
 {
-	const size_t npt = pointsDb.vtx.size();
-	double*& dev_ptr_pt = pointsDb.devVtxPtr;
-	const size_t npnl = afl.getNumberOfPanels(); //virtualWake.vtx.size();
-
-	double*& dev_ptr_r = afl.devRPtr;
-	double*& dev_ptr_freeVortexSheet = afl.devFreeVortexSheetPtr;
-	double*& dev_ptr_attachedVortexSheet = afl.devAttachedVortexSheetPtr;
-	double*& dev_ptr_attachedSourceSheet = afl.devAttachedSourceSheetPtr;
-
-	std::vector<Point2D>& Vel = velo;
-	std::vector<Point2D> locvel(npt);
-	double*& dev_ptr_vel = pointsDb.devVelPtr;
-	double eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
-
-	const int& id = W.getParallel().myidWork;
-	VMlib::parProp par = W.getParallel().SplitMPI(npt, true);
-
-	//Явная синхронизация слоев не нужна, т.к. она выполняется в Gpu::RefreshAfls() 
-	if (npt > 0)
+	if (afl.numberInPassport == 0)
 	{
-		cuCalculateConvVeloWakeFromVirtual(par.myDisp, par.myLen, dev_ptr_pt, npnl, dev_ptr_r, dev_ptr_freeVortexSheet, dev_ptr_attachedVortexSheet, dev_ptr_attachedSourceSheet, dev_ptr_vel, eps2);
+		const size_t npt = pointsDb.vtx.size();
+		double*& dev_ptr_pt = pointsDb.devVtxPtr;
 
-		W.getCuda().CopyMemFromDev<double, 2>(par.myLen, dev_ptr_vel, (double*)&locvel[0]);
+		//const size_t npnl = afl.getNumberOfPanels(); //virtualWake.vtx.size();
 
-		std::vector<Point2D> newV;
-		if (id == 0)
-			newV.resize(Vel.size());
+		size_t npnl = afl.getNumberOfPanels();
+		for (size_t q = 1; q < W.getNumberOfAirfoil(); ++q)
+			npnl += W.getAirfoil(q).getNumberOfPanels();
 
-		MPI_Gatherv(locvel.data(), par.myLen, Point2D::mpiPoint2D, newV.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
+		double*& dev_ptr_r = afl.devRPtr;
+		double*& dev_ptr_freeVortexSheet = afl.devFreeVortexSheetPtr;
+		double*& dev_ptr_attachedVortexSheet = afl.devAttachedVortexSheetPtr;
+		double*& dev_ptr_attachedSourceSheet = afl.devAttachedSourceSheetPtr;
 
-		if (id == 0)
-		for (size_t q = 0; q < Vel.size(); ++q)
-			Vel[q] += newV[q];
+		double*& dev_ptr_freeVortexSheetLin = afl.devFreeVortexSheetLinPtr;
+		double*& dev_ptr_attachedVortexSheetLin = afl.devAttachedVortexSheetLinPtr;
+		double*& dev_ptr_attachedSourceSheetLin = afl.devAttachedSourceSheetLinPtr;
+
+		std::vector<Point2D>& Vel = velo;
+		std::vector<Point2D> newV(npt);
+		double*& dev_ptr_vel = pointsDb.devVelPtr;
+		double eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
+
+		//Явная синхронизация слоев не нужна, т.к. она выполняется в Gpu::RefreshAfls() 
+		if (npt > 0)
+		{
+			cuCalculateConvVeloWakeFromVirtual(npt, dev_ptr_pt, npnl, dev_ptr_r, \
+				dev_ptr_freeVortexSheet, dev_ptr_freeVortexSheetLin, \
+				dev_ptr_attachedVortexSheet, dev_ptr_attachedVortexSheetLin, \
+				dev_ptr_attachedSourceSheet, dev_ptr_attachedSourceSheetLin, \
+				dev_ptr_vel, eps2);
+
+			W.getCuda().CopyMemFromDev<double, 2>(npt, dev_ptr_vel, (double*)newV.data());
+
+			for (size_t q = 0; q < Vel.size(); ++q)
+				Vel[q] += newV[q];
+		}
+
+		//tCUDAEND = omp_get_wtime();
+
+		//W.getInfo('t') << "CONV_VIRT_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
 	}
-
-	//tCUDAEND = omp_get_wtime();
-
-	//W.getInfo('t') << "CONV_VIRT_GPU: " << (tCUDAEND - tCUDASTART) << std::endl;
 }
 //GPUCalcConvVelocityToSetOfPointsFromSheets(...)
 #endif
 
-
-void BoundaryLinLayerAver::CalcConvVelocityAtVirtualVortexes(std::vector<Point2D>& velo) const
+#if defined(USE_CUDA)
+void BoundaryLinLayerAver::GPUCalcConvVelocityToSetOfPointsFromSheetsFAST(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
 {
-	const int& id = W.getParallel().myidWork;
-	std::vector<Point2D>& Vel = velo;
-
-	//Скорости виртуальных вихрей
-	if (id == 0)
+	if (afl.numberInPassport == 0)
 	{
-#pragma omp parallel for default(none) shared(Vel)		
-		for (int i = 0; i < (int)Vel.size(); ++i)
-			Vel[i] = afl.getV(virtualWake.aflPan[i].second) \
-			+ virtualWake.vecHalfGamma[i] \
-			- W.getPassport().physicalProperties.V0();
+		size_t npt = pointsDb.vtx.size();
+		double*& dev_ptr_pt = pointsDb.devVtxPtr;
+
+		size_t npnl = afl.getNumberOfPanels();
+		for (size_t q = 1; q < W.getNumberOfAirfoil(); ++q)
+			npnl += W.getAirfoil(q).getNumberOfPanels();
+
+		std::vector<Point2D>& Vel = velo;
+		//std::vector<Point2D> locvel(npt);
+		double*& dev_ptr_vel = pointsDb.devVelPtr;
+
+		double eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
+
+		std::vector<Point2D> newVvrt(npt);
+		std::vector<Point2D> newVsrc(npt);
+
+		{
+			double timings[7];
+
+			size_t i = 0;
+			{
+				double tt = -omp_get_wtime();
+
+				size_t npnli = W.getAirfoil(i).getNumberOfPanels();
+				for (size_t q = 1; q < W.getNumberOfAirfoil(); ++q)
+					npnli += W.getAirfoil(q).getNumberOfPanels();
+
+				double*& dev_ptr_r = W.getAirfoil(i).devRPtr;
+				double*& dev_ptr_freeVortexSheet = W.getAirfoil(i).devFreeVortexSheetPtr;
+				double*& dev_ptr_attachedVortexSheet = W.getAirfoil(i).devAttachedVortexSheetPtr;
+				double*& dev_ptr_attachedSourceSheet = W.getAirfoil(i).devAttachedSourceSheetPtr;
+
+				double*& dev_ptr_freeVortexSheetLin = W.getAirfoil(i).devFreeVortexSheetLinPtr;
+				double*& dev_ptr_attachedVortexSheetLin = W.getAirfoil(i).devAttachedVortexSheetLinPtr;
+				double*& dev_ptr_attachedSourceSheetLin = W.getAirfoil(i).devAttachedSourceSheetLinPtr;
+
+				//std::cout << "-----------------------------------------" << std::endl;
+				//std::cout << "npt = " << npt << ", npnli = " << npnli << std::endl;
+
+				wrapperInfluenceFromPanelsToPoints((double*)dev_ptr_r,  //концы панелей
+					(double*)dev_ptr_freeVortexSheet, (double*)dev_ptr_freeVortexSheetLin,
+					(double*)dev_ptr_attachedVortexSheet, (double*)dev_ptr_attachedVortexSheetLin,
+					(double*)dev_ptr_attachedSourceSheet, (double*)dev_ptr_attachedSourceSheetLin,
+					(Vortex2D*)dev_ptr_pt,    //вихри в следе
+					(double*&)dev_ptr_vel,   //куда сохранить результат 
+					W.getNonConstCuda().CUDAptrsAirfoilVrt[i],  //указатели на дерево
+					true,                   //признак перестроения дерева вихрей
+					(int)npt,				//число вихрей в следе
+					(int)npnli,				//общее число панелей на профиле
+					timings,                //засечки времени
+					sqrt(eps2),             //eps
+					multipoleTheta,                    //theta
+					multipoleOrder,                      //order
+					W.getPassport().numericalSchemes.boundaryCondition.second
+				);
+
+				W.getCuda().CopyMemFromDev<double, 2>(npt, dev_ptr_vel, (double*)newVvrt.data());
+
+				wrapperInfluenceFromPanelsToPoints((double*)dev_ptr_r,  //концы панелей
+					(double*)dev_ptr_freeVortexSheet, (double*)dev_ptr_freeVortexSheetLin,
+					(double*)dev_ptr_attachedVortexSheet, (double*)dev_ptr_attachedVortexSheetLin,
+					(double*)dev_ptr_attachedSourceSheet, (double*)dev_ptr_attachedSourceSheetLin,
+					(Vortex2D*)dev_ptr_pt,    //вихри в следе
+					(double*&)dev_ptr_vel,   //куда сохранить результат 
+					W.getNonConstCuda().CUDAptrsAirfoilSrc[i],  //указатели на дерево
+					true,                   //признак перестроения дерева вихрей
+					(int)npt,				//число вихрей в следе
+					(int)npnli,				//общее число панелей на профиле
+					timings,                //засечки времени
+					sqrt(eps2),             //eps
+					multipoleTheta,                    //theta
+					multipoleOrder,                      //order
+					-W.getPassport().numericalSchemes.boundaryCondition.second
+					);
+
+				W.getCuda().CopyMemFromDev<double, 2>(npt, dev_ptr_vel, (double*)newVsrc.data());
+
+				tt += omp_get_wtime();
+			}
+
+			for (size_t q = 0; q < Vel.size(); ++q)
+				Vel[q] += newVvrt[q] + newVsrc[q];
+		}
 	}
 }
-//CalcConvVelocityAtVirtualVortexes(...)
+//GPUCalcConvVelocityToSetOfPointsFromSheets(...)
+#endif
 
 
 //Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников
@@ -576,39 +607,13 @@ void BoundaryLinLayerAver::GetInfluenceFromVortexSheetAtRectPanelToVortex(size_t
 void BoundaryLinLayerAver::GetInfluenceFromVInfToRectPanel(std::vector<double>& vInfRhs) const
 {
 	size_t np = afl.getNumberOfPanels();
-	//int id = W.getParallel().myidWork;
-	VMlib::parProp par = W.getParallel().SplitMPI(np);
-
 
 	vInfRhs.resize(2 * np);
 
-#pragma omp parallel for default(none) shared(vInfRhs, par, np)
-	for (int i = 0; i < par.myLen; ++i)
+#pragma omp parallel for default(none) shared(vInfRhs, np)
+	for (int i = 0; i < np; ++i)
 	{
-		vInfRhs[par.myDisp + i] = afl.tau[par.myDisp + i] & W.getPassport().physicalProperties.V0();
-		vInfRhs[par.myDisp + np + i] =0;
+		vInfRhs[i] = afl.tau[i] & W.getPassport().physicalProperties.V0();
+		vInfRhs[np + i] = 0;
 	}
 }// GetInfluenceFromVInfToRectPanel(...)
-
-
-//Вычисляет влияния набегающего потока на криволинейную панель для правой части
-void BoundaryLinLayerAver::GetInfluenceFromVInfToCurvPanel(std::vector<double>& vInfRhs) const
-{
-	size_t np = afl.getNumberOfPanels();
-	//int id = W.getParallel().myidWork;
-	VMlib::parProp par = W.getParallel().SplitMPI(np);
-
-
-	vInfRhs.resize(2*np);
-
-#pragma omp parallel for default(none) shared(vInfRhs, par, np)
-	for (int i = 0; i < par.myLen; ++i)
-	{
-		
-		vInfRhs[par.myDisp + i] = - (afl.tau[par.myDisp + i] & W.getPassport().physicalProperties.V0()) + 1.0 / 24.0 * ((afl.nrm[par.myDisp + i] & (W.getPassport().physicalProperties.V0())) * ((AirfoilCurv)afl).getKc(par.myDisp + i) + \
-			+ (afl.tau[par.myDisp + i] & W.getPassport().physicalProperties.V0()) * ((AirfoilCurv)afl).getDkc(par.myDisp + i) * ((AirfoilCurv)afl).getKc(par.myDisp + i)) * afl.len[par.myDisp + i] * afl.len[par.myDisp + i];
-	
-		vInfRhs[par.myDisp + np + i] = 1.0 / 12.0 * (afl.nrm[par.myDisp + i] & W.getPassport().physicalProperties.V0()) * ((AirfoilCurv)afl).getKc(par.myDisp + i) * afl.len[par.myDisp + i];
-
-	}
-}// GetInfluenceFromVorticesToCurvPanel(...)

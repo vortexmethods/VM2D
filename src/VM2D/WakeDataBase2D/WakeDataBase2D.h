@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: WakeDataBase2D.h                                                 |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef WAKEDATABASE_H
@@ -41,6 +42,10 @@
 
 #include "defs.h"
 #include "Gpu2D.h"
+
+#if defined(USE_CUDA)
+	class VectorsForKnn;
+#endif
 
 namespace VM2D
 {
@@ -51,8 +56,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 
 	class WakeDataBase
@@ -82,15 +88,20 @@ namespace VM2D
 		mutable double* devRadPtr;
 
 		mutable double* devI0Ptr;
+		mutable float* devI0fPtr;
 		mutable double* devI1Ptr;
 		mutable double* devI2Ptr;
 		mutable double* devI3Ptr;
+		mutable float* devI3fPtr;
 
 		//Данные для коллапса
 		mutable int* devMeshPtr;
 		mutable int* devNeiPtr;
 
 		mutable std::vector<numvector<int, 2>> mesh;
+
+		mutable VectorsForKnn* vecForKnn = nullptr;
+
 #endif
 
 		virtual ~WakeDataBase() {};
@@ -103,13 +114,6 @@ namespace VM2D
 			   
 		/// \brief Сохранение вихревого следа в файл .vtk
 		void SaveKadrVtk(const std::string& filePrefix = "Kadr") const;
-
-		/// \brief MPI-синхронизация вихревого следа
-		///
-		/// Рассылка следа на все процессоры локальной группы процессоров, занятых решением данной задачи
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
-		void WakeSynchronize();
 	};
 
 }//namespace VM2D

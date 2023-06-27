@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Passport2D.h                                                     |
 | Info: Source code of VM2D                                                   |
@@ -40,8 +40,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 
@@ -60,8 +61,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	struct PhysicalProperties
 	{
@@ -127,8 +129,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	struct WakeDiscretizationProperties
 	{
@@ -162,7 +165,7 @@ namespace VM2D
 		/// Функция минимально возможного значения для epsAst
 		double getMinEpsAst() const
 		{
-			return 0.0; // 2.0*epscol;
+			return 2.0 * epscol;
 		};
 
 	};//WakeDiscretizationProperties
@@ -174,8 +177,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+    \author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	struct NumericalSchemes
 	{
@@ -188,9 +192,6 @@ namespace VM2D
 		//Метод решения ОДУ движения вихрей
 		//std::pair<std::string, int> wakeMotionIntegrator;
 
-		/// Тип панелей (0 --- прямые)
-		std::pair<std::string, int> panelsType;
-
 		/// Метод аппроксимации граничных условий
 		std::pair<std::string, int> boundaryCondition;
 	};//NumericalSchemes
@@ -202,13 +203,17 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	struct AirfoilParams
 	{
 		/// Имя файла с начальным состоянием профилей (без полного пути)
 		std::string fileAirfoil;
+
+		/// Желаемое число панелей для разбиения геометрии
+		size_t requiredNPanels;
 
 		/// Смещение центра масс (перенос профиля)
 		Point2D basePoint;
@@ -216,8 +221,14 @@ namespace VM2D
 		/// Коэффициент масштабирования
 		Point2D scale;
 
+		/// Хорда
+		double chord;
+
 		/// Угол поворота (угол атаки)
 		double angle;
+
+		/// Присоединенная масса
+		Point2D addedMass;
 
 		/// Признак разворота нормалей (для расчета внутреннего течения)
 		bool inverse;
@@ -237,8 +248,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class Passport : public VMlib::PassportGen
 	{
@@ -263,6 +275,19 @@ namespace VM2D
 
 		/// Список структур с параметрами профилей 
 		std::vector<AirfoilParams> airfoilParams;
+
+		/// Признак работы в "географической" системе координат
+		bool geographicalAngles;
+
+		/// Признак поворота вычисляемых сил в профильную систему координат
+		bool rotateForces;
+
+		/// Признак вычисления коэффициентов вместо сил
+		bool calcCoefficients;
+
+		/// Угол поворота точек VP
+		double rotateAngleVpPoints;
+
 
 		/// Структура с физическими свойствами задачи
 		PhysicalProperties physicalProperties;

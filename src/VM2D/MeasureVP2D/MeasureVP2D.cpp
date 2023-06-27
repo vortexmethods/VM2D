@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: MeasureVP2D.cpp                                                  |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #if defined(_WIN32)
@@ -51,11 +52,9 @@
 #include "Boundary2DConstLayerAver.h"
 
 #include "Mechanics2D.h"
-#include "Parallel.h"
 #include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
-#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -75,7 +74,7 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 	std::string filename = dir + "pointsVP";
 	std::ifstream VPFile;
 
-	if (fileExistTest(filename, W.getInfo()))
+	if (fileExistTest(filename, W.getInfo(), { "txt", "TXT" }))
 	{
 		std::stringstream VPFile(VMlib::Preprocessor(filename).resultString);
 
@@ -83,7 +82,14 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 		
 		VPParser.get("points", initialPoints);
 		VPParser.get("history", historyPoints);
-				
+
+		for (auto& pt : initialPoints)
+			pt = pt.rotated(-W.getPassport().rotateAngleVpPoints * PI / 180.0);
+		
+		for (auto& pt : historyPoints)
+			pt = pt.rotated(-W.getPassport().rotateAngleVpPoints * PI / 180.0);
+
+
 		if (historyPoints.size() > 0)
 		{
 			VMlib::CreateDirectory(dir, "velPres");
@@ -103,7 +109,11 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 
 				std::ofstream VPFileCsv(VPFileNameCsv.c_str());
 
-				VPFileCsv << "t,Vx,Vy,p" << std::endl;
+				if (!W.getPassport().calcCoefficients)
+					VPFileCsv << "t,Vx,Vy,p" << std::endl;
+				else
+					VPFileCsv << "t,CVx,CVy,Cp" << std::endl;
+				
 				VPFileCsv.close();
 				VPFileCsv.clear();
 			}
@@ -119,75 +129,61 @@ void MeasureVP::Initialization()
 {
 	W.getTimestat().timeVP.first += omp_get_wtime();
 
-	if ((W.getPassport().timeDiscretizationProperties.saveVP > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVP)))
+	if ((W.getPassport().timeDiscretizationProperties.saveVPstep > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVPstep)))
 	{
-		W.getInfo('i') << "Preparing VP points " << std::endl;
+		W.getInfo('i') << "Preparing VP points" << std::endl;
 
-		if (W.getParallel().myidWork == 0)
+
+		wakeVP->vtx.clear();
+		wakeVP->vtx.resize(0);
+
+		Vortex2D addvtx;
+
+		velocity.clear();
+		velocity.resize(0);
+
+		pressure.clear();
+		pressure.resize(0);
+
+		domainRadius.clear();
+		domainRadius.resize(0);
+
+
+		//отключаем проверку того, что точки расположены вне профиля
+		/*
+		//определяем точки, которые не находятся внутри профилей
+		bool inside;
+		for (size_t i = 0; i < initialPoints.size(); ++i)
 		{
-			wakeVP->vtx.clear();
-			wakeVP->vtx.resize(0);
-
-			Vortex2D addvtx;
-
-			velocity.clear();
-			velocity.resize(0);
-
-			pressure.clear();
-			pressure.resize(0);
-
-			domainRadius.clear();
-			domainRadius.resize(0);
-
-
-			//отключаем проверку того, что точки расположены вне профиля
-			/*
-			//определяем точки, которые не находятся внутри профилей
-			bool inside;
-			for (size_t i = 0; i < initialPoints.size(); ++i)
+			inside = false;
+			for (size_t j = 0; j < W.getNumberOfAirfoil(); ++j)
 			{
-				inside = false;
-				for (size_t j = 0; j < W.getNumberOfAirfoil(); ++j)
+				if (W.getAirfoil(j).isInsideGabarits(initialPoints[i]) && W.getAirfoil(j).IsPointInAirfoil(initialPoints[i]))
 				{
-					if (W.getAirfoil(j).isInsideGabarits(initialPoints[i]) && W.getAirfoil(j).IsPointInAirfoil(initialPoints[i]))
-					{
-						inside = true;
-						break;
-					}
-				}
-				if (!inside)
-				{
-					addvtx.r() = initialPoints[i];
-					wakeVP.vtx.push_back(addvtx);
+					inside = true;
+					break;
 				}
 			}
-			*/
-
-			//добавляем все точки, а не только те, которые вне профиля
-			for (size_t i = 0; i < initialPoints.size(); ++i)
+			if (!inside)
 			{
 				addvtx.r() = initialPoints[i];
-				wakeVP->vtx.push_back(addvtx);
-			}
-
-			for (size_t i = 0; i < historyPoints.size(); ++i)
-			{
-				addvtx.r() = historyPoints[i];
-				wakeVP->vtx.push_back(addvtx);
+				wakeVP.vtx.push_back(addvtx);
 			}
 		}
+		*/
 
+		//добавляем все точки, а не только те, которые вне профиля
+		for (size_t i = 0; i < initialPoints.size(); ++i)
+		{
+			addvtx.r() = initialPoints[i];
+			wakeVP->vtx.push_back(addvtx);
+		}//for i
 
-		//MPI-синхронизация точек VP
-		int nV;
-		if (W.getParallel().myidWork == 0)
-			nV = (int)wakeVP->vtx.size();
-		MPI_Bcast(&nV, 1, MPI_INT, 0, W.getParallel().commWork);
-		
-		if (W.getParallel().myidWork > 0)
-			wakeVP->vtx.resize(nV);
-
-		MPI_Bcast(wakeVP->vtx.data(), nV, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
+		for (size_t i = 0; i < historyPoints.size(); ++i)
+		{
+			addvtx.r() = historyPoints[i];
+			wakeVP->vtx.push_back(addvtx);
+		}//for i
 
 	}
 	W.getTimestat().timeVP.second += omp_get_wtime();
@@ -197,65 +193,18 @@ void MeasureVP::Initialization()
 //Расчет поля давления
 void MeasureVP::CalcPressure()
 {
-	int addWSize = (int)wakeVP->vtx.size();
-	MPI_Bcast(&addWSize, 1, MPI_INT, 0, W.getParallel().commWork);
-
-	if (W.getParallel().myidWork == 0)
-		pressure.resize(addWSize);
-
-
-	int id = W.getParallel().myidWork;
-	VMlib::parProp par = W.getParallel().SplitMPI(addWSize);
-
-	/// \todo Для успокоения добавить WakeSyncronize(), но после обучения его проверке hash
-
-	std::vector<Point2D> locVelocity;
-	locVelocity.resize(par.myLen);
-	MPI_Scatterv(velocity.data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, locVelocity.data(), par.myLen, Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-
-	std::vector<double> locPressure;
-	locPressure.resize(par.myLen, 0.0);
-
-	WakeDataBase locWakeVP(W);
-	locWakeVP.vtx.resize(par.myLen);
-	MPI_Scatterv(wakeVP->vtx.data(), par.len.data(), par.disp.data(), Vortex2D::mpiVortex2D, locWakeVP.vtx.data(), par.myLen, Vortex2D::mpiVortex2D, 0, W.getParallel().commWork);
-
-
-	W.getNonConstVelocity().wakeVortexesParams.convVelo.resize(W.getWake().vtx.size());
-	MPI_Bcast(W.getNonConstVelocity().wakeVortexesParams.convVelo.data(), (int)(W.getVelocity().wakeVortexesParams.convVelo.size()), Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-
-	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
-		W.getNonConstBoundary(bou).sheets.FreeSheetSynchronize();
-
-
-	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
-	{
-		int sz = (int)(W.getAirfoil(bou).gammaThrough.size());
-		MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
-		MPI_Bcast(W.getNonConstAirfoil(bou).gammaThrough.data(), sz, MPI_DOUBLE, 0, W.getParallel().commWork);
-	}
-
-	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
-	{
-		int sz = (int)(W.getBoundary(bou).virtualWake.vecHalfGamma.size());
-		MPI_Bcast(&sz, 1, MPI_INT, 0, W.getParallel().commWork);
-		if (id > 0)
-			W.getNonConstBoundary(bou).virtualWake.vecHalfGamma.resize(sz);
-		MPI_Bcast(W.getNonConstBoundary(bou).virtualWake.vecHalfGamma.data(), sz, Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-	}
+	int addWSize = (int)wakeVP->vtx.size();	
+	pressure.resize(addWSize);	
 
 	Point2D dri;
 	Point2D Vi;
 	Point2D vi;
 
-
 	const Point2D& V0 = W.getPassport().physicalProperties.V0();
 	const double& eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
-
 	double P0 = /*1*/ 0.5 * V0.length2();
-
 
 	Point2D cPan;
 
@@ -265,14 +214,13 @@ void MeasureVP::CalcPressure()
 	double dst2eps;
 #pragma warning (pop)
 
-#pragma omp parallel for default(none) private(alpha, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, eps2, V0, /*gamAverPan,*/ id, locWakeVP, locPressure, locVelocity, par, std::cout, IDPI) 
-	for (int locI = 0; locI < par.myLen; ++locI)
+#pragma omp parallel for default(none) private(alpha, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, eps2, V0, addWSize, std::cout, IDPI) 
+	for (int i = 0; i < addWSize; ++i)
 	{
-		//int i = locI + par.myDisp;
-		locPressure[locI] = P0;
-		locPressure[locI] -= 0.5 * locVelocity[locI].length2(); //2
+		pressure[i] = P0;
+		pressure[i] -= 0.5 * velocity[i].length2(); //2
 
-		const Point2D& pt = locWakeVP.vtx[locI].r();
+		const Point2D& pt = wakeVP->vtx[i].r();
 
 		for (size_t j = 0; j < W.getWake().vtx.size(); ++j)
 		{
@@ -282,7 +230,7 @@ void MeasureVP::CalcPressure()
 			dst2eps = VMlib::boundDenom(dri.length2(), eps2);
 
 			vi = IDPI * W.getWake().vtx[j].g() / dst2eps * dri.kcross();
-			locPressure[locI] += vi & Vi; //3
+			pressure[i] += vi & Vi; //3
 		}
 
 		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
@@ -295,28 +243,82 @@ void MeasureVP::CalcPressure()
 				Vi = W.getBoundary(bou).virtualWake.vecHalfGamma[j];
 				vi = IDPI * W.getBoundary(bou).virtualWake.vtx[j].g() / dst2eps * dri.kcross();
 
-				locPressure[locI] += vi & Vi; //4
+				pressure[i] += vi & Vi; //4
 			}
 
 		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 		{
 			const Point2D& rcm = W.getAirfoil(bou).rcm;
 
+
+			/*
+			if ((i==0) && (bou == 2))
+			{
+				for (int q = 0; q < W.getAirfoil(bou).possibleWays.size(); ++q)
+				{
+					std::cout << "Possible way #" << q << ": " << std::endl;
+					for (size_t s = 0; s < W.getAirfoil(bou).possibleWays[q].size(); ++s)
+						std::cout << W.getAirfoil(bou).possibleWays[q][s] << " ";
+					std::cout << std::endl;
+				}
+				
+				std::ofstream of(W.getPassport().dir + "ways2.txt");
+				for (size_t q = 0; q < W.getAirfoil(bou).getNumberOfPanels(); ++q)
+				{
+					cPan = 0.5 * (W.getAirfoil(bou).getR(q) + W.getAirfoil(bou).getR(q + 1));
+
+					alpha = 0.0;
+
+					int way = W.getAirfoil(bou).wayToVertex[q];
+					if (way == 0)
+						of << q << " " << rcm[0] << " " << rcm[1] << " " << cPan[0] << " " << cPan[1] << std::endl;
+					else
+					{
+						of << q << " " << rcm[0] << " " << rcm[1];
+						for (int q = 0; q < W.getAirfoil(bou).possibleWays[way - 1].size() + 1; ++q)
+						{
+							Point2D start = ((q == 0) ? rcm : W.getAirfoil(bou).possibleWays[way - 1][q - 1]);
+							Point2D finish = ((q == W.getAirfoil(bou).possibleWays[way - 1].size()) ? cPan : W.getAirfoil(bou).possibleWays[way - 1][q]);
+							of << " " << finish[0] << " " << finish[1];
+						}
+						of << std::endl;
+					}
+				}				
+				of.close();
+			}
+			*/
+
+
 			for (size_t j = 0; j < W.getAirfoil(bou).getNumberOfPanels(); ++j)
 			{
 				cPan = 0.5 * (W.getAirfoil(bou).getR(j) + W.getAirfoil(bou).getR(j + 1));
-				alpha = atan2((cPan - pt) ^ (rcm - pt), (cPan - pt)&(rcm - pt));
+				
+				alpha = 0.0;
+				
+				int way = W.getAirfoil(bou).wayToVertex[j];
+				if (way < 0)				
+					W.getInfo('i') << "Pressure computation is incorrect, way inside airfoil is undefined" << std::endl;				
+
+				if (way == 0)
+					alpha = atan2((cPan - pt) ^ (rcm - pt), (cPan - pt) & (rcm - pt));
+				else
+				{					
+					for (int q = 0; q < W.getAirfoil(bou).possibleWays[way - 1].size() + 1; ++q)
+					{
+						Point2D start = ((q == 0) ? rcm : W.getAirfoil(bou).possibleWays[way - 1][q-1]);
+						Point2D finish = ((q == W.getAirfoil(bou).possibleWays[way - 1].size()) ? cPan : W.getAirfoil(bou).possibleWays[way - 1][q]);
+						alpha += atan2((finish - pt) ^ (start - pt), (finish - pt) & (start - pt));
+					}
+				}
 
 				/// \todo Пока используем только средние значения свободного слоя на панелях
-				locPressure[locI] += IDPI * alpha *	W.getBoundary(bou).sheets.freeVortexSheet(j, 0) * W.getAirfoil(bou).len[j] / dt;
+				pressure[i] += IDPI * alpha *	W.getBoundary(bou).sheets.freeVortexSheet(j, 0) * W.getAirfoil(bou).len[j] / dt;
 
-				locPressure[locI] -= IDPI * alpha * W.getAirfoil(bou).gammaThrough[j] / dt;
+				pressure[i] -= IDPI * alpha * W.getAirfoil(bou).gammaThrough[j] / dt;
 			}
 		}//for bou
 	}//for i
-
-	MPI_Gatherv(locPressure.data(), par.myLen, MPI_DOUBLE, pressure.data(), par.len.data(), par.disp.data(), MPI_DOUBLE, 0, W.getParallel().commWork);
-
+		
 	for (size_t i = 0; i < pressure.size(); ++i)
 		pressure[i] *= W.getPassport().physicalProperties.rho;
 
@@ -327,165 +329,239 @@ void MeasureVP::CalcPressure()
 void MeasureVP::SaveVP()
 {
 	W.getTimestat().timeSaveKadr.first += omp_get_wtime();
-	if (W.getParallel().myidWork == 0)
+
+	double scaleV = 1.0, scaleP = 1.0;
+	if (W.getPassport().calcCoefficients)
+	{
+		const double& vRef = W.getPassport().physicalProperties.vRef;
+		scaleV = 1.0 / vRef;
+		scaleP = 1.0 / (0.5 * W.getPassport().physicalProperties.rho * sqr(vRef));
+	}
+
+
+	std::ofstream outfile;
+
+	VMlib::CreateDirectory(W.getPassport().dir, "velPres");
+
+	if (W.getPassport().timeDiscretizationProperties.fileTypeVP.second == 0) //text format VTK
 	{
 		std::string fname = VMlib::fileNameStep("VelPres", W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "vtk");
+		outfile.open(W.getPassport().dir + "velPres/" + fname);
 
-		std::ofstream outfile;
+		outfile << "# vtk DataFile Version 2.0" << std::endl;
+		outfile << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
+		outfile << "ASCII" << std::endl;
+		outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
+		outfile << "POINTS " << wakeVP->vtx.size() << " float" << std::endl;
 
-		VMlib::CreateDirectory(W.getPassport().dir, "velPres");
-
-		if (W.getPassport().timeDiscretizationProperties.fileType == 0)
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
 		{
-			outfile.open(W.getPassport().dir + "velPres/" + fname);
+			double xi = (wakeVP->vtx[i].r())[0];
+			double yi = (wakeVP->vtx[i].r())[1];
+			outfile << xi << " " << yi << " " << "0.0" << std::endl;
+		}//for i
 
-			outfile << "# vtk DataFile Version 2.0" << std::endl;
-			outfile << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
-			outfile << "ASCII" << std::endl;
-			outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
-			outfile << "POINTS " << wakeVP->vtx.size() << " float" << std::endl;
+		outfile << "CELLS " << wakeVP->vtx.size() << " " << 2 * wakeVP->vtx.size() << std::endl;
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			outfile << "1 " << i << std::endl;
 
-			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			{
-				double xi = (wakeVP->vtx[i].r())[0];
-				double yi = (wakeVP->vtx[i].r())[1];
-				outfile << xi << " " << yi << " " << "0.0" << std::endl;
-			}//for i
+		outfile << "CELL_TYPES " << wakeVP->vtx.size() << std::endl;
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+			outfile << "1" << std::endl;
 
-			outfile << "CELLS " << wakeVP->vtx.size() << " " << 2 * wakeVP->vtx.size() << std::endl;
-			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-				outfile << "1 " << i << std::endl;
+		outfile << std::endl;
+		outfile << "POINT_DATA " << wakeVP->vtx.size() << std::endl;
 
-			outfile << "CELL_TYPES " << wakeVP->vtx.size() << std::endl;
-			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-				outfile << "1" << std::endl;
-
-			outfile << std::endl;
-			outfile << "POINT_DATA " << wakeVP->vtx.size() << std::endl;
-
+		if (!W.getPassport().calcCoefficients)
 			outfile << "VECTORS V float" << std::endl;
-			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			{
-				outfile << velocity[i][0] << " " << velocity[i][1] << " 0.0" << std::endl;
-			}//for i
-
-			outfile << std::endl;
-
-			outfile << "SCALARS P float 1" << std::endl;
-			outfile << "LOOKUP_TABLE default" << std::endl;
-
-			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			{
-				outfile << pressure[i] << std::endl;
-			}//for i
-
-			outfile.close();
-		}
 		else
+			outfile << "VECTORS CV float" << std::endl;
+
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
 		{
-			//Тест способа хранения чисел
-			uint16_t x = 0x0001;
-			bool littleEndian = (*((uint8_t*)&x));
-			const char eolnBIN[] = "\n";
+			outfile << velocity[i][0] * scaleV << " " << velocity[i][1] * scaleV << " 0.0" << std::endl;
+		}//for i
 
+		outfile << std::endl;
 
-			outfile.open(W.getPassport().dir + "velPres/" + fname, std::ios::out | std::ios::binary);
-			
-			outfile << "# vtk DataFile Version 3.0" << "\r\n" << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << eolnBIN;
-			outfile << "BINARY" << eolnBIN;
-			outfile << "DATASET UNSTRUCTURED_GRID" << eolnBIN << "POINTS " << wakeVP->vtx.size() << " " << "float" << eolnBIN;
+		if (!W.getPassport().calcCoefficients)
+			outfile << "SCALARS P float 1" << std::endl;
+		else
+			outfile << "SCALARS CP float 1" << std::endl;
 
+		outfile << "LOOKUP_TABLE default" << std::endl;
 
-			Eigen::VectorXf pData = Eigen::VectorXf::Zero(wakeVP->vtx.size());
-			Eigen::VectorXf vData = Eigen::VectorXf::Zero(wakeVP->vtx.size() * 3);
-			Eigen::VectorXf rData = Eigen::VectorXf::Zero(wakeVP->vtx.size() * 3);
-
-
-			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			{
-				rData(3 * i) = (float)(wakeVP->vtx[i].r())[0];
-				rData(3 * i + 1) = (float)(wakeVP->vtx[i].r())[1];
-			}//for i
-
-			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			{
-				vData(3 * i) = (float)velocity[i][0];
-				vData(3 * i + 1) = (float)velocity[i][1];
-			}//for i
-
-			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			{
-				pData(i) = (float)pressure[i];
-			}//for i
-
-			//POINTS
-			if (littleEndian)
-				for (int i = 0; i < wakeVP->vtx.size() * 3; ++i)
-					VMlib::SwapEnd(rData(i));
-			outfile.write(reinterpret_cast<char*>(rData.data()), wakeVP->vtx.size() * 3 * sizeof(float));
-
-			// CELLS
-			std::vector<int> cells(2 * wakeVP->vtx.size());
-			for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
-			{
-				cells[2 * i] = 1;
-				cells[2 * i + 1] = (int)i;
-			}
-
-			std::vector<int> cellsTypes;
-			cellsTypes.resize(wakeVP->vtx.size(), 1);
-
-			if (littleEndian)
-			{
-				for (int i = 0; i < wakeVP->vtx.size() * 2; ++i)
-					VMlib::SwapEnd(cells[i]);
-
-				for (int i = 0; i < wakeVP->vtx.size(); ++i)
-					VMlib::SwapEnd(cellsTypes[i]);
-			}
-
-			outfile << eolnBIN << "CELLS " << wakeVP->vtx.size() << " " << wakeVP->vtx.size() * 2 << eolnBIN;
-			outfile.write(reinterpret_cast<char*>(cells.data()), wakeVP->vtx.size() * 2 * sizeof(int));
-			outfile << eolnBIN << "CELL_TYPES " << wakeVP->vtx.size() << eolnBIN;
-			outfile.write(reinterpret_cast<char*>(cellsTypes.data()), wakeVP->vtx.size() * sizeof(int));
-
-			//VECTORS V
-			if (littleEndian)
-				for (int i = 0; i < wakeVP->vtx.size() * 3; ++i)
-					VMlib::SwapEnd(vData(i));
-
-			outfile << eolnBIN << "POINT_DATA " << wakeVP->vtx.size() << eolnBIN;
-			outfile << "VECTORS V " << "float" << eolnBIN;
-			outfile.write(reinterpret_cast<char*>(vData.data()), wakeVP->vtx.size() * 3 * sizeof(float));
-
-			//SCALARS P	
-			if (littleEndian)
-				for (int i = 0; i < wakeVP->vtx.size(); ++i)
-					VMlib::SwapEnd(pData(i));
-
-			outfile << eolnBIN << "SCALARS P " << "float" << " 1" << eolnBIN;
-			outfile << "LOOKUP_TABLE default" << eolnBIN;
-			outfile.write(reinterpret_cast<char*>(pData.data()), wakeVP->vtx.size() * sizeof(float));
-
-			outfile << eolnBIN;
-
-			outfile.close();
-		}
-
-		//Вывод в csv-файлы
-		for (size_t q = 0; q < historyPoints.size(); ++q)
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
 		{
-			std::string VPFileNameCsv;
-			VPFileNameCsv = W.getPassport().dir + "velPres/" + VMlib::fileNameStep("VP-atPoint-", 2, q, "csv");
+			outfile << pressure[i] * scaleP << std::endl;
+		}//for i
 
-			std::ofstream VPFileCsv(VPFileNameCsv.c_str(), std::ios::app);
-
-			VPFileCsv << W.getPassport().physicalProperties.getCurrTime() << ","
-				<< velocity[initialPoints.size() + q][0] << ","
-				<< velocity[initialPoints.size() + q][1] << ","
-				<< pressure[initialPoints.size() + q] << std::endl;
-			VPFileCsv.close();
-		}
+		outfile.close();
 	}
+	else if (W.getPassport().timeDiscretizationProperties.fileTypeVP.second == 1) //binary format VTK
+	{
+		//Тест способа хранения чисел
+		uint16_t x = 0x0001;
+		bool littleEndian = (*((uint8_t*)&x));
+		const char eolnBIN[] = "\n";
+
+		std::string fname = VMlib::fileNameStep("VelPres", W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "vtk");
+		outfile.open(W.getPassport().dir + "velPres/" + fname, std::ios::out | std::ios::binary);
+
+		outfile << "# vtk DataFile Version 3.0" << "\r\n" << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << eolnBIN;
+		outfile << "BINARY" << eolnBIN;
+		outfile << "DATASET UNSTRUCTURED_GRID" << eolnBIN << "POINTS " << wakeVP->vtx.size() << " " << "float" << eolnBIN;
+
+
+		Eigen::VectorXf pData = Eigen::VectorXf::Zero(wakeVP->vtx.size());
+		Eigen::VectorXf vData = Eigen::VectorXf::Zero(wakeVP->vtx.size() * 3);
+		Eigen::VectorXf rData = Eigen::VectorXf::Zero(wakeVP->vtx.size() * 3);
+
+
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		{
+			rData(3 * i + 0) = (float)(wakeVP->vtx[i].r())[0];
+			rData(3 * i + 1) = (float)(wakeVP->vtx[i].r())[1];
+		}//for i
+
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		{
+			vData(3 * i + 0) = (float)(velocity[i][0] * scaleV);
+			vData(3 * i + 1) = (float)(velocity[i][1] * scaleV);
+		}//for i
+
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		{
+			pData(i) = (float)(pressure[i] * scaleP);
+		}//for i
+
+		//POINTS
+		if (littleEndian)
+			for (int i = 0; i < wakeVP->vtx.size() * 3; ++i)
+				VMlib::SwapEnd(rData(i));
+		outfile.write(reinterpret_cast<char*>(rData.data()), wakeVP->vtx.size() * 3 * sizeof(float));
+
+		// CELLS
+		std::vector<int> cells(2 * wakeVP->vtx.size());
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		{
+			cells[2 * i + 0] = 1;
+			cells[2 * i + 1] = (int)i;
+		}
+
+		std::vector<int> cellsTypes;
+		cellsTypes.resize(wakeVP->vtx.size(), 1);
+
+		if (littleEndian)
+		{
+			for (int i = 0; i < wakeVP->vtx.size() * 2; ++i)
+				VMlib::SwapEnd(cells[i]);
+
+			for (int i = 0; i < wakeVP->vtx.size(); ++i)
+				VMlib::SwapEnd(cellsTypes[i]);
+		}
+
+		outfile << eolnBIN << "CELLS " << wakeVP->vtx.size() << " " << wakeVP->vtx.size() * 2 << eolnBIN;
+		outfile.write(reinterpret_cast<char*>(cells.data()), wakeVP->vtx.size() * 2 * sizeof(int));
+		outfile << eolnBIN << "CELL_TYPES " << wakeVP->vtx.size() << eolnBIN;
+		outfile.write(reinterpret_cast<char*>(cellsTypes.data()), wakeVP->vtx.size() * sizeof(int));
+
+		//VECTORS V
+		if (littleEndian)
+			for (int i = 0; i < wakeVP->vtx.size() * 3; ++i)
+				VMlib::SwapEnd(vData(i));
+
+		outfile << eolnBIN << "POINT_DATA " << wakeVP->vtx.size() << eolnBIN;
+
+		if (!W.getPassport().calcCoefficients)
+			outfile << "VECTORS V " << "float" << eolnBIN;
+		else
+			outfile << "VECTORS CV " << "float" << eolnBIN;
+
+		outfile.write(reinterpret_cast<char*>(vData.data()), wakeVP->vtx.size() * 3 * sizeof(float));
+
+		//SCALARS P	
+		if (littleEndian)
+			for (int i = 0; i < wakeVP->vtx.size(); ++i)
+				VMlib::SwapEnd(pData(i));
+
+		if (!W.getPassport().calcCoefficients)
+			outfile << eolnBIN << "SCALARS P " << "float" << " 1" << eolnBIN;
+		else
+			outfile << eolnBIN << "SCALARS CP " << "float" << " 1" << eolnBIN;
+
+		outfile << "LOOKUP_TABLE default" << eolnBIN;
+		outfile.write(reinterpret_cast<char*>(pData.data()), wakeVP->vtx.size() * sizeof(float));
+
+		outfile << eolnBIN;
+
+		outfile.close();
+	}
+	else if (W.getPassport().timeDiscretizationProperties.fileTypeVP.second == 2) //csv
+	{
+		std::string fname = VMlib::fileNameStep("VelPres", W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "csv");
+		outfile.open(W.getPassport().dir + "velPres/" + fname);
+
+		if (!W.getPassport().calcCoefficients)
+			outfile << "point,x,y,Vx,Vy,P" << std::endl;
+		else
+			outfile << "point,x,y,CVx,CVy,CP" << std::endl;
+
+		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		{
+			double xi = (wakeVP->vtx[i].r())[0];
+			double yi = (wakeVP->vtx[i].r())[1];
+			outfile << i << "," << xi << "," << yi \
+				<< "," << velocity[i][0] * scaleV << "," << velocity[i][1] * scaleV \
+				<< "," << pressure[i] * scaleP << std::endl;
+		}//for i
+		outfile.close();
+	}
+	else if (W.getPassport().timeDiscretizationProperties.fileTypeVP.second == 3) //csvBundle
+	{
+		std::string fnameBunCsv = W.getPassport().dir + "velPres/" + "velPresBundle.csv";
+		std::ofstream VPFileBunCsv(fnameBunCsv.c_str(), W.getCurrentStep() ? std::ios::app : std::ios::out);
+		{
+			if (W.getCurrentStep() == 0)
+				VPFileBunCsv << wakeVP->vtx.size() << std::endl;
+
+
+			for (size_t q = 0; q < wakeVP->vtx.size(); ++q)
+			{
+				VPFileBunCsv << W.getCurrentStep() << "," \
+					<< W.getPassport().physicalProperties.getCurrTime() << "," \
+					<< q << "," \
+					<< wakeVP->vtx[q].r()[0] << "," << wakeVP->vtx[q].r()[1] << "," \
+					<< velocity[q][0] * scaleV << "," << velocity[q][1] * scaleV << "," \
+					<< pressure[q] * scaleP << std::endl;
+			}
+		}
+
+	}
+
+
+	//Вывод в csv-файлы точек "historyPoints"
+	for (size_t q = 0; q < historyPoints.size(); ++q)
+	{
+		std::string VPFileNameCsv;
+		VPFileNameCsv = W.getPassport().dir + "velPres/" + VMlib::fileNameStep("VP-atPoint-", 2, q, "csv");
+
+		std::ofstream VPFileCsv(VPFileNameCsv.c_str(), W.getCurrentStep() ? std::ios::app : std::ios::out);
+
+		if (W.getCurrentStep() == 0)
+		{
+			if (!W.getPassport().calcCoefficients)
+				VPFileCsv << "point,time,Vx,Vy,P" << std::endl;
+			else
+				VPFileCsv << "point,time,CVx,CVy,CP" << std::endl;
+		}
+
+		VPFileCsv << q << "," << W.getPassport().physicalProperties.getCurrTime() << ","
+			<< velocity[initialPoints.size() + q][0] * scaleV << ","
+			<< velocity[initialPoints.size() + q][1] * scaleV << ","
+			<< pressure[initialPoints.size() + q] * scaleP << std::endl;
+		VPFileCsv.close();
+	}
+
 	W.getTimestat().timeSaveKadr.second += omp_get_wtime();
 }//SaveVP()

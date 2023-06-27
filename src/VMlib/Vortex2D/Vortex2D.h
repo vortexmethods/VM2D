@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: Vortex2D.h                                                       |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса Vortex2D
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef VORTEX2D_H_
@@ -45,8 +45,8 @@ namespace VMlib
 	/*!
 	\brief Класс, опеделяющий двумерный вихревой элемент	
 	\author Марчевский Илья Константинович
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class Vortex2D
 	{
@@ -59,47 +59,41 @@ namespace VMlib
 
 	public:
 
-#ifndef __CUDACC__
-		/// MPI-описатель типа
-		static MPI_Datatype mpiVortex2D;
-#endif
-
 		static size_t offsPos;
 		static size_t offsGam;
 
 		/// Пустой конструктор
-		Vortex2D() {};
+		HD Vortex2D() {};
 
 		/// \brief Конструктор инициализации
 		///
 		/// \param[in] _r константная ссылка на радиус-вектор положения вихря
 		/// \param[in] _g циркуляция (интенсивность) вихря
-		Vortex2D(const Point2D& _r, const double _g)
-			: pos(_r), gam(_g) { }
+		HD Vortex2D(const Point2D& _r, const double _g) 	
+			: pos(_r), gam(_g) {};
 
 		/// Деструктор
-		~Vortex2D() {};
+		HD ~Vortex2D() {};
 
 		/// \brief Функция для доступа к радиус-вектору вихря
 		/// \return ссылка на радиус-вектор вихря
-		Point2D& r() { return pos; }
+		HD Point2D& r() { return pos; }
 
 		/// \brief Функция для доступа для чтения к радиус-вектору вихря
 		/// \return константная ссылка на радиус-вектор вихря
-		const Point2D& r() const { return pos; }
+		HD const Point2D& r() const { return pos; }
 
 		/// \brief Функция для доступа к циркуляции вихря
 		/// \return ссылка на циркуляцию вихря
-		double& g() { return gam; }
+		HD double& g() { return gam; }
 
 		/// \brief Функция для доступа для чтения к циркуляции вихря
 		/// \return константная ссылка на циркуляцию вихря
-		const double& g() const { return gam; }
+		HD const double& g() const { return gam; }
 
-#ifndef __CUDACC__
-		/// Cоздание MPI-описателя типа
-		static void CreateMpiType();
-#endif
+		HD operator Point2D& () { return pos; }
+		HD operator const Point2D& () const { return pos; }
+
 	};
 
 	/// Определение типа данных - источника, имеющего ту же структуру, что и вихрь

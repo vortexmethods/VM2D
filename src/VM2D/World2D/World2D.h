@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: World2D.h                                                        |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef WORLD2D_H
@@ -42,11 +43,6 @@
 #include "Gpu2D.h"
 #include "Times2D.h"
 #include "WorldGen.h"
-
-namespace VMlib
-{
-	class Parallel;
-}
 
 namespace VM2D
 {
@@ -59,15 +55,15 @@ namespace VM2D
 	class Velocity;	
 	class Wake;
 	class WakeDataBase;
-	class Tree;
 
 	/*!
 	\brief Класс, опеделяющий текущую решаемую задачу
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class World2D : public VMlib::WorldGen
 	{
@@ -100,17 +96,12 @@ namespace VM2D
 		std::unique_ptr<MeasureVP> measureVP;
 
 	public:
-		/// \brief Умные указатели на деревья: 
-		/// treeWake содержит вихри из вихревого следа,  
-		/// treeVP - точки, в которых считается скорость и давление, 
-		/// treeSourcesWake - источники в области течения,
-		/// treeSheetsGam - маркеры для вихревых слоев (свободный + присоединенный),
-		/// treeSheetsSource - маркеры для присоединенного слоя источников 
-		mutable std::unique_ptr<Tree> treeWake, treeVP, treeSourcesWake, treeSheetsGam, treeSheetsSource;
 	
 	private:
 		/// Матрица системы
-		Eigen::MatrixXd matr;
+		//Eigen::MatrixXd matr;
+		Eigen::MatrixXd matrReord;
+		//Eigen::MatrixXd matrSkos;
 
 		/// Матрица, состоящая из пар матриц, в которых хранятся касательные и нормальные компоненты интегралов от ядра
 		std::vector<std::vector<std::pair<Eigen::MatrixXd, Eigen::MatrixXd>>> IQ;
@@ -118,8 +109,13 @@ namespace VM2D
 		/// Обратная матрица
 		Eigen::MatrixXd invMatr;
 
+		/// Признак использования обратной матрицы
+		bool useInverseMatrix;
+
 		/// Правая часть системы
-		Eigen::VectorXd rhs;
+		//Eigen::VectorXd rhs;
+		Eigen::VectorXd rhsReord;
+		//Eigen::VectorXd rhsSkos;
 
 		/// Решение системы
 		Eigen::VectorXd sol;
@@ -218,32 +214,7 @@ namespace VM2D
 		///
 		/// \return константную ссылку на объект для вычисления скоростей
 		const Velocity& getVelocity() const { return *velocity; };
-
-		Tree& getNonConstTree(const PointType type) const
-		{
-			switch (type)
-			{
-			case PointType::wake:
-				return *treeWake;
-
-			case PointType::wakeVP:
-				return *treeVP;
-
-			case PointType::sourceWake:
-				return *treeSourcesWake;
-
-			case PointType::sheetGam:
-				return *treeSheetsGam;
-
-			case PointType::source:
-				return *treeSheetsSource;
-
-			default: 
-				return *treeWake;
-				break;
-			}
-		};
-
+				
 		/// \brief Возврат неконстантной ссылки на объект для вычисления скоростей
 		///
 		/// \return неконстантную ссылку на объект для вычисления скоростей
@@ -281,6 +252,16 @@ namespace VM2D
 		/// Вызывается в Step()		
 		void SolveLinearSystem();
 
+#ifdef USE_CUDA
+		void GMRES(
+			std::vector<std::vector<double>>& X,
+			std::vector<double>& R,
+			const std::vector<std::vector<double>>& rhs,
+			const std::vector<double> rhsReg,
+			int& niter,
+			bool linScheme);
+#endif
+
 		/// \brief Заполнение матрицы, состоящей из интегралов от (r-xi) / |r-xi|^2
 		///
 		/// Вызывается в Step()
@@ -296,20 +277,10 @@ namespace VM2D
 		/// Вызывается в Step()		
 		void ReserveMemoryForMatrixAndRhs();
 
-		/// \brief Построение дерева для точек типа type
-		///
-		/// \param[in] type - тип точек, на основе которых строится дерево
-		void BuildTree(const PointType type) const;
-
-		/// Построение всех деревьев 
-		/// \todo усовершенствовать с учетом обхода деревьев на GPU и "переключателя" использования деревьев 
-		void BuildAllTrees();
-
 		/// \brief Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных), а также в точках вычисления VP 
 		///
 		/// Вызывается в Step()
 		void CalcVortexVelo(bool shiftTime);
-
 
 		/// \brief Вычисление скоростей панелей и интенсивностей присоединенных слоев вихрей и источников
 		///
@@ -337,14 +308,13 @@ namespace VM2D
 		/// \brief Перемещение вихрей и профилей на шаге
 		///
 		/// Вызывается в Step()
-		void WakeAndAirfoilsMotion();
+		void WakeAndAirfoilsMotion(bool dynamics);
 
 
 		/// \brief Конструктор
 		///
 		/// \param[in] passport_ константная ссылка на паспорт расчета
-		/// \param[in] parallel_ коенстантная ссылка на параметры исполнения задачи в параллельном MPI-режиме
-		World2D(const VMlib::PassportGen& passport_, const VMlib::Parallel& parallel_);
+		World2D(const VMlib::PassportGen& passport_);
 
 		/// Деструктор
 		~World2D() { };
@@ -357,7 +327,7 @@ namespace VM2D
 
 		// Реализация виртуальных функций
 		virtual void Step() override;
-		virtual void ZeroStep() override;
+		//virtual void ZeroStep() override;
 	};
 
 }//namespace VM2D

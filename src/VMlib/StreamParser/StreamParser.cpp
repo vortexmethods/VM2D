@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: StreamParser.cpp                                                 |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Файл кода с описанием класса StreamParser
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #include "StreamParser.h"
@@ -45,6 +45,10 @@ StreamParser::StreamParser(LogStream& infoStream, const std::string& label, std:
 
 	ParseStream(varsStream, vars);
 	ParseStream(defaultsStream, defaults);
+
+	//Добавление defaults в vars
+	MergeDbsWithoutRepeats(vars, defaults);
+
 	ParseStream(switchersStream, switchers);
 	ParseStream(mainStream, database, specificKey, true);	
 }//StreamParser(...)
@@ -246,6 +250,18 @@ void StreamParser::ParseStream(std::istream& stream, std::unordered_map<std::str
 }//ParseStream(...)
 
 
+// Мерджинг двух баз данных без повторений
+void StreamParser::MergeDbsWithoutRepeats(std::unordered_map<std::string, std::vector<std::string>>& database, const std::unordered_map<std::string, std::vector<std::string>>& add)
+{
+	for (const auto& rec : add)
+	{
+		auto positionKey = database.find(rec.first);
+		if (positionKey == database.end())
+			database.insert(rec);
+	}
+}
+
+
 // Замена переменных в строке их значениями
 void StreamParser::ReplaceVarsInString(std::string& st)
 {
@@ -303,7 +319,7 @@ void StreamParser::ReplaceVarsInString(std::string& st)
 		}
 		else
 		{
-			info('e') << "substitution $" << var << " is us undefined" << std::endl;
+			info('e') << "substitution $" << var << " is undefined" << std::endl;
 			exit(1);
 		}
 	}

@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: StreamParser.h                                                   |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса StreamParser
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef STREAMPARSER_H
@@ -44,17 +44,109 @@
 #include <unordered_map>
 
 #include "defs.h"
-
+#include "AirfoilGeometry.h"
 #include "Gpu2D.h"
 
 namespace VMlib
 {
+	/// \brief Функция сверки строки с шаблоном, который может содержать знаки * и ?
+	///
+	/// \param[in] line_ константная ссылка на проверяемую строку
+	/// \param[in] pattern_ константная ссылка на строку-шаблон, с которой производится сверка
+	/// rerurn признак соответствия строки шаблону
+	inline int is_match(const std::string& line_, const std::string& pattern_)
+	{
+
+		const auto lineCStr = line_.c_str();
+		const auto patternCStr = pattern_.c_str();
+
+		const char* line = &(lineCStr[0]);
+		const char* pattern = &(patternCStr[0]);
+
+		// returns 1 (true) if there is a match
+		// returns 0 if the pattern is not whitin the line
+		int wildcard = 0;
+
+		const char* last_pattern_start = 0;
+		const char* last_line_start = 0;
+		do
+		{
+			if (*pattern == *line)
+			{
+				if (wildcard == 1)
+					last_line_start = line + 1;
+
+				line++;
+				pattern++;
+				wildcard = 0;
+			}
+			else if (*pattern == '?')
+			{
+				if (*(line) == '\0') // the line is ended but char was expected
+					return 0;
+				if (wildcard == 1)
+					last_line_start = line + 1;
+				line++;
+				pattern++;
+				wildcard = 0;
+			}
+			else if (*pattern == '*')
+			{
+				if (*(pattern + 1) == '\0')				
+					return 1;				
+
+				last_pattern_start = pattern;
+				//last_line_start = line + 1;
+				wildcard = 1;
+
+				pattern++;
+			}
+			else if (wildcard)
+			{
+				if (*line == *pattern)
+				{
+					wildcard = 0;
+					line++;
+					pattern++;
+					last_line_start = line + 1;
+				}
+				else				
+					line++;				
+			}
+			else
+			{
+				if ((*pattern) == '\0' && (*line) == '\0')  // end of mask
+					return 1; // if the line also ends here then the pattern match
+				else
+				{
+					if (last_pattern_start != 0) // try to restart the mask on the rest
+					{
+						pattern = last_pattern_start;
+						line = last_line_start;
+						last_line_start = 0;
+					}
+					else					
+						return 0;					
+				}
+			}
+
+		} while (*line);
+
+		if (*pattern == '\0')
+			return 1;
+		else
+			return 0;
+	};
+
+
+
+
 
 	/*!
 	\brief Класс, позволяющий выполнять разбор файлов и строк с настройками и параметрами	
 	\author Марчевский Илья Константинович
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class StreamParser
 	{
@@ -67,8 +159,9 @@ namespace VMlib
 		///
 		/// Неупорядоченный ассоциативный контейнер, хранящий данные из паспорта расчета
 		/// \n По умолчанию данные берутся из файла passport, но это имя может быть изменено ключом pspFile в строке параметров задачи 
+	public:
 		std::unordered_map<std::string, std::vector<std::string>> database;
-
+	private:
 		/// \brief Данные считываемые из списка умолчаний
 		///
 		/// Неупорядоченный ассоциативный контейнер, хранящий данные из файла со списком значений по умолчанию
@@ -97,7 +190,21 @@ namespace VMlib
 		/// \param[in] replaceVars признак замены переменных из базы vars (по умолчанию false)
 		/// \param[in] openBracket тип открывающейся скобки (по умолчанию --- "(" )
 		/// \param[in] closeBracket тип закрывающейся скобки (по умолчанию --- ")" )	
-		void ParseStream(std::istream& stream, std::unordered_map<std::string, std::vector<std::string>>& database, std::vector<std::string> specificKey = {}, bool replaceVars = false, char openBracket = '(', char closeBracket = ')');
+		void ParseStream(
+			std::istream& stream, 
+			std::unordered_map<std::string, std::vector<std::string>>& database, 
+			std::vector<std::string> specificKey = {}, 
+			bool replaceVars = false, 
+			char openBracket = '(', char closeBracket = ')'
+		);
+
+		/// \brief Слияние двух баз данных
+		///
+		/// Дополняет первую базу данных записями из второй, если такого ключа там раньше не было
+		/// \n Возвращает измененную первую базу данных
+		/// \param[in,out] database ссылка на дополняемую базу данных (unordered_map)
+		/// \param[in] add константная ссылка на добавляемую базу данных
+		void MergeDbsWithoutRepeats(std::unordered_map<std::string, std::vector<std::string>>& database, const std::unordered_map<std::string, std::vector<std::string>>&);
 
 		/// \brief Замена переменных в строке их значениями
 		///
@@ -206,7 +313,7 @@ namespace VMlib
 
 		/// \brief Считывание вектора из двумерных точек из базы данных
 		/// 
-		/// Переопределение метода get() для ситывания вектора из точек (Point2D) из базы данных
+		/// Переопределение метода get() для считывания вектора из точек (Point2D) из базы данных
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на значение, считываемое из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
@@ -217,11 +324,22 @@ namespace VMlib
 			bool boolRes = false;
 
 			res.resize(0);
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
 
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
+			
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if (((search_it = database.find(UpperCase(name))) != database.end()) ||
-				((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			//if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			//	((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			if (((search_it = search_ita) != database.end()) ||
+				((search_it = search_itb) != defaults.end()))
 			{
 				for (size_t i = 0; i < (search_it->second).size(); ++i)
 				{
@@ -229,8 +347,8 @@ namespace VMlib
 
 					Point2D elem;
 					size_t pos = s.find(',', 1);
-					std::stringstream(s.substr(1, pos)) >> elem[0];
-					std::stringstream(s.substr(pos + 1, s.length() - pos)) >> elem[1];
+					std::stringstream(s.substr(1, pos - 1)) >> elem[0];
+					std::stringstream(s.substr(pos + 1, s.length() - pos - 2)) >> elem[1];
 					res.push_back(elem);
 				}
 				boolRes = true;
@@ -239,11 +357,11 @@ namespace VMlib
 			//	SetDefault(name, res, defValue, echoDefault);
 			return boolRes;
 		};
-
+		
 
 		/// \brief Считывание вектора из трехмерных точек из базы данных
 		/// 
-		/// Переопределение метода get() для ситывания вектора из точек (v3D) из базы данных
+		/// Переопределение метода get() для считывания вектора из точек (v3D) из базы данных
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на значение, считываемое из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
@@ -254,22 +372,32 @@ namespace VMlib
 			bool boolRes = false;
 
 			res.resize(0);
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if (((search_it = database.find(UpperCase(name))) != database.end()) ||
-				((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			//if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			//	((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			if (((search_it = search_ita) != database.end()) ||
+				((search_it = search_itb) != defaults.end()))
 			{
 				for (size_t i = 0; i < (search_it->second).size(); ++i)
 				{
 					std::string s = (search_it->second)[i];
 
 					v3D elem;
-					size_t pos = s.find(',', 1);
-					std::stringstream(s.substr(1, pos)) >> elem[0];
-					size_t pos2 = s.find(',', pos+1);
-					std::stringstream(s.substr(pos + 1, pos2 + 1)) >> elem[1];
-					std::stringstream(s.substr(pos2 + 1, s.length() - pos)) >> elem[2];
+					size_t pos1 = s.find(',', 1);
+					std::stringstream(s.substr(1, pos1 - 1)) >> elem[0];
+					size_t pos2 = s.find(',', pos1 + 1);
+					std::stringstream(s.substr(pos1 + 1, pos2 - pos1 - 1)) >> elem[1];
+					std::stringstream(s.substr(pos2 + 1, s.length() - pos2 - 2)) >> elem[2];
 					res.push_back(elem);
 				}
 				boolRes = true;
@@ -282,7 +410,7 @@ namespace VMlib
 
 		/// \brief Считывание вектора из пар чисел из базы данных
 		/// 
-        /// Переопределение метода get() для ситывания вектора из пар чисел (std::pair) из базы данных
+        /// Переопределение метода get() для считывания вектора из пар чисел (std::pair) из базы данных
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на значение, считываемое из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
@@ -294,11 +422,21 @@ namespace VMlib
 			bool boolRes = false;
 
 			res.resize(0);
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if (((search_it = database.find(UpperCase(name))) != database.end()) ||
-				((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			//if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			//	((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			if (((search_it = search_ita) != database.end()) ||
+				((search_it = search_itb) != defaults.end()))
 			{
 				for (size_t i = 0; i < (search_it->second).size(); ++i)
 				{
@@ -306,8 +444,8 @@ namespace VMlib
 
 					std::pair<T,P> elem;
 					size_t pos = s.find(',', 1);
-					std::stringstream(s.substr(1, pos)) >> elem.first;
-					std::stringstream(s.substr(pos + 1, s.length() - pos)) >> elem.second;
+					std::stringstream(s.substr(1, pos - 1)) >> elem.first;
+					std::stringstream(s.substr(pos + 1, s.length() - pos - 2)) >> elem.second;
 					res.push_back(elem);
 				}
 				boolRes = true;
@@ -321,7 +459,7 @@ namespace VMlib
 
 		/// \brief Считывание вектора из пар чисел из базы данных
 		/// 
-		/// Переопределение метода get() для ситывания вектора из пар чисел (numvector<T,2>) из базы данных
+		/// Переопределение метода get() для считывания вектора из пар чисел (numvector<T,2>) из базы данных
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на значение, считываемое из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
@@ -333,11 +471,21 @@ namespace VMlib
 			bool boolRes = false;
 
 			res.resize(0);
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if (((search_it = database.find(UpperCase(name))) != database.end()) ||
-				((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			//if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			//	((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			if (((search_it = search_ita) != database.end()) ||
+				((search_it = search_itb) != defaults.end()))
 			{
 				for (size_t i = 0; i < (search_it->second).size(); ++i)
 				{
@@ -345,8 +493,8 @@ namespace VMlib
 
 					numvector<T, 2> elem;
 					size_t pos = s.find(',', 1);
-					std::stringstream(s.substr(1, pos)) >> elem[0];
-					std::stringstream(s.substr(pos + 1, s.length() - pos)) >> elem[1];
+					std::stringstream(s.substr(1, pos - 1)) >> elem[0];
+					std::stringstream(s.substr(pos + 1, s.length() - pos - 2)) >> elem[1];
 					res.push_back(elem);
 				}
 				boolRes = true;
@@ -360,7 +508,7 @@ namespace VMlib
 
 		/// \brief Считывание вектора из вихрей из базы данных
 		/// 
-		/// Переопределение метода get() для ситывания вектора из вихрей (Vortex2D) из базы данных
+		/// Переопределение метода get() для считывания вектора из вихрей (Vortex2D) из базы данных
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на вектор из вихрей, считываемый из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
@@ -371,11 +519,21 @@ namespace VMlib
 			bool boolRes = false;
 
 			res.resize(0);
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if (((search_it = database.find(UpperCase(name))) != database.end()) ||
-				((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			//if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			//	((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			if (((search_it = search_ita) != database.end()) ||
+				((search_it = search_itb) != defaults.end()))
 			{
 				for (size_t i = 0; i < (search_it->second).size(); ++i)
 				{
@@ -385,9 +543,9 @@ namespace VMlib
 					double g;
 					size_t pos1 = s.find(',', 1);
 					size_t pos2 = s.find(',', pos1 + 1);
-					std::stringstream(s.substr(1, pos1)) >> r[0];
-					std::stringstream(s.substr(pos1 + 1, s.length() - pos1)) >> r[1];
-					std::stringstream(s.substr(pos2 + 1, s.length() - pos2)) >> g;
+					std::stringstream(s.substr(1, pos1 - 1)) >> r[0];
+					std::stringstream(s.substr(pos1 + 1, pos2 - pos1 - 1)) >> r[1];
+					std::stringstream(s.substr(pos2 + 1, s.length() - pos2 - 2)) >> g;
 
 					Vortex2D elem(r, g);
 
@@ -400,6 +558,65 @@ namespace VMlib
 
 			return boolRes;
 		};
+
+
+		/// \brief Считывание вектора из точек, задающих профиль, из базы данных
+		/// 
+		/// Переопределение метода get() для считывания вектора из вихрей (Vortex2D) из базы данных
+		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
+		/// \param[out] res ссылка на вектор из вихрей, считываемый из базы данных
+		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
+		/// \param[in] echoDefault признак эхо-ответа при считывании значения по умолчанию (по умолчанию true)
+		/// \return признак считывания переменной из базы данных (false - если считано значение по умолчанию)
+		bool get(const std::string& name, std::vector<GeomPoint>& res, const std::vector<GeomPoint>* defValue = nullptr, bool echoDefault = true) const
+		{
+			bool boolRes = false;
+
+			res.resize(0);
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
+
+			//поиск ключа в базе и, если нет, то в базе умолчаний
+			//if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			//	((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			if (((search_it = search_ita) != database.end()) ||
+				((search_it = search_itb) != defaults.end()))
+			{
+				for (size_t i = 0; i < (search_it->second).size(); ++i)
+				{
+					std::string s = (search_it->second)[i];
+
+					Point2D r;
+					std::string type;
+					size_t pos1 = s.find(',', 1);
+					size_t pos2 = s.find(',', pos1 + 1);
+					std::stringstream(s.substr(1, pos1 - 1)) >> r[0];
+					std::stringstream(s.substr(pos1 + 1, pos2 - pos1 - 1)) >> r[1];
+					std::stringstream(s.substr(pos2 + 1, s.length() - pos2 - 2)) >> type;
+					
+					GeomPoint elem(r, type);
+
+
+					res.push_back(elem);
+				}
+				boolRes = true;
+			}
+			//else
+			//	SetDefault(name, res, defValue, echoDefault);
+			
+
+			return boolRes;
+		};
+
+
+
 
 		/// \brief Считывание вектора из простых типов из базы данных
 		/// 
@@ -416,11 +633,21 @@ namespace VMlib
 			bool boolRes = false;
 
 			res.resize(0);
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if (((search_it = database.find(UpperCase(name))) != database.end()) ||
-				((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			//if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			//	((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			if (((search_it = search_ita) != database.end()) ||
+				((search_it = search_itb) != defaults.end()))
 			{
 				for (size_t i = 0; i < (search_it->second).size(); ++i)
 				{
@@ -459,11 +686,21 @@ namespace VMlib
 		{
 			bool boolRes = false;
 
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
-				(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))
+			//if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
+			//	(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))
+			if ((((search_it = search_ita) != database.end()) && ((search_it->second).size() > 0)) ||
+				(((search_it = search_itb) != defaults.end()) && ((search_it->second).size() > 0)))
 			{
 				if ((search_it->second).size() == 1)
 				{
@@ -514,11 +751,21 @@ namespace VMlib
 		{
 			bool boolRes = false;
 
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
-				(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))
+			//if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
+			//	(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))
+			if ((((search_it = search_ita) != database.end()) && ((search_it->second).size() > 0)) ||
+				(((search_it = search_itb) != defaults.end()) && ((search_it->second).size() > 0)))
 			{
 				if ((search_it->second).size() == 1)
 				{
@@ -555,7 +802,7 @@ namespace VMlib
 
 		/// \brief Считывание точки из базы данных
 		/// 
-		/// Переопределение метода get() для ситывания точки (Point2D) из базы данных
+		/// Переопределение метода get() для считывания точки (Point2D) из базы данных
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на точку, считываемую из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
@@ -565,11 +812,21 @@ namespace VMlib
 		{
 			bool boolRes = false;
 
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if (((search_it = database.find(UpperCase(name))) != database.end()) ||
-				((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			//if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			//	((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			if (((search_it = search_ita) != database.end()) ||
+				((search_it = search_itb) != defaults.end()))
 			{
 				if ((search_it->second).size() == res.size())
 				{
@@ -600,7 +857,7 @@ namespace VMlib
 
 		/// \brief Считывание точки из базы данных
 		/// 
-		/// Переопределение метода get() для ситывания точки (v3D) из базы данных
+		/// Переопределение метода get() для считывания точки (v3D) из базы данных
 		/// \param[in] name константная ссылка на строку --- имя считываемого параметра
 		/// \param[out] res ссылка на точку, считываемую из базы данных
 		/// \param[in] defValue указатель на константу --- значение по умолчанию (по умолчанию nullptr)
@@ -610,11 +867,21 @@ namespace VMlib
 		{
 			bool boolRes = false;
 
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if (((search_it = database.find(UpperCase(name))) != database.end()) ||
-				((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			//if (((search_it = database.find(UpperCase(name))) != database.end()) ||
+			//	((search_it = defaults.find(UpperCase(name))) != defaults.end()))
+			if (((search_it = search_ita) != database.end()) ||
+				((search_it = search_itb) != defaults.end()))
 			{
 				if ((search_it->second).size() == res.size())
 				{
@@ -655,11 +922,21 @@ namespace VMlib
 		{
 			bool boolRes = false;
 
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;
+
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
 
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
-				(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))
+			//if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
+			//	(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))
+			if ((((search_it = search_ita) != database.end()) && ((search_it->second).size() > 0)) ||
+				(((search_it = search_itb) != defaults.end()) && ((search_it->second).size() > 0)))
 			{
 				if ((search_it->second).size() == 1)
 				{
@@ -702,11 +979,21 @@ namespace VMlib
 		{
 			bool boolRes = false;
 
-			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it;
+			std::unordered_map<std::string, std::vector<std::string>>::const_iterator search_it, search_ita, search_itb;
+			
+			for (search_ita = database.begin(); search_ita != database.end(); ++search_ita)
+				if (is_match(search_ita->first, UpperCase(name)))
+					break;	
 
+			for (search_itb = defaults.begin(); search_itb != defaults.end(); ++search_itb)
+				if (is_match(search_itb->first, UpperCase(name)))
+					break;
+			
 			//поиск ключа в базе и, если нет, то в базе умолчаний
-			if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
-				(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))
+			//if ((((search_it = database.find(UpperCase(name))) != database.end()) && ((search_it->second).size() > 0)) ||
+			//	(((search_it = defaults.find(UpperCase(name))) != defaults.end()) && ((search_it->second).size() > 0)))			
+			if ((((search_it = search_ita) != database.end()) && ((search_it->second).size() > 0)) ||
+				(((search_it = search_itb) != defaults.end()) && ((search_it->second).size() > 0)))
 			{
 				if ((search_it->second).size() == 1)
 				{
@@ -756,9 +1043,6 @@ namespace VMlib
 
 			return boolRes;
 		};
-
-
-
 	};
 
 }//namespace VMlib

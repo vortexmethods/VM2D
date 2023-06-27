@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Wake2D.h                                                         |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef WAKE_H
@@ -51,14 +52,18 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class Wake : public WakeDataBase
 	{
 	private:
 		/// Вектор потенциальных соседей для будущего коллапса
 		std::vector<int> neighb;
+
+		static const int knb = 2;  //количество ближайших соседей
+		std::vector<int> neighbNew;
 
 	public:
 
@@ -83,10 +88,8 @@ namespace VM2D
 		/// \param[in] isMoves признак того, что профиль подвижный
 		/// \param[in] oldAfl константная ссылка контролируемый профиль до перемещения (используется, если у профиля стоит признак того, что он движется)
 		/// \param[in,out] afl ссылка на контролируемый профиль (происходит изменение afl->gammaThrough)
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
 		void Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves, const Airfoil& oldAfl);
-
+		
 		/// \brief Реструктуризация вихревого следа
 		///
 		/// Исполняется сразу для всех вихрей в пелене
@@ -143,6 +146,7 @@ namespace VM2D
 		/// \param[in] times число проходов алгоритма коллапса
 		/// \return число зануленных вихрей
 		int Collaps(int type, int times);
+                int CollapsNew(int type, int times);
 
 		/// абсцисса, правее которой происходит линейный (вправо) рост радиуса коллапса
 		double collapseRightBorderParameter;

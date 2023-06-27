@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: v3D.h                                                            |
 | Info: Source code of VMlib                                                  |
@@ -29,16 +29,12 @@
 \file
 \brief Заголовочный файл с описанием класса v3D
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef V3D_H_
 #define V3D_H_
-
-#ifndef __CUDACC__
-	#include "mpi.h"
-#endif
 
 #include "numvector.h"
 
@@ -53,17 +49,17 @@ namespace VMlib
 	- генерируется MPI-описатель для возможности его пересылки как единичного объекта.
 
 	\author Марчевский Илья Константинович
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class v3D : public numvector<double, 3>
 	{
 	public:
 		
-#ifndef __CUDACC__		
-		/// MPI-описатель типа
-		static MPI_Datatype mpiv3D;
-#endif
+//#ifndef __CUDACC__		
+//		/// MPI-описатель типа
+//		static MPI_Datatype mpiv3D;
+//#endif
 
 		/// Пустой конструктор
 		v3D() { };
@@ -96,10 +92,10 @@ namespace VMlib
 		/// \return новый вектор, полученный поворотом старого 
 		v3D rotated(const double angle, const v3D& axis) const;
 
-#ifndef __CUDACC__
-		/// Cоздание MPI-описателя типа
-		static void CreateMpiType();
-#endif
+//#ifndef __CUDACC__
+//		/// Cоздание MPI-описателя типа
+//		static void CreateMpiType();
+//#endif
 	
 		//operator numvector<double, 3>&() 
 		//{

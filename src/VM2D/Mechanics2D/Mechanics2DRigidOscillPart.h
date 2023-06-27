@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidOscillPart.h                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef MECHANICSRIGIDOSCILLPART_H
@@ -54,9 +55,10 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
 
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 
 	class MechanicsRigidOscillPart :
@@ -64,44 +66,49 @@ namespace VM2D
 	{
 	private:
 
-		/// начальная скорость профиля
-		const double u0;
-
-		/// начальное отклонение профиля
-		const double y0;
-
-		/// текущая скорость профиля
-		double u;
-
-		/// текущее отклонение профиля
-		double y;
-
-		/// скорость профиля с предыдущего шага
-		double uOld;
-
-		/// отклонение профиля с предыдущего шага
-		double yOld;
-
 		/// масса профиля
 		double m;
 
-		/// параметр демпфирования механической системы
-		double b;
+		/// момент инерции профиля
+		double J;
 
+		/// параметр демпфирования механической системы
+		Point2D b;
+		double bw;
+		
 		/// параметр жесткости механической системы
-		double k;
+		Point2D k;		
+		double kw;
+
+		/// начальное отклонение
+		Point2D initDisplacement;
+		double initAngularDisplacement;
+
+		/// начальные скорости
+		Point2D initVelocity;
+		double initAngularVelocity;		
+
+		/// признак полунеявной схемы связывания
+		bool strongCoupling;
 
 	public:
-
-
 		/// текущая скорость профиля
-		double& getU(){ return u; };
-		double& getUOld(){ return uOld; };
+		Point2D& getV() { return Vcm; };
+		Point2D& getVOld() { return VcmOld; };
 
 		/// текущее отклонение профиля
-		double& getY(){ return y; };
-		double& getYOld(){ return yOld; };
+		Point2D& getR() { return Rcm; };
+		Point2D& getROld() { return RcmOld; };
 
+		/// текущая угловая скорость профиля
+		double& getW() { return Wcm; };
+		double& getWOld() { return WcmOld; };
+
+		/// текущий угол поворота профиля
+		double& getPhi() { return Phi; };
+		double& getPhiOld() { return PhiOld; };
+
+		bool& getStrongCoupling() { return strongCoupling; };
 
 		/// \brief Конструктор
 		/// 
@@ -112,7 +119,6 @@ namespace VM2D
 		/// Деструктор
 		~MechanicsRigidOscillPart() {};
 
-
 		//далее -- реализации виртуальных функций
 		virtual void GetHydroDynamForce() override;
 		virtual Point2D VeloOfAirfoilRcm(double currTime) override;
@@ -122,12 +128,9 @@ namespace VM2D
 		virtual void VeloOfAirfoilPanels(double currTime) override;
 		virtual void ReadSpecificParametersFromDictionary() override;
 		virtual void Move() override;
+		void MoveKinematic();
+		void MoveOnlyVelo();
 
-
-		double uiter;
-		Point2D Qiter;
-
-		void RecalcU(Point2D forcePrev); //ИК
 	};
 
 }//namespace VM2D

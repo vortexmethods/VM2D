@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: defaults                                                         |
 | Info: Default values for various parameters                                 |
@@ -17,12 +17,17 @@ basePoint = {0.0, 0.0};
 
 linearSystemSolver = linearSystemGauss;
 velocityComputation = velocityBiotSavart;
-panelsType = panelsRectilinear; 
 boundaryConditionSatisfaction = boundaryLinearLayerAverage;
-fileType = binary;
+saveVtx = text(100);
+saveVP = 0;
 
 mechanicalSystem = mechanicsRigidImmovable;
 np = 1;
+
+initDisplacement = {0.0, 0.0}; 
+initAngularDisplacement = 0.0; 
+initVelocity = {0.0, 0.0}; 
+initAngularVelocity = 0.0;
 
 airfoilsDir = "../settings/airfoils/";
 wakesDir = "../settings/wakes/";

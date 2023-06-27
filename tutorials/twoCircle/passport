@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: passport                                                         |
 | Info: Parameters of the problem to be solved                                |
@@ -22,9 +22,11 @@ timeStop = 300.0001;
 dt = 0.005;
 accelVel = RampLin(1.0);       //by default = RampLin(0.0)
 
-saveVTK = 10;                  //by default = 100
-saveVP = 10;                   //by default = 0
+saveVtx = binary(100);         //by default = 100
+saveVp = binary(100);          //by default = 0
 nameLength = 5;                //by default = 5
+
+calcCoefficients = true;
 
 //Wake Discretization Properties
 eps = 0.0075;
@@ -43,6 +45,6 @@ panelsType = panelsRectilinear;
 boundaryConditionSatisfaction = boundaryConstantLayerAverage;
 
 //Files and parameters
-airfoil = { "circle200"(basePoint = {0.0, 0.0}, mechanicalSystem=mech0),
-            "circle200"(basePoint = {-2.0, -1.0}, mechanicalSystem=mech0) };
+airfoil = { "circle200"(basePoint = {0.0, 0.0}, chord = 1.0, mechanicalSystem=mech0),
+            "circle200"(basePoint = {-2.0, -1.0}, chord = 1.0, mechanicalSystem=mech0) };
 //fileWake = { "OblakoV1000" };              //by default={}

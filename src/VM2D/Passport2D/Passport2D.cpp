@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Passport2D.cpp                                                   |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #include "Passport2D.h"
@@ -75,10 +76,12 @@ physicalProperties(timeDiscretizationProperties)
 	std::string defaultsFileFullName = _defaults;
 	std::string switchersFileFullName = _switchers;
 
-	if (fileExistTest(fileFullName, info)
-		&& fileExistTest(defaultsFileFullName, info)
-		&& fileExistTest(switchersFileFullName, info)
-		&& fileExistTest(mechanicsFileFullName, info))
+	if (
+		fileExistTest(fileFullName, info, { "txt", "TXT"}) &&
+		fileExistTest(defaultsFileFullName, info, { "txt", "TXT" }) &&
+		fileExistTest(switchersFileFullName, info, { "txt", "TXT" }) &&
+		fileExistTest(mechanicsFileFullName, info, { "txt", "TXT" })
+	   )
 	{
 		std::string str = VMlib::StreamParser::VectorStringToString(vars);
 		std::stringstream varsStream(str);
@@ -105,25 +108,24 @@ physicalProperties(timeDiscretizationProperties)
 //Считывание всех параметров расчета из соответствующих потоков
 void Passport::GetAllParamsFromParser
 (
-	std::istream& mainStream, 
+	std::istream& mainStream,
 	std::istream& mechanicsStream,
-	std::istream& defaultStream, 
-	std::istream& switcherStream, 
+	std::istream& defaultStream,
+	std::istream& switcherStream,
 	std::istream& varsStream
 )
-{
+{	
+	// 1. Разбор паспорта в целом
 
-// 1. Разбор паспорта в целом
-	
 	//создаем парсер и связываем его с нужным потоком
 	std::unique_ptr<VMlib::StreamParser> parser;
 	parser.reset(new VMlib::StreamParser(info, "parser", mainStream, defaultStream, switcherStream, varsStream));
-		
-	//считываем общие парамеры
+			
+	//считываем общие параметры
 	parser->get("rho", physicalProperties.rho);
 	parser->get("vInf", physicalProperties.vInf);
 	parser->get("vRef", physicalProperties.vRef, &defaults::defaultVRef);
-	
+
 	if (physicalProperties.vRef == 0.0)
 	{
 		if (physicalProperties.vInf.length() == 0.0)
@@ -135,36 +137,38 @@ void Passport::GetAllParamsFromParser
 	}
 
 	//Считывание схемы разгона потока
-	std::pair<std::pair<std::string, int>, std::string> velAccel;
-	bool defParam = parser->get("accelVel", velAccel, &defaults::defaultVelAccel);
-	if (velAccel.first.second != -1)
 	{
-		physicalProperties.typeAccel = velAccel.first;
-		std::stringstream sstr(velAccel.second);
-		std::istream& istr(sstr);
-		
-		std::unique_ptr<VMlib::StreamParser> parserAccel;
-		
-		parserAccel.reset(new VMlib::StreamParser(info, "parserAccel", istr, defaultStream, switcherStream, varsStream));
-		bool defParamTime = parserAccel->get("timeAccel", physicalProperties.timeAccel, &defaults::defaultTimeAccel, false);
-		parserAccel->get("_DEFVAR_0", physicalProperties.timeAccel, &physicalProperties.timeAccel, defParam && !defParamTime);
-	}
-	else
-	{
-		info('e') << "Velocity acceleration scheme <" << velAccel.first.first << "> is unknown" << std::endl;
-		exit(1);
-	}
-
-	/// \todo Удалить в следующих версиях. Добавлено для совместимости со старым синтаксисом задания разгона потока
-	if (!defParam)
-		parser->get("timeAccel", physicalProperties.timeAccel, &defaults::defaultTimeAccel);
-	else
-	{
-		double tempTimeAccel;
-		if (parser->get("timeAccel", tempTimeAccel, &defaults::defaultTimeAccel, false))
+		std::pair<std::pair<std::string, int>, std::string> velAccel;
+		bool defParamAccelVel = parser->get("accelVel", velAccel, &defaults::defaultVelAccel);
+		if (velAccel.first.second != -1)
 		{
-			info('e') << "timeAccel parameter is set twice!" << std::endl;
+			physicalProperties.typeAccel = velAccel.first;
+			std::stringstream sstr(velAccel.second);
+			std::istream& istr(sstr);
+
+			std::unique_ptr<VMlib::StreamParser> parserAccel;
+
+			parserAccel.reset(new VMlib::StreamParser(info, "parserAccel", istr, defaultStream, switcherStream, varsStream));
+			bool defParamTime = parserAccel->get("timeAccel", physicalProperties.timeAccel, &defaults::defaultTimeAccel, false);
+			parserAccel->get("_DEFVAR_0", physicalProperties.timeAccel, &physicalProperties.timeAccel, defParamAccelVel && !defParamTime);
+		}
+		else
+		{
+			info('e') << "Velocity acceleration scheme <" << velAccel.first.first << "> is unknown" << std::endl;
 			exit(1);
+		}
+
+		/// \todo Удалить в следующих версиях. Добавлено для совместимости со старым синтаксисом задания разгона потока
+		if (!defParamAccelVel)
+			parser->get("timeAccel", physicalProperties.timeAccel, &defaults::defaultTimeAccel);
+		else
+		{
+			double tempTimeAccel;
+			if (parser->get("timeAccel", tempTimeAccel, &defaults::defaultTimeAccel, false))
+			{
+				info('e') << "timeAccel parameter is set twice!" << std::endl;
+				exit(1);
+			}
 		}
 	}
 	
@@ -175,9 +179,76 @@ void Passport::GetAllParamsFromParser
 	parser->get("timeStop", timeDiscretizationProperties.timeStop);
 	parser->get("dt", timeDiscretizationProperties.dt);
 	parser->get("nameLength", timeDiscretizationProperties.nameLength, &defaults::defaultNameLength);
-	parser->get("fileType", timeDiscretizationProperties.fileType, &defaults::defaultFileType);
-	parser->get("saveVTK", timeDiscretizationProperties.saveVTK, &defaults::defaultSaveVTK);
-	parser->get("saveVP",  timeDiscretizationProperties.saveVP,  &defaults::defaultSaveVP);
+	
+	
+	//Считывание схемы сохранения файлов Vtx
+	std::pair<std::pair<std::string, int>, std::string> saveVtx;
+	bool defParamSaveVtx = parser->get("saveVt?", saveVtx, &defaults::defaultSaveVtx);
+	if (saveVtx.first.second != -1)
+	{
+		timeDiscretizationProperties.fileTypeVtx = saveVtx.first;
+		std::stringstream sstr(saveVtx.second);
+		std::istream& istr(sstr);
+
+		std::unique_ptr<VMlib::StreamParser> parserSaveVtx;
+
+		parserSaveVtx.reset(new VMlib::StreamParser(info, "parserSaveVtx", istr, defaultStream, switcherStream, varsStream));
+		parserSaveVtx->get("_DEFVAR_0", timeDiscretizationProperties.saveVtxStep, &defaults::defaultSaveVtxStep, defParamSaveVtx);
+	}
+	else
+	{
+		std::stringstream ss;
+		ss << saveVtx.first.first;
+		int step;
+		ss >> step;
+		if (!ss.fail())
+		{
+			timeDiscretizationProperties.fileTypeVtx = defaults::defaultSaveVtx.first;
+			timeDiscretizationProperties.saveVtxStep = step;
+		}
+		else
+		{
+			info('e') << "Vtx file type <" << saveVtx.first.first << "> is unknown" << std::endl;
+			exit(1);
+		}
+	}
+	
+	
+	//Считывание схемы сохранения файлов VP
+	std::pair<std::pair<std::string, int>, std::string> saveVP;
+	bool defParamSaveVP = parser->get("saveVP", saveVP, &defaults::defaultSaveVP);
+	if (saveVP.first.second != -1)
+	{
+		timeDiscretizationProperties.fileTypeVP = saveVP.first;
+		std::stringstream sstr(saveVP.second);
+		std::istream& istr(sstr);
+
+		std::unique_ptr<VMlib::StreamParser> parserSaveVP;
+
+		parserSaveVP.reset(new VMlib::StreamParser(info, "parserSaveVP", istr, defaultStream, switcherStream, varsStream));
+		parserSaveVP->get("_DEFVAR_0", timeDiscretizationProperties.saveVPstep, &defaults::defaultSaveVPstep, defParamSaveVP);
+	}
+	else
+	{
+		std::stringstream ss;
+		ss << saveVP.first.first;
+		int step;
+		ss >> step;
+		if (!ss.fail())
+		{
+			timeDiscretizationProperties.fileTypeVP = defaults::defaultSaveVP.first;
+			timeDiscretizationProperties.saveVPstep = step;
+		}
+		else
+		{
+			info('e') << "VP file type <" << saveVP.first.first << "> is unknown" << std::endl;
+			exit(1);
+		}
+	}
+
+	parser->get("rotateVpPoints", rotateAngleVpPoints, &defaults::rotateAngleVpPoints);
+	
+	
 	parser->get("saveVisStress", timeDiscretizationProperties.saveVisStress, &defaults::defaultSaveVisStress);
 
 
@@ -194,7 +265,6 @@ void Passport::GetAllParamsFromParser
 	parser->get("linearSystemSolver", numericalSchemes.linearSystemSolver, &defaults::defaultLinearSystemSolver);
 	parser->get("velocityComputation", numericalSchemes.velocityComputation, &defaults::defaultVelocityComputation);
 	//parser->get("wakeMotionIntegrator", numericalSchemes.wakeMotionIntegrator);
-	parser->get("panelsType", numericalSchemes.panelsType, &defaults::defaultPanelsType);
 	parser->get("boundaryConditionSatisfaction", numericalSchemes.boundaryCondition, &defaults::defaultBoundaryCondition);
 	
 	parser->get("airfoilsDir", airfoilsDir, &defaults::defaultAirfoilsDir);
@@ -202,6 +272,16 @@ void Passport::GetAllParamsFromParser
 
 	parser->get("fileWake", wakeDiscretizationProperties.fileWake, &defaults::defaultFileWake);
 	parser->get("fileSource", wakeDiscretizationProperties.fileSource, &defaults::defaultFileSource);
+
+	parser->get("geographicalAngles", geographicalAngles, &defaults::defaultGeographicalAngles);
+	if (geographicalAngles && (physicalProperties.vInf[1] != 0.0))
+	{
+		info('e') << "For geographical angles vInf should be horizontal; now vInf = " << physicalProperties.vInf << "." << std::endl;
+		exit(1);
+	}
+
+	parser->get("rotateForces", rotateForces, &defaults::defaultRotateForces);
+	parser->get("calcCoefficients", calcCoefficients, &defaults::defaultCalcCoefficients);
 
 	std::vector<std::string> airfoil;
 	parser->get("airfoil", airfoil, &defaults::defaultAirfoil);
@@ -230,6 +310,8 @@ void Passport::GetAllParamsFromParser
 		parserAirfoil.reset(new VMlib::StreamParser(info, "airfoil parser", aflStream, defaultStream, switcherStream, varsStream));
 
 		//считываем нужные параметры с учетом default-значений
+		parserAirfoil->get("nPanels", prm.requiredNPanels, &defaults::defaultRequiredNPanels);
+
 		parserAirfoil->get("basePoint", prm.basePoint, &defaults::defaultBasePoint);
 		
 		std::vector<double> tmpScale, defaultTmpScale = { defaults::defaultScale[0], defaults::defaultScale[1] };
@@ -253,7 +335,12 @@ void Passport::GetAllParamsFromParser
 		
 		parserAirfoil->get("angle", prm.angle, &defaults::defaultAngle);
 		prm.angle *= PI / 180.0;
-		
+
+		parserAirfoil->get("chord", prm.chord, &defaults::defaultChord);
+
+		parserAirfoil->get("addedMass", prm.addedMass, &defaults::defaultAddedMass);
+
+
 		parserAirfoil->get("inverse", prm.inverse, &defaults::defaultInverse);		
 		parserAirfoil->get("mechanicalSystem", prm.mechanicalSystem, &defaults::defaultMechanicalSystem);
 
@@ -307,9 +394,8 @@ void Passport::PrintAllParams()
 	info('-') << "timeStop = " << timeDiscretizationProperties.timeStop << std::endl;
 	info('-') << "dt = " << timeDiscretizationProperties.dt << std::endl;
 	info('-') << "nameLength = " << timeDiscretizationProperties.nameLength << std::endl;
-	info('-') << "fileType = " << timeDiscretizationProperties.fileType << std::endl;
-	info('-') << "saveVTK = " << timeDiscretizationProperties.saveVTK << std::endl;
-	info('-') << "saveVP = " << timeDiscretizationProperties.saveVP << std::endl;
+	info('-') << "saveVtx = " << timeDiscretizationProperties.fileTypeVtx.first << "( " << timeDiscretizationProperties.saveVtxStep << " )" << std::endl;
+	info('-') << "saveVP = " << timeDiscretizationProperties.fileTypeVP.first << "( " << timeDiscretizationProperties.saveVPstep << " )" << std::endl;
 	info('-') << "saveVisStress = " << timeDiscretizationProperties.saveVisStress << std::endl;
 	info('-') << "eps = " << wakeDiscretizationProperties.eps << std::endl;
 	info('-') << "eps2 = " << wakeDiscretizationProperties.eps2 << std::endl;
@@ -321,21 +407,30 @@ void Passport::PrintAllParams()
 	info('-') << "linearSystemSolver = " << numericalSchemes.linearSystemSolver.first << std::endl;
 	info('-') << "velocityComputation = " << numericalSchemes.velocityComputation.first << std::endl;
 	//info('-') << "wakeMotionIntegrator = " << numericalSchemes.wakeMotionIntegrator << std::endl;
-	info('_') << "panelType = " << numericalSchemes.panelsType.first << std::endl;
 	info('_') << "boundaryCondition = " << numericalSchemes.boundaryCondition.first << std::endl;
 	
 	info('-') << "airfoilsDir = " << airfoilsDir << std::endl;
 	info('-') << "wakesDir = " << wakesDir << std::endl;
 
+	info('-') << "geographicalAngles = " << geographicalAngles << std::endl;
+	info('-') << "rotateForces = " << rotateForces << std::endl;
+	info('-') << "calcCoefficients = " << calcCoefficients << std::endl;
+	info('-') << "rotateVpPoints = " << rotateAngleVpPoints << std::endl;
+
+
+
 	info('-') << "number of airfoils = " << airfoilParams.size() << std::endl;
 	for (size_t q = 0; q < airfoilParams.size(); ++q)
 	{
 		info('_') << "airfoil[" << q << "]_file = " << airfoilParams[q].fileAirfoil << std::endl;
+		info('_') << "airfoil[" << q << "]_requiredNPanels = " << airfoilParams[q].requiredNPanels << std::endl;
 		info('_') << "airfoil[" << q << "]_basePoint = " << airfoilParams[q].basePoint << std::endl;
 		info('_') << "airfoil[" << q << "]_scale = " << airfoilParams[q].scale << std::endl;
 		info('_') << "airfoil[" << q << "]_angle = " << airfoilParams[q].angle << std::endl;
+		info('_') << "airfoil[" << q << "]_chord = " << airfoilParams[q].chord << std::endl;
 		info('_') << "airfoil[" << q << "]_inverse = " << (airfoilParams[q].inverse ? "true": "false") << std::endl;
 		info('_') << "airfoil[" << q << "]_mechanicalSystem = " << airfoilParams[q].mechanicalSystem << std::endl;
+		info('_') << "airfoil[" << q << "]_addedMass = " << airfoilParams[q].addedMass << std::endl;
 	}
 
 	info('-') << "fileWake = " << wakeDiscretizationProperties.fileWake << std::endl;

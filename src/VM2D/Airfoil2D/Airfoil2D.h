@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil2D.h                                                      |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef AIRFOIL_H
@@ -52,8 +53,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class Airfoil
 	{
@@ -86,6 +88,12 @@ namespace VM2D
 		/// Полярный момент инерции профиля относительно центра масс
 		double J;
 
+		/// Возможные пути внутри профиля от точки (0, 0) к центрам всех панелей
+		std::vector<std::vector<Point2D>> possibleWays;
+		
+		/// Номера путей к вершинам
+		std::vector<int> wayToVertex; 
+
 		///Средние значения Eps на панелях
 		std::vector<double> meanEpsOverPanel;
 
@@ -97,6 +105,18 @@ namespace VM2D
 		/// \param[in] q номер вершины профиля
 		/// return константную ссылку на вершину профиля  
 		const Point2D& getR(size_t q) const
+		{
+			return (q < r_.size()) ? r_[q] : r_[0];
+		};
+
+		///\brief Возврат ссылки на вершину профиля  
+		///
+		/// Организовано "зацикливание" в сторону увеличения индекса, т.е. getR[size()] = getR[0];		
+		/// \n Это позволяет удобно обращаться к getR(i) и getR(i+1) как к началу и концу i-й панели
+		/// 
+		/// \param[in] q номер вершины профиля
+		/// return ссылку на вершину профиля  
+		Point2D& setR(size_t q) 
 		{
 			return (q < r_.size()) ? r_[q] : r_[0];
 		};
@@ -151,14 +171,23 @@ namespace VM2D
 		/// Указатель на хосте, где хранится временная часть матрицы, полученная с девайса
 		IFCUDA(mutable std::vector<double> tmpRhs);
 
-		/// Указатель на девайсе, где хранятся интенсивности свободного вихревого слоя на панелях
+		/// Указатель на девайсе, где хранятся интенсивности (константные) свободного вихревого слоя на панелях
 		IFCUDA(mutable double* devFreeVortexSheetPtr);
+		
+		/// Указатель на девайсе, где хранятся интенсивности (линейные) свободного вихревого слоя на панелях
+		IFCUDA(mutable double* devFreeVortexSheetLinPtr);
 
-		/// Указатель на девайсе, где хранятся интенсивности присоединенного вихревого слоя на панелях
+		/// Указатель на девайсе, где хранятся интенсивности (константные) присоединенного вихревого слоя на панелях
 		IFCUDA(mutable double* devAttachedVortexSheetPtr);
+		
+		/// Указатель на девайсе, где хранятся интенсивности (линейные) присоединенного вихревого слоя на панелях
+		IFCUDA(mutable double* devAttachedVortexSheetLinPtr);
 
-		/// Указатель на девайсе, где хранятся интенсивности присоединенного слоя источников на панелях
+		/// Указатель на девайсе, где хранятся интенсивности (константные) присоединенного слоя источников на панелях
 		IFCUDA(mutable double* devAttachedSourceSheetPtr);
+		
+		/// Указатель на девайсе, где хранятся интенсивности (линейные) присоединенного слоя источников на панелях
+		IFCUDA(mutable double* devAttachedSourceSheetLinPtr);
 
 		/// Указатель на девайсе, где хранятся средние eps на панелях
 		IFCUDA(mutable double* devMeanEpsOverPanelPtr);
@@ -210,31 +239,34 @@ namespace VM2D
 		/// \return true, если i-я вершина следует зп j-й в порядке обхода профиля
 		bool isAfter(size_t i, size_t j) const;
 
+		/// Вычисление нормалей, касательных и длин панелей по текущему положению вершин
+		void CalcNrmTauLen();
+
 		/// \brief Поворот профиля 
 		///
 		/// Поворачивает профиль на угол \f$ \alpha \f$ вокруг центра масс
 		/// \param[in] alpha угол поворота против часовой стрелки в радианах
-		virtual void Rotate(double alpha) = 0;
+		virtual void Rotate(double alpha);
 
 		/// \brief Масштабирование профиля 
 		///
 		/// Масштабирует профиль в factor раз относительно центра масс
 		/// \param[in] factor масштабный коэффициент
-		virtual void Scale(const Point2D&) = 0;
+		virtual void Scale(const Point2D&);
 
 		/// \brief Перемещение профиля 
 		///
 		/// Плоскопараллельно перемещает профиль на вектор \f$ \overrightarrow{dr} \f$
 		///
 		/// \param[in] dr константная ссылка на вектор перемещения
-		virtual void Move(const Point2D& dr) = 0;
+		virtual void Move(const Point2D& dr);
 
 		/// \brief Вычисляет габаритный прямоугольник профиля
 		///
 		/// Заполняет значения полей lowLeft и upRight по габаритному прямоугольнику профиля с учетом зазора
 		///
 		/// \param[in] gap относительная величина зазора в долях от размера габаритного прямоугольника (по умолчанию 0.02, что соответствует 2 %)
-		virtual void GetGabarits(double gap = 0.02) = 0;
+		virtual void GetGabarits(double gap = 0.02);
 
 		/// \brief Определяет, находится ли точка с радиус-вектором \f$ \vec r \f$ внутри габаритного прямоугольника профиля
 		///
@@ -252,7 +284,7 @@ namespace VM2D
 		///
 		/// \param[in] point константная ссылка на текущее положение точки
 		/// \return true, если точка внутри профиля
-		virtual bool IsPointInAirfoil(const Point2D& point) const = 0;
+		virtual bool IsPointInAirfoil(const Point2D& point) const;
 
 		/// \brief Считывание профиля из файла
 		///
@@ -261,7 +293,7 @@ namespace VM2D
 		/// \warning Сейчас масса, момент инерции и скорости вершин зануляются.
 		///
 		/// \param[in] dir константная ссылка на строку --- имя каталога, где лежит cчитываемый файл
-		virtual void ReadFromFile(const std::string& dir) = 0;
+		virtual void ReadFromFile(const std::string& dir);
 
 		/// \brief Вычисление коэффициентов матрицы A для расчета влияния панели на панель
 		///
@@ -270,7 +302,7 @@ namespace VM2D
 		/// \param[in] airfoil константная ссылка на профиль, от которого рассчитывается влияние
 		/// \param[in] j номер влияющей панели
 		/// return соответствующий блок матрицы СЛАУ, вытянутый в линию 
-		virtual std::vector<double> getA(size_t p, size_t i, const Airfoil& airfoil, size_t j) const = 0;
+		virtual std::vector<double> getA(size_t p, size_t i, const Airfoil& airfoil, size_t j) const;
 
 		/// \brief Вычисление коэффициентов матрицы, состоящей из интегралов от (r-xi)/|r-xi|^2 
 		///
@@ -278,7 +310,7 @@ namespace VM2D
 		/// \param[in] otherAirfoil константная ссылка на профиль, от которого рассчитывается влияние
 		/// \param[out] matrPair ссылка на пару матриц, выражающих взаимные влияния (касательные и нормальные) панелей профиля 
 		/// return соответствующий блок матрицы СЛАУ, вытянутый в линию 
-		virtual void calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& matrPair) const = 0;
+		virtual void calcIQ(size_t p, const Airfoil& otherAirfoil, std::pair<Eigen::MatrixXd, Eigen::MatrixXd>& matrPair) const;
 
 
 		/// \brief Вычисление средних значений eps на панелях
@@ -295,13 +327,11 @@ namespace VM2D
 		/// \param[out] I3 ссылка на вектор числителей диффузионных скоростей, которые приобретают точки из-за влияния геометрии профиля
 		/// 
 		/// \warning Векторы I0, I3 --- накапливаются!
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
-		virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
+		virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
 #if defined(USE_CUDA)
-		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
+		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
 #endif
-		virtual void GetDiffVelocityI0I3ToWakeAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
+		virtual void GetDiffVelocityI0I3ToWakeAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
 
 		/// \brief Вычисление влияния части подряд идущих вихрей из вихревого следа на панель для правой части
 		///
@@ -311,7 +341,7 @@ namespace VM2D
 		/// \param[in] ptr указатель на начало диапазона вихрей
 		/// \param[in] count длина диапазона вихрей
 		/// \param[out] panelRhs ссылка на вектор полученного влияния для правой части СЛАУ для конкретной панели
-		virtual void GetInfluenceFromVorticesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const = 0;
+		virtual void GetInfluenceFromVorticesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const;
 				
 	
 		/// \brief Вычисление влияния части подряд идущих источников из области течения на панель для правой части
@@ -322,7 +352,7 @@ namespace VM2D
 		/// \param[in] ptr указатель на начало диапазона источников
 		/// \param[in] count длина диапазона источников
 		/// \param[out] panelRhs ссылка на вектор полученного влияния для правой части СЛАУ для конкретной панели
-		virtual void GetInfluenceFromSourcesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const = 0;
+		virtual void GetInfluenceFromSourcesToPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& panelRhs) const;
 
 
 		/// \brief Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения	
@@ -330,21 +360,21 @@ namespace VM2D
 		/// \param[in] panel номер панели профиля, от которой считается влияние
 		/// \param[in] vtx ссылка на вихрь
 		/// \param[out] vel ссылка на вектор полученной скорости
-		virtual void GetInfluenceFromSourceSheetToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const = 0;
+		virtual void GetInfluenceFromSourceSheetToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const;
 
 		/// \brief Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вихрь в области течения
 		///
 		/// \param[in] panel номер панели профиля, от которой считается влияние
 		/// \param[in] vtx ссылка на вихрь
 		/// \param[out] vel ссылка на вектор полученной скорости
-		virtual void GetInfluenceFromVortexSheetToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const = 0;
+		virtual void GetInfluenceFromVortexSheetToVortex(size_t panel, const Vortex2D& vtx, Point2D& vel) const;
 
                 /// \brief Вычисление влияния набегающего потока на панель для правой части
 		///
 		/// Вычисляет влияния набегающего потока на панель для правой части
 		/// 
 		/// \param[out] vInfRhs ссылка на вектор полученного влияния для правой части СЛАУ для всех панелей профиля
-		virtual void GetInfluenceFromVInfToPanel(std::vector<double>& vInfRhs) const = 0;
+		virtual void GetInfluenceFromVInfToPanel(std::vector<double>& vInfRhs) const;
 
 
 };

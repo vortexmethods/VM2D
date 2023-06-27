@@ -19,93 +19,93 @@
 #define scales { 1.0 }
 
 
-if (currentStep%10 == 0)
+if (currentStep % 10 == 0)
 {
 
-	if (getParallel().myidWork == 0)
+
+
+	std::vector<double> rad = radiuses;
+	std::vector<double> scale = scales;
+
+
+	std::string circFileName = getPassport().dir + "circ";
+
+
+	if (currentStep == 0)
 	{
-		std::vector<double> rad = radiuses;
-		std::vector<double> scale = scales;
+		std::ofstream circFile(circFileName.c_str());
 
+		VMlib::PrintLogoToTextFile(circFile, circFileName, "Circulations along the circles of fixed radius");
 
-		std::string circFileName = getPassport().dir + "circ";
-			
+		std::stringstream ssCirc;
+		ssCirc << "step  time  scale";
+		for (auto r : rad)
+			ssCirc << "  R=" << r;
 
-		if (currentStep == 0)
+		VMlib::PrintHeaderToTextFile(circFile, ssCirc.str());
+
+		circFile << std::endl;
+		circFile.close();
+		circFile.clear();
+	}
+
+	for (int c = 0; c < scale.size(); ++c)
+	{
+		std::vector<double> circRad(rad.size(), 0.0);
+
+		int nPts = 50; //50
+		double dist = 3.0; //3.0
+
+		double R = 0.0;
+		double L = 0.0;
+		double epsAst = 0.0;
+		double gam = 0.0;
+		double curCirc = 0.0;
+
+		for (size_t i = 0; i < rad.size(); ++i)
 		{
-			std::ofstream circFile(circFileName.c_str());
-
-			VMlib::PrintLogoToTextFile(circFile, circFileName, "Circulations along the circles of fixed radius");
-
-			std::stringstream ssCirc;
-			ssCirc << "step  time  scale";
-			for (auto r : rad)
-				ssCirc << "  R=" << r;
-
-			VMlib::PrintHeaderToTextFile(circFile, ssCirc.str());
-
-			circFile << std::endl;
-			circFile.close();
-			circFile.clear();
-		}
-
-		for (int c = 0; c < scale.size(); ++c)
-		{
-			std::vector<double> circRad(rad.size(), 0.0);
-
-			int nPts = 50; //50
-			double dist = 3.0; //3.0
-
-			double R = 0.0;
-			double L = 0.0;
-			double epsAst = 0.0;
-			double gam = 0.0;
-			double curCirc = 0.0;
-
-			for (size_t i = 0; i < rad.size(); ++i)
-			{
-				R = rad[i];
-				curCirc = 0.0;
+			R = rad[i];
+			curCirc = 0.0;
 
 #pragma omp parallel for default(none) private(L,gam,epsAst) shared(R,nPts,dist,c,scale) reduction(+:curCirc) schedule(dynamic,100)
-				for (int j = 0; j < (int)wake->vtx.size(); ++j)
-				{
-					L = wake->vtx[j].r().length();
-					gam = wake->vtx[j].g();
-					epsAst = scale[c] * velocity->wakeVortexesParams.epsastWake[j];
+			for (int j = 0; j < (int)wake->vtx.size(); ++j)
+			{
+				L = wake->vtx[j].r().length();
+				gam = wake->vtx[j].g();
+				epsAst = scale[c] * velocity->wakeVortexesParams.epsastWake[j];
 
-					if (R - L > dist * epsAst)
-						curCirc += gam;
-					else if (R - L > -dist * epsAst)
-					{
-						auto func = [R, L, epsAst, gam](double phi) -> double
+				if (R - L > dist * epsAst)
+					curCirc += gam;
+				else if (R - L > -dist * epsAst)
+				{
+					auto func = [R, L, epsAst, gam](double phi) -> double
 						{
 							return IDPI * exp(-sqr(L / epsAst)) - IDPI * exp(-(L * L - 2.0 * L * R * cos(phi) + R * R) / sqr(epsAst)) + exp(-sqr(L * sin(phi) / epsAst)) * L * cos(phi) * (erf(L * cos(phi) / epsAst) + erf((R - L * cos(phi)) / epsAst)) / (2.0 * sqrt(PI) * epsAst);
 						};
 
-						double cft = dist * epsAst / (nPts * R);
+					double cft = dist * epsAst / (nPts * R);
 
-						for (int s = 0; s < nPts; ++s)
-							curCirc += gam * 2.0 * cft * func((s + 0.5) * cft);
-					}//else
-				}//for j
+					for (int s = 0; s < nPts; ++s)
+						curCirc += gam * 2.0 * cft * func((s + 0.5) * cft);
+				}//else
+			}//for j
 
-				circRad[i] = curCirc;
-			}//for i
-
-
-			std::ofstream circFile(circFileName.c_str(), std::ios::app);
-
-			circFile << currentStep << " " << getPassport().physicalProperties.getCurrTime() << " " << scale[c];
-
-			for (auto gamma : circRad)
-				circFile << " " << gamma;
-			circFile << std::endl;
+			circRad[i] = curCirc;
+		}//for i
 
 
-			circFile.close();
-			circFile.clear();
+		std::ofstream circFile(circFileName.c_str(), std::ios::app);
 
-		}// for c
-	}
+		circFile << currentStep << " " << getPassport().physicalProperties.getCurrTime() << " " << scale[c];
+
+		for (auto gamma : circRad)
+			circFile << " " << gamma;
+		circFile << std::endl;
+
+
+		circFile.close();
+		circFile.clear();
+
+	}// for c
+
 }

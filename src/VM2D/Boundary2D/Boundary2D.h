@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2D.h                                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef BOUNDARY_H
@@ -54,8 +55,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 
 	class Boundary
@@ -149,23 +151,15 @@ namespace VM2D
 		/// \param[out] velo ссылка на вектор скоростей, которые приобретают точки из-за влияния слоев вихрей и источников на профиле
 		/// 
 		/// \warning velo --- накапливается!
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
 		virtual void CalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const = 0;
 #if defined(USE_CUDA)
 		virtual void GPUCalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const = 0;
+		virtual void GPUCalcConvVelocityToSetOfPointsFromSheetsFAST(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
+		{ 
+			exit(888); 
+			return; 
+		};
 #endif
-
-		/// \brief Вычисление конвективной скорости в точках расположения виртуальных вихрей
-		///
-		/// Вычисление производится в точках расположения виртуальных вихрей.
-		/// Скорости находятся как скорости соответствующих точек профиля плюс половина интенсивности 
-		/// присоединенного вихревого слоя, умноженная на касательную к профилю на данной панели.
-		///
-		/// \param[out] velo ссылка на заполняемый список скоростей
-		/// \warning Массив velo заполняется путем присвоения, а не прибавления значений
-		virtual void CalcConvVelocityAtVirtualVortexes(std::vector<Point2D>& velo) const = 0;
-
 
 		/// \brief Возврат размерности вектора решения 
 		///
@@ -210,28 +204,7 @@ namespace VM2D
 		/// \param[in] count длина диапазона источников
 		/// \param[out] wakeRhs ссылка на вектор полученных влияние для правой части СЛАУ
 		virtual void GetInfluenceFromSourcesToRectPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& wakeRhs) const = 0;
-
-
-		/// \brief Вычисление влияния части подряд идущих вихрей из вихревого следа на криволинейную панель для правой части
-		///
-		/// Вычисляет влияния части подряд идущих вихрей из вихревого следа на криволинейную панель для правой части
-		/// 
-		/// \param[in] panel номер панели профиля, на которую считается влияние
-		/// \param[in] ptr указатель на начало диапазона вихрей
-		/// \param[in] count длина диапазона вихрей
-		/// \param[out] wakeRhs ссылка на вектор полученных влияние для правой части СЛАУ
-		virtual void GetInfluenceFromVorticesToCurvPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& wakeRhs) const = 0;
-
-		/// \brief Вычисление влияния части подряд идущих источников из области течения на криволинейную панель для правой части
-		///
-		/// Вычисляет влияния части подряд идущих источников из области течения на криволинейную панель для правой части
-		/// 
-		/// \param[in] panel номер панели профиля, на которую считается влияние
-		/// \param[in] ptr указатель на начало диапазона источников
-		/// \param[in] count длина диапазона источников
-		/// \param[out] wakeRhs ссылка на вектор полученных влияние для правой части СЛАУ
-		virtual void GetInfluenceFromSourcesToCurvPanel(size_t panel, const Vortex2D* ptr, ptrdiff_t count, std::vector<double>& wakeRhs) const = 0;
-
+				
 		/// \brief Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вихрь в области течения	///
 		///
 		/// \param[in] panel номер панели профиля, от которой считается влияние
@@ -253,12 +226,6 @@ namespace VM2D
 		/// \param[out] vInfRhs ссылка на вектор полученных влияние для правой части СЛАУ
 		virtual void GetInfluenceFromVInfToRectPanel(std::vector<double>& vInfRhs) const = 0;
 
-		/// \brief Вычисление влияния набегающего потока на криволинейную панель для правой части
-		///
-		/// Вычисляет влияния набегающего потока на криволинейную панель для правой части
-		/// 
-		/// \param[out] vInfRhs ссылка на вектор полученных влияние для правой части СЛАУ
-		virtual void GetInfluenceFromVInfToCurvPanel(std::vector<double>& vInfRhs) const = 0;
 };
 
 }//namespace VM2D

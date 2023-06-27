@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: defs.h                                                           |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Описание базовых вспомогательных функций
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 
@@ -48,6 +48,7 @@
 
 #include <ctime>
 #include <iostream>
+#include <list>
 
 #include "Eigen/Dense"
 
@@ -57,6 +58,9 @@
 #include "Vortex2D.h"
 #include "v3D.h"
 #include "PairInt.h"
+
+const int multipoleOrder = 12;
+const double multipoleTheta = 1.2;
 
 
 /// параметр расписания для распараллеливания циклов по OpenMP
@@ -95,14 +99,13 @@ namespace defaults
 	const std::pair<std::pair<std::string, int>, std::string> defaultVelAccel = { {"RampLin", 1}, "" };
 	const double defaultTimeAccel = 0.0;
 	
-	/// Тип сохраняемого файла
-	const int defaultFileType = 0;
-
-	/// Шаг сохранения в файл
-	const int defaultSaveVTK = 100;
+	/// Шаг подсчета поля скорости и давления
+	const std::pair<std::pair<std::string, int>, std::string> defaultSaveVP = { {"text", 0}, "" };
+	const int defaultSaveVPstep = 0;
 
 	/// Шаг подсчета поля скорости и давления
-	const int defaultSaveVP = 0;
+	const std::pair<std::pair<std::string, int>, std::string> defaultSaveVtx = { {"text", 0}, "" };
+	const int defaultSaveVtxStep = 100;
 
 	/// Шаг подсчета поля скорости и давления
 	const int defaultSaveVisStress = 0;
@@ -125,12 +128,11 @@ namespace defaults
 	/// Референсная скорость, равная нулю, что означает ее равенство скорости набегающего потока
 	const double defaultVRef = 0.0;
 
-
-	/// Тип панелей
-	const std::pair<std::string, int> defaultPanelsType = { "panelsRectilinear", 0 };
+	/// Желаемое число панелей для разбиения геометрии
+	const size_t defaultRequiredNPanels = 0;
 
 	/// Способ удовлетворения граничного условия
-	const std::pair<std::string, int> defaultBoundaryCondition = { "boundaryConstLayerAver", 0 };
+	const std::pair<std::string, int> defaultBoundaryCondition = { "boundaryConstantLayerAver", 1 };
 
 	/// Способ решения линейной системы
 	const std::pair<std::string, int> defaultLinearSystemSolver = { "linearSystemGauss", 0 };
@@ -138,8 +140,18 @@ namespace defaults
 
 	/// Способ вычисления скоростей вихрей
 	const std::pair<std::string, int> defaultVelocityComputation{ "velocityBiotSavart", 0 };
-	
 
+	/// Признак работы в "географической" системе координат
+	const bool defaultGeographicalAngles = false;
+
+	/// Признак поворота сил в профильную систему координат
+	const bool defaultRotateForces = false;
+
+	/// Признак расчета безразмерных коэффициентов вместо сил
+	const bool defaultCalcCoefficients = false;
+
+	/// Угол поворота точек VP
+	const double rotateAngleVpPoints = 0;
 
 	/// Каталог с файлами профилей
 	const std::string defaultAirfoilsDir = "../settings/airfoils/";
@@ -171,14 +183,16 @@ namespace defaults
 
 	/// Угол атаки
 	const double defaultAngle = 0.0;
-	
 
-	
+	/// Хорда
+	const double defaultChord = 1.0;
 
+	/// Присоединенная масса
+	const Point2D defaultAddedMass = { 0.0, 0.0 };
+	
 	/// Признак разворота нормалей (для расчета внутреннего течения)
 	const bool defaultInverse = false;
 	
-
 	/// Тип механической системы
 	const int defaultMechanicalSystemType = 0;
 	const std::string defaultMechanicalSystem = "";
@@ -189,8 +203,8 @@ namespace defaults
 	/// Необходимое число процессоров для решения задачи
 	const int defaultNp = 1;
 
-	/// Имя файла с паспортом задачи для копирования в новые каталоги
-	const std::string defaultCopyPspFile = "";
+	/// Путь к каталогу с задачей для копирования в новые каталоги
+	const std::string defaultCopyPath = "";
 
 	/// Поток вывода логов и ошибок очереди
 	static std::ostream* defaultQueueLogStream = &std::cout;
@@ -202,6 +216,13 @@ namespace defaults
 	static bool defaultAddMass = false;
 	static v3D defaultAddMassVcm = { 0.0, 0.0, 0.0 };
 	static v3D defaultAddMassWcm = { 0.0, 0.0, 0.0 };
+
+	/// Для профиля на упругих связях - начальные отклонения и скорости	
+	static Point2D defaultInitDisplacement = { 0.0, 0.0 };
+	static double defaultInitAngularDisplacement = 0.0;
+	static Point2D defaultInitVelocity = {0.0, 0.0};
+	static double defaultInitAngularVelocity = 0.0;
+
 } //namespace defaults
 
 
@@ -303,26 +324,33 @@ namespace VMlib
 
 	/// \brief Проверка существования файла
 	///
-	/// \param[in] fileName константная ссылка на имя проверяемого файла
+	/// \param[in, out] fileName ссылка на имя проверяемого файла, заменяется на имя + то из расширений, с которым файл присутствует
 	/// \param[in, out] info ссылка на поток вывода логов/ошибок
+	/// \param[in] extList константная ссылка на список проверяемых расширений
 	/// \return true, если файл существует; false если файл отсутствует
-	inline bool fileExistTest(const std::string& fileName, LogStream& info)
+	inline bool fileExistTest(std::string& fileName, LogStream& info, const std::list <std::string>& extList = {})
 	{
-		std::ifstream f(fileName.c_str());
-		if (f.good())
-		{
-			f.close();
-			f.clear();
+		std::list<std::string> fullExtList(extList);
+		fullExtList.insert(fullExtList.begin(), "");
 
-			info('i') << "file " << fileName << " is found" << std::endl;
-			return true;
-		}
-		else
+		for (const auto& ext : fullExtList)
 		{
-			info('e') << "file " << fileName << " is not found" << std::endl;
-			exit(-1);
-			return false;
+			std::string newFileName = ((ext == "") ? fileName : (fileName + "." + ext));
+			std::ifstream f(newFileName.c_str());
+			if (f.good())
+			{
+				f.close();
+				f.clear();
+
+				info('i') << "file " << newFileName << " is found" << std::endl;
+				fileName = newFileName;
+				return true;
+			}
 		}
+
+		info('e') << "file " << fileName << " is not found" << std::endl;
+		exit(-1);
+		return false;
 	}
 
 

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2D.h                                                    |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef MECHANICS_H
@@ -61,9 +62,10 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
 
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 
 	class Mechanics
@@ -95,25 +97,17 @@ namespace VM2D
 		/// Умный указатель на парсер параметров механической системы
 		std::unique_ptr<VMlib::StreamParser> mechParamsParser;
 
+	public:
+
 		/// Начальная скорость центра и угловая скорость
 		Point2D Vcm0; double Wcm0;
 
 		/// Начальное положение профиля
 		Point2D Rcm0; double Phi0;
 
-#ifdef INITIAL 	
 		/// Текущие скорость центра и угловая скорость
-		Point2D Vcm; double Wcm;
-#endif
+		Point2D Vcm; double Wcm;	
 
-#ifdef BRIDGE 	
-	public:
-		/// Текущие скорость центра и угловая скорость
-		Point2D Vcm; double Wcm;
-#endif
-
-
-	protected:
 		/// Текущие положение профиля
 		Point2D Rcm; double Phi;
 
@@ -123,18 +117,18 @@ namespace VM2D
 		/// Текущие положение профиля
 		Point2D RcmOld;	double PhiOld;
 
+		/// Текущая циркуляция скорости по границе профиля
+		double circulation;
+
+		/// Циркуляция скорости по границе профиля с предыдущего шага
+		double circulationOld;
+
 	public:
 		/// Переменная, отвечающая за то, двигается профиль или нет
 		const bool isMoves;
 
 		/// Переменная, отвечающая за то, деформируется профиль или нет
 		const bool isDeform;
-
-		/// Переменная, отвечающая за то, может профиль вращаться или нет
-		const bool isRotate;
-
-		/// Количество степеней свободы
-		const size_t degOfFreedom;
 
 		/// Вектор гидродинамической силы и момент, действующие на профиль
 		Point2D hydroDynamForce;
@@ -152,13 +146,10 @@ namespace VM2D
 		/// \brief Конструктор
 		/// 
 		/// \param[in] W_ константная ссылка на решаемую задачу
-		/// \param[in] numberInPassport_ номер профиля в паспорте задачи
-		/// \param[in] degOfFreedom_ количество степеней свободы
+		/// \param[in] numberInPassport_ номер профиля в паспорте задачи		
 		/// \param[in] isMoves_ является ли профиль подвижным (1 - является, 0 - не является)
 		/// \param[in] isDeform_ является ли профиль деформируемым (1 - является, 0 - не является)
-		/// \param[in] isRotate_ является ли профиль вращающимся (1 - является, 0 - не является)
-		//Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_, Point2D Vcm0_, Point2D Rcm0_, double Wcm0_, double Phi0_);
-		Mechanics(const World2D& W_, size_t numberInPassport_, int degOfFreedom_, bool isMoves_, bool isDeform_, bool isRotate_);
+		Mechanics(const World2D& W_, size_t numberInPassport_, bool isMoves_, bool isDeform_);
 
 		/// Деструктор
 		virtual ~Mechanics() { };

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: VM2D.cpp                                                         |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 /*! 
@@ -42,46 +43,32 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\date 07 августа 2022 г.
-\version 1.11
+\author Колганова Александра Олеговна
+\date 14 января 2024 г.
+\Version 1.12
 */
-
-/// \defgroup Parallel Параллельные функции
 
 #include "Queue.h"
 
 using namespace VMlib;
 
-void CreateMpiTypes()
-{
-	Vortex2D::CreateMpiType();
-	Point2D::CreateMpiType();
-}
-
 void Initializers()
-{
-	
+{	
 }
 
 
 int main(int argc, char** argv)
 {	
 	Initializers();
-
-	Queue queue(argc, argv, CreateMpiTypes);
-
+	Queue queue(argc, argv);
 	queue.LoadTasksList("problems", "mechanics", "defaults", "switchers");	
 	
 	do
 	{
-		queue.TaskSplit();
-		
+		queue.TaskSplit();		
 		queue.RunConveyer();
-
 		queue.TaskUpdate();		
 	} 
 	while (queue.nextKvant);
-
-	//cin.get();
 }
 

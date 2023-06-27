@@ -1,11 +1,11 @@
 /*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.11   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2022/08/07     |
+| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
+| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
 | ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
 |  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: Queue.h                                                          |
 | Info: Source code of VMlib                                                  |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием класса Queue
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef QUEUE_H
@@ -66,8 +66,8 @@ namespace VMlib
 	Управляет распределением задач по процессорам, инициализацией их запуска и выгрузки
 
 	\author Марчевский Илья Константинович
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class Queue
 	{
@@ -130,6 +130,7 @@ namespace VMlib
 		/// Общее число процессоров
 		int nProcAll;
 
+#ifdef USE_MPI
 		/// Группа для всех процессов
 		MPI_Group groupAll;
 
@@ -148,6 +149,13 @@ namespace VMlib
 		///
 		/// К нему всегда присоединяется 0-й процессор, даже если он не раешает задачу в данном кванте времени
 		MPI_Comm commSolving;
+#else
+		int groupAll;
+		int groupStarting;
+		int commStarting;
+		int groupSolving;
+		int commSolving;
+#endif
 
 		/// \brief Число процессоров в группе для головных процессоров в решаемых в данном кванте времени задачах
 		///
@@ -223,7 +231,7 @@ namespace VMlib
 		/// \param[in] argc ссылка на число параметров командной строки
 		/// \param[in] argv ссылка на указатель на список параметров командной строки
 		/// \param[in] _CreateMpiTypes указатель на функцию, инициализирующую все необходимые MPI-описания типов
-		Queue(int& argc, char**& argv, void(*_CreateMpiTypes)());
+		Queue(int& argc, char**& argv);
 
 		/// Деструктор
 		~Queue();
@@ -248,11 +256,6 @@ namespace VMlib
 		/// \param[in] _defaultsFile константная ссылка на имя файла с описанием параметров по умолчанию
 		/// \param[in] _switchersFile константная ссылка на имя файла со значениями параметров-переключателей
 		void LoadTasksList(const std::string& _tasksFile, const std::string& _mechanicsFile, const std::string& _defaultsFile, const std::string& _switchersFile);
-
-
-/* //POLARA
-		std::ofstream logFile;
-*/
 	};
 
 }//namespace VMlib

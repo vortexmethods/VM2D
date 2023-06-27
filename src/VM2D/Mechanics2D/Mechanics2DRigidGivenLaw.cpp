@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidGivenLaw.cpp                                     |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #include <algorithm>
@@ -45,10 +46,8 @@
 
 
 #include "MeasureVP2D.h"
-#include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
-#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -56,7 +55,7 @@
 using namespace VM2D;
 
 MechanicsRigidGivenLaw::MechanicsRigidGivenLaw(const World2D& W_, size_t numberInPassport_)
-	: Mechanics(W_, numberInPassport_, 0, true, false, false)
+	: Mechanics(W_, numberInPassport_, true, false)
 {
 	ReadSpecificParametersFromDictionary();
 	Initialize(VelocityOfCenterOfMass(0.0), PositionOfCenterOfMass(0.0), AngularVelocity(0.0), RotationAngle(0.0));
@@ -127,7 +126,7 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce()
 	hydroDynamForce = rho * (hDFGam + hDFdelta * (1.0 / dt) + hDFQ);
 	hydroDynamMoment = rho * (hDMGam + hDMdelta / dt + hDMQ);
 
-	if (W.getPassport().physicalProperties.nu > 0.0)
+	if ((W.getPassport().physicalProperties.nu > 0.0) && (W.currentStep > 0))
 		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 		{
 			Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
@@ -184,6 +183,9 @@ void MechanicsRigidGivenLaw::VeloOfAirfoilPanels(double currTime)
 	}
 	
 	afl.setV(vel);
+
+	circulation = 2.0 * afl.area * Wcm;
+	circulationOld = 2.0 * afl.area * WcmOld;
 }//VeloOfAirfoilPanels(...)
 
 void MechanicsRigidGivenLaw::Move()
@@ -205,6 +207,19 @@ void MechanicsRigidGivenLaw::Move()
 
 void MechanicsRigidGivenLaw::ReadSpecificParametersFromDictionary()
 {
+	mechParamsParser->get("timeAccel", timeAccel);
+	W.getInfo('i') << "time of accelerated movement: " << "timeAccel = " << timeAccel << std::endl;
+
+	mechParamsParser->get("initPosition", initPosition);
+	W.getInfo('i') << "initial position: " << "initPosition = " << initPosition << std::endl;
+
+	//mechParamsParser->get("targetVelocity", targetVelocity);
+	//W.getInfo('i') << "target Velocity: " << "targetVelocity = " << targetVelocity << std::endl;
+
+	mechParamsParser->get("targetAmplitude", targetAmplitude);
+	W.getInfo('i') << "target Amplitude: " << "targetAmplitude = " << targetAmplitude << std::endl;
+
+
    /*
 	mechParamsParser->get("Comega", Comega);
     
