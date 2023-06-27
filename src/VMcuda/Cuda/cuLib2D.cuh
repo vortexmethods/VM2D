@@ -1,11 +1,11 @@
 /*-------------------------------*- VMcuda -*----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
 |  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: cuLib2D.cuh                                                      |
 | Info: Source code of VMcuda                                                 |
@@ -30,8 +30,8 @@
 \file
 \brief Заголовочный файл с описанием функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef CUVELOCITYBIOTSAVART_CUH
@@ -50,6 +50,9 @@ void cuSetAccelCoeff(double cft_, int code = 0);
 void cuSetCollapseCoeff(double pos_, double refLength_, int code = 0);
 void cuSetMaxGamma(double gam_, int code = 0);
 void cuSetSchemeSwitcher(int schemeSwitcher_, int code);
+void cuSetCurrentStep(int currentStep_, int code);
+
+void cuCheckError(int code);
 
 void cuReserveDevMem(void*& ptr, size_t nBytes, int code = 0);
 void cuClearWakeMem(size_t new_n, double* dev_ptr, int code = 0);
@@ -64,16 +67,16 @@ void cuCopyMemFromDev(void* host_ptr, void* dev_ptr, size_t nBytes, int code = 0
 void cuDeleteFromDev(void* devPtr, int code = 0);
 
 ////////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double eps2, bool calcVelo, bool calcRadius);
-void cuCalculateConvVeloWakeFromVirtual(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* attgamma, double* attsource, double* vel, double eps2);
+void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double eps2, bool calcVelo, bool calcRadius);
+void cuCalculateConvVeloWakeFromVirtual(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* freegammalin, double* attgamma, double* attgammalin, double* attsource, double* attsourcelin, double* vel, double eps2);
 
-void cuCalculateDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd, double minRad);
-void cuCalculateDiffVeloWakeMesh(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, int* mesh, double meshStep, double* i1, double* i2, double* rd);
-void cuCalculateDiffVeloWakeFromPanels(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* i1, double* i2, double* rd, double minRad);
+void cuCalculateDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd, double minRad);
+void cuCalculateDiffVeloWakeMesh(size_t npt, double* pt, size_t nvt, double* vt, int* mesh, double meshStep, double* i1, double* i2, double* rd);
+void cuCalculateDiffVeloWakeFromPanels(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* freegammalin, double* i1, double* i2, double* rd, double minRad);
 
-void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr);
-void cuCalculateRhs(size_t myDisp, size_t myLen, size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double eps2, double* rhs, double* rhsLin);
-void cuCalculatePairs(size_t myDisp, size_t myLen, size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
+void cuCalculateSurfDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr);
+void cuCalculateRhs(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double eps2, double* rhs, double* rhsLin);
+void cuCalculatePairs(size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 
 
 //void cuTEST(const std::string& str);
@@ -81,6 +84,8 @@ void cuCalculatePairs(size_t myDisp, size_t myLen, size_t npt, double* pt, int* 
 void cuAlloc(void** ptr, size_t numBytes);
 void cuDalloc(void* ptr);
 
+
+void cuInverseMatrix(int n, double* matrPtr, double* invMatrPtr);
 
 #endif
 

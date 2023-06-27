@@ -1,10 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.13.0)
 project(VM)
 
-set(CudaOldIncludeMethod FALSE)
-
 set(VM2D_DIR "build")
-
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/${VM2D_DIR}")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/${VM2D_DIR}")
@@ -19,12 +16,12 @@ message(STATUS "Work directory ${VM_WORK_DIR}")
 #message(STATUS "CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}")
 
 
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-if(COMPILER_SUPPORTS_CXX11)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-	set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -std=c++11")
-endif()
+#include(CheckCXXCompilerFlag)
+#CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+#if(COMPILER_SUPPORTS_CXX11)
+#	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+#	set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -std=c++11")
+#endif()
 
 message (STATUS "C++ compiler is: " ${CMAKE_CXX_COMPILER})
 
@@ -41,33 +38,49 @@ else()
 endif()
 
 
-#CUDA OLD
-if(CudaOldIncludeMethod)
-   find_package(CUDA)   
-#CUDA NEW
-else()
-   include(CheckLanguage)
-   check_language(CUDA)
-   if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)
-		enable_language(CUDA)   
+#OpenMP
+find_package(OpenMP)
+if (OPENMP_FOUND)
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif()
+
+
+#MPI
+if (WIN32)
+   if (${CMAKE_VS_PLATFORM_TOOLSET} MATCHES "Intel")
+      #message(STATUS "INTEL COMPILER")
+	  #message(STATUS "CXX: " ${CXX})
+   else()
+      set(MPI_GUESS_LIBRARY_NAME "MSMPI" CACHE STRING "Override MPI library name, e.g., MSMPI, MPICH2")
+	  #message(STATUS "NOT INTEL COMPILER")
+	  #message(STATUS "CXX: " ${CXX})
    endif()
 endif()
-
-#set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Wno-deprecated-gpu-targets -gencode arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_53,code=sm_53 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_62,code=sm_62")
-set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Wno-deprecated-gpu-targets -gencode arch=compute_52,code=sm_52 -gencode arch=compute_53,code=sm_53 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_62,code=sm_62 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_72,code=sm_72 -gencode arch=compute_75,code=sm_75 -gencode arch=compute_80,code=sm_80")
-
-
-#COMMENT THIS LINE IF THERE IS INSTALLED CUDA SDK BUT YOU DON'T WANT TO USE GPU
-if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)
-   add_definitions(-DUSE_CUDA)
+  
+find_package(MPI)
+if (MPI_FOUND)
+	include_directories(${MPI_CXX_INCLUDE_PATH})
+	link_libraries(${MPI_CXX_LIBRARIES})
+	add_definitions(-DUSE_MPI)
 endif()
 
+
+include(CheckLanguage)
+check_language(CUDA)
+if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)
+   enable_language(CUDA)   
+   #set (ARCHITECTURE "60")
+   set (ARCHITECTURE "60;70")
+   #set (ARCHITECTURE "70;80")  
+   
+   #COMMENT THIS LINE IF THERE IS INSTALLED CUDA SDK BUT YOU DON'T WANT TO USE GPU   
+   add_definitions(-DUSE_CUDA)   
+endif()
 
 if(MSVC)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
-	
-
 
 IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")
 	message(STATUS "-------------------------2D CODE-------------------------")
@@ -90,7 +103,9 @@ MACRO(SUBDIRLIST result curdir)
 ENDMACRO()
 
 add_subdirectory(src/VMlib)
-add_subdirectory(src/VMcuda)
+if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)
+    add_subdirectory(src/VMcuda)
+endif() 
 
 IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")
 	add_subdirectory(src/VM2D)
@@ -98,8 +113,16 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")
 	set_target_properties(VM2D PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
 	set_target_properties(VM2D PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/${VM2D_DIR}")
 		
-	if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)
+	if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)		
+		set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr")
+		set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr")
+		
+		message(STATUS "-------------------------CUDA FLAGS-------------------------")
+		
 		add_dependencies(VM2D VMlib2 VMcuda)
+		set_target_properties(VMcuda PROPERTIES CUDA_ARCHITECTURES "${ARCHITECTURE}")
+		set_target_properties(VM2D PROPERTIES CUDA_ARCHITECTURES "${ARCHITECTURE}")
+		target_link_libraries(VM2D cusolver)
 	else()
 		add_dependencies(VM2D VMlib2)
 	endif()

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidGivenLaw.h                                       |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef MECHANICSRIGIDGIVENLAW_H
@@ -56,9 +57,10 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
 
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 
 
@@ -67,50 +69,33 @@ namespace VM2D
 	{
 	private:
 
-		const double timeOfMovement = 5.0;
-		const double refVel = 2.0;
-		//const Point2D maxDisplacementOfCM = { 2.0, 3.0 };
-		//const double maxRotationAngle = PI / 3.0;
+		double timeAccel;
+		Point2D initPosition; 
+		Point2D targetVelocity;
+		Point2D targetAmplitude;
 
 		std::function<Point2D(double)> PositionOfCenterOfMass = [=](double t) -> Point2D
 		{
-			if (numberInPassport < 4)
-			{
+			//if (t < timeAccel)
+			//	return initPosition + 0.5 * (t * t / timeAccel) * targetVelocity;
+			//else
+			//	return initPosition + (t - 0.5 * timeAccel) * targetVelocity;
 
-				if (t < timeOfMovement)
-					return { -25.0 + 0.5 * (t * t / timeOfMovement) * refVel - 1.04 * numberInPassport, 0.0 };
-				else
-					return { -25.0 + (t - 0.5 * timeOfMovement) * refVel - 1.04 * numberInPassport, 0.0 };
-			}
-			else
-			{
-
-				if (t < timeOfMovement)
-					return { 25.0 - 0.5 * (t * t / timeOfMovement) * refVel + 1.04 * (numberInPassport - 4), -0.164 };
-				else
-					return { 25.0 - (t - 0.5 * timeOfMovement) * refVel + 1.04 * (numberInPassport - 4), -0.164 };
-			}
-
-			
+			return initPosition + Point2D{ targetAmplitude[0] * sin(DPI * t / timeAccel), 
+										   targetAmplitude[1] * sin(DPI * t / timeAccel) };
 
 		};
 
 		std::function<Point2D(double)> VelocityOfCenterOfMass = [=](double t) -> Point2D
-		{
-			if (numberInPassport < 4)
-			{
-				if (t < timeOfMovement)
-					return { (t / timeOfMovement) * refVel, 0.0 };
-				else
-					return { refVel, 0.0 };
-			}
-			else
-			{
-				if (t < timeOfMovement)
-					return { -(t / timeOfMovement) * refVel, 0.0 };
-				else
-					return { -refVel, 0.0 };
-			}
+		{			
+			//if (t < timeAccel)
+			//	return (t / timeAccel) * targetVelocity;
+			//else
+			//	return targetVelocity;
+
+			return Point2D{ targetAmplitude[0] * DPI / timeAccel * cos(DPI * t / timeAccel),
+							targetAmplitude[1] * DPI / timeAccel * cos(DPI * t / timeAccel) };
+
 
 		};
 

@@ -1,0 +1,48 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+*-----------------------------------------------------------------------------*
+| File name: passport                                                         |
+| Info: Parameters of the problem to be solved                                |
+\*---------------------------------------------------------------------------*/
+
+//Physical Properties
+rho = 1.0;
+vInf = {0.0, 0.0};
+vRef = 1.0;
+nu = 0.0025;
+
+//Time Discretization Properties
+//timeStart = 0.0;             //by default = 0.0
+timeStop = 100000.0001;
+dt = 0.1;
+accelVel = Impulse;            //by default = RampLin(0.0)
+
+saveVtx = binary(200);             //by default = 100
+saveVp = 0;                  //by default = 0
+nameLength = 5;                //by default = 5
+
+calcCoefficients = true;
+
+//Wake Discretization Properties
+eps = 0.05;
+epscol = 0.0;
+distFar = 100.0;                 //by default = 10.0
+delta = 5.e-6;                  //by default = 1.e-5
+vortexPerPanel = 1;             //by default = 1
+maxGamma = 0.0;                 //by default = 0.0
+
+//Numerical Schemes
+linearSystemSolver = linearSystemGauss;     
+velocityComputation = velocityBiotSavart;   
+panelsType = panelsRectilinear; 
+boundaryConditionSatisfaction = boundaryConstantLayerAverage;
+
+//Files and parameters
+airfoil = { };
+fileWake = { "wake1602x2" };              //by default={}
