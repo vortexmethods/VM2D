@@ -1,35 +1,34 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: problems                                                         |
 | Info: Problems to be solved by using VM2D                                   |
 \*---------------------------------------------------------------------------*/
-
-problems = 
-{
-circle200,
-//blasius(np=4),
-//blasius5k,
+problems = {
+circle200(),
+//blasius(),
+//blasius5k(),
 //cylPlate(),
-//twoCircle(np=1),
-//twoCircleRut1(np=1),
-//tube(np=1),
-//squareGivenLaw,
-//oscilCircle(np=4, m=1.0, sh=0.2),
+//twoCircle(),
+//tube(),
+//squareGivenLaw(timeAccel = 5.0, initPosition = {0.0, 0.0}, 
+//                targetVelocity = {0.5, 0.5}, targetAmplitude = {0.0, 1.0}),
+//oscilCircle(m=10.5, sh={0.0, 0.2}, zeta = {0.0, 0.1}),
 //rotor(),
 
-//wing00(angle=0.0, copyPath="wingBase/passport"),
-//wing02(angle=2.0, copyPath="wingBase/passport"),
-//wing04(angle=4.0, copyPath="wingBase/passport"),
-//wing06(angle=6.0, copyPath="wingBase/passport"),
-//wing08(angle=8.0, copyPath="wingBase/passport"),
-//wing10(angle=10.0, copyPath="wingBase/passport"),
-//wing12(angle=12.0, copyPath="wingBase/passport"),
-//wing14(angle=14.0, copyPath="wingBase/passport"),
+//wing00(angle=0.0, copyPath="wingBase"),
+//wing02(angle=2.0, copyPath="wingBase"),
+//wing04(angle=4.0, copyPath="wingBase"),
+//wing06(angle=6.0, copyPath="wingBase"),
+//wing08(angle=8.0, copyPath="wingBase"),
+//wing10(angle=10.0, copyPath="wingBase"),
+//wing12(angle=12.0, copyPath="wingBase"),
+//wing14(angle=14.0, copyPath="wingBase"),
+
 }

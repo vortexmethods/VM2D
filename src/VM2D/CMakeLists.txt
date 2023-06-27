@@ -14,30 +14,6 @@ FILE(GLOB VM2D_ALLFILES
       ${CMAKE_CURRENT_SOURCE_DIR}/*/*.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/*/*.h
     )
-
-#MPI
-if(WIN32)
-   if (${CMAKE_VS_PLATFORM_TOOLSET} MATCHES "Intel")
-      #message(STATUS "INTEL COMPILER")	  
-   else()
-      set(MPI_GUESS_LIBRARY_NAME "MSMPI" CACHE STRING "Override MPI library name, e.g., MSMPI, MPICH2")
-	  #message(STATUS "NOT INTEL COMPILER")	  
-   endif()  
-endif()
-   find_package(MPI REQUIRED)   
-   include_directories(${MPI_CXX_INCLUDE_PATH})
-   link_libraries(${MPI_CXX_LIBRARIES})
- 
-#OpenMP
-find_package(OpenMP)
-if (OPENMP_FOUND)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-	
-	#message(STATUS "OMP directory ${OpenMP_LIBRARY_DIR}")
-
-endif()
-
  
 add_executable(VM2D ${VM2D_ALLFILES})
 

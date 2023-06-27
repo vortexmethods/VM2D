@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: passport                                                         |
 | Info: Parameters of the problem to be solved                                |
@@ -18,12 +18,12 @@ nu = 0.0001;
 
 //Time Discretization Properties
 //timeStart = 0.0;             //by default = 0.0
-timeStop = 200.0001;
+timeStop = 0.5001;
 dt = 0.001;
-accelVel = RampLin(1.0);       //by default = RampLin(0.0)
+accelVel = RampLin(0.1);       //by default = RampLin(0.0)
 
-saveVTK = 10;                  //by default = 100
-saveVP = 0;                    //by default = 0
+saveVtx = binary(10);          //by default = 100
+saveVp = 0;                    //by default = 0
 nameLength = 6;                //by default = 5
 
 //Wake Discretization Properties

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Wake2D.cpp                                                       |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #if defined(_WIN32)
@@ -46,24 +47,21 @@
 
 #include "Wake2D.h"
 
+#include "knnCPU.h"
+#include "knn.cuh"
+
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
-#include "Parallel.h"
 #include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
-#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "World2D.h"
 #include <algorithm>
 
-#include "Velocity2DBarnesHut.h"
-
 using namespace VM2D;
-
-
 
 bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough)
 {
@@ -280,43 +278,22 @@ bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos
 //Проверка пересечения вихрями следа профиля при перемещении
 void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves, const Airfoil& oldAfl)
 {
-	//int id = W.getParallel().myidWork;
-
-	WakeSynchronize();
-
-	VMlib::parProp par = W.getParallel().SplitMPI(vtx.size());
-
-	std::vector<Point2D> locNewPos;
-	locNewPos.resize(par.myLen);
-	
 	std::vector<double> gamma;
 	gamma.resize(afl.getNumberOfPanels(), 0.0);
 
-	std::vector<double> locGamma;
-	locGamma.resize(afl.getNumberOfPanels(), 0.0);
-
 	std::vector<int> through;
-	if (W.getParallel().myidWork == 0)
-		through.resize(par.totalLen);
+	through.resize(vtx.size(), -1);
 
-	std::vector<int> locThrough;
-	locThrough.resize(par.myLen, -1);
-
-	MPI_Scatterv(const_cast<std::vector<Point2D> &>(newPos).data(), par.len.data(), par.disp.data(), Point2D::mpiPoint2D, locNewPos.data(), par.myLen, Point2D::mpiPoint2D, 0, W.getParallel().commWork);
-
-#pragma omp parallel for default(none) shared(locGamma, locNewPos, locThrough, afl, oldAfl, par, isMoves) 
-	for (int locI = 0; locI < par.myLen; ++locI)
-	{
-		int i = par.myDisp + locI;
+#pragma omp parallel for default(none) shared(afl, oldAfl, isMoves, through, newPos) 
+	for (int i = 0; i < (int)vtx.size(); ++i)
+	{		
 		size_t minN;
 
-		bool crit = isMoves ? MoveInsideMovingBoundary(locNewPos[locI], vtx[i].r(), oldAfl, afl, minN) : MoveInside(locNewPos[locI], vtx[i].r(), afl, minN);
+		bool crit = isMoves ? MoveInsideMovingBoundary(newPos[i], vtx[i].r(), oldAfl, afl, minN) : MoveInside(newPos[i], vtx[i].r(), afl, minN);
 
 		if (crit)
-			locThrough[static_cast<size_t>(locI)] = static_cast<int>(minN);
-	}//for locI	
-
-	MPI_Gatherv(locThrough.data(), par.myLen, MPI_INT, through.data(), par.len.data(), par.disp.data(), MPI_INT, 0, W.getParallel().commWork);
+			through[i] = (int)minN;
+	}//for i	
 
 
 	//std::stringstream sss;
@@ -326,57 +303,37 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves
 	//	of << gamma[i] << std::endl;
 	//of.close();
 
-	if (W.getParallel().myidWork == 0)
+	for (size_t q = 0; q < through.size(); ++q)
+	if (through[q] > -1)
 	{
-		for (size_t q = 0; q < through.size(); ++q)
-		if (through[q] > -1)
-		{
-			locGamma[static_cast<size_t>(through[q])] += vtx[q].g();
-			vtx[q].g() = 0.0;
-		}
+		gamma[through[q]] += vtx[q].g();
+		vtx[q].g() = 0.0;
 	}
 
-	MPI_Reduce(locGamma.data(), gamma.data(), (int)afl.getNumberOfPanels(), MPI_DOUBLE, MPI_SUM, 0, W.getParallel().commWork);
-
-	if (W.getParallel().myidWork == 0)
-		afl.gammaThrough = gamma;	
-
+	afl.gammaThrough = gamma;	
 }//Inside(...)
 
 //Поиск ближайшего соседа
 void Wake::GetPairs(int type)
 {
-	switch (W.getPassport().numericalSchemes.velocityComputation.second)
-	{
-	case 0:
-		GetPairsBS(type);
-		break;
-	case 1:
-		GetPairsBH(type);
-		break;
-	}
+	GetPairsBS(type);
 }
 
 //Поиск ближайшего соседа
 void Wake::GetPairsBS(int type)
 {
-	int id = W.getParallel().myidWork;
-	VMlib::parProp par = W.getParallel().SplitMPI(vtx.size());
-
-	std::vector<int> locNeighb; //локальный массив соседей (для данного процессора)
-	locNeighb.resize(par.myLen);
-
+	neighb.resize(0);
+	neighb.resize(vtx.size(), 0);
+	
 	Point2D Ri, Rk;
 
 	double maxG = W.getPassport().wakeDiscretizationProperties.maxGamma;
 
-#pragma omp parallel for default(none) shared(type, locNeighb, par, maxG) schedule(dynamic, DYN_SCHEDULE)
-	for (int locI = 0; locI < par.myLen; ++locI)
+#pragma omp parallel for default(none) shared(type, maxG) schedule(dynamic, DYN_SCHEDULE)
+	for (int i = 0; i < vtx.size(); ++i)
 	{
-		int s = locI + par.myDisp;
-		const Vortex2D& vtxI = vtx[s];
-		
-		locNeighb[locI] = 0;//по умолчанию
+		int s = i;
+		const Vortex2D& vtxI = vtx[i];	
 
 		bool found = false;
 
@@ -414,109 +371,22 @@ void Wake::GetPairsBS(int type)
 						found = (vtxI.g()*vtxK.g() < 0.0);
 						break;
 					case 2:
-						found = (vtxI.g()*vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG);
+						found = (vtxI.g()*vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG); 
 						break;
 				}
 			}//if r2 < r2_test
 		}//while
 
 		if (found)
-			locNeighb[locI] = s;
-	}//for locI
-
-	if (id == 0)
-		neighb.resize(vtx.size());
-
-	MPI_Gatherv(locNeighb.data(), par.myLen, MPI_INT, neighb.data(), par.len.data(), par.disp.data(), MPI_INT, 0, W.getParallel().commWork);
-
+			neighb[i] = s;
+	}//for locI	
 }//GetPairsBS(...)
-
-
-void Wake::GetPairsBH(int type)
-{
-	/*
-	int id = W.getParallel().myidWork;
-
-	if (id == 0)
-	{
-		W.BuildTree(PointType::wake);
-
-		auto& tree = *(W.treeWake);
-
-		neighb.resize(vtx.size());
-		double maxG = W.getPassport().wakeDiscretizationProperties.maxGamma;
-
-		int s;
-#pragma omp parallel for private(s) shared(maxG) schedule(dynamic, 16)
-		for (int i = 0; i < (int)tree.lowCells.size(); ++i)
-		{
-			tree.lowCells[i]->CalcABCDandCloseCellsToLowLevel(tree.rootCell, false);
-			for (auto it = tree.lowCells[i]->itBegin; it != tree.lowCells[i]->itEnd; ++it)
-			{
-				const Vortex2D& vtxI = it.getVtx();
-
-				bool found = false;
-
-				double r2, r2test;
-
-				const double& cSP = collapseScaleParameter;
-				const double& cRBP = collapseRightBorderParameter;
-
-				for(size_t k = 0; k < tree.lowCells[i]->closeCells.size() && (!found); ++k)
-					for (auto itCl = tree.lowCells[i]->closeCells[k]->itBegin; itCl < tree.lowCells[i]->closeCells[k]->itEnd && (!found); ++itCl)
-					{
-						s = itCl.getNum();
-						if (s > it.getNum())
-						{
-							const Vortex2D& vtxK = itCl.getVtx();
-
-							r2 = dist2(vtxI.r(), vtxK.r());
-
-							//линейное увеличение радиуса коллапса
-							double mnog = std::max(1.0,  (vtxI.r()[0] - cRBP) / cSP);
-							                          //тут м.б. умножение на 2, см. выше
-
-							r2test = sqr(W.getPassport().wakeDiscretizationProperties.epscol * mnog);
-
-							if (type == 1)
-								r2test *= 4.0; //Увеличение радиуса коллапса в 2 раза для коллапса вихрей разных знаков			
-
-							//if (mnog > 1.0)     
-							//	r2test = sqr(0.005*cSP);
-
-							if (r2 < r2test)
-							{
-								switch (type)
-								{
-								case 0:
-									found = (fabs(vtxI.g() * vtxK.g()) != 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG);
-									break;
-								case 1:
-									found = (vtxI.g() * vtxK.g() < 0.0);
-									break;
-								case 2:
-									found = (vtxI.g() * vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG);
-									break;
-								}
-							}//if r2 < r2_test
-						}
-					}
-				if (found)
-					neighb[it.getNum()] = s;
-				else neighb[it.getNum()] = 0;
-			}//for locI
-		}
-	}// if (id == 0)
-	*/
-}//GetPairsBH(...)
 
 
 #if defined(USE_CUDA)
 void Wake::GPUGetPairs(int type)
 {
 	size_t npt = vtx.size();
-	//const int& id = W.getParallel().myidWork;
-	VMlib::parProp par = W.getParallel().SplitMPI(npt, true);
 
 	double tCUDASTART = 0.0, tCUDAEND = 0.0;
 	
@@ -526,21 +396,9 @@ void Wake::GPUGetPairs(int type)
 	
 	if (npt > 0)
 	{
-		cuCalculatePairs(par.myDisp, par.myLen, npt, devVtxPtr, devMeshPtr, devNeiPtr, 2.0*W.getPassport().wakeDiscretizationProperties.epscol, sqr(W.getPassport().wakeDiscretizationProperties.epscol), type);
+		cuCalculatePairs(npt, devVtxPtr, devMeshPtr, devNeiPtr, 2.0*W.getPassport().wakeDiscretizationProperties.epscol, sqr(W.getPassport().wakeDiscretizationProperties.epscol), type);
 		
-		W.getCuda().CopyMemFromDev<int, 1>(par.myLen, devNeiPtr, &tnei[0], 30);
-
-		std::vector<int> newNei;
-
-		newNei.resize(neighb.size());
-
-		MPI_Allgatherv(tnei.data(), par.myLen, MPI_INT, newNei.data(), par.len.data(), par.disp.data(), MPI_INT, W.getParallel().commWork);
-
-		for (size_t q = 0; q < neighb.size(); ++q)
-		{
-			neighb[q] = newNei[q];			
-			//std::cout << q << " " << vtx[q].r() << " " << vtx[q].g() << " " << neighb[q] << " " << vtx[neighb[q]].r() << " " << vtx[neighb[q]].g() << std::endl;		
-		}
+		W.getCuda().CopyMemFromDev<int, 1>(npt, devNeiPtr, neighb.data(), 30);		
 	}
 
 	tCUDAEND += omp_get_wtime();
@@ -562,8 +420,7 @@ int Wake::Collaps(int type, int times)
 	{
 
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_PAIRS))	
-		//W.getInfo('t') << "nvtx (" << parallel.myidWork << ") = " << vtx.size() << std::endl;
-
+		
 		if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
 		{
 			const_cast<Gpu&>(W.getCuda()).RefreshWake(3);
@@ -574,77 +431,205 @@ int Wake::Collaps(int type, int times)
 #else
 		GetPairs(type);
 #endif		
-		
-		if (W.getParallel().myidWork == 0)
+
+		//loc_hlop = 0;//число схлопнутых вихрей
+
+		flag.clear();
+		flag.resize(vtx.size(), false);
+
+		double sumAbsGam, iws;
+		Point2D newPos;
+
+		for (size_t vt = 0; vt + 1 < vtx.size(); ++vt)
 		{
-			//loc_hlop = 0;//число схлопнутых вихрей
+			Vortex2D& vtxI = vtx[vt];
 
-			flag.clear();
-			flag.resize(vtx.size(), false);
-
-			double sumAbsGam, iws;
-			Point2D newPos;
-
-			for (size_t vt = 0; vt + 1 < vtx.size(); ++vt)
+			if (!flag[vt])
 			{
-				Vortex2D& vtxI = vtx[vt];
+				//std::cout << "A" << std::endl;
 
-				if (!flag[vt])
+				int ssd = neighb[vt];
+				
+				//std::cout << "B" << std::endl;
+
+				if ((ssd < 0) || (ssd >= flag.size()))
+					std::cout << "ssd = " << ssd << ", flag.size() = " << flag.size() << ", vtx.size() = " << vtx.size() << std::endl;
+
+				if ((ssd != 0) && (!flag[ssd]))
 				{
-					int ssd = neighb[vt];
-					if ((ssd != 0) && (!flag[ssd]))
+					//std::cout << "C0" << std::endl;
+
+					Vortex2D& vtxK = vtx[ssd];
+
+					//std::cout << "C" << std::endl;
+
+					flag[ssd] = true;
+
+					Vortex2D sumVtx;
+					sumVtx.g() = vtxI.g() + vtxK.g();
+
+					switch (type)
 					{
-						Vortex2D& vtxK = vtx[ssd];
+					case 0:
+					case 2:
+						sumAbsGam = fabs(vtxI.g()) + fabs(vtxK.g());
 
-						flag[ssd] = true;
+						iws = sumAbsGam > 1e-10 ? 1.0 / sumAbsGam : 1.0;
 
-						Vortex2D sumVtx;
-						sumVtx.g() = vtxI.g() + vtxK.g();
+						sumVtx.r() = (vtxI.r() * fabs(vtxI.g()) + vtxK.r() * fabs(vtxK.g())) * iws;
+						break;
 
-						switch (type)
-						{
-						case 0:
-						case 2:
-							sumAbsGam = fabs(vtxI.g()) + fabs(vtxK.g());
+					case 1:
+						sumVtx.r() = (fabs(vtxI.g()) > fabs(vtxK.g())) ? vtxI.r() : vtxK.r();
+						break;
+					}
 
-							iws = sumAbsGam > 1e-10 ? 1.0 / sumAbsGam : 1.0;
+					bool fl_hit = true;
+					//double Ch1[2];
+					size_t hitpan = -1;
 
-							sumVtx.r() = (vtxI.r()*fabs(vtxI.g()) + vtxK.r()*fabs(vtxK.g())) * iws;
-							break;
+					//std::cout << "D" << std::endl;
 
-						case 1:
-							sumVtx.r() = (fabs(vtxI.g()) > fabs(vtxK.g())) ? vtxI.r() : vtxK.r();
-							break;
-						}
+					for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
+					{
+						//проверим, не оказался ли новый вихрь внутри контура
+						if (MoveInside(sumVtx.r(), vtxI.r(), W.getAirfoil(afl), hitpan) || MoveInside(sumVtx.r(), vtxK.r(), W.getAirfoil(afl), hitpan))
+							fl_hit = false;
+					}//for
 
-						bool fl_hit = true;
-						//double Ch1[2];
-						size_t hitpan = -1;
+					//std::cout << "E" << std::endl;
 
-						for(size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
-						{
-							//проверим, не оказался ли новый вихрь внутри контура
-							if (MoveInside(sumVtx.r(), vtxI.r(), W.getAirfoil(afl), hitpan) || MoveInside(sumVtx.r(), vtxK.r(), W.getAirfoil(afl), hitpan))
-								fl_hit = false;
-						}//for
+					if (fl_hit)
+					{
+						vtxI = sumVtx;
+						vtxK.g() = 0.0;
+						nHlop++;
+					}//if (fl_hit)
 
-						if (fl_hit)
-						{
-							vtxI = sumVtx;
-							vtxK.g() = 0.0;
-							nHlop++;
-						}//if (fl_hit)
+					//std::cout << "F" << std::endl;
 
-					}//if ((ssd!=0)&&(!flag[ssd]))
-				}//if !flag[vt] 
-			}//for vt
-		}
+				}//if ((ssd!=0)&&(!flag[ssd]))
+			}//if !flag[vt] 
+		}//for vt
 
-		WakeSynchronize();
 	}//for z
 
 	return nHlop;
 }//Collaps(...)
+
+// Коллапс вихрей
+int Wake::CollapsNew(int type, int times)
+{
+	int nHlop = 0; //общее число убитых вихрей
+
+	const double& cSP = collapseScaleParameter;
+	const double& cRBP = collapseRightBorderParameter;
+
+	double maxG = W.getPassport().wakeDiscretizationProperties.maxGamma;
+
+	//int loc_hlop = 0; // neigh
+
+	std::vector<bool> flag;	//как только вихрь сколлапсировался  flag = 1
+	for (int z = 0; z < times; ++z)
+	{
+		//loc_hlop = 0;//число схлопнутых вихрей
+
+		flag.clear();
+		flag.resize(vtx.size(), false);
+
+		double sumAbsGam, iws, r2, r2test;
+		Point2D newPos;
+
+		for (size_t vt = 0; vt + 1 < vtx.size(); ++vt)
+		{
+			Vortex2D& vtxI = vtx[vt];
+			if (!flag[vt])
+			{
+				for (int s = 0; s < knb - 1; ++s)
+				{
+					int ssd = neighbNew[vt * (knb - 1) + s];
+					Vortex2D& vtxK = vtx[ssd];
+
+					r2 = dist2(vtxI.r(), vtxK.r());
+					//линейное увеличение радиуса коллапса				    
+					double mnog = std::max(1.0, /* 2.0 * */ (vtxI.r()[0] - cRBP) / cSP);
+					r2test = sqr(W.getPassport().wakeDiscretizationProperties.epscol * mnog);
+					if (type == 1)
+						r2test *= 4.0; //Увеличение радиуса коллапса в 2 раза для коллапса вихрей разных знаков			
+
+					bool keyGamma = false;
+					switch (type)
+					{
+					case 0:
+						keyGamma = (fabs(vtxI.g() * vtxK.g()) != 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG);
+						break;
+					case 1:
+						keyGamma = (vtxI.g() * vtxK.g() < 0.0);
+						break;
+					case 2:
+						keyGamma = (vtxI.g() * vtxK.g() > 0.0) && (fabs(vtxI.g() + vtxK.g()) < sqr(mnog) * maxG);
+						break;
+					}
+
+					if ((r2 < r2test) && (keyGamma))
+					{
+						if ((ssd != 0) && (!flag[ssd]))
+						{
+							flag[ssd] = true;
+
+							Vortex2D sumVtx;
+							sumVtx.g() = vtxI.g() + vtxK.g();
+
+							switch (type)
+							{
+							case 0:
+							case 2:
+								sumAbsGam = fabs(vtxI.g()) + fabs(vtxK.g());
+
+								if (sumAbsGam > 1e-10)
+									sumVtx.r() = (vtxI.r() * fabs(vtxI.g()) + vtxK.r() * fabs(vtxK.g())) * (1.0 / sumAbsGam);
+								else
+									sumVtx.r() = 0.5 * (vtxI.r() + vtxK.r());													
+
+								break;
+
+							case 1:
+								sumVtx.r() = (fabs(vtxI.g()) > fabs(vtxK.g())) ? vtxI.r() : vtxK.r();
+								break;
+							}
+
+							bool fl_hit = true;
+							size_t hitpan = -1;
+
+							for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
+							{
+								//проверим, не оказался ли новый вихрь внутри контура
+								if (MoveInside(sumVtx.r(), vtxI.r(), W.getAirfoil(afl), hitpan) || MoveInside(sumVtx.r(), vtxK.r(), W.getAirfoil(afl), hitpan))
+									fl_hit = false;
+							}//for
+
+							if (fl_hit)
+							{
+								vtxI = sumVtx;
+								vtxK.g() = 0.0;
+								nHlop++;
+								flag[vt] = true;
+							}//if (fl_hit)
+
+						}//if ((ssd!=0)&&(!flag[ssd]))
+					}
+
+					if (flag[vt])
+						break;
+				}// for s
+			}//if !flag[vt] 
+		}//for vt
+
+	}//for z
+
+	return nHlop;
+}//Collaps(...)
+
 
 
 int Wake::RemoveFar()
@@ -663,7 +648,6 @@ int Wake::RemoveFar()
 		}
 	}
 
-	WakeSynchronize();
 	return nFar;
 }//RemoveFar()
 
@@ -684,17 +668,23 @@ size_t Wake::RemoveZero()
 
 	newWake.swap(vtx);
 
-	WakeSynchronize();
-
 	return delta;
 }//RemoveZero()
+
+
+
+
+
+
+
+
+
 
 
 //Реструктуризация вихревого следа
 void Wake::Restruct()
 {
 	W.getTimestat().timeRestruct.first += omp_get_wtime();
-
 
 	// Определение параметров, отвечающих за увеличение радиуса коллапса
 	std::vector<double> rightBorder, horizSpan;
@@ -723,11 +713,57 @@ void Wake::Restruct()
 #endif 
 	
 
-	WakeSynchronize();
+	
+	/////////////////////////////////////////////////////////////
 
-	Collaps(1, 1);
-	Collaps(2, 1);
 
+	//CPU/GPU - прямой алгоритм
+	//Collaps(1, 1); 
+	//Collaps(2, 1); 
+	
+
+	//*
+	//быстрый алгоритм
+	for (int collapsStep = 1; collapsStep <= 2; ++collapsStep)
+	{
+#if defined(USE_CUDA)
+#define knnGPU
+#endif
+
+		neighbNew.resize(vtx.size() * (knb - 1));
+	
+		if (vtx.size() > 2 * knb)
+		{
+#ifndef knnGPU		
+			//CPU
+			std::vector<std::vector<std::pair<double, size_t>>> initdist(vtx.size());
+			for (auto& d : initdist)
+				d.resize(2 * knb, { -1.0, -1 });
+
+			WakekNN(vtx, knb, initdist);//CPU
+#else		
+			std::vector<std::pair<double, size_t>> initdistcuda(knb * vtx.size(), { -1.0, -1 });  //CUDA
+			kNNcuda(vtx, knb, initdistcuda, vecForKnn);                                           //CUDA
+#endif		
+
+			for (int i = 0; i < vtx.size(); ++i)
+			{
+#ifndef knnGPU	
+				neighbNew[i] = (int)initdist[i][1].second;
+#else
+				for (int j = 0; j < knb - 1; ++j)
+					neighbNew[i * (knb - 1) + j] = (int)initdistcuda[(i * knb) + (j + 1)].second;
+#endif
+			}
+		}
+		
+		CollapsNew(collapsStep, 1);
+
+	}
+
+	/////////////////////////////////////////////////////////////
+//*/
+	
 	RemoveFar();
 	RemoveZero();
 

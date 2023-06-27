@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Gpu2D.cpp                                                        |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #include "Gpu2D.h"
@@ -42,10 +43,8 @@
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
-#include "Parallel.h"
 #include "Passport2D.h"
 #include "StreamParser.h"
-#include "Tree2D.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
@@ -64,7 +63,6 @@ Gpu::Gpu(const World2D& W_)
 // Откомментировать следующую строку, если запускается счет на кластере, каждый узел которого  
 // имеет несколько видеокарт, при этом хочется одновременно решать несколько задач --- каждую на своей видеокарте ---
 // каждая задача по своему номеру, деленному по модулю числа видеокарт на узле будет привязана к своей видеокарте;
-// MPI-распаралеливание внутри каждой задачи НЕ ПРОИЗВОДИТЬ;
 // на каждый узел при этом отправлять СТОЛЬКО MPI-нитей, СКОЛЬКО ТАМ ВИДЕОКАРТ;
 // число задач НАСТОЯТЕЛЬНО РЕКОМЕНДУЕТСЯ ВЫБИРАТЬ ТОЧНО РАВНЫМ СУММАРНОМУ ЧИСЛУ ВИДЕОКАРТ,
 // т.е. чтобы все задачи стартовали сразу же.
@@ -72,7 +70,6 @@ Gpu::Gpu(const World2D& W_)
 // Uncomment the following string if the program runs on the computer cluster with several graphic cards on every node
 // and you want to solve several tasks simultaneously --- EVERY TASK ON ITS OWN GRAPHIC CARD;
 // every task will be associated with separate graphic card;
-// DO NOT use MPI-parallelization within one task;
 // send THE SAME AMOUNT OF MPI-THREADS for the node as THE NUMBER OF GRAPHIC CARDS on this node;
 // IT IS STRONGLY RECOMMENDED TO CHOOSE THE NUMBER OF TASKS EXACTLY EQUAL TO TOTAL VIDEO CARDs NUMBERS,
 // i.e. to start all the tasks simultaneously.
@@ -80,30 +77,11 @@ Gpu::Gpu(const World2D& W_)
 //cuDevice(W.getPassport().problemNumber % 4); //The index of the used video card will be equal to the task number
                                              // in the task list (to modulo 4 --- number of graphic cards on each node) 
 
-
-	
-// Откомментировать следующую строку, если запускается счет на кластере, каждый узел которого  
-// имеет несколько видеокарт, при этом хочется каждую задачу решать при помощи нескольких видеокарт ---
-// каждый MPI-процесс, решающий текущую задачу, будет привязан к своей видеокарте;
-// число порождаемых MPI-нитей (на каждую задачу) должно было не больше числа видеокарт;
-// на каждый узел при этом отправлять ТОЛЬКО ОДНУ задачу;
-// число задач может быть любым, они будут исполняться по очереди
-//
-//
-// Uncomment the following string if the program runs on the computer cluster with several graphic cards on every node
-// and you want to solve EVERY TASK USING SEVERAL GRAPHIC CARDS ---
-// every MPI-thread (solving the current task) will be associated with its own graphic card;
-// the number of MPI-threads (for every task) have to be not much than number of graphic cards;
-// send only one task to every node;
-// number of problems can be arbitrary, they will be executed in turn.
-
-// cuDevice(W.getParallel().myidWork);          //The index of the used video card will be equal to the number of MPI-thread
-
-
-	   
+   
 	cuSetConstants(sizeof(Vortex2D)/sizeof(double), Vortex2D::offsPos / sizeof(double), Vortex2D::offsGam / sizeof(double) );
 	
 	n_CUDA_wake = 0;
+	n_CUDA_bodies = 0;
 	n_CUDA_source = 0;
 	n_CUDA_afls = 0;
 
@@ -500,8 +478,7 @@ void Gpu::RefreshAfls(int code)
 				host_attachedVortexSheet[p] = sh.attachedVortexSheet(p, 0);
 				host_attachedSourceSheet[p] = sh.attachedSourceSheet(p, 0);
 
-				if (W.getParallel().myidWork == 0)
-					host_freeVortexSheet[p] = sh.freeVortexSheet(p, 0);
+				host_freeVortexSheet[p] = sh.freeVortexSheet(p, 0);
 			}//for p
 
 			if(sch == 1)
@@ -509,12 +486,9 @@ void Gpu::RefreshAfls(int code)
 			{
 				host_attachedVortexSheet[np + p] = sh.attachedVortexSheet(p, 1);
 				host_attachedSourceSheet[np + p] = sh.attachedSourceSheet(p, 1);
-
-				if (W.getParallel().myidWork == 0)
-					host_freeVortexSheet[np + p] = sh.freeVortexSheet(p, 1);
+								
+				host_freeVortexSheet[np + p] = sh.freeVortexSheet(p, 1);
 			}//for p
-
-			MPI_Bcast(host_freeVortexSheet.data(), (int)host_freeVortexSheet.size(), MPI_DOUBLE, 0, W.getParallel().commWork);
 
 			cuCopyFixedArray(W.getBoundary(s).afl.devFreeVortexSheetPtr, host_freeVortexSheet.data(), sizeof(double) * host_freeVortexSheet.size());
 			cuCopyFixedArray(W.getBoundary(s).afl.devAttachedVortexSheetPtr, host_attachedVortexSheet.data(), sizeof(double)* host_attachedVortexSheet.size());
@@ -563,6 +537,9 @@ void Gpu::RefreshVirtualWakes(int code)
 			W.getBoundary(0).virtualWake.devVtxPtr = ReserveDevMem<double, sizeof(Vortex2D) / sizeof(double)>(szVtx, n_CUDA_totalVirtWake);
 			W.getBoundary(0).virtualWake.devVelPtr = ReserveDevMem<double, 2>(szVtx, n_CUDA_totalVirtWake);
 			W.getBoundary(0).virtualWake.devRadPtr = ReserveDevMem<double, 1>(szVtx, n_CUDA_totalVirtWake);
+
+			std::cout << "szVtx = " << szVtx << ", n_CUDA_totalVirtWake = " << n_CUDA_totalVirtWake << std::endl;
+
 			W.getBoundary(0).virtualWake.devI0Ptr = ReserveDevMem<double, 1>(szVtx, n_CUDA_totalVirtWake);
 			W.getBoundary(0).virtualWake.devI1Ptr = ReserveDevMem<double, 1>(szVtx, n_CUDA_totalVirtWake);
 			W.getBoundary(0).virtualWake.devI2Ptr = ReserveDevMem<double, 2>(szVtx, n_CUDA_totalVirtWake);

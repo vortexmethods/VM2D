@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Gpu2D.h                                                          |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 
@@ -46,6 +47,8 @@
 #include "cuLib2D.cuh"
 #include "Gpudefs.h"
 
+#include "wrapper.h"
+
 namespace VM2D
 {
 
@@ -57,8 +60,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class Gpu
 	{
@@ -210,6 +214,7 @@ namespace VM2D
 
 		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о следе (wake)
 		size_t n_CUDA_wake;
+		
 
 		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о следе (source)
 		size_t n_CUDA_source;
@@ -217,7 +222,8 @@ namespace VM2D
 		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о точках вычисления VP
 		size_t n_CUDA_velVP;
 
-
+		size_t n_CUDA_bodies;
+		BHcu::CUDApointers CUDAptrs;
 #endif
 
 		/// \brief Конструктор

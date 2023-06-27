@@ -1,11 +1,11 @@
 /*-------------------------------*- VMcuda -*----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
 |  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
 *-----------------------------------------------------------------------------*
 | File name: cuLib2D.cu                                                       |
 | Info: Source code of VMcuda                                                 |
@@ -30,8 +30,8 @@
 \file
 \brief Файл с реализацией функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\version 1.11
-\date 07 августа 2022 г.
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #include <iostream>
@@ -41,6 +41,8 @@
 
 #include "cuda.h"
 #include "Gpudefs.h"
+
+#include <cusolverDn.h>
 
 
 __device__ __constant__ size_t sizeVort;
@@ -73,25 +75,21 @@ void cuDalloc(void* ptr)
 }
 
 
-//#if __CUDA_ARCH__ < 600
 __device__ double myAtomicAdd(double* address, double val)
 {
-	unsigned long long int* address_as_ull =
-		(unsigned long long int*)address;
+	unsigned long long int* address_as_ull = (unsigned long long int*)address;
 	unsigned long long int old = *address_as_ull, assumed;
 
 	do {
 		assumed = old;
-		old = atomicCAS(address_as_ull, assumed,
-			__double_as_longlong(val +
-				__longlong_as_double(assumed)));
+		old = atomicCAS(address_as_ull, assumed, __double_as_longlong(val +	__longlong_as_double(assumed)));
 
 		// Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
 	} while (assumed != old);
-
 	return __longlong_as_double(old);
 }
-//#endif
+
+
 
 
 
@@ -147,7 +145,7 @@ __global__ void CU_WakeToZero(size_t nvt, double* vt)
 
 
 __global__ void CU_calc_conv_epsast(
-	size_t disp, size_t len, double* pt,
+	size_t npt, double* pt,
 	size_t nvt, double* vt,
 	size_t nsr, double* sr,
 	double eps2,
@@ -159,8 +157,7 @@ __global__ void CU_calc_conv_epsast(
 	__shared__ double shy[CUBLOCK];
 	__shared__ double shg[CUBLOCK];
 
-	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
-	size_t i = disp + locI;
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 
 	double ptx = pt[i*sizeVort + posR + 0];
 	double pty = pt[i*sizeVort + posR + 1];
@@ -259,9 +256,21 @@ __global__ void CU_calc_conv_epsast(
 	if (calcRadius)
 	{
 #ifndef TESTONLYVELO	
+		size_t nTotVtxs = 0;
 		for (size_t p = 0; p < nAfls; ++p)
-			for (size_t j = 0; j < nVtxs[p]; j += CUBLOCK)
+			nTotVtxs += nVtxs[p];
+
+		//for (size_t p = 0; p < nAfls; ++p)						
+		size_t p = 0;
+			//for (size_t j = 0; j < nVtxs[p]; j += CUBLOCK)
+			for (size_t j = 0; j < nTotVtxs; j += CUBLOCK)
 			{
+				//if (((&ptrVtxs[p][0] + ((j + threadIdx.x) * sizeVort + posR + 1)) - &ptrVtxs[0][0]) > 4096 * 3)
+				//{
+				//	//printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %d\n", ((&ptrVtxs[p][0] + ((j + threadIdx.x) * sizeVort + posR + 1)) - &ptrVtxs[0][0]));
+				//	printf("p = %d, nVtxs[p] = %d, j = %d\n", (int)p, (int)(nVtxs[p]), (int)j);
+				//}
+
 				shx[threadIdx.x] = ptrVtxs[p][(j + threadIdx.x)*sizeVort + posR + 0];
 				shy[threadIdx.x] = ptrVtxs[p][(j + threadIdx.x)*sizeVort + posR + 1];
 
@@ -294,21 +303,23 @@ __global__ void CU_calc_conv_epsast(
 			}
 #endif
 	}
-
 	
-	if (locI < len)
+	if (i < npt)
 	{
 		if (calcVelo)
 		{
-			vel[2 * locI + 0] = velx * invdpi;
-			vel[2 * locI + 1] = vely * invdpi;
+			vel[2 * i + 0] = velx * invdpi;
+			vel[2 * i + 1] = vely * invdpi;
 		}
 
 		if (calcRadius)
 		{
 #ifndef TESTONLYVELO
-			rad[locI] =  1.0 * sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
-			//rad[locI] =  4.0 * sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
+			rad[i] =  1.0 * sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
+
+			//printf("rad_%d = %f\n", (int)i, rad[i]);
+
+			//rad[i] =  4.0 * sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
 #endif
 		}
 	}	
@@ -317,7 +328,7 @@ __global__ void CU_calc_conv_epsast(
 
 
 __global__ void CU_calc_conv_From_Panels(
-	size_t disp, size_t len, double* pt,
+	size_t npt, double* pt,
 	size_t npnl, double* r, double* freegamma, double* attgamma, double* attsource,
 	double eps2,
 	double* vel)
@@ -339,8 +350,7 @@ __global__ void CU_calc_conv_From_Panels(
 	__shared__ double shattgammaLin[CUBLOCK];
 	__shared__ double shattsourceLin[CUBLOCK];
 
-	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
-	size_t i = disp + locI;
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 
 	double ptx = pt[i*sizeVort + posR + 0];
 	double pty = pt[i*sizeVort + posR + 1];
@@ -428,16 +438,16 @@ __global__ void CU_calc_conv_From_Panels(
 		__syncthreads();
 	}
 
-	if (locI < len)
+	if (i < npt)
 	{
-		vel[2 * locI + 0] = velx * invdpi;
-		vel[2 * locI + 1] = vely * invdpi;
+		vel[2 * i + 0] = velx * invdpi;
+		vel[2 * i + 1] = vely * invdpi;
 	}
 }
 
 
 __global__ void CU_calc_I1I2(
-	size_t disp, size_t len, double* pt,
+	size_t npt, double* pt,
 	size_t nvt, double* vt,
 	double* i1, double* i2,
 	double* rd, double minRd)
@@ -446,8 +456,7 @@ __global__ void CU_calc_I1I2(
 	__shared__ double shy[CUBLOCK];
 	__shared__ double shg[CUBLOCK];
 	
-	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
-	size_t i = disp + locI;
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 
 	double ptx = pt[i*sizeVort + posR + 0];
 	double pty = pt[i*sizeVort + posR + 1];
@@ -500,17 +509,17 @@ __global__ void CU_calc_I1I2(
 
 	//printf("thread = %d, ptx = %f, rd[i] = %f\n", (int)locI, ptx, rd[i]);
 
-	if (locI < len)
+	if (i < npt)
 	{
-		i1[locI] = val1;
-		i2[2 * locI + 0] = val2x;
-		i2[2 * locI + 1] = val2y;
+		i1[i] = val1;
+		i2[2 * i + 0] = val2x;
+		i2[2 * i + 1] = val2y;
 	}
 }
 
 
 __global__ void CU_calc_I1I2mesh(
-	size_t disp, size_t len, double* pt,
+	size_t npt, double* pt,
 	size_t nvt, double* vt,
 	double* i1, double* i2,
 	double* rd, int* dev_ptr_mesh)
@@ -521,8 +530,7 @@ __global__ void CU_calc_I1I2mesh(
 	__shared__ int shmshx[CUBLOCK];
 	__shared__ int shmshy[CUBLOCK];
 
-	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
-	size_t i = disp + locI;
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 
 	double ptx = pt[i*sizeVort + posR + 0];
 	double pty = pt[i*sizeVort + posR + 1];
@@ -576,18 +584,18 @@ __global__ void CU_calc_I1I2mesh(
 		__syncthreads();
 	}
 
-	if (locI < len)
+	if (i < npt) 
 	{
-		i1[locI] = val1;
-		i2[2 * locI + 0] = val2x;
-		i2[2 * locI + 1] = val2y;
+		i1[i] = val1;
+		i2[2 * i + 0] = val2x;
+		i2[2 * i + 1] = val2y;
 	}
 }
 
 
 
 __global__ void CU_calc_I1I2FromPanels(
-	size_t disp, size_t len, double* pt,
+	size_t npt, double* pt,
 	size_t npnl, double* r, double* freegamma,
 	double* i1, double* i2,
 	double* rd, double minRd)
@@ -603,8 +611,7 @@ __global__ void CU_calc_I1I2FromPanels(
 	__shared__ double shlen[CUBLOCK];
 	__shared__ double shptG[CUBLOCK];
 
-	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
-	size_t i = disp + locI;
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 
 	double ptx = pt[i*sizeVort + posR + 0];
 	double pty = pt[i*sizeVort + posR + 1];
@@ -624,7 +631,7 @@ __global__ void CU_calc_I1I2FromPanels(
 	double left = ptx - diffRadius;
 	double right = ptx + diffRadius;
 
-	const int nQuadPt = 3;
+	const int nQuadPt = 3; 
 
 	for (size_t j = 0; j < npnl; j += CUBLOCK)
 	{
@@ -652,7 +659,7 @@ __global__ void CU_calc_I1I2FromPanels(
 					mn = (s + 0.5) / nQuadPt;
 					x0 = shx[q] + shtaux[q] * mn;
 					if ((x0 < right) && (x0 > left))
-					{
+                    {
 						y0 = shy[q] + shtauy[q] * mn;
 
 
@@ -676,30 +683,30 @@ __global__ void CU_calc_I1I2FromPanels(
 		__syncthreads();
 	}
 
-	if (locI < len)
+	if (i < npt)
 	{
-		i1[locI] = val1;
-		i2[2 * locI + 0] = val2x;
-		i2[2 * locI + 1] = val2y;
+		i1[i] = val1;
+		i2[2 * i + 0] = val2x;
+		i2[2 * i + 1] = val2y;
 	}
 }
 
 
 __global__ void  CU_calc_I0I3(
-	size_t disp, size_t len, double* pt,
-	size_t nvt, double* vt,
+	size_t npt, double* pt, //вихри
+	size_t nvt, double* vt, //панели
 	double* i0, double* i3,
 	double* rd, double* meanEps,
 	double minRd,
 	double* visstr)
 {
-	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
-	size_t i = disp + locI;
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;	
 
 	double ptx = pt[i*sizeVort + posR + 0];
 	double pty = pt[i*sizeVort + posR + 1];
 	double ptg = pt[i*sizeVort + posG + 0];
 	double rdi = myMax(rd[i], minRd);
+	//double rdi = rd[i];
 
 	double val0 = 0.0;
 	double val3x = 0.0;
@@ -707,7 +714,7 @@ __global__ void  CU_calc_I0I3(
 
 	double iDDomRad = 1.0 / rdi;
 
-	double qx, qy, d;
+	double qx, qy, d/*, q*/;
 	double begx, begy, endx, endy;
 	double lenj, lenj_m;
 	double taux, tauy;
@@ -724,8 +731,8 @@ __global__ void  CU_calc_I0I3(
 	double mnog1;
 	double vs;
 	double meanepsj2;
-	
-	if (locI < len) //Здесь так делать можно, т.к. shared memory не используется
+
+	if (i < npt) //Здесь так делать можно, т.к. shared memory не используется
 	{
 		for (size_t j = 0; j < nvt; ++j)
 		{
@@ -738,8 +745,9 @@ __global__ void  CU_calc_I0I3(
 
 			qx = ptx - 0.5 * (begx + endx);
 			qy = pty - 0.5 * (begy + endy);
+			//q = sqrt(qx * qx + qy * qy);
 
-			lenj = sqrt((endx - begx)*(endx - begx) + (endy - begy)*(endy - begy));
+			lenj = sqrt( (endx - begx)*(endx - begx) + (endy - begy)*(endy - begy) );
 
 			taux = (endx - begx) / lenj;
 			tauy = (endy - begy) / lenj;
@@ -750,43 +758,46 @@ __global__ void  CU_calc_I0I3(
 			normy = -taux;
 					   
 			d = fabs(qx*normx + qy * normy);
-
-			meanepsj2 = meanEps[j] * meanEps[j];
+			
+			meanepsj2 = sqr(myMax(meanEps[j], minRd));   
+			//meanepsj2 = sqr(meanEps[j]);
 
 			if ( (d < 50.0 * lenj) && (fabs(s) < 50.0 * lenj) )	//Почему зависит от длины панели???
+			//if (q < 50.0 * lenj)	//Почему зависит от длины панели???
 			{
 				v0x = taux * lenj;
 				v0y = tauy * lenj;
 								
 				if ( (d > 5.0 * lenj) || (fabs(s) > 5.0 * lenj) )
+				//if ((q > 5.0 * lenj))
 				{
 					xix = qx * iDDomRad;
 					xiy = qy * iDDomRad;
-					lxi = sqrt(xix*xix + xiy * xiy);
+					lxi = sqrt(xix * xix + xiy * xiy);
 
-					expon = exp(-lxi)*lenj;
+					expon = exp(-lxi) * lenj;
 					mnx = normx * expon;
 					mny = normy * expon;
 
 					if (val0 != -pi * rdi)
 					{
-						val0 += (xix * mnx + xiy * mny) * (lxi + 1.0) / (lxi*lxi);
+						val0 += (xix * mnx + xiy * mny) * (lxi + 1.0) / (lxi * lxi);
 						val3x += mnx;
 						val3y += mny;
 					}
 
 					vs = ptg * expon / (pi * meanepsj2);
 				}				
-				else if ( (d >= 0.1 * lenj) || (fabs(s) > 0.5 * lenj) )
+				
+				//else if ( (d >= 0 * lenj) || (fabs(s) >= 0 * lenj) )
+				else if ( (d >= 0.01 * lenj) || (fabs(s) > 0.499 * lenj) )
+				//else if ((q >= 0.1 * lenj) && (q <= 5.0 * lenj))
 				{
-					vs = 0.0;
 					//new_n = 100;
-					//new_n = (int)(ceil(5.0 * lenj / d));
+					//new_n = (int)(ceil(5.0 * lenj / q));
 
 					den = (fabs(s) < 0.5 * lenj) ? d : (fabs(s) + d - 0.5 * lenj);
-
-
-					new_n = (int)myMax(ceil(5.0 * lenj / den), 1.0);
+					new_n = (int)myMin((int)myMax(ceil(10.0 * lenj / den), 1.0), 20);
 
 					hx = v0x / new_n;
 					hy = v0y / new_n;
@@ -799,15 +810,14 @@ __global__ void  CU_calc_I0I3(
 						lxi_m = sqrt(xi_mx*xi_mx + xi_my * xi_my);
 
 						lenj_m = lenj / new_n;
-						expon = exp(-lxi_m)*lenj_m;
-
+						expon = exp(-lxi_m) * lenj_m;
 
 						mnx = normx * expon;
 						mny = normy * expon;
 
 						if (val0 != -pi * rdi)
 						{
-							val0 += (xi_mx*mnx + xi_my * mny) * (lxi_m + 1.0) / (lxi_m*lxi_m);
+							val0 += (xi_mx * mnx + xi_my * mny) * (lxi_m + 1.0) / (lxi_m * lxi_m);
 							val3x += mnx;
 							val3y += mny;
 						}
@@ -818,33 +828,38 @@ __global__ void  CU_calc_I0I3(
 				} 				
 				else
 				{
-					
-						val0 = -pi * rdi;
-
-						
-							mnog1 = 2.0 * rdi * (1.0 - exp(-lenj * iDDomRad / 2.0)*cosh(fabs(s) * iDDomRad));
-							val3x = mnog1 * normx;
-							val3y = mnog1 * normy;
-							vs = mnog1 * ptg / (pi * meanepsj2);
+					val0 = -pi * rdi;
+										
+					mnog1 = 2.0 * rdi * (1.0 - exp(-lenj * 0.5 * iDDomRad) * cosh(fabs(s) * iDDomRad));
+					val3x = mnog1 * normx;
+					val3y = mnog1 * normy;
+					vs = mnog1 * ptg / (pi * meanepsj2);
 				}
 			}//if d<50 len 
 
+#ifdef  __CUDA_ARCH__
+#if __CUDA_ARCH__ <= 600
 			myAtomicAdd(visstr + j, vs);
+			//printf("MY: __CUDA_ARCH__ = %d\n", __CUDA_ARCH__);
+#else
+			atomicAdd(visstr + j, vs);
+			//printf("CUDA: __CUDA_ARCH__ = %d\n", __CUDA_ARCH__);
+#endif
+#endif //  __CUDA_ARCH__			
 
 		}//for j
 	}
 
-	if (locI < len)
+	if (i < npt)
 	{
-		i0[locI] = val0;
-		i3[2 * locI + 0] = val3x;
-		i3[2 * locI + 1] = val3y;
+		i0[i] = val0;
+		i3[2 * i + 0] = val3x;
+		i3[2 * i + 1] = val3y;
 	}
 }
 
 
-__global__ void CU_calc_RHS(
-	size_t disp, size_t len,
+__global__ void CU_calc_RHS(	
 	size_t npt, double* pt,
 	size_t nvt, double* vt,
 	size_t nsr, double* sr,
@@ -856,11 +871,10 @@ __global__ void CU_calc_RHS(
 	__shared__ double shy[CUBLOCK];
 	__shared__ double shg[CUBLOCK];
 
-	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
-	size_t i = disp + locI;
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 	   
 	double begx = 0.0, begy = 0.0, endx = 0.0, endy = 0.0, dlen = 0.0, dix = 0.0, diy = 0.0, taux = 0.0, tauy = 0.0, u1x = 0.0, u1y = 0.0;
-	if (locI < len)
+	if (i < npt)
 	{
 		begx = pt[i * 4 + 0];
 		begy = pt[i * 4 + 1];
@@ -903,11 +917,11 @@ __global__ void CU_calc_RHS(
 					px = shx[q] - endx;
 					py = shy[q] - endy;
 
-
 					alpha = atan2(px * sy - py * sx, px * sx + py * sy);
 
 					tempVel = shg[q] * alpha;
 					val -= tempVel;
+					//printf("pnl = %d, val = %f\n", locI, val);
 				}
 
 				if (schemeSwitcher == 11)
@@ -982,15 +996,15 @@ __global__ void CU_calc_RHS(
 	}
 
 
-	if (locI < len)
+	if (i < npt)
 	{
 		val *= invdpi / dlen;
-		rhs[locI] = val;
+		rhs[i] = val;
 
 		if (schemeSwitcher == 2)
 		{
 			valLin *= invdpi / dlen;
-			rhsLin[locI] = valLin;
+			rhsLin[i] = valLin;
 		}
 	}
 }
@@ -1012,15 +1026,14 @@ __global__ void CU_calc_mesh(
 
 
 __global__ void CU_calc_nei(
-	size_t disp, size_t len, size_t npt, double* pt,
+	size_t npt, double* pt,
 	int* dev_ptr_mesh, int* dev_ptr_nei,
 	double epsCol2, int type)
 {
-	size_t locI = blockIdx.x * blockDim.x + threadIdx.x;
-	size_t i = disp + locI;
-	size_t minI = disp + blockIdx.x * blockDim.x;
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
+	size_t minI = blockIdx.x * blockDim.x;
 
-	if (locI < len) // можно, т.к. не используем shared memory
+	if (i < npt) // можно, т.к. не используем shared memory
 	{
 		int ix = dev_ptr_mesh[2 * i + 0];
 		int iy = dev_ptr_mesh[2 * i + 1];
@@ -1032,7 +1045,7 @@ __global__ void CU_calc_nei(
 		ipy = pt[i*sizeVort + posR + 1];
 
 		double dx, dy, r2, r2test;
-		dev_ptr_nei[locI] = 0;
+		dev_ptr_nei[i] = 0;
 
 		double ig = pt[i*sizeVort + posG + 0];
 		double jg;
@@ -1049,7 +1062,7 @@ __global__ void CU_calc_nei(
 		//	r2test = sqr(0.005*collapseScale);
 
 		int fracMesh = (int)(r2test / epsCol2);
-
+   
 		bool cond;
 
 		for (size_t j = minI; j < npt; ++j)
@@ -1069,10 +1082,9 @@ __global__ void CU_calc_nei(
 				jg = pt[j*sizeVort + posG + 0];
 
 				cond = (r2 < r2test) && ((type == 1) ? ig*jg < 0 : (ig*jg > 0) && (fabs(ig + jg) < cftmax2 * maxGamma) );
-
-				if (cond)
+                if (cond)
 				{
-					dev_ptr_nei[locI] = j;
+					dev_ptr_nei[i] = j;
 					break;
 				}
 			}
@@ -1226,9 +1238,9 @@ void cuDeleteFromDev(void* devPtr, int code)
 }
 
 /////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double eps2, bool calcVelo, bool calcRadius)
+void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double eps2, bool calcVelo, bool calcRadius)
 {	
-	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
+	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
 
 
 	/*
@@ -1239,7 +1251,7 @@ void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt
 	cudaEventRecord(start, 0); 
 	*/
 
-	CU_calc_conv_epsast <<< blocks, threads >>> (myDisp, myLen, pt, nvt, vt, nsr, sr, eps2, vel, rd, nAfls, nVtxs, ptrVtxs, calcVelo, calcRadius);
+	CU_calc_conv_epsast <<< blocks, threads >>> (npt, pt, nvt, vt, nsr, sr, eps2, vel, rd, nAfls, nVtxs, ptrVtxs, calcVelo, calcRadius);
 
 	/*
 	cudaThreadSynchronize();
@@ -1260,10 +1272,10 @@ void cuCalculateConvVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt
 }
 
 
-void cuCalculateConvVeloWakeFromVirtual(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* attgamma, double* attsource, double* vel, double eps2)
+void cuCalculateConvVeloWakeFromVirtual(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* attgamma, double* attsource, double* vel, double eps2)
 {
-	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
-	CU_calc_conv_From_Panels << < blocks, threads >> > (myDisp, myLen, pt, npnl, r, freegamma, attgamma, attsource, eps2, vel);
+	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
+	CU_calc_conv_From_Panels << < blocks, threads >> > (npt, pt, npnl, r, freegamma, attgamma, attsource, eps2, vel);
 
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
@@ -1273,36 +1285,36 @@ void cuCalculateConvVeloWakeFromVirtual(size_t myDisp, size_t myLen, double* pt,
 }
 
 
-void cuCalculateDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd, double minRad)
+void cuCalculateDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd, double minRad)
 {
-	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
-	CU_calc_I1I2 << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, i1, i2, rd, minRad);
+	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
+	CU_calc_I1I2 << < blocks, threads >> > (npt, pt, nvt, vt, i1, i2, rd, minRad);
 
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
 		std::cout << cudaGetErrorString(err1) << " (erCU_calc_I1I201)" << std::endl;
 }
 
-void cuCalculateDiffVeloWakeMesh(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, int* mesh, double meshStep, double* i1, double* i2, double* rd)
+void cuCalculateDiffVeloWakeMesh(size_t npt, double* pt, size_t nvt, double* vt, int* mesh, double meshStep, double* i1, double* i2, double* rd)
 {
-	dim3 blocks1(cuCalcBlocks(nvt)), blocks2(cuCalcBlocks(myLen)), threads(CUBLOCK);
+	dim3 blocks1(cuCalcBlocks(nvt)), blocks2(cuCalcBlocks(npt)), threads(CUBLOCK);
 	CU_calc_mesh << < blocks1, threads >> > (nvt, vt, mesh, meshStep);
 	
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
 		std::cout << cudaGetErrorString(err1) << " (erCU_calc_mesh01)" << std::endl;
 
-	CU_calc_I1I2mesh << < blocks2, threads >> > (myDisp, myLen, pt, nvt, vt, i1, i2, rd, mesh);
+	CU_calc_I1I2mesh << < blocks2, threads >> > (npt, pt, nvt, vt, i1, i2, rd, mesh);
 
 	cudaError_t err2 = cudaGetLastError();
 	if (err2 != cudaSuccess)
 		std::cout << cudaGetErrorString(err2) << " (erCU_calc_I1I2mesh01)" << std::endl;
 }
 
-void cuCalculateDiffVeloWakeFromPanels(size_t myDisp, size_t myLen, double* pt, size_t npnl, double* r, double* freegamma, double* i1, double* i2, double* rd, double minRad)
+void cuCalculateDiffVeloWakeFromPanels(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* i1, double* i2, double* rd, double minRad)
 {
-	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
-	CU_calc_I1I2FromPanels << < blocks, threads >> > (myDisp, myLen, pt, npnl, r, freegamma, i1, i2, rd, minRad);
+	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
+	CU_calc_I1I2FromPanels << < blocks, threads >> > (npt, pt, npnl, r, freegamma, i1, i2, rd, minRad);
 
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
@@ -1310,10 +1322,10 @@ void cuCalculateDiffVeloWakeFromPanels(size_t myDisp, size_t myLen, double* pt, 
 }
 
 
-void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr)
+void cuCalculateSurfDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr)
 {
-	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
-	CU_calc_I0I3 << < blocks, threads >> > (myDisp, myLen, pt, nvt, vt, i0, i3, rd, meanEps, minRd, visstr);
+	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
+	CU_calc_I0I3<<<blocks, threads>>>(npt, pt, nvt, vt, i0, i3, rd, meanEps, minRd, visstr);
 	
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
@@ -1321,11 +1333,11 @@ void cuCalculateSurfDiffVeloWake(size_t myDisp, size_t myLen, double* pt, size_t
 }
 
 
-void cuCalculateRhs(size_t myDisp, size_t myLen, size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double eps2, double* rhs, double* rhsLin)
+void cuCalculateRhs(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double eps2, double* rhs, double* rhsLin)
 {
-	dim3 blocks(cuCalcBlocks(myLen)), threads(CUBLOCK);
+	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
 	
-	CU_calc_RHS << < blocks, threads >> > (myDisp, myLen, npt, pt, nvt, vt, nsr, sr, eps2, rhs, rhsLin);
+	CU_calc_RHS << < blocks, threads >> > (npt, pt, nvt, vt, nsr, sr, eps2, rhs, rhsLin);
 	
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
@@ -1334,7 +1346,7 @@ void cuCalculateRhs(size_t myDisp, size_t myLen, size_t npt, double* pt, size_t 
 
 
 
-void cuCalculatePairs(size_t myDisp, size_t myLen, size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type)
+void cuCalculatePairs(size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type)
 {
 	dim3 blocksMesh(cuCalcBlocks(npt)), threadsMesh(CUBLOCK);
 	CU_calc_mesh << < blocksMesh, threadsMesh >> > (npt, pt, mesh, meshStep);
@@ -1343,8 +1355,8 @@ void cuCalculatePairs(size_t myDisp, size_t myLen, size_t npt, double* pt, int* 
 	if (err1 != cudaSuccess)
 		std::cout << cudaGetErrorString(err1) << " (erCU_calc_mesh01)" << std::endl;
 	
-	dim3 blocksNei(cuCalcBlocks(myLen)), threadsNei(CUBLOCK);
-	CU_calc_nei << < blocksNei, threadsNei >> > (myDisp, myLen, npt, pt, mesh, nei, epsCol2, type);
+	dim3 blocksNei(cuCalcBlocks(npt)), threadsNei(CUBLOCK);
+	CU_calc_nei << < blocksNei, threadsNei >> > (npt, pt, mesh, nei, epsCol2, type);
 	
 	cudaError_t err2 = cudaGetLastError();
 	if (err2 != cudaSuccess)
@@ -1367,3 +1379,145 @@ void cuTEST(const std::string& str)
 		std::cout << str << ": " << cudaGetErrorString(err1) << " (CUDA_TEST_PASSED)" << std::endl;
 }
 */
+
+
+void cuInverseMatrix(int n, double* matrPtr, double* invMatrPtr)
+{
+	cusolverDnHandle_t cusolverH = NULL;
+	cudaStream_t stream = NULL;
+
+
+	double *devMatr, *devInvMatr; // , * devSol;
+	cudaMalloc(&devMatr, n * n * sizeof(double));
+	cudaMalloc(&devInvMatr, n * n * sizeof(double));
+	cudaError_t cudaStat1 = cudaMemcpy(devMatr, matrPtr, sizeof(double) * n * n, cudaMemcpyHostToDevice);
+	if (cudaStat1 != cudaSuccess)
+		std::cout << cudaGetErrorString(cudaStat1) << " (cuInverseMatrix01)" << std::endl;
+
+	cudaError_t cudaStat2 = cudaMemcpy(devInvMatr, invMatrPtr, sizeof(double) * n * n, cudaMemcpyHostToDevice);
+	if (cudaStat2 != cudaSuccess)
+		std::cout << cudaGetErrorString(cudaStat2) << " (cuInverseMatrix02)" << std::endl;
+
+	int* d_Ipiv = NULL; /* pivoting sequence */
+	int* d_info = NULL; /* error info */
+
+	int  lwork = 0;     /* size of workspace */
+	double* d_work = NULL; /* device workspace for getrf */
+
+	cudaError_t cudaStat3 = cudaMalloc(&d_Ipiv, sizeof(int) * n);
+	if (cudaStat3 != cudaSuccess)
+		std::cout << cudaGetErrorString(cudaStat3) << " (cuInverseMatrix03)" << std::endl;
+
+	cudaError_t cudaStat4 = cudaMalloc(&d_info, sizeof(int));
+	if (cudaStat4 != cudaSuccess)
+		std::cout << cudaGetErrorString(cudaStat4) << " (cuInverseMatrix04)" << std::endl;
+
+	/* step 1: create cusolver handle, bind a stream */
+	cusolverStatus_t status = cusolverDnCreate(&cusolverH);
+	if (CUSOLVER_STATUS_SUCCESS != status)
+		std::cout << " (cuBlas01)" << std::endl;
+
+	cudaError_t cudaStat5 = cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
+	if (cudaStat5 != cudaSuccess)
+		std::cout << cudaGetErrorString(cudaStat5) << " (cuInverseMatrix05)" << std::endl;
+
+	status = cusolverDnSetStream(cusolverH, stream);
+	if (CUSOLVER_STATUS_SUCCESS != status)
+		std::cout << " (cuBlas02)" << std::endl;
+
+	bool pivot_on = true;
+
+	/* step 3: query working space of getrf */
+	status = cusolverDnDgetrf_bufferSize(
+		cusolverH,
+		n,
+		n,
+		devMatr,
+		n,
+		&lwork);
+	if (CUSOLVER_STATUS_SUCCESS != status)
+		std::cout << " (cuBlas03)" << std::endl;
+
+	cudaError_t cudaStat6 = cudaMalloc((void**)&d_work, sizeof(double) * lwork);
+	if (cudaStat6 != cudaSuccess)
+		std::cout << cudaGetErrorString(cudaStat6) << " (cuInverseMatrix06)" << std::endl;
+
+	/* step 4: LU factorization */
+	if (pivot_on) {
+		status = cusolverDnDgetrf(
+			cusolverH,
+			n,
+			n,
+			devMatr,
+			n,
+			d_work,
+			d_Ipiv,
+			d_info);
+	}
+	else {
+		status = cusolverDnDgetrf(
+			cusolverH,
+			n,
+			n,
+			devMatr,
+			n,
+			d_work,
+			NULL,
+			d_info);
+	}
+	cudaError_t cudaStat7 = cudaDeviceSynchronize();
+
+	if (CUSOLVER_STATUS_SUCCESS != status)
+		std::cout << " (cuBlas04)" << std::endl;
+	
+	if (cudaStat7 != cudaSuccess)
+		std::cout << cudaGetErrorString(cudaStat7) << " (cuInverseMatrix07)" << std::endl;
+
+
+	/* step 5: solve */
+	if (pivot_on) {
+		status = cusolverDnDgetrs(
+			cusolverH,
+			CUBLAS_OP_N,
+			n,
+			n, /* nrhs */
+			devMatr,
+			n,
+			d_Ipiv,
+			devInvMatr,
+			n,
+			d_info);
+	}
+	else {
+		status = cusolverDnDgetrs(
+			cusolverH,
+			CUBLAS_OP_N,
+			n,
+			1, /* nrhs */
+			devMatr,
+			n,
+			NULL,
+			devInvMatr,
+			n,
+			d_info);
+	}
+
+	cudaError_t cudaStat8 = cudaDeviceSynchronize();
+
+	if (CUSOLVER_STATUS_SUCCESS != status)
+		std::cout << " (cuBlas05)" << std::endl;
+
+	if (cudaStat8 != cudaSuccess)
+		std::cout << cudaGetErrorString(cudaStat8) << " (cuInverseMatrix08)" << std::endl;
+
+	cudaError_t cudaStat9 = cudaMemcpy(invMatrPtr, devInvMatr, sizeof(double) * n * n, cudaMemcpyDeviceToHost);
+	if (cudaStat9 != cudaSuccess)
+		std::cout << cudaGetErrorString(cudaStat9) << " (cuInverseMatrix09)" << std::endl;
+
+	cusolverDnDestroy(cusolverH);
+	cudaFree(devMatr);
+	cudaFree(devInvMatr);
+	cudaFree(d_Ipiv);
+	cudaFree(d_info);
+	cudaFree(d_work);
+}
