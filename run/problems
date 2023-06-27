@@ -1,35 +1,27 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: problems                                                         |
 | Info: Problems to be solved by using VM2D                                   |
 \*---------------------------------------------------------------------------*/
-
-problems = 
-{
-circle200,
-//blasius(np=4),
-//blasius5k,
+problems = {
+circle200(),
+//blasius(),
 //cylPlate(),
-//twoCircle(np=1),
-//twoCircleRut1(np=1),
-//tube(np=1),
-//squareGivenLaw,
-//oscilCircle(np=4, m=1.0, sh=0.2),
-//rotor(),
-
-//wing00(angle=0.0, copyPath="wingBase/passport"),
-//wing02(angle=2.0, copyPath="wingBase/passport"),
-//wing04(angle=4.0, copyPath="wingBase/passport"),
-//wing06(angle=6.0, copyPath="wingBase/passport"),
-//wing08(angle=8.0, copyPath="wingBase/passport"),
-//wing10(angle=10.0, copyPath="wingBase/passport"),
-//wing12(angle=12.0, copyPath="wingBase/passport"),
-//wing14(angle=14.0, copyPath="wingBase/passport"),
+//lamb(),
+//oscilCircle(sh = {0.0, 0.2}, shw = 0, m = 10.0, J = 0.0, zeta = {0.0, 0.001}, zetaw = 0.001),
+//oscilCircle(sh = {0.0, 0.1}, shw = 0, m = 10.0, J = 0.0, zeta = {0.0, 0.001}, zetaw = 0.001),
+//oscilCircle(sh = {0.0, 0.02}, shw = 0, m = 10.0, J = 0.0, zeta = {0.0, 0.001}, zetaw = 0.001),
+//coupledProblem(sh = {0.0, 0.27}, shw = 0, m = 0.5, J = 0.0, zeta = {0.0, 0.001}, zetaw = 0.001),
+//rotor(J=1, tAccel=1.0, wAccel=0.0, externalTorque = 0.0),
+//rotor(J=1, tAccel=1.0, wAccel=1.0, externalTorque = 0.0),
+//rotor(J=1, tAccel=1.0, wAccel=1.0, externalTorque = 0.2),
+//squareGivenLaw(timeAccel = 1.0, initPosition = {0.0, 0.0}, targetAmplitude = {0.2, 0.1}),
+//twoCircle(),
 }

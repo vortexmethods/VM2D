@@ -18,11 +18,15 @@
 # -- Project information -----------------------------------------------------
 
 project = 'VM2D'
-copyright = '2022, Марчевский И.К., Сокол К.С., Рятина Е.П.'
-author = 'Марчевский И.К., Сокол К.С., Рятина Е.П.'
+# copyright = '2024, Марчевский И.К., Сокол К.С., Рятина Е.П., Колганова А.О.'
+# author = 'Марчевский И.К., Сокол К.С., Рятина Е.П., Колганова А.О.'
+
+copyright = '2024, Marchevsky I.K., Sokol K.S., Ryatina E.P., Kolganova A.O.'
+author = 'Marchevsky I.K., Sokol K.S., Ryatina E.P., Kolganova A.O.'
+
 
 # The full version, including alpha/beta/rc tags.
-release = '1.11'
+release = '1.12'
 
 
 # -- General configuration ---------------------------------------------------
@@ -43,7 +47,8 @@ templates_path = ['_templates']
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'ru'
+# language = 'ru'
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -56,9 +61,10 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'alabaster'
+# html_theme = 'alabaster'
 html_theme = 'default'
-html_title = 'Документация пользователя пакета VM2D'
+# html_title = 'Документация пользователя пакета VM2D'
+html_title = 'User guide for the VM2D code'
 html_logo = '_static/LOGO.png'
 
 
@@ -68,7 +74,8 @@ html_logo = '_static/LOGO.png'
 html_static_path = ['_static']
 
 # -- Options for Epub output -------------------------------------------------
-epub_language = 'ru'
+# epub_language = 'ru'
+epub_language = 'en'
 
 # -- Options for LaTeX output -------------------------------------------------
 # Additional stuff for the LaTeX preamble.
