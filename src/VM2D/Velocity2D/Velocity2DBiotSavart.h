@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2DBiotSavart.h                                           |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef VELOCITYBIOTSAVART_H
@@ -55,9 +56,10 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
 
-	\version 1.11
-	\date 07 августа 2022 г.
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class VelocityBiotSavart : public Velocity
 	{
@@ -80,16 +82,15 @@ namespace VM2D
 		/// \param[out] domainRadius ссылка на вектор радиусов вихревых доменов
 		/// \param[in] calcVelo признак вычисления скоростей в точках
 		/// \param[in] calcRadius признак вычисления радиусов доменов
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
 		void CalcConvVeloToSetOfPointsFromWake(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool calcVelo, bool calcRadius);
 #if defined (USE_CUDA)
 		void GPUCalcConvVeloToSetOfPointsFromWake(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool calcVelo, bool calcRadius);
+		void GPUWakeToWakeFAST(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool calcVelo, bool calcRadius);
 #endif	
 
 		//реализация виртуальных функций
 		virtual void CalcConvVelo() override;
-		virtual void FillRhs(Eigen::VectorXd& rhs) const override;		
+		virtual void FillRhs(/*Eigen::VectorXd& rhs, Eigen::VectorXd& rhsSkos,*/ Eigen::VectorXd& rhsReord) const override;
 		virtual void CalcVeloToWakeVP() override;
 
 
@@ -99,11 +100,11 @@ namespace VM2D
 		/// 
 		/// \param[in] afl константная ссылка на профиль, правая часть для которого вычисляется
 		/// \param[out] wakeRhs ссылка на вектор влияния вихревого следа на ОДИН профиль
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
 		void GetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeRhs) const;
 #if defined(USE_CUDA)
 		void GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeRhs) const;
+		void GPUFASTGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeRhs) const;
+		void GPUDiffVeloFAST(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2) const;
 #endif
 
 		void CalcDiffVeloI1I2ToWakeFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2) override;
