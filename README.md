@@ -9,11 +9,11 @@ VM2D: Vortex method for 2D flow simulation
 ![Read the Docs](https://img.shields.io/readthedocs/vm2d)
 
 
-Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina
+Copyright (C) 2017-2024 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina, Aleksandra Kolganova
 
 Программная реализация (с открытым исходным кодом) вихревых методов вычислительной гидродинамики для моделирования течений вязкой несжимаемой среды. 
 
-Версия 1.11 от 07 августа 2022 г.
+Версия 1.12, обновлена 19 июня 2024 г.
 
 ЛИЦЕНЗИЯ
 --------
@@ -44,7 +44,7 @@ Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina
   
 [Документация пользователя](https://vm2d.readthedocs.io/ru/latest), генерируемая средствами [Read the Docs](https://readthedocs.org) находится в процессе разработки, текущая версия доступна по ссылке
 
-      https://vm2d.readthedocs.io/ru/latest
+      https://vm2d.readthedocs.io/en/latest
 
 КРАТКАЯ ИСТОРИЯ ВЕРСИЙ
 ----------------------
@@ -73,6 +73,8 @@ Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina
 
 * Версия 1.11 представлена 08 августа 2022 г. на конференции [ICMAR](http://conf.nsc.ru/icmar2022/) (Новосибирск) 
 
+* Версия 1.12 представлена 22 января 2024 г. на семинаре в [Hohai University](https://en.hhu.edu.cn/) (Нанкин, КНР) 
+
 
 ВОПРОСЫ, ПРЕДЛОЖЕНИЯ И ЗАМЕЧАНИЯ
 --------------------------------
@@ -86,28 +88,103 @@ Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina
 С глубоким уважением,
 разработчики
 
+
+<table width="500" border="0" cellpadding="5">
+<tr>
+<td align="center" valign="center" width="200">
+<img src="docs/_static/authors/Marchevsky.jpg" alt="Марчевский И.К."/>
+<br />
+Марчевский
+<br />
+Илья
+<br />
+Константинович
+</td>
+<td align="center" valign="center" width="200">
+<img src="docs/_static/authors/Sokol.jpg" alt="Сокол К.С."/>
+<br />
+Сокол
+<br />
+Ксения<br />
+Сергеевна
+</td>
+<td align="center" valign="center" width="200">
+<img src="docs/_static/authors/Ryatina.jpg" alt="Рятина Е.П."/>
+<br />
+Рятина
+<br />
+Евгения
+<br />
+Павловна
+</td>
+<td align="center" valign="center" width="200">
+<img src="docs/_static/authors/Kolganova.jpg" alt="Колганова А.О."/>
+<br />
+Колганова
+<br />
+Александра
+<br />
+Олеговна
+</td>
+</tr>
+</table>
+
+
+Авторы благодарят за помощь в разработке кода своих коллег
+
+
 <table width="500" border="0" cellpadding="5">
 
 <tr>
-
-<td align="center" valign="center" width="20%">
-<img src="docs/_static/authors/Marchevsky.jpg" alt="Марчевский И.К."/>
-<br />
-Марчевский Илья Константинович
 </td>
-
-<td align="center" valign="center" width="20%">
-<img src="docs/_static/authors/Sokol.jpg" alt="Сокол К.С."/>
+<td align="center" valign="center" width="160">
+<img src="docs/_static/authors/Shcheglov.jpg" alt="Щеглов Г.А."/>
 <br />
-Сокол Ксения Сергеевна
-</td>
-
-<td align="center" valign="center" width="20%">
-<img src="docs/_static/authors/Ryatina.jpg" alt="Рятина Е.П."/>
+Щеглов
 <br />
-Рятина Евгения Павловна
+Георгий
+<br />
+Александрович
 </td>
-
+<td align="center" valign="center" width="160">
+<img src="docs/_static/authors/Izmailova.jpg" alt="Измайлова Ю.А."/>
+<br />
+Измайлова
+<br />
+Юлия
+<br />
+Андреевна
+</td>
+<td align="center" valign="center" width="160">
+<img src="docs/_static/authors/Soldatova.jpg" alt="Коробова И.А."/>
+<br />
+Коробова
+<br />
+Ирина
+<br />
+Алекснадровна
+</td>
+<td align="center" valign="center" width="160">
+<img src="docs/_static/authors/Serebrovskaya.jpg" alt="Серебровская Е.А."/>
+<br />
+Серебровская
+<br />
+Екатерина
+<br />
+Александровна
+</td>
+<td align="center" valign="center" width="160">
+<img src="docs/_static/authors/Kobzar.jpg" alt="Кобзарь Д.Ю."/>
+<br />
+Кобзарь
+<br />
+Дарья
+<br />
+Юрьевна
 </tr>
-
 </table>
+
+
+
+
+

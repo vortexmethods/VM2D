@@ -19,12 +19,8 @@ FILE(GLOB VMcuda_ALLFILES
     )
 
 #CUDA
-if(CudaOldIncludeMethod)
-    if (CUDA_FOUND)
-       cuda_add_library(VMcuda ${VMcuda_ALLFILES})
-	endif()
-else()
-    if (CMAKE_CUDA_COMPILER)
-       add_library(VMcuda ${VMcuda_ALLFILES})
-	endif()
+if (CMAKE_CUDA_COMPILER)
+    add_library(VMcuda ${VMcuda_ALLFILES})
+    set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr")
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr")
 endif()

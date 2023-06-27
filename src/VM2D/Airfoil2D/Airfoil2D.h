@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.11   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2022/08/07     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2022 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina    |
+| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil2D.h                                                      |
 | Info: Source code of VM2D                                                   |
@@ -32,8 +32,9 @@
 \author Марчевский Илья Константинович
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
-\version 1.11
-\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+\Version 1.12
+\date 14 января 2024 г.
 */
 
 #ifndef AIRFOIL_H
@@ -52,8 +53,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-	\version 1.11
-	\date 07 августа 2022 г.
+\author Колганова Александра Олеговна
+	\Version 1.12
+	\date 14 января 2024 г.
 	*/
 	class Airfoil
 	{
@@ -85,6 +87,12 @@ namespace VM2D
 
 		/// Полярный момент инерции профиля относительно центра масс
 		double J;
+
+		/// Возможные пути внутри профиля от точки (0, 0) к центрам всех панелей
+		std::vector<std::vector<Point2D>> possibleWays;
+		
+		/// Номера путей к вершинам
+		std::vector<int> wayToVertex; 
 
 		///Средние значения Eps на панелях
 		std::vector<double> meanEpsOverPanel;
@@ -151,14 +159,23 @@ namespace VM2D
 		/// Указатель на хосте, где хранится временная часть матрицы, полученная с девайса
 		IFCUDA(mutable std::vector<double> tmpRhs);
 
-		/// Указатель на девайсе, где хранятся интенсивности свободного вихревого слоя на панелях
+		/// Указатель на девайсе, где хранятся интенсивности (константные) свободного вихревого слоя на панелях
 		IFCUDA(mutable double* devFreeVortexSheetPtr);
+		
+		/// Указатель на девайсе, где хранятся интенсивности (линейные) свободного вихревого слоя на панелях
+		IFCUDA(mutable double* devFreeVortexSheetLinPtr);
 
-		/// Указатель на девайсе, где хранятся интенсивности присоединенного вихревого слоя на панелях
+		/// Указатель на девайсе, где хранятся интенсивности (константные) присоединенного вихревого слоя на панелях
 		IFCUDA(mutable double* devAttachedVortexSheetPtr);
+		
+		/// Указатель на девайсе, где хранятся интенсивности (линейные) присоединенного вихревого слоя на панелях
+		IFCUDA(mutable double* devAttachedVortexSheetLinPtr);
 
-		/// Указатель на девайсе, где хранятся интенсивности присоединенного слоя источников на панелях
+		/// Указатель на девайсе, где хранятся интенсивности (константные) присоединенного слоя источников на панелях
 		IFCUDA(mutable double* devAttachedSourceSheetPtr);
+		
+		/// Указатель на девайсе, где хранятся интенсивности (линейные) присоединенного слоя источников на панелях
+		IFCUDA(mutable double* devAttachedSourceSheetLinPtr);
 
 		/// Указатель на девайсе, где хранятся средние eps на панелях
 		IFCUDA(mutable double* devMeanEpsOverPanelPtr);
@@ -295,8 +312,6 @@ namespace VM2D
 		/// \param[out] I3 ссылка на вектор числителей диффузионных скоростей, которые приобретают точки из-за влияния геометрии профиля
 		/// 
 		/// \warning Векторы I0, I3 --- накапливаются!
-		/// \warning Использует OMP, MPI
-		/// \ingroup Parallel
 		virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
 #if defined(USE_CUDA)
 		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3) = 0;
