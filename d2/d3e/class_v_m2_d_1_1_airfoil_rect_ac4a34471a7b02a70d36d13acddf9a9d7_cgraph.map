@@ -1,0 +1,7 @@
+<map id="VM2D::AirfoilRect::Scale" name="VM2D::AirfoilRect::Scale">
+<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a86dac66802e3eccab1ea05eb7d6442b7" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин " alt="" coords="189,49,325,90"/>
+<area shape="rect" id="node6" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a27752906451f4aae047c5c1c787e7e2a" title="Вычисляет габаритный прямоугольник профиля " alt="" coords="189,114,325,155"/>
+<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="389,5,525,32"/>
+<area shape="rect" id="node4" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764" title="Вычисление 2&#45;нормы (длины) вектора " alt="" coords="373,56,540,83"/>
+<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html#aeac4d166e1b761b24de9b5cff5414e88" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному " alt="" coords="380,107,533,133"/>
+</map>

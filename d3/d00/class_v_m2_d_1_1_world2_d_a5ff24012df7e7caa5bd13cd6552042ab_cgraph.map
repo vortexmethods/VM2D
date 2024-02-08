@@ -1,0 +1,12 @@
+<map id="VM2D::World2D::CalcAndSolveLinearSystem" name="VM2D::World2D::CalcAndSolveLinearSystem">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a198aa1abb3a1a6980111422622b97fa7" title="Вычисляем размер матрицы и резервируем память под нее и под правую часть " alt="" coords="263,5,485,47"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="533,341,728,367"/>
+<area shape="rect" id="node5" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a44c734c3878981e37dfcadcc33ab65ca" title="Установка коэффициента разгона потока " alt="" coords="283,122,465,149"/>
+<area shape="rect" id="node6" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="286,173,462,215"/>
+<area shape="rect" id="node7" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a689f7b0e4ae9ed7c56e3b077a50c4de2" title="Установка максимально допустимой циркуляции вихря " alt="" coords="280,239,468,266"/>
+<area shape="rect" id="node8" href="$d0/d75/class_v_m2_d_1_1_gpu.html#aff6cf9500f84f7d400034f1aedc5a369" title="Установка переключателя расчетных схем " alt="" coords="266,290,482,317"/>
+<area shape="rect" id="node9" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a76ca71da59452ac1670c228a6a8b3f09" title="Заполнение матрицы, состоящей из интегралов от (r&#45;xi) / |r&#45;xi|^2. " alt="" coords="295,341,453,367"/>
+<area shape="rect" id="node10" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ada86302cbf92c7dff8124a610ae00e24" title="Заполнение матрицы системы для всех профилей " alt="" coords="285,392,463,433"/>
+<area shape="rect" id="node11" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений " alt="" coords="277,457,471,499"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="535,5,726,47"/>
+</map>

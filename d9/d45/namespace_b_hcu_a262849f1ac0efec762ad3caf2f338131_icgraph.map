@@ -1,0 +1,6 @@
+<map id="BHcu::wrapperDiffusiveVelo" name="BHcu::wrapperDiffusiveVelo">
+<area shape="rect" id="node2" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ab6875b58f381978e20135c90f77abfa3" title="VM2D::Velocity::CalcDiff\lVeloI1I2ToSetOfPointsFromSheets" alt="" coords="240,39,467,80"/>
+<area shape="rect" id="node3" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе " alt="" coords="553,5,723,47"/>
+<area shape="rect" id="node5" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ac04ca51b096cd7f08703c45ebe00ad7e" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromSheets" alt="" coords="515,71,761,112"/>
+<area shape="rect" id="node4" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="809,13,1005,39"/>
+</map>

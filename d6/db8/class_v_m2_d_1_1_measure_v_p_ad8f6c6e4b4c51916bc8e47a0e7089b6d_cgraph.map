@@ -1,0 +1,17 @@
+<map id="VM2D::MeasureVP::CalcPressure" name="VM2D::MeasureVP::CalcPressure">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="279,5,475,32"/>
+<area shape="rect" id="node3" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="277,56,477,83"/>
+<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="290,107,465,133"/>
+<area shape="rect" id="node6" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a96f89cab550d0283c9991cd1867ffc2b" title="Возврат константной ссылки на вихревой след " alt="" coords="288,157,467,184"/>
+<area shape="rect" id="node7" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a3b27cf9188066707092260ece7c35a6f" title="Возврат константной ссылки на объект для вычисления скоростей " alt="" coords="282,208,473,235"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#ab2f8c946d498827f7f4827b538690fa3" title="Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба) " alt="" coords="307,259,447,285"/>
+<area shape="rect" id="node10" href="$d6/dd4/class_v_mlib_1_1numvector.html#a1471ef55266b8e21d045c4f4e05912d9" title="Геометрический поворот двумерного вектора на 90 градусов " alt="" coords="292,309,463,336"/>
+<area shape="rect" id="node11" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a088a7850b255847d4f0f25d652bc71e1" title="Возврат количества граничных условий в задаче " alt="" coords="282,361,473,402"/>
+<area shape="rect" id="node12" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="278,427,477,453"/>
+<area shape="rect" id="node13" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="289,477,466,504"/>
+<area shape="rect" id="node14" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="291,529,463,570"/>
+<area shape="rect" id="node15" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="309,595,445,621"/>
+<area shape="rect" id="node16" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="276,645,479,672"/>
+<area shape="rect" id="node4" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="527,49,703,90"/>
+<area shape="rect" id="node9" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="574,259,655,285"/>
+</map>

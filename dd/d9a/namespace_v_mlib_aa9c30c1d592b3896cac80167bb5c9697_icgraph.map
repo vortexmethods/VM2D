@@ -1,0 +1,29 @@
+<map id="VMlib::sqr" name="VMlib::sqr">
+<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#ae66317e023311cd9bc216024357ab0b1" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения " alt="" coords="140,30,323,86"/>
+<area shape="rect" id="node5" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#a2131c97c4107890c515b240d96d4ae45" title="Сохранение в файл вычисленных скоростей и давлений " alt="" coords="136,121,327,147"/>
+<area shape="rect" id="node7" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a4bfd3c2c190d324cfde4e4e95e863f5f" title="Сохранение строки со статистикой в файл нагрузок " alt="" coords="136,225,327,267"/>
+<area shape="rect" id="node8" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a5705978eb31d08c835167c0c96168bb8" title="VM2D::MechanicsRigidOscill\lPart::UpdateU" alt="" coords="135,291,328,332"/>
+<area shape="rect" id="node9" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e81fd75f2fa3af9ab43b50dcd970046" title="VM2D::Velocity::CalcDiff\lVeloI0I3" alt="" coords="146,356,317,397"/>
+<area shape="rect" id="node11" href="$df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e" title="VM2D::Wake::GetPairsBS" alt="" coords="142,422,321,449"/>
+<area shape="rect" id="node15" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad9b7f5fc4d187f728eed9661ad345c3c" title="VM2D::Wake::CollapsNew" alt="" coords="418,479,598,506"/>
+<area shape="rect" id="node17" href="$df/d8f/class_v_m2_d_1_1_wake.html#a4269347865d074b8446266868c333378" title="Зануление далеко улетевших вихрей " alt="" coords="419,530,597,557"/>
+<area shape="rect" id="node18" href="$df/db0/gamma_circ_8h.html#a9ded039ad6f52e1c16b0a65086e11d4e" title="if" alt="" coords="212,590,251,617"/>
+<area shape="rect" id="node21" href="$dd/d9a/namespace_v_mlib.html#a090232472a9f8cb04ba8535935b3b46b" title="Ядро сглаживания (Монагана) " alt="" coords="191,667,272,694"/>
+<area shape="rect" id="node24" href="$dd/d9a/namespace_v_mlib.html#ab2f8c946d498827f7f4827b538690fa3" title="Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба) " alt="" coords="161,174,301,201"/>
+<area shape="rect" id="node3" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a28befac6a99c52bd38f699a5bb90921c" title="VM2D::AirfoilRect::\lGetDiffVelocityI0I3ToWakeAnd\lViscousStresses" alt="" coords="405,30,611,86"/>
+<area shape="rect" id="node4" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="729,5,865,47"/>
+<area shape="rect" id="node6" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="688,130,907,157"/>
+<area shape="rect" id="node10" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="410,278,606,305"/>
+<area shape="rect" id="node12" href="$df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа " alt="" coords="428,422,588,449"/>
+<area shape="rect" id="node14" href="$df/d8f/class_v_m2_d_1_1_wake.html#a8445ca23e13732c4b7aa312c4e2c219d" title="Деструктор " alt="" coords="967,454,1117,481"/>
+<area shape="rect" id="node13" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей " alt="" coords="721,429,874,455"/>
+<area shape="rect" id="node16" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа " alt="" coords="718,530,877,557"/>
+<area shape="rect" id="node19" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a40e4cb03382b34abe8dd7dc82582490a" title="Генерация вектора влияния вихревого следа на профиль " alt="" coords="419,593,597,635"/>
+<area shape="rect" id="node20" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a54f3597cd4655c1211ffda53628b253a" title="Расчет вектора правой части (всего) " alt="" coords="710,632,885,673"/>
+<area shape="rect" id="node22" href="$dd/d9a/namespace_v_mlib.html#ad8c062cbe3e278a78e187e957077d01d" title="Усовершенствованный сигнум " alt="" coords="465,685,551,711"/>
+<area shape="rect" id="node23" href="$dd/d9a/namespace_v_mlib.html#a335d2f33867d1fa571571118886c5a97" title="Усовершенствованный аркосинус " alt="" coords="746,698,849,725"/>
+<area shape="rect" id="node25" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления " alt="" coords="397,161,619,187"/>
+<area shape="rect" id="node26" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="376,212,640,253"/>
+<area shape="rect" id="node27" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="955,212,1129,253"/>
+<area shape="rect" id="node28" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a8efe4ad936349ae0282b37bc61ac2869" title="Вычисление скоростей в точках wakeVP. " alt="" coords="710,241,885,283"/>
+</map>

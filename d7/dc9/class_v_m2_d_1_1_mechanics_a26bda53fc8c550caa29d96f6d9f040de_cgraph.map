@@ -1,0 +1,7 @@
+<map id="VM2D::Mechanics::GeneratePositionHeader" name="VM2D::Mechanics::GeneratePositionHeader">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="244,5,440,32"/>
+<area shape="rect" id="node3" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D. " alt="" coords="252,56,432,83"/>
+<area shape="rect" id="node6" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D. " alt="" coords="245,107,439,133"/>
+<area shape="rect" id="node4" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D. " alt="" coords="488,31,663,57"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой " alt="" coords="494,81,657,108"/>
+</map>

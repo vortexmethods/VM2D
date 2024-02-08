@@ -1,0 +1,6 @@
+<map id="VM2D::BoundaryConstLayerAver::GetInfluenceFromSourcesToRectPanel" name="VM2D::BoundaryConstLayerAver::GetInfluenceFromSourcesToRectPanel">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="263,5,399,32"/>
+<area shape="rect" id="node3" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="265,56,396,83"/>
+<area shape="rect" id="node4" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#a19fac3f92003a7a45d4e635585d8c1ef" title="Функция для доступа к циркуляции вихря " alt="" coords="264,107,397,133"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов " alt="" coords="276,157,385,184"/>
+</map>

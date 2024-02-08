@@ -1,0 +1,6 @@
+<map id="VM2D::WakeDataBase::ReadFromFile" name="VM2D::WakeDataBase::ReadFromFile">
+<area shape="rect" id="node2" href="$dd/d9a/namespace_v_mlib.html#a6b3aae108ba4e961d15ad5c278842901" title="Проверка существования файла " alt="" coords="229,5,365,32"/>
+<area shape="rect" id="node3" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="212,56,381,83"/>
+<area shape="rect" id="node4" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a9fae0e4418f1053a6633ca35408aff4b" title="Считывание вектора из двумерных точек из базы данных " alt="" coords="212,107,381,133"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a9f4fcb924d0d4b3f0e685bc8b2f4973f" title="Функция сверки строки с шаблоном, который может содержать знаки * и ? " alt="" coords="429,107,545,133"/>
+</map>

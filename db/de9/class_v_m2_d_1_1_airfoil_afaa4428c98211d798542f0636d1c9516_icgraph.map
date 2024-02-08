@@ -1,0 +1,10 @@
+<map id="VM2D::Airfoil::setV" name="VM2D::Airfoil::setV">
+<area shape="rect" id="node2" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#aa7da88dbafbb00e5c10c141b59afae8a" title="Вычисление скоростей начал панелей " alt="" coords="203,5,397,47"/>
+<area shape="rect" id="node4" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a07b390c266752385ed81d638828f9df4" title="Вычисление скоростей начал панелей " alt="" coords="188,71,412,112"/>
+<area shape="rect" id="node6" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#aeefa25aeb6cf8e5e10756926e0f47802" title="Вычисление скоростей начал панелей " alt="" coords="203,136,397,177"/>
+<area shape="rect" id="node8" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a390e256224195d7805eafe7bd9e83668" title="Вычисление скоростей начал панелей " alt="" coords="201,201,399,243"/>
+<area shape="rect" id="node3" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a5424e2694887408f886168734f490a7a" title="Деструктор " alt="" coords="465,5,679,47"/>
+<area shape="rect" id="node5" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#ad3c325c6687ee3722e752e74e5551e42" title="Деструктор " alt="" coords="460,71,684,112"/>
+<area shape="rect" id="node7" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a75eec602bb770e89e41d7773afe53948" title="Деструктор " alt="" coords="466,136,678,177"/>
+<area shape="rect" id="node9" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a7b7a0d2367a91741daae89f90751db92" title="Деструктор " alt="" coords="463,201,681,243"/>
+</map>

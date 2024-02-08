@@ -1,0 +1,7 @@
+<map id="VM2D::VelocityBiotSavart::CalcDiffVeloI1I2ToWakeFromWake" name="VM2D::VelocityBiotSavart::CalcDiffVeloI1I2ToWakeFromWake">
+<area shape="rect" id="node2" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a9d62ab68ad9f30cb51837040128f5965" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек ..." alt="" coords="292,86,512,127"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="560,5,756,32"/>
+<area shape="rect" id="node4" href="$db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a7d3941e28c9966512123e3242d4e40d1" title="Функция минимально возможного значения для epsAst. " alt="" coords="567,57,749,98"/>
+<area shape="rect" id="node5" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="593,123,723,149"/>
+<area shape="rect" id="node6" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#a19fac3f92003a7a45d4e635585d8c1ef" title="Функция для доступа к циркуляции вихря " alt="" coords="591,173,725,200"/>
+</map>

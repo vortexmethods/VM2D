@@ -1,0 +1,6 @@
+<map id="VM2D::World2D::World2D" name="VM2D::World2D::World2D">
+<area shape="rect" id="node2" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a9718b59c756960f3d793ef9e32b30199" title="Связывание потока логов с потоком вывода " alt="" coords="233,5,405,47"/>
+<area shape="rect" id="node3" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aeac3c4a247f466bfc0716e79402beab3" title="Установка текущего времени " alt="" coords="231,71,407,112"/>
+<area shape="rect" id="node4" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a189a69073636a4f93a1de3c7a8e13098" title="Вывод в поток логов пустой строки " alt="" coords="239,137,398,163"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D. " alt="" coords="231,187,406,214"/>
+</map>

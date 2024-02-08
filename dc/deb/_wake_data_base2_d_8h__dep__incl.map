@@ -1,0 +1,28 @@
+<map id="VM2D/WakeDataBase2D/WakeDataBase2D.h" name="VM2D/WakeDataBase2D/WakeDataBase2D.h">
+<area shape="rect" id="node2" href="$de/dac/_airfoil2_d_8cpp.html" title="Файл кода с описанием класса Airfoil. " alt="" coords="253,266,445,293"/>
+<area shape="rect" id="node3" href="$d2/dad/_velocity2_d_8cpp.html" title="Файл кода с описанием класса Velocity. " alt="" coords="921,259,1106,300"/>
+<area shape="rect" id="node4" href="$d5/d31/_virtual_wake2_d_8h.html" title="Заголовочный файл с описанием класса VirtualWake. " alt="" coords="1829,95,1979,136"/>
+<area shape="rect" id="node26" href="$dc/d69/_wake_data_base2_d_8cpp.html" title="Файл кода с описанием класса WakeDataBase. " alt="" coords="3979,259,4151,300"/>
+<area shape="rect" id="node27" href="$dc/d4d/_wake2_d_8h.html" title="Заголовочный файл с описанием класса Wake. " alt="" coords="2769,184,2949,211"/>
+<area shape="rect" id="node5" href="$d6/d41/_boundary2_d_8h.html" title="Заголовочный файл с описанием класса Boundary. " alt="" coords="1793,184,2015,211"/>
+<area shape="rect" id="node6" href="$de/d45/_airfoil2_d_rect_8cpp.html" title="Файл кода с описанием класса AirfoilRect. " alt="" coords="3633,266,3853,293"/>
+<area shape="rect" id="node7" href="$da/dee/_boundary2_d_8cpp.html" title="Файл кода с описанием класса Boundary. " alt="" coords="1130,259,1331,300"/>
+<area shape="rect" id="node8" href="$d6/d56/_boundary2_d_const_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryConstLayerAver. " alt="" coords="27,259,229,300"/>
+<area shape="rect" id="node10" href="$d5/d96/_measure_v_p2_d_8cpp.html" title="Файл кода с описанием класса MeasureVP. " alt="" coords="27,348,229,389"/>
+<area shape="rect" id="node12" href="$d1/d2e/_boundary2_d_lin_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryLinLayerAver. " alt="" coords="470,259,671,300"/>
+<area shape="rect" id="node14" href="$d5/d0c/_boundary2_d_vortex_colloc_n_8h.html" title="Заголовочный файл с описанием класса BoundaryVortexCollocN. " alt="" coords="695,259,897,300"/>
+<area shape="rect" id="node16" href="$d5/d1b/_gpu2_d_8cpp.html" title="Файл кода с описанием класса Gpu. " alt="" coords="1355,266,1530,293"/>
+<area shape="rect" id="node17" href="$df/dde/_mechanics2_d_8cpp.html" title="Файл кода с описанием класса Mechanics.cpp. " alt="" coords="1554,259,1771,300"/>
+<area shape="rect" id="node18" href="$d0/d4f/_mechanics2_d_rigid_given_law_8cpp.html" title="Файл кода с описанием класса MechanicsRigidGivenLaw. " alt="" coords="1795,259,2013,300"/>
+<area shape="rect" id="node19" href="$d0/dfa/_mechanics2_d_rigid_immovable_8cpp.html" title="Файл кода с описанием класса MechanicsRigidImmovable. " alt="" coords="2037,259,2254,300"/>
+<area shape="rect" id="node20" href="$d1/da2/_mechanics2_d_rigid_oscill_part_8cpp.html" title="Файл кода с описанием класса MechanicsRigidOscillPart. " alt="" coords="2278,259,2495,300"/>
+<area shape="rect" id="node21" href="$d5/d9d/_mechanics2_d_rigid_rotate_part_8cpp.html" title="Файл кода с описанием класса Mechanics2DRigidRotatePart. " alt="" coords="2519,259,2737,300"/>
+<area shape="rect" id="node22" href="$d2/d24/_sheet2_d_8cpp.html" title="Файл кода с описанием класса Sheet. " alt="" coords="2761,266,2956,293"/>
+<area shape="rect" id="node23" href="$d2/d5a/_times2_d_8cpp.html" title="Файл кода с описанием класса Times. " alt="" coords="2981,266,3179,293"/>
+<area shape="rect" id="node24" href="$dd/d60/_velocity2_d_biot_savart_8cpp.html" title="Файл кода с описанием класса VelocityBiotSavart. " alt="" coords="3203,259,3389,300"/>
+<area shape="rect" id="node25" href="$d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake. " alt="" coords="3413,266,3608,293"/>
+<area shape="rect" id="node9" href="$de/d6b/_boundary2_d_const_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryConstLayerAver. " alt="" coords="2327,348,2529,389"/>
+<area shape="rect" id="node11" href="$d6/ddb/_world2_d_8cpp.html" title="Файл кода с описанием класса World2D. " alt="" coords="585,355,780,382"/>
+<area shape="rect" id="node13" href="$dc/d7a/_boundary2_d_lin_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryLinLayerAver. " alt="" coords="3314,348,3515,389"/>
+<area shape="rect" id="node15" href="$dd/d45/_boundary2_d_vortex_colloc_n_8cpp.html" title="Файл кода с описанием класса BoundaryVortexCollocN. " alt="" coords="3921,348,4122,389"/>
+</map>

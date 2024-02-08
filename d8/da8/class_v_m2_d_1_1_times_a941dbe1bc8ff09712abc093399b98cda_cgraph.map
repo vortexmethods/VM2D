@@ -1,0 +1,7 @@
+<map id="VM2D::Times::GenerateStatString" name="VM2D::Times::GenerateStatString">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="252,5,448,32"/>
+<area shape="rect" id="node3" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a166a10941c37c9c73686c4981d13c584" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="241,56,459,83"/>
+<area shape="rect" id="node4" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a07acdb787188d8f83ae8587cc0b39df0" title="Возвращает текуще время " alt="" coords="262,107,438,149"/>
+<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a96f89cab550d0283c9991cd1867ffc2b" title="Возврат константной ссылки на вихревой след " alt="" coords="261,173,439,200"/>
+<area shape="rect" id="node6" href="$d8/de6/class_v_mlib_1_1_times_gen.html#a254abcef2f5ba63410678b0ffafbf5e9" title="VMlib::TimesGen::dT" alt="" coords="277,224,423,251"/>
+</map>

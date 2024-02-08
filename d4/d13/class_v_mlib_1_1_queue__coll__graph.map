@@ -1,0 +1,15 @@
+<map id="VMlib::Queue" name="VMlib::Queue">
+<area shape="rect" id="node2" href="$d1/dd8/class_v_mlib_1_1_log_stream.html" title="Класс, определяющий работу с потоком логов " alt="" coords="739,268,865,295"/>
+<area shape="rect" id="node14" href="$d6/d3d/class_v_mlib_1_1_world_gen.html" title="Класс, опеделяющий текущую решаемую задачу " alt="" coords="1385,207,1507,233"/>
+<area shape="rect" id="node15" href="$d9/d9a/class_v_mlib_1_1_passport_gen.html" title="Абстрактный класс, опеделяющий паспорт задачи " alt="" coords="1113,336,1251,363"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="549,335,629,361"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="362,327,489,369"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="541,257,636,284"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="359,250,492,291"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="155,257,309,284"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="5,257,105,284"/>
+<area shape="rect" id="node9" href="$dd/de1/class_v_mlib_1_1_parallel.html" title="Класс, опеделяющий параметры исполнения задачи в параллельном MPI&#45;режиме " alt="" coords="1659,84,1766,111"/>
+<area shape="rect" id="node11" href="$d7/db3/class_v_mlib_1_1_task.html" title="Класс, опеделяющий описание каждой задачи в смысле прохождения процесса ее решения ..." alt="" coords="1400,96,1492,123"/>
+<area shape="rect" id="node16" href="$d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени " alt="" coords="716,409,888,450"/>
+<area shape="rect" id="node18" href="$d8/de6/class_v_mlib_1_1_times_gen.html" title="Класс для сбора статистики времени исполнения основных шагов алгоритма и вывода ее в файл ..." alt="" coords="741,147,863,173"/>
+</map>

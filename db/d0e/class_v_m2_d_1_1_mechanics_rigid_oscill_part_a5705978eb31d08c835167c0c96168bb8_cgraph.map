@@ -1,0 +1,7 @@
+<map id="VM2D::MechanicsRigidOscillPart::UpdateU" name="VM2D::MechanicsRigidOscillPart::UpdateU">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="263,5,459,32"/>
+<area shape="rect" id="node3" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a5e6bfd0b3b87fb0f3bda513ebd0c2f96" title="Чтение параметров конкретной механической системы " alt="" coords="247,56,476,112"/>
+<area shape="rect" id="node4" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="277,136,446,163"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="321,187,402,213"/>
+<area shape="rect" id="node6" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="274,237,449,264"/>
+</map>

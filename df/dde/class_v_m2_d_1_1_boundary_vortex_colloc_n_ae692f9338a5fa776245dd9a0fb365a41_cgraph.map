@@ -1,0 +1,20 @@
+<map id="VM2D::BoundaryVortexCollocN::CalcConvVelocityToSetOfPointsFromSheets" name="VM2D::BoundaryVortexCollocN::CalcConvVelocityToSetOfPointsFromSheets">
+<area shape="rect" id="node2" href="$d6/dd4/class_v_mlib_1_1numvector.html#ab52c2bfa931d8533aae15b6999d718ab" title="Установка всех компонент вектора в константу (по умолчанию — нуль) " alt="" coords="301,5,470,32"/>
+<area shape="rect" id="node3" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a8016a5311758482564a0fcb0868477fa" title="VM2D::Sheet::getSheetSize" alt="" coords="292,56,479,83"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="317,107,453,133"/>
+<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html#aeac4d166e1b761b24de9b5cff5414e88" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному " alt="" coords="309,157,462,184"/>
+<area shape="rect" id="node6" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами " alt="" coords="337,208,433,235"/>
+<area shape="rect" id="node9" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="824,233,999,260"/>
+<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов " alt="" coords="331,309,440,336"/>
+<area shape="rect" id="node11" href="$d6/dd4/class_v_mlib_1_1numvector.html#a1471ef55266b8e21d045c4f4e05912d9" title="Геометрический поворот двумерного вектора на 90 градусов " alt="" coords="300,360,471,387"/>
+<area shape="rect" id="node12" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="284,411,487,437"/>
+<area shape="rect" id="node13" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a9431e357980548a5fabd5ffffb917665" title="VM2D::Sheet::attachedVortex\lSheet" alt="" coords="287,462,484,503"/>
+<area shape="rect" id="node14" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a49b7345512b924471bbac608c7129043" title="VM2D::Sheet::attachedSource\lSheet" alt="" coords="285,527,485,569"/>
+<area shape="rect" id="node15" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="299,593,471,634"/>
+<area shape="rect" id="node16" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="290,658,481,699"/>
+<area shape="rect" id="node17" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="297,724,474,751"/>
+<area shape="rect" id="node18" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="287,775,483,801"/>
+<area shape="rect" id="node19" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0c0e1a56d2270639e9dc27f700a49e53" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="298,825,473,852"/>
+<area shape="rect" id="node7" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="535,208,637,235"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="685,208,776,235"/>
+</map>

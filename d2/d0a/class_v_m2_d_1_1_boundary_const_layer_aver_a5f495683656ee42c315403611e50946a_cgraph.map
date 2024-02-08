@@ -1,0 +1,6 @@
+<map id="VM2D::BoundaryConstLayerAver::CalcConvVelocityAtVirtualVortexes" name="VM2D::BoundaryConstLayerAver::CalcConvVelocityAtVirtualVortexes">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5b9bb928f446cad77a33ec6c01862d7a" title="Возврат константной ссылки на скорость вершины профиля " alt="" coords="298,5,433,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="267,56,463,83"/>
+<area shape="rect" id="node4" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="265,107,465,133"/>
+<area shape="rect" id="node5" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="513,99,689,141"/>
+</map>

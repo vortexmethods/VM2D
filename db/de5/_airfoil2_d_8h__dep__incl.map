@@ -1,0 +1,23 @@
+<map id="VM2D/Airfoil2D/Airfoil2D.h" name="VM2D/Airfoil2D/Airfoil2D.h">
+<area shape="rect" id="node2" href="$de/dac/_airfoil2_d_8cpp.html" title="Файл кода с описанием класса Airfoil. " alt="" coords="5,87,197,114"/>
+<area shape="rect" id="node3" href="$d2/df8/_airfoil2_d_rect_8h.html" title="Заголовочный файл с описанием класса AirfoilRect. " alt="" coords="222,87,429,114"/>
+<area shape="rect" id="node6" href="$da/dee/_boundary2_d_8cpp.html" title="Файл кода с описанием класса Boundary. " alt="" coords="453,80,654,121"/>
+<area shape="rect" id="node7" href="$de/d6b/_boundary2_d_const_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryConstLayerAver. " alt="" coords="678,80,879,121"/>
+<area shape="rect" id="node8" href="$dc/d7a/_boundary2_d_lin_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryLinLayerAver. " alt="" coords="903,80,1105,121"/>
+<area shape="rect" id="node9" href="$dd/d45/_boundary2_d_vortex_colloc_n_8cpp.html" title="Файл кода с описанием класса BoundaryVortexCollocN. " alt="" coords="1129,80,1330,121"/>
+<area shape="rect" id="node10" href="$d5/d1b/_gpu2_d_8cpp.html" title="Файл кода с описанием класса Gpu. " alt="" coords="1354,87,1529,114"/>
+<area shape="rect" id="node11" href="$d5/d96/_measure_v_p2_d_8cpp.html" title="Файл кода с описанием класса MeasureVP. " alt="" coords="1553,80,1756,121"/>
+<area shape="rect" id="node12" href="$df/dde/_mechanics2_d_8cpp.html" title="Файл кода с описанием класса Mechanics.cpp. " alt="" coords="1781,80,1998,121"/>
+<area shape="rect" id="node13" href="$d0/d4f/_mechanics2_d_rigid_given_law_8cpp.html" title="Файл кода с описанием класса MechanicsRigidGivenLaw. " alt="" coords="2022,80,2239,121"/>
+<area shape="rect" id="node14" href="$d0/dfa/_mechanics2_d_rigid_immovable_8cpp.html" title="Файл кода с описанием класса MechanicsRigidImmovable. " alt="" coords="2263,80,2481,121"/>
+<area shape="rect" id="node15" href="$d1/da2/_mechanics2_d_rigid_oscill_part_8cpp.html" title="Файл кода с описанием класса MechanicsRigidOscillPart. " alt="" coords="2505,80,2722,121"/>
+<area shape="rect" id="node16" href="$d5/d9d/_mechanics2_d_rigid_rotate_part_8cpp.html" title="Файл кода с описанием класса Mechanics2DRigidRotatePart. " alt="" coords="2746,80,2963,121"/>
+<area shape="rect" id="node17" href="$d2/d24/_sheet2_d_8cpp.html" title="Файл кода с описанием класса Sheet. " alt="" coords="2988,87,3183,114"/>
+<area shape="rect" id="node18" href="$d2/d5a/_times2_d_8cpp.html" title="Файл кода с описанием класса Times. " alt="" coords="3207,87,3406,114"/>
+<area shape="rect" id="node19" href="$d2/dad/_velocity2_d_8cpp.html" title="Файл кода с описанием класса Velocity. " alt="" coords="3430,80,3615,121"/>
+<area shape="rect" id="node20" href="$dd/d60/_velocity2_d_biot_savart_8cpp.html" title="Файл кода с описанием класса VelocityBiotSavart. " alt="" coords="3639,80,3825,121"/>
+<area shape="rect" id="node21" href="$d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake. " alt="" coords="3849,87,4044,114"/>
+<area shape="rect" id="node22" href="$dc/d69/_wake_data_base2_d_8cpp.html" title="Файл кода с описанием класса WakeDataBase. " alt="" coords="4069,80,4241,121"/>
+<area shape="rect" id="node4" href="$de/d45/_airfoil2_d_rect_8cpp.html" title="Файл кода с описанием класса AirfoilRect. " alt="" coords="99,169,319,196"/>
+<area shape="rect" id="node5" href="$d6/ddb/_world2_d_8cpp.html" title="Файл кода с описанием класса World2D. " alt="" coords="344,169,539,196"/>
+</map>

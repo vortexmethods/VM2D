@@ -1,0 +1,8 @@
+<map id="VM2D::MechanicsRigidOscillPart::GetHydroDynamForce" name="VM2D::MechanicsRigidOscillPart::GetHydroDynamForce">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="251,5,445,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="250,56,446,83"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="262,107,434,149"/>
+<area shape="rect" id="node5" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="247,173,449,200"/>
+<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="280,224,416,251"/>
+<area shape="rect" id="node7" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="261,275,435,301"/>
+</map>

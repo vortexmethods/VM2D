@@ -1,0 +1,5 @@
+<map id="VM2D::Wake::MoveInside" name="VM2D::Wake::MoveInside">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a8e7340245cfc3ba2a3d0cd05d9ba7519" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля ..." alt="" coords="234,5,397,47"/>
+<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="229,71,401,112"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="247,137,383,163"/>
+</map>

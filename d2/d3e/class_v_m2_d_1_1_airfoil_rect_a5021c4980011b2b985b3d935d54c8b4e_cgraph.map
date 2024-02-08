@@ -1,0 +1,4 @@
+<map id="VM2D::AirfoilRect::GetInfluenceFromVorticesToPanel" name="VM2D::AirfoilRect::GetInfluenceFromVorticesToPanel">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="245,5,444,32"/>
+<area shape="rect" id="node3" href="$df/da2/class_v_m2_d_1_1_boundary.html#a211ce06f20fc153227aef9d17e9ed15a" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="243,57,447,98"/>
+</map>

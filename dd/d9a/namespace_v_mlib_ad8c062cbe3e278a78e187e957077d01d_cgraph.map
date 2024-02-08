@@ -1,0 +1,12 @@
+<map id="VMlib::sign" name="VMlib::sign">
+<area shape="rect" id="node2" href="$dd/d9a/namespace_v_mlib.html#ac5fcc7948bce30707ac03a3bd047ac22" title="Сохранение списка из двумерных векторов (точек) в поток " alt="" coords="140,5,291,32"/>
+<area shape="rect" id="node3" href="$dd/d9a/namespace_v_mlib.html#a090232472a9f8cb04ba8535935b3b46b" title="Ядро сглаживания (Монагана) " alt="" coords="175,56,256,83"/>
+<area shape="rect" id="node5" href="$dd/d60/_velocity2_d_biot_savart_8cpp.html#a24621439a1e24f7f518b40641d561467" title="Модифицирует массив квадратов расстояний до ближайших вихрей из wake. " alt="" coords="177,107,254,133"/>
+<area shape="rect" id="node6" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами " alt="" coords="167,157,263,184"/>
+<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов " alt="" coords="161,208,270,235"/>
+<area shape="rect" id="node11" href="$dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины . " alt="" coords="163,259,268,285"/>
+<area shape="rect" id="node4" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="349,56,431,83"/>
+<area shape="rect" id="node7" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="339,208,441,235"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="489,208,580,235"/>
+<area shape="rect" id="node9" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="628,208,803,235"/>
+</map>

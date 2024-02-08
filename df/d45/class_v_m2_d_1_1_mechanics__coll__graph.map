@@ -1,0 +1,32 @@
+<map id="VM2D::Mechanics" name="VM2D::Mechanics">
+<area shape="rect" id="node3" href="$db/d04/class_v_mlib_1_1_stream_parser.html" title="Класс, позволяющий выполнять разбор файлов и строк с настройками и параметрами " alt="" coords="1497,797,1639,824"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="419,1085,499,1112"/>
+<area shape="rect" id="node8" href="$d1/dd8/class_v_mlib_1_1_log_stream.html" title="Класс, определяющий работу с потоком логов " alt="" coords="1105,921,1232,948"/>
+<area shape="rect" id="node19" href="$d9/d9a/class_v_mlib_1_1_passport_gen.html" title="Абстрактный класс, опеделяющий паспорт задачи " alt="" coords="1499,1044,1637,1071"/>
+<area shape="rect" id="node40" href="$d2/d15/class_v_m2_d_1_1_passport.html" title="Класс, опеделяющий паспорт двумерной задачи " alt="" coords="1845,1143,1964,1169"/>
+<area shape="rect" id="node43" href="$d7/deb/struct_v_m2_d_1_1_airfoil_params.html" title="Структура, задающая параметры профиля " alt="" coords="1096,1143,1241,1169"/>
+<area shape="rect" id="node44" href="$db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html" title="Структура, задающая параметры параметры дискретизации вихревого следа " alt="" coords="877,1291,1059,1333"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="169,1078,295,1119"/>
+<area shape="rect" id="node18" href="$d6/d3d/class_v_mlib_1_1_world_gen.html" title="Класс, опеделяющий текущую решаемую задачу " alt="" coords="1844,921,1965,948"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="715,868,809,895"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="393,861,526,902"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="155,868,309,895"/>
+<area shape="rect" id="node12" title="STL class. " alt="" coords="5,868,105,895"/>
+<area shape="rect" id="node13" href="$df/da2/class_v_m2_d_1_1_boundary.html" title="Абстрактный класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле ..." alt="" coords="3757,463,3880,489"/>
+<area shape="rect" id="node14" href="$d4/d07/class_v_m2_d_1_1_virtual_wake.html" title="Класс, опеделяющий вихревой след (пелену) " alt="" coords="4029,573,4168,600"/>
+<area shape="rect" id="node15" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей " alt="" coords="3436,1092,3595,1119"/>
+<area shape="rect" id="node25" href="$df/d8f/class_v_m2_d_1_1_wake.html" title="Класс, опеделяющий вихревой след (пелену) " alt="" coords="3768,1199,3869,1225"/>
+<area shape="rect" id="node17" href="$d3/d00/class_v_m2_d_1_1_world2_d.html" title="Класс, опеделяющий текущую решаемую задачу " alt="" coords="3214,797,3333,824"/>
+<area shape="rect" id="node27" href="$d0/d75/class_v_m2_d_1_1_gpu.html" title="Класс, обеспечивающий возможность выполнения вычислений на GPU по технологии Nvidia CUDA..." alt="" coords="3470,877,3561,904"/>
+<area shape="rect" id="node29" href="$d7/dfe/class_v_m2_d_1_1_velocity.html" title="Абстрактный класс, определяющий способ вычисления скоростей " alt="" coords="3458,600,3573,627"/>
+<area shape="rect" id="node36" href="$db/de9/class_v_m2_d_1_1_airfoil.html" title="Абстрактный класс, определяющий обтекаемый профиль " alt="" coords="3465,245,3565,272"/>
+<area shape="rect" id="node52" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html" title="Класс, отвечающий за вычисление поля скорости и давления в заданых точках для вывода ..." alt="" coords="4031,965,4166,992"/>
+<area shape="rect" id="node55" href="$de/d8b/class_v_m2_d_1_1_sheet.html" title="Класс, опеделяющий слои на поверхности обтекаемого профиля " alt="" coords="3465,432,3566,459"/>
+<area shape="rect" id="node20" href="$d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени " alt="" coords="1083,1005,1255,1046"/>
+<area shape="rect" id="node45" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html" title="Структура, задающая физические свойства задачи " alt="" coords="1480,993,1656,1020"/>
+<area shape="rect" id="node22" href="$d8/de6/class_v_mlib_1_1_times_gen.html" title="Класс для сбора статистики времени исполнения основных шагов алгоритма и вывода ее в файл ..." alt="" coords="1107,808,1230,835"/>
+<area shape="rect" id="node31" href="$d2/d48/struct_v_m2_d_1_1_vortexes_params.html" title="Структура, определяющая параметры виртуальных вихрей для отдельного профиля " alt="" coords="1823,587,1987,613"/>
+<area shape="rect" id="node37" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title="Класс, опеделяющий двумерный вектор " alt="" coords="707,573,817,600"/>
+<area shape="rect" id="node38" href="$d6/dd4/class_v_mlib_1_1numvector.html" title="VMlib::numvector\&lt; double, 2 \&gt;" alt="" coords="359,573,560,600"/>
+<area shape="rect" id="node41" href="$d2/d76/struct_v_m2_d_1_1_numerical_schemes.html" title="Структура, задающая используемые численные схемы " alt="" coords="1477,1256,1659,1283"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="VM2D::MechanicsRigidRotatePart::getPhiOld" name="VM2D::MechanicsRigidRotatePart::getPhiOld">
+<area shape="rect" id="node2" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a59183858c817328199f449df792b6b5a" title="Конструктор " alt="" coords="252,99,463,141"/>
+<area shape="rect" id="node3" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#ad00c8353de0fbf8b6a1c8a45355dfe1b" title="Чтение параметров конкретной механической системы " alt="" coords="511,9,740,65"/>
+<area shape="rect" id="node5" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости " alt="" coords="532,107,719,133"/>
+<area shape="rect" id="node7" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="788,157,965,184"/>
+<area shape="rect" id="node4" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="792,5,961,32"/>
+<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae77606bfe37d99ef15cefa876e284277" title="Перемещение профиля " alt="" coords="807,56,947,83"/>
+<area shape="rect" id="node8" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae6f87ad89e0743fd910af6f898c4d6e6" title="Поворот профиля " alt="" coords="803,107,950,133"/>
+</map>

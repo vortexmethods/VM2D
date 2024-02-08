@@ -1,0 +1,10 @@
+<map id="VM2D::MechanicsRigidGivenLaw::Move" name="VM2D::MechanicsRigidGivenLaw::Move">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="248,5,444,32"/>
+<area shape="rect" id="node3" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a07acdb787188d8f83ae8587cc0b39df0" title="Возвращает текуще время " alt="" coords="258,57,434,98"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae77606bfe37d99ef15cefa876e284277" title="Перемещение профиля " alt="" coords="276,123,416,149"/>
+<area shape="rect" id="node5" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a57a932604018b2b7b2b76a090c66d170" title="Вычисление положения центра масс профиля " alt="" coords="249,174,443,215"/>
+<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae6f87ad89e0743fd910af6f898c4d6e6" title="Поворот профиля " alt="" coords="273,240,419,267"/>
+<area shape="rect" id="node7" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#adf06862acd7724eb4ec955de2e525054" title="Вычисление угла поворота профиля " alt="" coords="249,291,443,333"/>
+<area shape="rect" id="node8" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a486b72e76c7712539adf50d68e3c557c" title="Вычисление скорости центра масс профиля " alt="" coords="249,357,443,398"/>
+<area shape="rect" id="node9" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a98f57ed642d3dd9e48624b43d7480df5" title="Вычисление угловой скорости профиля " alt="" coords="249,422,443,463"/>
+</map>

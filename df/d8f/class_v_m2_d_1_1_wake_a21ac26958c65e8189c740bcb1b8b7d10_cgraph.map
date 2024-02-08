@@ -1,0 +1,7 @@
+<map id="VM2D::Wake::MoveInsideMovingBoundary" name="VM2D::Wake::MoveInsideMovingBoundary">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a8e7340245cfc3ba2a3d0cd05d9ba7519" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля ..." alt="" coords="277,5,439,47"/>
+<area shape="rect" id="node3" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="313,71,403,98"/>
+<area shape="rect" id="node4" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="492,97,667,123"/>
+<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="272,173,444,215"/>
+<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="290,239,426,266"/>
+</map>

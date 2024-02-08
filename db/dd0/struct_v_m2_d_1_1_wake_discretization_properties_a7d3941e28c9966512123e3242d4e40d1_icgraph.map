@@ -1,0 +1,12 @@
+<map id="VM2D::WakeDiscretizationProperties::getMinEpsAst" name="VM2D::WakeDiscretizationProperties::getMinEpsAst">
+<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#ae66317e023311cd9bc216024357ab0b1" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения " alt="" coords="257,71,439,127"/>
+<area shape="rect" id="node3" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a28befac6a99c52bd38f699a5bb90921c" title="VM2D::AirfoilRect::\lGetDiffVelocityI0I3ToWakeAnd\lViscousStresses" alt="" coords="530,5,735,61"/>
+<area shape="rect" id="node5" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе " alt="" coords="547,274,718,315"/>
+<area shape="rect" id="node7" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e81fd75f2fa3af9ab43b50dcd970046" title="VM2D::Velocity::CalcDiff\lVeloI0I3" alt="" coords="263,150,433,191"/>
+<area shape="rect" id="node8" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a9d62ab68ad9f30cb51837040128f5965" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек ..." alt="" coords="238,215,458,257"/>
+<area shape="rect" id="node10" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ab6875b58f381978e20135c90f77abfa3" title="VM2D::Velocity::CalcDiff\lVeloI1I2ToSetOfPointsFromSheets" alt="" coords="235,333,461,374"/>
+<area shape="rect" id="node4" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="834,46,970,87"/>
+<area shape="rect" id="node6" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="804,219,1000,245"/>
+<area shape="rect" id="node9" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#aba507495ba1d6c266ea95348eeb706a2" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromWake" alt="" coords="513,209,752,250"/>
+<area shape="rect" id="node11" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ac04ca51b096cd7f08703c45ebe00ad7e" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromSheets" alt="" coords="509,339,756,381"/>
+</map>

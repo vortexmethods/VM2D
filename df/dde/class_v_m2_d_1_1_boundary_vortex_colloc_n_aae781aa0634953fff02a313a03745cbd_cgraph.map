@@ -1,0 +1,6 @@
+<map id="VM2D::BoundaryVortexCollocN::ComputeAttachedSheetsIntensity" name="VM2D::BoundaryVortexCollocN::ComputeAttachedSheetsIntensity">
+<area shape="rect" id="node2" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a8016a5311758482564a0fcb0868477fa" title="VM2D::Sheet::getSheetSize" alt="" coords="296,5,483,32"/>
+<area shape="rect" id="node3" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a9431e357980548a5fabd5ffffb917665" title="VM2D::Sheet::attachedVortex\lSheet" alt="" coords="291,57,488,98"/>
+<area shape="rect" id="node4" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a49b7345512b924471bbac608c7129043" title="VM2D::Sheet::attachedSource\lSheet" alt="" coords="289,122,489,163"/>
+<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5b9bb928f446cad77a33ec6c01862d7a" title="Возврат константной ссылки на скорость вершины профиля " alt="" coords="322,188,457,215"/>
+</map>

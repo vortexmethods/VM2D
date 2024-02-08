@@ -1,0 +1,4 @@
+<map id="VM2D::Boundary::CalcConvVelocityAtVirtualVortexes" name="VM2D::Boundary::CalcConvVelocityAtVirtualVortexes">
+<area shape="rect" id="node2" href="$df/da2/class_v_m2_d_1_1_boundary.html#ae61caa08bceea2ed067cbf0f9605e515" title="Деструктор " alt="" coords="241,5,435,32"/>
+<area shape="rect" id="node3" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="251,57,425,98"/>
+</map>

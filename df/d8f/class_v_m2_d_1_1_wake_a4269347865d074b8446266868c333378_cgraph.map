@@ -1,0 +1,6 @@
+<map id="VM2D::Wake::RemoveFar" name="VM2D::Wake::RemoveFar">
+<area shape="rect" id="node2" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="288,5,369,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="231,56,427,83"/>
+<area shape="rect" id="node4" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="283,107,374,133"/>
+<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="475,107,649,133"/>
+</map>

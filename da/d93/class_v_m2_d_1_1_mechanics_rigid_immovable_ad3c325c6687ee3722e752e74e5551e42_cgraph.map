@@ -1,0 +1,15 @@
+<map id="VM2D::MechanicsRigidImmovable::~MechanicsRigidImmovable" name="VM2D::MechanicsRigidImmovable::~MechanicsRigidImmovable">
+<area shape="rect" id="node2" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a98f1a2f3b8065db981513c470c81cb34" title="Вычисление гидродинамической силы, действующей на профиль " alt="" coords="277,137,501,178"/>
+<area shape="rect" id="node9" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a64db0076fb412ea450866b61c124253d" title="Вычисление скорости центра масс профиля " alt="" coords="549,343,773,385"/>
+<area shape="rect" id="node10" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a208cadc15a8d167775357c8e2138e864" title="Вычисление положения центра масс профиля " alt="" coords="277,254,501,295"/>
+<area shape="rect" id="node11" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a7960a51cd920e9b91d3dd3a661a4e619" title="Вычисление угловой скорости профиля " alt="" coords="277,319,501,361"/>
+<area shape="rect" id="node12" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a2c1e12dc0c3399b479635d3f3a36d874" title="Вычисление угла поворота профиля " alt="" coords="277,385,501,426"/>
+<area shape="rect" id="node13" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a07b390c266752385ed81d638828f9df4" title="Вычисление скоростей начал панелей " alt="" coords="277,450,501,491"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="564,5,759,32"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="563,56,759,83"/>
+<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="575,107,747,149"/>
+<area shape="rect" id="node6" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="560,173,763,200"/>
+<area shape="rect" id="node7" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="593,224,729,251"/>
+<area shape="rect" id="node8" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="574,275,749,301"/>
+<area shape="rect" id="node14" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afaa4428c98211d798542f0636d1c9516" title="Установка постоянной скорости всех вершин профиля " alt="" coords="594,457,729,484"/>
+</map>

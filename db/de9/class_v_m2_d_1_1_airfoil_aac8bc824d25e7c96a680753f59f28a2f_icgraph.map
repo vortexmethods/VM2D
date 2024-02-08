@@ -1,0 +1,5 @@
+<map id="VM2D::Airfoil::GetInfluenceFromVorticesToPanel" name="VM2D::Airfoil::GetInfluenceFromVorticesToPanel">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af184136bf9207d4f00b1e93a8df974b2" title="Деструктор " alt="" coords="250,5,399,32"/>
+<area shape="rect" id="node3" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a40e4cb03382b34abe8dd7dc82582490a" title="Генерация вектора влияния вихревого следа на профиль " alt="" coords="236,57,413,98"/>
+<area shape="rect" id="node4" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a54f3597cd4655c1211ffda53628b253a" title="Расчет вектора правой части (всего) " alt="" coords="461,57,636,98"/>
+</map>

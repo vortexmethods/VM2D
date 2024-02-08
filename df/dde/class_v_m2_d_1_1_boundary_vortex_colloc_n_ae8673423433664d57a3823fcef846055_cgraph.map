@@ -1,0 +1,13 @@
+<map id="VM2D::BoundaryVortexCollocN::GetInfluenceFromSourceSheetAtRectPanelToVortex" name="VM2D::BoundaryVortexCollocN::GetInfluenceFromSourceSheetAtRectPanelToVortex">
+<area shape="rect" id="node2" href="$d6/dd4/class_v_mlib_1_1numvector.html#ab52c2bfa931d8533aae15b6999d718ab" title="Установка всех компонент вектора в константу (по умолчанию — нуль) " alt="" coords="287,5,457,32"/>
+<area shape="rect" id="node3" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="307,56,437,83"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="304,107,440,133"/>
+<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html#aeac4d166e1b761b24de9b5cff5414e88" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному " alt="" coords="295,157,449,184"/>
+<area shape="rect" id="node6" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами " alt="" coords="324,208,420,235"/>
+<area shape="rect" id="node9" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="809,233,984,260"/>
+<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов " alt="" coords="317,309,427,336"/>
+<area shape="rect" id="node11" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a49b7345512b924471bbac608c7129043" title="VM2D::Sheet::attachedSource\lSheet" alt="" coords="272,361,472,402"/>
+<area shape="rect" id="node12" href="$d6/dd4/class_v_mlib_1_1numvector.html#a1471ef55266b8e21d045c4f4e05912d9" title="Геометрический поворот двумерного вектора на 90 градусов " alt="" coords="287,427,457,453"/>
+<area shape="rect" id="node7" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="520,208,623,235"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="671,208,761,235"/>
+</map>

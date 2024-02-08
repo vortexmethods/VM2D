@@ -1,0 +1,23 @@
+<map id="VMlib::numvector::length" name="VMlib::numvector::length">
+<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#ae66317e023311cd9bc216024357ab0b1" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения " alt="" coords="535,44,717,100"/>
+<area shape="rect" id="node5" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a86dac66802e3eccab1ea05eb7d6442b7" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин " alt="" coords="281,226,417,267"/>
+<area shape="rect" id="node10" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a6cce4d0da20e483f266fa7e8523cc1b2" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2. " alt="" coords="808,394,944,435"/>
+<area shape="rect" id="node11" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="239,488,460,544"/>
+<area shape="rect" id="node13" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#af88cfc75a4e1c24666e35c5e80effcb0" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="220,567,479,608"/>
+<area shape="rect" id="node14" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ada4f7f36671817b207e42756b5180608" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="220,632,479,674"/>
+<area shape="rect" id="node15" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="238,697,461,753"/>
+<area shape="rect" id="node16" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="240,408,459,464"/>
+<area shape="rect" id="node17" href="$d2/d15/class_v_m2_d_1_1_passport.html#ae11560e6df417191603182d5b2c2ce09" title="Считывание всех параметров расчета из соответствующих потоков " alt="" coords="245,776,453,818"/>
+<area shape="rect" id="node19" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a15b7ac1972093ca8c7a3e73ac8446abe" title="Контроль больших значений диффузионных скоростей " alt="" coords="251,842,448,869"/>
+<area shape="rect" id="node21" href="$d6/dd4/class_v_mlib_1_1numvector.html#aeac4d166e1b761b24de9b5cff5414e88" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному " alt="" coords="272,894,427,935"/>
+<area shape="rect" id="node22" href="$d6/dd4/class_v_mlib_1_1numvector.html#ad8ae47c439a962678170722c9b0801fb" title="Нормирование вектора на заданную длину " alt="" coords="272,959,427,1000"/>
+<area shape="rect" id="node3" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a28befac6a99c52bd38f699a5bb90921c" title="VM2D::AirfoilRect::\lGetDiffVelocityI0I3ToWakeAnd\lViscousStresses" alt="" coords="773,44,979,100"/>
+<area shape="rect" id="node4" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="1027,196,1163,238"/>
+<area shape="rect" id="node6" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a47e772124cbf44d0ec8784f483797d53" title="Перемещение профиля " alt="" coords="542,174,710,201"/>
+<area shape="rect" id="node8" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a05811a761cdefc827cc8211efcd989ff" title="Поворот профиля " alt="" coords="558,226,694,267"/>
+<area shape="rect" id="node9" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#ac4a34471a7b02a70d36d13acddf9a9d7" title="Масштабирование профиля " alt="" coords="558,291,694,332"/>
+<area shape="rect" id="node7" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a9d64a95d5abba507e3c2d1f535a60338" title="Считывание профиля из файла " alt="" coords="808,226,944,267"/>
+<area shape="rect" id="node12" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="527,567,725,608"/>
+<area shape="rect" id="node18" href="$d2/d15/class_v_m2_d_1_1_passport.html#a875604d311bcf3c17ce56f2f0ea0aa09" title="Конструктор " alt="" coords="537,784,715,810"/>
+<area shape="rect" id="node20" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="528,842,724,869"/>
+</map>

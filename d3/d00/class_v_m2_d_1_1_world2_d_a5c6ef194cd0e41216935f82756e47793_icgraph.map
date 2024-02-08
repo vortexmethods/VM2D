@@ -1,0 +1,31 @@
+<map id="VM2D::World2D::getAirfoil" name="VM2D::World2D::getAirfoil">
+<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a28befac6a99c52bd38f699a5bb90921c" title="VM2D::AirfoilRect::\lGetDiffVelocityI0I3ToWakeAnd\lViscousStresses" alt="" coords="243,5,449,61"/>
+<area shape="rect" id="node4" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="241,87,451,143"/>
+<area shape="rect" id="node6" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#ae692f9338a5fa776245dd9a0fb365a41" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="231,169,461,225"/>
+<area shape="rect" id="node8" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления " alt="" coords="235,255,457,281"/>
+<area shape="rect" id="node10" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости " alt="" coords="253,369,439,396"/>
+<area shape="rect" id="node12" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f" title="Конструктор " alt="" coords="509,259,733,301"/>
+<area shape="rect" id="node13" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#af5c415c8acbbb2abcd3ee928fa69d614" title="Конструктор " alt="" coords="519,390,723,431"/>
+<area shape="rect" id="node19" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ac7ac5871e063f5b69bf21cbe311aaaee" title="Сохранение вязких напряжений " alt="" coords="1529,572,1739,599"/>
+<area shape="rect" id="node20" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="1787,597,1983,624"/>
+<area shape="rect" id="node21" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html#a3fc0ddc71a5bd3bfac889850d2d189f7" title="Сохранение вихревого следа в файл .vtk. " alt="" coords="1555,489,1713,530"/>
+<area shape="rect" id="node23" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a59183858c817328199f449df792b6b5a" title="Конструктор " alt="" coords="516,455,727,497"/>
+<area shape="rect" id="node25" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a40e4cb03382b34abe8dd7dc82582490a" title="Генерация вектора влияния вихревого следа на профиль " alt="" coords="257,725,435,766"/>
+<area shape="rect" id="node26" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a54f3597cd4655c1211ffda53628b253a" title="Расчет вектора правой части (всего) " alt="" coords="534,699,709,741"/>
+<area shape="rect" id="node27" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей " alt="" coords="269,791,423,817"/>
+<area shape="rect" id="node29" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad9b7f5fc4d187f728eed9661ad345c3c" title="VM2D::Wake::CollapsNew" alt="" coords="256,841,436,868"/>
+<area shape="rect" id="node30" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа " alt="" coords="542,892,701,919"/>
+<area shape="rect" id="node3" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="553,11,689,53"/>
+<area shape="rect" id="node5" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="514,77,729,118"/>
+<area shape="rect" id="node7" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a3b7bee5fc8563d25d48a8ad52b773ea6" title="Деструктор " alt="" coords="523,142,720,183"/>
+<area shape="rect" id="node9" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="512,208,731,235"/>
+<area shape="rect" id="node11" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#acb2bcd9d2c01173b75584afb13a5a15e" title="Конструктор " alt="" coords="519,325,724,366"/>
+<area shape="rect" id="node14" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a0e817783b3da43723c571791136089ce" title="VM2D::MechanicsRigidOscill\lPart::getYOld" alt="" coords="784,390,977,431"/>
+<area shape="rect" id="node15" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a082e883ac7900fd8b9880e78bf0b3961" title="Перемещение вихрей и профилей на шаге " alt="" coords="1028,413,1251,454"/>
+<area shape="rect" id="node16" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага " alt="" coords="1557,429,1711,456"/>
+<area shape="rect" id="node18" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a990ea0076c7de69c7c6f4f2c17943409" title="VM2D::World2D::ifDivisible" alt="" coords="1299,471,1481,497"/>
+<area shape="rect" id="node17" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac3ea00be884fcbce3b9a6530b75c55bb" title="Деструктор " alt="" coords="1792,429,1977,456"/>
+<area shape="rect" id="node22" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html#a2b080303e7ab69526c8a74c70f299fdf" title="VM2D::WakeDataBase\l::~WakeDataBase" alt="" coords="1805,489,1964,530"/>
+<area shape="rect" id="node24" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a9736437d2d41f6e57e835d72bccddb68" title="VM2D::MechanicsRigidRotate\lPart::getPhiOld" alt="" coords="781,455,980,497"/>
+<area shape="rect" id="node28" href="$df/d8f/class_v_m2_d_1_1_wake.html#a8445ca23e13732c4b7aa312c4e2c219d" title="Деструктор " alt="" coords="805,841,956,868"/>
+</map>

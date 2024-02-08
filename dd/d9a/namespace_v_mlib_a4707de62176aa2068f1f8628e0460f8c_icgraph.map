@@ -1,0 +1,9 @@
+<map id="VMlib::dist" name="VMlib::dist">
+<area shape="rect" id="node2" href="$d9/d47/knn_c_p_u_8cpp.html#a3aa4d7d06eebd51153b1e88b6cdfed72" title="mainCycle" alt="" coords="137,8,221,35"/>
+<area shape="rect" id="node6" href="$df/db0/gamma_circ_8h.html#a9ded039ad6f52e1c16b0a65086e11d4e" title="if" alt="" coords="160,60,199,87"/>
+<area shape="rect" id="node3" href="$db/d83/knn_c_p_u_8h.html#a502dc2255024de1a1f2027de5ee9d518" title="WakekNN" alt="" coords="317,5,399,32"/>
+<area shape="rect" id="node4" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа " alt="" coords="503,5,661,32"/>
+<area shape="rect" id="node5" href="$df/d8f/class_v_m2_d_1_1_wake.html#a8445ca23e13732c4b7aa312c4e2c219d" title="Деструктор " alt="" coords="717,5,868,32"/>
+<area shape="rect" id="node7" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a40e4cb03382b34abe8dd7dc82582490a" title="Генерация вектора влияния вихревого следа на профиль " alt="" coords="269,57,447,98"/>
+<area shape="rect" id="node8" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a54f3597cd4655c1211ffda53628b253a" title="Расчет вектора правой части (всего) " alt="" coords="495,57,669,98"/>
+</map>

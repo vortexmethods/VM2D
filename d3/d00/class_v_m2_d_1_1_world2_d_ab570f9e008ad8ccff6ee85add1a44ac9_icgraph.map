@@ -1,0 +1,5 @@
+<map id="VM2D::World2D::getIQ" name="VM2D::World2D::getIQ">
+<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a77497c2b9cf4fe8bbd7744224d98624a" title="Вычисление коэффициентов матрицы A для расчета влияния панели на панель " alt="" coords="218,13,381,39"/>
+<area shape="rect" id="node4" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a54f3597cd4655c1211ffda53628b253a" title="Расчет вектора правой части (всего) " alt="" coords="212,64,387,105"/>
+<area shape="rect" id="node3" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="435,5,571,47"/>
+</map>

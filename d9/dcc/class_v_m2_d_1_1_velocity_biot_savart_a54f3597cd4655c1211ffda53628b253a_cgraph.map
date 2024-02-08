@@ -1,0 +1,35 @@
+<map id="VM2D::VelocityBiotSavart::FillRhs" name="VM2D::VelocityBiotSavart::FillRhs">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a088a7850b255847d4f0f25d652bc71e1" title="Возврат количества граничных условий в задаче " alt="" coords="236,5,427,47"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="513,122,691,149"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="781,216,953,257"/>
+<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="503,173,701,199"/>
+<area shape="rect" id="node6" href="$df/da2/class_v_m2_d_1_1_boundary.html#acd103fc7af2620c974616cc8346b35e1" title="Возврат размерности вектора решения " alt="" coords="483,223,721,250"/>
+<area shape="rect" id="node7" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a40e4cb03382b34abe8dd7dc82582490a" title="Генерация вектора влияния вихревого следа на профиль " alt="" coords="243,376,420,417"/>
+<area shape="rect" id="node19" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="504,894,700,921"/>
+<area shape="rect" id="node29" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a4182a6958f69c2fbba58dacb43663a29" title="Вычисление влияния набегающего потока на панель для правой части " alt="" coords="240,493,423,535"/>
+<area shape="rect" id="node30" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5b9bb928f446cad77a33ec6c01862d7a" title="Возврат константной ссылки на скорость вершины профиля " alt="" coords="264,559,399,586"/>
+<area shape="rect" id="node31" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab570f9e008ad8ccff6ee85add1a44ac9" title="Возврат константной ссылки на объект, связанный с матрицей интегралов от (r&#45;xi)/|r&#45;xi|^2. " alt="" coords="252,610,411,637"/>
+<area shape="rect" id="node32" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a3fb86b16943c1dafd950da765b3de6fd" title="Возврат константной ссылки на объект механики " alt="" coords="228,661,435,687"/>
+<area shape="rect" id="node33" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a94413c229ef381efa9235fff2aa0b690" title="Возврат неконстантной ссылки на объект механики " alt="" coords="230,712,433,753"/>
+<area shape="rect" id="node34" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a5822957b7db2a8138c2aa7b4ac5a3fa6" title="Вычисление угловой скорости профиля " alt="" coords="240,777,423,819"/>
+<area shape="rect" id="node8" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a96f89cab550d0283c9991cd1867ffc2b" title="Возврат константной ссылки на вихревой след " alt="" coords="513,594,691,621"/>
+<area shape="rect" id="node9" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aac8bc824d25e7c96a680753f59f28a2f" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на панель для правой части ..." alt="" coords="511,645,693,687"/>
+<area shape="rect" id="node10" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0d4106fbb04e7978ed27b7f0ee2840fa" title="Возврат константной ссылки на источники в области течения " alt="" coords="509,711,695,738"/>
+<area shape="rect" id="node11" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ac610b9007c72bf7aa7aade86bc4de023" title="Вычисление влияния части подряд идущих источников из области течения на панель для правой части ..." alt="" coords="511,763,693,804"/>
+<area shape="rect" id="node12" href="$df/db0/gamma_circ_8h.html#a9ded039ad6f52e1c16b0a65086e11d4e" title="if" alt="" coords="583,493,621,519"/>
+<area shape="rect" id="node20" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="507,828,697,869"/>
+<area shape="rect" id="node21" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0c0e1a56d2270639e9dc27f700a49e53" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="515,325,689,351"/>
+<area shape="rect" id="node22" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a58eb9fce5d0cd053a5a7daadc1a72b46" title="Возврат неконстантной ссылки на объект профиля " alt="" coords="501,376,703,417"/>
+<area shape="rect" id="node23" href="$d9/d45/namespace_b_hcu.html#a52ceff7b4369cdca0703d87663544397" title="BHcu::wrapperInfluenceToRHS" alt="" coords="499,543,705,570"/>
+<area shape="rect" id="node28" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aea2bd87d86e2d657c6724a91a4f42009" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="485,442,719,469"/>
+<area shape="rect" id="node13" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D. " alt="" coords="777,391,957,418"/>
+<area shape="rect" id="node16" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D. " alt="" coords="769,442,964,469"/>
+<area shape="rect" id="node17" href="$dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c" title="Вычисление расстояния между двумя точками " alt="" coords="825,493,909,519"/>
+<area shape="rect" id="node18" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="826,341,907,367"/>
+<area shape="rect" id="node14" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D. " alt="" coords="1013,366,1188,393"/>
+<area shape="rect" id="node15" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой " alt="" coords="1019,417,1182,443"/>
+<area shape="rect" id="node24" href="$d9/d45/namespace_b_hcu.html#ae08582b53db0f82aee2e8d4cb28abc55" title="BHcu::memoryAllocate" alt="" coords="788,645,945,671"/>
+<area shape="rect" id="node25" href="$d9/d45/namespace_b_hcu.html#a5b015b647f1d31ba5be7887fdf2057f1" title="BHcu::rebuildBaseTree" alt="" coords="788,543,945,570"/>
+<area shape="rect" id="node26" href="$d1/dd7/struct_b_hcu_1_1_cuda_sorter.html#a07c711acfa6b10ede25caf3e893740f3" title="BHcu::CudaSorter::calc" alt="" coords="786,594,947,621"/>
+<area shape="rect" id="node27" href="$db/dfe/struct_b_hcu_1_1_cuda_calc_gab.html#a48b79ea1461407f45fa52dd5ce5b64c0" title="BHcu::CudaCalcGab::calc" alt="" coords="1012,594,1189,621"/>
+</map>

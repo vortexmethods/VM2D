@@ -1,0 +1,6 @@
+<map id="VM2D::BoundaryLinLayerAver::GetInfluenceFromVInfToRectPanel" name="VM2D::BoundaryLinLayerAver::GetInfluenceFromVInfToRectPanel">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="302,5,474,47"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="290,71,486,98"/>
+<area shape="rect" id="node4" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="288,122,488,149"/>
+<area shape="rect" id="node5" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="536,115,712,156"/>
+</map>

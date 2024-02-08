@@ -1,0 +1,15 @@
+<map id="VM2D::BoundaryLinLayerAver::GetInfluenceFromVortexSheetAtRectPanelToVortex" name="VM2D::BoundaryLinLayerAver::GetInfluenceFromVortexSheetAtRectPanelToVortex">
+<area shape="rect" id="node2" href="$d6/dd4/class_v_mlib_1_1numvector.html#ab52c2bfa931d8533aae15b6999d718ab" title="Установка всех компонент вектора в константу (по умолчанию — нуль) " alt="" coords="289,5,458,32"/>
+<area shape="rect" id="node3" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="308,56,439,83"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="305,107,441,133"/>
+<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html#aeac4d166e1b761b24de9b5cff5414e88" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному " alt="" coords="297,157,450,184"/>
+<area shape="rect" id="node6" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764" title="Вычисление 2&#45;нормы (длины) вектора " alt="" coords="290,208,457,235"/>
+<area shape="rect" id="node7" href="$dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины . " alt="" coords="321,259,426,285"/>
+<area shape="rect" id="node10" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="812,284,987,311"/>
+<area shape="rect" id="node11" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов " alt="" coords="319,360,428,387"/>
+<area shape="rect" id="node12" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="272,411,475,437"/>
+<area shape="rect" id="node13" href="$d6/dd4/class_v_mlib_1_1numvector.html#a1471ef55266b8e21d045c4f4e05912d9" title="Геометрический поворот двумерного вектора на 90 градусов " alt="" coords="288,461,459,488"/>
+<area shape="rect" id="node14" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a9431e357980548a5fabd5ffffb917665" title="VM2D::Sheet::attachedVortex\lSheet" alt="" coords="275,513,472,554"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="523,259,625,285"/>
+<area shape="rect" id="node9" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="673,259,764,285"/>
+</map>

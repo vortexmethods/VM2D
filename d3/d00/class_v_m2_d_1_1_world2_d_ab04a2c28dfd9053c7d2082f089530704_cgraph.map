@@ -1,0 +1,9 @@
+<map id="VM2D::World2D::CalcVortexVelo" name="VM2D::World2D::CalcVortexVelo">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="275,5,469,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a088a7850b255847d4f0f25d652bc71e1" title="Возврат количества граничных условий в задаче " alt="" coords="277,57,467,98"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a58eb9fce5d0cd053a5a7daadc1a72b46" title="Возврат неконстантной ссылки на объект профиля " alt="" coords="271,122,473,163"/>
+<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a174780bb8e877b96c05d7f15523deed9" title="Вычисление средних значений eps на панелях " alt="" coords="279,187,465,229"/>
+<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="535,129,707,170"/>
+<area shape="rect" id="node7" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="521,195,720,221"/>
+<area shape="rect" id="node8" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a3b27cf9188066707092260ece7c35a6f" title="Возврат константной ссылки на объект для вычисления скоростей " alt="" coords="525,245,716,272"/>
+</map>

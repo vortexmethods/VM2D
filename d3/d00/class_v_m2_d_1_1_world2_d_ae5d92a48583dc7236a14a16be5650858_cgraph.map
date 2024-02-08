@@ -1,0 +1,48 @@
+<map id="VM2D::World2D::Step" name="VM2D::World2D::Step">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="989,479,1183,506"/>
+<area shape="rect" id="node3" href="$d8/da8/class_v_m2_d_1_1_times.html#a496da542ba5d0ccb1f012634afb27b2f" title="Обнуление состояния временной статистики " alt="" coords="225,989,377,1015"/>
+<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4276963a38fc7a7355c48c1f6b2bd74a" title="Вычисление скоростей панелей и интенсивностей присоединенных слоев вихрей и источников ..." alt="" coords="457,308,651,349"/>
+<area shape="rect" id="node6" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5ff24012df7e7caa5bd13cd6552042ab" title="Набор матрицы, правой части и решение СЛАУ " alt="" coords="449,373,659,415"/>
+<area shape="rect" id="node16" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab04a2c28dfd9053c7d2082f089530704" title="Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных), а также в точках вычисления VP. " alt="" coords="445,938,663,965"/>
+<area shape="rect" id="node23" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a990ea0076c7de69c7c6f4f2c17943409" title="VM2D::World2D::ifDivisible" alt="" coords="209,642,392,669"/>
+<area shape="rect" id="node27" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a082e883ac7900fd8b9880e78bf0b3961" title="Перемещение вихрей и профилей на шаге " alt="" coords="443,872,665,913"/>
+<area shape="rect" id="node41" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="456,1039,652,1066"/>
+<area shape="rect" id="node42" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a07acdb787188d8f83ae8587cc0b39df0" title="Возвращает текуще время " alt="" coords="466,1091,642,1132"/>
+<area shape="rect" id="node43" href="$d8/de6/class_v_mlib_1_1_times_gen.html#a254abcef2f5ba63410678b0ffafbf5e9" title="VMlib::TimesGen::dT" alt="" coords="481,1258,627,1285"/>
+<area shape="rect" id="node44" href="$d8/da8/class_v_m2_d_1_1_times.html#a941dbe1bc8ff09712abc093399b98cda" title="Сохранение строки со статистикой в файл временной статистики " alt="" coords="207,1141,395,1183"/>
+<area shape="rect" id="node47" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aa26243123bdee03525b782f07ea673df" title="Добавление шага к текущему времени " alt="" coords="213,1259,389,1300"/>
+<area shape="rect" id="node4" href="$d8/de6/class_v_mlib_1_1_times_gen.html#a0cf82e8b3b5f498e030754e3c76ba9ec" title="VMlib::TimesGen::ToZeroPeriod" alt="" coords="449,989,659,1015"/>
+<area shape="rect" id="node7" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a198aa1abb3a1a6980111422622b97fa7" title="Вычисляем размер матрицы и резервируем память под нее и под правую часть " alt="" coords="713,348,936,389"/>
+<area shape="rect" id="node9" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a44c734c3878981e37dfcadcc33ab65ca" title="Установка коэффициента разгона потока " alt="" coords="733,94,916,121"/>
+<area shape="rect" id="node10" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="1263,481,1439,523"/>
+<area shape="rect" id="node11" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a689f7b0e4ae9ed7c56e3b077a50c4de2" title="Установка максимально допустимой циркуляции вихря " alt="" coords="731,145,919,171"/>
+<area shape="rect" id="node12" href="$d0/d75/class_v_m2_d_1_1_gpu.html#aff6cf9500f84f7d400034f1aedc5a369" title="Установка переключателя расчетных схем " alt="" coords="717,195,933,222"/>
+<area shape="rect" id="node13" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a76ca71da59452ac1670c228a6a8b3f09" title="Заполнение матрицы, состоящей из интегралов от (r&#45;xi) / |r&#45;xi|^2. " alt="" coords="746,479,903,506"/>
+<area shape="rect" id="node14" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ada86302cbf92c7dff8124a610ae00e24" title="Заполнение матрицы системы для всех профилей " alt="" coords="735,531,914,572"/>
+<area shape="rect" id="node15" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений " alt="" coords="727,413,922,455"/>
+<area shape="rect" id="node8" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="991,348,1181,389"/>
+<area shape="rect" id="node17" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a088a7850b255847d4f0f25d652bc71e1" title="Возврат количества граничных условий в задаче " alt="" coords="991,1161,1181,1203"/>
+<area shape="rect" id="node18" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a58eb9fce5d0cd053a5a7daadc1a72b46" title="Возврат неконстантной ссылки на объект профиля " alt="" coords="723,1164,926,1205"/>
+<area shape="rect" id="node19" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a174780bb8e877b96c05d7f15523deed9" title="Вычисление средних значений eps на панелях " alt="" coords="731,1284,918,1325"/>
+<area shape="rect" id="node20" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="1000,1227,1172,1268"/>
+<area shape="rect" id="node21" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="987,1293,1185,1319"/>
+<area shape="rect" id="node22" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a3b27cf9188066707092260ece7c35a6f" title="Возврат константной ссылки на объект для вычисления скоростей " alt="" coords="991,1343,1181,1370"/>
+<area shape="rect" id="node24" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a1e93757ef8a0bf80601cbb8022138af6" title="Вычисляем новые положения вихрей (в пелене и виртуальных) " alt="" coords="719,930,930,957"/>
+<area shape="rect" id="node26" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aeb0fd46eee2aafc56d8f6a075da3673c" title="Проверка проникновения вихрей внутрь профиля " alt="" coords="725,829,924,855"/>
+<area shape="rect" id="node36" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a458d892d4d9ebb62d8534a97e79902f6" title="Конструктор " alt="" coords="465,669,643,695"/>
+<area shape="rect" id="node25" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="986,730,1186,757"/>
+<area shape="rect" id="node28" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a4d49718689f49186edadbe0e46691deb" title="текущее отклонение профиля " alt="" coords="728,981,921,1023"/>
+<area shape="rect" id="node29" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a0e817783b3da43723c571791136089ce" title="VM2D::MechanicsRigidOscill\lPart::getYOld" alt="" coords="728,1099,921,1140"/>
+<area shape="rect" id="node30" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#af5c415c8acbbb2abcd3ee928fa69d614" title="Конструктор " alt="" coords="984,1096,1188,1137"/>
+<area shape="rect" id="node31" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a5e6bfd0b3b87fb0f3bda513ebd0c2f96" title="Чтение параметров конкретной механической системы " alt="" coords="1236,1089,1465,1145"/>
+<area shape="rect" id="node32" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости " alt="" coords="1257,1169,1444,1195"/>
+<area shape="rect" id="node34" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="1513,1066,1691,1093"/>
+<area shape="rect" id="node33" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae77606bfe37d99ef15cefa876e284277" title="Перемещение профиля " alt="" coords="1532,1143,1672,1170"/>
+<area shape="rect" id="node35" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae6f87ad89e0743fd910af6f898c4d6e6" title="Поворот профиля " alt="" coords="1529,1194,1675,1221"/>
+<area shape="rect" id="node37" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a9718b59c756960f3d793ef9e32b30199" title="Связывание потока логов с потоком вывода " alt="" coords="739,596,911,637"/>
+<area shape="rect" id="node38" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aeac3c4a247f466bfc0716e79402beab3" title="Установка текущего времени " alt="" coords="737,661,913,703"/>
+<area shape="rect" id="node39" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a189a69073636a4f93a1de3c7a8e13098" title="Вывод в поток логов пустой строки " alt="" coords="745,727,904,754"/>
+<area shape="rect" id="node40" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D. " alt="" coords="737,778,912,805"/>
+<area shape="rect" id="node45" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a166a10941c37c9c73686c4981d13c584" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="445,1157,663,1183"/>
+<area shape="rect" id="node46" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a96f89cab550d0283c9991cd1867ffc2b" title="Возврат константной ссылки на вихревой след " alt="" coords="465,1207,643,1234"/>
+</map>

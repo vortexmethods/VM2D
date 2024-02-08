@@ -1,0 +1,9 @@
+<map id="VM2D::Airfoil::getA" name="VM2D::Airfoil::getA">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af184136bf9207d4f00b1e93a8df974b2" title="Деструктор " alt="" coords="213,5,362,32"/>
+<area shape="rect" id="node3" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a95434e380fa4255f70787ebb37c9f9dd" title="Генерация блока матрицы " alt="" coords="193,57,382,98"/>
+<area shape="rect" id="node5" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a1d059af397116bbe4bb2e57d4976c5c8" title="Генерация блока матрицы влияния от другого профиля того же типа " alt="" coords="193,122,382,163"/>
+<area shape="rect" id="node6" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ab093d4d8c2e5f068d6142858d87ab3b0" title="Генерация блока матрицы " alt="" coords="188,187,387,229"/>
+<area shape="rect" id="node8" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a6668f82a7939a18eb0d8112724c0bdc3" title="Генерация блока матрицы влияния от другого профиля того же типа " alt="" coords="188,253,387,294"/>
+<area shape="rect" id="node4" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21" title="Деструктор " alt="" coords="435,106,649,147"/>
+<area shape="rect" id="node7" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a36b9f16da8ec138ffc571a011b6da3d4" title="Деструктор " alt="" coords="443,203,641,245"/>
+</map>

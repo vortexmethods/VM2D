@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$df/da2/class_v_m2_d_1_1_boundary.html" title="Абстрактный класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле ..." alt="" coords="5,56,128,83"/>
+<area shape="rect" id="node2" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html" title="Класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле ..." alt="" coords="176,5,392,32"/>
+<area shape="rect" id="node3" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html" title="Класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле ..." alt="" coords="185,56,383,83"/>
+<area shape="rect" id="node4" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html" title="Класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле ..." alt="" coords="181,107,387,133"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="VMlib::boundDenom" name="VMlib::boundDenom">
+<area shape="rect" id="node2" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления " alt="" coords="214,5,437,32"/>
+<area shape="rect" id="node4" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="193,57,457,98"/>
+<area shape="rect" id="node3" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="505,5,724,32"/>
+<area shape="rect" id="node5" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="772,82,947,123"/>
+<area shape="rect" id="node6" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a8efe4ad936349ae0282b37bc61ac2869" title="Вычисление скоростей в точках wakeVP. " alt="" coords="527,111,702,153"/>
+</map>

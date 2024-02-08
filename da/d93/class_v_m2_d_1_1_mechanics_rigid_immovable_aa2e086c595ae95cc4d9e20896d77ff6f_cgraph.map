@@ -1,0 +1,7 @@
+<map id="VM2D::MechanicsRigidImmovable::MechanicsRigidImmovable" name="VM2D::MechanicsRigidImmovable::MechanicsRigidImmovable">
+<area shape="rect" id="node2" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a13bf21939ba96139cc3005af2ba42bad" title="Чтение параметров конкретной механической системы " alt="" coords="277,5,541,47"/>
+<area shape="rect" id="node3" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости " alt="" coords="316,71,503,98"/>
+<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="589,122,767,149"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae77606bfe37d99ef15cefa876e284277" title="Перемещение профиля " alt="" coords="608,21,748,47"/>
+<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae6f87ad89e0743fd910af6f898c4d6e6" title="Поворот профиля " alt="" coords="605,71,751,98"/>
+</map>

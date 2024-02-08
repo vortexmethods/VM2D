@@ -1,0 +1,36 @@
+<map id="VM2D::VelocityBiotSavart::CalcConvVelo" name="VM2D::VelocityBiotSavart::CalcConvVelo">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="239,131,434,157"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a96f89cab550d0283c9991cd1867ffc2b" title="Возврат константной ссылки на вихревой след " alt="" coords="833,5,1012,32"/>
+<area shape="rect" id="node4" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="493,435,757,477"/>
+<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="825,56,1021,83"/>
+<area shape="rect" id="node14" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a088a7850b255847d4f0f25d652bc71e1" title="Возврат количества граничных условий в задаче " alt="" coords="827,107,1018,149"/>
+<area shape="rect" id="node15" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="823,1007,1022,1033"/>
+<area shape="rect" id="node27" href="$df/da2/class_v_m2_d_1_1_boundary.html#ae1b0804df779ed38c82e1ca2f180cd10" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="512,967,739,1009"/>
+<area shape="rect" id="node28" href="$df/da2/class_v_m2_d_1_1_boundary.html#a42863c389f57e980fd93ed0e27d25e06" title="Вычисление конвективной скорости в точках расположения виртуальных вихрей " alt="" coords="243,1085,431,1126"/>
+<area shape="rect" id="node29" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a166a10941c37c9c73686c4981d13c584" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="228,1151,445,1177"/>
+<area shape="rect" id="node30" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a8efe4ad936349ae0282b37bc61ac2869" title="Вычисление скоростей в точках wakeVP. " alt="" coords="249,603,424,645"/>
+<area shape="rect" id="node6" href="$d6/dd4/class_v_mlib_1_1numvector.html#ab52c2bfa931d8533aae15b6999d718ab" title="Установка всех компонент вектора в константу (по умолчанию — нуль) " alt="" coords="838,560,1007,587"/>
+<area shape="rect" id="node7" href="$dd/d9a/namespace_v_mlib.html#a42960d06cf1001551b93dd8aedeff100" title="Модифицирует массив квадратов расстояний до ближайших вихрей из wake. " alt="" coords="863,611,982,637"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#ab2f8c946d498827f7f4827b538690fa3" title="Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба) " alt="" coords="853,661,993,688"/>
+<area shape="rect" id="node10" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0d4106fbb04e7978ed27b7f0ee2840fa" title="Возврат константной ссылки на источники в области течения " alt="" coords="830,712,1015,739"/>
+<area shape="rect" id="node11" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="835,865,1011,906"/>
+<area shape="rect" id="node12" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="877,173,968,200"/>
+<area shape="rect" id="node16" href="$dd/d60/_velocity2_d_biot_savart_8cpp.html#a24621439a1e24f7f518b40641d561467" title="Модифицирует массив квадратов расстояний до ближайших вихрей из wake. " alt="" coords="884,224,961,251"/>
+<area shape="rect" id="node17" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0c0e1a56d2270639e9dc27f700a49e53" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="835,275,1010,301"/>
+<area shape="rect" id="node18" href="$d9/d45/namespace_b_hcu.html#a3c0c339301f4d6fad935df04796c83dc" title="BHcu::wrapperInfluence" alt="" coords="841,325,1004,352"/>
+<area shape="rect" id="node21" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aea2bd87d86e2d657c6724a91a4f42009" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="805,813,1040,840"/>
+<area shape="rect" id="node22" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aa0d6f9cad473aa52ae7948bfc8166b66" title="Возврат константной ссылки на measureVP. " alt="" coords="817,931,1029,957"/>
+<area shape="rect" id="node23" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#a3c15254b1f7a40cf1d96bd081afee78a" title="Возврат wakeVP. " alt="" coords="816,763,1029,789"/>
+<area shape="rect" id="node24" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="827,377,1018,418"/>
+<area shape="rect" id="node25" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a3b27cf9188066707092260ece7c35a6f" title="Возврат константной ссылки на объект для вычисления скоростей " alt="" coords="827,443,1018,469"/>
+<area shape="rect" id="node26" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#adca24eb07996f32373f768a1aba9ffb5" title="Возврат неконстантной ссылки на объект для вычисления скоростей " alt="" coords="821,494,1024,535"/>
+<area shape="rect" id="node9" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="1135,661,1216,688"/>
+<area shape="rect" id="node13" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="1088,173,1263,200"/>
+<area shape="rect" id="node19" href="$d9/d45/namespace_b_hcu.html#ae08582b53db0f82aee2e8d4cb28abc55" title="BHcu::memoryAllocate" alt="" coords="1097,300,1254,327"/>
+<area shape="rect" id="node20" href="$d9/d45/namespace_b_hcu.html#a5b015b647f1d31ba5be7887fdf2057f1" title="BHcu::rebuildBaseTree" alt="" coords="1097,351,1254,377"/>
+<area shape="rect" id="node31" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#af349d66ac7e4b0b4e0d4658624778a21" title="Возврат неконстантной ссылки на measureVP. " alt="" coords="524,603,727,645"/>
+<area shape="rect" id="node32" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#a038347c62ffce27dd2a3f11a427e7667" title="Возврат domainRadius. " alt="" coords="515,771,735,813"/>
+<area shape="rect" id="node33" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac4e6bcfd49b0cfd5b3976a25e8e617a1" title="Возврат неконстантной ссылки на объект граничного условия " alt="" coords="524,837,727,878"/>
+<area shape="rect" id="node34" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#aad6a878a218251ae1fb489250229ae3a" title="Возврат velocity. " alt="" coords="515,902,735,943"/>
+<area shape="rect" id="node35" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="525,669,725,696"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="VM2D::Mechanics::Initialize" name="VM2D::Mechanics::Initialize">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae77606bfe37d99ef15cefa876e284277" title="Перемещение профиля " alt="" coords="259,5,399,32"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="240,56,417,83"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae6f87ad89e0743fd910af6f898c4d6e6" title="Поворот профиля " alt="" coords="255,107,402,133"/>
+</map>

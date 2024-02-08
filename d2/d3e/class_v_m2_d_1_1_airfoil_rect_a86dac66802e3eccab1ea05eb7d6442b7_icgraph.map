@@ -1,0 +1,7 @@
+<map id="VM2D::AirfoilRect::CalcNrmTauLen" name="VM2D::AirfoilRect::CalcNrmTauLen">
+<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a47e772124cbf44d0ec8784f483797d53" title="Перемещение профиля " alt="" coords="189,34,357,61"/>
+<area shape="rect" id="node4" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="589,77,725,119"/>
+<area shape="rect" id="node5" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a05811a761cdefc827cc8211efcd989ff" title="Поворот профиля " alt="" coords="205,85,341,127"/>
+<area shape="rect" id="node6" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#ac4a34471a7b02a70d36d13acddf9a9d7" title="Масштабирование профиля " alt="" coords="205,151,341,192"/>
+<area shape="rect" id="node3" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a9d64a95d5abba507e3c2d1f535a60338" title="Считывание профиля из файла " alt="" coords="405,136,541,177"/>
+</map>

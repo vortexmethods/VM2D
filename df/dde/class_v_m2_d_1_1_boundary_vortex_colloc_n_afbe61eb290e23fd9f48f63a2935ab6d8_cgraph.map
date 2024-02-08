@@ -1,0 +1,4 @@
+<map id="VM2D::BoundaryVortexCollocN::FillMatrixFromOther" name="VM2D::BoundaryVortexCollocN::FillMatrixFromOther">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="251,5,423,47"/>
+<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="269,71,405,98"/>
+</map>

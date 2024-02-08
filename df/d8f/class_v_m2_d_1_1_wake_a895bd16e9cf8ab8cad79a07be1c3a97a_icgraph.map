@@ -1,0 +1,7 @@
+<map id="VM2D::Wake::MoveInside" name="VM2D::Wake::MoveInside">
+<area shape="rect" id="node2" href="$df/d8f/class_v_m2_d_1_1_wake.html#a7aefd87785e7283ca55865c25ef37b4b" title="Проверка пересечения вихрями следа профиля при перемещении " alt="" coords="465,5,609,32"/>
+<area shape="rect" id="node3" href="$df/d8f/class_v_m2_d_1_1_wake.html#a8445ca23e13732c4b7aa312c4e2c219d" title="Деструктор " alt="" coords="664,107,815,133"/>
+<area shape="rect" id="node4" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей " alt="" coords="243,107,396,133"/>
+<area shape="rect" id="node5" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad9b7f5fc4d187f728eed9661ad345c3c" title="VM2D::Wake::CollapsNew" alt="" coords="229,157,409,184"/>
+<area shape="rect" id="node6" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа " alt="" coords="457,208,616,235"/>
+</map>

@@ -1,0 +1,18 @@
+<map id="VM2D::Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets" name="VM2D::Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="299,5,495,32"/>
+<area shape="rect" id="node3" href="$db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a7d3941e28c9966512123e3242d4e40d1" title="Функция минимально возможного значения для epsAst. " alt="" coords="307,57,488,98"/>
+<area shape="rect" id="node4" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="332,123,463,149"/>
+<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="311,174,483,215"/>
+<area shape="rect" id="node6" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="296,240,499,267"/>
+<area shape="rect" id="node7" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="329,291,465,317"/>
+<area shape="rect" id="node8" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a96f89cab550d0283c9991cd1867ffc2b" title="Возврат константной ссылки на вихревой след " alt="" coords="308,341,487,368"/>
+<area shape="rect" id="node9" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="298,392,497,419"/>
+<area shape="rect" id="node10" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a088a7850b255847d4f0f25d652bc71e1" title="Возврат количества граничных условий в задаче " alt="" coords="302,443,493,485"/>
+<area shape="rect" id="node11" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0c0e1a56d2270639e9dc27f700a49e53" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="310,509,485,536"/>
+<area shape="rect" id="node12" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="302,561,493,602"/>
+<area shape="rect" id="node13" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#adca24eb07996f32373f768a1aba9ffb5" title="Возврат неконстантной ссылки на объект для вычисления скоростей " alt="" coords="296,626,499,667"/>
+<area shape="rect" id="node14" href="$d9/d45/namespace_b_hcu.html#a262849f1ac0efec762ad3caf2f338131" title="BHcu::wrapperDiffusiveVelo" alt="" coords="304,692,491,719"/>
+<area shape="rect" id="node17" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aea2bd87d86e2d657c6724a91a4f42009" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="280,743,515,769"/>
+<area shape="rect" id="node15" href="$d9/d45/namespace_b_hcu.html#ae08582b53db0f82aee2e8d4cb28abc55" title="BHcu::memoryAllocate" alt="" coords="563,667,720,693"/>
+<area shape="rect" id="node16" href="$d9/d45/namespace_b_hcu.html#a5b015b647f1d31ba5be7887fdf2057f1" title="BHcu::rebuildBaseTree" alt="" coords="563,717,720,744"/>
+</map>

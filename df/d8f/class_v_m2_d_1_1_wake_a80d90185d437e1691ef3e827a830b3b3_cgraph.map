@@ -1,0 +1,32 @@
+<map id="VM2D::Wake::Restruct" name="VM2D::Wake::Restruct">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="233,139,428,165"/>
+<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="500,209,691,250"/>
+<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="507,275,684,301"/>
+<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a36ee1e0ac82725c33699d5fba6edcf97" title="Возврат неконстантной ссылки на вихревой след " alt="" coords="212,477,449,504"/>
+<area shape="rect" id="node6" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aea2bd87d86e2d657c6724a91a4f42009" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU) " alt="" coords="213,528,448,555"/>
+<area shape="rect" id="node7" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a5279e671bedc8f19f2ec9c7d62581508" title="Установка правой границы самого правого профиля (для организации увеличения радиуса коллапса) ..." alt="" coords="231,579,431,605"/>
+<area shape="rect" id="node8" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a96f89cab550d0283c9991cd1867ffc2b" title="Возврат константной ссылки на вихревой след " alt="" coords="241,629,420,656"/>
+<area shape="rect" id="node9" href="$d9/d47/knn_c_p_u_8cpp.html#a502dc2255024de1a1f2027de5ee9d518" title="WakekNN" alt="" coords="289,189,372,216"/>
+<area shape="rect" id="node20" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad9b7f5fc4d187f728eed9661ad345c3c" title="VM2D::Wake::CollapsNew" alt="" coords="241,376,421,403"/>
+<area shape="rect" id="node30" href="$df/d8f/class_v_m2_d_1_1_wake.html#a4269347865d074b8446266868c333378" title="Зануление далеко улетевших вихрей " alt="" coords="242,427,419,453"/>
+<area shape="rect" id="node31" href="$df/d8f/class_v_m2_d_1_1_wake.html#a762072f1b77f99c4297364f3567da941" title="Исключение нулевых и мелких вихрей " alt="" coords="239,680,423,707"/>
+<area shape="rect" id="node10" href="$d9/d47/knn_c_p_u_8cpp.html#a59b87bc33ee5fea4761b3d784a08dbd4" title="����� ������ ����������� �������������� (����� ������ � ������ �������) " alt="" coords="553,157,638,184"/>
+<area shape="rect" id="node12" href="$d9/d47/knn_c_p_u_8cpp.html#a3aa4d7d06eebd51153b1e88b6cdfed72" title="mainCycle" alt="" coords="553,107,637,133"/>
+<area shape="rect" id="node11" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="763,280,894,307"/>
+<area shape="rect" id="node13" href="$d9/d47/knn_c_p_u_8cpp.html#a8f03a33b2fc5c0cc9815ad1624362a4b" title="Morton2D" alt="" coords="789,5,868,32"/>
+<area shape="rect" id="node15" href="$d9/d47/knn_c_p_u_8cpp.html#acc7e6b44c7539afc6733395e7bb43a7e" title="���������� ������� �� ������������ ����� " alt="" coords="775,56,882,83"/>
+<area shape="rect" id="node16" href="$dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c" title="Вычисление расстояния между двумя точками " alt="" coords="787,107,871,133"/>
+<area shape="rect" id="node17" href="$d9/d47/knn_c_p_u_8cpp.html#a7c3f80cac72e3ecd204fdb25e391649c" title="newSort" alt="" coords="793,157,864,184"/>
+<area shape="rect" id="node18" href="$d9/d47/knn_c_p_u_8cpp.html#aa477c444567c6ebae8f1dc2db478586c" title="newMerge" alt="" coords="787,208,870,235"/>
+<area shape="rect" id="node14" href="$d9/d47/knn_c_p_u_8cpp.html#ad0e1490b213053387b10e0bcf55dc2e7" title="ExpandBits" alt="" coords="964,5,1053,32"/>
+<area shape="rect" id="node19" href="$d9/d47/knn_c_p_u_8cpp.html#a8b46f9f925a7cbc80c50760a64378f64" title="BinSearch" alt="" coords="967,208,1050,235"/>
+<area shape="rect" id="node21" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="497,477,693,504"/>
+<area shape="rect" id="node22" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="550,528,641,555"/>
+<area shape="rect" id="node24" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="555,579,636,605"/>
+<area shape="rect" id="node25" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#a19fac3f92003a7a45d4e635585d8c1ef" title="Функция для доступа к циркуляции вихря " alt="" coords="529,376,662,403"/>
+<area shape="rect" id="node26" href="$df/d8f/class_v_m2_d_1_1_wake.html#a895bd16e9cf8ab8cad79a07be1c3a97a" title="Проверка проникновения точки через границу профиля " alt="" coords="507,427,683,453"/>
+<area shape="rect" id="node23" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="741,532,916,559"/>
+<area shape="rect" id="node27" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a8e7340245cfc3ba2a3d0cd05d9ba7519" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля ..." alt="" coords="747,350,910,391"/>
+<area shape="rect" id="node28" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="743,415,915,457"/>
+<area shape="rect" id="node29" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="761,481,897,508"/>
+</map>

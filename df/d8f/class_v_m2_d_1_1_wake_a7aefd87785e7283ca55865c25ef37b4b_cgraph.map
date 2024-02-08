@@ -1,0 +1,9 @@
+<map id="VM2D::Wake::Inside" name="VM2D::Wake::Inside">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="464,5,636,47"/>
+<area shape="rect" id="node3" href="$df/d8f/class_v_m2_d_1_1_wake.html#a21ac26958c65e8189c740bcb1b8b7d10" title="Проверка проникновения точки через границу профиля " alt="" coords="197,123,416,164"/>
+<area shape="rect" id="node8" href="$df/d8f/class_v_m2_d_1_1_wake.html#a895bd16e9cf8ab8cad79a07be1c3a97a" title="Проверка проникновения точки через границу профиля " alt="" coords="219,71,395,98"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a8e7340245cfc3ba2a3d0cd05d9ba7519" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля ..." alt="" coords="469,123,631,164"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="505,239,595,266"/>
+<area shape="rect" id="node6" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="684,214,859,241"/>
+<area shape="rect" id="node7" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="482,71,618,98"/>
+</map>

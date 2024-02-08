@@ -1,0 +1,4 @@
+<map id="VM2D::AirfoilRect::GetInfluenceFromSourceSheetToVortex" name="VM2D::AirfoilRect::GetInfluenceFromSourceSheetToVortex">
+<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="283,5,481,32"/>
+<area shape="rect" id="node3" href="$df/da2/class_v_m2_d_1_1_boundary.html#a9fbc3a797839c4499b416a9b3c358a9d" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения ..." alt="" coords="255,57,509,98"/>
+</map>

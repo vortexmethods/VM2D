@@ -1,0 +1,5 @@
+<map id="VM2D::Boundary::GetInfluenceFromVortexSheetAtRectPanelToVortex" name="VM2D::Boundary::GetInfluenceFromVortexSheetAtRectPanelToVortex">
+<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a63823a4a3f014791d441ea08360ecfa4" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="304,5,503,61"/>
+<area shape="rect" id="node4" href="$df/da2/class_v_m2_d_1_1_boundary.html#ae61caa08bceea2ed067cbf0f9605e515" title="Деструктор " alt="" coords="307,85,500,112"/>
+<area shape="rect" id="node3" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="551,13,687,54"/>
+</map>

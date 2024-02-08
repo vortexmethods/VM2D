@@ -1,0 +1,15 @@
+<map id="BHcu::rebuildBaseTree" name="BHcu::rebuildBaseTree">
+<area shape="rect" id="node2" href="$d9/d45/namespace_b_hcu.html#a3c0c339301f4d6fad935df04796c83dc" title="BHcu::wrapperInfluence" alt="" coords="233,23,395,50"/>
+<area shape="rect" id="node6" href="$d9/d45/namespace_b_hcu.html#a5e2849f8fe419d00b376233f3875c721" title="npoints &#45; ����� ����� ���������� " alt="" coords="225,75,403,116"/>
+<area shape="rect" id="node7" href="$d9/d45/namespace_b_hcu.html#a52ceff7b4369cdca0703d87663544397" title="BHcu::wrapperInfluenceToRHS" alt="" coords="211,141,417,167"/>
+<area shape="rect" id="node10" href="$d9/d45/namespace_b_hcu.html#a262849f1ac0efec762ad3caf2f338131" title="BHcu::wrapperDiffusiveVelo" alt="" coords="221,195,407,222"/>
+<area shape="rect" id="node3" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="465,16,729,57"/>
+<area shape="rect" id="node4" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="1083,5,1257,47"/>
+<area shape="rect" id="node5" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a8efe4ad936349ae0282b37bc61ac2869" title="Вычисление скоростей в точках wakeVP. " alt="" coords="813,35,988,76"/>
+<area shape="rect" id="node8" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a40e4cb03382b34abe8dd7dc82582490a" title="Генерация вектора влияния вихревого следа на профиль " alt="" coords="509,129,686,171"/>
+<area shape="rect" id="node9" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a54f3597cd4655c1211ffda53628b253a" title="Расчет вектора правой части (всего) " alt="" coords="813,129,988,171"/>
+<area shape="rect" id="node11" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ab6875b58f381978e20135c90f77abfa3" title="VM2D::Velocity::CalcDiff\lVeloI1I2ToSetOfPointsFromSheets" alt="" coords="484,195,711,236"/>
+<area shape="rect" id="node12" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе " alt="" coords="815,195,986,236"/>
+<area shape="rect" id="node14" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ac04ca51b096cd7f08703c45ebe00ad7e" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromSheets" alt="" coords="777,260,1024,301"/>
+<area shape="rect" id="node13" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="1072,202,1268,229"/>
+</map>

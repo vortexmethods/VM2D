@@ -1,0 +1,13 @@
+<map id="VM2D::MeasureVP::ReadPointsFromFile" name="VM2D::MeasureVP::ReadPointsFromFile">
+<area shape="rect" id="node2" href="$dd/d9a/namespace_v_mlib.html#a6b3aae108ba4e961d15ad5c278842901" title="Проверка существования файла " alt="" coords="294,5,430,32"/>
+<area shape="rect" id="node3" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="277,56,447,83"/>
+<area shape="rect" id="node4" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a9fae0e4418f1053a6633ca35408aff4b" title="Считывание вектора из двумерных точек из базы данных " alt="" coords="277,107,447,133"/>
+<area shape="rect" id="node6" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="264,157,460,184"/>
+<area shape="rect" id="node7" href="$dd/d9a/namespace_v_mlib.html#aa355deb397e5af9cd818ecaef4f10a3a" title="Создание каталога " alt="" coords="285,208,439,235"/>
+<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D. " alt="" coords="272,259,452,285"/>
+<area shape="rect" id="node11" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D. " alt="" coords="265,309,459,336"/>
+<area shape="rect" id="node12" href="$dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a" title="Формирование имени файла " alt="" coords="291,360,433,387"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a9f4fcb924d0d4b3f0e685bc8b2f4973f" title="Функция сверки строки с шаблоном, который может содержать знаки * и ? " alt="" coords="537,107,653,133"/>
+<area shape="rect" id="node9" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D. " alt="" coords="508,233,683,260"/>
+<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой " alt="" coords="514,284,677,311"/>
+</map>

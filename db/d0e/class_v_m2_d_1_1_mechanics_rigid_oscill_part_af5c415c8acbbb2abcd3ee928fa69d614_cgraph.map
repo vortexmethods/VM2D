@@ -1,0 +1,7 @@
+<map id="VM2D::MechanicsRigidOscillPart::MechanicsRigidOscillPart" name="VM2D::MechanicsRigidOscillPart::MechanicsRigidOscillPart">
+<area shape="rect" id="node2" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a5e6bfd0b3b87fb0f3bda513ebd0c2f96" title="Чтение параметров конкретной механической системы " alt="" coords="257,5,487,61"/>
+<area shape="rect" id="node3" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости " alt="" coords="279,85,465,112"/>
+<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="535,136,712,163"/>
+<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae77606bfe37d99ef15cefa876e284277" title="Перемещение профиля " alt="" coords="553,35,693,61"/>
+<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae6f87ad89e0743fd910af6f898c4d6e6" title="Поворот профиля " alt="" coords="550,85,697,112"/>
+</map>

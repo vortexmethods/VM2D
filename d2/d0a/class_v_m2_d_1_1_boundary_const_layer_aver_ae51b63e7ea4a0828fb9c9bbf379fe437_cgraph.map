@@ -1,0 +1,9 @@
+<map id="VM2D::BoundaryConstLayerAver::GetInfluenceFromVorticesToRectPanel" name="VM2D::BoundaryConstLayerAver::GetInfluenceFromVorticesToRectPanel">
+<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="263,5,399,32"/>
+<area shape="rect" id="node3" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="265,56,396,83"/>
+<area shape="rect" id="node4" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#a19fac3f92003a7a45d4e635585d8c1ef" title="Функция для доступа к циркуляции вихря " alt="" coords="264,107,397,133"/>
+<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами " alt="" coords="283,157,379,184"/>
+<area shape="rect" id="node6" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="447,157,549,184"/>
+<area shape="rect" id="node7" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="597,157,688,184"/>
+<area shape="rect" id="node8" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="736,157,911,184"/>
+</map>
