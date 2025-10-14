@@ -47,6 +47,11 @@ namespace BHcu
         const int* MmortonCodesKeyUnsortd, int* MmortonCodesKeyd, \
         const int* MmortonCodesIdxUnsortd, int* MmortonCodesIdxd,
         int num_items, int begin_bit, int end_bit);
+
+    void RadixSortFromCUBReservedMem(
+        const int* MmortonCodesKeyUnsortd, int* MmortonCodesKeyd, \
+        const int* MmortonCodesIdxUnsortd, int* MmortonCodesIdxd,
+        int num_items, int begin_bit, int end_bit, void*& d_temp_storage, int& d_temp_storage_in_bytes);
 }
 
 #endif

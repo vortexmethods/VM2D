@@ -42,6 +42,17 @@
 
 #include "defs.h"
 
+#ifdef USE_CUDA
+#ifdef USE_CUDNN
+	#include "mlp_cudnn.cuh"
+#endif
+	#include "intersection.cuh"
+
+//	#include <thrust/copy.h>
+//	#include <thrust/device_vector.h>
+//	#include <thrust/iterator/counting_iterator.h>
+#endif
+
 namespace VM2D
 {
 
@@ -197,6 +208,22 @@ namespace VM2D
 			   
 		/// Указатель на хосте, где хранится временная часть вектора (по панелям) для силы вязкого трения
 		IFCUDA(mutable std::vector<double> tmpViscousStresses);
+
+		/// Нейросеть для коэффициентов I0 и I3 диффузионной скорости
+#ifdef USE_CUDNN
+		IFCUDA(CudaNN NN);
+#endif
+
+		/// Быстрый поиск ближайшей панели
+		IFCUDA(lbvh_find_nearest_panel panelSearcher);
+		IFCUDA(lbvh_penetration_control penetrationControler);
+
+		//
+		IFCUDA(std::vector<int> vorticesToProcess);
+		IFCUDA(int vtp);
+		IFCUDA(std::vector<float> batch);     //(vtp * 3 * 5);
+		IFCUDA(std::vector<float> nnout);     //(vtp * 2 * 5);
+		IFCUDA(std::vector<int> batchPanels); // (vtp * 5);
 
 		/// \brief Нормали к панелям профиля
 		///

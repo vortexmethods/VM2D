@@ -185,6 +185,9 @@ namespace VM2D
 	{
 		//Решатель СЛАУ
 		std::pair<std::string, int> linearSystemSolver;
+		double fastGmresTheta;
+		double gmresEps;
+		int multipoleOrderGmres;
 
 		//Метод вычисления скоростей вихрей и в отдельных точках
 		std::pair<std::string, int> velocityComputation;

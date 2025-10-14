@@ -60,7 +60,7 @@ void WakeDataBase::ReadFromFile(const std::string& dir, const std::string& fileN
 	
 	char firstChar, secondChar;
 
-	if (fileExistTest(filename, W.getInfo(), { "txt", "TXT" }))
+	if (fileExistTest(filename, W.getInfo(), true, { "txt", "TXT" }))
 	{		
 		testFile.open(filename);
 		testFile >> firstChar;
@@ -74,7 +74,7 @@ void WakeDataBase::ReadFromFile(const std::string& dir, const std::string& fileN
 	//Считывание из словаря
 	if (firstChar == '/' && secondChar == '*')
 	{
-		if (fileExistTest(filename, W.getInfo(), { "txt", "TXT" }))
+		if (fileExistTest(filename, W.getInfo(), true, { "txt", "TXT" }))
 		{
 			std::stringstream wakeFile(VMlib::Preprocessor(filename).resultString);
 
@@ -87,7 +87,7 @@ void WakeDataBase::ReadFromFile(const std::string& dir, const std::string& fileN
 	else
 	{
 		//Считывание из обычного текстового файла
-		if (fileExistTest(filename, W.getInfo(), { "txt", "TXT" }))
+		if (fileExistTest(filename, W.getInfo(), true, { "txt", "TXT" }))
 		{
 			wakeFile.open(filename);
 			int nnn;

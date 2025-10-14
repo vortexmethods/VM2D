@@ -201,15 +201,15 @@ void Velocity::CalcDiffVelo()
 		t03finish = omp_get_wtime();
 
 
-    //std::cout << "I1I2 TOTAL = " << t12finish - t12start << std::endl;
-    //std::cout << "I0I3 TOTAL = " << t03finish - t03start << std::endl;
+
   
+		tOtherstart = omp_get_wtime();
 		for (Point2D& diffV : wakeVortexesParams.diffVelo)
 			diffV *= W.getPassport().physicalProperties.nu;
 
 
 		//контроль застрелов диффузионной скорости
-		tOtherstart = omp_get_wtime();
+		
 		LimitDiffVelo(wakeVortexesParams.diffVelo);
 
 		for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
@@ -217,7 +217,7 @@ void Velocity::CalcDiffVelo()
 				W.getNonConstAirfoil(afl).viscousStress[i] *= W.getPassport().physicalProperties.nu;
 
 		SaveVisStress();
-		tOtherfinish = omp_get_wtime();
+		
 
 		//Заполнение структуры данных виртуальных вихрей
 		size_t nVirtVortices = 0;
@@ -236,6 +236,10 @@ void Velocity::CalcDiffVelo()
 				virtualVortexesParams[bou].I3[v] = wakeVortexesParams.I3[counter];				
 				++counter;
 			}
+
+		tOtherfinish = omp_get_wtime();
+
+		//std::cout << "I1I2 = " << t12finish - t12start << ", I0I3 = " << t03finish - t03start << ", other = " << tOtherfinish - tOtherstart << std::endl;
 
 
 	}

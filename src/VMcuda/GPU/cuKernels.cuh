@@ -391,7 +391,84 @@ namespace BHcu
         int nTotPan, const real* dev_ptr_pt,
         const real* pointsd,
         real* __restrict veld,
-        real* __restrict vellind);
+        real* __restrict vellind,
+        int* __restrict nClosePanelsl,
+        int* __restrict closeCellsPfl, 
+        int* __restrict PrefixSuml, 
+        realPoint* __restrict i00, 
+        realPoint* __restrict i01, 
+        realPoint* __restrict i10,
+        realPoint* __restrict i11);
+
+    float cuMatrixMulVectorNoCalculationKernel
+    (
+        CUDApointers ptr,
+        int order,
+        int nnodesd, int nbodiesd,
+        real itolsqd,
+        const real* __restrict rpnl,
+        const real* dev_ptr_freeVortexSheet,
+        const real* dev_ptr_freeVortexSheetLin,
+        //CUDApointers ptrPoints,
+        const int* __restrict MmortonCodesIdxl,
+        realPoint* __restrict El,
+        int nTotPan, const real* dev_ptr_pt,
+        const real* pointsd,
+        real* __restrict veld,
+        real* __restrict vellind,
+        int* __restrict nClosePanelsl);
+
+    float cuMatrixMulVectorZeroCalculationKernel
+    (
+        CUDApointers ptr,
+        int order,
+        int nnodesd, int nbodiesd,
+        real itolsqd,
+        const real* __restrict rpnl,
+        const real* dev_ptr_freeVortexSheet,
+        const real* dev_ptr_freeVortexSheetLin,
+        //CUDApointers ptrPoints,
+        const int* __restrict MmortonCodesIdxl,
+        realPoint* __restrict El,
+        int nTotPan, const real* dev_ptr_pt,
+        const real* pointsd,
+        real* __restrict veld,
+        real* __restrict vellind,
+        int* __restrict nClosePanelsl,
+        int* __restrict closeCellsPfl,
+        int* __restrict PrefixSuml,
+        realPoint* __restrict i00,
+        realPoint* __restrict i01,
+        realPoint* __restrict i10,
+        realPoint* __restrict i11,
+        int iter
+        );
+
+    float cuMatrixMulVectorNoZeroCalculationKernel
+    (
+        CUDApointers ptr,
+        int order,
+        int nnodesd, int nbodiesd,
+        real itolsqd,
+        const real* __restrict rpnl,
+        const real* dev_ptr_freeVortexSheet,
+        const real* dev_ptr_freeVortexSheetLin,
+        //CUDApointers ptrPoints,
+        const int* __restrict MmortonCodesIdxl,
+        realPoint* __restrict El,
+        int nTotPan, const real* dev_ptr_pt,
+        const real* pointsd,
+        real* __restrict veld,
+        real* __restrict vellind,
+        int* __restrict nClosePanelsl,
+        int* __restrict closeCellsPfl,
+        int* __restrict PrefixSuml,
+        realPoint* __restrict i00,
+        realPoint* __restrict i01,
+        realPoint* __restrict i10,
+        realPoint* __restrict i11,
+        int iter
+    );
 
 
     /******************************************************************************/

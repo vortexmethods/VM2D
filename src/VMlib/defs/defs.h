@@ -60,7 +60,10 @@
 #include "PairInt.h"
 
 const int multipoleOrder = 12;
+//const int multipoleOrderGMRES = 12;
+
 const double multipoleTheta = 1.2;
+
 
 
 /// параметр расписания для распараллеливания циклов по OpenMP
@@ -136,7 +139,6 @@ namespace defaults
 
 	/// Способ решения линейной системы
 	const std::pair<std::string, int> defaultLinearSystemSolver = { "linearSystemGauss", 0 };
-
 
 	/// Способ вычисления скоростей вихрей
 	const std::pair<std::string, int> defaultVelocityComputation{ "velocityBiotSavart", 0 };
@@ -328,7 +330,7 @@ namespace VMlib
 	/// \param[in, out] info ссылка на поток вывода логов/ошибок
 	/// \param[in] extList константная ссылка на список проверяемых расширений
 	/// \return true, если файл существует; false если файл отсутствует
-	inline bool fileExistTest(std::string& fileName, LogStream& info, const std::list <std::string>& extList = {})
+	inline bool fileExistTest(std::string& fileName, LogStream& info, bool exitKey = false, const std::list <std::string>& extList = {})
 	{
 		std::list<std::string> fullExtList(extList);
 		fullExtList.insert(fullExtList.begin(), "");
@@ -348,8 +350,14 @@ namespace VMlib
 			}
 		}
 
-		info('e') << "file " << fileName << " is not found" << std::endl;
-		exit(-1);
+		if (exitKey)
+		{
+			info('e') << "file " << fileName << " is not found" << std::endl;
+			exit(-1);
+		}
+		else
+			info('i') << "file " << fileName << " is not found" << std::endl;
+
 		return false;
 	}
 

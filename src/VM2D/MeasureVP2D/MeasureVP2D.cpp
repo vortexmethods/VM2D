@@ -52,6 +52,7 @@
 #include "Boundary2DConstLayerAver.h"
 
 #include "Mechanics2D.h"
+#include "Mechanics2DDeformable.h"
 #include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
@@ -74,7 +75,7 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 	std::string filename = dir + "pointsVP";
 	std::ifstream VPFile;
 
-	if (fileExistTest(filename, W.getInfo(), { "txt", "TXT" }))
+	if (fileExistTest(filename, W.getInfo(), true, { "txt", "TXT" }))
 	{
 		std::stringstream VPFile(VMlib::Preprocessor(filename).resultString);
 
@@ -133,21 +134,14 @@ void MeasureVP::Initialization()
 	{
 		W.getInfo('i') << "Preparing VP points" << std::endl;
 
-
 		wakeVP->vtx.clear();
-		wakeVP->vtx.resize(0);
+		wakeVP->vtx.reserve(initialPoints.size() + historyPoints.size() + elasticPoints.size());
 
 		Vortex2D addvtx;
 
 		velocity.clear();
-		velocity.resize(0);
-
 		pressure.clear();
-		pressure.resize(0);
-
 		domainRadius.clear();
-		domainRadius.resize(0);
-
 
 		//отключаем проверку того, что точки расположены вне профиля
 		/*
@@ -182,6 +176,44 @@ void MeasureVP::Initialization()
 		for (size_t i = 0; i < historyPoints.size(); ++i)
 		{
 			addvtx.r() = historyPoints[i];
+			wakeVP->vtx.push_back(addvtx);
+		}//for i
+
+
+		elasticPoints.clear();
+				
+		for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
+		{
+			MechanicsDeformable* ptr = dynamic_cast<MechanicsDeformable*>(&(W.getNonConstMechanics(afl)));
+			if (ptr != nullptr)
+			{
+				if (afl > 0)
+				{
+					W.getInfo('e') << "Only airfoil 0 can be elastic!" << std::endl;
+					exit(-345);
+				}
+				
+				elasticPoints.reserve(ptr->chord.size() * 2);
+				for (size_t q = 0; q < ptr->chord.size(); ++q)
+				{
+					std::pair<size_t, size_t> pnls = ptr->chord[q].infPanels;
+					elasticPoints.push_back(
+						0.5 * (W.getAirfoil(afl).getR(pnls.first) + W.getAirfoil(afl).getR(pnls.first + 1))
+						+ 0.01 * W.getAirfoil(afl).len[pnls.first] * W.getAirfoil(afl).nrm[pnls.first]
+					);
+
+					elasticPoints.push_back(
+						0.5 * (W.getAirfoil(afl).getR(pnls.second) + W.getAirfoil(afl).getR(pnls.second + 1))
+						+ 0.01 * W.getAirfoil(afl).len[pnls.second] * W.getAirfoil(afl).nrm[pnls.second]
+					);
+				}
+			}			
+		}
+
+
+		for (size_t i = 0; i < elasticPoints.size(); ++i)
+		{
+			addvtx.r() = elasticPoints[i];
 			wakeVP->vtx.push_back(addvtx);
 		}//for i
 
@@ -342,6 +374,7 @@ void MeasureVP::SaveVP()
 	std::ofstream outfile;
 
 	VMlib::CreateDirectory(W.getPassport().dir, "velPres");
+	const size_t nRealPressurePoints = initialPoints.size() + historyPoints.size(); //число реальных точек - без учета тех, что для гидроупругости
 
 	if (W.getPassport().timeDiscretizationProperties.fileTypeVP.second == 0) //text format VTK
 	{
@@ -352,32 +385,32 @@ void MeasureVP::SaveVP()
 		outfile << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
 		outfile << "ASCII" << std::endl;
 		outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
-		outfile << "POINTS " << wakeVP->vtx.size() << " float" << std::endl;
+		outfile << "POINTS " << nRealPressurePoints << " float" << std::endl;
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 		{
 			double xi = (wakeVP->vtx[i].r())[0];
 			double yi = (wakeVP->vtx[i].r())[1];
 			outfile << xi << " " << yi << " " << "0.0" << std::endl;
 		}//for i
 
-		outfile << "CELLS " << wakeVP->vtx.size() << " " << 2 * wakeVP->vtx.size() << std::endl;
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		outfile << "CELLS " << nRealPressurePoints << " " << 2 * nRealPressurePoints << std::endl;
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 			outfile << "1 " << i << std::endl;
 
-		outfile << "CELL_TYPES " << wakeVP->vtx.size() << std::endl;
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		outfile << "CELL_TYPES " << nRealPressurePoints << std::endl;
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 			outfile << "1" << std::endl;
 
 		outfile << std::endl;
-		outfile << "POINT_DATA " << wakeVP->vtx.size() << std::endl;
+		outfile << "POINT_DATA " << nRealPressurePoints << std::endl;
 
 		if (!W.getPassport().calcCoefficients)
 			outfile << "VECTORS V float" << std::endl;
 		else
 			outfile << "VECTORS CV float" << std::endl;
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 		{
 			outfile << velocity[i][0] * scaleV << " " << velocity[i][1] * scaleV << " 0.0" << std::endl;
 		}//for i
@@ -391,7 +424,7 @@ void MeasureVP::SaveVP()
 
 		outfile << "LOOKUP_TABLE default" << std::endl;
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 		{
 			outfile << pressure[i] * scaleP << std::endl;
 		}//for i
@@ -410,79 +443,79 @@ void MeasureVP::SaveVP()
 
 		outfile << "# vtk DataFile Version 3.0" << "\r\n" << "VM2D VTK result: " << (W.getPassport().dir + "velPres/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << eolnBIN;
 		outfile << "BINARY" << eolnBIN;
-		outfile << "DATASET UNSTRUCTURED_GRID" << eolnBIN << "POINTS " << wakeVP->vtx.size() << " " << "float" << eolnBIN;
+		outfile << "DATASET UNSTRUCTURED_GRID" << eolnBIN << "POINTS " << nRealPressurePoints << " " << "float" << eolnBIN;
 
 
-		Eigen::VectorXf pData = Eigen::VectorXf::Zero(wakeVP->vtx.size());
-		Eigen::VectorXf vData = Eigen::VectorXf::Zero(wakeVP->vtx.size() * 3);
-		Eigen::VectorXf rData = Eigen::VectorXf::Zero(wakeVP->vtx.size() * 3);
+		Eigen::VectorXf pData = Eigen::VectorXf::Zero(nRealPressurePoints);
+		Eigen::VectorXf vData = Eigen::VectorXf::Zero(nRealPressurePoints * 3);
+		Eigen::VectorXf rData = Eigen::VectorXf::Zero(nRealPressurePoints * 3);
 
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 		{
 			rData(3 * i + 0) = (float)(wakeVP->vtx[i].r())[0];
 			rData(3 * i + 1) = (float)(wakeVP->vtx[i].r())[1];
 		}//for i
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 		{
 			vData(3 * i + 0) = (float)(velocity[i][0] * scaleV);
 			vData(3 * i + 1) = (float)(velocity[i][1] * scaleV);
 		}//for i
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 		{
 			pData(i) = (float)(pressure[i] * scaleP);
 		}//for i
 
 		//POINTS
 		if (littleEndian)
-			for (int i = 0; i < wakeVP->vtx.size() * 3; ++i)
+			for (int i = 0; i < nRealPressurePoints * 3; ++i)
 				VMlib::SwapEnd(rData(i));
-		outfile.write(reinterpret_cast<char*>(rData.data()), wakeVP->vtx.size() * 3 * sizeof(float));
+		outfile.write(reinterpret_cast<char*>(rData.data()), nRealPressurePoints * 3 * sizeof(float));
 
 		// CELLS
-		std::vector<int> cells(2 * wakeVP->vtx.size());
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		std::vector<int> cells(2 * nRealPressurePoints);
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 		{
 			cells[2 * i + 0] = 1;
 			cells[2 * i + 1] = (int)i;
 		}
 
 		std::vector<int> cellsTypes;
-		cellsTypes.resize(wakeVP->vtx.size(), 1);
+		cellsTypes.resize(nRealPressurePoints, 1);
 
 		if (littleEndian)
 		{
-			for (int i = 0; i < wakeVP->vtx.size() * 2; ++i)
+			for (int i = 0; i < nRealPressurePoints * 2; ++i)
 				VMlib::SwapEnd(cells[i]);
 
-			for (int i = 0; i < wakeVP->vtx.size(); ++i)
+			for (int i = 0; i < nRealPressurePoints; ++i)
 				VMlib::SwapEnd(cellsTypes[i]);
 		}
 
-		outfile << eolnBIN << "CELLS " << wakeVP->vtx.size() << " " << wakeVP->vtx.size() * 2 << eolnBIN;
-		outfile.write(reinterpret_cast<char*>(cells.data()), wakeVP->vtx.size() * 2 * sizeof(int));
-		outfile << eolnBIN << "CELL_TYPES " << wakeVP->vtx.size() << eolnBIN;
-		outfile.write(reinterpret_cast<char*>(cellsTypes.data()), wakeVP->vtx.size() * sizeof(int));
+		outfile << eolnBIN << "CELLS " << nRealPressurePoints << " " << nRealPressurePoints * 2 << eolnBIN;
+		outfile.write(reinterpret_cast<char*>(cells.data()), nRealPressurePoints * 2 * sizeof(int));
+		outfile << eolnBIN << "CELL_TYPES " << nRealPressurePoints << eolnBIN;
+		outfile.write(reinterpret_cast<char*>(cellsTypes.data()), nRealPressurePoints * sizeof(int));
 
 		//VECTORS V
 		if (littleEndian)
-			for (int i = 0; i < wakeVP->vtx.size() * 3; ++i)
+			for (int i = 0; i < nRealPressurePoints * 3; ++i)
 				VMlib::SwapEnd(vData(i));
 
-		outfile << eolnBIN << "POINT_DATA " << wakeVP->vtx.size() << eolnBIN;
+		outfile << eolnBIN << "POINT_DATA " << nRealPressurePoints << eolnBIN;
 
 		if (!W.getPassport().calcCoefficients)
 			outfile << "VECTORS V " << "float" << eolnBIN;
 		else
 			outfile << "VECTORS CV " << "float" << eolnBIN;
 
-		outfile.write(reinterpret_cast<char*>(vData.data()), wakeVP->vtx.size() * 3 * sizeof(float));
+		outfile.write(reinterpret_cast<char*>(vData.data()), nRealPressurePoints * 3 * sizeof(float));
 
 		//SCALARS P	
 		if (littleEndian)
-			for (int i = 0; i < wakeVP->vtx.size(); ++i)
+			for (int i = 0; i < nRealPressurePoints; ++i)
 				VMlib::SwapEnd(pData(i));
 
 		if (!W.getPassport().calcCoefficients)
@@ -491,7 +524,7 @@ void MeasureVP::SaveVP()
 			outfile << eolnBIN << "SCALARS CP " << "float" << " 1" << eolnBIN;
 
 		outfile << "LOOKUP_TABLE default" << eolnBIN;
-		outfile.write(reinterpret_cast<char*>(pData.data()), wakeVP->vtx.size() * sizeof(float));
+		outfile.write(reinterpret_cast<char*>(pData.data()), nRealPressurePoints * sizeof(float));
 
 		outfile << eolnBIN;
 
@@ -507,7 +540,7 @@ void MeasureVP::SaveVP()
 		else
 			outfile << "point,x,y,CVx,CVy,CP" << std::endl;
 
-		for (size_t i = 0; i < wakeVP->vtx.size(); ++i)
+		for (size_t i = 0; i < nRealPressurePoints; ++i)
 		{
 			double xi = (wakeVP->vtx[i].r())[0];
 			double yi = (wakeVP->vtx[i].r())[1];
@@ -523,10 +556,10 @@ void MeasureVP::SaveVP()
 		std::ofstream VPFileBunCsv(fnameBunCsv.c_str(), W.getCurrentStep() ? std::ios::app : std::ios::out);
 		{
 			if (W.getCurrentStep() == 0)
-				VPFileBunCsv << wakeVP->vtx.size() << std::endl;
+				VPFileBunCsv << nRealPressurePoints << std::endl;
 
 
-			for (size_t q = 0; q < wakeVP->vtx.size(); ++q)
+			for (size_t q = 0; q < nRealPressurePoints; ++q)
 			{
 				VPFileBunCsv << W.getCurrentStep() << "," \
 					<< W.getPassport().physicalProperties.getCurrTime() << "," \
@@ -565,3 +598,16 @@ void MeasureVP::SaveVP()
 
 	W.getTimestat().timeSaveKadr.second += omp_get_wtime();
 }//SaveVP()
+
+std::vector<std::pair<Point2D, double>> MeasureVP::GetVPinElasticPoints()
+{
+	std::vector<std::pair<Point2D, double>> result;
+	result.reserve(elasticPoints.size());
+	
+	const size_t nRealPressurePoints = initialPoints.size() + historyPoints.size(); //число реальных точек - без учета тех, что для гидроупругости
+
+	for (size_t q = 0; q < elasticPoints.size(); ++q)
+		result.push_back({ velocity[nRealPressurePoints + q], pressure[nRealPressurePoints + q] });
+	
+	return result;
+}

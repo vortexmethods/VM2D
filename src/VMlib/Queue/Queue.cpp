@@ -723,9 +723,9 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mec
 	std::string extSwitchersFile = _switchersFile;
 
 	if (
-		fileExistTest(extTasksFile, info, {"txt", "TXT"}) &&
-		fileExistTest(extDefaultsFile, info, { "txt", "TXT" }) &&
-		fileExistTest(extSwitchersFile, info, { "txt", "TXT" })
+		fileExistTest(extTasksFile, info, true, {"txt", "TXT"}) &&
+		fileExistTest(extDefaultsFile, info, true, { "txt", "TXT" }) &&
+		fileExistTest(extSwitchersFile, info, true, { "txt", "TXT" })
 	)
 	{
 		std::stringstream tasksFile(Preprocessor(extTasksFile).resultString);

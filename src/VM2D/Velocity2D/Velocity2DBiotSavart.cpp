@@ -49,6 +49,8 @@
 #include "World2D.h"
 
 #include "wrapper.h"
+#include "BarnesHut.h"
+#include "Tree.h"
 
 #include <algorithm>
 
@@ -77,9 +79,50 @@ void VelocityBiotSavart::CalcConvVelo()
 	tW2Wstart = omp_get_wtime();
 //Влияние следа на след
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_CONV_TOWAKE))		
-	GPUWakeToWakeFAST(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
+	//std::vector<Point2D> tempVel(wakeVortexesParams.convVelo.size(), { 0.0, 0.0 });
+	//std::vector<double> tempEps(wakeVortexesParams.convVelo.size(), 0.0);
+
+	double timeStart = omp_get_wtime();
+	bool calcEpsast = true;
+	//CPUWakeToWakeFAST(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, calcEpsast);
+	GPUWakeToWakeFAST(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, calcEpsast);
+	//GPUCalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, calcEpsast);
+	//CalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, calcEpsast);
+
+//	double timeFinish = omp_get_wtime();
+//	std::ofstream tmFile; 
+//	if (W.currentStep == 0)
+//		tmFile.open(W.getPassport().dir + "tmFile");
+//	else
+//		tmFile.open(W.getPassport().dir + "tmFile", std::ios_base::app);
+//
+//	tmFile << W.getWake().vtx.size() << " " << timeFinish - timeStart << std::endl;
+//
+//	tmFile.close();
+ 
+	/*
+	if (W.currentStep > 400)
+	{
+		std::ofstream gpufile(W.getPassport().dir + "gpufile-" + std::to_string(W.currentStep) + ".txt");
+		std::ofstream cpufile(W.getPassport().dir + "cpufile-" + std::to_string(W.currentStep) + ".txt");
+		//std::ofstream posfile(W.getPassport().dir + "posfile-" + std::to_string(W.currentStep) + ".txt");
+
+		for (size_t i = 0; i < W.getWake().vtx.size(); ++i)
+		{
+			cpufile << wakeVortexesParams.convVelo[i][0] << " " << wakeVortexesParams.convVelo[i][1] << " " << wakeVortexesParams.epsastWake[i] << std::endl;
+			gpufile << tempVel[i][0] << " " << tempVel[i][1] << " " << tempEps[i] << std::endl;
+			//posfile << W.getWake().vtx[i].r()[0] << " " << W.getWake().vtx[i].r()[1] << std::endl;
+		}
+		gpufile.close();
+		cpufile.close();
+		//posfile.close();
+	}	
+	//*/
+
+
 	//GPUCalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);	
 #else
+
 	CalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
 #endif
 	tW2Wfinish = omp_get_wtime();
@@ -377,6 +420,12 @@ void VelocityBiotSavart::CalcConvVeloToSetOfPointsFromWake(const WakeDataBase& p
 	if (calcVelo)
 		for (size_t i = 0; i < velo.size(); ++i)
 			velo[i] += selfVelo[i];
+
+#ifdef USE_CUDA	
+	W.getCuda().CopyMemToDev<double, 2>(velo.size(), (double*)velo.data(), pointsDb.devVelPtr);
+	W.getCuda().CopyMemToDev<double, 1>(domainRadius.size(), domainRadius.data(), pointsDb.devRadPtr);
+#endif
+
 }//CalcConvVeloToSetOfPointsFromWake(...)
 
 
@@ -409,8 +458,7 @@ void VelocityBiotSavart::GPUWakeToWakeFAST(const WakeDataBase& pointsDb, std::ve
 		if (npt > 0)
 		{
 			
-			double timings[7];
-
+			double timings[7];			
 			wrapperInfluenceToPoints((Vortex2D*)dev_ptr_pt, (Vortex2D*)dev_ptr_pt, sizeof(Vortex2D), (int)Vortex2D::offsPos,
 				(Point2D*)dev_ptr_vel, dev_ptr_rad,
 				W.getNonConstCuda().CUDAptrs, true, (int)npt, (int)npt, timings, sqrt(eps2), multipoleTheta,
@@ -466,6 +514,38 @@ void VelocityBiotSavart::GPUWakeToWakeFAST(const WakeDataBase& pointsDb, std::ve
 		}//if npt > 0
 }
 #endif
+
+void VelocityBiotSavart::CPUWakeToWakeFAST(const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool calcVelo, bool calcRadius)
+{
+	BH::params prm;
+	prm.eps = W.getPassport().wakeDiscretizationProperties.eps;
+	prm.eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
+	
+	int nCores = omp_get_max_threads();
+	prm.maxLevelOmp = (int)(log(nCores) / log(2.0));	
+	prm.order = 8;
+	prm.theta = 2.0;
+	prm.NumOfLevelsVortex = 12;
+	prm.velInf = {0.0, 0.0};
+	prm.outVortex = 100;
+
+	BH::BarnesHut BH(prm, pointsDb.vtx);
+	double timeBuildTree = 0.0, timeRect = 0.0, timeSummarization = 0.0, timeComputation = 0.0;
+	BH.BuildOneTree(BH.treeVrt, prm.NumOfLevelsVortex, BH.pointsCopyVrt, timeBuildTree);	
+	BH.BuildEnclosingRectangle(timeRect);
+	BH.InfluenceComputation(velo, domainRadius, timeSummarization, timeComputation, calcRadius);
+	std::cout << timeBuildTree << " " << timeRect << " " << timeSummarization << " " << timeComputation << std::endl;
+	std::cout << "Tot_time = " << timeBuildTree + timeRect + timeSummarization + timeComputation << std::endl;
+
+#ifdef USE_CUDA	
+	W.getCuda().CopyMemToDev<double, 2>(velo.size(), (double*)velo.data(), pointsDb.devVelPtr);
+	W.getCuda().CopyMemToDev<double, 1>(domainRadius.size(), domainRadius.data(), pointsDb.devRadPtr);
+#endif
+
+
+}
+
+
 
 
 #if defined(USE_CUDA)

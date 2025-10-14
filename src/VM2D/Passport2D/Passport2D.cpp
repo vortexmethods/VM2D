@@ -77,10 +77,10 @@ physicalProperties(timeDiscretizationProperties)
 	std::string switchersFileFullName = _switchers;
 
 	if (
-		fileExistTest(fileFullName, info, { "txt", "TXT"}) &&
-		fileExistTest(defaultsFileFullName, info, { "txt", "TXT" }) &&
-		fileExistTest(switchersFileFullName, info, { "txt", "TXT" }) &&
-		fileExistTest(mechanicsFileFullName, info, { "txt", "TXT" })
+		fileExistTest(fileFullName, info, true, { "txt", "TXT"}) &&
+		fileExistTest(defaultsFileFullName, info, true, { "txt", "TXT" }) &&
+		fileExistTest(switchersFileFullName, info, true, { "txt", "TXT" }) &&
+		fileExistTest(mechanicsFileFullName, info, true, { "txt", "TXT" })
 	   )
 	{
 		std::string str = VMlib::StreamParser::VectorStringToString(vars);
@@ -263,6 +263,15 @@ void Passport::GetAllParamsFromParser
 		wakeDiscretizationProperties.maxGamma = 1e+10;
 	
 	parser->get("linearSystemSolver", numericalSchemes.linearSystemSolver, &defaults::defaultLinearSystemSolver);
+	if (numericalSchemes.linearSystemSolver.second == 1 || numericalSchemes.linearSystemSolver.second == 2)
+		parser->get("gmresEps", numericalSchemes.gmresEps);
+
+	if (numericalSchemes.linearSystemSolver.second == 2) {
+		parser->get("fastGmresTheta", numericalSchemes.fastGmresTheta);
+		parser->get("multipoleOrderGmres", numericalSchemes.multipoleOrderGmres);
+
+	}
+
 	parser->get("velocityComputation", numericalSchemes.velocityComputation, &defaults::defaultVelocityComputation);
 	//parser->get("wakeMotionIntegrator", numericalSchemes.wakeMotionIntegrator);
 	parser->get("boundaryConditionSatisfaction", numericalSchemes.boundaryCondition, &defaults::defaultBoundaryCondition);

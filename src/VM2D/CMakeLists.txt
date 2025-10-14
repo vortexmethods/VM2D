@@ -20,6 +20,8 @@ add_executable(VM2D ${VM2D_ALLFILES})
 target_link_libraries(VM2D debug VMlib2)
 target_link_libraries(VM2D optimized VMlib2)
 
+target_compile_features(VM2D PRIVATE cxx_std_17)
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     if(WIN32)
         target_link_libraries(VM2D debug "c:/Program Files/LLVM/lib/libomp.lib")

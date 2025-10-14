@@ -62,7 +62,7 @@
 #include "Wake2D.h"
 
 #include "intersection.cuh"
-#include "GMRES.h"
+#include "Gmres2D.h"
 #include "wrapper.h"
 
 
@@ -70,8 +70,6 @@
 
 using namespace VM2D;
 
-
-int multipoleOrderGMRES;
 
 
 //Конструктор
@@ -240,7 +238,7 @@ void World2D::Step() // ЮИ
 			}
 		}
 
-		bool semiImplicitStrategy = (countStrongCoupling == mechanics.size());
+		bool semiImplicitStrategy = ((countStrongCoupling == mechanics.size()) && (mechanics.size() > 0));
 		if ((currentStep == 0) && (semiImplicitStrategy))
 			info('i') << "Strong (semi-implicit) coupling strategy" << std::endl;
 	
@@ -261,6 +259,65 @@ void World2D::Step() // ЮИ
 			{
 				measureVP->CalcPressure();
 				measureVP->SaveVP();
+/*
+				std::ofstream elastPresFile;
+				if (currentStep == 0)
+					elastPresFile.open(getPassport().dir + "elastPresFile.txt");
+				else
+					elastPresFile.open(getPassport().dir + "elastPresFile.txt", std::ios_base::app);
+
+				elastPresFile << currentStep << " ";
+
+				auto r = measureVP->GetVPinElasticPoints();
+				for (size_t q = 0; q < r.size(); ++q)				
+					elastPresFile << measureVP->elasticPoints[q][0] << " " << measureVP->elasticPoints[q][1] << " " << r[q].second << " ";
+				
+				elastPresFile << std::endl;
+				elastPresFile.close();
+*/
+				//Коэффициенты разложения силы по балочным функциям
+				
+				MechanicsDeformable* ptr = dynamic_cast<MechanicsDeformable*>(mechanics[0].get());
+				if (ptr)
+				{
+					auto r = measureVP->GetVPinElasticPoints();
+					std::vector<double> currentPres(ptr->chord.size());
+					for (int p = 0; p < ptr->chord.size(); ++p)
+					{
+						for (size_t j = 0; j < ptr->chord.size(); ++j)
+							currentPres[j] = (r[2 * j + 0].second - r[2 * j + 1].second);
+					}
+					if (ptr->beam->presLastSteps.size() < ptr->beam->nLastSteps)
+						ptr->beam->presLastSteps.push_back(currentPres);
+					else
+					{
+						for (int w = 1; w < ptr->beam->nLastSteps; ++w)
+							ptr->beam->presLastSteps[w - 1] = std::move(ptr->beam->presLastSteps[w]);
+						ptr->beam->presLastSteps.back() = currentPres;
+					}				
+
+					for (int q = 0; q < ptr->beam->R; ++q)
+					{
+						ptr->beam->qCoeff[q] = 0;
+
+						if (ptr->beam->presLastSteps.size() == ptr->beam->nLastSteps)
+						{
+							for (size_t j = 0; j < ptr->chord.size(); ++j)
+							{
+								double averpres = 0.0;
+								for (int i = 0; i < ptr->beam->nLastSteps; ++i)
+									averpres += ptr->beam->presLastSteps[i][j];
+								averpres /= ptr->beam->nLastSteps;
+
+								ptr->beam->qCoeff[q] += -averpres * (ptr->chord[j].beg - ptr->chord[j].end).length() * ptr->beam->shape(q, ptr->beam->L, 0.5 * (ptr->chord[j].beg + ptr->chord[j].end)[0]);
+							}
+							ptr->beam->qCoeff[q] /= (ptr->beam->intSqUnitShape * ptr->beam->L);
+						}
+
+						std::cout << "q[" << q << "] = " << ptr->beam->qCoeff[q] << std::endl;
+					}
+				}
+//*/
 			}
 
 			//Вычисление сил, действующих на профиль и сохранение в файл	
@@ -379,7 +436,7 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 		wake->Inside(newPos, *airfoil[afl], mechanics[afl]->isMoves, *oldAirfoil[afl]);
 #else	
 //	//////////////////////// CUDA ///////////////////////
-	if (true || movable)
+	if (false || movable)
 	{
 		getTimestat().timeCheckInside.first += omp_get_wtime();
 		for (size_t afl = 0; afl < airfoil.size(); ++afl)
@@ -387,46 +444,57 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 		getTimestat().timeCheckInside.second += omp_get_wtime();
 	}
 	else
-	if (newPos.size() > 0)
+	if ((newPos.size() > 0) && (getNumberOfAirfoil() > 0))
 	{
 		double* devNewpos_ptr;
 		cuReserveDevMem((void*&)devNewpos_ptr, newPos.size() * sizeof(double) * 2, 0);
 		cuCopyFixedArray(devNewpos_ptr, newPos.data(), newPos.size() * sizeof(double) * 2, 119);
 
+		int nTotPanels = 0;
 		for (size_t afl = 0; afl < airfoil.size(); ++afl)
+			nTotPanels += (int)airfoil[afl]->getNumberOfPanels();
+
+
+		//for (size_t afl = 0; afl < airfoil.size(); ++afl)
+		//for (size_t afl = 0; afl < 1; ++afl)
 		{
-			std::vector<double> gamma(airfoil[afl]->getNumberOfPanels(), 0.0);
 			
-			//Через поиск ближайшей панели и псевдонормали
+						
 			getTimestat().timeCheckInside.first += omp_get_wtime();
-			//std::vector<int> hit = lbvh_check_inside((int)currentStep, (int)newPos.size(), devNewpos_ptr, (int)airfoil[afl]->getNumberOfPanels(), airfoil[afl]->devRPtr, movable);			
-			std::vector<int> hit = lbvh_check_inside_ray((int)currentStep, (int)newPos.size(), this->getWake().devVtxPtr, devNewpos_ptr, (int)airfoil[afl]->getNumberOfPanels(), airfoil[afl]->devRPtr, movable);
+						
+			//Через поиск ближайшей панели и псевдонормали			
+			//std::vector<int> hit = lbvh_check_inside((int)currentStep, (int)newPos.size(), devNewpos_ptr, nTotPanels, airfoil[0]->devRPtr, true);
+			
+			//Через трассировку луча
+			std::vector<int> hit = getNonConstAirfoil(0).penetrationControler.lbvh_check_inside_ray((int)currentStep, (int)newPos.size(), this->getWake().devVtxPtr, devNewpos_ptr, nTotPanels, airfoil[0]->devRPtr, true);
 			getTimestat().timeCheckInside.second += omp_get_wtime();
 
-			/*for (size_t q = 0; q < hit.size(); ++q)
-			{
-				if (hit[q] != hit2[q])
-					std::cout << "q = " << q << " " << hit[q] << " / " << hit2[q] << std::endl;
-			}
-			*/
-			
 			//std::stringstream sss;
 			//sss << "hit_" << currentStep;
 			//std::ofstream of(getPassport().dir + "dbg/" + sss.str());
-			//for (size_t i = 0; i < gamma.size(); ++i)
+			//for (size_t i = 0; i < nTotPanels; ++i)
 			//	of << hit[i] << std::endl;
 			//of.close();
 
-			for (int i = 0; i < newPos.size(); ++i)
+			size_t panCounter = 0;
+			for (size_t afl = 0; afl < airfoil.size(); ++afl)
 			{
-				if (hit[i] != (unsigned int)(-1))
+				std::vector<double> gamma(airfoil[afl]->getNumberOfPanels(), 0.0);
+				for (int i = 0; i < newPos.size(); ++i)
 				{
-					gamma[hit[i]] += wake->vtx[i].g();
-					wake->vtx[i].g() = 0.0;
+					if (hit[i] != (unsigned int)(-1))
+					{
+						if ((hit[i] >= panCounter) && (hit[i] < panCounter + airfoil[afl]->getNumberOfPanels()))
+						{
+							gamma[hit[i] - panCounter] += wake->vtx[i].g();
+							wake->vtx[i].g() = 0.0;
+						}
+					}
 				}
-			}
-			airfoil[afl]->gammaThrough = gamma;
-		}//for afl
+				airfoil[afl]->gammaThrough = gamma;
+				panCounter += airfoil[afl]->getNumberOfPanels();
+			}//for afl
+		}
 
 		cuDeleteFromDev(devNewpos_ptr);
 	}
@@ -438,445 +506,9 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 
 
 
-#ifdef USE_CUDA
-void World2D::GMRES(
-	std::vector<std::vector<double>>& X,
-	std::vector<double>& R,
-	const std::vector<std::vector<double>>& rhs,
-	const std::vector<double> rhsReg,
-	int& niter,
-	bool linScheme)
-{
-	size_t nAfl = airfoil.size();
 
-	size_t totalVsize = 0;
-	for (size_t i = 0; i < airfoil.size(); ++i)
-		totalVsize += airfoil[i]->getNumberOfPanels();
 
-	//std::vector<double> currentSol(totalVsize, 0.0);
 
-	if (linScheme)
-		totalVsize *= 2;
-
-	std::vector<double> w(totalVsize + nAfl), g(totalVsize + nAfl + 1);
-	size_t m;
-	const size_t iterSize = 50;
-
-	std::vector<std::vector<double>> V;
-	std::vector<std::vector<double>> H;
-
-	V.reserve(iterSize);
-	H.reserve(iterSize + 1);
-
-	V.resize(1);
-	H.resize(1);
-
-	double beta;
-
-	std::vector<std::vector <double>> diag(nAfl);
-
-	//#ifndef OLD_OMP
-	//#pragma omp simd
-	//#endif
-	for (int p = 0; p < (int)nAfl; ++p)
-	{
-		if (!linScheme)
-			diag[p].resize(airfoil[p]->getNumberOfPanels());
-		else
-			diag[p].resize(2 * airfoil[p]->getNumberOfPanels());
-
-		for (int i = 0; i < airfoil[p]->getNumberOfPanels(); ++i)
-		{
-			diag[p][i] = 0.5 / airfoil[p]->len[i];
-
-			if (linScheme)
-				diag[p][i + airfoil[p]->getNumberOfPanels()] = (1.0 / 24.0) / airfoil[p]->len[i];
-		}
-	}
-
-	//Проверка, что предобуславливатель работает корректно (влияния соседних панелей рассчитаны по прямой схеме)
-	/*
-	for (int i = 0; i < (int)BH.pointsCopyPan.size(); ++i)
-	{
-		if ((BH.pointsCopyPan[0][i].a.length2() == 0.0) || (BH.pointsCopyPan[0][i].c.length2() == 0.0))
-		{
-			std::cout << "eps is too small!" << std::endl;
-			exit(-1);
-		}
-	}
-	*/
-
-	std::vector<std::vector<double>> residual(nAfl);
-	for (size_t p = 0; p < nAfl; ++p)
-		residual[p] = rhs[p];
-
-	for (size_t i = 0; i < nAfl; ++i)
-		V[0].insert(V[0].end(), residual[i].begin(), residual[i].end());
-
-	for (size_t i = 0; i < nAfl; ++i)
-		V[0].push_back(rhsReg[i]); /// суммарная гамма
-
-	// PRECONDITIONER
-	//std::vector<PointsCopy> buf1;
-	std::vector<double> vbuf1;
-	size_t np = 0;
-
-	for (size_t p = 0; p < nAfl; ++p)
-	{
-		if (!linScheme)
-			vbuf1.resize(airfoil[p]->getNumberOfPanels() + 1);
-		else
-			vbuf1.resize(2 * airfoil[p]->getNumberOfPanels() + 1);
-
-		if (!linScheme)
-			np += ((p == 0) ? 0 : airfoil[p-1]->getNumberOfPanels());
-		else
-			np += ((p == 0) ? 0 : 2 * airfoil[p-1]->getNumberOfPanels());
-
-		for (size_t i = 0; i < airfoil[p]->getNumberOfPanels(); ++i)
-		{
-			vbuf1[i] = V[0][np + i];
-			if (linScheme)
-				vbuf1[i + airfoil[p]->getNumberOfPanels()] = V[0][np + airfoil[p]->getNumberOfPanels() + i];
-		}
-
-		if (!linScheme)
-			vbuf1[airfoil[p]->getNumberOfPanels()] = V[0][V[0].size() - (nAfl - p)];
-		else
-			vbuf1[2 * airfoil[p]->getNumberOfPanels()] = V[0][V[0].size() - (nAfl - p)];
-
-		//SolM(vbuf1, vbuf1, /*buf1*/ BH, p, n[p]);
-
-		for (size_t j = np; j < np + airfoil[p]->getNumberOfPanels(); ++j)
-		{
-			V[0][j] = vbuf1[j - np];
-			if (linScheme)
-				V[0][j + airfoil[p]->getNumberOfPanels()] = vbuf1[j - np + airfoil[p]->getNumberOfPanels()];
-		}
-
-		V[0][V[0].size() - (nAfl - p)] = vbuf1[vbuf1.size() - 1];
-	}
-
-	beta = norm(V[0]);
-	if (beta > 0)
-		V[0] = (1.0 / beta) * V[0];
-  	else
-	 exit(-200);      
-
-	double gs = beta;
-	std::vector<double> c, s;
-	c.reserve(iterSize);
-	s.reserve(iterSize);
-
-	size_t nTotPan = 0;
-	for (size_t s = 0; s < getNumberOfAirfoil(); ++s)
-		nTotPan += getAirfoil(s).getNumberOfPanels();
-	std::vector<double> bufnewSol((linScheme ? 2 : 1) * nTotPan);
-
-	std::vector<double> bufcurrentSol;
-	if (linScheme)
-		bufcurrentSol.resize(totalVsize, 0.0);
-
-	this->cuda.AllocateSolution(cuda.dev_sol, nTotPan);
-	if (linScheme)	
-		this->cuda.AllocateSolution(cuda.dev_solLin, nTotPan);	
-	else
-		cuda.dev_solLin = nullptr;
-
-	for (int j = 0; j < totalVsize - 1; ++j) //+ n.size()
-	{
-		double t1 = omp_get_wtime();
-
-		//BH.UpdateGams(V[j]);
-		//currentSol = V[j];
-
-		//if (afl.numberInPassport == 0)
-		double*& dev_ptr_pt = airfoil[0]->devRPtr;
-
-		double*& dev_ptr_rhs = airfoil[0]->devRhsPtr;
-		double*& dev_ptr_rhsLin = airfoil[0]->devRhsLinPtr;
-
-		double timingsToRHS[7];
-
-		double* linPtr = (double*)(!linScheme ? nullptr : dev_ptr_rhsLin);
-
-		double t2 = omp_get_wtime();
-
-		if (!linScheme)
-		{
-			this->cuda.SetSolution(V[j].data(), cuda.dev_sol, nTotPan);
-			
-			//std::ofstream bufnewfile(passport.dir + "/dbg/mul" + std::to_string(currentStep) + "_" + std::to_string(j) + "_new.txt");
-			//for (auto& q : V[j])
-			//	bufnewfile << q << '\n';
-			//bufnewfile.close();
-			
-		}
-		
-		if (linScheme) 
-		{
-			size_t npred = 0;
-			for (size_t i = 0; i < getNumberOfAirfoil(); ++i)
-			{
-				for (size_t p = 0; p < getAirfoil(i).getNumberOfPanels(); ++p) 
-				{
-					bufcurrentSol[npred + p] = V[j][2*npred + p];
-					bufcurrentSol[nTotPan + npred + p] = V[j][2*npred + getAirfoil(i).getNumberOfPanels() + p];
-				}
-				npred += getAirfoil(i).getNumberOfPanels();
-			}
-			this->cuda.SetSolution(bufcurrentSol.data(), cuda.dev_sol, nTotPan);
-			this->cuda.SetSolution(bufcurrentSol.data() + nTotPan, cuda.dev_solLin, nTotPan);
-
-			
-			//std::ofstream bufnewfile(passport.dir + "/dbg/mul" + std::to_string(currentStep) + "_" + std::to_string(j) + "_new.txt");
-			//for (auto& q : bufcurrentSol)
-			//	bufnewfile << q << '\n';
-			//bufnewfile.close();
-			
-		}
-		double t2a = omp_get_wtime();
-
-
-
-		BHcu::wrapperMatrixToVector wrapper(
-			(double*)dev_ptr_pt,    //начала и концы панелей
-			(double*)dev_ptr_rhs,   //куда сохранить результат 
-			linPtr,
-			getNonConstCuda().CUDAptrsAirfoilVrt[0],  //указатели на дерево вихрей
-			true,                   //признак перестроения дерева вихрей				
-			(int)nTotPan,           //общее число панелей на всех профилях
-			timingsToRHS,           //засечки времени				
-			1.2,//multipoleTheta,                    //theta
-			multipoleOrderGMRES,//multipoleOrder,                    //order
-			getPassport().numericalSchemes.boundaryCondition.second
-		);
-
-		wrapper.calculate(
-			(double*)cuda.dev_sol,
-			(double*)cuda.dev_solLin
-		);
-
-		//exit(-100);
-
-
-		double t2b = omp_get_wtime();
-
-		int mul = (linScheme ? 2 : 1);
-		
-		//w.resize(0);
-		//w.resize(totalVsize + nAfl, 0.0);
-
-		if (!linScheme)
-			getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhs, w.data(), 22);
-
-		if (linScheme)
-		{
-			getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhs, bufnewSol.data(), 22);
-			getCuda().CopyMemFromDev<double, 1>(nTotPan, linPtr, bufnewSol.data() + nTotPan, 22);
-		}
-
-		double t3 = omp_get_wtime();
-
-		if (linScheme)
-		{
-			size_t npred = 0;
-			for (size_t i = 0; i < getNumberOfAirfoil(); ++i)
-			{
-				for (size_t j = 0; j < getAirfoil(i).getNumberOfPanels(); ++j)
-				{
-					w[2 * npred + j] = bufnewSol[npred + j];
-					w[2 * npred + getAirfoil(i).getNumberOfPanels() + j] = bufnewSol[nTotPan + npred + j];
-				}
-				npred += getAirfoil(i).getNumberOfPanels();
-			}
-		}
-
-		//for (int s = 0; s < totalVsize; ++s)
-		//	w[s] = newSol[s];
-		size_t cntr = 0;
-		for (size_t pi = 0; pi < nAfl; ++pi)
-		{
-#pragma omp parallel for
-				for (int i = 0; i < (int)airfoil[pi]->getNumberOfPanels(); ++i)
-				{	
-					w[cntr + i] += V[j][totalVsize + pi] - V[j][cntr + i] * diag[pi][i] * airfoil[pi]->len[i];
-					if (linScheme)
-						w[cntr + i + airfoil[pi]->getNumberOfPanels()] += -V[j][cntr + i + airfoil[pi]->getNumberOfPanels()] * diag[pi][i + airfoil[pi]->getNumberOfPanels()] * airfoil[pi]->len[i];
-				}
-
-			cntr += airfoil[pi]->getNumberOfPanels();
-			if (linScheme)
-				cntr += airfoil[pi]->getNumberOfPanels();
-		}	
-
-		//{
-		//	std::ofstream bufnewfile(passport.dir + "/dbg/s" + std::to_string(currentStep) + "_" + std::to_string(j) + "_new.txt");
-		//	for (auto& q : w)
-		//		bufnewfile << q << '\n';
-		//	bufnewfile.close();
-		//}
-
-
-
-		for (size_t i = 0; i < airfoil.size(); ++i)
-			w[totalVsize + i] = 0.0;
-
-		cntr = 0;
-		for (size_t i = 0; i < airfoil.size(); ++i)
-		{
-			for (size_t k = 0; k < airfoil[i]->getNumberOfPanels(); ++k)
-				w[totalVsize + i] += V[j][cntr + k] * airfoil[i]->len[k];
-			cntr += airfoil[i]->getNumberOfPanels();
-			if (linScheme)
-				cntr += airfoil[i]->getNumberOfPanels();
-		}
-
-
-		// PRECONDITIONER
-		std::vector<double> vbuf2;
-		size_t np = 0;
-
-		for (size_t p = 0; p < nAfl; ++p)
-		{
-			if (!linScheme)
-				vbuf2.resize(airfoil[p]->getNumberOfPanels() + 1);
-			else
-				vbuf2.resize(2 * airfoil[p]->getNumberOfPanels() + 1);
-
-			if (!linScheme)
-				np += ((p == 0) ? 0 : airfoil[p-1]->getNumberOfPanels());
-			else
-				np += ((p == 0) ? 0 : 2 * airfoil[p-1]->getNumberOfPanels());
-
-			for (size_t i = 0; i < airfoil[p]->getNumberOfPanels(); ++i)
-			{				
-				vbuf2[i] = w[np + i];
-				if (linScheme)
-					vbuf2[i + airfoil[p]->getNumberOfPanels()] = w[np + airfoil[p]->getNumberOfPanels() + i];
-			}
-
-			if (!linScheme)
-				vbuf2[airfoil[p]->getNumberOfPanels()] = w[w.size() - (nAfl - p)];
-			else
-				vbuf2[2 * airfoil[p]->getNumberOfPanels()] = w[w.size() - (nAfl - p)];
-
-			//SolM(vbuf2, vbuf2, /*buf2*/ BH, p, n[p]);
-
-			for (size_t j = np; j < np + airfoil[p]->getNumberOfPanels(); ++j)
-			{
-				w[j] = vbuf2[j - np];
-				if (linScheme)
-					w[j + airfoil[p]->getNumberOfPanels()] = vbuf2[j - np + airfoil[p]->getNumberOfPanels()];
-			}
-
-			w[w.size() - (nAfl - p)] = vbuf2[vbuf2.size() - 1];
-		}
-
-
-		H.resize(j + 2);
-		for (int i = 0; i < j + 2; ++i)
-			H[i].resize(j + 1);
-
-		for (int i = 0; i <= j; ++i)
-		{
-			double scal = 0.0;
-#pragma omp parallel 
-			{
-#pragma omp for reduction(+:scal)
-				for (int q = 0; q < (int)w.size(); ++q)
-					scal += w[q] * V[i][q];
-
-				H[i][j] = scal;
-#pragma omp for				
-				for (int q = 0; q < (int)w.size(); ++q)
-					w[q] -= scal * V[i][q];
-			}
-		}
-
-		H[j + 1][j] = norm(w);
-		V.push_back((1 / H[j + 1][j]) * w);
-		m = j + 1;
-
-		if (IterRot(H, rhs[0], gs, c, s, j + 1, (int)totalVsize, 1e-8, (int)m, true))
-			break;
-
-		double t4 = omp_get_wtime();
-
-		printf("beforeGPU = %f, copy = %f, GPU = %f, copy = %f, afterGPU = %f\n", t2 - t1, t2a-t2, t2b - t2a, t3-t2b, t4 - t3);
-
-	}
-
-	this->cuda.ReleaseSolution(cuda.dev_sol);
-	if (linScheme)
-		this->cuda.ReleaseSolution(cuda.dev_solLin);
-
-	//printf("------------------------------------------------------------------------\n");
-	niter = (int)m;
-
-	g[0] = beta;
-	for (int i = 1; i < m + 1; i++)
-		g[i] = 0.;
-
-	//GivensRotations
-	double oldValue;
-	for (int i = 0; i < m; i++)
-	{
-		oldValue = g[i];
-		g[i] = c[i] * oldValue;
-		g[i + 1] = -s[i] * oldValue;
-	}
-	//end of GivensRotations
-
-	std::vector<double> Y(m);
-	double sum;
-
-	// Solve HY=g
-	Y[m - 1] = g[m - 1] / H[m - 1][m - 1];
-
-	for (int k = (int)m - 2; k >= 0; --k)
-	{
-		sum = 0;
-		for (int s = k + 1; s < m; ++s)
-			sum += H[k][s] * Y[s];
-		Y[k] = (g[k] - sum) / H[k][k];
-	}
-	// end of Solve HY=g
-
-	size_t cntr = 0;
-	for (size_t p = 0; p < airfoil.size(); p++) {
-		if (!linScheme)
-			for (size_t i = 0; i < airfoil[p]->getNumberOfPanels(); i++)
-			{
-				sum = 0.0;
-				for (size_t j = 0; j < m; j++)
-					sum += V[j][i + cntr] * Y[j];
-				X[p][i] += sum;// / airfoil[p]->len[i];
-			}
-		else
-			for (size_t i = 0; i < 2 * airfoil[p]->getNumberOfPanels(); i++)
-			{
-				sum = 0.0;
-				for (size_t j = 0; j < m; j++)
-					sum += V[j][i + cntr] * Y[j];
-				X[p][i] += sum;// / airfoil[p]->len[i % airfoil[p]->getNumberOfPanels()];
-			}
-		cntr += airfoil[p]->getNumberOfPanels();
-
-		if (linScheme)
-			cntr += airfoil[p]->getNumberOfPanels();
-
-	}
-	sum = 0.0;
-	for (size_t p = 0; p < airfoil.size(); p++)
-	{
-		for (size_t j = 0; j < m; j++)
-			sum += V[j][totalVsize + p] * Y[j];
-		R[p] += sum;
-	}
-}
-
-#endif
 
 
 
@@ -914,58 +546,39 @@ void World2D::SolveLinearSystem()
 		//int nx, ny;
 		//fileMatrix >> nx;
 		//fileMatrix >> ny;
-		for (int i = 0; i < matr.rows(); ++i)
+		fileMatrix.precision(16);
+		for (int i = 0; i < matrReord.rows(); ++i)
 		{
-			for (int j = 0; j < matr.cols(); ++j)
+			for (int j = 0; j < matrReord.cols(); ++j)
 			{
-				fileMatrix << matr(i, j) << " ";
+				fileMatrix << matrReord(i, j) << " ";
 			}
 			fileMatrix << std::endl;
 		}
 		fileMatrix.close();
 	}
-	*/
+	
+		
 
-	//if (currentStep == 0)
-	//{
-	//	std::ofstream fileMatrix(passport.dir + "/dbg/matrixReord.txt");
-	//	//int nx, ny;
-	//	//fileMatrix >> nx;
-	//	//fileMatrix >> ny;
-	//	fileMatrix.precision(16);
-	//	for (int i = 0; i < matrReord.rows(); ++i)
-	//	{
-	//		for (int j = 0; j < matrReord.cols(); ++j)
-	//		{
-	//			fileMatrix << matrReord(i, j) << " ";
-	//		}
-	//		fileMatrix << std::endl;
-	//	}
-	//	fileMatrix.close();
-	//}
+	{
+		std::ofstream fileMatrix(passport.dir + "/dbg/rhs"+std::to_string(currentStep)+".txt");
+		//int nx, ny;
+		//fileMatrix >> nx;
+		//fileMatrix >> ny;
+		fileMatrix.precision(16);
+		for (int i = 0; i < rhsReord.size(); ++i)
+		{			
+			fileMatrix << rhsReord(i) << std::endl;
+		}
+		fileMatrix.close();
+	}//*/
 
-	//{
-	//	std::ofstream fileMatrix(passport.dir + "/dbg/RhsReord"+std::to_string(currentStep)+".txt");
-	//	//int nx, ny;
-	//	//fileMatrix >> nx;
-	//	//fileMatrix >> ny;
-	//	fileMatrix.precision(16);
-	//	for (int i = 0; i < rhsReord.size(); ++i)
-	//	{			
-	//		fileMatrix << rhsReord(i) << std::endl;
-	//	}
-	//	fileMatrix.close();
-	//}
-
+	//exit(-100500);
 	
 //////
-
-	bool GAUSSIAN = true;
-	multipoleOrderGMRES = 12;
-
-	if (GAUSSIAN)
+	if (passport.numericalSchemes.linearSystemSolver.second == 0) // Gaussian elimination
 	{
-
+		double t1 = -omp_get_wtime();
 		if (useInverseMatrix && (currentStep == 0))
 		{
 			info('t') << "Inverting matrix... ";
@@ -993,18 +606,16 @@ void World2D::SolveLinearSystem()
 		if (currentStep == 0)
 			info('t') << "done" << std::endl;
 		
+		t1 += omp_get_wtime();
 
+		//std::cout << " Time in Gauss = " << t1 << std::endl;
 
-		//std::ofstream solFile(getPassport().dir + "/dbg/sol" + std::to_string(currentStep) + "-old.txt");
+		//std::ofstream solFile(getPassport().dir + "/dbg/sol" + std::to_string(currentStep) + "-Gauss.txt");
 		//solFile.precision(16);
 		//for (int i = 0; i < sol.size(); ++i)
 		//	solFile << sol(i) << std::endl;
-		//solFile.close();
-
+		//solFile.close();		
 	}
-
-//////
-
 
 /*
 	if (currentStep == 0)
@@ -1061,13 +672,12 @@ void World2D::SolveLinearSystem()
 */
 
 
-#ifdef USE_CUDA
-	if (!GAUSSIAN)
+	if (passport.numericalSchemes.linearSystemSolver.second == 1 || passport.numericalSchemes.linearSystemSolver.second == 2) // GMRES
 	{
+#ifdef USE_CUDA
 		int nFullVars = (int)getNumberOfBoundary();
 		for (int i = 0; i < getNumberOfBoundary(); ++i)
 			nFullVars += (int)(boundary[i]->GetUnknownsSize());
-
 
 		std::vector<double> Grhs(rhsReord.size());
 		for (int i = 0; i < rhsReord.size(); ++i)
@@ -1087,59 +697,75 @@ void World2D::SolveLinearSystem()
 
 		std::vector<double> GR(getNumberOfBoundary());
 
+		if (passport.numericalSchemes.linearSystemSolver.second == 1)
+		{
+			//for direct GMRES
+			std::vector<double> Gmatr(nFullVars * nFullVars);
+			for (size_t i = 0; i < nFullVars; ++i)
+				for (size_t j = 0; j < nFullVars; ++j)
+					Gmatr[i * nFullVars + j] = matrReord(i, j);
 
-		// for direct GMRES
-		//std::vector<double> Gmatr(nFullVars * nFullVars);
-		//for (size_t i = 0; i < nFullVars; ++i)
-		//	for (size_t j = 0; j < nFullVars; ++j)
-		//		Gmatr[i * nFullVars + j] = matrReord(i, j);
-		//
-		//std::vector<int> Gn(getNumberOfBoundary());
-		//for (int i = 0; i < getNumberOfBoundary(); ++i)
-		//	Gn[i] = getAirfoil(i).getNumberOfPanels();
-		//
-		//GMRES_Direct(nFullVars, getNumberOfBoundary(), Gmatr, Grhs, Gn, Gpos, Gvsize, Ggam, GR, currentStep);
+			for (int i = 0; i < getNumberOfBoundary(); ++i)
+				for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
+					auto y_test = airfoil[i]->len[j % airfoil[i]->getNumberOfPanels()];
 
-		// for fast GMRES
-		std::vector<std::vector<double>> GGrhs(getNumberOfBoundary());
-		int cntrRhs = 0;
-		for (int i = 0; i < getNumberOfBoundary(); ++i)
-			GGrhs[i].resize(boundary[i]->GetUnknownsSize());
-		for (int i = 0; i < getNumberOfBoundary(); ++i)
-			for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
-				GGrhs[i][j] = rhsReord(cntrRhs++);
+			GMRES_Direct(*this, nFullVars, (int)getNumberOfBoundary(), Gmatr, Grhs, Gpos, Gvsize, Ggam, GR);
 
-		std::vector<double> GrhsReg(getNumberOfBoundary());
-		for (int i = 0; i < getNumberOfBoundary(); ++i)
-			GrhsReg[i] = rhsReord[nFullVars - (getNumberOfBoundary() - i)];
+			sol.resize(nFullVars);
+			int cntr = 0;
+			for (int i = 0; i < getNumberOfBoundary(); ++i)
+				for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
+					sol(cntr++) = Ggam[i][j] /*/ airfoil[i]->len[j % airfoil[i]->getNumberOfPanels()]*/;
+			for (int i = 0; i < getNumberOfBoundary(); ++i)
+				sol(cntr++) = GR[i];
 
+			//std::ofstream solFile(getPassport().dir + "/dbg/sol-direct-gmres" + std::to_string(currentStep) + ".txt");
+			//solFile.precision(16);
+			//for (int i = 0; i < sol.size(); ++i)
+			//	solFile << sol(i) << std::endl;
+			//solFile.close();
+		}
+		
+		if (passport.numericalSchemes.linearSystemSolver.second == 2)
+		{
+			// for fast GMRES
+			std::vector<std::vector<double>> GGrhs(getNumberOfBoundary());
+			int cntrRhs = 0;
+			for (int i = 0; i < getNumberOfBoundary(); ++i)
+				GGrhs[i].resize(boundary[i]->GetUnknownsSize());
+			for (int i = 0; i < getNumberOfBoundary(); ++i)
+				for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
+					GGrhs[i][j] = rhsReord(cntrRhs++);
 
-		double time_GMRES = -omp_get_wtime();
+			std::vector<double> GrhsReg(getNumberOfBoundary());
+			for (int i = 0; i < getNumberOfBoundary(); ++i)
+				GrhsReg[i] = rhsReord[nFullVars - (getNumberOfBoundary() - i)];
 
-		int niter;
-		bool linScheme = (passport.numericalSchemes.boundaryCondition.second == 2);
-		GMRES(Ggam, GR, GGrhs, GrhsReg, niter, linScheme);
+			double time_GMRES = -omp_get_wtime();
 
-		time_GMRES += omp_get_wtime();
+			int niter;
+			bool linScheme = (passport.numericalSchemes.boundaryCondition.second == 2);
+			GMRES(*this, Ggam, GR, GGrhs, GrhsReg, niter, linScheme);
 
-		std::cout << "Time_GMRES = " << time_GMRES << std::endl;
+			time_GMRES += omp_get_wtime();
+			//std::cout << "Time_GMRES = " << time_GMRES << std::endl;
 
+			sol.resize(nFullVars);
+			int cntr = 0;
+			for (int i = 0; i < getNumberOfBoundary(); ++i)
+				for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
+					sol(cntr++) = Ggam[i][j] / airfoil[i]->len[j % airfoil[i]->getNumberOfPanels()];
+			for (int i = 0; i < getNumberOfBoundary(); ++i)
+				sol(cntr++) = GR[i];
 
-		sol.resize(nFullVars);
-		int cntr = 0;
-		for (int i = 0; i < getNumberOfBoundary(); ++i)
-			for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
-				sol(cntr++) = Ggam[i][j];
-		for (int i = 0; i < getNumberOfBoundary(); ++i)
-			sol(cntr++) = GR[i];
-
-		//std::ofstream solFile(getPassport().dir + "/dbg/sol-new" + std::to_string(currentStep) + ".txt");
-		//solFile.precision(16);
-		//for (int i = 0; i < sol.size(); ++i)
-		//	solFile << sol(i) << std::endl;
-		//solFile.close();
-	}
+			//std::ofstream solFile(getPassport().dir + "/dbg/sol-fast-gmres" + std::to_string(currentStep) + ".txt");
+			//solFile.precision(16);
+			//for (int i = 0; i < sol.size(); ++i)
+			//	solFile << sol(i) << std::endl;
+			//solFile.close();
+		}		
 #endif
+	}
 
 	getTimestat().timeSolveLinearSystem.second += omp_get_wtime();
 }//SolveLinearSystem()
@@ -1353,6 +979,7 @@ void World2D::CalcVortexVelo(bool shiftTime)
 		sss << "prmWake";
 		sss << currentStep;
 		std::ofstream prmtFile(passport.dir + "dbg/" + sss.str());
+		prmtFile.precision(11);
 		prmtFile << "i x y g epsast convVeloX convVeloY diffVeloX diffVeloY I0 I1 I2X I2Y I3X I3Y" << std::endl;
 		for (size_t i = 0; i < wake->vtx.size(); ++i)
 			prmtFile << i << " " \
@@ -1366,7 +993,7 @@ void World2D::CalcVortexVelo(bool shiftTime)
 			<< velocity->wakeVortexesParams.I1[i] << " " \
 			<< velocity->wakeVortexesParams.I2[i][0] << " " << velocity->wakeVortexesParams.I2[i][1] << " " \
 			<< velocity->wakeVortexesParams.I3[i][0] << " " << velocity->wakeVortexesParams.I3[i][1] << " " \
-			<< std::endl;
+			<< "\n";
 
 		prmtFile.close();
 	}

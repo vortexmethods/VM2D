@@ -67,12 +67,6 @@
 namespace BHcu
 {
     __device__ double myAtomicAdd(double* address, double val)
-
-
-
-
-
-
     {
         unsigned long long int* address_as_ull = (unsigned long long int*)address;
         unsigned long long int old = *address_as_ull, assumed;
@@ -131,7 +125,7 @@ namespace BHcu
         return x * x;
     }
 
-    __device__ inline double sqrf(float x)
+    __device__ inline float sqrf(float x)
     {
         return x * x;
     }
@@ -172,23 +166,24 @@ void CudaSelect(int dev)
     printf("\n");
     printf("                          GPU Device Properties                         \n");
     printf("------------------------------------------------------------------------\n");
-    printf("Name:                                  %s\n", properties.name); 
-    printf("CUDA driver/runtime version:           %d.%d/%d.%d\n", driverVersion / 1000, (driverVersion % 100) / 10, runtimeVersion / 1000, (runtimeVersion % 100) / 10);
-    printf("CUDA compute capabilitiy:              %d.%d\n", properties.major, properties.minor);
-    printf("Number of multiprocessors:             %d\n", properties.multiProcessorCount);
+    printf("Name:                                  %s\n", deviceProp.name);
+    //printf("CUDA driver/runtime version:           %d.%d/%d.%d\n", driverVersion / 1000, (driverVersion % 100) / 10, runtimeVersion / 1000, (runtimeVersion % 100) / 10);
+    printf("CUDA compute capabilitiy:              %d.%d\n", deviceProp.major, deviceProp.minor);
+    printf("Number of multiprocessors:             %d\n", deviceProp.multiProcessorCount);
     
     if (false)
     {
-        printf("GPU clock rate:                        %d (MHz)\n", properties.clockRate / fact);
-        printf("Memory clock rate:                     %d (MHz)\n", properties.memoryClockRate / fact);
-        printf("Memory bus width:                      %d-bit\n", properties.memoryBusWidth);
-        printf("Theoretical memory bandwidth:          %d (GB/s)\n", (properties.memoryClockRate / fact * (properties.memoryBusWidth / 8) * 2) / fact);
-        printf("Device global memory:                  %d (MB)\n", (int)(properties.totalGlobalMem / (fact * fact)));
-        printf("Shared memory per block:               %d (KB)\n", (int)(properties.sharedMemPerBlock / fact));
-        printf("Constant memory:                       %d (KB)\n", (int)(properties.totalConstMem / fact));
-        printf("Maximum number of threads per block:   %d\n", properties.maxThreadsPerBlock);
-        printf("Maximum thread dimension:              [%d, %d, %d]\n", properties.maxThreadsDim[0], properties.maxThreadsDim[1], properties.maxThreadsDim[2]);
-        printf("Maximum grid size:                     [%d, %d, %d]\n", properties.maxGridSize[0], properties.maxGridSize[1], properties.maxGridSize[2]);
+        int fact = 1;
+        printf("GPU clock rate:                        %d (MHz)\n", deviceProp.clockRate / fact);
+        printf("Memory clock rate:                     %d (MHz)\n", deviceProp.memoryClockRate / fact);
+        printf("Memory bus width:                      %d-bit\n", deviceProp.memoryBusWidth);
+        printf("Theoretical memory bandwidth:          %d (GB/s)\n", (deviceProp.memoryClockRate / fact * (deviceProp.memoryBusWidth / 8) * 2) / fact);
+        printf("Device global memory:                  %d (MB)\n", (int)(deviceProp.totalGlobalMem / (fact * fact)));
+        printf("Shared memory per block:               %d (KB)\n", (int)(deviceProp.sharedMemPerBlock / fact));
+        printf("Constant memory:                       %d (KB)\n", (int)(deviceProp.totalConstMem / fact));
+        printf("Maximum number of threads per block:   %d\n", deviceProp.maxThreadsPerBlock);
+        printf("Maximum thread dimension:              [%d, %d, %d]\n", deviceProp.maxThreadsDim[0], deviceProp.maxThreadsDim[1], deviceProp.maxThreadsDim[2]);
+        printf("Maximum grid size:                     [%d, %d, %d]\n", deviceProp.maxGridSize[0], deviceProp.maxGridSize[1], deviceProp.maxGridSize[2]);
     }
     printf("------------------------------------------------------------------------\n");  
 */
@@ -2101,7 +2096,911 @@ __device__ double2 Omega(double2 a, double2 b, double2 c)
     double acrossb = a.x * b.y - a.y * b.x;
     return real2{ adotb * c.x - acrossb * c.y, adotb * c.y + acrossb * c.x};
 };
-    
+
+
+// Функция обхода дерева для подсчета ячеек в дальней зоне (без вычислений!)
+__global__
+__launch_bounds__(THREADS5slae, FACTOR5slae)
+void MatrToVecNoCalculationKernel
+(
+    const int nnodesd,  // Число узлов дерева (по вихрям)
+    const int nbodiesd, // Число вихрей в пелене
+
+    const real itolsqd, // 1/theta^2
+    const int2* __restrict Mchildd, //Массив потомков узлов дерева
+
+    const int order, //порядок мультипольного разложения
+    const real2* __restrict momsd, //моменты узлов дерева
+    const real* __restrict rpnl,  //вихри в пелене
+    const real* dev_ptr_freeVortexSheet,
+    const real* dev_ptr_freeVortexSheetLin,
+
+    const int* __restrict MmortonCodesIdxd, //порядок сортировки вихрей в пелене
+
+    const real2* __restrict Mposd, //массив координат центров ячеек дерева
+    const int* __restrict MindexSortd, //порядок сортировки внутренних узлов дерева
+    const int* __restrict MindexSortTd,//обратный порядок сортировки внутренних узлов дерева
+
+    const int npointsd,                  //количество панелей на теле
+    const real* __restrict dev_ptr_pt,   //массив четверок (beg.x, beg.y, end.x, end.y)
+    const real2* __restrict pointsd,     //массив центров панелей
+
+    real2* __restrict Ed,                //коэффициенты локального разложения
+    const int* __restrict MmortonCodesIdxPointsd,//порядок сортировки центров панелей
+
+    real* __restrict veld,               //куда сохранять ответ
+    real* __restrict vellind,            //куда сохранять ответ
+
+    const real2* __restrict Mlowerd,     //координаты нижнего левого угла ячейки дерева
+    const real2* __restrict Mupperd,     //координаты верхнего правого угла ячейки дерева
+
+    int* __restrict nClosePanelsl
+)
+{
+    register int j, k, n, depth, base, sbase, pd, nd;
+    register real2 p, dr, ps;
+    register real r2;
+
+    __shared__ volatile int pos[MAXDEPTH * THREADS5slae / WARPSIZE], node[MAXDEPTH * THREADS5slae / WARPSIZE];
+
+    // figure out first thread in each warp (lane 0)
+    base = threadIdx.x / WARPSIZE;
+    sbase = base * WARPSIZE;
+    j = base * MAXDEPTH;
+
+    __syncthreads();
+    __threadfence_block();
+
+    // iterate over all bodies assigned to thread
+    for (k = threadIdx.x + blockIdx.x * blockDim.x; k < npointsd; k += blockDim.x * gridDim.x)
+    {
+        const int indexOfPoint = MmortonCodesIdxPointsd[k];
+        p = pointsd[indexOfPoint];
+        nClosePanelsl[indexOfPoint] = 0;
+
+        real2 beg, end;
+        beg = real2{ dev_ptr_pt[4 * indexOfPoint + 0], dev_ptr_pt[4 * indexOfPoint + 1] };
+        end = real2{ dev_ptr_pt[4 * indexOfPoint + 2], dev_ptr_pt[4 * indexOfPoint + 3] };
+
+        real dlen2 = (end.x - beg.x) * (end.x - beg.x) + (end.y - beg.y) * (end.y - beg.y);
+
+
+        // initialize iteration stack, i.e., push root node onto stack
+        depth = j;
+        if (sbase == threadIdx.x)
+        {
+            pos[j] = 0;
+            node[j] = nnodesd - 1;
+        }
+
+        do
+        {
+            // stack is not empty
+            pd = pos[depth];
+            nd = node[depth];
+
+            register int2 chBoth = Mchildd[MindexSortd[(nnodesd - 1) - nd]];
+
+            register real2 sumSide2;
+            bool isVortex;
+
+            while (pd < 2)
+            {
+                // node on top of stack has more children to process
+
+                // load child pointer
+                //computation of n = childd[nd + pd] (pd = 0 или pd = 1)
+                int chd = pd * chBoth.y + (1 - pd) * chBoth.x;
+                ++pd;
+
+                isVortex = (chd >= nbodiesd);
+
+                if (isVortex)
+                {
+                    n = chd - nbodiesd;
+
+                    ps = real2{ 0.5 * (rpnl[MmortonCodesIdxd[n] * 4 + 0] + rpnl[MmortonCodesIdxd[n] * 4 + 2]), 0.5 * (rpnl[MmortonCodesIdxd[n] * 4 + 1] + rpnl[MmortonCodesIdxd[n] * 4 + 3]) };
+
+                    sumSide2 = real2{ fabs(rpnl[MmortonCodesIdxd[n] * 4 + 2] - rpnl[MmortonCodesIdxd[n] * 4 + 0]),
+                        fabs(rpnl[MmortonCodesIdxd[n] * 4 + 3] - rpnl[MmortonCodesIdxd[n] * 4 + 1]) };
+                }
+                else
+                {
+                    register const int srtT = MindexSortTd[chd];
+                    //printf("srtT = %d\n", (int)srtT);
+                    n = (nnodesd - 1) - srtT;
+                    ps = Mposd[chd];
+                    sumSide2 = Mupperd[chd] - Mlowerd[chd]; /*Msized[chd]*/;
+
+                }
+
+                //ps - положение вихря/кластера
+                //p - центр панели
+                dr = p - ps;
+                r2 = (dr.x * dr.x + dr.y * dr.y);   // compute distance squared               
+
+                // check if all threads agree that cell is far enough away (or is a body)
+                if (isVortex || __all_sync(0xffffffff, ((sumSide2.x + sumSide2.y) * (sumSide2.x + sumSide2.y) + dlen2) * itolsqd < r2))
+                {
+                    if (isVortex)
+                    {
+                        ++nClosePanelsl[indexOfPoint];
+                    }
+                    else
+                    {                        
+                    }
+                }
+                else //идем глубже по дереву
+                {
+                    if (depth < MAXDEPTH * THREADS5slae / WARPSIZE)
+                    {
+
+                        // push cell onto stack
+                        if (sbase == threadIdx.x)
+                        {  // maybe don't push and inc if last child
+                            if (depth >= MAXDEPTH * THREADS5slae / WARPSIZE)
+                                printf("?????????????????????????????????????????????????????????????????\n");
+
+                            pos[depth] = pd;
+                            node[depth] = nd;
+                        }
+                        depth++;
+                        pd = 0;
+                        nd = n;
+                        chBoth = Mchildd[MindexSortd[(nnodesd - 1) - nd]];
+                    }//if depth<
+                }
+            }
+            depth--;  // done with this level
+        } while (depth >= j);
+    }
+}
+
+__global__
+__launch_bounds__(THREADS5slae, FACTOR5slae)
+void MatrToVecZeroCalculationKernel
+(
+    const int nnodesd,  // Число узлов дерева (по вихрям)
+    const int nbodiesd, // Число вихрей в пелене
+
+    const real itolsqd, // 1/theta^2
+    const int2* __restrict Mchildd, //Массив потомков узлов дерева
+
+    const int order, //порядок мультипольного разложения
+    const real2* __restrict momsd, //моменты узлов дерева
+    const real* __restrict rpnl,  //вихри в пелене
+    const real* dev_ptr_freeVortexSheet,
+    const real* dev_ptr_freeVortexSheetLin,
+
+    const int* __restrict MmortonCodesIdxd, //порядок сортировки вихрей в пелене
+
+    const real2* __restrict Mposd, //массив координат центров ячеек дерева
+    const int* __restrict MindexSortd, //порядок сортировки внутренних узлов дерева
+    const int* __restrict MindexSortTd,//обратный порядок сортировки внутренних узлов дерева
+
+    const int npointsd,                  //количество панелей на теле
+    const real* __restrict dev_ptr_pt,   //массив четверок (beg.x, beg.y, end.x, end.y)
+    const real2* __restrict pointsd,     //массив центров панелей
+
+    real2* __restrict Ed,                //коэффициенты локального разложения
+    const int* __restrict MmortonCodesIdxPointsd,//порядок сортировки центров панелей
+
+    real* __restrict veld,               //куда сохранять ответ
+    real* __restrict vellind,            //куда сохранять ответ
+
+    const real2* __restrict Mlowerd,     //координаты нижнего левого угла ячейки дерева
+    const real2* __restrict Mupperd,     //координаты верхнего правого угла ячейки дерева
+
+    int* __restrict nClosePanelsl,
+    int* __restrict closeCellsPfl,
+    int* __restrict PrefixSuml,
+    real2* __restrict i00save,
+    real2* __restrict i01save,
+    real2* __restrict i10save,
+    real2* __restrict i11save,
+    int iter
+)
+{
+    register int j, k, n, depth, base, sbase, pd, nd;
+    register real2 p, dr, ps;
+    register real r2;
+    register const real2* mom;
+    register real val, vallin;
+
+    __shared__ volatile int pos[MAXDEPTH * THREADS5slae / WARPSIZE], node[MAXDEPTH * THREADS5slae / WARPSIZE];
+
+    // figure out first thread in each warp (lane 0)
+    base = threadIdx.x / WARPSIZE;
+    sbase = base * WARPSIZE;
+    j = base * MAXDEPTH;
+
+    __syncthreads();
+    __threadfence_block();
+
+    // iterate over all bodies assigned to thread
+    for (k = threadIdx.x + blockIdx.x * blockDim.x; k < npointsd; k += blockDim.x * gridDim.x)
+    {
+        const int indexOfPoint = MmortonCodesIdxPointsd[k];
+        p = pointsd[indexOfPoint];
+        nClosePanelsl[indexOfPoint] = 0;
+        int closecntr = 0;
+
+        real2 beg, end;
+        beg = real2{ dev_ptr_pt[4 * indexOfPoint + 0], dev_ptr_pt[4 * indexOfPoint + 1] };
+        end = real2{ dev_ptr_pt[4 * indexOfPoint + 2], dev_ptr_pt[4 * indexOfPoint + 3] };
+
+        real2 di = real2{ end.x - beg.x, end.y - beg.y };
+
+        real dlen2 = (end.x - beg.x) * (end.x - beg.x) + (end.y - beg.y) * (end.y - beg.y);
+        real dilen = sqrt(dlen2);
+        real idlen = 1.0 / dilen;
+        real2 tau = (end - beg) * idlen;
+
+        val = 0;
+        vallin = 0;
+
+        // initialize iteration stack, i.e., push root node onto stack
+        depth = j;
+        if (sbase == threadIdx.x)
+        {
+            pos[j] = 0;
+            node[j] = nnodesd - 1;
+        }
+
+        do
+        {
+            // stack is not empty
+            pd = pos[depth];
+            nd = node[depth];
+
+            register int2 chBoth = Mchildd[MindexSortd[(nnodesd - 1) - nd]];
+
+            register real gm;
+            register real2 sumSide2;
+            bool isVortex;
+
+            while (pd < 2)
+            {
+                // node on top of stack has more children to process
+
+                // load child pointer
+                //computation of n = childd[nd + pd] (pd = 0 или pd = 1)
+                int chd = pd * chBoth.y + (1 - pd) * chBoth.x;
+                ++pd;
+
+                isVortex = (chd >= nbodiesd);
+
+                if (isVortex)
+                {
+                    n = chd - nbodiesd;
+
+                    ps = real2{ 0.5 * (rpnl[MmortonCodesIdxd[n] * 4 + 0] + rpnl[MmortonCodesIdxd[n] * 4 + 2]), 0.5 * (rpnl[MmortonCodesIdxd[n] * 4 + 1] + rpnl[MmortonCodesIdxd[n] * 4 + 3]) };
+
+                    double lj = sqrt((rpnl[MmortonCodesIdxd[n] * 4 + 2] - rpnl[MmortonCodesIdxd[n] * 4 + 0]) * (rpnl[MmortonCodesIdxd[n] * 4 + 2] - rpnl[MmortonCodesIdxd[n] * 4 + 0]) +
+                        (rpnl[MmortonCodesIdxd[n] * 4 + 3] - rpnl[MmortonCodesIdxd[n] * 4 + 1]) * (rpnl[MmortonCodesIdxd[n] * 4 + 3] - rpnl[MmortonCodesIdxd[n] * 4 + 1]));
+
+                    gm = lj * dev_ptr_freeVortexSheet[MmortonCodesIdxd[n]];// vtxd[MmortonCodesIdxd[n]].z;
+
+                    sumSide2 = real2{ fabs(rpnl[MmortonCodesIdxd[n] * 4 + 2] - rpnl[MmortonCodesIdxd[n] * 4 + 0]),
+                        fabs(rpnl[MmortonCodesIdxd[n] * 4 + 3] - rpnl[MmortonCodesIdxd[n] * 4 + 1]) };
+
+
+                }
+                else
+                {
+                    register const int srtT = MindexSortTd[chd];
+                    n = (nnodesd - 1) - srtT;
+                    ps = Mposd[chd];
+                    mom = momsd + (srtT * order);
+                    gm = mom[0].x;
+                    sumSide2 = Mupperd[chd] - Mlowerd[chd]; /*Msized[chd]*/;
+                }
+
+                //ps - положение вихря/кластера
+                //p - центр панели
+                dr = p - ps;
+                r2 = (dr.x * dr.x + dr.y * dr.y);   // compute distance squared               
+
+                // check if all threads agree that cell is far enough away (or is a body)
+                if (isVortex || __all_sync(0xffffffff, ((sumSide2.x + sumSide2.y) * (sumSide2.x + sumSide2.y) + dlen2) * itolsqd < r2))
+                {
+                    if (isVortex)
+                    {
+                        real tempVelNew;
+
+                        double2 ptpanBeg = real2{ rpnl[MmortonCodesIdxd[n] * 4 + 0], rpnl[MmortonCodesIdxd[n] * 4 + 1] };
+                        double2 ptpanEnd = real2{ rpnl[MmortonCodesIdxd[n] * 4 + 2], rpnl[MmortonCodesIdxd[n] * 4 + 3] };
+
+                        double lj = sqrt((rpnl[MmortonCodesIdxd[n] * 4 + 2] - rpnl[MmortonCodesIdxd[n] * 4 + 0]) * (rpnl[MmortonCodesIdxd[n] * 4 + 2] - rpnl[MmortonCodesIdxd[n] * 4 + 0]) +
+                            (rpnl[MmortonCodesIdxd[n] * 4 + 3] - rpnl[MmortonCodesIdxd[n] * 4 + 1]) * (rpnl[MmortonCodesIdxd[n] * 4 + 3] - rpnl[MmortonCodesIdxd[n] * 4 + 1]));
+
+                        double gmlin = 0.0;
+                        if (dev_ptr_freeVortexSheetLin != nullptr)
+                            gmlin = lj * dev_ptr_freeVortexSheetLin[MmortonCodesIdxd[n]];
+
+                        if (r2 > 1e-20)
+                        {
+                            double2 i00;
+                            double2 dj;
+                            double djlen;
+                            double ilenj;
+                            double2 tauj;
+                            double2 p1, s1, p2, s2;
+                            double3 alpha, lambda;
+                            bool condBefore, condAfter;
+
+                            if (iter == 0)
+                            {
+                                dj = real2{ ptpanEnd.x - ptpanBeg.x, ptpanEnd.y - ptpanBeg.y };
+                                djlen = sqrt(dj.x * dj.x + dj.y * dj.y);
+                                ilenj = 1.0 / djlen;
+                                tauj = real2{ ilenj * dj.x, ilenj * dj.y };
+
+                                p1 = real2{ end.x - ptpanEnd.x, end.y - ptpanEnd.y };
+                                s1 = real2{ end.x - ptpanBeg.x, end.y - ptpanBeg.y };
+                                p2 = real2{ beg.x - ptpanEnd.x, beg.y - ptpanEnd.y };
+                                s2 = real2{ beg.x - ptpanBeg.x, beg.y - ptpanBeg.y };
+
+                                condBefore = isEqual(beg, ptpanEnd);
+                                condAfter = isEqual(ptpanBeg, end);
+
+                                alpha = double3{ \
+                                    condAfter ? 0.0 : Alpha(s2, s1), \
+                                    Alpha(s2, p1), \
+                                    condBefore ? 0.0 : Alpha(p1, p2) \
+                                };
+
+                                lambda = double3{ \
+                                    condAfter ? 0.0 : Lambda(s2, s1), \
+                                    Lambda(s2, p1), \
+                                    condBefore ? 0.0 : Lambda(p1, p2) \
+                                };
+
+                                double2 v00_0 = Omega(s1, tau, tauj);
+                                double2 v00_1 = Omega(di, tau, tauj);
+                                v00_1.x *= -1.0;
+                                v00_1.y *= -1.0;
+
+                                double2 v00_2 = Omega(p2, tau, tauj);
+
+
+                                i00 = real2{
+                                    ilenj * (alpha.x * v00_0.x + alpha.y * v00_1.x + alpha.z * v00_2.x \
+                                        - (lambda.x * v00_0.y + lambda.y * v00_1.y + lambda.z * v00_2.y)),
+                                    ilenj * (alpha.x * v00_0.y + alpha.y * v00_1.y + alpha.z * v00_2.y \
+                                        + (lambda.x * v00_0.x + lambda.y * v00_1.x + lambda.z * v00_2.x))
+                                };
+
+                                i00save[PrefixSuml[indexOfPoint] + closecntr] = i00;
+                            }//if iter==0
+                            else
+                                i00 = i00save[PrefixSuml[indexOfPoint] + closecntr];
+                        
+                            tempVelNew = -gm * (i00.x * tau.x + i00.y * tau.y);
+
+
+                            //if (indexOfPoint == 0)
+                           //     printf("cntr: %d, inf: %d, i00 = {%f, %f}, tau_c = {%f, %f}, gm = %f\n", indexOfPoint, MmortonCodesIdxd[n], i00.x, i00.y, tau.x, tau.y, gm);
+
+                            val -= tempVelNew;
+
+                            //if (indexOfPoint == 0)
+                            //{
+                            //    //printf(" j = %d, [0][j] = %f, idlen = %f\n", (int)MmortonCodesIdxd[n], (i00.x * tau.x + i00.y * tau.y), idlen);
+                            //    printf(" j = %d, i00 = {%f, %f}, v[j] = %f\n", (int)MmortonCodesIdxd[n], i00.x * idlen, i00.y * idlen /** idpi * idlen*/, gm);
+                            //    //printf(" j = %d, M[0][j] = %f, v[j] = %f\n", (int)MmortonCodesIdxd[n], (i00.x * tau.x + i00.y * tau.y) * idpi * idlen, gm);
+                            //}
+
+
+                            if (vellind != nullptr)
+                            {
+                                
+                                double2 i01, i10, i11;
+
+                                if (iter == 0)
+                                {
+
+                                    double s1len2 = s1.x * s1.x + s1.y * s1.y;
+
+                                    double2 om1 = Omega(s1, tau, tauj);
+                                    double2 om2 = Omega(real2{ s1.x + p2.x, s1.y + p2.y }, tauj, tauj);
+                                    double sc = (p1.x + s1.x) * tauj.x + (p1.y + s1.y) * tauj.y;
+
+                                    double2 v01_0 = real2{ 0.5 / (djlen) * (sc * om1.x - s1len2 * tau.x), 0.5 / (djlen) * (sc * om1.y - s1len2 * tau.y) };
+                                    double2 v01_1 = real2{ -0.5 * dilen / djlen * om2.x, -0.5 * dilen / djlen * om2.y };
+
+
+                                    i01 = real2{
+                                         ilenj* ((alpha.x + alpha.z) * v01_0.x + (alpha.y + alpha.z) * v01_1.x\
+                                            - (((lambda.x + lambda.z) * v01_0.y + (lambda.y + lambda.z) * v01_1.y) - 0.5 * dilen * tauj.y)),
+                                         ilenj*((alpha.x + alpha.z) * v01_0.y + (alpha.y + alpha.z) * v01_1.y\
+                                            + (((lambda.x + lambda.z) * v01_0.x + (lambda.y + lambda.z) * v01_1.x) - 0.5 * dilen * tauj.x))
+                                    };
+
+                                    i01save[PrefixSuml[indexOfPoint] + closecntr] = i01;
+
+                                    double2 om3 = Omega(real2{ s1.x + p2.x, s1.y + p2.y }, tau, tau);
+
+                                    double2 v10_0 = real2{ -0.5 / dilen * (((s1 + s2) & tau) * om1.x - s1len2 * tauj.x), -0.5 / dilen * (((s1 + s2) & tau) * om1.y - s1len2 * tauj.y) };
+                                    double2 v10_1 = real2{ 0.5 * djlen / dilen * om3.x, 0.5 * djlen / dilen * om3.y };
+
+                                    i10 = real2{
+                                         ilenj* ((alpha.x + alpha.z) * v10_0.x + alpha.z * v10_1.x \
+                                        - (((lambda.x + lambda.z) * v10_0.y + lambda.z * v10_1.y) + 0.5 * djlen * tau.y)),
+                                        ilenj* ((alpha.x + alpha.z) * v10_0.y + alpha.z * v10_1.y \
+                                        + (((lambda.x + lambda.z) * v10_0.x + lambda.z * v10_1.x) + 0.5 * djlen * tau.x)),
+                                    };
+
+                                    i10save[PrefixSuml[indexOfPoint] + closecntr] = i10;
+
+                                    double2 om4 = Omega(real2{ s1.x - 3.0 * p2.x, s1.y - 3.0 * p2.y }, tau, tauj);
+                                    double2 om5 = Omega(di, tauj, tauj);
+                                    double2 om6 = Omega(dj, tau, tau);
+                                    double sc4 = s1.x * om4.x + s1.y * om4.y;
+
+
+
+                                    double2 v11_0 = real2{
+                                        1.0 / (12.0 * dilen * djlen) * (2.0 * sc4 * om1.x - s1len2 * (s1.x - 3.0 * p2.x)) - 0.25 * om1.x,
+                                        1.0 / (12.0 * dilen * djlen) * (2.0 * sc4 * om1.y - s1len2 * (s1.y - 3.0 * p2.y)) - 0.25 * om1.y
+                                    };
+                                    double2 v11_1 = real2{ -dilen / (12.0 * djlen) * om5.x, -dilen / (12.0 * djlen) * om5.y };
+                                    double2 v11_2 = real2{ -djlen / (12.0 * dilen) * om6.x, -djlen / (12.0 * dilen) * om6.y };
+
+
+                                    i11 = {
+                                         ilenj* ((alpha.x + alpha.z) * v11_0.x + (alpha.y + alpha.z) * v11_1.x + alpha.z * v11_2.x\
+                                        - ((lambda.x + lambda.z) * v11_0.y + (lambda.y + lambda.z) * v11_1.y + lambda.z * v11_2.y \
+                                            + 1.0 / 12.0 * (djlen * tau.y + dilen * tauj.y - 2.0 * om1.y))),
+                                        ilenj* ((alpha.x + alpha.z) * v11_0.y + (alpha.y + alpha.z) * v11_1.y + alpha.z * v11_2.y\
+                                        + ((lambda.x + lambda.z) * v11_0.x + (lambda.y + lambda.z) * v11_1.x + lambda.z * v11_2.x \
+                                            + 1.0 / 12.0 * (djlen * tau.x + dilen * tauj.x - 2.0 * om1.x)))
+                                    };
+
+                                    i11save[PrefixSuml[indexOfPoint] + closecntr] = i11;
+                                }//if iter==0
+                                else
+                                {
+                                    i01 = i01save[PrefixSuml[indexOfPoint] + closecntr];
+                                    i10 = i10save[PrefixSuml[indexOfPoint] + closecntr];
+                                    i11 = i11save[PrefixSuml[indexOfPoint] + closecntr];
+                                }
+
+                                double tempVelNewB = -gmlin * (i01.x * tau.x + i01.y * tau.y);
+                                val -= tempVelNewB;
+
+
+                                double tempVelNewC = -gm * (i10.x * tau.x + i10.y * tau.y);
+                                double tempVelNewD = -gmlin * (i11.x * tau.x + i11.y * tau.y);
+                                
+                                vallin -= (tempVelNewC + tempVelNewD);
+                            }
+                        }//if (posI != posJ)
+
+                        ++closecntr;
+
+                    }
+                    else
+                    {
+                        real dist2 = (p.x - ps.x) * (p.x - ps.x) + (p.y - ps.y) * (p.y - ps.y);
+
+                        // Это просто смещение указателя
+                        real2* Eloc = Ed + order * indexOfPoint;
+
+                        for (int q = 0; q < order; ++q)
+                            Eloc[q].x = Eloc[q].y = 0;
+
+                        real2 theta = (p - ps) / dist2;
+
+                        int cftStart = 1;
+                        int cftDiag;
+                        real factorial;
+
+                        for (int q = 0; q < order; ++q)
+                        {
+                            factorial = 1;
+                            cftDiag = 1;
+                            for (int s = q; s >= 0; --s)
+                            {
+                                Eloc[s] += (cftStart * cftDiag / factorial) * multzA(theta, mom[q - s]);
+
+                                cftDiag = -cftDiag;
+                                factorial *= (q - s + 1);
+                            }
+                            theta = ((q + 1) / dist2) * multz(theta, p - ps);
+                            cftStart = -cftStart;
+                        }
+
+
+
+                        real2 v = Eloc[0];
+                        real2 vL{ 0.0, 0.0 };
+
+
+                        real2 rPan = end - beg;
+                        real panLen2 = (rPan.x * rPan.x + rPan.y * rPan.y);
+                        real2 dPos2 = real2{ 0.0, 0.0 }; // т.к. разложение строится в центре панели
+
+                        real2 kp, km;
+
+                        real2 mulP = kp = dPos2 + rPan;
+                        real2 mulM = km = dPos2 - rPan;
+
+                        real2 taudL = (0.5 / panLen2) * rPan;
+                        real2 taudLc = taudL;
+
+                        real iFact = 1;
+                        for (int k = 1; k < order; ++k)
+                        {
+                            iFact /= (k + 1);
+                            mulP = multz(mulP, kp);
+                            mulM = multz(mulM, km);
+                            taudL = taudL * 0.5;
+                            //if (fabs(Eloc[k].x) + fabs(Eloc[k].y) < 1e+10)
+                            v += iFact * multz(Eloc[k], multzA(taudL, mulP - mulM));
+
+
+                            if (vellind != nullptr)
+                                vL += (iFact / (k + 2)) * multz(Eloc[k], multzA(multz(taudL, taudLc), multz(mulP, (k + 1) * rPan - dPos2) + multz(mulM, (k + 1) * rPan + dPos2)));
+                        }
+
+                        val += (-v.y * rPan.x + v.x * rPan.y);
+
+                        if (vellind != nullptr)
+                        {
+                            vallin += (-vL.y * rPan.x + vL.x * rPan.y);
+                        }
+                    }
+                }
+                else //идем глубже по дереву
+                {
+                    if (depth < MAXDEPTH * THREADS5slae / WARPSIZE)
+                    {
+
+                        // push cell onto stack
+                        if (sbase == threadIdx.x)
+                        {  // maybe don't push and inc if last child
+                            if (depth >= MAXDEPTH * THREADS5slae / WARPSIZE)
+                                printf("?????????????????????????????????????????????????????????????????\n");
+
+                            pos[depth] = pd;
+                            node[depth] = nd;
+                        }
+                        depth++;
+                        pd = 0;
+                        nd = n;
+                        chBoth = Mchildd[MindexSortd[(nnodesd - 1) - nd]];
+                    }//if depth<
+                }
+
+            }
+            depth--;  // done with this level
+        } while (depth >= j);
+         
+
+        // update velocity
+        veld[indexOfPoint] = val * idpi * idlen;
+
+        if (vellind != nullptr)
+            vellind[indexOfPoint] = vallin * idpi * idlen;
+    }
+}
+
+__global__
+__launch_bounds__(THREADS5slae, FACTOR5slae)
+void MatrToVecNoZeroCalculationKernel
+(
+    const int nnodesd,  // Число узлов дерева (по вихрям)
+    const int nbodiesd, // Число вихрей в пелене
+
+    const real itolsqd, // 1/theta^2
+    const int2* __restrict Mchildd, //Массив потомков узлов дерева
+
+    const int order, //порядок мультипольного разложения
+    const real2* __restrict momsd, //моменты узлов дерева
+    const real* __restrict rpnl,  //вихри в пелене
+    const real* dev_ptr_freeVortexSheet,
+    const real* dev_ptr_freeVortexSheetLin,
+
+    const int* __restrict MmortonCodesIdxd, //порядок сортировки вихрей в пелене
+
+    const real2* __restrict Mposd, //массив координат центров ячеек дерева
+    const int* __restrict MindexSortd, //порядок сортировки внутренних узлов дерева
+    const int* __restrict MindexSortTd,//обратный порядок сортировки внутренних узлов дерева
+
+    const int npointsd,                  //количество панелей на теле
+    const real* __restrict dev_ptr_pt,   //массив четверок (beg.x, beg.y, end.x, end.y)
+    const real2* __restrict pointsd,     //массив центров панелей
+
+    real2* __restrict Ed,                //коэффициенты локального разложения
+    const int* __restrict MmortonCodesIdxPointsd,//порядок сортировки центров панелей
+
+    real* __restrict veld,               //куда сохранять ответ
+    real* __restrict vellind,            //куда сохранять ответ
+
+    const real2* __restrict Mlowerd,     //координаты нижнего левого угла ячейки дерева
+    const real2* __restrict Mupperd,     //координаты верхнего правого угла ячейки дерева
+
+    const int* __restrict nClosePanelsl,
+    const int* __restrict closeCellsPfl,
+    const int* __restrict PrefixSuml,
+    const real2* __restrict i00save,
+    const real2* __restrict i01save,
+    const real2* __restrict i10save,
+    const real2* __restrict i11save,
+    int iter
+)
+{
+    register int j, k, n, depth, base, sbase, pd, nd;
+    register real2 p, dr, ps;
+    register real r2;
+    register const real2* mom;
+    register real val, vallin;
+
+    register int MmortonCodesIdxd_n = 0;
+
+    __shared__ volatile int pos[MAXDEPTH * THREADS5slae / WARPSIZE], node[MAXDEPTH * THREADS5slae / WARPSIZE];
+
+    // figure out first thread in each warp (lane 0)
+    base = threadIdx.x / WARPSIZE;
+    sbase = base * WARPSIZE;
+    j = base * MAXDEPTH;
+
+    __syncthreads();
+    __threadfence_block();
+
+    // iterate over all bodies assigned to thread
+    for (k = threadIdx.x + blockIdx.x * blockDim.x; k < npointsd; k += blockDim.x * gridDim.x)
+    {
+        const int indexOfPoint = MmortonCodesIdxPointsd[k];
+        p = pointsd[indexOfPoint];
+        int closecntr = 0;
+      
+        real2 beg, end;
+        //beg = real2{ dev_ptr_pt[4 * indexOfPoint + 0], dev_ptr_pt[4 * indexOfPoint + 1] };
+        //end = real2{ dev_ptr_pt[4 * indexOfPoint + 2], dev_ptr_pt[4 * indexOfPoint + 3] };
+        beg = *(real2*)(dev_ptr_pt + 4 * indexOfPoint);
+        end = *(real2*)(dev_ptr_pt + 4 * indexOfPoint + 2);
+
+        real2 di = real2{ end.x - beg.x, end.y - beg.y };
+        real dlen2 = di.x * di.x + di.y * di.y;
+        //real dlen2 = (end.x - beg.x) * (end.x - beg.x) + (end.y - beg.y) * (end.y - beg.y);
+        //real dilen = sqrt(dlen2);
+        //real idlen = 1 / sqrt(dlen2);
+
+        real idlen = rhypot(di.x, di.y);
+
+        real2 tau = (end - beg) * idlen;
+
+
+        double lj = 0.0; // used only: if(isVortex)!
+        double deltax, deltay; 
+
+        val = 0;
+        vallin = 0;
+
+        // initialize iteration stack, i.e., push root node onto stack
+        depth = j;
+        if (sbase == threadIdx.x)
+        {
+            pos[j] = 0;
+            node[j] = nnodesd - 1;
+        }
+
+        do
+        {
+            // stack is not empty
+            pd = pos[depth];
+            nd = node[depth];
+
+            register int2 chBoth = Mchildd[MindexSortd[(nnodesd - 1) - nd]];
+
+            register real gm;
+            register real2 sumSide2;
+            bool isVortex;
+
+            while (pd < 2)
+            {
+                // node on top of stack has more children to process
+
+                // load child pointer
+                //computation of n = childd[nd + pd] (pd = 0 или pd = 1)
+                int chd = pd * chBoth.y + (1 - pd) * chBoth.x;
+                ++pd;
+
+                isVortex = (chd >= nbodiesd);
+
+                if (isVortex)
+                {
+                    n = chd - nbodiesd;
+
+                    MmortonCodesIdxd_n = MmortonCodesIdxd[n];
+
+                    real2 begbuf = *(real2*)(rpnl + MmortonCodesIdxd_n * 4);
+                    real2 endbuf = *(real2*)(rpnl + MmortonCodesIdxd_n * 4 + 2);
+
+                    //psx = (begbuf.x + endbuf.x) * 0.5;
+                    //psy = (begbuf.y + endbuf.y) * 0.5;
+                    deltax = endbuf.x - begbuf.x;
+                    deltay = endbuf.y - begbuf.y;
+                    lj = hypot(deltax, deltay);
+                    
+                    
+                    //real2 delta = endbuf - begbuf;
+                    //lj = hypot(delta.x, delta.y);
+
+                    gm = lj * dev_ptr_freeVortexSheet[MmortonCodesIdxd_n];
+                    sumSide2 = endbuf - begbuf;
+
+                    ps = (begbuf + endbuf) * 0.5;
+                }
+                else
+                {
+                    register const int srtT = MindexSortTd[chd];
+                    n = (nnodesd - 1) - srtT;
+                    ps = Mposd[chd];
+                    mom = momsd + (srtT * order);
+                    gm = mom[0].x;
+                    sumSide2 = Mupperd[chd] - Mlowerd[chd]; /*Msized[chd]*/
+                }
+
+                //ps - положение вихря/кластера
+                //p - центр панели
+                dr = p - ps;
+                r2 = (dr.x * dr.x + dr.y * dr.y);   // compute distance squared               
+
+                // check if all threads agree that cell is far enough away (or is a body)
+                if (isVortex || __all_sync(0xffffffff, ((sumSide2.x + sumSide2.y) * (sumSide2.x + sumSide2.y) + dlen2) * itolsqd < r2))
+                {
+                    if (isVortex)
+                    {
+                        real tempVelNew;
+                        double gmlin = 0.0;
+                        if (dev_ptr_freeVortexSheetLin != nullptr)
+                            gmlin = lj * dev_ptr_freeVortexSheetLin[MmortonCodesIdxd_n];
+
+                        if (r2 > 1e-20)
+                        {
+                            double2 i00;
+                            i00 = i00save[PrefixSuml[indexOfPoint] + closecntr];
+
+                            tempVelNew = -gm * (i00.x * tau.x + i00.y * tau.y);
+                            val -= tempVelNew;
+
+                            //if (indexOfPoint == 0)
+                            //{
+                            //    //printf(" j = %d, [0][j] = %f, idlen = %f\n", (int)MmortonCodesIdxd[n], (i00.x * tau.x + i00.y * tau.y), idlen);
+                            //    printf(" j = %d, i00 = {%f, %f}, v[j] = %f\n", (int)MmortonCodesIdxd[n], i00.x * idlen, i00.y * idlen /** idpi * idlen*/, gm);
+                            //    //printf(" j = %d, M[0][j] = %f, v[j] = %f\n", (int)MmortonCodesIdxd[n], (i00.x * tau.x + i00.y * tau.y) * idpi * idlen, gm);
+                            //}
+
+
+                            if (vellind != nullptr)
+                            {
+
+                                double2 i01, i10, i11;
+                                i01 = i01save[PrefixSuml[indexOfPoint] + closecntr];
+                                i10 = i10save[PrefixSuml[indexOfPoint] + closecntr];
+                                i11 = i11save[PrefixSuml[indexOfPoint] + closecntr];
+                       
+                                double tempVelNewB = -gmlin * (i01.x * tau.x + i01.y * tau.y);
+                                val -= tempVelNewB;
+
+
+                                double tempVelNewC = -gm * (i10.x * tau.x + i10.y * tau.y);
+                                double tempVelNewD = -gmlin * (i11.x * tau.x + i11.y * tau.y);
+                                vallin -= (tempVelNewC + tempVelNewD);
+                            }
+                        }//if (posI != posJ)
+
+                        ++closecntr;
+                        //++closecntr[indexOfPoint];
+
+                    }
+                    else
+                    {
+                        real dist2 = (p.x - ps.x) * (p.x - ps.x) + (p.y - ps.y) * (p.y - ps.y);
+
+                        // Это просто смещение указателя
+                        real2* Eloc = Ed + order * indexOfPoint;
+
+                        for (int q = 0; q < order; ++q)
+                            Eloc[q].x = Eloc[q].y = 0;
+
+                        real2 theta = (p - ps) / dist2;
+
+                        int cftStart = 1;
+                        int cftDiag;
+                        real factorial;
+
+                        for (int q = 0; q < order; ++q)
+                        {
+                            factorial = 1;
+                            cftDiag = 1;
+                            for (int s = q; s >= 0; --s)
+                            {
+                                Eloc[s] += (cftStart * cftDiag / factorial) * multzA(theta, mom[q - s]);
+
+                                cftDiag = -cftDiag;
+                                factorial *= (q - s + 1);
+                            }
+                            theta = ((q + 1) / dist2) * multz(theta, p - ps);
+                            cftStart = -cftStart;
+                        }
+
+                        real2 v = Eloc[0];
+                        real2 vL{ 0.0, 0.0 };
+
+
+                        real2 rPan = end - beg;
+                        real panLen2 = (rPan.x * rPan.x + rPan.y * rPan.y);
+                        real2 dPos2 = real2{ 0.0, 0.0 }; // т.к. разложение строится в центре панели
+
+                        real2 kp, km;
+
+                        real2 mulP = kp = dPos2 + rPan;
+                        real2 mulM = km = dPos2 - rPan;
+
+                        real2 taudL = (0.5 / panLen2) * rPan;
+                        real2 taudLc = taudL;
+
+                        real iFact = 1;
+                        for (int k = 1; k < order; ++k)
+                        {
+                            iFact /= (k + 1);
+                            mulP = multz(mulP, kp);
+                            mulM = multz(mulM, km);
+                            taudL = taudL * 0.5;
+                            //if (fabs(Eloc[k].x) + fabs(Eloc[k].y) < 1e+10)
+                            v += iFact * multz(Eloc[k], multzA(taudL, mulP - mulM));
+
+
+                            if (vellind != nullptr)
+                                vL += (iFact / (k + 2)) * multz(Eloc[k], multzA(multz(taudL, taudLc), multz(mulP, (k + 1) * rPan - dPos2) + multz(mulM, (k + 1) * rPan + dPos2)));
+                        }
+
+                        val += (-v.y * rPan.x + v.x * rPan.y);
+
+                        if (vellind != nullptr)
+                            vallin += (-vL.y * rPan.x + vL.x * rPan.y);
+                    }
+                }
+                else //идем глубже по дереву
+                {
+                    if (depth < MAXDEPTH * THREADS5slae / WARPSIZE)
+                    {
+
+                        // push cell onto stack
+                        if (sbase == threadIdx.x)
+                        {  // maybe don't push and inc if last child
+                            if (depth >= MAXDEPTH * THREADS5slae / WARPSIZE)
+                                printf("?????????????????????????????????????????????????????????????????\n");
+
+                            pos[depth] = pd;
+                            node[depth] = nd;
+                        }
+                        depth++;
+                        pd = 0;
+                        nd = n;
+                        chBoth = Mchildd[MindexSortd[(nnodesd - 1) - nd]];
+                    }//if depth<
+                }
+
+            }
+            depth--;  // done with this level
+        } while (depth >= j);
+
+
+        // update velocity
+        veld[indexOfPoint] = val * idpi * idlen;
+
+        if (vellind != nullptr)
+            vellind[indexOfPoint] = vallin * idpi * idlen;
+
+    }
+}
+
+   
 __global__
 __launch_bounds__(THREADS5slae, FACTOR5slae)
 void MatrToVecCalculationKernel
@@ -2135,7 +3034,9 @@ void MatrToVecCalculationKernel
     real* __restrict vellind,            //куда сохранять ответ
 
     const real2* __restrict Mlowerd,     //координаты нижнего левого угла ячейки дерева
-    const real2* __restrict Mupperd      //координаты верхнего правого угла ячейки дерева
+    const real2* __restrict Mupperd,     //координаты верхнего правого угла ячейки дерева
+
+    int* __restrict nClosePanelsl
 )
 {
     register int j, k, n, depth, base, sbase, pd, nd;
@@ -2157,13 +3058,8 @@ void MatrToVecCalculationKernel
     // iterate over all bodies assigned to thread
     for (k = threadIdx.x + blockIdx.x * blockDim.x; k < npointsd; k += blockDim.x * gridDim.x)
     {
-        //if (k == 0)
-        //    printf("mom0[187]: %f\n", momsd[187]);
-
         const int indexOfPoint = MmortonCodesIdxPointsd[k];
         p = pointsd[indexOfPoint];
-        //if (indexOfPoint == 0)
-        //    printf("x,y = %f, %f\n", p.x, p.y);
 
         real2 beg, end;
         beg = real2{ dev_ptr_pt[4 * indexOfPoint + 0], dev_ptr_pt[4 * indexOfPoint + 1] };
@@ -2221,35 +3117,17 @@ void MatrToVecCalculationKernel
 
                     gm = lj * dev_ptr_freeVortexSheet[MmortonCodesIdxd[n]];// vtxd[MmortonCodesIdxd[n]].z;
 
-                    //if (indexOfPoint == 0)
-                    //{
-                    //    if (MmortonCodesIdxd[n] == 71 || MmortonCodesIdxd[n] == 72)
-                    //    {
-                    //        printf("gm[%d] = %f\n", (int)MmortonCodesIdxd[n], gm);
-                    //        printf("freesh[%d] = %f\n", (int)MmortonCodesIdxd[n], dev_ptr_freeVortexSheet[MmortonCodesIdxd[n]]);
-                    //    }
-                    //}
-
-
                     sumSide2 = real2{ fabs(rpnl[MmortonCodesIdxd[n] * 4 + 2] - rpnl[MmortonCodesIdxd[n] * 4 + 0]),
                         fabs(rpnl[MmortonCodesIdxd[n] * 4 + 3] - rpnl[MmortonCodesIdxd[n] * 4 + 1]) };
                 }
                 else
                 {
                     register const int srtT = MindexSortTd[chd];
-                    //printf("srtT = %d\n", (int)srtT);
                     n = (nnodesd - 1) - srtT;
                     ps = Mposd[chd];
                     mom = momsd + (srtT * order);
                     gm = mom[0].x;
                     sumSide2 = Mupperd[chd] - Mlowerd[chd]; /*Msized[chd]*/;
-
-                    //if (indexOfPoint == 0 && chd == 78)
-                    //{
-                    //    printf("srtT = %d, n = %d, ps = (%f, %f), mom0.x = %f, lower=(%f, %f), upper=(%f, %f)\n", srtT, (int)n, ps.x, ps.y, mom[0].x, Mlowerd[chd].x, Mlowerd[chd].y, Mupperd[chd].x, Mupperd[chd].y);
-                    //}
-
-
                 }
 
                 //ps - положение вихря/кластера
@@ -2259,9 +3137,11 @@ void MatrToVecCalculationKernel
 
                 // check if all threads agree that cell is far enough away (or is a body)
                 if (isVortex || __all_sync(0xffffffff, ((sumSide2.x + sumSide2.y) * (sumSide2.x + sumSide2.y) + dlen2) * itolsqd < r2))
-                {
+                {                    
                     if (isVortex)
                     {
+                        //orderOfPanl[indexOfPoint] = MmortonCodesIdxd[n];
+                        // ++nClosePanelsl[indexOfPoint];
                         real tempVelNew;
 
                         double2 ptpanBeg = real2{ rpnl[MmortonCodesIdxd[n] * 4 + 0], rpnl[MmortonCodesIdxd[n] * 4 + 1] };
@@ -2276,18 +3156,6 @@ void MatrToVecCalculationKernel
 
                         if (r2 > 1e-20)
                         {
-
-                            //bool cond = ((sumSide2.x + sumSide2.y) * (sumSide2.x + sumSide2.y) + dlen2)* itolsqd < r2;
-                            //if ((int)indexOfPoint == 0)
-                            //    printf("i = %d, j = %d, isVortex = %d, farZone = %d, S^2 = %f, dlen2 = %f, r2 = %f\n",
-                            //        (int)indexOfPoint,
-                            //        (int)MmortonCodesIdxd[n],
-                            //        (int)isVortex,
-                            //        (int)cond,
-                            //        (sumSide2.x + sumSide2.y) * (sumSide2.x + sumSide2.y),
-                            //        dlen2,
-                            //        r2
-                            //    );
                             double2 dj = real2{ ptpanEnd.x - ptpanBeg.x, ptpanEnd.y - ptpanBeg.y };
                             double djlen = sqrt(dj.x * dj.x + dj.y * dj.y);
                             double ilenj = 1.0 / djlen;
@@ -2327,23 +3195,14 @@ void MatrToVecCalculationKernel
 
                             tempVelNew = -gm * (i00.x * tau.x + i00.y * tau.y);
                             
-                            //printf("%f, %f\n", tempVel, tempVelNew);
-                            
                             val -= tempVelNew;
 
-                            //if (indexOfPoint == 0)
-                            //{
-                            //    if (MmortonCodesIdxd[n] == 71 || MmortonCodesIdxd[n] == 72)
-                            //        printf("contrib %d: %f\n", (int)MmortonCodesIdxd[n], tempVelNew);
-                            //}
-
-
-                            
                             if (vellind != nullptr)
                             {
                             double s1len2 = s1.x * s1.x + s1.y * s1.y;                            
 
                             double2 om1 = Omega(s1, tau, tauj);
+
                             double2 om2 = Omega(real2{ s1.x + p2.x, s1.y + p2.y }, tauj, tauj);
                             double sc = (p1.x + s1.x) * tauj.x + (p1.y + s1.y) * tauj.y;
 
@@ -2362,7 +3221,6 @@ void MatrToVecCalculationKernel
 
                             double2 v10_0 = real2{ -0.5 / dilen * (((s1 + s2) & tau) * om1.x - s1len2 * tauj.x), -0.5 / dilen * (((s1 + s2) & tau) * om1.y - s1len2 * tauj.y) };
                             double2 v10_1 = real2{ 0.5 * djlen / dilen * om3.x, 0.5 * djlen / dilen * om3.y };
-                            
 
                             double2 i10 = real2{
                                 ilenj * ((alpha.x + alpha.z) * v10_0.x + alpha.z * v10_1.x \
@@ -2395,7 +3253,6 @@ void MatrToVecCalculationKernel
                                     + 1.0 / 12.0 * (djlen * tau.x + dilen * tauj.x - 2.0 * om1.x)))
                             };
                             double tempVelNewB = -gmlin * (i01.x * tau.x + i01.y * tau.y);
-                            //printf("gm = %f, gmlin = %f\n", gm, gmlin);
 
                             val -= tempVelNewB;
 
@@ -2413,13 +3270,6 @@ void MatrToVecCalculationKernel
                     }
                     else
                     {
-                        //if (indexOfPoint == 0)
-                        //{
-                        //    //printf("[%f, %f] x [%f, %f]\n", Mlowerd[chd].x, Mupperd[chd].x, Mlowerd[chd].y, Mupperd[chd].y);
-                        //    printf("{{%f, %f}, {%f, %f}, mom.x=%f, gm=%f, SrtT=%d, chd=%d},\n", Mlowerd[chd].x, Mlowerd[chd].y, Mupperd[chd].x, Mupperd[chd].y, mom[0].x, gm, (int)(MindexSortTd[chd]), (int)chd);
-                        //}
-                        
-                        
                         real dist2 = (p.x - ps.x) * (p.x - ps.x) + (p.y - ps.y) * (p.y - ps.y);
 
                         // Это просто смещение указателя
@@ -2440,11 +3290,6 @@ void MatrToVecCalculationKernel
                             cftDiag = 1;
                             for (int s = q; s >= 0; --s)
                             {
-                                //if (sqrt(theta.x * theta.x + theta.y * theta.y) > 1e+16)
-                                //{
-                                //    printf("theta[%d] = (%f, %f)\n", q, theta.x, theta.y);
-                                //    printf("mom[%d] = (%f, %f)\n", q - s, mom[q - s].x, mom[q - s].y);
-                                //}
                                 
                                 Eloc[s] += (cftStart * cftDiag / factorial) * multzA(theta, mom[q - s]);
 
@@ -2459,13 +3304,6 @@ void MatrToVecCalculationKernel
 
                         real2 v = Eloc[0];
                         real2 vL{ 0.0, 0.0 };
-
-
-                        //if (indexOfPoint == 0 && chd == 78)
-                        //{
-                        //    //printf("order = %d\n", (int)order);
-                        //    printf("val += {%f, %f}\n", v.x, v.y);
-                        //}
 
                         real2 rPan = end - beg;
                         real panLen2 = (rPan.x * rPan.x + rPan.y * rPan.y);
@@ -2493,22 +3331,8 @@ void MatrToVecCalculationKernel
                             if (vellind != nullptr)
                                 vL += (iFact / (k + 2)) * multz(Eloc[k], multzA(multz(taudL, taudLc), multz(mulP, (k + 1) * rPan - dPos2) + multz(mulM, (k + 1) * rPan + dPos2)));
                         }
-
-                        //printf("far!\n");
-
-
-
-                        
-                        //if (indexOfPoint == 0 && chd==78)
-                        //    printf("val_old = %f\n", val);
-
-                        //if (indexOfPoint == 0 && chd == 78)
-                        //    printf("add, v={%f, %f}, rPan={%f, %f}\n", v.x, v.y, rPan.x, rPan.y);
-                            
+         
                         val += (-v.y * rPan.x + v.x * rPan.y);
-                            
-                        //if (indexOfPoint == 0 && chd == 78)
-                        //    printf("val_added = %f\n", (-v.y * rPan.x + v.x * rPan.y));
 
                         if (vellind != nullptr)
                             vallin += (-vL.y * rPan.x + vL.x * rPan.y);
@@ -2545,13 +3369,6 @@ void MatrToVecCalculationKernel
 
         if (vellind != nullptr)
             vellind[indexOfPoint] = vallin * idpi * idlen;
-
-        //if (indexOfPoint == 0)
-        //{
-        //    //printf("order = %d\n", (int)order);
-        //    printf("veld[0] = %f\n", val* idpi * idlen);
-        //}
-
     }
 }
 
@@ -3319,7 +4136,158 @@ void KernelsOptimization()
     }
 
 
+    float cuMatrixMulVectorNoCalculationKernel
+    (
+        CUDApointers ptr,
+        int order,
+        int nnodesd, int nbodiesd,
+        real itolsqd,
+        const real* __restrict rpnl,
+        const real* dev_ptr_freeVortexSheet,
+        const real* dev_ptr_freeVortexSheetLin,
+        //CUDApointers ptrPoints,
+        const int* __restrict MmortonCodesIdxl,
+        realPoint* __restrict El,
+        int nTotPan, const real* dev_ptr_pt,
+        const real* pointsd,
+        real* __restrict veld,
+        real* __restrict vellind,
+        int* __restrict nClosePanelsl)
+    {
+        cudaEvent_t start, stop;
+        float time;
 
+        cudaEventCreate(&start);  cudaEventCreate(&stop);
+        cudaEventRecord(start, 0);
+
+        MatrToVecNoCalculationKernel << <blocks * FACTOR5slae, THREADS5slae >> > (
+            nnodesd, nbodiesd, itolsqd,
+            (int2*)ptr.Mchildl, order, (real2*)ptr.momsl,
+            (real*)rpnl,
+            dev_ptr_freeVortexSheet,
+            dev_ptr_freeVortexSheetLin,
+            ptr.MmortonCodesIdxl,
+            (real2*)ptr.Mposl,
+            ptr.MindexSortl, ptr.MindexSortTl,
+            nTotPan, (const real*)dev_ptr_pt, (const real2*)pointsd, (real2*)El, MmortonCodesIdxl,
+            (real*)veld, (real*)vellind,
+            (real2*)ptr.Mlowerl, (real2*)ptr.Mupperl, (int*)nClosePanelsl);
+
+        cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
+
+        CudaTest("kernel MatrToVecNoCalculationKernel rhs launch failed");
+
+        cudaEventDestroy(start);  cudaEventDestroy(stop);
+        return time;
+    }
+
+    float cuMatrixMulVectorZeroCalculationKernel
+    (
+        CUDApointers ptr,
+        int order,
+        int nnodesd, int nbodiesd,
+        real itolsqd,
+        const real* __restrict rpnl,
+        const real* dev_ptr_freeVortexSheet,
+        const real* dev_ptr_freeVortexSheetLin,
+        //CUDApointers ptrPoints,
+        const int* __restrict MmortonCodesIdxl,
+        realPoint* __restrict El,
+        int nTotPan, const real* dev_ptr_pt,
+        const real* pointsd,
+        real* __restrict veld,
+        real* __restrict vellind,
+        int* __restrict nClosePanelsl,
+        int* __restrict closeCellsPfl,
+        int* __restrict PrefixSuml,
+        realPoint* __restrict i00,
+        realPoint* __restrict i01,
+        realPoint* __restrict i10,
+        realPoint* __restrict i11,
+        int iter
+    )
+    {
+        cudaEvent_t start, stop;
+        float time;
+
+        cudaEventCreate(&start);  cudaEventCreate(&stop);
+        cudaEventRecord(start, 0);
+
+        MatrToVecZeroCalculationKernel << <blocks * FACTOR5slae, THREADS5slae >> > (
+            nnodesd, nbodiesd, itolsqd,
+            (int2*)ptr.Mchildl, order, (real2*)ptr.momsl,
+            (real*)rpnl,
+            dev_ptr_freeVortexSheet,
+            dev_ptr_freeVortexSheetLin,
+            ptr.MmortonCodesIdxl,
+            (real2*)ptr.Mposl,
+            ptr.MindexSortl, ptr.MindexSortTl,
+            nTotPan, (const real*)dev_ptr_pt, (const real2*)pointsd, (real2*)El, MmortonCodesIdxl,
+            (real*)veld, (real*)vellind,
+            (real2*)ptr.Mlowerl, (real2*)ptr.Mupperl, (int*)nClosePanelsl, (int*) closeCellsPfl, (int*) PrefixSuml, 
+            (real2*)i00, (real2*)i01, (real2*)i10, (real2*)i11, iter);
+
+        cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
+
+        CudaTest("kernel MatrToVecZeroCalculationKernel launch failed");
+
+        cudaEventDestroy(start);  cudaEventDestroy(stop);
+        return time;
+    }
+
+    float cuMatrixMulVectorNoZeroCalculationKernel
+    (
+        CUDApointers ptr,
+        int order,
+        int nnodesd, int nbodiesd,
+        real itolsqd,
+        const real* __restrict rpnl,
+        const real* dev_ptr_freeVortexSheet,
+        const real* dev_ptr_freeVortexSheetLin,
+        //CUDApointers ptrPoints,
+        const int* __restrict MmortonCodesIdxl,
+        realPoint* __restrict El,
+        int nTotPan, const real* dev_ptr_pt,
+        const real* pointsd,
+        real* __restrict veld,
+        real* __restrict vellind,
+        int* __restrict nClosePanelsl,
+        int* __restrict closeCellsPfl,
+        int* __restrict PrefixSuml,
+        realPoint* __restrict i00,
+        realPoint* __restrict i01,
+        realPoint* __restrict i10,
+        realPoint* __restrict i11,
+        int iter
+    )
+    {
+        cudaEvent_t start, stop;
+        float time;
+
+        cudaEventCreate(&start);  cudaEventCreate(&stop);
+        cudaEventRecord(start, 0);
+
+        MatrToVecNoZeroCalculationKernel << <blocks * FACTOR5slae, THREADS5slae >> > (
+            nnodesd, nbodiesd, itolsqd,
+            (int2*)ptr.Mchildl, order, (real2*)ptr.momsl,
+            (real*)rpnl,
+            dev_ptr_freeVortexSheet,
+            dev_ptr_freeVortexSheetLin,
+            ptr.MmortonCodesIdxl,
+            (real2*)ptr.Mposl,
+            ptr.MindexSortl, ptr.MindexSortTl,
+            nTotPan, (const real*)dev_ptr_pt, (const real2*)pointsd, (real2*)El, MmortonCodesIdxl,
+            (real*)veld, (real*)vellind,
+            (real2*)ptr.Mlowerl, (real2*)ptr.Mupperl, (int*)nClosePanelsl, (int*)closeCellsPfl, (int*)PrefixSuml,
+            (real2*)i00, (real2*)i01, (real2*)i10, (real2*)i11, iter);
+
+        cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
+
+        CudaTest("kernel cuMatrixMulVectorNoZeroCalculationKernel launch failed");
+
+        cudaEventDestroy(start);  cudaEventDestroy(stop);
+        return time;
+    }
 
     float cuMatrixMulVectorCalculationKernel
     (
@@ -3336,7 +4304,15 @@ void KernelsOptimization()
         int nTotPan, const real* dev_ptr_pt,
         const real* pointsd,
         real* __restrict veld,
-        real* __restrict vellind)
+        real* __restrict vellind,
+        int* __restrict nClosePanelsl,
+        int* __restrict closeCellsPfl,
+        int* __restrict PrefixSuml,
+        realPoint* __restrict i00,
+        realPoint* __restrict i01,
+        realPoint* __restrict i10,
+        realPoint* __restrict i11
+        )
     {
         cudaEvent_t start, stop;
         float time;
@@ -3355,7 +4331,7 @@ void KernelsOptimization()
             ptr.MindexSortl, ptr.MindexSortTl,
             nTotPan, (const real*)dev_ptr_pt, (const real2*)pointsd, (real2*)El, MmortonCodesIdxl,
             (real*)veld, (real*)vellind,
-            (real2*)ptr.Mlowerl, (real2*)ptr.Mupperl);
+            (real2*)ptr.Mlowerl, (real2*)ptr.Mupperl, (int*)nClosePanelsl);
 
         cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
 
@@ -3364,10 +4340,6 @@ void KernelsOptimization()
         cudaEventDestroy(start);  cudaEventDestroy(stop);
         return time;
     }
-
-
-
-
     /******************************************************************************/
     /*** compute force (direct) ***************************************************/
     /******************************************************************************/

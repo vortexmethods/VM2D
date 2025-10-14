@@ -109,6 +109,7 @@ Gpu::~Gpu()
 	if (W.getSource().vtx.size() > 0)
 		ReleaseDevMem(W.getSource().devVtxPtr, 10);
 
+	if (W.getNumberOfAirfoil() > 0)
 	for (size_t s = 0; s < 1/*n_CUDA_afls*/; ++s)
 	{
 		ReleaseDevMem(W.getBoundary(s).virtualWake.devVtxPtr, 11);

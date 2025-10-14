@@ -5,26 +5,12 @@
 #include <cmath>
 
 #include <omp.h>
-
 #include "Point2D.h"
-
-
 #include <memory>
-
-
+#include "intersection.cuh"
 
 struct aabbS_getter
 {
-    __device__
-        lbvh::aabb2<float> operator()(const lbvh::segment<float> S) const noexcept
-    {
-        lbvh::aabb2<float> retval;
-        retval.upper.x = ::fmaxf(S.p1.x, S.p2.x);
-        retval.upper.y = ::fmaxf(S.p1.y, S.p2.y);
-        retval.lower.x = ::fminf(S.p1.x, S.p2.x);
-        retval.lower.y = ::fminf(S.p1.y, S.p2.y);
-        return retval;
-    }
     __device__
         lbvh::aabb2<double> operator()(const lbvh::segment<double> S) const noexcept
     {
@@ -39,55 +25,10 @@ struct aabbS_getter
 
 
 
-std::shared_ptr<lbvh::bvhS<float, lbvh::segment<float>, aabbS_getter>> ptrTree(nullptr);
-std::shared_ptr<thrust::device_vector<float2>> ptrNorm(nullptr);
-std::shared_ptr < thrust::device_vector<lbvh::segment<float>>> ptrPs(nullptr);
 
 
 struct distance_calculatorS
 {
-    //определяет квадрат расстояния от точки до отрезка
-    __device__
-        thrust::pair<float, int> operator()(const float2 point, const lbvh::segment<float> object) const noexcept
-    {
-        int location;
-
-        float a = object.p2.y - object.p1.y;
-        float b = object.p2.x - object.p1.x;
-
-        float distanceSegment;
-        float r_numerator = (point.x - object.p1.x) * b + (point.y - object.p1.y) * a;
-        float r_denomenator = b * b + a * a;
-        float r = r_numerator / r_denomenator;
-
-        float s = ((object.p1.y - point.y) * b - (object.p1.x - point.x) * a);
-
-        if ((r >= 0) && (r <= 1))
-        {
-            distanceSegment = s * s / r_denomenator;
-            location = 0;
-        }
-        else
-        {
-            float dist1 = (point.x - object.p1.x) * (point.x - object.p1.x) +
-                (point.y - object.p1.y) * (point.y - object.p1.y);
-            float dist2 = (point.x - object.p2.x) * (point.x - object.p2.x) +
-                (point.y - object.p2.y) * (point.y - object.p2.y);
-            if (dist1 < dist2)
-            {
-                distanceSegment = dist1;
-                location = -1;
-            }
-            else
-            {
-                distanceSegment = dist2;
-                location = 1;
-            }
-        }
-
-        return thrust::make_pair(distanceSegment, location);
-    }
-
     //определяет квадрат расстояния от точки до отрезка
     __device__
         thrust::pair<double, int> operator()(const double2 point, const lbvh::segment<double> object) const noexcept
@@ -132,8 +73,6 @@ struct distance_calculatorS
 };
 
 
-
-
 template <typename T>
 __device__ int get_line_intersection(T p0_x, T p0_y, T p1_x, T p1_y,
     T p2_x, T p2_y, T p3_x, T p3_y, T* i_x, T* i_y)
@@ -172,22 +111,6 @@ struct check_hit_obj_Calculator
 {
     //определяет расстояние по лучу до точки пересечения этим лучом отрезка object (или infinity)
     __device__
-        float operator()(const float2 start, const float2 finish, const lbvh::segment<float> object) const noexcept
-    {
-        //printf("D3\n");
-        float xint, yint;
-
-        //printf("st.x = %f, st.y = %f, f.x = %f, f.y = %f, op1.x = %f, op1.y = %f, op2.x = %f, op2.y = %f\n", 
-        //    start.x, start.y, finish.x, finish.y, object.p1.x, object.p1.y, object.p2.x, object.p2.y);
-
-        int intersect = get_line_intersection(start.x, start.y, finish.x, finish.y, object.p1.x, object.p1.y, object.p2.x, object.p2.y, &xint, &yint);
-        if (intersect)
-            return (xint - start.x) * (xint - start.x) + (yint - start.y) * (yint - start.y);
-        else
-            return lbvh::infinity<float>();
-    }
-
-    __device__
         float operator()(const double2 start, const double2 finish, const lbvh::segment<double> object) const noexcept
     {
         //printf("D3\n");
@@ -209,28 +132,28 @@ struct check_hit_node_Calculator
 {
     //определяет расстояние по лучу до точки пересечения этим лучом прямоугольника (или infinity)
     __device__
-        float operator()(const float2 start, const float2 finish, const lbvh::aabb2<float> object) const noexcept
+        double operator()(const double2 start, const double2 finish, const lbvh::aabb2<double> object) const noexcept
     {
-        if ( (object.lower.x <= start.x) && (start.x <= object.upper.x) && (object.lower.y <= start.y) && (start.y <= object.upper.y) &&
-            (object.lower.x <= finish.x) && (finish.x <= object.upper.x) && (object.lower.y <= finish.y) && (finish.y <= object.upper.y) )
+        if ((object.lower.x <= start.x) && (start.x <= object.upper.x) && (object.lower.y <= start.y) && (start.y <= object.upper.y) &&
+            (object.lower.x <= finish.x) && (finish.x <= object.upper.x) && (object.lower.y <= finish.y) && (finish.y <= object.upper.y))
             return 0;
-        
-        float xint, yint, d1, d2, d3, d4;
+
+        double xint, yint, d1, d2, d3, d4;
         int intersect1 = get_line_intersection(start.x, start.y, finish.x, finish.y, object.upper.x,
             object.upper.y, object.upper.x, object.lower.y, &xint, &yint);
-        d1 = (intersect1) ? (xint - start.x) * (xint - start.x) + (yint - start.y) * (yint - start.y) : lbvh::infinity<float>();
+        d1 = (intersect1) ? (xint - start.x) * (xint - start.x) + (yint - start.y) * (yint - start.y) : lbvh::infinity<double>();
 
         int intersect2 = get_line_intersection(start.x, start.y, finish.x, finish.y, object.upper.x,
             object.lower.y, object.lower.x, object.lower.y, &xint, &yint);
-        d2 = (intersect2) ? (xint - start.x) * (xint - start.x) + (yint - start.y) * (yint - start.y) : lbvh::infinity<float>();
+        d2 = (intersect2) ? (xint - start.x) * (xint - start.x) + (yint - start.y) * (yint - start.y) : lbvh::infinity<double>();
 
         int intersect3 = get_line_intersection(start.x, start.y, finish.x, finish.y, object.lower.x, object.lower.y,
             object.lower.x, object.upper.y, &xint, &yint);
-        d3 = (intersect3) ? (xint - start.x) * (xint - start.x) + (yint - start.y) * (yint - start.y) : lbvh::infinity<float>();
+        d3 = (intersect3) ? (xint - start.x) * (xint - start.x) + (yint - start.y) * (yint - start.y) : lbvh::infinity<double>();
 
         int intersect4 = get_line_intersection(start.x, start.y, finish.x, finish.y, object.lower.x, object.upper.y,
             object.upper.x, object.upper.y, &xint, &yint);
-        d4 = (intersect4) ? (xint - start.x) * (xint - start.x) + (yint - start.y) * (yint - start.y) : lbvh::infinity<float>();
+        d4 = (intersect4) ? (xint - start.x) * (xint - start.x) + (yint - start.y) * (yint - start.y) : lbvh::infinity<double>();
 
         //printf("d: %f %f %f %f\n",d1, d2, d3, d4);
 
@@ -241,37 +164,6 @@ struct check_hit_node_Calculator
         return d1;
     }
 };
-
-
-__host__ __device__
-bool aabbContainsSegment(const float2 start, const float2 finish, const lbvh::aabb2<float> object) noexcept
-{
-    // Completely outside.
-    if ((start.x <= object.lower.x && finish.x <= object.lower.x) || (start.y <= object.lower.y && finish.y <= object.lower.y) ||
-        (start.x >= object.upper.x && finish.x >= object.upper.x) || (start.y >= object.upper.y && finish.y >= object.upper.y))
-        return false;
-
-    float m = (finish.y - start.y) / (finish.x - start.x);
-
-    float y = m * (object.lower.x - start.x) + start.y;
-    if (y > object.lower.y && y < object.upper.y) return true;
-
-    y = m * (object.upper.x - start.x) + start.y;
-    if (y > object.lower.y && y < object.upper.y) return true;
-
-    float x = (object.lower.y - start.y) / m + start.x;
-    if (x > object.lower.x && x < object.upper.x) return true;
-
-    x = (object.upper.y - start.y) / m + start.x;
-    if (x > object.lower.x && x < object.upper.x) return true;
-
-    // Start or end inside.
-    if ((start.x > object.lower.x && start.x < object.upper.x && start.y > object.lower.y && start.y < object.lower.y)
-        || (finish.x > object.lower.x && finish.x < object.upper.x && finish.y > object.lower.y && finish.y < object.upper.y)) return true;
-
-    return false;
-}
-
 
 __host__ __device__
 bool aabbContainsSegment(const double2 start, const double2 finish, const lbvh::aabb2<double> object) noexcept
@@ -303,18 +195,7 @@ bool aabbContainsSegment(const double2 start, const double2 finish, const lbvh::
 }
 
 
-
-
 //нормаль к отрезку
-inline __device__ float2 normal2d(const lbvh::segment<float> object)
-{
-    float dx = object.p2.x - object.p1.x;
-    float dy = object.p2.y - object.p1.y;
-    float len = sqrtf(dx * dx + dy * dy);
-    return  { dy / len, -dx / len };
-}
-
-
 inline __device__ double2 normal2d(const lbvh::segment<double> object)
 {
     double dx = object.p2.x - object.p1.x;
@@ -329,86 +210,198 @@ int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
 
-std::vector<int> lbvh_check_inside(
+__global__ void FillPointsKernel(int nPoints, double* devNewpos, double2* ptr)
+{
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < nPoints)
+    {
+        ptr[idx].x = devNewpos[idx * 3 + 0];
+        ptr[idx].y = devNewpos[idx * 3 + 1];
+    }
+}
+
+__global__ void FillPanelsKernel(int nPanels, double* devRPtr, lbvh::segment<double>* ptrPnl)
+{
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < nPanels)
+    {
+        ptrPnl[idx].p1 = { devRPtr[4 * idx + 0], devRPtr[4 * idx + 1] };
+        ptrPnl[idx].p2 = { devRPtr[4 * idx + 2], devRPtr[4 * idx + 3] };
+    }
+};
+
+
+lbvh_find_nearest_panel::lbvh_find_nearest_panel()
+{    
+    baseTreeVoid = nullptr;
+}
+
+
+lbvh_find_nearest_panel::~lbvh_find_nearest_panel()
+{
+}
+
+
+std::vector<std::pair<int, double>> lbvh_find_nearest_panel::get_nearest_panels(
     int timeStep,
-    //const std::vector<Point2D>& vecPositions,
+    int nPoints,
+    double* devNewpos, //Здесь это вихри, т.е. (x, y, G)
+    int nPanels,
+    double* devRPtr,
+    bool rebuildTree
+)
+{
+    lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>* baseTree = (lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>*)baseTreeVoid.get();
+
+    double t1 = -omp_get_wtime();
+    bool flagRebuild = (baseTree == nullptr || rebuildTree);
+    if (flagRebuild)
+    {       
+        thrust::device_vector<lbvh::segment<double>> dev_vec_Pnl(nPanels);
+        lbvh::segment<double>* ptrPnl = thrust::raw_pointer_cast(&((dev_vec_Pnl)[0]));
+        FillPanelsKernel << <(nPanels + 31) / 32, 32 >> > (nPanels, devRPtr, ptrPnl);
+
+        baseTreeVoid.reset(new lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>(dev_vec_Pnl));        
+        baseTree = (lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>*)baseTreeVoid.get();
+    }
+    t1 += omp_get_wtime();
+
+    double t2 = -omp_get_wtime();
+
+    const auto bvh_dev = baseTree->get_device_reprS();
+
+    double2* ptr;
+    cudaMalloc(&ptr, nPoints * sizeof(double2));
+    FillPointsKernel << <(nPoints + 31) / 32, 32 >> > (nPoints, devNewpos, ptr);
+    /////////////////////////////////////
+    t2 += omp_get_wtime();
+
+    double t3 = -omp_get_wtime();
+    thrust::device_vector<thrust::pair<int, double>> num;
+    num.resize(nPoints);
+    auto numptr = thrust::raw_pointer_cast(&num[0]);
+
+    thrust::for_each(thrust::device,
+        thrust::make_counting_iterator<unsigned int>(0),
+        thrust::make_counting_iterator<unsigned int>(nPoints),        
+        [bvh_dev, ptr, numptr] __device__(const unsigned int idx) {
+        const auto self = ptr[idx];
+        //printf("idx = %d, ptr.x = %f, ptr.y = %f\n", idx, ptr->x, ptr->y);
+        const auto nest = lbvh::query_device2a(bvh_dev, lbvh::nearest2(self),
+            distance_calculatorS());
+
+        numptr[idx] = nest;
+        return;
+    });
+    t3 += omp_get_wtime();
+
+    double t4 = -omp_get_wtime();
+    thrust::host_vector<thrust::pair<int, double>> numHost = num;
+    std::vector<std::pair<int,double>> nearestPan(numHost.size());
+    
+    for (size_t q = 0; q < numHost.size(); ++q)
+        nearestPan[q] = numHost[q];
+
+    //cudaFree(ptrPnl);
+    cudaFree(ptr);
+    //delete baseTree;
+    
+    t4 += omp_get_wtime();
+
+    printf("%f, %f, %f, %f ms\n", t1 * 1000, t2 * 1000, t3 * 1000, t4 * 1000);
+    
+    return nearestPan;
+};
+
+
+
+
+
+lbvh_penetration_control::lbvh_penetration_control()
+{
+    ptrTreeVoid = nullptr;
+    ptrNormVoid = nullptr;
+    ptrPsVoid = nullptr;
+}
+
+lbvh_penetration_control::~lbvh_penetration_control()
+{
+}
+
+std::vector<int> lbvh_penetration_control::lbvh_check_inside(
+    int timeStep,
     int nPoints,
     double* devNewpos,
     int nPanels,
     double* devRPtr,
     bool rebuildTree
 )
-{     
-    double t1 = omp_get_wtime();
-    //double t2 = t1, t3 = t1;
+{
+    lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>* ptrTree = (lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>*)ptrTreeVoid.get();
+    thrust::device_vector<double2>* ptrNorm = (thrust::device_vector<double2>*)ptrNormVoid.get();
+    thrust::device_vector<lbvh::segment<double>>* ptrPs = (thrust::device_vector<lbvh::segment<double>>*) ptrPsVoid.get();
+
 
     bool flagRebuild = (ptrTree == nullptr || rebuildTree);
 
     if (flagRebuild)
     {
-        ptrTree.reset();
-        ptrNorm.reset();
-        ptrPs.reset();
+        ptrTreeVoid.reset();
+        ptrNormVoid.reset();
+        ptrPsVoid.reset();
 
-        std::shared_ptr < thrust::device_vector<lbvh::segment<float>>> ps = std::make_shared<thrust::device_vector<lbvh::segment<float>>>(nPanels);
+        std::shared_ptr < thrust::device_vector<lbvh::segment<double>>> ps = std::make_shared<thrust::device_vector<lbvh::segment<double>>>(nPanels);
         thrust::transform(
             thrust::make_counting_iterator<unsigned int>(0),
             thrust::make_counting_iterator<unsigned int>(nPanels),
             ps->begin(),
             [devRPtr] __device__(const unsigned int idx) {
-            const float x1 = devRPtr[4 * idx + 0];
-            const float y1 = devRPtr[4 * idx + 1];
-            const float x2 = devRPtr[4 * idx + 2];
-            const float y2 = devRPtr[4 * idx + 3];
-            return lbvh::segment<float>{ {x1, y1}, { x2, y2 } };
+            const double x1 = devRPtr[4 * idx + 0];
+            const double y1 = devRPtr[4 * idx + 1];
+            const double x2 = devRPtr[4 * idx + 2];
+            const double y2 = devRPtr[4 * idx + 3];
+            return lbvh::segment<double>{ {x1, y1}, { x2, y2 } };
         }
         );
-        ptrPs = ps;
+        ptrPsVoid = ps;
 
-        //t2 = omp_get_wtime();
-
-        std::shared_ptr<thrust::device_vector<float2>> norms = std::make_shared<thrust::device_vector<float2>>(nPanels);
+        std::shared_ptr<thrust::device_vector<double2>> norms = std::make_shared<thrust::device_vector<double2>>(nPanels);
         thrust::transform(
             ps->begin(),
             ps->end(),
             norms->begin(),
-            []__device__(const lbvh::segment<float>&s) {
+            []__device__(const lbvh::segment<double>&s) {
             return normal2d(s);
         }
         );
 
-        ptrNorm = norms;
+        ptrNormVoid = norms;
 
+        std::shared_ptr<lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>> bvhS = std::make_shared<lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>>(ps->begin(), ps->end(), true);
+        ptrTreeVoid = bvhS;
 
-        //t3 = omp_get_wtime();              
-
-        std::shared_ptr<lbvh::bvhS<float, lbvh::segment<float>, aabbS_getter>> bvhS = std::make_shared<lbvh::bvhS<float, lbvh::segment<float>, aabbS_getter>>(ps->begin(), ps->end(), true);
-        ptrTree = bvhS;
+        ptrTree = (lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>*)ptrTreeVoid.get();
+        ptrNorm = (thrust::device_vector<double2>*)ptrNormVoid.get();
+        ptrPs = (thrust::device_vector<lbvh::segment<double>>*) ptrPsVoid.get();
     }
 
-    //const auto bvh_dev = ptrTree->get_device_reprS();
     const auto bvh_dev = ptrTree->get_device_reprS();
-    float2* normptr = thrust::raw_pointer_cast(&((*ptrNorm)[0]));
-    lbvh::segment<float>* psptr = thrust::raw_pointer_cast(&((*ptrPs)[0]));
-    
+    double2* normptr = thrust::raw_pointer_cast(&((*ptrNorm)[0]));
+    lbvh::segment<double>* psptr = thrust::raw_pointer_cast(&((*ptrPs)[0]));
 
-    double t4 = omp_get_wtime();
-
-    thrust::device_vector<float2> random_points(nPoints);
+    thrust::device_vector<double2> random_points(nPoints);
     thrust::transform(
         thrust::make_counting_iterator<unsigned int>(0),
         thrust::make_counting_iterator<unsigned int>(nPoints),
         random_points.begin(),
         [devNewpos] __device__(const unsigned int idx) {
-        const float x = devNewpos[2 * idx + 0];
-        const float y = devNewpos[2 * idx + 1];
-        return make_float2(x, y);
+        const double x = devNewpos[2 * idx + 0];
+        const double y = devNewpos[2 * idx + 1];
+        return make_double2(x, y);
     }
     );
 
-    float2* ptr = thrust::raw_pointer_cast(&random_points[0]);
-
-    double t5 = omp_get_wtime();
+    double2* ptr = thrust::raw_pointer_cast(&random_points[0]);
 
     /////////////////////////////////////
 
@@ -432,12 +425,10 @@ std::vector<int> lbvh_check_inside(
         numptr[idx] = nest;
         return;
     });
-    
-    double t6 = omp_get_wtime();
 
     thrust::device_vector<int> flag(random_points.size());
     auto flagptr = thrust::raw_pointer_cast(&flag[0]);
-    
+
     thrust::transform(thrust::device,
         thrust::make_counting_iterator<unsigned int>(0),
         thrust::make_counting_iterator<unsigned int>(nPoints),
@@ -445,7 +436,7 @@ std::vector<int> lbvh_check_inside(
         [ptr, normptr, numptr, psptr, nPanels]__device__(const unsigned int idx) {
         int pnl = numptr[idx].first;
         int loc = numptr[idx].second;
-        float2 norm, vp;
+        double2 norm, vp;
 
         if (loc > 0)  //1
         {
@@ -472,41 +463,28 @@ std::vector<int> lbvh_check_inside(
     }
     );
 
-    double t7 = omp_get_wtime();
-
     thrust::device_vector<int> fitpanel(random_points.size());
     thrust::transform(thrust::device,
         thrust::make_counting_iterator<unsigned int>(0),
         thrust::make_counting_iterator<unsigned int>(nPoints),
         fitpanel.begin(),
         [flagptr, numptr]__device__(const unsigned int idx) {
-            if (flagptr[idx] > 0)
-                return -1;
-            else
-                return (numptr[idx].first);            
-        }
+        if (flagptr[idx] > 0)
+            return -1;
+        else
+            return (numptr[idx].first);
+    }
     );
-
-    double t8 = omp_get_wtime();
 
     ///////////////////////////////////////
 
     thrust::host_vector<int> fitpanelHost = fitpanel;
-    
-    double t9 = omp_get_wtime();
-
-    //std::cout << 1000*(t2 - t1) << " " << 1000 * (t3 - t2) << " " << 1000 * (t4 - t3) << " " << 1000 * (t5 - t4) << " " << 1000 * (t6 - t5) << " " << 1000 * (t7 - t6) << " " << 1000 * (t8 - t7) << " " << 1000 * (t9 - t8) << std::endl;
-
     return std::vector<int>(fitpanelHost.begin(), fitpanelHost.end());
 }
 
 
-
-
-
-std::vector<int> lbvh_check_inside_ray(
+std::vector<int> lbvh_penetration_control::lbvh_check_inside_ray(
     int timeStep,
-    //const std::vector<Point2D>& vecPositions,
     int nPoints,
     double* devOldpos,
     double* devNewpos,
@@ -515,83 +493,84 @@ std::vector<int> lbvh_check_inside_ray(
     bool rebuildTree
 )
 {
-	double t1 = omp_get_wtime();
-    double t2 = t1;
+    lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>* ptrTree = (lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>*)ptrTreeVoid.get();
+
+    bool flag = (ptrTreeVoid == nullptr || rebuildTree);
     
-    bool flag = (ptrTree == nullptr || rebuildTree);
+    //double t1 = omp_get_wtime();
 
     if (flag)
     {
-        ptrTree.reset();
+        ptrTreeVoid.reset();
 
-        thrust::device_vector<lbvh::segment<float>> ps(nPanels);
+        thrust::device_vector<lbvh::segment<double>> ps(nPanels);
         thrust::transform(
             thrust::make_counting_iterator<unsigned int>(0),
             thrust::make_counting_iterator<unsigned int>(nPanels),
             ps.begin(),
             [devRPtr] __device__(const unsigned int idx) {
-            const float x1 = devRPtr[4 * idx + 0];
-            const float y1 = devRPtr[4 * idx + 1];
-            const float x2 = devRPtr[4 * idx + 2];
-            const float y2 = devRPtr[4 * idx + 3];
-            return lbvh::segment<float>{ {x1, y1}, { x2, y2 } };
+            const double x1 = devRPtr[4 * idx + 0];
+            const double y1 = devRPtr[4 * idx + 1];
+            const double x2 = devRPtr[4 * idx + 2];
+            const double y2 = devRPtr[4 * idx + 3];
+            return lbvh::segment<double>{ {x1, y1}, { x2, y2 } };
         }
         );
-        lbvh::segment<float>* psptr = thrust::raw_pointer_cast(&ps[0]);
+        lbvh::segment<double>* psptr = thrust::raw_pointer_cast(&ps[0]);
 
-        t2 = omp_get_wtime();
-
-        std::shared_ptr<lbvh::bvhS<float, lbvh::segment<float>, aabbS_getter>> bvhS = std::make_shared<lbvh::bvhS<float, lbvh::segment<float>, aabbS_getter>>(ps.begin(), ps.end(), true);
-        ptrTree = bvhS;
+        std::shared_ptr<lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>> bvhS = std::make_shared<lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>>(ps.begin(), ps.end(), true);
+        ptrTreeVoid = bvhS;
+        ptrTree = (lbvh::bvhS<double, lbvh::segment<double>, aabbS_getter>*)ptrTreeVoid.get();
     }
-    
-    //const auto bvh_dev = ptrTree->get_device_reprS();
+       
+        
     const auto bvh_dev = ptrTree->get_device_reprS();
 
-    double t3 = omp_get_wtime();
-
-    thrust::device_vector<lbvh::segment<float>> random_rays(nPoints);
+    //double t2 = omp_get_wtime();
+    
+    thrust::device_vector<lbvh::segment<double>> random_rays(nPoints);
     thrust::transform(
         thrust::make_counting_iterator<unsigned int>(0),
         thrust::make_counting_iterator<unsigned int>(nPoints),
         random_rays.begin(),
         [devOldpos, devNewpos] __device__(const unsigned int idx) {
-        const float x1 = devOldpos[3 * idx + 0];
-        const float y1 = devOldpos[3 * idx + 1];
-        const float x2 = devNewpos[2 * idx + 0];
-        const float y2 = devNewpos[2 * idx + 1];
-        return lbvh::segment<float>{ {x1, y1}, { x2, y2 } };
+        const double x1 = devOldpos[3 * idx + 0];
+        const double y1 = devOldpos[3 * idx + 1];
+        const double x2 = devNewpos[2 * idx + 0];
+        const double y2 = devNewpos[2 * idx + 1];
+        return lbvh::segment<double>{ {x1, y1}, { x2, y2 } };
     }
     );
 
-    lbvh::segment<float>* ptr = thrust::raw_pointer_cast(&random_rays[0]);
+    lbvh::segment<double>* ptr = thrust::raw_pointer_cast(&random_rays[0]);
 
-    double t4 = omp_get_wtime();
+    //double t3 = omp_get_wtime();
 
     /////////////////////////////////////
 
     thrust::device_vector<int> fitpanel(random_rays.size());
-    
+
     auto numptr = thrust::raw_pointer_cast(&fitpanel[0]);
 
     thrust::for_each(thrust::device,
         thrust::make_counting_iterator<unsigned int>(0),
         thrust::make_counting_iterator<unsigned int>(nPoints),
         [bvh_dev, ptr, numptr] __device__(const unsigned int idx) {
-        const auto self = lbvh::query_nearest2ray<float>{ ptr[idx].p1, ptr[idx].p2 };
+        const auto self = lbvh::query_nearest2ray<double>{ ptr[idx].p1, ptr[idx].p2 };
         const auto nest = lbvh::query_device2ray(bvh_dev, self, check_hit_obj_Calculator(), check_hit_node_Calculator());
         numptr[idx] = nest;
         return;
     });
-    
+
+    //double t4 = omp_get_wtime();
+
     thrust::host_vector<int> fitpanelHost = fitpanel;
+    std::vector<int> returnVector(fitpanelHost.begin(), fitpanelHost.end());
     
-    double t5 = omp_get_wtime();
+    //double t5 = omp_get_wtime();
 
-    std::cout << 1000*(t2 - t1) << " " << 1000 * (t3 - t2) << " " << 1000 * (t4 - t3) << " " << 1000 * (t5 - t4)  << std::endl;
+    //std::cout << "Ray_times: " << t2 - t1 << " " << t3 - t2 << " " << t4 - t3 << " " << t5 - t4 << std::endl;
 
-    return std::vector<int>(fitpanelHost.begin(), fitpanelHost.end());
+    return returnVector;
+    //return std::vector<int>(nPoints, -1);
 }
-
-
-

@@ -70,6 +70,11 @@ namespace VM2D
 		/// Точки, которые считываются из файла (давление пишется в vtk и csv-файлы)
 		std::vector<Point2D> historyPoints;
 
+	public:
+		/// Точки, в которых давление нужно вычислять в служебных целях (для задач гидроупругости), формируются программно
+		std::vector<Point2D> elasticPoints;
+
+	private:
 		/// \brief Умный указатель на точки, в которых нужно вычислять в данный момент времени 
 		/// Хранятся в виде "мнимой" системы вихрей, чтобы воспользоваться методом CalcConvVeloToSetOfPoints(...)
 		std::unique_ptr<WakeDataBase> wakeVP;
@@ -113,6 +118,9 @@ namespace VM2D
 
 		/// Сохранение в файл вычисленных скоростей и давлений
 		void SaveVP();
+
+		/// Возврат давления в "гидроупругих" точках
+		std::vector<std::pair<Point2D, double>> GetVPinElasticPoints();
 
 		/// \brief Возврат wakeVP
 		///

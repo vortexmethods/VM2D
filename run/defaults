@@ -16,7 +16,12 @@ scale = 1.0;
 basePoint = {0.0, 0.0};
 
 linearSystemSolver = linearSystemGauss;
+fastGmresTheta = 0.8;
+gmresEps = 1e-8;
+multipoleOrderGmres = 12;
+
 velocityComputation = velocityBiotSavart;
+
 boundaryConditionSatisfaction = boundaryLinearLayerAverage;
 saveVtx = text(100);
 saveVP = 0;
