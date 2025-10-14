@@ -1163,6 +1163,53 @@ __global__ void CU_calc_nei(
 	}
 }
 
+__global__ void CU_calc_closest_neib(
+	size_t npt, double* pt,
+	int* dev_ptr_mesh, int* dev_ptr_nei,
+	double epsCol2, int type)
+{
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
+	size_t minI = blockIdx.x * blockDim.x;
+
+	if (i < npt) // можно, т.к. не используем shared memory
+	{
+		double ipx, ipy, jpx, jpy;
+		ipx = pt[i * sizeVort + posR + 0];
+		ipy = pt[i * sizeVort + posR + 1];
+
+		double dx, dy, r2, r2test;
+		dev_ptr_nei[i] = 0;
+
+		r2test = 1e+10;
+
+		//if (cftmax > 1)
+		//	r2test = sqr(0.005*collapseScale);
+
+		bool cond;
+
+		for (size_t j = minI; j < npt; ++j)
+		{
+			{
+				jpx = pt[j * sizeVort + posR + 0];
+				jpy = pt[j * sizeVort + posR + 1];
+
+				dx = ipx - jpx;
+				dy = ipy - jpy;
+
+				r2 = dx * dx + dy * dy;
+
+				cond = (r2 < r2test);
+				if (cond)
+				{
+					r2test = r2;
+					dev_ptr_nei[i] = j;					
+				}
+			}
+		}
+	}
+}
+
+
 void cuDevice(int n)
 {
 	cudaSetDevice(n);
@@ -1453,6 +1500,23 @@ void cuCalculatePairs(size_t npt, double* pt, int* mesh, int* nei, double meshSt
 	dim3 blocksNei(cuCalcBlocks(npt)), threadsNei(CUBLOCK);
 	CU_calc_nei << < blocksNei, threadsNei >> > (npt, pt, mesh, nei, epsCol2, type);
 	
+	cudaError_t err2 = cudaGetLastError();
+	if (err2 != cudaSuccess)
+		std::cout << cudaGetErrorString(err2) << " (erCU_calc_nei01)" << std::endl;
+}
+
+void cuCalculatePairsClosestNeib(size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type)
+{
+	//dim3 blocksMesh(cuCalcBlocks(npt)), threadsMesh(CUBLOCK);
+	//CU_calc_mesh << < blocksMesh, threadsMesh >> > (npt, pt, mesh, meshStep);
+
+	cudaError_t err1 = cudaGetLastError();
+	if (err1 != cudaSuccess)
+		std::cout << cudaGetErrorString(err1) << " (erCU_calc_mesh01)" << std::endl;
+
+	dim3 blocksNei(cuCalcBlocks(npt)), threadsNei(CUBLOCK);
+	CU_calc_closest_neib << < blocksNei, threadsNei >> > (npt, pt, mesh, nei, epsCol2, type);
+
 	cudaError_t err2 = cudaGetLastError();
 	if (err2 != cudaSuccess)
 		std::cout << cudaGetErrorString(err2) << " (erCU_calc_nei01)" << std::endl;

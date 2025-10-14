@@ -99,35 +99,30 @@ namespace BHcu
 	/******************************************************************************/
 	/******************************************************************************/
 
-	struct CudaCalcGab
-	{
-		realPoint* maxpt;
-		realPoint* minpt;
-		int blocks;
-
-		CudaCalcGab() //(realPoint*& maxpt, realPoint*& minpt, int blocks)
+	
+	CudaCalcGab::CudaCalcGab() //(realPoint*& maxpt, realPoint*& minpt, int blocks)
 			//: maxpt_(maxpt), minpt_(minpt), blocks_(blocks) 
-		{
-			CudaSelect(0);
-			setBlocks(blocks);
-			
-			maxpt = (realPoint*)cudaNew(blocks * FACTOR1, sizeof(realPoint));
-			minpt = (realPoint*)cudaNew(blocks * FACTOR1, sizeof(realPoint));
-		};
+	{
+		CudaSelect(0);
+		setBlocks(blocks);
 
-		float calc(int npoints, const realVortex* pointsl)
-		{
-			float time;
-			time = McuBoundingBoxKernelFree(nullptr, maxpt, minpt, npoints, (void*)pointsl, sizeof(realVortex), (int)realVortex::offsPos);
-			return time;
-		}
-
-		~CudaCalcGab()
-		{
-			cudaDelete(maxpt, 1);
-			cudaDelete(minpt, 2);
-		}
+		maxpt = (realPoint*)cudaNew(blocks * FACTOR1, sizeof(realPoint));
+		minpt = (realPoint*)cudaNew(blocks * FACTOR1, sizeof(realPoint));
 	};
+
+	float CudaCalcGab::calc(int npoints, const realVortex* pointsl)
+	{
+		float time;
+		time = McuBoundingBoxKernelFree(nullptr, maxpt, minpt, npoints, (void*)pointsl, sizeof(realVortex), (int)realVortex::offsPos);
+		return time;
+	}
+
+	CudaCalcGab::~CudaCalcGab()
+	{
+		cudaDelete(maxpt, 1);
+		cudaDelete(minpt, 2);
+	}
+	
 
 	struct CudaSorter
 	{
@@ -174,32 +169,34 @@ namespace BHcu
 
 
 	void rebuildBaseTree(CUDApointers& ptrs, const int nbodies, /*const realVortex* vtxl*/ const void* ptrl, int sizeOfElement, int offsetOfPointInElement, int objType, int nnodes, int order, double* timing, 
-		bool bodyZeroSize, const double* XYXY)
+		bool bodyZeroSize, const double* XYXY, int iter)
 	{
 		timing[0] += cuInitializationKernel();
-		
-		double tBBK	= McuBoundingBoxKernel(ptrs, nbodies, ptrl, sizeOfElement, offsetOfPointInElement);
-		timing[1] += tBBK;
-		
-		double tTBK = 0;
-		tTBK += McuMortonCodesKernel(ptrs, nbodies, ptrl, sizeOfElement, offsetOfPointInElement /*(int)sizeof(realVortex), (int)Vortex2D::offsPos*/);
-		
-		//std::cout << nbodies << std::endl;
-		
-		tTBK += McuMortonInternalNodesKernel(ptrs, nbodies);
-		tTBK += McuMortonInternalCellsGeometryKernel(ptrs, nbodies, nnodes);
-		timing[2] += tTBK;
-		
-		double tCLK = cuClearKernel2(ptrs, order, nnodes, nbodies);
-		timing[3] += tCLK;
-		
 		double tSKK = 0;
-		tSKK += cuAABBKernel2(ptrs, nnodes, nbodies, ptrl, sizeOfElement, offsetOfPointInElement, bodyZeroSize, XYXY);
+		double tBBK = 0, tCLK = 0, tTBK = 0;
+		if (iter == 0) {
+			tBBK = McuBoundingBoxKernel(ptrs, nbodies, ptrl, sizeOfElement, offsetOfPointInElement);
+
+			tTBK = 0;
+			tTBK += McuMortonCodesKernel(ptrs, nbodies, ptrl, sizeOfElement, offsetOfPointInElement /*(int)sizeof(realVortex), (int)Vortex2D::offsPos*/);
+
+			//std::cout << nbodies << std::endl;
+
+			tTBK += McuMortonInternalNodesKernel(ptrs, nbodies);
+			tTBK += McuMortonInternalCellsGeometryKernel(ptrs, nbodies, nnodes);
+
+			tCLK = cuClearKernel2(ptrs, order, nnodes, nbodies);
+
+			tSKK += cuAABBKernel2(ptrs, nnodes, nbodies, ptrl, sizeOfElement, offsetOfPointInElement, bodyZeroSize, XYXY);
+		}
+
 		tSKK += cuClearKernel2(ptrs, order, nnodes, nbodies);
 		tSKK += cuSummarizationKernel2(ptrs, order, nnodes, nbodies, (double*)ptrl, objType);
-		
-		timing[4] += tSKK;
 
+		timing[1] += tBBK;
+		timing[2] += tTBK;
+		timing[3] += tCLK;
+		timing[4] += tSKK;
 
 		//std::cout << " BBK = " << tBBK << " TBK = " << tTBK << " CLK = " << tCLK << " SKK = " << tSKK << std::endl;
 	}
@@ -342,11 +339,15 @@ namespace BHcu
 
 		if (rebuild)
 		{
+			//double t1 = -omp_get_wtime();
+
 			if (nbodiesUp > nbodiesOld)
 				timing[1] += memoryAllocate(ptrs, nnodesUp, nbodiesUp, (int)nbodiesOld, blocks, order);
 
 			nbodiesOld = nbodiesUp;			
-			rebuildBaseTree(ptrs, nbodies, vtxl, (int)sizeof(realVortex), (int)Vortex2D::offsPos, 0, nnodes, order, timing, true, nullptr);
+			rebuildBaseTree(ptrs, nbodies, vtxl, (int)sizeof(realVortex), (int)Vortex2D::offsPos, 0, nnodes, order, timing, true, nullptr, 0);
+			//t1 += omp_get_wtime();
+			//std::cout << "build_tree_time = " << t1 << std::endl;
 		}
 
 
@@ -444,7 +445,7 @@ namespace BHcu
 			//nbodiesOld = nbodiesUp;
 			//rebuildBaseTree(ptrs, nbodies, vtxl, (int)sizeof(realVortex), (int)Vortex2D::offsPos, nnodes, order, timing);
 
-			rebuildBaseTree(ptrsi, npnli, panelPoints, 12*(int)sizeof(double), 0, schemeType, nnodes, order, timings, false, dev_ptr_r);
+			rebuildBaseTree(ptrsi, npnli, panelPoints, 12*(int)sizeof(double), 0, schemeType, nnodes, order, timings, false, dev_ptr_r, 0);
 		}
 
 		if (npt > 0)
@@ -526,7 +527,7 @@ namespace BHcu
 				timingsToRHS[1] += memoryAllocate(ptrs, nnodesUp, nbodiesUp, (int)nbodiesOld, blocks, order);
 
 			nbodiesOld = nbodiesUp;
-			rebuildBaseTree(ptrs, nvt, dev_ptr_vt, (int)sizeof(realVortex), (int)Vortex2D::offsPos, 0, nnodes, order, timingsToRHS, true, nullptr);
+			rebuildBaseTree(ptrs, nvt, dev_ptr_vt, (int)sizeof(realVortex), (int)Vortex2D::offsPos, 0, nnodes, order, timingsToRHS, true, nullptr, 0);
 
 			//std::cout << " BBK = " << timingsToRHS[1] << " TBK = " << timingsToRHS[2] << " CLK = " << timingsToRHS[3] << " SKK = " << timingsToRHS[4] << std::endl;
 		}
@@ -585,6 +586,9 @@ namespace BHcu
 		controlPoints = (Point2D*)cudaNew(nTotPan, sizeof(Point2D));
 		El = (realPoint*)cudaNew(nTotPan * order, sizeof(realPoint));
 
+		nClosePanelsl = (int*)cudaNew(nTotPan, sizeof(int)); 
+		PrefixSuml = (int*)cudaNew(nTotPan + 1, sizeof(int));
+
 		McuVerticesToControlPoints(nTotPan, (double*)dev_ptr_pt, (double*)controlPoints);
 		mCodesPtr = new TMortonCodesCalculator(nTotPan, (void*)controlPoints, sizeof(Point2D), 0);
 		timingsMatr[5] += mCodesPtr->timeOfWork;
@@ -596,12 +600,25 @@ namespace BHcu
 		cudaDelete(panelPoints, 25);
 		cudaDelete(El, 27);
 		cudaDelete(controlPoints, 28);
+		cudaDelete(nClosePanelsl, 29);
+
+		cudaDelete(i00, 203);
+
+		if (scheme == 2)
+		{
+			cudaDelete(i01, 204);
+			cudaDelete(i10, 205);
+			cudaDelete(i11, 206);
+		}
+
+		cudaDelete(closeCellsPfl, 34);
+		cudaDelete(PrefixSuml, 35);
 	}
 
 
 		double wrapperMatrixToVector::calculate(
 			double* dev_ptr_freeVortexSheet, 
-			double* dev_ptr_freeVortexSheetLin)
+			double* dev_ptr_freeVortexSheetLin, int iter)
 		{
 			double starttime, endtime;
 			starttime = omp_get_wtime();
@@ -656,11 +673,12 @@ namespace BHcu
 			if (rebuild)
 			{
 				//if (nbodiesUp > nbodiesOld)
-				timingsMatr[1] += memoryAllocate(ptrs, nnodesUp, nTotPan, nTotPan, blocks, order);
+				if (iter==0)
+					timingsMatr[1] += memoryAllocate(ptrs, nnodesUp, nTotPan, nTotPan, blocks, order);
 
 				//nbodiesOld = nbodiesUp;
 				//rebuildBaseTree(ptrs, nTotPan, controlPointsVortexes, (int)sizeof(realVortex), (int)Vortex2D::offsPos, 0, nnodes, order, timingsToRHS, true, nullptr);
-				rebuildBaseTree(ptrs, nTotPan, panelPoints, 12*(int)sizeof(double), 0, scheme, nnodes, order, timingsMatr, false, dev_ptr_pt);
+				rebuildBaseTree(ptrs, nTotPan, panelPoints, 12*(int)sizeof(double), 0, scheme, nnodes, order, timingsMatr, false, dev_ptr_pt, iter);
 				//std::cout << " BBK = " << timingsToRHS[1] << " TBK = " << timingsToRHS[2] << " CLK = " << timingsToRHS[3] << " SKK = " << timingsToRHS[4] << std::endl;
 			}
 
@@ -671,18 +689,82 @@ namespace BHcu
 			if (scheme == 2)
 				ptrToLin = dev_ptr_rhslin;
 
+			if (iter == 0) {
+				double timeNoCalcIter = -omp_get_wtime();
+				timingsMatr[5] += cuMatrixMulVectorNoCalculationKernel(ptrs, order, nnodes, nTotPan, itolsq, dev_ptr_pt,
+					dev_ptr_freeVortexSheet,
+					dev_ptr_freeVortexSheetLin,
+					mCodesPtr->getSortedIndices(), El,
+					nTotPan, dev_ptr_pt, (const real*)controlPoints, dev_ptr_rhs, ptrToLin, nClosePanelsl);
+				nClosePanelsh.resize(nTotPan);
+				timeNoCalcIter += omp_get_wtime();
 
-			timingsMatr[5] += cuMatrixMulVectorCalculationKernel(ptrs, order, nnodes, nTotPan, itolsq, dev_ptr_pt, 
-				dev_ptr_freeVortexSheet,
-				dev_ptr_freeVortexSheetLin,
-				mCodesPtr->getSortedIndices(), El,
-				nTotPan, dev_ptr_pt, (const real*)controlPoints, dev_ptr_rhs, ptrToLin);
+				std::cout << "timeNoCalcIter = " << timeNoCalcIter << std::endl;
+
+				cudaCopyVecFromDevice(nClosePanelsl, nClosePanelsh.data(), nTotPan, sizeof(int));
+
+				PrefixSumh.resize(nTotPan + 1, 0);
+				for (size_t i = 0; i < nClosePanelsh.size(); ++i) 
+				{
+					PrefixSumh[i + 1] = PrefixSumh[i] + nClosePanelsh[i];
+				}
+			
+				cudaCopyVecToDevice(PrefixSumh.data(), PrefixSuml, nTotPan + 1, sizeof(int));
+				closeCellsPfl = (int*)cudaNew(PrefixSumh.back(), sizeof(int));
+				
+				i00 = (Point2D*)cudaNew(PrefixSumh.back(), sizeof(Point2D));
+				//std::cout << "i00_allocated: " << PrefixSumh.back() << " of real2" << std::endl;
+				
+				if (scheme == 2)
+				{
+					i01 = (Point2D*)cudaNew(PrefixSumh.back(), sizeof(Point2D));
+					i10 = (Point2D*)cudaNew(PrefixSumh.back(), sizeof(Point2D));
+					i11 = (Point2D*)cudaNew(PrefixSumh.back(), sizeof(Point2D));
+				}
+			}//if (iter == 0)
+
+			if (iter == 0) 
+			{
+				double timeZeroCalcIter = -omp_get_wtime();
+				
+				timingsMatr[5] += cuMatrixMulVectorZeroCalculationKernel(ptrs, order, nnodes, nTotPan, itolsq, dev_ptr_pt,
+				dev_ptr_freeVortexSheet, dev_ptr_freeVortexSheetLin,
+				mCodesPtr->getSortedIndices(), El, nTotPan, dev_ptr_pt, (const real*)controlPoints, 
+				dev_ptr_rhs, ptrToLin, nClosePanelsl, closeCellsPfl, PrefixSuml, i00, i01, i10, i11, iter);
+				timeZeroCalcIter += omp_get_wtime();
+				std::cout << "timeZeroCalcIter = " << timeZeroCalcIter << std::endl;
+			}
+			else {
+				double timeAfterZeroCalcIter = -omp_get_wtime();
+				timingsMatr[5] += cuMatrixMulVectorNoZeroCalculationKernel(ptrs, order, nnodes, nTotPan, itolsq, dev_ptr_pt,
+					dev_ptr_freeVortexSheet,
+					dev_ptr_freeVortexSheetLin,
+					mCodesPtr->getSortedIndices(), El,
+					nTotPan, dev_ptr_pt, (const real*)controlPoints, dev_ptr_rhs, 
+					ptrToLin, nClosePanelsl, closeCellsPfl, PrefixSuml, i00, i01, i10, i11, iter);
+				timeAfterZeroCalcIter += omp_get_wtime();
+				//std::cout << "timeAfterZeroCalcIter = " << timeAfterZeroCalcIter << std::endl;
+
+			  //  timingsMatr[5] += cuMatrixMulVectorCalculationKernel(ptrs, order, nnodes, nTotPan, itolsq, dev_ptr_pt,
+					//dev_ptr_freeVortexSheet,
+					//dev_ptr_freeVortexSheetLin,
+					//mCodesPtr->getSortedIndices(), El,
+					//nTotPan, dev_ptr_pt, (const real*)controlPoints, dev_ptr_rhs, ptrToLin, nClosePanelsl, closeCellsPfl, PrefixSuml, i00, i01, i10, i11);
+			}
+
+			//timingsMatr[5] += cuMatrixMulVectorCalculationKernel(ptrs, order, nnodes, nTotPan, itolsq, dev_ptr_pt,
+			//	dev_ptr_freeVortexSheet,
+			//	dev_ptr_freeVortexSheetLin,
+			//	mCodesPtr->getSortedIndices(), El,
+			//	nTotPan, dev_ptr_pt, (const real*)controlPoints, dev_ptr_rhs, ptrToLin, nClosePanelsl, closeCellsPfl, PrefixSuml, i00, i01, i10, i11);
+
 
 
 			//cudaDelete(controlPointsVortexes, 29);
 
 			//std::cout << " RhsCK = " << timingsToRHS[5] << std::endl;
 
+			//std::cout << "iter = " << iter << " Time cuMatrixMulVectorNoZeroCalculationKernel = " << timingsMatr[5] << " ms" << std::endl;
 
 			timingsMatr[6] = timingsMatr[1] + timingsMatr[2] + timingsMatr[3] + timingsMatr[4] + timingsMatr[5];
 
@@ -753,7 +835,7 @@ namespace BHcu
 				timing[1] += memoryAllocate(ptrs, nnodesUp, nbodiesUp, (int)nbodiesOld, blocks, order);
 
 			nbodiesOld = nbodiesUp;
-			rebuildBaseTree(ptrs, nbodies, vtxl, (int)sizeof(realVortex), (int)Vortex2D::offsPos, 0, nnodes, order, timing, true, nullptr);
+			rebuildBaseTree(ptrs, nbodies, vtxl, (int)sizeof(realVortex), (int)Vortex2D::offsPos, 0, nnodes, order, timing, true, nullptr, 0);
 		}
 		timing[5] += cuI1I2CalculationKernel2(ptrs, order, nnodes, nbodies, minRd, vtxl, i1l, i2l, epsastl);
 		timing[6] = timing[1] + timing[2] + timing[3] + timing[4] + timing[5];
@@ -807,7 +889,7 @@ namespace BHcu
 				timing[1] += memoryAllocate(ptrs, nnodesUp, nbodiesUp, (int)nbodiesOld, blocks, order);
 
 			nbodiesOld = nbodiesUp;
-			rebuildBaseTree(ptrs, nbodies, vtxl, (int)sizeof(realVortex), (int)Vortex2D::offsPos, 0, nnodes, order, timing, true, nullptr);
+			rebuildBaseTree(ptrs, nbodies, vtxl, (int)sizeof(realVortex), (int)Vortex2D::offsPos, 0, nnodes, order, timing, true, nullptr, 0);
 		}
 		
 		timing[5] += cuI0I3CalculationKernel2(ptrs, order, nnodes, nbodies, minRd, vtxl, i0l, i3l, epsastl, meanEps, (int)nPan, ptr_r, visstr);

@@ -238,7 +238,7 @@ void World2D::Step() // ЮИ
 			}
 		}
 
-		bool semiImplicitStrategy = ((countStrongCoupling == mechanics.size()) && (mechanics.size() > 0));
+		bool semiImplicitStrategy = (countStrongCoupling == mechanics.size());
 		if ((currentStep == 0) && (semiImplicitStrategy))
 			info('i') << "Strong (semi-implicit) coupling strategy" << std::endl;
 	
@@ -259,65 +259,6 @@ void World2D::Step() // ЮИ
 			{
 				measureVP->CalcPressure();
 				measureVP->SaveVP();
-/*
-				std::ofstream elastPresFile;
-				if (currentStep == 0)
-					elastPresFile.open(getPassport().dir + "elastPresFile.txt");
-				else
-					elastPresFile.open(getPassport().dir + "elastPresFile.txt", std::ios_base::app);
-
-				elastPresFile << currentStep << " ";
-
-				auto r = measureVP->GetVPinElasticPoints();
-				for (size_t q = 0; q < r.size(); ++q)				
-					elastPresFile << measureVP->elasticPoints[q][0] << " " << measureVP->elasticPoints[q][1] << " " << r[q].second << " ";
-				
-				elastPresFile << std::endl;
-				elastPresFile.close();
-*/
-				//Коэффициенты разложения силы по балочным функциям
-				
-				MechanicsDeformable* ptr = dynamic_cast<MechanicsDeformable*>(mechanics[0].get());
-				if (ptr)
-				{
-					auto r = measureVP->GetVPinElasticPoints();
-					std::vector<double> currentPres(ptr->chord.size());
-					for (int p = 0; p < ptr->chord.size(); ++p)
-					{
-						for (size_t j = 0; j < ptr->chord.size(); ++j)
-							currentPres[j] = (r[2 * j + 0].second - r[2 * j + 1].second);
-					}
-					if (ptr->beam->presLastSteps.size() < ptr->beam->nLastSteps)
-						ptr->beam->presLastSteps.push_back(currentPres);
-					else
-					{
-						for (int w = 1; w < ptr->beam->nLastSteps; ++w)
-							ptr->beam->presLastSteps[w - 1] = std::move(ptr->beam->presLastSteps[w]);
-						ptr->beam->presLastSteps.back() = currentPres;
-					}				
-
-					for (int q = 0; q < ptr->beam->R; ++q)
-					{
-						ptr->beam->qCoeff[q] = 0;
-
-						if (ptr->beam->presLastSteps.size() == ptr->beam->nLastSteps)
-						{
-							for (size_t j = 0; j < ptr->chord.size(); ++j)
-							{
-								double averpres = 0.0;
-								for (int i = 0; i < ptr->beam->nLastSteps; ++i)
-									averpres += ptr->beam->presLastSteps[i][j];
-								averpres /= ptr->beam->nLastSteps;
-
-								ptr->beam->qCoeff[q] += -averpres * (ptr->chord[j].beg - ptr->chord[j].end).length() * ptr->beam->shape(q, ptr->beam->L, 0.5 * (ptr->chord[j].beg + ptr->chord[j].end)[0]);
-							}
-							ptr->beam->qCoeff[q] /= (ptr->beam->intSqUnitShape * ptr->beam->L);
-						}
-
-						std::cout << "q[" << q << "] = " << ptr->beam->qCoeff[q] << std::endl;
-					}
-				}
-//*/
 			}
 
 			//Вычисление сил, действующих на профиль и сохранение в файл	
@@ -436,7 +377,7 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 		wake->Inside(newPos, *airfoil[afl], mechanics[afl]->isMoves, *oldAirfoil[afl]);
 #else	
 //	//////////////////////// CUDA ///////////////////////
-	if (false || movable)
+	if (true || movable)
 	{
 		getTimestat().timeCheckInside.first += omp_get_wtime();
 		for (size_t afl = 0; afl < airfoil.size(); ++afl)
@@ -444,57 +385,46 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 		getTimestat().timeCheckInside.second += omp_get_wtime();
 	}
 	else
-	if ((newPos.size() > 0) && (getNumberOfAirfoil() > 0))
+	if (newPos.size() > 0)
 	{
 		double* devNewpos_ptr;
 		cuReserveDevMem((void*&)devNewpos_ptr, newPos.size() * sizeof(double) * 2, 0);
 		cuCopyFixedArray(devNewpos_ptr, newPos.data(), newPos.size() * sizeof(double) * 2, 119);
 
-		int nTotPanels = 0;
 		for (size_t afl = 0; afl < airfoil.size(); ++afl)
-			nTotPanels += (int)airfoil[afl]->getNumberOfPanels();
-
-
-		//for (size_t afl = 0; afl < airfoil.size(); ++afl)
-		//for (size_t afl = 0; afl < 1; ++afl)
 		{
+			std::vector<double> gamma(airfoil[afl]->getNumberOfPanels(), 0.0);
 			
-						
+			//Через поиск ближайшей панели и псевдонормали
 			getTimestat().timeCheckInside.first += omp_get_wtime();
-						
-			//Через поиск ближайшей панели и псевдонормали			
-			//std::vector<int> hit = lbvh_check_inside((int)currentStep, (int)newPos.size(), devNewpos_ptr, nTotPanels, airfoil[0]->devRPtr, true);
-			
-			//Через трассировку луча
-			std::vector<int> hit = getNonConstAirfoil(0).penetrationControler.lbvh_check_inside_ray((int)currentStep, (int)newPos.size(), this->getWake().devVtxPtr, devNewpos_ptr, nTotPanels, airfoil[0]->devRPtr, true);
+			//std::vector<int> hit = lbvh_check_inside((int)currentStep, (int)newPos.size(), devNewpos_ptr, (int)airfoil[afl]->getNumberOfPanels(), airfoil[afl]->devRPtr, movable);			
+			std::vector<int> hit = lbvh_check_inside_ray((int)currentStep, (int)newPos.size(), this->getWake().devVtxPtr, devNewpos_ptr, (int)airfoil[afl]->getNumberOfPanels(), airfoil[afl]->devRPtr, movable);
 			getTimestat().timeCheckInside.second += omp_get_wtime();
 
+			/*for (size_t q = 0; q < hit.size(); ++q)
+			{
+				if (hit[q] != hit2[q])
+					std::cout << "q = " << q << " " << hit[q] << " / " << hit2[q] << std::endl;
+			}
+			*/
+			
 			//std::stringstream sss;
 			//sss << "hit_" << currentStep;
 			//std::ofstream of(getPassport().dir + "dbg/" + sss.str());
-			//for (size_t i = 0; i < nTotPanels; ++i)
+			//for (size_t i = 0; i < gamma.size(); ++i)
 			//	of << hit[i] << std::endl;
 			//of.close();
 
-			size_t panCounter = 0;
-			for (size_t afl = 0; afl < airfoil.size(); ++afl)
+			for (int i = 0; i < newPos.size(); ++i)
 			{
-				std::vector<double> gamma(airfoil[afl]->getNumberOfPanels(), 0.0);
-				for (int i = 0; i < newPos.size(); ++i)
+				if (hit[i] != (unsigned int)(-1))
 				{
-					if (hit[i] != (unsigned int)(-1))
-					{
-						if ((hit[i] >= panCounter) && (hit[i] < panCounter + airfoil[afl]->getNumberOfPanels()))
-						{
-							gamma[hit[i] - panCounter] += wake->vtx[i].g();
-							wake->vtx[i].g() = 0.0;
-						}
-					}
+					gamma[hit[i]] += wake->vtx[i].g();
+					wake->vtx[i].g() = 0.0;
 				}
-				airfoil[afl]->gammaThrough = gamma;
-				panCounter += airfoil[afl]->getNumberOfPanels();
-			}//for afl
-		}
+			}
+			airfoil[afl]->gammaThrough = gamma;
+		}//for afl
 
 		cuDeleteFromDev(devNewpos_ptr);
 	}
@@ -608,13 +538,13 @@ void World2D::SolveLinearSystem()
 		
 		t1 += omp_get_wtime();
 
-		//std::cout << " Time in Gauss = " << t1 << std::endl;
+		std::cout << " Time in Gauss = " << t1 << std::endl;
 
-		//std::ofstream solFile(getPassport().dir + "/dbg/sol" + std::to_string(currentStep) + "-Gauss.txt");
-		//solFile.precision(16);
-		//for (int i = 0; i < sol.size(); ++i)
-		//	solFile << sol(i) << std::endl;
-		//solFile.close();		
+		std::ofstream solFile(getPassport().dir + "/dbg/sol" + std::to_string(currentStep) + "-Gauss.txt");
+		solFile.precision(16);
+		for (int i = 0; i < sol.size(); ++i)
+			solFile << sol(i) << std::endl;
+		solFile.close();		
 	}
 
 /*
@@ -705,25 +635,25 @@ void World2D::SolveLinearSystem()
 				for (size_t j = 0; j < nFullVars; ++j)
 					Gmatr[i * nFullVars + j] = matrReord(i, j);
 
+			std::vector<int> Gn(getNumberOfBoundary());
 			for (int i = 0; i < getNumberOfBoundary(); ++i)
-				for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
-					auto y_test = airfoil[i]->len[j % airfoil[i]->getNumberOfPanels()];
+				Gn[i] = (int)getAirfoil(i).getNumberOfPanels();
 
-			GMRES_Direct(*this, nFullVars, (int)getNumberOfBoundary(), Gmatr, Grhs, Gpos, Gvsize, Ggam, GR);
+			GMRES_Direct(nFullVars, (int)getNumberOfBoundary(), Gmatr, Grhs, Gn, Gpos, Gvsize, Ggam, GR, (int)currentStep);
 
 			sol.resize(nFullVars);
 			int cntr = 0;
 			for (int i = 0; i < getNumberOfBoundary(); ++i)
 				for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
-					sol(cntr++) = Ggam[i][j] /*/ airfoil[i]->len[j % airfoil[i]->getNumberOfPanels()]*/;
+					sol(cntr++) = Ggam[i][j] / airfoil[i]->len[j % airfoil[i]->getNumberOfPanels()];
 			for (int i = 0; i < getNumberOfBoundary(); ++i)
 				sol(cntr++) = GR[i];
 
-			//std::ofstream solFile(getPassport().dir + "/dbg/sol-direct-gmres" + std::to_string(currentStep) + ".txt");
-			//solFile.precision(16);
-			//for (int i = 0; i < sol.size(); ++i)
-			//	solFile << sol(i) << std::endl;
-			//solFile.close();
+			std::ofstream solFile(getPassport().dir + "/dbg/sol-direct-gmres" + std::to_string(currentStep) + ".txt");
+			solFile.precision(16);
+			for (int i = 0; i < sol.size(); ++i)
+				solFile << sol(i) << std::endl;
+			solFile.close();
 		}
 		
 		if (passport.numericalSchemes.linearSystemSolver.second == 2)
@@ -748,7 +678,7 @@ void World2D::SolveLinearSystem()
 			GMRES(*this, Ggam, GR, GGrhs, GrhsReg, niter, linScheme);
 
 			time_GMRES += omp_get_wtime();
-			//std::cout << "Time_GMRES = " << time_GMRES << std::endl;
+			std::cout << "Time_GMRES = " << time_GMRES << std::endl;
 
 			sol.resize(nFullVars);
 			int cntr = 0;
@@ -758,11 +688,11 @@ void World2D::SolveLinearSystem()
 			for (int i = 0; i < getNumberOfBoundary(); ++i)
 				sol(cntr++) = GR[i];
 
-			//std::ofstream solFile(getPassport().dir + "/dbg/sol-fast-gmres" + std::to_string(currentStep) + ".txt");
-			//solFile.precision(16);
-			//for (int i = 0; i < sol.size(); ++i)
-			//	solFile << sol(i) << std::endl;
-			//solFile.close();
+			std::ofstream solFile(getPassport().dir + "/dbg/sol-fast-gmres" + std::to_string(currentStep) + ".txt");
+			solFile.precision(16);
+			for (int i = 0; i < sol.size(); ++i)
+				solFile << sol(i) << std::endl;
+			solFile.close();
 		}		
 #endif
 	}
@@ -979,7 +909,6 @@ void World2D::CalcVortexVelo(bool shiftTime)
 		sss << "prmWake";
 		sss << currentStep;
 		std::ofstream prmtFile(passport.dir + "dbg/" + sss.str());
-		prmtFile.precision(11);
 		prmtFile << "i x y g epsast convVeloX convVeloY diffVeloX diffVeloY I0 I1 I2X I2Y I3X I3Y" << std::endl;
 		for (size_t i = 0; i < wake->vtx.size(); ++i)
 			prmtFile << i << " " \
@@ -993,7 +922,7 @@ void World2D::CalcVortexVelo(bool shiftTime)
 			<< velocity->wakeVortexesParams.I1[i] << " " \
 			<< velocity->wakeVortexesParams.I2[i][0] << " " << velocity->wakeVortexesParams.I2[i][1] << " " \
 			<< velocity->wakeVortexesParams.I3[i][0] << " " << velocity->wakeVortexesParams.I3[i][1] << " " \
-			<< "\n";
+			<< std::endl;
 
 		prmtFile.close();
 	}

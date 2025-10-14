@@ -915,13 +915,6 @@ class bvhS
         this->constructS();
     }
 
-    bvhS(const thrust::device_vector<object_type>& objects_d)
-        : query_host_enabled_(false)
-    {
-        objects_d_ = objects_d;
-        this->constructS();
-    }
-
     bvhS()                      = default;
     ~bvhS()                     = default;
     bvhS(const bvhS&)            = default;
@@ -972,13 +965,10 @@ class bvhS
 
     void constructS()
     {
-        if (query_host_enabled_)
-        {
-            assert(objects_h_.size() == objects_d_.size());
-            if(objects_h_.size() == 0u) { return;}
-        }
+        assert(objects_h_.size() == objects_d_.size());
+        if(objects_h_.size() == 0u) {return;}
 
-        const unsigned int num_objects        = (unsigned int)objects_d_.size();
+        const unsigned int num_objects        = (unsigned int)objects_h_.size();
         const unsigned int num_internal_nodes = num_objects - 1;
         const unsigned int num_nodes          = num_objects * 2 - 1;
 
@@ -995,11 +985,19 @@ class bvhS
         this->aabbs2_.resize(num_nodes, default_aabb2);
 
         thrust::transform(this->objects_d_.begin(), this->objects_d_.end(),
+
+
+
                 aabbs2_.begin() + num_internal_nodes, aabbS_getter_type());
 
         
 
         const auto aabb2_whole = thrust::reduce(
+
+
+
+
+
             aabbs2_.begin() + num_internal_nodes, aabbs2_.end(), default_aabb2,
             [] __device__ __host__ (const aabb2_type& lhs, const aabb2_type& rhs) {
                 return merge2(lhs, rhs);
@@ -1103,6 +1101,11 @@ class bvhS
                 {
                     const int old = atomicCAS(flags + parent, 0, 1);
                     if(old == 0)
+
+
+
+
+
                     {
                         // this is the first thread entered here.
                         // wait the other thread from the other child node.
@@ -1124,6 +1127,10 @@ class bvhS
 #endif
                 return;
             });
+
+
+
+
 
         if(this->query_host_enabled_)
         {

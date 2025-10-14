@@ -165,7 +165,7 @@ MechanicsDeformable::MechanicsDeformable(const World2D& W_, size_t numberInPassp
 		chord[i].beg = 0.5 * (rUpLeft + rDnLeft);
 		chord[i].end = 0.5 * (rUpRight + rDnRight);
 		chord[i].infPanels = { idxUp, idxDn };
-		chord[i].rightWidth = 0.5 * (rUpRight - rDnRight)[1];
+		chord[i].rightSemiWidth = 0.5 * (rUpRight - rDnRight)[1];
 	}
 
 	//std::ofstream of("chord.txt");		
@@ -173,7 +173,7 @@ MechanicsDeformable::MechanicsDeformable(const World2D& W_, size_t numberInPassp
 	//	of << chord[i].beg[0] << " " << chord[i].beg[1] << " " << chord[i].end[0] << " " << chord[i].end[1] << " " << chord[i].infPanels.first << " " << chord[i].infPanels.second << std::endl;
 	//of.close();	
 
-	beam = std::make_unique<Beam>(chord[0].beg[0], chord.back().end[0] - chord[0].beg[0]);
+	beam = std::make_unique<Beam>(chord[0].beg[0], chord.back().end[0] - chord[0].beg[0], 5);
 };
 
 //Вычисление гидродинамической силы, действующей на профиль
@@ -300,10 +300,13 @@ void MechanicsDeformable::Move()
 	double x0 = chord[0].beg[0];
 	double t = W.getCurrentStep() * W.getPassport().timeDiscretizationProperties.dt;
 
+	for (int i=0; i < beam->R; ++i)
+		beam->solveDU(i, W.getPassport().timeDiscretizationProperties.dt);
+
 	for (size_t i = 0; i < chord.size(); ++i)
 	{
-		chord[i].beg[1] = beam->getDisp(chord[i].beg[0], t);
-		chord[i].end[1] = beam->getDisp(chord[i].end[0], t);
+		chord[i].beg[1] = beam->getTotalDisp(chord[i].beg[0], t);
+		chord[i].end[1] = beam->getTotalDisp(chord[i].end[0], t);
 	}
 	
 	std::vector<Point2D> upperPoints(chord.size() + upperShifts.size());
@@ -315,19 +318,19 @@ void MechanicsDeformable::Move()
 		const Point2D& endI = chord[i].end;
 		Point2D normI = (endI - chord[i].beg).unit().kcross();
 		Point2D normIp1 = (chord[i + 1].end - begIp1).unit().kcross();
-		upperPoints[i] = endI + 0.5 * chord[i].rightWidth * (normI + normIp1);
-		lowerPoints[i] = endI - 0.5 * chord[i].rightWidth * (normI + normIp1);
+		upperPoints[i] = endI + 0.5 * chord[i].rightSemiWidth * (normI + normIp1);
+		lowerPoints[i] = endI - 0.5 * chord[i].rightSemiWidth * (normI + normIp1);
 	}
 	Point2D normBack = (chord.back().end - chord.back().beg).unit().kcross();
-	upperPoints[chord.size() - 1] = chord.back().end + chord.back().rightWidth * normBack;
-	lowerPoints[chord.size() - 1] = chord.back().end - chord.back().rightWidth * normBack;
+	upperPoints[chord.size() - 1] = chord.back().end + chord.back().rightSemiWidth * normBack;
+	lowerPoints[chord.size() - 1] = chord.back().end - chord.back().rightSemiWidth * normBack;
 
 	for (size_t i = 0; i < upperShifts.size(); ++i)	
 		upperPoints[chord.size() + i] = chord.back().end + upperShifts[upperShifts.size() - 1 - i] * normBack;
 	for (size_t i = 0; i < lowerShifts.size(); ++i)	
 		lowerPoints[chord.size() + i] = chord.back().end + lowerShifts[lowerShifts.size() - 1 - i] * normBack;
 		
-	afl.setR(0) = { chord.back().end[0], beam->getDisp(chord.back().end[0], t) };
+	afl.setR(0) = { chord.back().end[0], beam->getTotalDisp(chord.back().end[0], t) };
 	for (size_t i = 0; i < upperPoints.size(); ++i)
 		afl.setR(indexOfUpperLeftAngle - 1 - i) = upperPoints[i];
 	for (size_t i = 0; i < lowerPoints.size(); ++i)

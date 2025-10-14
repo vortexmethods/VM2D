@@ -230,7 +230,7 @@ namespace VM2D
 		std::vector<BHcu::CUDApointers> CUDAptrsAirfoilVrt;
 		std::vector<BHcu::CUDApointers> CUDAptrsAirfoilSrc;
 
-		void AllocateSolution(double*& dev_sol, size_t n);
+		void AllocateSolution(double*& dev_sol, size_t n); 
 		void SetSolution(double* sol, double* dev_sol, size_t n);
 		void ReleaseSolution(double* dev_sol);
 

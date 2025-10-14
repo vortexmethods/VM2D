@@ -62,7 +62,7 @@ namespace VM2D
 		/// Вектор потенциальных соседей для будущего коллапса
 		std::vector<int> neighb;
 
-		static const int knb = 2;  //количество ближайших соседей
+		static const int knb = 5;  //количество ближайших соседей
 		std::vector<int> neighbNew;
 
 	public:
@@ -132,10 +132,13 @@ namespace VM2D
 		void GetPairs(int type);
 		/// \todo Доделать 
 		void GetPairsBS(int type);
+		void GetPairsClosestNeib(int type);
+
 		void GetPairsBH(int type);
 
 #if defined(USE_CUDA)
 		void GPUGetPairs(int type);
+		void GPUGetPairsClosestNeib(int type);
 #endif
 
 		/// \brief Коллапс вихрей
@@ -147,6 +150,7 @@ namespace VM2D
 		/// \return число зануленных вихрей
 		int Collaps(int type, int times);
                 int CollapsNew(int type, int times);
+		int CollapsNewFast(int type, int times, std::vector<Vortex2D>& ri, std::vector<Vortex2D>& rj, std::vector<Point2D>& rnew, std::vector<std::pair<int, int>>& rindex);
 
 		/// абсцисса, правее которой происходит линейный (вправо) рост радиуса коллапса
 		double collapseRightBorderParameter;

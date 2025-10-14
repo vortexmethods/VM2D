@@ -77,6 +77,7 @@ void cuCalculateDiffVeloWakeFromPanels(size_t npt, double* pt, size_t npnl, doub
 void cuCalculateSurfDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr);
 void cuCalculateRhs(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double eps2, double* rhs, double* rhsLin);
 void cuCalculatePairs(size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
+void cuCalculatePairsClosestNeib(size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 
 
 //void cuTEST(const std::string& str);

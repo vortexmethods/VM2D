@@ -371,6 +371,148 @@ thrust::pair<unsigned int, Real> query_device2(
 
 
 template<typename Real, typename Objects, bool IsConst,
+    typename DistanceCalculator2>
+__device__
+thrust::pair<unsigned int, Real> query_device2a(
+    const detail::basic_device_bvh2<Real, Objects, IsConst>& bvh,
+    const query_nearest2<Real>& q, DistanceCalculator2 calc_dist) noexcept
+{
+    using bvh_type = detail::basic_device_bvh2<Real, Objects, IsConst>;
+    using real_type = typename bvh_type::real_type;
+    using index_type = typename bvh_type::index_type;
+    using aabb_type = typename bvh_type::aabb2_type;
+    using node_type = typename bvh_type::node_type;
+
+    // pair of {node_idx, mindist}
+    thrust::pair<index_type, real_type>  stack[64];
+    thrust::pair<index_type, real_type>* stack_ptr = stack;
+    *stack_ptr++ = thrust::make_pair(0, mindist(bvh.aabbs2[0], q.target));
+
+    //if (isCP(q.target))
+    //    printf("FOUND!\n");
+
+    unsigned int nearest = 0xFFFFFFFF;
+    real_type dist_to_nearest_object = infinity<real_type>();
+    //int location;
+
+    //int counter = 0;
+
+    do
+    {
+        //if (isCP(q.target))
+        //{
+        //    ++counter;
+        //    printf("counter = %d\n", counter);
+        //}
+
+        const auto node = *--stack_ptr;
+        if (node.second > dist_to_nearest_object)
+        {
+            // if aabb mindist > already_found_mindist, it cannot have a nearest
+            continue;
+        }
+
+        const index_type L_idx = bvh.nodes[node.first].left_idx;
+        const index_type R_idx = bvh.nodes[node.first].right_idx;
+
+        const aabb_type& L_box = bvh.aabbs2[L_idx];
+        const aabb_type& R_box = bvh.aabbs2[R_idx];
+
+        //if (isCP(q.target))
+        //{
+        //    printf(" leftChild = { {%f, %f}, {%f, %f} }\n", L_box.lower.x, L_box.lower.y, L_box.upper.x, L_box.upper.y);
+        //    printf("rightChild = { {%f, %f}, {%f, %f} }\n", R_box.lower.x, R_box.lower.y, R_box.upper.x, R_box.upper.y);
+        //}
+
+        const real_type L_mindist = mindist(L_box, q.target);
+        const real_type R_mindist = mindist(R_box, q.target);
+
+        const real_type L_minmaxdist = minmaxdist2(L_box, q.target);
+        const real_type R_minmaxdist = minmaxdist2(R_box, q.target);
+
+        // there should be an object that locates within minmaxdist.
+
+        //if (isCP(q.target))
+        //{
+        //    printf("L_mindist = %.16f, R_minmaxdist = %.16f\n", L_mindist, R_minmaxdist);
+        //}
+        //if(L_mindist <= R_minmaxdist) // L is worth considering
+        //if ((L_mindist < R_minmaxdist) || (::fabsf(L_mindist - R_minmaxdist) <= machineEps * ::fmaxf(L_mindist, R_minmaxdist)))   //  << todo
+        if (L_mindist <= R_minmaxdist * onePlusMachineEps) // L is worth considering
+        {
+
+            const auto obj_idx = bvh.nodes[L_idx].object_idx;
+            if (obj_idx != 0xFFFFFFFF) // leaf node
+            {
+                //if (isCP(q.target))
+                //{
+                //    printf("Left -> panel\n");
+                //}
+                const thrust::pair<real_type, int> dist = calc_dist(q.target, bvh.objects[obj_idx]);
+                if (dist.first <= dist_to_nearest_object)
+                {
+                    dist_to_nearest_object = dist.first;
+                    //location = dist.second;
+                    nearest = obj_idx;
+                }
+            }
+            else
+            {
+                //if (isCP(q.target))
+                //{
+                //    printf("Left -> continue\n");
+                //}
+                *stack_ptr++ = thrust::make_pair(L_idx, L_mindist);
+            }
+        }
+
+
+        //if (isCP(q.target))
+        //{
+        //    printf("R_mindist = %.16f, L_minmaxdist = %.16f\n", R_mindist, L_minmaxdist);
+        //}
+
+        //if(R_mindist <= L_minmaxdist) // R is worth considering
+        //if ((R_mindist < L_minmaxdist) || (::fabsf(R_mindist - L_minmaxdist) <= machineEps * ::fmaxf(R_mindist, L_minmaxdist)))      // << todo
+        if (R_mindist <= L_minmaxdist * onePlusMachineEps) // R is worth considering
+        {
+            const auto obj_idx = bvh.nodes[R_idx].object_idx;
+            if (obj_idx != 0xFFFFFFFF) // leaf node
+            {
+                //if (isCP(q.target))
+                //{
+                //    printf("Right -> panel\n");
+                //}
+
+                const thrust::pair<real_type, int> dist = calc_dist(q.target, bvh.objects[obj_idx]);
+                if (dist.first <= dist_to_nearest_object)
+                {
+                    dist_to_nearest_object = dist.first;
+                    //location = dist.second;
+                    nearest = obj_idx;
+                }
+            }
+            else
+            {
+                //if (isCP(q.target))
+                //{
+                //    printf("Right -> continue\n");
+                //}
+                *stack_ptr++ = thrust::make_pair(R_idx, R_mindist);
+            }
+        }
+        assert(stack_ptr < stack + 64);
+    } while (stack < stack_ptr);
+    return thrust::make_pair(nearest, dist_to_nearest_object);
+}
+
+
+
+
+
+
+
+template<typename Real, typename Objects, bool IsConst,
     typename HitChecker2, typename HitChecker2node>
 __device__
 unsigned int query_device2ray(

@@ -6,6 +6,19 @@
 namespace BHcu
 {
 
+
+	struct CudaCalcGab
+	{
+		realPoint* maxpt;
+		realPoint* minpt;
+		int blocks;
+
+		CudaCalcGab();
+		float calc(int npoints, const realVortex* pointsl);
+		~CudaCalcGab();
+	};
+
+
 //*
 	class TMortonCodesCalculator
 	{
@@ -140,6 +153,17 @@ namespace BHcu
 		Point2D* controlPoints;
 		realPoint* El;
 		TMortonCodesCalculator* mCodesPtr;
+		std::vector<int> nClosePanelsh;
+		std::vector<int> PrefixSumh;
+	public:	
+		Point2D* i00;
+		Point2D* i01;
+		Point2D* i10;
+		Point2D* i11;
+
+		int* nClosePanelsl; //количество ячеек, находящихся в дальней зоне
+		int* closeCellsPfl; 
+		int* PrefixSuml;
 
 	public:
 		wrapperMatrixToVector(
@@ -159,7 +183,8 @@ namespace BHcu
 
 		double calculate(
 			double* dev_ptr_freeVortexSheet,
-			double* dev_ptr_freeVortexSheetLin);
+			double* dev_ptr_freeVortexSheetLin, 
+			int iter);
 	};
 	 
 

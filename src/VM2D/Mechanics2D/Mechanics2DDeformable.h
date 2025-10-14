@@ -48,26 +48,87 @@ namespace VM2D
 	class World2D;
 	class Beam
 	{
-		double x0;
-		double L;
+	public:
+		double x0; //абсцисса начала балки
+		double L;  //длина балки
+
+		double rho, F, EJ;
+
+		int R;
+		
+		//соб.частоты для единичной консольной балки
+		const std::vector<double> unitLambda = { 1.8751, 4.6941, 7.8548, 10.9955, 14.1772, 17.2788, 20.4204 };
+		std::vector<double> qCoeff;		
+
+		//Интегралы от квадратов собственных форм
+		const double intSqUnitShape = 0.25;
+
+		//Собств.формы
+		double shape(int n, double L, double x) const
+		{
+			double lam = unitLambda[n] / L;
+			double C4 = (sin(unitLambda[n]) - sinh(unitLambda[n])) / (cos(unitLambda[n]) + cosh(unitLambda[n]));
+
+			return 0.5 * (-cos(lam * (x - x0)) + cosh(lam * (x - x0)) - C4 * sin(lam * (x - x0)) + C4 * sinh(lam * (x - x0)));
+		}
+
+		std::vector<double> currentPhi, currentDPhi;
+
+		const size_t nLastSteps = 10;
+		std::vector<std::vector<double>> presLastSteps;
 
 	public:
-		Beam(double x0_, double L_):		
+		Beam(double x0_, double L_, int R_) :
+			rho(1000.0),
+			F(0.02),
+			EJ(1.11111),
+			R(R_),
 			x0(x0_),
 			L(L_)
-		{};
-		double getDisp(double x, double t) 
+		{
+			qCoeff.resize(R);
+			currentPhi.resize(R);
+			currentDPhi.resize(R);
+			presLastSteps.reserve(nLastSteps);
+		};
+
+		double phi(int n, double t) const
+		{
+			return currentPhi[n];
+		}
+
+		void solveDU(int n, double dt)
+		{
+			double cm = rho * F;
+			double ck = EJ * sqr(sqr(unitLambda[n] / L));
+			double cq = qCoeff[n];
+
+			double omega = sqrt(ck / cm);
+			double cDamp = 0.005;
+
+			double phiAst = currentPhi[n] + 0.5 * dt * currentDPhi[n];
+			double psiAst = currentDPhi[n] + 0.5 * dt * (-ck * currentPhi[n] - cDamp * omega * currentDPhi[n] - cq) / cm;
+
+			currentPhi[n] += dt * psiAst;
+			currentDPhi[n] += dt * (-ck * phiAst - cDamp * omega * psiAst - cq) / cm;
+		}
+
+
+		double getTotalDisp(double x, double t) const //имитатор деформации упругой линии
 		{ 
-			return 0.2 * 2.84 * (x - x0) * (x - x0) * sin(DPI * t); 
+			double result = 0.0;
+			for (int i = 0; i < R; ++i)
+				result += phi(i, t) * shape(i, L, x);
+			return result;
 		}
 	};
 
 
-	struct ChordPanel
+	struct ChordPanel //Хорда балки (упругая линия)
 	{
-		Point2D beg, end;
-		std::pair<size_t, size_t> infPanels;
-		double rightWidth;
+		Point2D beg, end;					 //начало и конец
+		std::pair<size_t, size_t> infPanels; //индексы панелей на обтекаемой поверхности балки под хордой и над хордой
+		double rightSemiWidth;				 //полутолщина балки на правом конце
 	};
 
 
@@ -131,11 +192,11 @@ namespace VM2D
 		size_t indexOfLowerRightAngle;
 		size_t indexOfLowerLeftAngle;
 
-		std::vector<ChordPanel> chord;
-		std::vector<double> upperShifts;
-		std::vector<double> lowerShifts;
+		std::vector<ChordPanel> chord;    //геометрия упругой линии
+		std::vector<double> upperShifts;  //превышения (по вертикали) точек верхней поверхности балки над хордой
+		std::vector<double> lowerShifts;  //превышения (по вертикали) точек нижней поверхности балки над хордой
 
-		std::unique_ptr<Beam> beam;
+		std::unique_ptr<Beam> beam;       //сама балка
 
 	};
 

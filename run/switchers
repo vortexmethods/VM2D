@@ -26,6 +26,8 @@ csv = 2;                //сохранение csv-файлов VP и Kadr
 csvBundle = 3;          //сохранение VP - в один текстовый csv файл
 
 linearSystemGauss = 0;      //Решение системы методом Гаусса (+)
+linearSystemDirectGmres = 1;//Решение системы методом GMRES с прямым умножением на матрицу (only for GPU)
+linearSystemFastGmres = 2;  //Решение системы методом GMRES с быстрым умножением на матрицу (only for GPU)
 
 velocityBiotSavart = 0;   //Вычисление скоростей напрямую по закону Био --- Савара (+)
 

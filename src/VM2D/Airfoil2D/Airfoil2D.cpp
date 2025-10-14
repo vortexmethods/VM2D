@@ -53,12 +53,25 @@
 
 #include "spline/spline.h"
 
+#include "intersection.cuh"
+
+
 using namespace VM2D;
 
 // Конструктор
 Airfoil::Airfoil(const World2D& W_, const size_t numberInPassport_)
-	: W(W_), numberInPassport(numberInPassport_)
-{ }
+	: W(W_)
+	, numberInPassport(numberInPassport_)	
+#ifdef USE_CUDA
+#ifdef USE_CUDNN
+	, NN()
+#endif
+	, panelSearcher()
+	, vtp(0)
+#endif
+{ 
+
+}
 
 
 //Проверка, идет ли вершина i следом за вершиной j
@@ -112,7 +125,7 @@ void Airfoil::ReadFromFile(const std::string& dir) //загрузка профи
 	std::string filename = dir + param.fileAirfoil;
 	std::ifstream airfoilFile;
 
-	if (fileExistTest(filename, W.getInfo(), { "txt", "TXT" }))
+	if (fileExistTest(filename, W.getInfo(), true, { "txt", "TXT" }))
 	{
 		std::stringstream airfoilFile(VMlib::Preprocessor(filename).resultString);
 
@@ -319,11 +332,6 @@ void Airfoil::ReadFromFile(const std::string& dir) //загрузка профи
 			}
 		}//else geometry
 
-		//std::ofstream of("airfoil.txt");		
-		//for (size_t i = 0; i < r_.size(); ++i)
-		//	of << r_[i] << "," << std::endl;
-		//of.close();
-
 		if (r_.size() == 0)
 		{
 			W.getInfo('e') << "No points on airfoil contour!" << std::endl;
@@ -348,9 +356,6 @@ void Airfoil::ReadFromFile(const std::string& dir) //загрузка профи
 
 
 
-
-
-
 		Move(param.basePoint);
 		Scale(param.scale);
 
@@ -360,6 +365,16 @@ void Airfoil::ReadFromFile(const std::string& dir) //загрузка профи
 
 		Rotate(-rotationAngle);
 		//в конце Rotate нормали, касательные и длины вычисляются сами
+
+		std::string fname = W.getPassport().dir + "/airfoil-" + std::to_string(numberInPassport) + ".pfl";
+		//if (!fileExistTest(fname, W.getInfo()))
+		{
+			std::ofstream of(fname);
+			for (size_t i = 0; i < r_.size(); ++i)
+				of << r_[i][0] << " " << r_[i][1] << std::endl;
+			of.close();
+		}
+
 
 		gammaThrough.clear();
 		gammaThrough.resize(r_.size(), 0.0);
@@ -424,8 +439,8 @@ void Airfoil::ReadFromFile(const std::string& dir) //загрузка профи
 			} while ((wayToVertex[i] == -1) && (wayNumber < possibleWays.size()));
 
 			if (wayToVertex[i] == -1)
-			{
-				std::cout << "Way to vertex inside airfoil not found" << std::endl;
+			{								
+				//std::cout << "Way to vertex inside airfoil not found" << std::endl;
 				//std::cout << "!!!" << std::endl;
 				//std::cout << "q = " << q << ", path[q] = " << path[q] << std::endl;
 				//std::cout << "i = " << i << std::endl;
@@ -704,6 +719,256 @@ void Airfoil::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDa
 			viscousStress[i] += tmpViscousStresses[i];
 
 }//GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses
+
+/*
+void Airfoil::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3)
+{
+	std::vector<double> newViscousStress;
+
+	//Обнуление вязких напряжений
+	if (&pointsDb == &(W.getWake()))
+	{
+		viscousStress.clear();
+		viscousStress.resize(r_.size(), 0.0);
+	}
+
+	//CUDA-ядро вызывается 1 раз и учитывает влияние сразу всех профилей
+	if ((numberInPassport == 0) && ((&pointsDb == &(W.getWake())) || (&pointsDb == &(W.getBoundary(0).virtualWake))))
+	{
+		size_t npt = pointsDb.vtx.size();
+
+		if (&pointsDb == &(W.getBoundary(0).virtualWake))
+		{
+			for (size_t q = 1; q < W.getNumberOfAirfoil(); ++q)
+				npt += W.getBoundary(q).virtualWake.vtx.size();
+		}
+
+		double*& dev_ptr_pt = pointsDb.devVtxPtr;
+		double*& dev_ptr_rad = pointsDb.devRadPtr;
+		double*& dev_ptr_meanEps = devMeanEpsOverPanelPtr;
+		const size_t nr = r_.size();
+		double*& dev_ptr_r = devRPtr;
+
+		double*& dev_ptr_i0 = pointsDb.devI0Ptr;
+		double*& dev_ptr_i3 = pointsDb.devI3Ptr;
+
+		float*& dev_ptr_i0f = pointsDb.devI0fPtr;
+		float*& dev_ptr_i3f = pointsDb.devI3fPtr;
+
+		double minRad = W.getPassport().wakeDiscretizationProperties.getMinEpsAst();
+
+		size_t nTotPan = 0;
+		for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+			nTotPan += W.getAirfoil(s).getNumberOfPanels();
+
+		double tNEIB = -omp_get_wtime();
+		
+
+		bool isMovable = false;
+		for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
+			isMovable = isMovable || W.getMechanics(afl).isMoves || W.getMechanics(afl).isDeform;
+
+		std::vector<std::pair<int,double>> nearestPan = panelSearcher.get_nearest_panels(W.currentStep, (int)npt, dev_ptr_pt, (int)nr, dev_ptr_r, isMovable);
+		tNEIB += omp_get_wtime();
+		
+		double tSelectVortex = -omp_get_wtime();
+		
+		if (vorticesToProcess.size() < npt)
+		{
+			size_t curSize = vorticesToProcess.size();
+			do
+			{
+				curSize += 1024;
+			} while (curSize < npt);
+			vorticesToProcess.resize(curSize);
+		}
+				
+		vtp = 0;
+//#pragma omp parallel for
+		for (int q = 0; q < (int)npt; ++q)
+		{
+			//double dist2 = (W.getWake().vtx[q].r() - 0.5 * (W.getAirfoil(0).getR(nearestPan[q]) + W.getAirfoil(0).getR(nearestPan[q] + 1))).length2();
+			//if ((dist2 < 9.0 * sqr(W.getAirfoil(0).len[nearestPan[q]])))
+			
+			if (nearestPan[q].second < 9.0 * sqr(W.getAirfoil(0).len[nearestPan[q].first]))
+//#pragma omp critical
+				vorticesToProcess[vtp++] = q;
+		}
+		
+		if (batch.size() < vtp * 3 * 5)
+		{
+			size_t curSize = batch.size() / (3*5);
+			do
+			{
+				curSize += 1024;
+			} while (curSize < vtp);
+			batch.resize(curSize * 3 * 5);
+			nnout.resize(curSize * 2 * 5);
+			batchPanels.resize(curSize * 5);
+		}
+		
+		for (size_t v = 0; v < vtp; ++v)
+		{
+			const Vortex2D& vrt = W.getWake().vtx[vorticesToProcess[v]];
+
+			for (int s = 0; s < 5; ++s)
+			{
+				int panIndex = nearestPan[vorticesToProcess[v]].first + s - 2;
+				if (panIndex < 0)
+					panIndex += W.getAirfoil(0).getNumberOfPanels();
+				if (panIndex >= W.getAirfoil(0).getNumberOfPanels())
+					panIndex -= W.getAirfoil(0).getNumberOfPanels();
+
+				Point2D panCenter = 0.5 * (W.getAirfoil(0).getR(panIndex) + W.getAirfoil(0).getR(panIndex + 1));
+
+				Point2D relPos = (1.0 / W.getAirfoil(0).len[panIndex]) *
+					Point2D{
+					Point2D({vrt.r() - panCenter }) & W.getAirfoil(0).tau[panIndex],
+					Point2D({vrt.r() - panCenter }) & W.getAirfoil(0).nrm[panIndex] };
+
+				batch[v * 15 + 3 * s + 0] = (float)relPos[0];
+				batch[v * 15 + 3 * s + 1] = (float)relPos[1];
+	
+				double domrad = std::max(W.getVelocity().wakeVortexesParams.epsastWake[vorticesToProcess[v]], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+				batch[v * 15 + 3 * s + 2] = (float)(domrad / W.getAirfoil(0).len[panIndex]);
+		
+				batchPanels[v * 5 + s] = panIndex;
+			}
+		}
+		tSelectVortex += omp_get_wtime();
+
+		
+		double tNN2 = -omp_get_wtime();
+		NN.setup_layers(vtp * 5);
+		tNN2 += omp_get_wtime();
+
+		double tNN3 = -omp_get_wtime();
+		NN.start((int)(vtp * 5), batch.data(), nnout.data());
+		tNN3 += omp_get_wtime();
+
+		double tNN4 = -omp_get_wtime();
+		NN.destroy_layers();
+		tNN4 += omp_get_wtime();
+
+		std::cout << "tNEIB = " << tNEIB << std::endl;
+		std::cout << "tSelectVortex = " << tSelectVortex << std::endl;
+		std::cout << "tNN2 = " << tNN2 << std::endl;
+		std::cout << "tNN3 = " << tNN3 << std::endl;
+		std::cout << "tNN4 = " << tNN4 << std::endl;
+		std::cout << "tSum = " << tNEIB + tSelectVortex + tNN2 + tNN3 + tNN4 << std::endl;
+		
+
+		//
+		//std::vector<double> nnI0(npt, 0.0);
+		//std::vector<Point2D> nnI3(npt, {0.0, 0.0});
+		//
+		//for (int v = 0; v < vtp; ++v)
+		//{
+		//	for (int s = 0; s < 5; ++s)
+		//	{			
+		//		nnI3[vorticesToProcess[v]] += (nnout[v * 10 + s * 2 + 0] * W.getAirfoil(0).len[batchPanels[v * 5 + s]]) * W.getAirfoil(0).nrm[batchPanels[v * 5 + s]];
+		//		nnI0[vorticesToProcess[v]] += (-nnout[v * 10 + s * 2 + 1] * sqr(W.getAirfoil(0).len[batchPanels[v * 5 + s]]));
+		//	}
+		//	double domrad = std::max(W.getVelocity().wakeVortexesParams.epsastWake[vorticesToProcess[v]], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+		//	nnI0[vorticesToProcess[v]] /= domrad;
+		//}
+		//
+
+		std::vector<Point2D> newI3(npt); //(I3.size());
+		std::vector<double> newI0(npt); //(I0.size());
+		std::vector<Point2Df> newI3f(npt); //(I3.size());
+		std::vector<float> newI0f(npt); //(I0.size());
+
+		newViscousStress.resize(nTotPan);
+
+
+		if ((npt > 0) && (nr > 0))
+		{
+			double*& dev_ptr_visstr = devViscousStressesPtr;
+
+			std::vector<double> locvisstr(nTotPan);
+
+			std::vector<double> zeroVec(nTotPan, 0.0);
+			cuCopyFixedArray(dev_ptr_visstr, zeroVec.data(), nTotPan * sizeof(double), 101);
+
+					
+			//cuCalculateSurfDiffVeloWake(npt, dev_ptr_pt, nTotPan, dev_ptr_r, dev_ptr_i0, dev_ptr_i3, dev_ptr_rad, dev_ptr_meanEps, minRad, dev_ptr_visstr);
+			//W.getCuda().CopyMemFromDev<double, 2>(npt, dev_ptr_i3, (double*)newI3.data());
+			//W.getCuda().CopyMemFromDev<double, 1>(npt, dev_ptr_i0, newI0.data());
+			//W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_visstr, newViscousStress.data());
+			//if (&pointsDb == &(W.getWake()))
+			//{
+			//	for (size_t q = 0; q < I3.size(); ++q)
+			//	{
+			//		I0[q] += newI0[q];
+			//		I3[q] += newI3[q];
+			//	}
+			//}
+			
+
+			//FAST 31-05			
+			double timings[7];
+
+			double tOLD = -omp_get_wtime();
+			BHcu::wrapperDiffusiveVeloI0I3((Vortex2D*)dev_ptr_pt, dev_ptr_i0f, (Point2Df*)dev_ptr_i3f, dev_ptr_rad, dev_ptr_r, W.getNonConstCuda().CUDAptrs, true, (int)npt, nTotPan, dev_ptr_visstr, timings, dev_ptr_meanEps, minRad, \
+				W.getNonConstCuda().n_CUDA_bodies, (int)W.getNonConstCuda().n_CUDA_wake, 8);
+			W.getCuda().CopyMemFromDev<float, 2>(npt, dev_ptr_i3f, (float*)newI3f.data());
+			W.getCuda().CopyMemFromDev<float, 1>(npt, dev_ptr_i0f, newI0f.data());
+			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_visstr, newViscousStress.data());
+
+			tOLD += omp_get_wtime();
+			std::cout << "tOLD = " << tOLD << std::endl;
+
+			if (&pointsDb == &(W.getWake()))
+			{
+				for (size_t q = 0; q < I3.size(); ++q)
+				{
+					//I0[q] += newI0f[q];
+					//I3[q] += newI3f[q];
+				}
+			}
+
+
+			//ЗАТЫЧКА
+			if (&pointsDb == &(W.getWake()))
+			{
+				for (size_t q = 0; q < I3.size(); ++q)
+				{
+					I0[q] += nnI0[q];
+					I3[q] += nnI3[q];
+				}
+			}			
+
+			//std::ofstream testFile(W.getPassport().dir + "/testFile.txt");
+			//for (int q = 0; q < W.getWake().vtx.size(); ++q)
+			//{
+			//	double domrad = std::max(W.getVelocity().wakeVortexesParams.epsastWake[q], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+			//	testFile << q << " " << W.getWake().vtx[q].r()[0] << " " << W.getWake().vtx[q].r()[1] << " " << nearestPan[q] << " " << \
+			//		I0[q] << " " << I3[q][0] << " " << I3[q][1] << " " << nnI0[q] << " " << nnI3[q][0] << " " << nnI3[q][1] << " " << domrad << "\n";
+			//}
+			//testFile.close();
+			//exit(-1);
+
+			size_t curGlobPnl = 0;
+			for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+			{
+				std::vector<double>& tmpVisStress = W.getNonConstAirfoil(s).tmpViscousStresses;
+				const size_t& np = W.getAirfoil(s).getNumberOfPanels();
+				tmpVisStress.resize(0);
+				tmpVisStress.insert(tmpVisStress.end(), newViscousStress.begin() + curGlobPnl, newViscousStress.begin() + curGlobPnl + np);
+				curGlobPnl += np;
+			}
+
+		}
+	}//if numberInPassport==0
+
+
+	if ((&pointsDb == &(W.getWake())) || (&pointsDb == &(W.getBoundary(0).virtualWake)))
+		for (size_t i = 0; i < viscousStress.size(); ++i)
+			viscousStress[i] += tmpViscousStresses[i];
+
+}//GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses
+*/
 #endif
 
 bool Airfoil::IsPointInAirfoil(const Point2D& point) const

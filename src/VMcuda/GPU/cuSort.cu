@@ -74,13 +74,15 @@ namespace BHcu
 
             // Determine temporary device storage requirements
         void* d_temp_storage = NULL;
-        size_t   temp_storage_bytes = 0;
+        size_t temp_storage_bytes = 0;
         //cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes, d_keys_in, d_keys_out, d_values_in, d_values_out, num_items);
 
         cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes, \
             MmortonCodesKeyUnsortd, MmortonCodesKeyd, \
             MmortonCodesIdxUnsortd, MmortonCodesIdxd, \
             num_items, begin_bit, end_bit);
+
+        //printf("num_items = %d, temp_storage_bytes = %d\n", num_items, (int)temp_storage_bytes);
 
         // Allocate temporary storage
         cudaMalloc(&d_temp_storage, temp_storage_bytes);
@@ -108,7 +110,52 @@ namespace BHcu
 
         if (err1 != cudaSuccess)
             std::cout << cudaGetErrorString(err1) << " (cudaFree) " << std::endl;
-
     }
+
+
+
+
+    void RadixSortFromCUBReservedMem(
+        const int* MmortonCodesKeyUnsortd, int* MmortonCodesKeyd, \
+        const int* MmortonCodesIdxUnsortd, int* MmortonCodesIdxd,
+        int num_items, int begin_bit, int end_bit, void*& d_temp_storage, int& d_temp_storage_in_bytes)
+    {
+        // Determine temporary device storage requirements
+        //void* d_temp_storage = NULL;
+        size_t temp_storage_bytes = 0;
+        
+        cub::DeviceRadixSort::SortPairs(NULL, temp_storage_bytes, \
+            MmortonCodesKeyUnsortd, MmortonCodesKeyd, \
+            MmortonCodesIdxUnsortd, MmortonCodesIdxd, \
+            num_items, begin_bit, end_bit);
+       
+        // Allocate temporary storage
+        //cudaMalloc(&d_temp_storage, temp_storage_bytes);
+                
+        if (temp_storage_bytes > d_temp_storage_in_bytes)
+        {
+            //printf("REALLOC: reserved = %d, num_items * 10 = %d, temp_storage_bytes = %d\n", d_temp_storage_in_bytes, num_items * 9, (int)temp_storage_bytes);
+            
+            cudaError_t err1 = cudaFree(d_temp_storage);
+            if (err1 != cudaSuccess)
+                std::cout << cudaGetErrorString(err1) << " (cudaFree) " << std::endl;
+
+            cudaMalloc(&d_temp_storage, temp_storage_bytes);
+            d_temp_storage_in_bytes = (int)temp_storage_bytes;
+            printf("REALLOCATION of sortBuffer!\n");
+        }
+
+        // Run sorting operation         
+        cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes, \
+            MmortonCodesKeyUnsortd, MmortonCodesKeyd, \
+            MmortonCodesIdxUnsortd, MmortonCodesIdxd, \
+            num_items, begin_bit, end_bit);        
+
+        //cudaError_t err1 = cudaFree(d_temp_storage);
+        //if (err1 != cudaSuccess)
+        //    std::cout << cudaGetErrorString(err1) << " (cudaFree) " << std::endl;
+    }
+
+
 
 }

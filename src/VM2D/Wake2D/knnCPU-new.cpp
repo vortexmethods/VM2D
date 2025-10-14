@@ -173,7 +173,9 @@ namespace knnNew
 		mass.swap(dstKeys);
 	}
 
-	void newMerge(std::vector<std::pair<double, size_t>>& currentNN, const std::vector<std::pair<double, size_t>>& candidateNN,
+	void newMerge(
+		int iii,
+		std::vector<std::pair<double, size_t>>& currentNN, const std::vector<std::pair<double, size_t>>& candidateNN,
 		std::vector<size_t>& loc,
 		std::vector<size_t>& counter,
 		std::vector<size_t>& offset,
@@ -181,6 +183,8 @@ namespace knnNew
 		std::vector<std::pair<double, size_t>>& updateNN
 	)
 	{
+
+
 		const size_t k = candidateNN.size() / 2;  //количество ближайших соседей
 
 		//std::cout << "loc: " << std::endl;		
@@ -328,7 +332,7 @@ void WakekNNnew(const std::vector<Vortex2D>& vtx, const size_t k, std::vector<st
 	double tStart[5], tFinish[5];
 	double tm[5][7];
 
-	const int nSdvig = 1;
+	const int nSdvig = 5;
 
 	preTime += omp_get_wtime();
 
@@ -350,16 +354,7 @@ void WakekNNnew(const std::vector<Vortex2D>& vtx, const size_t k, std::vector<st
 		{
 			Point2D sh = (vtx[i].r() - lowLeft) * (0.75 / scale) + sdvig * Point2D{ 0.05, 0.05 };
 			mcdata[i].key = Morton2D(sh);
-			mcdata[i].originNumber = i;
-
-			if (i == 11803 || i == 0)
-				printf("Mcode[%d] = %d\n", i, mcdata[i].key);
-
-			if (i == 11803 || i == 0)
-			{
-				printf("i = %d, r = {%f, %f}, sh = {%f, %f}, code = %d\n",
-					i, vtx[i].r()[0], vtx[i].r()[1], sh[0], sh[1], mcdata[i].key);
-			}
+			mcdata[i].originNumber = i;	
 		}
 
 		time[1] = omp_get_wtime();
@@ -367,8 +362,8 @@ void WakekNNnew(const std::vector<Vortex2D>& vtx, const size_t k, std::vector<st
 		//сортировка единого массива (data и query) по мортоновским кодам			
 		RSort_Parallel(mcdata.data(), mcdata_temp.data(), (int)mcdata.size(), s.data());
 
-		printf("After sort: mcdata[0]: code = %d, orig = %d\n", mcdata[0].key, mcdata[0].originNumber);
-		printf("After sort: mcdata[1]: code = %d, orig = %d\n", mcdata[1].key, mcdata[1].originNumber);
+		//printf("After sort: mcdata[0]: code = %d, orig = %d\n", mcdata[0].key, mcdata[0].originNumber);
+		//printf("After sort: mcdata[1]: code = %d, orig = %d\n", mcdata[1].key, mcdata[1].originNumber);
 
 		time[2] = omp_get_wtime();
 		time[3] = omp_get_wtime();
@@ -391,9 +386,6 @@ void WakekNNnew(const std::vector<Vortex2D>& vtx, const size_t k, std::vector<st
 //#pragma omp parallel for firstprivate(dist, loc, counter, offset, counterScan, updateNN, dstKeys, dstKeys1)
 		for (int i = 0; i < initdist.size(); ++i)
 		{
-			if (mcdata[i].originNumber == 3989/*2558*/)
-				printf("Hello!\n");
-			
 			const Vortex2D& vtxi = vtx[mcdata[i].originNumber];
 
 			int cntr = 0;
@@ -447,8 +439,8 @@ void WakekNNnew(const std::vector<Vortex2D>& vtx, const size_t k, std::vector<st
 			else
 			{
 				newSort(dist, dstKeys1);
-				newMerge(initdist[mcdata[i].originNumber], dist, loc, counter, offset, counterScan, updateNN);
-				//newSort(initdist[mcdata[i].originNumber], dstKeys);
+				newMerge(mcdata[i].originNumber, initdist[mcdata[i].originNumber], dist, loc, counter, offset, counterScan, updateNN);
+				newSort(initdist[mcdata[i].originNumber], dstKeys);
 			}
 		}
 //*/
@@ -457,13 +449,5 @@ void WakekNNnew(const std::vector<Vortex2D>& vtx, const size_t k, std::vector<st
 		
 		tFinish[sdvig] = omp_get_wtime();
 
-		//std::cout << "time_knn:" 
-		//	<< " " << tm[sdvig][1] - tm[sdvig][0] 
-		//	<< " " << tm[sdvig][2] - tm[sdvig][1] 
-		//	<< " " << tm[sdvig][3] - tm[sdvig][2] 
-		//	<< " " << tm[sdvig][4] - tm[sdvig][3] //0.0002688
-		//	<< " " << tm[sdvig][5] - tm[sdvig][4] 
-		//	<< " " << tm[sdvig][6] - tm[sdvig][5] //0.0046687
-		//  << std::endl;
 	}//for sdvig
 }

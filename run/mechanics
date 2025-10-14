@@ -13,8 +13,8 @@
 
 mech0 = mechanicsRigidImmovable();
 mech1 = mechanicsRigidGivenLaw(timeAccel = $timeAccel, initPosition = $initPosition, /* targetVelocity = $targetVelocity,*/ targetAmplitude = $targetAmplitude);
-//mech2 = mechanicsRigidOscillPart(sh=$sh, shw=$shw, m=$m, J=$J, zeta=$zeta, zetaw=$zetaw, initDisplacement=$initDisplacement, initAngularDisplacement=$initAngularDisplacement, initVelocity=$initVelocity, initAngularVelocity=$initAngularVelocity);
-mech2 = mechanicsRigidOscillPart(k=$k, kw=$kw, m=$m, J=$J, c=$c, cw=$cw, initDisplacement=$initDisplacement, initAngularDisplacement=$initAngularDisplacement, initVelocity=$initVelocity, initAngularVelocity=$initAngularVelocity);
+mech2 = mechanicsRigidOscillPart(sh=$sh, shw=$shw, m=$m, J=$J, zeta=$zeta, zetaw=$zetaw, initDisplacement=$initDisplacement, initAngularDisplacement=$initAngularDisplacement, initVelocity=$initVelocity, initAngularVelocity=$initAngularVelocity);
+//mech2 = mechanicsRigidOscillPart(k=$k, kw=$kw, m=$m, J=$J, c=$c, cw=$cw, initDisplacement=$initDisplacement, initAngularDisplacement=$initAngularDisplacement, initVelocity=$initVelocity, initAngularVelocity=$initAngularVelocity);
 
 mech3 = mechanicsRigidRotatePart(J=$J, wAccel=$wAccel, tAccel=$tAccel, externalTorque=$externalTorque);
 mech4 = mechanicsDeformable();
