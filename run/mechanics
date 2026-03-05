@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: mechanics                                                        |
 | Info: Dictionary with mechanical systems description                        |
@@ -17,4 +17,4 @@ mech2 = mechanicsRigidOscillPart(sh=$sh, shw=$shw, m=$m, J=$J, zeta=$zeta, zetaw
 //mech2 = mechanicsRigidOscillPart(k=$k, kw=$kw, m=$m, J=$J, c=$c, cw=$cw, initDisplacement=$initDisplacement, initAngularDisplacement=$initAngularDisplacement, initVelocity=$initVelocity, initAngularVelocity=$initAngularVelocity);
 
 mech3 = mechanicsRigidRotatePart(J=$J, wAccel=$wAccel, tAccel=$tAccel, externalTorque=$externalTorque);
-mech4 = mechanicsDeformable();
+mech4 = mechanicsDeformable(deformParam = $deformParam);

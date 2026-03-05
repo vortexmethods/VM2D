@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Passport2D.h                                                     |
 | Info: Source code of VM2D                                                   |
@@ -41,13 +41,13 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 
-#ifndef PASSPORT_H
-#define PASSPORT_H
+#ifndef PASSPORT2D_H
+#define PASSPORT2D_H
 
 #include "PassportGen.h"
 #include "Point2D.h"
@@ -61,9 +61,9 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\author Колганова Александра Олеговна
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 	struct PhysicalProperties
 	{
@@ -87,34 +87,16 @@ namespace VM2D
 		double timeAccel;
 		
 		/// Функция-множитель, позволяющая моделировать разгон
-		double accelCft() const;
+		double accelCft(double currentTime) const;
 		
 		/// Функция скорости набегающего потока с учетом разгона
-		Point2D V0() const
+		Point2D V0(double currentTime) const
 		{
-			return static_cast<Point2D>(accelCft()*vInf);
+			return static_cast<Point2D>(accelCft(currentTime) * vInf);
 		};
 
 		/// Коэффициент кинематической вязкости среды
-		double nu;
-
-		/// Возвращает текуще время
-		double getCurrTime() const
-		{
-			return timeProp.currTime;
-		}
-
-		/// Установка текущего времени
-		void setCurrTime(double t_) const
-		{
-			timeProp.currTime = t_;
-		}
-
-		/// Добавление шага к текущему времени
-		void addCurrTime(double dt_) const
-		{
-			timeProp.currTime += dt_;
-		}
+		double nu;		
 
 		PhysicalProperties(const VMlib::TimeDiscretizationProperties& timeProp_)
 			:timeProp(timeProp_)
@@ -130,8 +112,8 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 	struct WakeDiscretizationProperties
 	{
@@ -165,7 +147,7 @@ namespace VM2D
 		/// Функция минимально возможного значения для epsAst
 		double getMinEpsAst() const
 		{
-			return 2.0 * epscol;
+			return 0.0; // 2.0 * epscol;
 		};
 
 	};//WakeDiscretizationProperties
@@ -178,19 +160,22 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
     \author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 	struct NumericalSchemes
 	{
 		//Решатель СЛАУ
 		std::pair<std::string, int> linearSystemSolver;
-		double fastGmresTheta;
 		double gmresEps;
-		int multipoleOrderGmres;
+		double gmresTheta;
+		int gmresMultipoleOrder;
 
 		//Метод вычисления скоростей вихрей и в отдельных точках
 		std::pair<std::string, int> velocityComputation;
+		double nbodyTheta;
+		int nbodyMultipoleOrder;
+
 
 		//Метод решения ОДУ движения вихрей
 		//std::pair<std::string, int> wakeMotionIntegrator;
@@ -207,13 +192,16 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 	struct AirfoilParams
 	{
 		/// Имя файла с начальным состоянием профилей (без полного пути)
 		std::string fileAirfoil;
+
+		/// Начальные габариты (прочитанные из файла, ло масштабирования и разворота на угол атаки)
+		std::pair<Point2D, Point2D> initialGab;
 
 		/// Желаемое число панелей для разбиения геометрии
 		size_t requiredNPanels;
@@ -252,8 +240,8 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 	class Passport : public VMlib::PassportGen
 	{
@@ -280,7 +268,7 @@ namespace VM2D
 		std::vector<AirfoilParams> airfoilParams;
 
 		/// Признак работы в "географической" системе координат
-		bool geographicalAngles;
+		//bool geographicalAngles; //Для обдува ветром, когда углы считаются по компасу
 
 		/// Признак поворота вычисляемых сил в профильную систему координат
 		bool rotateForces;

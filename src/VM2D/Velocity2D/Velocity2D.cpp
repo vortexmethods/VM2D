@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Velocity2D.cpp                                                   |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */ 
 
 #include "Velocity2D.h"
@@ -43,12 +43,11 @@
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Wake2D.h"
-#include "WakeDataBase2D.h"
 #include "World2D.h"
 
+#include "BarnesHut.h"
 
 using namespace VM2D;
 
@@ -58,21 +57,9 @@ void Velocity::CalcDiffVeloI1I2()
 	// !!! пелена на пелену
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I1I2))	
 	if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
-	{
-		double tt1 = omp_get_wtime();
-
-		//GPUCalcDiffVeloI1I2ToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);
-		
-		//FAST 31-05
-		GPUDiffVeloFAST(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);
-		double tt2 = omp_get_wtime();
-
-		//W.getInfo('t') << "Diffusive velocities time = " << int(((tt2 - tt1) * 1000) * 10) / 10.0 << " ms, bodies = " << W.getWake().vtx.size() << std::endl;
-		//W.getInfo('t') << "I12_wake->wake  FAST = " << (tt2 - tt1) << std::endl;
-
-	}
+		GPUCalcDiffVeloI1I2ToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);		
 	else
-		CalcDiffVeloI1I2ToWakeFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);
+		GPUDiffVeloFAST(wakeVortexesParams.epsastWake, wakeVortexesParams.I1, wakeVortexesParams.I2);		
 #else
 	CalcDiffVeloI1I2ToWakeFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);	
 #endif
@@ -86,15 +73,7 @@ void Velocity::CalcDiffVeloI1I2()
 		
 	//виртуальные на границе на след
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I1I2))				
-		if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
-		{
-			double tt1 = omp_get_wtime();
-			GPUCalcDiffVeloI1I2ToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
-			double tt2 = omp_get_wtime();
-			//W.getInfo('t') << "I12_layer->wake  = " << (tt2 - tt1) << std::endl;
-		}
-		else
-			CalcDiffVeloI1I2ToWakeFromSheets(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
+		GPUCalcDiffVeloI1I2ToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
 #else			
 		CalcDiffVeloI1I2ToWakeFromSheets(W.getWake(), wakeVortexesParams.epsastWake, W.getBoundary(bou), wakeVortexesParams.I1, wakeVortexesParams.I2);
 #endif			
@@ -113,6 +92,7 @@ void Velocity::CalcDiffVeloI1I2()
 	{
 		I2 = wakeVortexesParams.I2[vt];
 		I1 = wakeVortexesParams.I1[vt];
+
 		if (fabs(I1) < 1.e-8)
 			wakeVortexesParams.diffVelo[vt] = { 0.0, 0.0 };
 		else
@@ -120,7 +100,6 @@ void Velocity::CalcDiffVeloI1I2()
 	}	
 
 	tDivfinish = omp_get_wtime();
-	//W.getInfo('t') << "I12_Div       = " << (tDivfinish - tDivstart) << std::endl;
 
 }//CalcDiffVeloI1I2()
 
@@ -130,21 +109,11 @@ void Velocity::CalcDiffVeloI0I3()
 	for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
 	{
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I0I3))		
-		if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
-		{
-			double tt1 = omp_get_wtime();
-			W.getNonConstAirfoil(afl).GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);
-			double tt2 = omp_get_wtime();
-			//W.getInfo('t') << "I03_bou->wake FAST = " << (tt2 - tt1) << std::endl;
-		}
-		else
-			W.getNonConstAirfoil(afl).GetDiffVelocityI0I3ToWakeAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);
+		W.getNonConstAirfoil(afl).GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);
 #else
 		W.getNonConstAirfoil(afl).GetDiffVelocityI0I3ToWakeAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);		
 #endif
 	}	
-
-	//std::cout << "I0[140] = " << wakeVortexesParams.I0[140] << " " << "I3[140] = " << wakeVortexesParams.I3[140] << std::endl;
 
 
 	//влияние поверхности
@@ -160,9 +129,11 @@ void Velocity::CalcDiffVeloI0I3()
 
 		wakeVortexesParams.I0[vt] *= domrad;
 		wakeVortexesParams.I0[vt] += DPI * sqr(domrad);
+			
 
 		I3 = wakeVortexesParams.I3[vt];
 		I0 = wakeVortexesParams.I0[vt];
+		
 
 		if (fabs(I0) > 1.e-8)
 			wakeVortexesParams.diffVelo[vt] += I3 * (1.0 / I0);		
@@ -184,7 +155,7 @@ void Velocity::LimitDiffVelo(std::vector<Point2D>& diffVel)
 // Вычисление диффузионных скоростей
 void Velocity::CalcDiffVelo()
 {
-	W.getTimestat().timeCalcVortexDiffVelo.first += omp_get_wtime();
+	W.getTimers().start("DiffVel");
 
 	double t12start, t12finish;
 	double t03start, t03finish;
@@ -199,24 +170,19 @@ void Velocity::CalcDiffVelo()
 		t03start = omp_get_wtime();
 		CalcDiffVeloI0I3();
 		t03finish = omp_get_wtime();
-
-
-
   
 		tOtherstart = omp_get_wtime();
 		for (Point2D& diffV : wakeVortexesParams.diffVelo)
 			diffV *= W.getPassport().physicalProperties.nu;
 
-
-		//контроль застрелов диффузионной скорости
-		
+		//контроль застрелов диффузионной скорости		
 		LimitDiffVelo(wakeVortexesParams.diffVelo);
 
 		for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
 			for (size_t i = 0; i < W.getAirfoil(afl).viscousStress.size(); ++i)
 				W.getNonConstAirfoil(afl).viscousStress[i] *= W.getPassport().physicalProperties.nu;
 
-		SaveVisStress();
+		//SaveVisStress();
 		
 
 		//Заполнение структуры данных виртуальных вихрей
@@ -237,19 +203,9 @@ void Velocity::CalcDiffVelo()
 				++counter;
 			}
 
-		tOtherfinish = omp_get_wtime();
-
-		//std::cout << "I1I2 = " << t12finish - t12start << ", I0I3 = " << t03finish - t03start << ", other = " << tOtherfinish - tOtherstart << std::endl;
-
-
+		tOtherfinish = omp_get_wtime();		
 	}
-	W.getTimestat().timeCalcVortexDiffVelo.second += omp_get_wtime();
-
-	//W.getInfo('t') << "diff_whole = " << W.getTimestat().timeCalcVortexDiffVelo.second - W.getTimestat().timeCalcVortexDiffVelo.first << std::endl;
-	//W.getInfo('t') << "diff_I12   = " << t12finish - t12start << std::endl;
-	//W.getInfo('t') << "diff_I03   = " << t03finish - t03start << std::endl;
-	//W.getInfo('t') << "diff_other = " << tOtherfinish - tOtherstart << std::endl;
-
+	W.getTimers().stop("DiffVel");
 
 }// CalcDiffVelo()
 
@@ -315,7 +271,6 @@ void Velocity::CalcDiffVeloI1I2ToSetOfPointsFromWake(const WakeDataBase& pointsD
 	}
 
 	tCPUEND = omp_get_wtime();
-	//W.getInfo('t') << "DIFF_CPU: " << tCPUEND - tCPUSTART << std::endl;
 }//CalcDiffVeloI1I2ToSetOfPointsFromWake(...)
 
 
@@ -531,80 +486,41 @@ void Velocity::GPUCalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& po
 				}
 			}
 		}
-	}
-	
+	}	
 }//GPUCalcDiffVeloI1I2ToSetOfPointsFromSheets(...)
 #endif
 
-
 #if defined(USE_CUDA)
-void Velocity::GPUDiffVeloFAST(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2)
+void Velocity::GPUDiffVeloFAST(const std::vector<double>& domainRadius, std::vector<double>& I1, std::vector<Point2D>& I2)
 {
-	if ((&pointsDb == &W.getWake()) || (&pointsDb == &W.getBoundary(0).virtualWake))
+	size_t nvt = W.getWake().vtx.size();
+
+	std::vector<Point2D> newI2(nvt); 
+	std::vector<double> newI1(nvt); 
+
+	double*& dev_ptr_i1 = W.getWake().devI1Ptr;
+	double*& dev_ptr_i2 = W.getWake().devI2Ptr;
+
+	size_t* const& dev_nVortices = W.getCuda().dev_ptr_nVortices;
+
+	if (nvt > 0)
 	{
-		size_t npt = pointsDb.vtx.size();
-	
-		if ((W.getNumberOfBoundary() > 0) && (&pointsDb == &W.getBoundary(0).virtualWake))
+		W.getNonConstCuda().RefreshWake(4);
+		auto& treeWake = *W.getCuda().inflTreeWake;
+		treeWake.MemoryAllocate((int)W.getCuda().n_CUDA_wake);
+		treeWake.Update((int)W.getWake().vtx.size(), W.getWake().devVtxPtr, W.getPassport().wakeDiscretizationProperties.eps);
+		treeWake.Build();
+		treeWake.UpwardTraversal(W.getPassport().numericalSchemes.nbodyMultipoleOrder);
+
+		double time = treeWake.I1I2CalculationWrapper(W.getPassport().wakeDiscretizationProperties.getMinEpsAst(), dev_ptr_i1, (Point2D*)dev_ptr_i2, W.getWake().devRadPtr);
+
+		W.getCuda().CopyMemFromDev<double, 2>(nvt, dev_ptr_i2, (double*)newI2.data(), 10);
+		W.getCuda().CopyMemFromDev<double, 1>(nvt, dev_ptr_i1, newI1.data(), 11);
+
+		for (size_t q = 0; q < I2.size(); ++q)
 		{
-			for (size_t q = 1; q < W.getNumberOfBoundary(); ++q)
-				npt += W.getBoundary(q).virtualWake.vtx.size();
-		}
-
-		double*& dev_ptr_pt = pointsDb.devVtxPtr;
-		double*& dev_ptr_dr = pointsDb.devRadPtr;
-
-		const size_t nvt = vorticesDb.vtx.size();
-		double*& dev_ptr_vt = vorticesDb.devVtxPtr;
-				
-		std::vector<Point2D> newI2(npt); // I2.size());
-		std::vector<double> newI1(npt); // I1.size());
-
-		double*& dev_ptr_i1 = pointsDb.devI1Ptr;
-		double*& dev_ptr_i2 = pointsDb.devI2Ptr;
-		double minRad = W.getPassport().wakeDiscretizationProperties.getMinEpsAst();
-		
-		const size_t nbou = W.getNumberOfBoundary();
-
-		size_t* const& dev_nVortices = W.getCuda().dev_ptr_nVortices;
-
-		double** const& dev_ptr_ptr_vtx = W.getCuda().dev_ptr_ptr_vtx;
-
-
-		if ((nvt > 0) && (npt > 0))
-		{
-			double timings[7];
-
-			wrapperDiffusiveVeloI1I2((Vortex2D*)dev_ptr_pt, dev_ptr_i1, (Point2D*)dev_ptr_i2,
-				dev_ptr_dr, W.getNonConstCuda().CUDAptrs, true, (int)npt, timings, minRad,
-				W.getNonConstCuda().n_CUDA_bodies, (int)W.getNonConstCuda().n_CUDA_wake, 8);
-
-			W.getCuda().CopyMemFromDev<double, 2>(npt, dev_ptr_i2, (double*)newI2.data(), 10);
-			W.getCuda().CopyMemFromDev<double, 1>(npt, dev_ptr_i1, newI1.data(), 11);
-
-			if (&pointsDb == &W.getWake())
-			{
-				for (size_t q = 0; q < I2.size(); ++q)
-				{
-					I1[q] += newI1[q];
-					I2[q] += newI2[q];
-				}
-			}
-
-			if ((W.getNumberOfBoundary() > 0) && (&pointsDb == &W.getBoundary(0).virtualWake))
-			{
-				size_t curGlobPnl = 0;
-
-				for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s) //W.getNumberOfAirfoil()
-				{
-					size_t nv = W.getBoundary(s).virtualWake.vtx.size();
-					for (size_t q = 0; q < nv; ++q)
-					{
-						W.getNonConstVelocity().virtualVortexesParams[s].I1[q] += newI1[curGlobPnl + q];
-						W.getNonConstVelocity().virtualVortexesParams[s].I2[q] += newI2[curGlobPnl + q];
-					}
-					curGlobPnl += nv;
-				}
-			}
+			I1[q] += newI1[q];
+			I2[q] += newI2[q];
 		}
 	}
 }
@@ -613,12 +529,12 @@ void Velocity::GPUDiffVeloFAST(const WakeDataBase& pointsDb, const std::vector<d
 // Очистка старых массивов под хранение скоростей, выделение новой памяти и обнуление
 void Velocity::ResizeAndZero()
 {
-	W.getTimestat().timeCalcVortexConvVelo.first += omp_get_wtime();
+	W.getTimers().start("ConvVel");	
 	wakeVortexesParams.convVelo.clear();
 	wakeVortexesParams.convVelo.resize(W.getWake().vtx.size(), { 0.0, 0.0 });
-	W.getTimestat().timeCalcVortexConvVelo.second += omp_get_wtime();
+	W.getTimers().stop("ConvVel");
 
-	W.getTimestat().timeCalcVortexDiffVelo.first += omp_get_wtime();
+	W.getTimers().start("DiffVel");
 	wakeVortexesParams.I0.clear();
 	wakeVortexesParams.I0.resize(W.getWake().vtx.size(), 0.0);
 
@@ -636,22 +552,22 @@ void Velocity::ResizeAndZero()
 
 	wakeVortexesParams.epsastWake.clear();
 	wakeVortexesParams.epsastWake.resize(W.getWake().vtx.size(), 0.0);
-	W.getTimestat().timeCalcVortexDiffVelo.second += omp_get_wtime();
+	W.getTimers().stop("DiffVel");
 
 	//Создаем массивы под виртуальные вихри
-	W.getTimestat().timeCalcVortexConvVelo.first += omp_get_wtime();
+	W.getTimers().start("ConvVel");
 	virtualVortexesParams.clear();
 	virtualVortexesParams.resize(W.getNumberOfBoundary());
-	W.getTimestat().timeCalcVortexConvVelo.second += omp_get_wtime();
+	W.getTimers().stop("ConvVel");
 
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 	{
-		W.getTimestat().timeCalcVortexConvVelo.first += omp_get_wtime();
+		W.getTimers().start("ConvVel");
 		virtualVortexesParams[bou].convVelo.clear();
 		virtualVortexesParams[bou].convVelo.resize(W.getBoundary(bou).virtualWake.vtx.size(), { 0.0, 0.0 });
-		W.getTimestat().timeCalcVortexConvVelo.second += omp_get_wtime();
+		W.getTimers().stop("ConvVel");
 
-		W.getTimestat().timeCalcVortexDiffVelo.first += omp_get_wtime();
+		W.getTimers().start("DiffVel");
 		virtualVortexesParams[bou].I0.clear();
 		virtualVortexesParams[bou].I0.resize(W.getBoundary(bou).virtualWake.vtx.size(), 0.0);
 
@@ -670,7 +586,7 @@ void Velocity::ResizeAndZero()
 		virtualVortexesParams[bou].epsastWake.clear();
 		virtualVortexesParams[bou].epsastWake.resize(W.getBoundary(bou).virtualWake.vtx.size(), 0.0);
 
-		W.getTimestat().timeCalcVortexDiffVelo.second += omp_get_wtime();
+		W.getTimers().stop("DiffVel");
 	}
 }//ResizeAndZero()
 
@@ -703,3 +619,456 @@ void Velocity::SaveVisStress()
 		}
 	}
 }//SaveVisStress()
+
+
+
+//Генерация вектора влияния вихревого следа на профиль
+void Velocity::GetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeRhs) const
+{
+	size_t np = afl.getNumberOfPanels();
+	size_t shDim = W.getBoundary(afl.numberInPassport).sheetDim;
+
+	wakeRhs.resize(W.getBoundary(afl.numberInPassport).GetUnknownsSize());
+
+	//локальные переменные для цикла	
+	std::vector<double> velI(shDim, 0.0);
+
+#pragma omp parallel for default(none) shared(shDim, afl, np, wakeRhs, IDPI) private(velI)
+	for (int i = 0; i < np; ++i)
+	{
+		velI.assign(shDim, 0.0);
+
+		if (W.getWake().vtx.size() > 0)
+		{
+			//Учет влияния следа
+			afl.GetInfluenceFromVorticesToPanel(i, W.getWake().vtx.data(), W.getWake().vtx.size(), velI);
+		}
+
+		if (W.getSource().vtx.size() > 0)
+		{
+			//Учет влияния источников
+			afl.GetInfluenceFromSourcesToPanel(i, W.getSource().vtx.data(), W.getSource().vtx.size(), velI);
+		}
+
+		for (size_t j = 0; j < shDim; ++j)
+			velI[j] *= IDPI / afl.len[i];
+
+		wakeRhs[i] = velI[0];
+
+		if (shDim != 1)
+			wakeRhs[np + i] = velI[1];
+	}//for i
+}//GetWakeInfluenceToRhs(...)
+
+
+
+#if defined(USE_CUDA)
+//Генерация вектора влияния вихревого следа на профиль
+void Velocity::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeVelo) const
+{
+	size_t shDim = W.getBoundary(afl.numberInPassport).sheetDim;
+
+	const size_t& nvt = W.getWake().vtx.size();
+	const size_t& nsr = W.getSource().vtx.size();
+	const double eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
+
+	if (afl.numberInPassport == 0)
+	{
+		size_t nTotPan = 0;
+		for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+			nTotPan += W.getAirfoil(s).getNumberOfPanels();
+
+		double*& dev_ptr_pt = afl.devRPtr;
+		double*& dev_ptr_vt = W.getWake().devVtxPtr;
+		double*& dev_ptr_sr = W.getSource().devVtxPtr;
+		double*& dev_ptr_rhs = afl.devRhsPtr;
+		double*& dev_ptr_rhsLin = afl.devRhsLinPtr;
+
+		std::vector<double> locrhs(nTotPan);
+		std::vector<double> locrhsLin(nTotPan);
+
+
+
+		if ((nvt > 0) || (nsr > 0))
+		{
+			cuCalculateRhs(nTotPan, dev_ptr_pt, nvt, dev_ptr_vt, nsr, dev_ptr_sr, eps2, dev_ptr_rhs, dev_ptr_rhsLin);
+
+			std::vector<double> newRhs(nTotPan), newRhsLin(nTotPan);
+
+			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhs, newRhs.data(), 22);
+			if (shDim != 1)
+				W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhsLin, newRhsLin.data(), 22);
+
+			size_t curGlobPnl = 0;
+			for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+			{
+				std::vector<double>& tmpRhs = W.getNonConstAirfoil(s).tmpRhs;
+				const size_t& np = W.getAirfoil(s).getNumberOfPanels();
+				tmpRhs.resize(0);
+				tmpRhs.insert(tmpRhs.end(), newRhs.begin() + curGlobPnl, newRhs.begin() + curGlobPnl + np);
+				if (shDim != 1)
+					tmpRhs.insert(tmpRhs.end(), newRhsLin.begin() + curGlobPnl, newRhsLin.begin() + curGlobPnl + np);
+
+				curGlobPnl += np;
+			}
+		}
+	}
+
+	if ((nvt > 0) || (nsr > 0))
+		wakeVelo = std::move(afl.tmpRhs);
+	else
+		wakeVelo.resize(afl.getNumberOfPanels() * (W.getPassport().numericalSchemes.boundaryCondition.second), 0.0);
+
+}//GPUGetWakeInfluenceToRhs(...)
+#endif
+
+#if defined(USE_CUDA)
+//Генерация вектора влияния вихревого следа на профиль
+void Velocity::GPUFASTGetWakeInfluenceToRhs(const Airfoil & afl, std::vector<double>&wakeVelo) const
+{
+	size_t shDim = W.getBoundary(afl.numberInPassport).sheetDim;
+
+	const size_t& nvt = W.getWake().vtx.size();
+	const size_t& nsr = W.getSource().vtx.size();
+
+	auto& inflTree = *W.getCuda().inflTreeWake;
+	const int& order = W.getPassport().numericalSchemes.nbodyMultipoleOrder;
+
+	if (afl.numberInPassport == 0)
+	{	
+		size_t nTotPan = 0;
+		for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+			nTotPan += W.getAirfoil(s).getNumberOfPanels();
+
+		double*& dev_ptr_pt = afl.devRPtr;
+		double*& dev_ptr_vt = W.getWake().devVtxPtr;
+		double*& dev_ptr_sr = W.getSource().devVtxPtr;
+		double*& dev_ptr_rhs = afl.devRhsPtr;
+		double*& dev_ptr_rhsLin = afl.devRhsLinPtr;
+		std::vector<double> locrhs(nTotPan);
+		std::vector<double> locrhsLin(nTotPan);
+
+		if ((nvt > 0) || (nsr > 0))
+		{
+			//double timingsToRHS[7];
+
+			double* linPtr = (double*)((shDim == 1) ? nullptr : dev_ptr_rhsLin);
+
+			auto& inflTree = *W.getCuda().inflTreeWake;
+			auto& cntrTree = *W.getCuda().cntrTreePnl;
+
+			inflTree.DownwardTraversalVorticesToPanels(cntrTree, (double*)dev_ptr_rhs, 
+				linPtr, multipoleTheta, multipoleOrder);
+
+
+			std::vector<double> newRhs(nTotPan), newRhsLin(nTotPan);
+
+			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhs, newRhs.data(), 22);
+			if (shDim != 1)
+				W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhsLin, newRhsLin.data(), 22);
+
+			size_t curGlobPnl = 0;
+			for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+			{
+				std::vector<double>& tmpRhs = W.getNonConstAirfoil(s).tmpRhs;
+				const size_t& np = W.getAirfoil(s).getNumberOfPanels();
+				tmpRhs.resize(0);
+				tmpRhs.insert(tmpRhs.end(), newRhs.begin() + curGlobPnl, newRhs.begin() + curGlobPnl + np);
+				if (shDim != 1)
+					tmpRhs.insert(tmpRhs.end(), newRhsLin.begin() + curGlobPnl, newRhsLin.begin() + curGlobPnl + np);
+
+				curGlobPnl += np;
+			}
+		}
+	}
+
+	if ((nvt > 0) || (nsr > 0))
+		wakeVelo = std::move(afl.tmpRhs);
+	else
+		wakeVelo.resize(afl.getNumberOfPanels() * (W.getPassport().numericalSchemes.boundaryCondition.second), 0.0);
+
+}//GPUGetWakeInfluenceToRhsFAST(...)
+#endif
+
+
+
+void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
+{
+	Eigen::VectorXd locRhs;
+	std::vector<double> lastRhs(W.getNumberOfBoundary());
+
+	size_t currentRow = 0;
+	size_t currentSkosRow = 0;
+
+	size_t nAllVars = 0;
+	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
+		nAllVars += W.getBoundary(bou).GetUnknownsSize();
+
+	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
+	{
+		const Airfoil& afl = W.getAirfoil(bou);
+		size_t np = afl.getNumberOfPanels();
+
+		size_t nVars;
+
+		nVars = W.getBoundary(bou).GetUnknownsSize();
+		locRhs.resize(nVars);
+
+
+		std::vector<double> wakeRhs;
+
+		double tt1 = omp_get_wtime();
+
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_RHS))
+		//GPUGetWakeInfluenceToRhs(afl, wakeRhs);		
+		GPUFASTGetWakeInfluenceToRhs(afl, wakeRhs);
+#else
+		GetWakeInfluenceToRhs(afl, wakeRhs);
+#endif	
+		std::vector<double> vInfRhs;
+		afl.GetInfluenceFromVInfToPanel(vInfRhs);
+
+#pragma omp parallel for \
+	default(none) \
+	shared(locRhs, afl, bou, wakeRhs, vInfRhs, np) \
+	schedule(dynamic, DYN_SCHEDULE)
+		for (int i = 0; i < (int)afl.getNumberOfPanels(); ++i)
+		{
+			locRhs(i) = -vInfRhs[i] - wakeRhs[i] + 0.25 * ((afl.getV(i) + afl.getV(i + 1)) & afl.tau[i]); //0.25 * (afl.getV(i) + afl.getV(i + 1))*afl.tau[i] - прямолинейные
+			if (W.getBoundary(bou).sheetDim > 1)
+				locRhs(np + i) = -vInfRhs[np + i] - wakeRhs[np + i];
+
+			//!!!!!!!!!!!влияние присоединенных слоев от самого себя и от других профилей				
+			//Если включен быстрый метод и есть подвижные тела, то пока что все равно вычисляем IQ
+			if (W.isAnyMovableOrDeformable())
+			{
+				for (size_t q = 0; q < W.getNumberOfBoundary(); ++q)
+				{
+					const auto& sht = W.getBoundary(q).sheets;
+					const auto& iq = W.getIQ(bou, q);
+
+					const Airfoil& aflOther = W.getAirfoil(q);
+					if (W.getMechanics(q).isMoves)
+					{
+						for (size_t j = 0; j < aflOther.getNumberOfPanels(); ++j)
+						{
+							if ((i != j) || (bou != q))
+							{
+								locRhs(i) += -iq.first(i, j) * sht.attachedVortexSheet(j, 0);
+								locRhs(i) += -iq.second(i, j) * sht.attachedSourceSheet(j, 0);
+							}//if (i != j)
+
+						}//for j
+					}
+				}//for q
+			}
+		}//for i
+
+		lastRhs[bou] = 0.0;
+
+#pragma omp for
+		for (int q = 0; q < (int)afl.gammaThrough.size(); ++q)
+			lastRhs[bou] += afl.gammaThrough[q];
+
+		////////////////////////////////////////////////////////////////
+
+		const double currT = W.getCurrentTime();
+		const double dt = W.getPassport().timeDiscretizationProperties.dt;
+
+		lastRhs[bou] += (W.getMechanics(bou).circulation - W.getMechanics(bou).circulationOld) * (W.getAirfoil(bou).inverse ? 1.0 : -1.0);
+
+		////////////////////////////////////////////////////////////////
+
+		//размазываем правую часть		
+		for (size_t i = 0; i < nVars; ++i)
+			rhsReord(i + currentSkosRow) = locRhs(i);
+
+		rhsReord(nAllVars + bou) = lastRhs[bou];
+
+		currentRow += nVars + 1;
+		currentSkosRow += nVars;
+	}// for bou
+}
+
+
+
+
+//Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wakeVP
+void Velocity::CalcConvVelo()
+{
+	W.getTimers().start("ConvVel");
+
+	//Влияние следа на след
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_CONV_TOWAKE))		
+	//Вызов виртуальной функции
+	std::unique_ptr<BHcu::CudaTreeInfo>& cntrTree = W.getNonConstCuda().cntrTreeWake;
+	if (W.getPassport().numericalSchemes.velocityComputation.second == 1)
+	{		
+		cntrTree->MemoryAllocate((int)W.getCuda().n_CUDA_wake);
+		cntrTree->Update((int)W.getWake().vtx.size(), W.getWake().devVtxPtr, W.getPassport().wakeDiscretizationProperties.eps);
+		cntrTree->Build();
+	}
+	GPUCalcConvVeloToSetOfPointsFromWake(W.getNonConstCuda().cntrTreeWake, W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
+	
+#else
+	//Вызов виртуальной функции
+	CalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
+#endif
+
+	std::vector<Point2D> nullVector(0);
+	//вычисление конвективных скоростей по закону Био-Савара от виртуальных вихрей (точнее, от слоев)
+	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
+	{
+		//Влияние на след от панелей
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_CONVVIRT))	
+
+		switch (W.getPassport().numericalSchemes.velocityComputation.second)
+		{
+		case 0:
+			W.getBoundary(bou).GPUCalcConvVelocityToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.convVelo);
+			break;
+		case 1:
+			if (bou == 0)
+				GPUCalcConvVelocityToSetOfPointsFromSheets(W.getNonConstCuda().cntrTreeWake, W.getWake(), wakeVortexesParams.convVelo);
+			break;
+		}
+		//		
+
+#else
+		W.getBoundary(bou).CalcConvVelocityToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.convVelo);
+#endif
+	}
+
+	//Скорости только что рожденных вихрей
+	{
+		size_t nVirtVortices = 0;
+		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
+			nVirtVortices += W.getBoundary(bou).virtualWake.vtx.size();
+
+		size_t counter = wakeVortexesParams.convVelo.size() - nVirtVortices;
+
+		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
+			for (size_t v = 0; v < W.getBoundary(bou).virtualWake.vtx.size(); ++v)
+			{
+				wakeVortexesParams.convVelo[counter] = W.getBoundary(bou).afl.getV(W.getBoundary(bou).virtualWake.aflPan[v].second) \
+					+ W.getBoundary(bou).virtualWake.vecHalfGamma[v] \
+					- W.getV0();
+				++counter;
+			}
+	}
+
+	//Заполнение структур данных виртуальных вихрей
+	{
+		size_t nVirtVortices = 0;
+		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
+			nVirtVortices += W.getBoundary(bou).virtualWake.vtx.size();
+
+		size_t counter = wakeVortexesParams.convVelo.size() - nVirtVortices;
+
+		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
+			for (size_t v = 0; v < W.getBoundary(bou).virtualWake.vtx.size(); ++v)
+			{
+				virtualVortexesParams[bou].convVelo[v] = wakeVortexesParams.convVelo[counter];
+				virtualVortexesParams[bou].epsastWake[v] = wakeVortexesParams.epsastWake[counter];
+				++counter;
+			}
+	}
+
+
+	W.getTimers().stop("ConvVel");
+	W.getTimers().start("VelPres");
+
+	//вычисление скоростей в заданных точках только на соответствующем шаге по времени
+	if ((W.getPassport().timeDiscretizationProperties.saveVPstep > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVPstep)))
+		CalcVeloToWakeVP();
+
+	W.getTimers().stop("VelPres");
+}//CalcConvVelo()
+
+
+
+//Вычисление конвективных скоростей вихрей в точках wakeVP
+void Velocity::CalcVeloToWakeVP()
+{
+	std::vector<Point2D> velConvWake;
+	std::vector<std::vector<Point2D>> velConvBou;
+
+	int addWSize = (int)W.getMeasureVP().getWakeVP().vtx.size();
+
+	velConvWake.resize(addWSize, { 0.0, 0.0 });
+
+	velConvBou.resize(W.getNumberOfBoundary());
+	for (size_t i = 0; i < W.getNumberOfBoundary(); ++i)
+		velConvBou[i].resize(addWSize, { 0.0, 0.0 });
+
+	std::vector<Point2D>& velocityRef = W.getNonConstMeasureVP().getNonConstVelocity();
+	velocityRef.assign(addWSize, W.getV0());
+
+
+#if (defined(USE_CUDA))
+	W.getNonConstCuda().RefreshVP();
+#endif
+
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_VP))
+	std::unique_ptr<BHcu::CudaTreeInfo>& cntrTree = W.getNonConstCuda().cntrTreeVP;
+	if (W.getPassport().numericalSchemes.velocityComputation.second == 1)
+	{
+		if (W.getCurrentStep() == 0 || W.isAnyMovableOrDeformable())
+		{
+			cntrTree->MemoryAllocate((int)W.getCuda().n_CUDA_velVP);
+			cntrTree->Update((int)W.getMeasureVP().getWakeVP().vtx.size(), W.getMeasureVP().getWakeVP().devVtxPtr, 0.0);
+			cntrTree->Build();
+		}
+	}
+	GPUCalcConvVeloToSetOfPointsFromWake(cntrTree, W.getMeasureVP().getWakeVP(), velocityRef, W.getNonConstMeasureVP().getNonConstDomainRadius(), true, false);
+#else
+	switch (W.getPassport().numericalSchemes.velocityComputation.second)
+	{
+	case 0:
+		CalcConvVeloToSetOfPointsFromWake(W.getMeasureVP().getWakeVP(), velConvWake, W.getNonConstMeasureVP().getNonConstDomainRadius(), true, false);
+		break;
+	case 1:
+		CalcConvVPVeloToSetOfPointsFromWake(W.getMeasureVP().getWakeVP(), velConvWake, W.getNonConstMeasureVP().getNonConstDomainRadius(), true, false);
+	}
+#endif			   
+	 
+	for (size_t i = 0; i < W.getNumberOfBoundary(); ++i)
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_VP))			
+		switch (W.getPassport().numericalSchemes.velocityComputation.second)
+		{
+		case 0:
+			W.getNonConstBoundary(i).GPUCalcConvVelocityToSetOfPointsFromSheets(W.getMeasureVP().getWakeVP(), velConvBou[i]);
+
+			for (int i = 0; i < addWSize; ++i)
+				velocityRef[i] += velConvWake[i];
+
+			for (size_t bou = 0; bou < velConvBou.size(); ++bou)
+				for (int j = 0; j < addWSize; ++j)
+					velocityRef[j] += velConvBou[bou][j];
+			break;
+		case 1:
+			if (i == 0)
+				GPUCalcConvVelocityToSetOfPointsFromSheets(cntrTree, W.getMeasureVP().getWakeVP(), velocityRef);
+			break;
+		}
+#else
+		W.getNonConstBoundary(i).CalcConvVelocityToSetOfPointsFromSheets(W.getMeasureVP().getWakeVP(), velConvBou[i]);
+		for (int i = 0; i < addWSize; ++i)
+			velocityRef[i] += velConvWake[i];
+
+		for (size_t bou = 0; bou < velConvBou.size(); ++bou)
+			for (int j = 0; j < addWSize; ++j)
+				velocityRef[j] += velConvBou[bou][j];
+#endif
+}// CalcVeloToWakeVP()
+
+
+void Velocity::CalcDiffVeloI1I2ToWakeFromWake(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2)
+{
+	CalcDiffVeloI1I2ToSetOfPointsFromWake(pointsDb, domainRadius, vorticesDb, I1, I2);
+}//CalcDiffVeloI1I2ToWakeFromWake(...)
+
+void Velocity::CalcDiffVeloI1I2ToWakeFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2)
+{
+	CalcDiffVeloI1I2ToSetOfPointsFromSheets(pointsDb, domainRadius, bnd, I1, I2);
+}//CalcDiffVeloI1I2ToWakeFromSheets(...)

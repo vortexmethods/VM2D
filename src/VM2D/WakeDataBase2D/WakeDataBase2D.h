@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: WakeDataBase2D.h                                                 |
 | Info: Source code of VM2D                                                   |
@@ -33,12 +33,12 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
-#ifndef WAKEDATABASE_H
-#define WAKEDATABASE_H
+#ifndef WAKEDATABASE2D_H
+#define WAKEDATABASE2D_H
 
 #include "defs.h"
 #include "Gpu2D.h"
@@ -53,12 +53,14 @@ namespace VM2D
 
 	/*!
 	\brief Класс, опеделяющий набор вихрей
+
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\author Колганова Александра Олеговна
+
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 
 	class WakeDataBase
@@ -101,6 +103,8 @@ namespace VM2D
 		mutable std::vector<numvector<int, 2>> mesh;
 
 		mutable VectorsForKnn* vecForKnn = nullptr;
+
+		mutable int* devNearestPanelPtr; //индекс ближайшей панели и код-положение на панели
 
 #endif
 

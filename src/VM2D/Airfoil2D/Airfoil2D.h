@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Airfoil2D.h                                                      |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #ifndef AIRFOIL_H
@@ -46,29 +46,23 @@
 #ifdef USE_CUDNN
 	#include "mlp_cudnn.cuh"
 #endif
-	#include "intersection.cuh"
-
-//	#include <thrust/copy.h>
-//	#include <thrust/device_vector.h>
-//	#include <thrust/iterator/counting_iterator.h>
 #endif
 
 namespace VM2D
 {
-
-	class World2D;
-	class WakeDataBase;
-
 	/*!
-	\brief Абстрактный класс, определяющий обтекаемый профиль
+	\brief Класс, определяющий форму профиля
+
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\author Колганова Александра Олеговна
+
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
-	class Airfoil
+
+	class AirfoilGeometry
 	{
 	protected:
 		/// Координаты начал панелей  
@@ -78,11 +72,26 @@ namespace VM2D
 		std::vector<Point2D> v_;
 
 	public:
-		/// Константная ссылка на решаемую задачу
-		const World2D& W;
+		/// Признак разворота нормалей (для расчета внутренних течений)
+		bool inverse;
 
-		/// Номер профиля в паспорте
-		const size_t numberInPassport;
+		/// \brief Нормали к панелям профиля
+		///
+		/// Нормали задаются внешними, нормированными на единицу
+		std::vector<Point2D> nrm;
+
+		/// \brief Псевдонормали к панелям профиля
+		///
+		/// Псевдонормали к началу и концу панели, нормированные на единицу
+		std::vector<std::pair<Point2D, Point2D>> psn;
+
+		/// \brief Касательные к панелям профиля
+		///
+		/// Касательные соответствуют обходу профиля против часовой стрелки, задаются нормированными на единицу
+		std::vector<Point2D> tau;
+
+		/// Длины панелей профиля	
+		std::vector<double> len;
 
 		/// Положение центра масс профиля
 		Point2D rcm;
@@ -93,20 +102,6 @@ namespace VM2D
 		/// Площадь профиля
 		double area;
 
-		/// Масса профиля
-		double m;
-
-		/// Полярный момент инерции профиля относительно центра масс
-		double J;
-
-		/// Возможные пути внутри профиля от точки (0, 0) к центрам всех панелей
-		std::vector<std::vector<Point2D>> possibleWays;
-		
-		/// Номера путей к вершинам
-		std::vector<int> wayToVertex; 
-
-		///Средние значения Eps на панелях
-		std::vector<double> meanEpsOverPanel;
 
 		///\brief Возврат константной ссылки на вершину профиля  
 		///
@@ -127,7 +122,7 @@ namespace VM2D
 		/// 
 		/// \param[in] q номер вершины профиля
 		/// return ссылку на вершину профиля  
-		Point2D& setR(size_t q) 
+		Point2D& setR(size_t q)
 		{
 			return (q < r_.size()) ? r_[q] : r_[0];
 		};
@@ -159,19 +154,67 @@ namespace VM2D
 		void setV(const std::vector<Point2D>& vel)
 		{
 			v_.clear();
-			v_.insert(v_.end(), vel.begin(), vel.end());				
+			v_.insert(v_.end(), vel.begin(), vel.end());
 		}
 
 		/// \brief Возврат количества панелей на профиле
 		///
 		/// \return количество панелей на профиле
 		size_t getNumberOfPanels() const { return r_.size(); };
+	};
+
+
+
+
+	class World2D;
+	class WakeDataBase;
+
+	/*!
+	\brief Абстрактный класс, определяющий обтекаемый профиль
+	\author Марчевский Илья Константинович
+	\author Сокол Ксения Сергеевна
+	\author Рятина Евгения Павловна
+	\author Колганова Александра Олеговна
+	\Version 1.14
+	\date 6 марта 2026 г.
+	*/
+	class Airfoil : public AirfoilGeometry
+	{
+	public:
+		/// Константная ссылка на решаемую задачу
+		const World2D& W;
+
+		/// Номер профиля в паспорте
+		const size_t numberInPassport;
+
+
+
+		/// Масса профиля
+		double m;
+
+		/// Полярный момент инерции профиля относительно центра масс
+		double J;
+
+		/// Возможные пути внутри профиля от точки (0, 0) к центрам всех панелей
+		std::vector<std::vector<Point2D>> possibleWays;
 		
-		/// Признак разворота нормалей (для расчета внутренних течений)
-		bool inverse;
+		/// Номера путей к вершинам
+		std::vector<int> wayToVertex; 
+
+		/// Тест на "отвещенность"
+		void lightningTest();
+
+
+		///Средние значения Eps на панелях
+		std::vector<double> meanEpsOverPanel;
+
+		
 
 		/// Указатель на девайсе, где хранятся вершины профиля
 		IFCUDA(mutable double* devRPtr);
+
+		/// Указатель на девайсе, где хранятся псевдонормали профиля
+		IFCUDA(mutable double* devPsnPtr);
 
 		/// Указатель на девайсе, где хранится правая часть (константная) матрицы
 		IFCUDA(mutable double* devRhsPtr);
@@ -212,31 +255,14 @@ namespace VM2D
 		/// Нейросеть для коэффициентов I0 и I3 диффузионной скорости
 #ifdef USE_CUDNN
 		IFCUDA(CudaNN NN);
-#endif
 
-		/// Быстрый поиск ближайшей панели
-		IFCUDA(lbvh_find_nearest_panel panelSearcher);
-		IFCUDA(lbvh_penetration_control penetrationControler);
-
-		//
 		IFCUDA(std::vector<int> vorticesToProcess);
 		IFCUDA(int vtp);
 		IFCUDA(std::vector<float> batch);     //(vtp * 3 * 5);
+		IFCUDA(std::vector<int> signy);     //(vtp * 3 * 5);
 		IFCUDA(std::vector<float> nnout);     //(vtp * 2 * 5);
 		IFCUDA(std::vector<int> batchPanels); // (vtp * 5);
-
-		/// \brief Нормали к панелям профиля
-		///
-		/// Нормали задаются внешними, нормированными на единицу
-		std::vector<Point2D> nrm;
-
-		/// \brief Касательные к панелям профиля
-		///
-		/// Касательные соответствуют обходу профиля против часовой стрелки, задаются нормированными на единицу
-		std::vector<Point2D> tau;
-
-		/// Длины панелей профиля
-		std::vector<double> len;
+#endif
 
 		/// Касательные напряжения на панелях профиля
 		std::vector<double> viscousStress;
@@ -356,7 +382,7 @@ namespace VM2D
 		/// \warning Векторы I0, I3 --- накапливаются!
 		virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
 #if defined(USE_CUDA)
-		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
+		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
 #endif
 		virtual void GetDiffVelocityI0I3ToWakeAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
 
@@ -402,8 +428,6 @@ namespace VM2D
 		/// 
 		/// \param[out] vInfRhs ссылка на вектор полученного влияния для правой части СЛАУ для всех панелей профиля
 		virtual void GetInfluenceFromVInfToPanel(std::vector<double>& vInfRhs) const;
-
-
 };
 
 }//namespace VM2D

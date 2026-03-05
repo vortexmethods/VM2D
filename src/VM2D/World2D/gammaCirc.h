@@ -8,21 +8,19 @@
 //
 // Результат сохраняется в файл circ в рабочий каталог задачи
 
-//#define radiuses { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, \
-				        2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, \
-                        3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, \
-                        4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0 }						
-#define radiuses { 1.0, 2.0, 3.0, 4.0, 5.0 }
+//#define radiuses { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 
+//				        2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, 
+//                        3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 
+//                        4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0 }						
+#define radiuses { 0.5, 1.0, 1.5, 2.0, 2.5 }
 						
 
 //#define scales {0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5}
 #define scales { 1.0 }
 
 
-if (currentStep % 10 == 0)
+if (currentStep % 1 == 0)
 {
-
-
 
 	std::vector<double> rad = radiuses;
 	std::vector<double> scale = scales;
@@ -54,7 +52,8 @@ if (currentStep % 10 == 0)
 		std::vector<double> circRad(rad.size(), 0.0);
 
 		int nPts = 50; //50
-		double dist = 3.0; //3.0
+
+		double delta = 6.0; //6.0
 
 		double R = 0.0;
 		double L = 0.0;
@@ -67,26 +66,45 @@ if (currentStep % 10 == 0)
 			R = rad[i];
 			curCirc = 0.0;
 
-#pragma omp parallel for default(none) private(L,gam,epsAst) shared(R,nPts,dist,c,scale) reduction(+:curCirc) schedule(dynamic,100)
+#pragma omp parallel for default(none) private(L,gam,epsAst) shared(R,nPts,delta,c,scale) reduction(+:curCirc) schedule(dynamic,100)
 			for (int j = 0; j < (int)wake->vtx.size(); ++j)
 			{
 				L = wake->vtx[j].r().length();
 				gam = wake->vtx[j].g();
 				epsAst = scale[c] * velocity->wakeVortexesParams.epsastWake[j];
 
-				if (R - L > dist * epsAst)
+				if (R - L > delta * epsAst)
 					curCirc += gam;
-				else if (R - L > -dist * epsAst)
-				{
-					auto func = [R, L, epsAst, gam](double phi) -> double
+				else if (R - L > -delta * epsAst)
+				{					
+					double h = fabs(R - L);
+					if (h / R > 1e-3)
+					{
+						double phi = atan(h / sqrt(delta * delta * epsAst * epsAst - h * h));
+						double deltaPhi = (PI - 2.0 * phi) / nPts;
+
+						double addCirc = 0.0;
+
+						auto func = [h, epsAst, delta](double phi) -> double
+							{
+								return (IDPI / epsAst) * (exp(h / (epsAst * sin(phi))) * (epsAst - h / sin(phi)) - exp(-delta) * (1 + delta));
+							};
+
+						for (int s = 0; s < nPts; ++s)
 						{
-							return IDPI * exp(-sqr(L / epsAst)) - IDPI * exp(-(L * L - 2.0 * L * R * cos(phi) + R * R) / sqr(epsAst)) + exp(-sqr(L * sin(phi) / epsAst)) * L * cos(phi) * (erf(L * cos(phi) / epsAst) + erf((R - L * cos(phi)) / epsAst)) / (2.0 * sqrt(PI) * epsAst);
-						};
+							double valAngle = -phi - deltaPhi * (s + 0.5);
 
-					double cft = dist * epsAst / (nPts * R);
+							addCirc += func(valAngle) * deltaPhi;
+						}
+						addCirc *= gam;
 
-					for (int s = 0; s < nPts; ++s)
-						curCirc += gam * 2.0 * cft * func((s + 0.5) * cft);
+						if (L > R)
+							curCirc += addCirc;
+						else
+							curCirc += (gam - addCirc);
+					}
+					else
+						curCirc += 0.5 * gam;
 				}//else
 			}//for j
 
@@ -96,7 +114,7 @@ if (currentStep % 10 == 0)
 
 		std::ofstream circFile(circFileName.c_str(), std::ios::app);
 
-		circFile << currentStep << " " << getPassport().physicalProperties.getCurrTime() << " " << scale[c];
+		circFile << currentStep << " " << getCurrentTime() << " " << scale[c];
 
 		for (auto gamma : circRad)
 			circFile << " " << gamma;

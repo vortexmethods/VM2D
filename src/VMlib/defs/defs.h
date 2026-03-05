@@ -1,28 +1,28 @@
-/*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
-| ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
-|  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
-|   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: defs.h                                                           |
-| Info: Source code of VMlib                                                  |
+| Info: Source code of VM2D                                                   |
 |                                                                             |
-| This file is part of VMlib.                                                 |
-| VMLib is free software: you can redistribute it and/or modify it            |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VMlib is distributed in the hope that it will be useful, but WITHOUT        |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
-| along with VMlib.  If not, see <http://www.gnu.org/licenses/>.              |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
 \*---------------------------------------------------------------------------*/
 
 
@@ -30,8 +30,11 @@
 \file
 \brief Описание базовых вспомогательных функций
 \author Марчевский Илья Константинович
-\Version 1.12
-\date 14 января 2024 г.
+\author Сокол Ксения Сергеевна
+\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 
@@ -116,11 +119,17 @@ namespace defaults
 	/// Число разрядов в имени файла
 	const int defaultNameLength = 5;
 
+	/// Радиус вихря по умолчанию
+	const double defaultEps = 0.0; //значит, рассчитать его по длине панелей как половину средней длины панелей
+
+	/// Радиус вихря по умолчанию
+	const double defaultEpsCol = 0.0; //значит, рассчитать его как 2/3 eps
+
 	/// Радиус убивания дальнего следа
-	const double defaultDistFar = 10.0;
+	const double defaultDistFar = 20.0;
 
 	/// Расстояние, на которое рождаемый вихрь отодвигается от профиля
-	const double defaultDelta = 1.e-5;
+	const double defaultDelta = 1.e-6;
 
 	/// Число вихрей, рождаемых на одной панели
 	const int defaultVortexPerPanel = 1;
@@ -141,10 +150,10 @@ namespace defaults
 	const std::pair<std::string, int> defaultLinearSystemSolver = { "linearSystemGauss", 0 };
 
 	/// Способ вычисления скоростей вихрей
-	const std::pair<std::string, int> defaultVelocityComputation{ "velocityBiotSavart", 0 };
+	const std::pair<std::string, int> defaultVelocityComputation{ "velocityBarnesHut", 1 };
 
 	/// Признак работы в "географической" системе координат
-	const bool defaultGeographicalAngles = false;
+	//const bool defaultGeographicalAngles = false; //Для обдува ветром, когда углы считаются по компасу
 
 	/// Признак поворота сил в профильную систему координат
 	const bool defaultRotateForces = false;
@@ -187,7 +196,7 @@ namespace defaults
 	const double defaultAngle = 0.0;
 
 	/// Хорда
-	const double defaultChord = 1.0;
+	const double defaultChord = 0.0;
 
 	/// Присоединенная масса
 	const Point2D defaultAddedMass = { 0.0, 0.0 };
