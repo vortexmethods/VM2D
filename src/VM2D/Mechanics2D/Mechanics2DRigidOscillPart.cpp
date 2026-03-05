@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidOscillPart.cpp                                   |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include "Mechanics2DRigidOscillPart.h"
@@ -42,11 +42,11 @@
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
+#include "Gmres2D.h"
 
 using namespace VM2D;
 
@@ -65,14 +65,14 @@ MechanicsRigidOscillPart::MechanicsRigidOscillPart(const World2D& W_, size_t num
 
 	strongCoupling = false;
 		
-	ReadSpecificParametersFromDictionary();
+	MechanicsRigidOscillPart::ReadSpecificParametersFromDictionary();
 	Initialize(initVelocity, W_.getAirfoil(numberInPassport_).rcm + initDisplacement, initAngularVelocity, W_.getAirfoil(numberInPassport_).phiAfl + initAngularDisplacement);
 };
 
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidOscillPart::GetHydroDynamForce()
 {
-	W.getTimestat().timeGetHydroDynamForce.first += omp_get_wtime();
+	W.getTimers().start("Force");
 
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
@@ -97,7 +97,7 @@ void MechanicsRigidOscillPart::GetHydroDynamForce()
 		double gAtt = (velK & afl.tau[i]);
 
 		double gAttOld = 0.0;
-		if (W.currentStep > 0)
+		if (W.getCurrentStep() > 0)
 		{
 			auto oldAfl = W.getOldAirfoil(numberInPassport);
 			gAttOld = ((0.5 * (oldAfl.getV(i) + oldAfl.getV(i + 1))) & oldAfl.tau[i]);
@@ -136,7 +136,7 @@ void MechanicsRigidOscillPart::GetHydroDynamForce()
 			viscousMoment += rho * (afl.viscousStress[i] * afl.tau[i]) & rK;
 		}
 
-	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
+	W.getTimers().stop("Force");
 }// GetHydroDynamForce()
 
 // Вычисление скорости центра масс
@@ -194,6 +194,9 @@ void MechanicsRigidOscillPart::Move()
 
 		double Jeff = J;
 
+		Point2D F = hydroDynamForce + viscousForce;
+		double M = hydroDynamMoment + viscousMoment;
+	
 	VcmOld = Vcm;
 	RcmOld = Rcm;
 	PhiOld = Phi;
@@ -209,10 +212,10 @@ void MechanicsRigidOscillPart::Move()
 		double dt = W.getPassport().timeDiscretizationProperties.dt;
 		Point2D kk[4];
 
-		kk[0] = { Vcm[0], (hydroDynamForce[0] - 2.0 * b[0] * Vcm[0] - k[0] * Rcm[0]) / meff[0] };
-		kk[1] = { Vcm[0] + 0.5 * dt * kk[0][1], (hydroDynamForce[0] - 2.0 * b[0] * (Vcm[0] + 0.5 * dt * kk[0][1]) - k[0] * (Rcm[0] + 0.5 * dt * kk[0][0])) / meff[0] };
-		kk[2] = { Vcm[0] + 0.5 * dt * kk[1][1], (hydroDynamForce[0] - 2.0 * b[0] * (Vcm[0] + 0.5 * dt * kk[1][1]) - k[0] * (Rcm[0] + 0.5 * dt * kk[1][0])) / meff[0] };
-		kk[3] = { Vcm[0] + dt * kk[2][1], (hydroDynamForce[0] - 2.0 * b[0] * (Vcm[0] + dt * kk[2][1]) - k[0] * (Rcm[0] + dt * kk[2][0])) / meff[0] };
+		kk[0] = { Vcm[0], (F[0] - 2.0 * b[0] * Vcm[0] - k[0] * Rcm[0]) / meff[0] };
+		kk[1] = { Vcm[0] + 0.5 * dt * kk[0][1], (F[0] - 2.0 * b[0] * (Vcm[0] + 0.5 * dt * kk[0][1]) - k[0] * (Rcm[0] + 0.5 * dt * kk[0][0])) / meff[0] };
+		kk[2] = { Vcm[0] + 0.5 * dt * kk[1][1], (F[0] - 2.0 * b[0] * (Vcm[0] + 0.5 * dt * kk[1][1]) - k[0] * (Rcm[0] + 0.5 * dt * kk[1][0])) / meff[0] };
+		kk[3] = { Vcm[0] + dt * kk[2][1], (F[0] - 2.0 * b[0] * (Vcm[0] + dt * kk[2][1]) - k[0] * (Rcm[0] + dt * kk[2][0])) / meff[0] };
 
 		dr[0] = dt * (kk[0][0] + 2. * kk[1][0] + 2. * kk[2][0] + kk[3][0]) / 6.0;
 		dV[0] = dt * (kk[0][1] + 2. * kk[1][1] + 2. * kk[2][1] + kk[3][1]) / 6.0;
@@ -229,10 +232,10 @@ void MechanicsRigidOscillPart::Move()
 	{
 		double dt = W.getPassport().timeDiscretizationProperties.dt;
 		Point2D kk[4];
-		kk[0] = { Vcm[1], (hydroDynamForce[1] - 2.0 * b[1] * Vcm[1] - k[1] * Rcm[1]) / meff[1]};
-		kk[1] = { Vcm[1] + 0.5 * dt * kk[0][1], (hydroDynamForce[1] - 2.0 * b[1] * (Vcm[1] + 0.5 * dt * kk[0][1]) - k[1] * (Rcm[1] + 0.5 * dt * kk[0][0])) / meff[1]};
-		kk[2] = { Vcm[1] + 0.5 * dt * kk[1][1], (hydroDynamForce[1] - 2.0 * b[1] * (Vcm[1] + 0.5 * dt * kk[1][1]) - k[1] * (Rcm[1] + 0.5 * dt * kk[1][0])) / meff[1]};
-		kk[3] = { Vcm[1] + dt * kk[2][1], (hydroDynamForce[1] - 2.0 * b[1] * (Vcm[1] + dt * kk[2][1]) - k[1] * (Rcm[1] + dt * kk[2][0])) / meff[1]};
+		kk[0] = { Vcm[1], (F[1] - 2.0 * b[1] * Vcm[1] - k[1] * Rcm[1]) / meff[1]};
+		kk[1] = { Vcm[1] + 0.5 * dt * kk[0][1], (F[1] - 2.0 * b[1] * (Vcm[1] + 0.5 * dt * kk[0][1]) - k[1] * (Rcm[1] + 0.5 * dt * kk[0][0])) / meff[1]};
+		kk[2] = { Vcm[1] + 0.5 * dt * kk[1][1], (F[1] - 2.0 * b[1] * (Vcm[1] + 0.5 * dt * kk[1][1]) - k[1] * (Rcm[1] + 0.5 * dt * kk[1][0])) / meff[1]};
+		kk[3] = { Vcm[1] + dt * kk[2][1], (F[1] - 2.0 * b[1] * (Vcm[1] + dt * kk[2][1]) - k[1] * (Rcm[1] + dt * kk[2][0])) / meff[1]};
 				
 		dr[1] = dt * (kk[0][0] + 2. * kk[1][0] + 2. * kk[2][0] + kk[3][0]) / 6.0;
 		dV[1] = dt * (kk[0][1] + 2. * kk[1][1] + 2. * kk[2][1] + kk[3][1]) / 6.0;
@@ -250,10 +253,10 @@ void MechanicsRigidOscillPart::Move()
 		double dt = W.getPassport().timeDiscretizationProperties.dt;
 		Point2D kk[4];
 
-		kk[0] = { Wcm, (hydroDynamMoment - 2.0 * bw * Wcm - kw * Phi) / Jeff };
-		kk[1] = { Wcm + 0.5 * dt * kk[0][1], (hydroDynamMoment - 2.0 * bw * (Wcm + 0.5 * dt * kk[0][1]) - kw * (Phi + 0.5 * dt * kk[0][0])) / Jeff };
-		kk[2] = { Wcm + 0.5 * dt * kk[1][1], (hydroDynamMoment - 2.0 * bw * (Wcm + 0.5 * dt * kk[1][1]) - kw * (Phi + 0.5 * dt * kk[1][0])) / Jeff };
-		kk[3] = { Wcm + dt * kk[2][1], (hydroDynamMoment - 2.0 * bw * (Wcm + dt * kk[2][1]) - kw * (Phi + dt * kk[2][0])) / Jeff };
+		kk[0] = { Wcm, (M - 2.0 * bw * Wcm - kw * Phi) / Jeff };
+		kk[1] = { Wcm + 0.5 * dt * kk[0][1], (M - 2.0 * bw * (Wcm + 0.5 * dt * kk[0][1]) - kw * (Phi + 0.5 * dt * kk[0][0])) / Jeff };
+		kk[2] = { Wcm + 0.5 * dt * kk[1][1], (M - 2.0 * bw * (Wcm + 0.5 * dt * kk[1][1]) - kw * (Phi + 0.5 * dt * kk[1][0])) / Jeff };
+		kk[3] = { Wcm + dt * kk[2][1], (M - 2.0 * bw * (Wcm + dt * kk[2][1]) - kw * (Phi + dt * kk[2][0])) / Jeff };
 
 		dphi = dt * (kk[0][0] + 2. * kk[1][0] + 2. * kk[2][0] + kk[3][0]) / 6.0;
 		dw = dt * (kk[0][1] + 2. * kk[1][1] + 2. * kk[2][1] + kk[3][1]) / 6.0;

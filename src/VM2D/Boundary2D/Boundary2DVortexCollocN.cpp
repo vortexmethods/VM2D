@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2DVortexCollocN.cpp                                      |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 
@@ -44,11 +44,11 @@
 #include "Airfoil2D.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
+#include "Gmres2D.h"
 
 using namespace VM2D;
 
@@ -255,7 +255,6 @@ void BoundaryVortexCollocN::GPUCalcConvVelocityToSetOfPointsFromSheets(const Wak
 		std::vector<Point2D>& Vel = velo;		
 		std::vector<Point2D> newV(npt);
 		double*& dev_ptr_vel = pointsDb.devVelPtr;
-		double eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
 
 		//Явная синхронизация слоев не нужна, т.к. она выполняется в Gpu::RefreshAfls() 
 		if (npt > 0)
@@ -265,7 +264,7 @@ void BoundaryVortexCollocN::GPUCalcConvVelocityToSetOfPointsFromSheets(const Wak
 				dev_ptr_freeVortexSheet, dev_ptr_freeVortexSheetLin, \
 				dev_ptr_attachedVortexSheet, dev_ptr_attachedVortexSheetLin, \
 				dev_ptr_attachedSourceSheet, dev_ptr_attachedSourceSheetLin, \
-				dev_ptr_vel, eps2);			
+				dev_ptr_vel);			
 			//double tt2 = omp_get_wtime();
 			//std::cout << "SHEET: " << tt2 - tt1 << std::endl;
 
@@ -312,11 +311,10 @@ void BoundaryVortexCollocN::GetInfluenceFromVorticesToRectPanel(size_t panel, co
 
 		const Point2D& posJ = vt.r();
 		const double& gamJ = vt.g();
+		const double sigma2 = sqr(vt.sigma());
 
 		Point2D d = posI - posJ;
-		//std::cout << "d = " << d << std::endl;
-
-		velI -= (gamJ * afl.len[panel] / std::max(d.length2(), W.getPassport().wakeDiscretizationProperties.eps2)) * (afl.tau[panel] & d);
+		velI -= (gamJ * afl.len[panel] / std::max(d.length2(), sigma2)) * (afl.tau[panel] & d);
 	}
 }// GetInfluenceFromVorticesToRectPanel(...)
 
@@ -335,10 +333,11 @@ void BoundaryVortexCollocN::GetInfluenceFromSourcesToRectPanel(size_t panel, con
 
 		const Point2D& posJ = vt.r();
 		const double& gamJ = vt.g();
+		const double sigma2 = sqr(vt.sigma());
 
 		Point2D d = posI - posJ;
 
-		velI += (gamJ * afl.len[panel] / std::max(d.length2(), W.getPassport().wakeDiscretizationProperties.eps2)) * (afl.nrm[panel] & d);
+		velI += (gamJ * afl.len[panel] / std::max(d.length2(), sigma2)) * (afl.nrm[panel] & d);
 	}	
 }// GetInfluenceFromSourcesToRectPanel(...)
 
@@ -402,7 +401,7 @@ void BoundaryVortexCollocN::GetInfluenceFromVInfToRectPanel(std::vector<double>&
 
 #pragma omp parallel for default(none) shared(vInfRhs, np)
 	for (int i = 0; i < np; ++i)	
-		vInfRhs[i] = afl.nrm[i] & W.getPassport().physicalProperties.V0();
+		vInfRhs[i] = afl.nrm[i] & W.getV0();
 	
 }// GetInfluenceFromVInfToRectPanel(...)
 

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: World2D.h                                                        |
 | Info: Source code of VM2D                                                   |
@@ -33,37 +33,45 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #ifndef WORLD2D_H
 #define WORLD2D_H
 
 #include "Gpu2D.h"
-#include "Times2D.h"
 #include "WorldGen.h"
+#include "Passport2D.h"
+#include "Velocity2D.h"
+#include "cpuTreeInfo.h"
+
 
 namespace VM2D
 {
 	class Airfoil;
+	class AirfoilGeometry;
 	class Boundary;
 	class MeasureVP;
 	class Mechanics;
 	class Passport;
 	class Times;
+	class TimersGen;
 	class Velocity;	
 	class Wake;
 	class WakeDataBase;
+	class GmresSolver;
 
 	/*!
 	\brief Класс, опеделяющий текущую решаемую задачу
+
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\author Колганова Александра Олеговна
+
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 	class World2D : public VMlib::WorldGen
 	{
@@ -72,7 +80,7 @@ namespace VM2D
 		std::vector<std::unique_ptr<Airfoil>> airfoil;
 
 		/// Список умных указателей на обтекаемые профили для сохранения старого положения
-		std::vector<std::unique_ptr<Airfoil>> oldAirfoil;
+		std::vector<std::unique_ptr<AirfoilGeometry>> oldAirfoil;
 
 		/// Список умных указателей на формирователи граничных условий на профилях
 		std::vector<std::unique_ptr<Boundary>> boundary;
@@ -95,13 +103,22 @@ namespace VM2D
 		/// Умный указатель на алгоритм вычисления полей скоростей и давления (для сохранения в файл)
 		std::unique_ptr<MeasureVP> measureVP;
 
-	public:
-	
+public:	
+		mutable int gabb;
+		mutable int check01;
+		mutable int check02;
+		mutable int checkPan;
+
+		/// Деревья для быстрого метода
+		std::unique_ptr<CpuTreeInfo> inflTreeWake;
+		std::unique_ptr<CpuTreeInfo> cntrTreeWake;
+		std::unique_ptr<CpuTreeInfo> cntrTreeVP;
+
+		//для вспомогательных операций
+		std::unique_ptr<CpuTreeInfo> auxTreePnl;
 	private:
 		/// Матрица системы
-		//Eigen::MatrixXd matr;
 		Eigen::MatrixXd matrReord;
-		//Eigen::MatrixXd matrSkos;
 
 		/// Матрица, состоящая из пар матриц, в которых хранятся касательные и нормальные компоненты интегралов от ядра
 		std::vector<std::vector<std::pair<Eigen::MatrixXd, Eigen::MatrixXd>>> IQ;
@@ -113,9 +130,7 @@ namespace VM2D
 		bool useInverseMatrix;
 
 		/// Правая часть системы
-		//Eigen::VectorXd rhs;
 		Eigen::VectorXd rhsReord;
-		//Eigen::VectorXd rhsSkos;
 
 		/// Решение системы
 		Eigen::VectorXd sol;
@@ -127,6 +142,19 @@ namespace VM2D
 		mutable Gpu cuda;
 
 	public:
+
+		/// Возврат текущей скорости набегающего потока
+		Point2D getV0() const
+		{
+			return passport.physicalProperties.V0(getCurrentTime());
+		}
+
+		/// Возврат признака того, что хотя бы один из профилей подвижный
+		bool isAnyMovable() const;
+
+		/// Возврат признака того, что хотя бы один из профилей подвижный или деформируемый
+		bool isAnyMovableOrDeformable() const;
+
 		/// \brief Возврат константной ссылки на объект профиля
 		///
 		/// \param[in] i номер профиля, константная ссылка на который возвращается
@@ -137,7 +165,7 @@ namespace VM2D
 		///
 		/// \param[in] i номер старого профиля, константная ссылка на который возвращается
 		/// \return константную ссылку на i-й старый профиль
-		const Airfoil& getOldAirfoil(size_t i) const { return *oldAirfoil[i]; };
+		const AirfoilGeometry& getOldAirfoil(size_t i) const { return *oldAirfoil[i]; };
 
 		/// \brief Возврат неконстантной ссылки на объект профиля
 		///
@@ -195,6 +223,8 @@ namespace VM2D
 		/// \return неконстантную ссылку на i-ю механику
 		Mechanics& getNonConstMechanics(size_t i) const { return *mechanics[i]; };
 
+		const std::vector<std::unique_ptr<Mechanics>>& getMechanicsVector() const { return mechanics; };
+
 		/// \brief Возврат константной ссылки на вихревой след
 		///
 		/// \return константную ссылку на вихревой след
@@ -205,6 +235,12 @@ namespace VM2D
 		/// \return неконстантную ссылку на вихревой след
 		Wake& getNonConstWake() const { return *wake; };
 
+		CpuTreeInfo& getInflTreeWake() const { return *inflTreeWake; };
+		CpuTreeInfo& getCntrTreeWake() const { return *cntrTreeWake; };
+		CpuTreeInfo& getAuxTreePnl() const { return *auxTreePnl; };
+		CpuTreeInfo& getCntrTreeVP() const { return *cntrTreeVP; };
+
+
 		/// \brief Возврат константной ссылки на источники в области течения
 		///
 		/// \return константную ссылку на источники в области течения
@@ -214,7 +250,7 @@ namespace VM2D
 		///
 		/// \return константную ссылку на объект для вычисления скоростей
 		const Velocity& getVelocity() const { return *velocity; };
-				
+
 		/// \brief Возврат неконстантной ссылки на объект для вычисления скоростей
 		///
 		/// \return неконстантную ссылку на объект для вычисления скоростей
@@ -224,6 +260,11 @@ namespace VM2D
 		///
 		/// \return константную ссылку на паспорт
 		const Passport& getPassport() const { return passport; };
+
+		/// \brief Возврат неконстантной ссылки на паспорт
+		///
+		/// \return неконстантную ссылку на паспорт
+		Passport& getNonConstPassport() const { return const_cast<Passport&>(passport); };
 
 		/// \brief Возврат константной ссылки на объект, связанный с видеокартой (GPU)
 		///
@@ -243,7 +284,7 @@ namespace VM2D
 		/// \brief Возврат ссылки на временную статистику выполнения шага расчета по времени
 		///
 		/// \return ссылку на временную статистику выполнения шага расчета по времени
-		Times& getTimestat() const { return dynamic_cast<Times&>(*timestat); };
+		VMlib::TimersGen& getTimers() const { return *timers; };
 
 		bool ifDivisible(int val) const { return ((val > 0) && (!(currentStep % val))); };
 
@@ -270,13 +311,15 @@ namespace VM2D
 		/// \brief Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных), а также в точках вычисления VP 
 		///
 		/// Вызывается в Step()
-		void CalcVortexVelo(bool shiftTime);
-
+		void CalcVortexVelo();
+#ifdef TURB
+		void CalcVeloDifference(std::vector<double>& nut) const;
+#endif
 		/// \brief Вычисление скоростей панелей и интенсивностей присоединенных слоев вихрей и источников
 		///
 		/// Вызывается в Step()
 		void CalcPanelsVeloAndAttachedSheets();
-		
+
 		/// \brief Набор матрицы, правой части и решение СЛАУ
 		///
 		/// Вызывается в Step()
@@ -286,19 +329,19 @@ namespace VM2D
 		///
 		/// Вызывается в Step()
 		/// \param[out] newPos новые позиции вихрей
-		void MoveVortexes(std::vector<Point2D>& newPos);
+		void MoveVortexes(std::vector<Point2D>& newPos, std::vector<double>* nutPtr = nullptr);
 
 		/// \brief Проверка проникновения вихрей внутрь  профиля
 		///
 		/// Вызывается в Step()
 		/// \param[in] newPos новые позиции вихрей
 		/// \param[in] oldAirfoil константная ссылка на вектор из умных указателей на старые положения профилей
-		void CheckInside(std::vector<Point2D>& newPos, const std::vector<std::unique_ptr<Airfoil>>& oldAirfoil);
+		void CheckInside(std::vector<Point2D>& newPos, const std::vector<std::unique_ptr<AirfoilGeometry>>& oldAirfoil);
 
 		/// \brief Перемещение вихрей и профилей на шаге
 		///
 		/// Вызывается в Step()
-		void WakeAndAirfoilsMotion(bool dynamics);
+		void WakeAndAirfoilsMotion(bool dynamics, std::vector<double>* nutPtr = nullptr);
 
 
 		/// \brief Конструктор
@@ -308,7 +351,7 @@ namespace VM2D
 
 		/// Деструктор
 		~World2D() {};
-		
+
 		/// Метод-обертка для вызова метода генерации заголовка файла нагрузок и заголовка файла положения (последнее --- если профиль движется) 
 		/// \param[in] mechanicsNumber номер профиля, для которого генерируется заголовок файла
 		void GenerateMechanicsHeader(size_t mechanicsNumber);
@@ -318,6 +361,15 @@ namespace VM2D
 		// Реализация виртуальных функций
 		virtual void Step() override;
 		//virtual void ZeroStep() override;
+
+		VMlib::vmTimer timerInitialBuild;
+		VMlib::vmTimer timerRhs;
+		VMlib::vmTimer timerFillMatrix;
+		VMlib::vmTimer timerSlaeSolve;
+
+		VMlib::vmTimer timerConvVelo;
+		VMlib::vmTimer timerInside;
+		VMlib::vmTimer timerMerging;
 	};
 
 }//namespace VM2D

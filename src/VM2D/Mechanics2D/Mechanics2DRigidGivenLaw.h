@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidGivenLaw.h                                       |
 | Info: Source code of VM2D                                                   |
@@ -33,12 +33,12 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
-#ifndef MECHANICSRIGIDGIVENLAW_H
-#define MECHANICSRIGIDGIVENLAW_H
+#ifndef MECHANICS2DRIGIDGIVENLAW_H
+#define MECHANICS2DRIGIDGIVENLAW_H
 
 #include <functional>
 
@@ -57,10 +57,10 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
+	\author Колганова Александра Олеговна
 
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 
 
@@ -81,8 +81,10 @@ namespace VM2D
 			//else
 			//	return initPosition + (t - 0.5 * timeAccel) * targetVelocity;
 
-			return initPosition + Point2D{ targetAmplitude[0] * sin(DPI * t / timeAccel), 
-										   targetAmplitude[1] * sin(DPI * t / timeAccel) };
+			/*return initPosition + Point2D{ targetAmplitude[0] * sin(DPI * t / timeAccel), 
+										   targetAmplitude[1] * sin(DPI * t / timeAccel) };*/
+
+				return Point2D{ 0.0, 0.1 * t };
 
 		};
 
@@ -93,10 +95,10 @@ namespace VM2D
 			//else
 			//	return targetVelocity;
 
-			return Point2D{ targetAmplitude[0] * DPI / timeAccel * cos(DPI * t / timeAccel),
-							targetAmplitude[1] * DPI / timeAccel * cos(DPI * t / timeAccel) };
+			/*return Point2D{ targetAmplitude[0] * DPI / timeAccel * cos(DPI * t / timeAccel),
+							targetAmplitude[1] * DPI / timeAccel * cos(DPI * t / timeAccel) };*/
 
-
+				return Point2D{ 0.0, 0.1 };
 		};
 
 		std::function<double(double)> RotationAngle = [=](double t) -> double

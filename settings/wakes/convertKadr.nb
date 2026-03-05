@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     46630,       1187]
-NotebookOptionsPosition[     44482,       1141]
-NotebookOutlinePosition[     44887,       1157]
-CellTagsIndexPosition[     44844,       1154]
+NotebookDataLength[     46813,       1189]
+NotebookOptionsPosition[     44670,       1143]
+NotebookOutlinePosition[     45070,       1159]
+CellTagsIndexPosition[     45027,       1156]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -161,7 +161,7 @@ Kadr400000.vtk\"\>", ",", "\<\"saved\"\>", ",", "7", ",", "\<\"April\"\>",
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource[
                 "FEStrings", "sizeBriefExplanation"], StandardForm],
-               ImageSizeCache->{49.2, {2., 7.}}],
+               ImageSizeCache->{49.2099609375, {2., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarCategory",
              StripOnInput->False],
@@ -183,7 +183,7 @@ Kadr400000.vtk\"\>", ",", "\<\"saved\"\>", ",", "7", ",", "\<\"April\"\>",
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
                 StandardForm],
-               ImageSizeCache->{40.2, {1., 7.}}],
+               ImageSizeCache->{39.884765625, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -213,7 +213,7 @@ Kadr400000.vtk\"\>", ",", "\<\"saved\"\>", ",", "7", ",", "\<\"April\"\>",
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowMore"], 
                 StandardForm],
-               ImageSizeCache->{46.800000000000004`, {1., 7.}}],
+               ImageSizeCache->{46.73583984375, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -230,7 +230,6 @@ Kadr400000.vtk\"\>", ",", "\<\"saved\"\>", ",", "7", ",", "\<\"April\"\>",
             FrameMargins->0,
             ImageSize->{Automatic, 25}],
            Appearance->None,
-           
            ButtonFunction:>OutputSizeLimit`ButtonFunction[
             OutputSizeLimit`Defer, 25, 33465953605210051459, 5 2],
            Enabled->True,
@@ -243,7 +242,7 @@ Kadr400000.vtk\"\>", ",", "\<\"saved\"\>", ",", "7", ",", "\<\"April\"\>",
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowAll"], 
                 StandardForm],
-               ImageSizeCache->{34.2, {1., 7.}}],
+               ImageSizeCache->{34.4970703125, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -273,7 +272,7 @@ Kadr400000.vtk\"\>", ",", "\<\"saved\"\>", ",", "7", ",", "\<\"April\"\>",
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeChangeLimit"], 
                 StandardForm],
-               ImageSizeCache->{59.400000000000006`, {1., 7.}}],
+               ImageSizeCache->{59.73046875, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -505,7 +504,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource[
                 "FEStrings", "sizeBriefExplanation"], StandardForm],
-               ImageSizeCache->{49.2, {2., 7.}}],
+               ImageSizeCache->{49.2099609375, {2., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarCategory",
              StripOnInput->False],
@@ -527,7 +526,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
                 StandardForm],
-               ImageSizeCache->{40.2, {1., 7.}}],
+               ImageSizeCache->{39.884765625, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -557,7 +556,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowMore"], 
                 StandardForm],
-               ImageSizeCache->{46.800000000000004`, {1., 7.}}],
+               ImageSizeCache->{46.73583984375, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -587,7 +586,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowAll"], 
                 StandardForm],
-               ImageSizeCache->{34.2, {1., 7.}}],
+               ImageSizeCache->{34.4970703125, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -617,7 +616,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeChangeLimit"], 
                 StandardForm],
-               ImageSizeCache->{59.400000000000006`, {1., 7.}}],
+               ImageSizeCache->{59.73046875, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -887,7 +886,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource[
                 "FEStrings", "sizeBriefExplanation"], StandardForm],
-               ImageSizeCache->{49.2, {2., 7.}}],
+               ImageSizeCache->{49.2099609375, {2., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarCategory",
              StripOnInput->False],
@@ -909,7 +908,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
                 StandardForm],
-               ImageSizeCache->{40.2, {1., 7.}}],
+               ImageSizeCache->{39.884765625, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -917,7 +916,8 @@ Cell[BoxData[
              StyleBox[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
-                StandardForm]],
+                StandardForm],
+               ImageSizeCache->{39.884765625, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControlActive",
              StripOnInput->False]}, Dynamic[
@@ -939,7 +939,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowMore"], 
                 StandardForm],
-               ImageSizeCache->{46.800000000000004`, {1., 7.}}],
+               ImageSizeCache->{46.73583984375, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -947,7 +947,8 @@ Cell[BoxData[
              StyleBox[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowMore"], 
-                StandardForm]],
+                StandardForm],
+               ImageSizeCache->{46.73583984375, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControlActive",
              StripOnInput->False]}, Dynamic[
@@ -969,7 +970,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowAll"], 
                 StandardForm],
-               ImageSizeCache->{34.2, {1., 7.}}],
+               ImageSizeCache->{34.4970703125, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -999,7 +1000,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeChangeLimit"], 
                 StandardForm],
-               ImageSizeCache->{59.400000000000006`, {1., 7.}}],
+               ImageSizeCache->{59.73046875, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControl",
              StripOnInput->False], True->
@@ -1008,7 +1009,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeChangeLimit"], 
                 StandardForm],
-               ImageSizeCache->{59.400000000000006`, {1., 7.}}],
+               ImageSizeCache->{59.73046875, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True], "SuggestionsBarControlActive",
              StripOnInput->False]}, Dynamic[
@@ -1076,13 +1077,13 @@ Cell[BoxData[
      RowBox[{
      "\"\</*--------------------------------*- VM2D \
 -*-----------------*---------------*\\\\\n| ##  ## ##   ##  ####  #####   |   \
-                         | Version 1.12   |\n| ##  ## ### ### ##  ## ##  ##  \
-|  VM2D: Vortex Method       | 2024/01/14     |\n| ##  ## ## # ##    ##  ##  \
+                         | Version 1.14   |\n| ##  ## ### ### ##  ## ##  ##  \
+|  VM2D: Vortex Method       | 2026/03/06     |\n| ##  ## ## # ##    ##  ##  \
 ##  |  for 2D Flow Simulation    *----------------*\n|  ####  ##   ##   ##   \
 ##  ##  |  Open Source Code                           |\n|   ##   ##   ## \
 ###### #####   |  https://www.github.com/vortexmethods/VM2D  |\n|             \
                                                                 |\n| \
-Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |\
+Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |\
 \n*---------------------------------------------------------------------------\
 --*\n| File name: wakeBridge\>\"", "<>", 
       RowBox[{"ToString", "[", "n", "]"}], "<>", 
@@ -1128,7 +1129,8 @@ Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |\
   3.795267734164572*^9, 3.7952677454397273`*^9}, {3.795267783489689*^9, 
   3.79526780203953*^9}, {3.7952765116992865`*^9, 3.7952765161996303`*^9}, {
   3.8043928547145805`*^9, 3.804392858328006*^9}, {3.8290335534009285`*^9, 
-  3.829033569662156*^9}},ExpressionUUID->"55d00817-e2d5-4426-9e41-\
+  3.829033569662156*^9}, {3.9817386617476015`*^9, 
+  3.9817386697858953`*^9}},ExpressionUUID->"55d00817-e2d5-4426-9e41-\
 00d6ac47f285"],
 
 Cell[BoxData["\<\"wakeBridge51841\"\>"], "Output",
@@ -1141,7 +1143,7 @@ a17a8317e694"]
 },
 WindowSize->{1141.2, 574.8},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
-FrontEndVersion->"12.2 for Microsoft Windows (64-bit) (December 12, 2020)",
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (July 9, 2021)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"e87ee6d4-2c41-49fc-adb9-312084ee0077"
 ]
@@ -1157,37 +1159,37 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 229, 5, 44, "Input",ExpressionUUID->"e18fbabd-ca33-4a11-a3a5-2746d0420c66"],
+Cell[580, 22, 229, 5, 28, "Input",ExpressionUUID->"e18fbabd-ca33-4a11-a3a5-2746d0420c66"],
 Cell[812, 29, 303, 5, 32, "Output",ExpressionUUID->"0e7c3796-cbb2-47f2-98e4-53a98d5d28d9"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[1152, 39, 270, 7, 44, "Input",ExpressionUUID->"6bb05f9f-008f-4192-a8eb-3d56acd2dcea"],
-Cell[1425, 48, 11824, 287, 242, "Output",ExpressionUUID->"3deb7e2f-fd7f-431c-aafa-07f748d391b2"]
+Cell[1152, 39, 270, 7, 28, "Input",ExpressionUUID->"6bb05f9f-008f-4192-a8eb-3d56acd2dcea"],
+Cell[1425, 48, 11825, 286, 236, "Output",ExpressionUUID->"3deb7e2f-fd7f-431c-aafa-07f748d391b2"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[13286, 340, 259, 7, 28, "Input",ExpressionUUID->"ec34256c-402e-449d-a32e-a83a67eb00f7"],
-Cell[13548, 349, 256, 4, 32, "Output",ExpressionUUID->"0040f768-0f0c-4f4e-97bc-b0be5a47dcfa"]
+Cell[13287, 339, 259, 7, 28, "Input",ExpressionUUID->"ec34256c-402e-449d-a32e-a83a67eb00f7"],
+Cell[13549, 348, 256, 4, 32, "Output",ExpressionUUID->"0040f768-0f0c-4f4e-97bc-b0be5a47dcfa"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[13841, 358, 337, 9, 28, "Input",ExpressionUUID->"cbea5d09-5aad-4e4d-a771-d4ce0b01def0"],
-Cell[14181, 369, 12363, 312, 216, "Output",ExpressionUUID->"ad6079f3-8966-4932-b892-52942767381c"]
+Cell[13842, 357, 337, 9, 28, "Input",ExpressionUUID->"cbea5d09-5aad-4e4d-a771-d4ce0b01def0"],
+Cell[14182, 368, 12376, 312, 212, "Output",ExpressionUUID->"ad6079f3-8966-4932-b892-52942767381c"]
 }, Open  ]],
-Cell[26559, 684, 728, 19, 28, "Input",ExpressionUUID->"61da1cc7-df84-4f6f-9dce-2f914f9f5b3e"],
+Cell[26573, 683, 728, 19, 28, "Input",ExpressionUUID->"61da1cc7-df84-4f6f-9dce-2f914f9f5b3e"],
 Cell[CellGroupData[{
-Cell[27312, 707, 236, 6, 28, "Input",ExpressionUUID->"9ff03d71-5c44-49b1-9fb8-2c782379a48d"],
-Cell[27551, 715, 456, 11, 32, "Output",ExpressionUUID->"8d073564-5dae-4248-b4ea-0139764fc6d9"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[28044, 731, 238, 6, 28, "Input",ExpressionUUID->"528fb137-b7af-47fa-8992-355b1476494b"],
-Cell[28285, 739, 441, 11, 32, "Output",ExpressionUUID->"f5438822-bb1c-4483-9651-2c2068bb8b21"]
+Cell[27326, 706, 236, 6, 28, "Input",ExpressionUUID->"9ff03d71-5c44-49b1-9fb8-2c782379a48d"],
+Cell[27565, 714, 456, 11, 32, "Output",ExpressionUUID->"8d073564-5dae-4248-b4ea-0139764fc6d9"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[28763, 755, 362, 11, 28, "Input",ExpressionUUID->"6e894bb6-56f1-48e2-92a0-cbfe848dfe85"],
-Cell[29128, 768, 12005, 295, 224, "Output",ExpressionUUID->"95f367b7-9a67-48ac-b622-12fc5adaf636"]
+Cell[28058, 730, 238, 6, 28, "Input",ExpressionUUID->"528fb137-b7af-47fa-8992-355b1476494b"],
+Cell[28299, 738, 441, 11, 32, "Output",ExpressionUUID->"f5438822-bb1c-4483-9651-2c2068bb8b21"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[41170, 1068, 3016, 63, 455, "Input",ExpressionUUID->"55d00817-e2d5-4426-9e41-00d6ac47f285"],
-Cell[44189, 1133, 277, 5, 32, "Output",ExpressionUUID->"6dc4b216-c668-4d69-a66b-a17a8317e694"]
+Cell[28777, 754, 362, 11, 28, "Input",ExpressionUUID->"6e894bb6-56f1-48e2-92a0-cbfe848dfe85"],
+Cell[29142, 767, 12126, 297, 220, "Output",ExpressionUUID->"95f367b7-9a67-48ac-b622-12fc5adaf636"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[41305, 1069, 3069, 64, 333, "Input",ExpressionUUID->"55d00817-e2d5-4426-9e41-00d6ac47f285"],
+Cell[44377, 1135, 277, 5, 32, "Output",ExpressionUUID->"6dc4b216-c668-4d69-a66b-a17a8317e694"]
 }, Open  ]]
 }
 ]

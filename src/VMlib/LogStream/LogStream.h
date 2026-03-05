@@ -1,28 +1,28 @@
-/*--------------------------------*- VMlib -*----------------*---------------*\
-| ##  ## ##   ## ##   ##  ##    |                            | Version 1.12   |
-| ##  ## ### ### ##       ##    |  VMlib: VM2D/VM3D Library  | 2024/01/14     |
-| ##  ## ## # ## ##   ##  ####  |  Open Source Code          *----------------*
-|  ####  ##   ## ##   ##  ## ## |  https://www.github.com/vortexmethods/VM2D  |
-|   ##   ##   ## #### ### ####  |  https://www.github.com/vortexmethods/VM3D  |
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: LogStream.h                                                      |
-| Info: Source code of VMlib                                                  |
+| Info: Source code of VM2D                                                   |
 |                                                                             |
-| This file is part of VMlib.                                                 |
-| VMLib is free software: you can redistribute it and/or modify it            |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VMlib is distributed in the hope that it will be useful, but WITHOUT        |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
-| along with VMlib.  If not, see <http://www.gnu.org/licenses/>.              |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
 \*---------------------------------------------------------------------------*/
 
 
@@ -30,8 +30,11 @@
 \file
 \brief Заголовочный файл с описанием класса LogStream
 \author Марчевский Илья Константинович
-\Version 1.12
-\date 14 января 2024 г.
+\author Сокол Ксения Сергеевна
+\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #ifndef LOGSTREAM_H
@@ -46,8 +49,8 @@ namespace VMlib
 	/*!
 	\brief Класс, определяющий работу с потоком логов
 	\author Марчевский Илья Константинович
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 
 	class LogStream

@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: MeasureVP2D.h                                                    |
 | Info: Source code of VM2D                                                   |
@@ -33,12 +33,12 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
-#ifndef MEASUREVP_H
-#define MEASUREVP_H
+#ifndef MEASUREVP2D_H
+#define MEASUREVP2D_H
 
 #include <memory>
 
@@ -55,10 +55,10 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
+	\author Колганова Александра Олеговна
 
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 
 	class MeasureVP
@@ -69,12 +69,16 @@ namespace VM2D
 
 		/// Точки, которые считываются из файла (давление пишется в vtk и csv-файлы)
 		std::vector<Point2D> historyPoints;
+		
+		std::vector<std::ostringstream> sstr;
+		int sstrCounter;
+
 
 	public:
 		/// Точки, в которых давление нужно вычислять в служебных целях (для задач гидроупругости), формируются программно
 		std::vector<Point2D> elasticPoints;
 
-	private:
+	//private:
 		/// \brief Умный указатель на точки, в которых нужно вычислять в данный момент времени 
 		/// Хранятся в виде "мнимой" системы вихрей, чтобы воспользоваться методом CalcConvVeloToSetOfPoints(...)
 		std::unique_ptr<WakeDataBase> wakeVP;
@@ -108,6 +112,7 @@ namespace VM2D
 		///
 		/// \param[in] dir константная ссылка на строку --- имя каталога, где лежит cчитываемый файл
 		void ReadPointsFromFile(const std::string& dir);
+		void SetPoints(const std::vector<Point2D>& points, const std::vector<Point2D>& history);
 
 		/// \brief Инициализация векторов для вычисления скоростей и давлений
 		/// Вызывается только на тех шагах расчета, когда это необходимо 
@@ -115,6 +120,9 @@ namespace VM2D
 
 		/// \brief Расчет поля давления
 		void CalcPressure();
+#ifdef USE_CUDA
+		void GPUCalcPressure();
+#endif
 
 		/// Сохранение в файл вычисленных скоростей и давлений
 		void SaveVP();
@@ -147,6 +155,12 @@ namespace VM2D
 		/// \return неконстантную ссылку на начало domainRadius
 		std::vector<double>& getNonConstDomainRadius() { return domainRadius; };
 
+		size_t getTotalNumberOfRealPoints() const { return initialPoints.size() + historyPoints.size(); };
+
+#if defined(USE_CUDA)
+		/// Адрес на видеокарте, где будет храниться вычисленные давления
+		mutable double* devPressurePtr;
+#endif
 	};
 
 }//namespace VM2D

@@ -1,5 +1,16 @@
 ﻿cmake_minimum_required(VERSION 3.13.0)
+cmake_policy(SET CMP0111 OLD)
 project(VM)
+
+##############################################
+
+set(ENABLE_CUDA ON)
+set(CUDA_ARCHITECTURE "70")
+set(ENABLE_CUDNN ON)
+
+set(ENABLE_FMM OFF)
+
+##############################################
 
 set(VM2D_DIR "build")
 
@@ -16,13 +27,6 @@ message(STATUS "Work directory ${VM_WORK_DIR}")
 #message(STATUS "CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}")
 
 
-#include(CheckCXXCompilerFlag)
-#CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-#if(COMPILER_SUPPORTS_CXX11)
-#	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-#	set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -std=c++11")
-#endif()
-
 message (STATUS "C++ compiler is: " ${CMAKE_CXX_COMPILER})
 
 if (CMAKE_COMPILER_IS_INTEL OR (${CMAKE_VS_PLATFORM_TOOLSET} MATCHES "Intel") OR (${CMAKE_CXX_COMPILER} MATCHES "Intel")  OR (${CMAKE_CXX_COMPILER} MATCHES "intel") )
@@ -30,11 +34,17 @@ if (CMAKE_COMPILER_IS_INTEL OR (${CMAKE_VS_PLATFORM_TOOLSET} MATCHES "Intel") OR
 	if (WIN32)
 	   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /O2 /fp:except /fp:precise")
 	else() 
-       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -fp-model=except -fp-model=precise")
+       #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -fp-model=except -fp-model=precise -Wno-deprecated-declarations")
+       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fp-model=precise -Wno-deprecated-declarations")
     endif()	   
 else()
     message (STATUS "Flags for non-Intel C++ compiler")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+	if (WIN32)
+	   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+	else()
+	   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wno-deprecated-declarations")
+	endif()
+
 endif()
 
 
@@ -43,6 +53,10 @@ find_package(OpenMP)
 if (OPENMP_FOUND)
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+	message (STATUS "OpenMP version: ${OpenMP_CXX_VERSION_MAJOR}")
+	if (OpenMP_CXX_VERSION_MAJOR LESS 3.0)
+		add_definitions(-DOLD_OMP)
+	endif()	
 endif()
 
 
@@ -65,17 +79,51 @@ if (MPI_FOUND)
 	add_definitions(-DUSE_MPI)
 endif()
 
+if (ENABLE_FMM)
+    find_package(TBB REQUIRED)
+	add_definitions(-DUSE_FMM)  
+endif()
 
-include(CheckLanguage)
-check_language(CUDA)
-if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)
-   enable_language(CUDA)   
-   #set (ARCHITECTURE "60")
-   set (ARCHITECTURE "60;70")
-   #set (ARCHITECTURE "70;80")  
-   
-   #COMMENT THIS LINE IF THERE IS INSTALLED CUDA SDK BUT YOU DON'T WANT TO USE GPU   
-   add_definitions(-DUSE_CUDA)   
+
+if(ENABLE_CUDA)
+    include(CheckLanguage)
+    check_language(CUDA)
+    if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)
+       enable_language(CUDA)   
+       set(CMAKE_CUDA_STANDARD 17)
+       
+       #   set (ARCHITECTURE "60")
+       #   set (ARCHITECTURE "70")
+       #   set (ARCHITECTURE "90")
+       #   set (ARCHITECTURE "70;80")  
+       set (ARCHITECTURE "${CUDA_ARCHITECTURE}")
+       include_directories("/usr/local/cuda/targets/x86_64-linux/include/")   
+       	      
+       #   #COMMENT THIS LINE IF THERE IS INSTALLED CUDA SDK BUT YOU DON'T WANT TO USE GPU   
+       add_definitions(-DUSE_CUDA)   
+      
+	   if(ENABLE_CUDNN)   
+           add_definitions(-DUSE_CUDNN)  
+           find_package(CUDAToolkit REQUIRED)   
+		 
+           if (WIN32)
+    	      set(CUDNN_INCLUDE_DIR "C:\\Program Files\\NVIDIA\\CUDNN\\v9.10\\include\\12.9")
+    	      set(CUDNN_LIBRARY     "C:\\Program Files\\NVIDIA\\CUDNN\\v9.10\\bin\\12.9\\cudnn64_9.dll")
+    	      set(cuDNN_LIBRARY_DIR "C:\\Program Files\\NVIDIA\\CUDNN\\v9.10\\lib\\12.9\\x64")
+           else()
+    	      set(CUDNN_INCLUDE_DIR "/usr/include/x86_64-linux-gnu")
+    	      set(CUDNN_LIBRARY     "/usr/lib/x86_64-linux-gnu/libcudnn.so")
+    	      set(cuDNN_LIBRARY_DIR "/usr/lib/x86_64-linux-gnu")
+           endif()	
+       
+           list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/VMcuda/mlp/cmake)
+           message(STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
+    
+           find_package(cuDNN REQUIRED)
+           list(APPEND CMAKE_BUILD_RPATH "${cuDNN_LIBRARY_DIR}")
+           include_directories(${CUDNN_INCLUDE_DIR})
+	   endif()
+    endif()
 endif()
 
 if(MSVC)
@@ -107,15 +155,24 @@ if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)
     add_subdirectory(src/VMcuda)
 endif() 
 
+if (ENABLE_FMM)
+    # Fast multipole method library (no MPI, no standalone FMM executable)
+    add_subdirectory(src/VMfmm)
+endif()
+
 IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")
 	add_subdirectory(src/VM2D)
-	set_target_properties(VM2D PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+#	set_target_properties(VM2D PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 	set_target_properties(VM2D PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
 	set_target_properties(VM2D PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/${VM2D_DIR}")
+	target_compile_definitions(VM2D PRIVATE VM2D_ROOT_DIR="${CMAKE_CURRENT_SOURCE_DIR}")	
 		
 	if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)		
-		set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr")
-		set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr")
+		set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr -Wno-deprecated-gpu-targets")
+		set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr -Wno-deprecated-gpu-targets")
+		
+		target_compile_options(VM2D PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-Wno-deprecated-gpu-targets>)
+		target_compile_definitions(VMcuda PRIVATE VM2D_ROOT_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 		
 		message(STATUS "-------------------------CUDA FLAGS-------------------------")
 		
@@ -123,6 +180,12 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")
 		set_target_properties(VMcuda PROPERTIES CUDA_ARCHITECTURES "${ARCHITECTURE}")
 		set_target_properties(VM2D PROPERTIES CUDA_ARCHITECTURES "${ARCHITECTURE}")
 		target_link_libraries(VM2D cusolver)
+		target_link_libraries(VM2D cublas)
+		target_compile_definitions(VMlib2 PRIVATE VM2D_ROOT_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+		
+		if(ENABLE_CUDNN)	
+		     target_link_libraries(VM2D ${CUDA_LIBRARIES} cudnn)
+		endif()
 	else()
 		add_dependencies(VM2D VMlib2)
 	endif()

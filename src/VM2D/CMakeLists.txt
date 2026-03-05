@@ -5,6 +5,11 @@ SUBDIRLIST(VM2Dsubdir_VMlib ${CMAKE_SOURCE_DIR}/src/VMlib)
 SUBDIRLIST(VM2Dsubdir_VMcuda ${CMAKE_SOURCE_DIR}/src/VMcuda)
 LIST(APPEND VM2Ddirs ${VM2Dsubdir_VM2D} ${VM2Dsubdir_VMlib} ${VM2Dsubdir_VMcuda})
 
+if (ENABLE_FMM)
+    SUBDIRLIST(VM2Dsubdir_VMfmm ${CMAKE_SOURCE_DIR}/src/VMfmm)
+    LIST(APPEND VM2Ddirs ${VM2Dsubdir_VMfmm})
+endif()
+
 #message(STATUS "VM2D_dirs: ${VM2Ddirs}")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -17,8 +22,14 @@ FILE(GLOB VM2D_ALLFILES
  
 add_executable(VM2D ${VM2D_ALLFILES})
 
-target_link_libraries(VM2D debug VMlib2)
-target_link_libraries(VM2D optimized VMlib2)
+if (ENABLE_FMM)
+	target_link_libraries(VM2D debug VMlib2 TBB::tbb TBB::tbbmalloc fmmlib)
+	target_link_libraries(VM2D optimized VMlib2 TBB::tbb TBB::tbbmalloc fmmlib)
+else()
+	target_link_libraries(VM2D debug VMlib2)
+	target_link_libraries(VM2D optimized VMlib2)
+endif()
+
 
 target_compile_features(VM2D PRIVATE cxx_std_17)
 
@@ -34,3 +45,5 @@ if(CUDA_FOUND OR CMAKE_CUDA_COMPILER)
    target_link_libraries(VM2D debug VMcuda)
    target_link_libraries(VM2D optimized VMcuda)
 endif()
+
+
