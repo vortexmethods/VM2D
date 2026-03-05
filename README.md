@@ -9,11 +9,11 @@ VM2D: Vortex method for 2D flow simulation
 ![Read the Docs](https://img.shields.io/readthedocs/vm2d)
 
 
-Copyright (C) 2017-2024 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina, Aleksandra Kolganova
+Copyright (C) 2017-2026 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina, Aleksandra Kolganova
 
 Software implementation (with open source code) of vortex particle method in computational fluid dynamics for viscous incompressible flows simulation.
 
-Version 1.12 dated January 14, 2024
+Version 1.14 dated March 6, 2026
 
 LICENSE
 --------
@@ -75,6 +75,10 @@ THE BRIEF VERSION HISTORY
 
 * Version 1.12 was announced on January 22, 2024 at a seminar at [Hohai University](https://en.hhu.edu.cn/) (Nanjing, China).
 
+* Version 1.13 was announced on October 16, 2025 at the conference [ICVFM](https://mm.scimeeting.cn/en/web/index/28196) (Beijing, China).
+
+* Version 1.14 was released on March 6, 2026.
+
 
 QUESTIONS, SUGGESTIONS AND COMMENTS
 --------------------------------
@@ -129,7 +133,6 @@ The authors thank their colleagues for their help in developing the code.
 <table width="500" border="0" cellpadding="5">
 
 <tr>
-</td>
 <td align="center" valign="center" width="160">
 <img src="docs/_static/authors/Shcheglov.jpg" alt="Щеглов Г.А."/>
 <br />
@@ -145,13 +148,6 @@ Izmailova
 Yulia
 </td>
 <td align="center" valign="center" width="160">
-<img src="docs/_static/authors/Soldatova.jpg" alt="Коробова И.А."/>
-<br />
-Korobova
-<br />
-Irina
-</td>
-<td align="center" valign="center" width="160">
 <img src="docs/_static/authors/Serebrovskaya.jpg" alt="Серебровская Е.А."/>
 <br />
 Serebrovskaya
@@ -164,6 +160,14 @@ Ekaterina
 Kobzar
 <br />
 Daria
+</td>
+<td align="center" valign="center" width="160">
+<img src="docs/_static/authors/Dubinina.jpg" alt="Dubinina O.A."/>
+<br />
+Dubinina
+<br />
+Olga
+</td>
 </tr>
 </table>
 

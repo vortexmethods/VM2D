@@ -1,45 +1,52 @@
-/*--------------------------------*- BHgpu -*----------------*---------------*\
-| #####   ##  ##                |                            | Version 1.5    |
-| ##  ##  ##  ##   ####  ##  ## |  BHgpu: Barnes-Hut method  | 2023/08/29     |
-| #####   ######  ##     ##  ## |  for 2D vortex particles   *----------------*
-| ##  ##  ##  ##  ##     ##  ## |  Open Source Code                           |
-| #####   ##  ##   ####   ####  |  https://www.github.com/vortexmethods/fastm |
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2020-2023 I. Marchevsky, E. Ryatina, A. Kolganova             |
-| Copyright (C) 2013, Texas State University-San Marcos. All rights reserved. |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: operations.cuh                                                   |
-| Info: Source code of BHgpu                                                  |
+| Info: Source code of VM2D                                                   |
 |                                                                             |
-| This file is part of BHgpu.                                                 |
-| BHcu is free software: you can redistribute it and/or modify it             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| BHcu is distributed in the hope that it will be useful, but WITHOUT         |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
-| along with BHgpu.  If not, see <http://www.gnu.org/licenses/>.              |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
 \*---------------------------------------------------------------------------*/
 
 /*!
 \file
 \brief Вспомогательные операции
 \author Марчевский Илья Константинович
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\version 1.5
-\date 29 августа 2023 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
-#ifndef OPERATIONS_H_
-#define OPERATIONS_H_
+
+#ifndef OPERATIONS_H
+#define OPERATIONS_H
 
 #include <cuda.h>
+
+#include "Gpudefs.h"
+
+
+__device__ const double ifac[] = { 0.0, 1.0, 1.0, 1.0 / 2.0, 1.0 / 6.0, 1.0 / 24.0, 1.0 / 120.0, 1.0 / 720.0, 1.0 / 5040.0, 1.0 / 40320.0, 1.0 / 362880.0, 1.0 / 3628800.0, 1.0 / 39916800.0, 1.0 / 479001600.0, 1.0 / 6227020800.0, 1.0 / 87178291200.0 };
+
 
 
 namespace BHcu
@@ -49,217 +56,140 @@ namespace BHcu
 #define __forceinline inline
 #endif
 
-	__device__ __forceinline real2 multz(real2 a, real2 b)
-	{
-		real2 res;
-		res.x = a.x * b.x - a.y * b.y;
-		res.y = a.x * b.y + a.y * b.x;
-		return res;
+	__device__ __forceinline double2 multz(const double2& a, const double2& b) {
+		return make_double2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
 	}
 
-	__device__ __forceinline real2 multz(real ax, real ay, real2 b)
-	{
-		real2 res;
-		res.x = ax * b.x - ay * b.y;
-		res.y = ax * b.y + ay * b.x;
-		return res;
+	__device__ __forceinline double2 multz(double ax, double ay, const double2& b) {
+		return make_double2(ax * b.x - ay * b.y, ax * b.y + ay * b.x);
 	}
-	__device__ __forceinline real2 multzA(real2 a, real2 b)
-	{
-		real2 res;
-		res.x =  a.x * b.x + a.y * b.y;
-		res.y = -a.x * b.y + a.y * b.x;
-		return res;
+
+	__device__ __forceinline double2 multzA(const double2& a, const double2& b)	{		
+		return make_double2(a.x * b.x + a.y * b.y, -a.x * b.y + a.y * b.x);
 	}	
 	
-	__device__ __forceinline real2 multzA(real2 a, real bx, real by)
-	{
-		real2 res;
-		res.x = a.x * bx + a.y * by;
-		res.y = a.y * bx - a.x * by;
-		return res;
+	__device__ __forceinline double2 multzA(const double2& a, double bx, double by) {
+		return make_double2(a.x * bx + a.y * by, a.y * bx - a.x * by);
 	}
 
-	__device__ __forceinline real2 operator*(real a, real2 b)
-	{
-		real2 res;
-		res.x = a * b.x;
-		res.y = a * b.y;
-		return res;
+	__device__ __forceinline double2 operator*(double a, const double2& b) {
+		return make_double2(a * b.x, a * b.y);
 	}
 
-	__device__ __forceinline float2 operator*(float a, float2 b)
-	{
-		float2 res;
-		res.x = a * b.x;
-		res.y = a * b.y;
-		return res;
+	__device__ __forceinline float2 operator*(float a, const float2& b) {
+		return make_float2(a * b.x, a * b.y);
 	}
 
-
-	__device__ __forceinline real2 operator*(int a, real2 b)
-	{
-		real2 res;
-		res.x = a * b.x;
-		res.y = a * b.y;
-		return res;
+	__device__ __forceinline double2 operator*(int a, const double2& b)	{
+		return make_double2(a * b.x, a * b.y);
 	}
 
-	__device__ __forceinline float2 operator*(int a, float2 b)
-	{
-		float2 res;
-		res.x = a * b.x;
-		res.y = a * b.y;
-		return res;
+	__device__ __forceinline float2 operator*(int a, const float2& b) {
+		return make_float2(a * b.x, a * b.y);
 	}
 
-	__device__ __forceinline real2 operator*(real2 b, real a)
-	{
-		real2 res;
-		res.x = a * b.x;
-		res.y = a * b.y;
-		return res;
+	__device__ __forceinline double2 operator*(const double2& b, double a) {
+		return make_double2(a * b.x, a * b.y);
 	}
 
-
-
-	__device__ __forceinline float2 operator*(float2 b, float a)
-	{
-		float2 res;
-		res.x = a * b.x;
-		res.y = a * b.y;
-		return res;
+	__device__ __forceinline float2 operator*(const float2& b, float a) {
+		return make_float2(a * b.x, a * b.y);
 	}
 
-	__device__ __forceinline real2 operator*(real2 b, int a)
-	{
-		real2 res;
-		res.x = a * b.x;
-		res.y = a * b.y;
-		return res;
+	__device__ __forceinline double2 operator*(const double2& b, int a) {
+		return make_double2(a * b.x, a * b.y);
 	}
 
-
-	__device__ __forceinline float2 operator*(float2 b, int a)
-	{
-		float2 res;
-		res.x = a * b.x;
-		res.y = a * b.y;
-		return res;
+	__device__ __forceinline float2 operator*(const float2& b, int a) {
+		return make_float2(a * b.x, a * b.y);
 	}
 
-	__device__ __forceinline real2 operator/(real2 b, real a)
-	{
-		real2 res;
-		res.x = b.x / a;
-		res.y = b.y / a;
-		return res;
+	__device__ __forceinline double2 operator/(const double2& b, double a) {
+		return make_double2(b.x / a, b.y / a);		
 	}
 
-	__device__ __forceinline float2 operator/(float2 b, float a)
-	{
-		float2 res;
-		res.x = b.x / a;
-		res.y = b.y / a;
-		return res;
+	__device__ __forceinline float2 operator/(const float2& b, float a) {
+		return make_float2(b.x / a, b.y / a);
 	}
 
-	__device__ __forceinline real2& operator+=(real2& a, real2 b)
-	{
+	__device__ __forceinline double2& operator+=(double2& a, const double2& b) {
 		a.x += b.x;
 		a.y += b.y;
 		return a;
 	}
 
-	__device__ __forceinline float2& operator+=(float2& a, float2 b)
-	{
+	__device__ __forceinline float2& operator+=(float2& a, const float2& b) {
 		a.x += b.x;
 		a.y += b.y;
 		return a;
 	}
 
-	__device__ __forceinline real2& operator-=(real2& a, real2 b)
-	{
-		a.x += b.x;
-		a.y += b.y;
+	__device__ __forceinline double2& operator-=(double2& a, const double2& b) {
+		a.x -= b.x;
+		a.y -= b.y;
 		return a;
 	}
 
-	__device__ __forceinline float2& operator-=(float2& a, float2 b)
-	{
-		a.x += b.x;
-		a.y += b.y;
+	__device__ __forceinline float2& operator-=(float2& a, const float2& b) {
+		a.x -= b.x;
+		a.y -= b.y;
 		return a;
 	}
 
-
-	__device__ __forceinline real2 operator-(real2 a, real2 b)
-	{
-		real2 res;
-		res.x = a.x - b.x;
-		res.y = a.y - b.y;
-		return res;
+	__device__ __forceinline float2& operator*=(float2& b, float a) {
+		b.x *= a;
+		b.y *= a;
+		return b;
 	}
 
-	__device__ __forceinline float2 operator-(float2 a, float2 b)
-	{
-		float2 res;
-		res.x = a.x - b.x;
-		res.y = a.y - b.y;
-		return res;
+	__device__ __forceinline double2& operator*=(double2& b, double a) {
+		b.x *= a;
+		b.y *= a;
+		return b;
 	}
 
-	__device__ __forceinline real2 operator+(real2 a, real2 b)
-	{
-		real2 res;
-		res.x = a.x + b.x;
-		res.y = a.y + b.y;
-		return res;
+
+	__device__ __forceinline double2 operator-(const double2& a, const double2& b) {
+		return make_double2(a.x - b.x, a.y - b.y);
 	}
 
-	__device__ __forceinline float2 operator+(float2 a, float2 b)
-	{
-		float2 res;
-		res.x = a.x + b.x;
-		res.y = a.y + b.y;
-		return res;
+	__device__ __forceinline float2 operator-(float2 a, float2 b) {
+		return make_float2(a.x - b.x, a.y - b.y);
 	}
 
-	__device__ __forceinline real operator&(real2 a, real2 b)
-	{
+	__device__ __forceinline double2 operator+(const double2& a, const double2& b) {
+		return make_double2(a.x + b.x, a.y + b.y);
+	}
+
+	__device__ __forceinline float2 operator+(float2 a, float2 b) {
+		return make_float2(a.x + b.x, a.y + b.y);
+	}
+
+	__device__ __forceinline double operator&(const double2& a, const double2& b) {
 		return a.x * b.x + a.y * b.y;
 	}
 
-	__device__ __forceinline float operator&(float2 a, float2 b)
-	{
+	__device__ __forceinline float operator&(float2 a, float2 b) {
 		return a.x * b.x + a.y * b.y;
 	}
 
-	__device__ __forceinline real length(real2 a)
-	{
+	__device__ __forceinline double length(const double2& a) {
 		return sqrt(a & a);
 	}
 
-	__device__ __forceinline float length(float2 a)
-	{
+	__device__ __forceinline float length(float2 a)	{
 		return sqrtf(a & a);
 	}
 	
-	__device__ __forceinline real2 normalize(real2 a)
-	{
-		real nrm = sqrt(a & a);
-		real2 res{ a.x / nrm, a.y / nrm };
-		return res;
+	__device__ __forceinline double2 normalize(const double2& a) {
+		double inrm = rsqrt(a & a);
+		return make_double2(a.x * inrm, a.y * inrm);		
 	}
 
-
-	__device__ __forceinline float2 normalize(float2 a)
-	{
-		float nrm = sqrtf(a & a);
-		float2 res{ a.x / nrm, a.y / nrm };
-		return res;
+	__device__ __forceinline float2 normalize(float2 a)	{
+		float inrm = rsqrtf(a & a);
+		return make_float2(a.x * inrm, a.y * inrm);
 	}
-
 
 	__device__ __forceinline unsigned int MExpandBits(unsigned int v)
 	{
@@ -306,14 +236,12 @@ namespace BHcu
 	//Знак числа, написана оптимизированная версия, 
 	//которая работает самым быстрым возможным образом, т.к. не содержит ни одного оператора условного перехода
 	__device__ __forceinline
-	int sign(int val)
-	{
+	int sign(int val) {
 		return (0 < val) - (val < 0);
 	}
 
 	__device__ __forceinline
-	int Delta(const int i, const int j, const int nbodies, const int* __restrict MmortonCodesKeyd)
-	{
+	int Delta(const int i, const int j, const int nbodies, const int* __restrict MmortonCodesKeyd) {
 		if ((j < 0) || (j > nbodies - 1))
 			return -1;
 
@@ -322,9 +250,41 @@ namespace BHcu
 		if ((count == 32) && (i != j))
 		{
 			int add = __clz((i + 1) ^ (j + 1));
-			return 28 + (add + 28 - 32);
+			return (2 * codeLength) + (add + (2 * codeLength) - 32);
 		}
-		return count + 28 - 32;
+		return count + (2 * codeLength) - 32;
+	}//Delta(...)
+
+	__device__ __forceinline
+		int Delta(const int codei, const int i, const int j, const int nbodies, const int* __restrict MmortonCodesKeyd)
+	{
+		if ((j < 0) || (j > nbodies - 1))
+			return -1;
+
+		int count = __clz(codei ^ MmortonCodesKeyd[j]);
+
+		if ((count == 32) && (i != j))
+		{
+			int add = __clz((i + 1) ^ (j + 1));
+			return (2 * codeLength) + (add + (2 * codeLength) - 32);
+		}
+		return count + (2 * codeLength) - 32;
+	}//Delta(...)
+
+	__device__ __forceinline
+		int Delta(const int codei, const int codej, const int i, const int j, const int nbodies)
+	{
+		if ((j < 0) || (j > nbodies - 1))
+			return -1;
+
+		int count = __clz(codei ^ codej);
+
+		if ((count == 32) && (i != j))
+		{
+			int add = __clz((i + 1) ^ (j + 1));
+			return (2 * codeLength) + (add + (2 * codeLength) - 32);
+		}
+		return count + (2 * codeLength) - 32;
 	}//Delta(...)
 
 
@@ -341,7 +301,40 @@ namespace BHcu
 	{
 		return (x >> 1) + (x & 1);
 	}
+	__device__ __forceinline double myMax(double x, double y)
+	{
+		return (x > y) ? x : y;
+	}
 
+	__device__ __forceinline double myMin(double x, double y)
+	{
+		return (x > y) ? y : x;
+	}
+
+	__device__ __forceinline float myMax(float x, float y)
+	{
+		return (x > y) ? x : y;
+	}
+
+	__device__ __forceinline float myMin(float x, float y)
+	{
+		return (x > y) ? y : x;
+	}
+
+	__device__ __forceinline int sqr(int x)
+	{
+		return x * x;
+	}
+
+	__device__ __forceinline double sqr(double x)
+	{
+		return x * x;
+	}
+
+	__device__ __forceinline float sqrf(float x)
+	{
+		return x * x;
+	}
 
 	//Функция вычисления длины общей части префиксов всех частиц в конкретной ячейке
 	//__device__ __forceinline

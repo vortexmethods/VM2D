@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2D.h                                                    |
 | Info: Source code of VM2D                                                   |
@@ -33,12 +33,12 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
-#ifndef MECHANICS_H
-#define MECHANICS_H
+#ifndef MECHANICS2D_H
+#define MECHANICS2D_H
 
 #include <memory>
 
@@ -62,10 +62,10 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
+	\author Колганова Александра Олеговна
 
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 
 	class Mechanics
@@ -147,8 +147,8 @@ namespace VM2D
 		/// 
 		/// \param[in] W_ константная ссылка на решаемую задачу
 		/// \param[in] numberInPassport_ номер профиля в паспорте задачи		
-		/// \param[in] isMoves_ является ли профиль подвижным (1 - является, 0 - не является)
-		/// \param[in] isDeform_ является ли профиль деформируемым (1 - является, 0 - не является)
+		/// \param[in] isMoves_ является ли профиль подвижным
+		/// \param[in] isDeform_ является ли профиль деформируемым
 		Mechanics(const World2D& W_, size_t numberInPassport_, bool isMoves_, bool isDeform_);
 
 		/// Деструктор

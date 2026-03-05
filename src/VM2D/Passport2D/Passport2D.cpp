@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Passport2D.cpp                                                   |
 | Info: Source code of VM2D                                                   |
@@ -33,13 +33,12 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include "Passport2D.h"
 
-#include "defs.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
 
@@ -48,16 +47,16 @@ using namespace VM2D;
 
 
 // Функция-множитель, позволяющая моделировать разгон
-double PhysicalProperties::accelCft() const
+double PhysicalProperties::accelCft(double currentTime) const
 {
 	switch (typeAccel.second)
 	{
 	case 0: //импульсный старт
 		return 1.0;
 	case 1: //разгон потока по линейному закону
-		return (timeProp.currTime < timeAccel) ? (timeProp.currTime / timeAccel) : 1.0;
+		return (currentTime < timeAccel) ? (currentTime / timeAccel) : 1.0;
 	case 2: //разгон потока по косинусоиде
-		return (timeProp.currTime < timeAccel) ? 0.5 * (1.0 - cos(PI * timeProp.currTime / timeAccel)) : 1.0;
+		return (currentTime < timeAccel) ? 0.5 * (1.0 - cos(PI * currentTime / timeAccel)) : 1.0;
 	}
 
 	return 1.0;
@@ -266,13 +265,20 @@ void Passport::GetAllParamsFromParser
 	if (numericalSchemes.linearSystemSolver.second == 1 || numericalSchemes.linearSystemSolver.second == 2)
 		parser->get("gmresEps", numericalSchemes.gmresEps);
 
-	if (numericalSchemes.linearSystemSolver.second == 2) {
-		parser->get("fastGmresTheta", numericalSchemes.fastGmresTheta);
-		parser->get("multipoleOrderGmres", numericalSchemes.multipoleOrderGmres);
-
+	if (numericalSchemes.linearSystemSolver.second == 2) 
+	{
+		parser->get("fastGmresTheta", numericalSchemes.gmresTheta);
+		parser->get("fastGmresMultipoleOrder", numericalSchemes.gmresMultipoleOrder);
 	}
 
 	parser->get("velocityComputation", numericalSchemes.velocityComputation, &defaults::defaultVelocityComputation);
+
+	if (numericalSchemes.velocityComputation.second == 1)
+	{
+		parser->get("nbodyTheta", numericalSchemes.nbodyTheta);
+		parser->get("nbodyMultipoleOrder", numericalSchemes.nbodyMultipoleOrder);
+	}
+
 	//parser->get("wakeMotionIntegrator", numericalSchemes.wakeMotionIntegrator);
 	parser->get("boundaryConditionSatisfaction", numericalSchemes.boundaryCondition, &defaults::defaultBoundaryCondition);
 	
@@ -391,7 +397,7 @@ void Passport::GetAllParamsFromParser
 void Passport::PrintAllParams()
 {
 	const std::string str = "passport info: ";
-	
+
 	info('i') << "--- Passport info ---" << std::endl;
 	info('-') << "rho = " << physicalProperties.rho << std::endl;
 	info('-') << "vInf = " << physicalProperties.vInf << std::endl;
@@ -414,7 +420,23 @@ void Passport::PrintAllParams()
 	info('-') << "vortexPerPanel = " << wakeDiscretizationProperties.minVortexPerPanel << std::endl;
 	info('-') << "maxGamma = " << ((wakeDiscretizationProperties.maxGamma == 1e+10) ? 0.0 : wakeDiscretizationProperties.maxGamma) << std::endl;
 	info('-') << "linearSystemSolver = " << numericalSchemes.linearSystemSolver.first << std::endl;
+	if (numericalSchemes.linearSystemSolver.second == 1 || numericalSchemes.linearSystemSolver.second == 2)
+	{
+		info('-') << "gmresEps = " << numericalSchemes.gmresEps << std::endl;
+		if (numericalSchemes.linearSystemSolver.second == 2)
+		{
+			info('-') << "gmresTheta = " << numericalSchemes.gmresTheta << std::endl;
+			info('-') << "gmresMultipoleOrder = " << numericalSchemes.gmresMultipoleOrder << std::endl;
+		}
+	}
+
 	info('-') << "velocityComputation = " << numericalSchemes.velocityComputation.first << std::endl;
+	if (numericalSchemes.velocityComputation.second == 1)
+	{
+		info('-') << "nbodyTheta = " << numericalSchemes.nbodyTheta << std::endl;
+		info('-') << "nbodyMultipoleOrder = " << numericalSchemes.nbodyMultipoleOrder << std::endl;
+	}
+
 	//info('-') << "wakeMotionIntegrator = " << numericalSchemes.wakeMotionIntegrator << std::endl;
 	info('_') << "boundaryCondition = " << numericalSchemes.boundaryCondition.first << std::endl;
 	

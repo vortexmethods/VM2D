@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: MeasureVP2D.cpp                                                  |
 | Info: Source code of VM2D                                                   |
@@ -33,27 +33,21 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #if defined(_WIN32)
 #include <direct.h>
 #endif
 
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <string.h>
-
 #include "MeasureVP2D.h"
 
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
-#include "Boundary2DConstLayerAver.h"
 
 #include "Mechanics2D.h"
 #include "Mechanics2DDeformable.h"
-#include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
@@ -128,7 +122,7 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 // Инициализация векторов для вычисления скоростей и давлений
 void MeasureVP::Initialization()
 {
-	W.getTimestat().timeVP.first += omp_get_wtime();
+	W.getTimers().start("VelPres");
 
 	if ((W.getPassport().timeDiscretizationProperties.saveVPstep > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVPstep)))
 	{
@@ -193,6 +187,15 @@ void MeasureVP::Initialization()
 					exit(-345);
 				}
 				
+
+				elasticPoints.reserve(W.getAirfoil(afl).getNumberOfPanels());
+				for (size_t q = 0; q < W.getAirfoil(afl).getNumberOfPanels(); ++q)
+				{
+					elasticPoints.push_back(0.5 * (W.getAirfoil(afl).getR(q) + W.getAirfoil(afl).getR(q + 1)) + W.getAirfoil(afl).nrm[q] * 1e-4);
+				}
+
+
+				/*
 				elasticPoints.reserve(ptr->chord.size() * 2);
 				for (size_t q = 0; q < ptr->chord.size(); ++q)
 				{
@@ -207,6 +210,7 @@ void MeasureVP::Initialization()
 						+ 0.01 * W.getAirfoil(afl).len[pnls.second] * W.getAirfoil(afl).nrm[pnls.second]
 					);
 				}
+				*/
 			}			
 		}
 
@@ -218,13 +222,15 @@ void MeasureVP::Initialization()
 		}//for i
 
 	}
-	W.getTimestat().timeVP.second += omp_get_wtime();
+	W.getTimers().stop("VelPres");
 
 }//Initialization()
 
 //Расчет поля давления
 void MeasureVP::CalcPressure()
 {
+	W.getTimers().start("VelPres");
+
 	int addWSize = (int)wakeVP->vtx.size();	
 	pressure.resize(addWSize);	
 
@@ -232,7 +238,7 @@ void MeasureVP::CalcPressure()
 	Point2D Vi;
 	Point2D vi;
 
-	const Point2D& V0 = W.getPassport().physicalProperties.V0();
+	const Point2D& V0 = W.getV0();
 	const double& eps2 = W.getPassport().wakeDiscretizationProperties.eps2;
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
@@ -243,16 +249,17 @@ void MeasureVP::CalcPressure()
 #pragma warning (push)
 #pragma warning (disable: 4101)
 	double alpha;
+	double lambda;
 	double dst2eps;
 #pragma warning (pop)
 
-#pragma omp parallel for default(none) private(alpha, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, eps2, V0, addWSize, std::cout, IDPI) 
+#pragma omp parallel for default(none) private(alpha, lambda, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, eps2, V0, addWSize, std::cout, IDPI) 
 	for (int i = 0; i < addWSize; ++i)
 	{
+		const Point2D& pt = wakeVP->vtx[i].r();
+				
 		pressure[i] = P0;
 		pressure[i] -= 0.5 * velocity[i].length2(); //2
-
-		const Point2D& pt = wakeVP->vtx[i].r();
 
 		for (size_t j = 0; j < W.getWake().vtx.size(); ++j)
 		{
@@ -265,6 +272,7 @@ void MeasureVP::CalcPressure()
 			pressure[i] += vi & Vi; //3
 		}
 
+		/*
 		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 			for (size_t j = 0; j < W.getBoundary(bou).virtualWake.vtx.size(); ++j)
 			{
@@ -275,8 +283,42 @@ void MeasureVP::CalcPressure()
 				Vi = W.getBoundary(bou).virtualWake.vecHalfGamma[j];
 				vi = IDPI * W.getBoundary(bou).virtualWake.vtx[j].g() / dst2eps * dri.kcross();
 
-				pressure[i] += vi & Vi; //4
+				//pressure[i] += vi & Vi; //4
+				//if ((i==0) && (j==0))
+				//	std::cout << "vi & Vi = " << (vi & Vi) << std::endl;
 			}
+		*/
+
+		for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+		{
+			const Airfoil& afl = W.getAirfoil(q);
+			const Boundary& bou = W.getBoundary(q);
+
+			for (size_t pnl = 0; pnl < afl.getNumberOfPanels(); ++pnl)
+			{
+				Point2D s = pt - afl.getR(pnl);
+				Point2D p = pt - afl.getR(pnl + 1);
+				Point2D u0 = afl.tau[pnl];
+				double alpha = VMlib::Alpha(s, p);
+				double lambda = VMlib::Lambda(s, p);
+
+				Point2D skos = IDPI * ((alpha * u0).kcross() + (lambda * u0));
+
+
+				Vi = 0.5 * bou.sheets.freeVortexSheet(pnl, 0) * u0;
+				vi = skos.kcross() * bou.sheets.freeVortexSheet(pnl, 0);
+				//if ((i == 0) && (pnl == 0))
+				//	std::cout << "vi & Vi = " << (vi & Vi) << std::endl;
+				pressure[i] += vi & Vi; //4
+
+				Vi = 0.5 * (afl.getV(pnl) + afl.getV(pnl + 1));
+				vi = skos.kcross() * (bou.sheets.attachedVortexSheet(pnl, 0) - bou.oldSheets.attachedVortexSheet(pnl, 0));
+				pressure[i] += vi & Vi; //4a
+
+				vi = skos * (bou.sheets.attachedSourceSheet(pnl, 0) - bou.oldSheets.attachedSourceSheet(pnl, 0));
+				pressure[i] += vi & Vi; //4b
+			}
+		}
 
 		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 		{
@@ -328,25 +370,29 @@ void MeasureVP::CalcPressure()
 				alpha = 0.0;
 				
 				int way = W.getAirfoil(bou).wayToVertex[j];
-				if (way < 0)				
-					W.getInfo('i') << "Pressure computation is incorrect, way inside airfoil is undefined" << std::endl;				
+				//if (way < 0)				
+				//	W.getInfo('i') << "Pressure computation is incorrect, way inside airfoil is undefined" << std::endl;				
 
 				if (way == 0)
 					alpha = atan2((cPan - pt) ^ (rcm - pt), (cPan - pt) & (rcm - pt));
 				else
-				{					
-					for (int q = 0; q < W.getAirfoil(bou).possibleWays[way - 1].size() + 1; ++q)
-					{
-						Point2D start = ((q == 0) ? rcm : W.getAirfoil(bou).possibleWays[way - 1][q-1]);
-						Point2D finish = ((q == W.getAirfoil(bou).possibleWays[way - 1].size()) ? cPan : W.getAirfoil(bou).possibleWays[way - 1][q]);
-						alpha += atan2((finish - pt) ^ (start - pt), (finish - pt) & (start - pt));
+					if (way > 0)
+					{					
+						for (int q = 0; q < W.getAirfoil(bou).possibleWays[way - 1].size() + 1; ++q)
+						{
+							Point2D start = ((q == 0) ? rcm : W.getAirfoil(bou).possibleWays[way - 1][q-1]);
+							Point2D finish = ((q == W.getAirfoil(bou).possibleWays[way - 1].size()) ? cPan : W.getAirfoil(bou).possibleWays[way - 1][q]);
+							alpha += atan2((finish - pt) ^ (start - pt), (finish - pt) & (start - pt));
+						}
 					}
-				}
 
 				/// \todo Пока используем только средние значения свободного слоя на панелях
-				pressure[i] += IDPI * alpha *	W.getBoundary(bou).sheets.freeVortexSheet(j, 0) * W.getAirfoil(bou).len[j] / dt;
+				pressure[i] += IDPI * alpha * (W.getBoundary(bou).sheets.freeVortexSheet(j, 0) + W.getBoundary(bou).sheets.attachedVortexSheet(j, 0) - W.getBoundary(bou).oldSheets.attachedVortexSheet(j, 0)) * W.getAirfoil(bou).len[j] / dt;
 
 				pressure[i] -= IDPI * alpha * W.getAirfoil(bou).gammaThrough[j] / dt;
+
+				lambda = 0.5 * log((pt - cPan).length2());
+				pressure[i] -= IDPI * lambda * (W.getBoundary(bou).sheets.attachedSourceSheet(j, 0) - W.getBoundary(bou).oldSheets.attachedSourceSheet(j, 0)) * W.getAirfoil(bou).len[j] / dt;
 			}
 		}//for bou
 	}//for i
@@ -354,13 +400,14 @@ void MeasureVP::CalcPressure()
 	for (size_t i = 0; i < pressure.size(); ++i)
 		pressure[i] *= W.getPassport().physicalProperties.rho;
 
+	W.getTimers().stop("VelPres");
 }//CalcPressure()
 
 
 //Сохранение в файл вычисленных скоростей и давлений
 void MeasureVP::SaveVP()
 {
-	W.getTimestat().timeSaveKadr.first += omp_get_wtime();
+	W.getTimers().start("Save");
 
 	double scaleV = 1.0, scaleP = 1.0;
 	if (W.getPassport().calcCoefficients)
@@ -562,7 +609,7 @@ void MeasureVP::SaveVP()
 			for (size_t q = 0; q < nRealPressurePoints; ++q)
 			{
 				VPFileBunCsv << W.getCurrentStep() << "," \
-					<< W.getPassport().physicalProperties.getCurrTime() << "," \
+					<< W.getCurrentTime() << "," \
 					<< q << "," \
 					<< wakeVP->vtx[q].r()[0] << "," << wakeVP->vtx[q].r()[1] << "," \
 					<< velocity[q][0] * scaleV << "," << velocity[q][1] * scaleV << "," \
@@ -589,14 +636,14 @@ void MeasureVP::SaveVP()
 				VPFileCsv << "point,time,CVx,CVy,CP" << std::endl;
 		}
 
-		VPFileCsv << q << "," << W.getPassport().physicalProperties.getCurrTime() << ","
+		VPFileCsv << q << "," << W.getCurrentTime() << ","
 			<< velocity[initialPoints.size() + q][0] * scaleV << ","
 			<< velocity[initialPoints.size() + q][1] * scaleV << ","
 			<< pressure[initialPoints.size() + q] * scaleP << std::endl;
 		VPFileCsv.close();
 	}
 
-	W.getTimestat().timeSaveKadr.second += omp_get_wtime();
+	W.getTimers().stop("Save");
 }//SaveVP()
 
 std::vector<std::pair<Point2D, double>> MeasureVP::GetVPinElasticPoints()

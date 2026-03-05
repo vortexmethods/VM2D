@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidGivenLaw.cpp                                     |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include <algorithm>
@@ -46,7 +46,6 @@
 
 
 #include "MeasureVP2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
@@ -65,7 +64,7 @@ MechanicsRigidGivenLaw::MechanicsRigidGivenLaw(const World2D& W_, size_t numberI
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidGivenLaw::GetHydroDynamForce()
 {
-	W.getTimestat().timeGetHydroDynamForce.first += omp_get_wtime();
+	W.getTimers().start("Force");
 
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
@@ -126,7 +125,7 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce()
 	hydroDynamForce = rho * (hDFGam + hDFdelta * (1.0 / dt) + hDFQ);
 	hydroDynamMoment = rho * (hDMGam + hDMdelta / dt + hDMQ);
 
-	if ((W.getPassport().physicalProperties.nu > 0.0) && (W.currentStep > 0))
+	if ((W.getPassport().physicalProperties.nu > 0.0) && (W.getCurrentStep() > 0))
 		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 		{
 			Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
@@ -134,7 +133,7 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce()
 			viscousMoment += rho * (afl.viscousStress[i] * afl.tau[i]) & rK;
 		}
 
-	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
+	W.getTimers().stop("Force");
 }// GetHydroDynamForce()
 
 
@@ -190,7 +189,7 @@ void MechanicsRigidGivenLaw::VeloOfAirfoilPanels(double currTime)
 
 void MechanicsRigidGivenLaw::Move()
 {
-	double t = W.getPassport().physicalProperties.getCurrTime();
+	double t = W.getCurrentTime();
 	double dt = W.getPassport().timeDiscretizationProperties.dt;
 
 	//Point2D airfoilVelo = VeloOfAirfoilRcm(t);

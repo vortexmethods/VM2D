@@ -9,11 +9,11 @@ VM2D: Vortex method for 2D flow simulation
 ![Read the Docs](https://img.shields.io/readthedocs/vm2d)
 
 
-Copyright (C) 2017-2024 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina, Aleksandra Kolganova
+Copyright (C) 2017-2026 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina, Aleksandra Kolganova
 
 Программная реализация (с открытым исходным кодом) вихревых методов вычислительной гидродинамики для моделирования течений вязкой несжимаемой среды. 
 
-Версия 1.12 от 14 января 2024 г.
+Версия 1.14 от 6 марта 2026 г.
 
 ЛИЦЕНЗИЯ
 --------
@@ -74,6 +74,10 @@ Copyright (C) 2017-2024 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina, Aleksa
 * Версия 1.11 представлена 08 августа 2022 г. на конференции [ICMAR](http://conf.nsc.ru/icmar2022/) (Новосибирск) 
 
 * Версия 1.12 представлена 22 января 2024 г. на семинаре в [Hohai University](https://en.hhu.edu.cn/) (Нанкин, КНР) 
+
+* Версия 1.13 представлена 16 октября 2025 г. на конференции [ICVFM](https://mm.scimeeting.cn/en/web/index/28196) (Пекин, КНР) 
+
+* Версия 1.14 представлена 6 марта 2026 г. 
 
 
 ВОПРОСЫ, ПРЕДЛОЖЕНИЯ И ЗАМЕЧАНИЯ
@@ -156,15 +160,6 @@ Copyright (C) 2017-2024 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina, Aleksa
 Андреевна
 </td>
 <td align="center" valign="center" width="160">
-<img src="docs/_static/authors/Soldatova.jpg" alt="Коробова И.А."/>
-<br />
-Коробова
-<br />
-Ирина
-<br />
-Алекснадровна
-</td>
-<td align="center" valign="center" width="160">
 <img src="docs/_static/authors/Serebrovskaya.jpg" alt="Серебровская Е.А."/>
 <br />
 Серебровская
@@ -181,6 +176,16 @@ Copyright (C) 2017-2024 Ilia Marchevsky, Kseniia Sokol, Evgeniya Ryatina, Aleksa
 Дарья
 <br />
 Юрьевна
+</td>
+<td align="center" valign="center" width="160">
+<img src="docs/_static/authors/Dubinina.jpg" alt="Дубинина О.А."/>
+<br />
+Дубинина
+<br />
+Ольга
+<br />
+Андреевна
+</td>
 </tr>
 </table>
 

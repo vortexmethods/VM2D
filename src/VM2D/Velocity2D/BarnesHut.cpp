@@ -1,43 +1,45 @@
-/*---------------------------------*- BH -*------------------*---------------*\
-|        #####   ##  ##         |                            | Version 1.5    |
-|        ##  ##  ##  ##         |  BH: Barnes-Hut method     | 2024/06/19     |
-|        #####   ######         |  for 2D vortex particles   *----------------*
-|        ##  ##  ##  ##         |  Open Source Code                           |
-|        #####   ##  ##         |  https://www.github.com/vortexmethods/fastm |
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2020-2024 I. Marchevsky, E. Ryatina, A. Kolganova             |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: BarnesHut.cpp                                                    |
-| Info: Source code of BH                                                     |
+| Info: Source code of VM2D                                                   |
 |                                                                             |
-| This file is part of BH.                                                    |
-| BH is free software: you can redistribute it and/or modify it               |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| BHcu is distributed in the hope that it will be useful, but WITHOUT         |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
-| along with BH.  If not, see <http://www.gnu.org/licenses/>.                 |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
 \*---------------------------------------------------------------------------*/
 
 /*!
 \file
 \brief Основные операции метода Барнса-Хата
 \author Марчевский Илья Константинович
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\version 1.5
-\date 19 июня 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include <fstream>
 
 #include "BarnesHut.h"
+#include "knnCPU.h"
 
 namespace BH
 {	
@@ -101,19 +103,21 @@ namespace BH
 
 	// Расчет влияния 
 #ifndef CALCSHEET
-void BarnesHut::InfluenceComputation(std::vector<Point2D>& result, std::vector<double>& epsast, double& timeParams, double& timeInfl, bool calcRadius)
-{
-	double tTreeParamsStart = omp_get_wtime();
+	void BarnesHut::InfluenceComputation(std::vector<Point2D>& result, std::vector<double>& epsast, double& timeParams, double& timeInfl, bool calcRadius)
+	{
+		double tTreeParamsStart = omp_get_wtime();
 
 #ifdef OLD_OMP
-	omp_set_nested(1);
+		omp_set_nested(1);
 #else
-	omp_set_max_active_levels(prm.maxLevelOmp + 1);
+		omp_set_max_active_levels(3);
+		std::cout << "OMP_LEVEL = 2" << std::endl;
+		//omp_set_max_active_levels(prm.maxLevelOmp + 1);
 #endif
 
 
-	auto& treeContr = treeVrt;
-	auto& pointsCopy = pointsCopyVrt;
+		auto& treeContr = treeVrt;
+		auto& pointsCopy = pointsCopyVrt;
 
 
 		treeVrt->CalculateMortonTreeParams(0, 0);
@@ -122,67 +126,37 @@ void BarnesHut::InfluenceComputation(std::vector<Point2D>& result, std::vector<d
 		timeParams += tTreeParamsFinish - tTreeParamsStart;
 
 		double tInflStart = omp_get_wtime();
-		
-		
-		prm.outVortexCoded = -1;
-		for (size_t s = 0; s < treeContr->mortonCodes.size(); ++s)
-			if (treeContr->mortonCodes[s].originNumber == prm.outVortex)
-				prm.outVortexCoded = (int)s;
-
-//		double t1 = 0.0, t2 = 0.0, t3 = 0.0, t4 = 0.0;
-
 
 #pragma omp parallel for schedule(dynamic, 10) //reduction(+:t1, t2, t3)
 		for (int i = 0; i < (int)treeContr->mortonLowCells.size(); ++i)
 		{
-//			double tau1, tau2, tau3, tau4;
 			auto& lci = treeContr->mortonLowCells[i];
 			auto& lowCell = treeContr->mortonTree[lci];
 
 			for (auto& e : lowCell.E)
-				e.toZero();					
+				e.toZero();
 
-			if ((lowCell.range[0] <= prm.outVortexCoded) && (lowCell.range[1] >= prm.outVortexCoded))
-				prm.outCell = lci;
-//			tau1 = omp_get_wtime();
 			treeContr->CalcLocalCoeffToLowLevel(lci, treeVrt, 0, true);
-//			tau2 = omp_get_wtime();
-			treeContr->CalcVeloBiotSavart(lci, treeVrt, calcRadius);
-//			tau3 = omp_get_wtime();
+			treeContr->CalcVeloBiotSavart(lci, treeVrt);
 			treeContr->CalcVeloTaylorExpansion(lci);
-//			tau4 = omp_get_wtime();
-
-//			t1 += (tau2 - tau1);
-//			t2 += (tau3 - tau2);
-//			t3 += (tau4 - tau3);
 		}
 
-//		t4 = -omp_get_wtime();
 
-		/*
-		std::ofstream WolfFile("visio.txt");
-		const auto& lowCell = treeContr->mortonTree[prm.outCell];
-		//std::cout << "lci = " << lci << std::endl;
-		WolfFile << "ll:\n" << (lowCell.center - 0.5 * lowCell.size)[0] << " " << (lowCell.center - 0.5 * lowCell.size)[1] << std::endl;
-		WolfFile << "ru:\n" << (lowCell.center + 0.5 * lowCell.size)[0] << " " << (lowCell.center + 0.5 * lowCell.size)[1] << std::endl;
-		WolfFile << lowCell.range[1] - lowCell.range[0] + 1 << std::endl;
-		for (size_t p = lowCell.range[0]; p <= lowCell.range[1]; ++p)
-			WolfFile << treeVrt->mortonCodes[p].r[0] << " " << treeVrt->mortonCodes[p].r[1] << std::endl;
-		
-		
-		WolfFile << prm.farCells.size() << std::endl;
-		for (const auto c : prm.farCells)
+		//CPU - neib
+		const size_t knb = 3;
+		std::vector<std::vector<std::pair<double, size_t>>> initdist(pointsCopy.size());
+		for (auto& d : initdist)
+			d.resize(2 * knb, { -1.0, -1 });
+		double timeKnn = -omp_get_wtime();
+		WakekNNnewForEpsast(pointsCopy, knb, initdist);//CPU
+
+#pragma omp parallel for
+		for (int j = 0; j < pointsCopy.size(); ++j)
 		{
-			const auto& cell = treeVrt->mortonTree[c];
-			WolfFile << (cell.center - 0.5 * cell.size)[0] << " " << (cell.center - 0.5 * cell.size)[1] << " " <<
-				(cell.center + 0.5 * cell.size)[0] << " " << (cell.center + 0.5 * cell.size)[1] << " " << cell.level << std::endl;
+			double sd2 = (initdist[j][0].first + initdist[j][1].first + initdist[j][2].first) / 3.0;
+			pointsCopy[j].epsast = (sd2 > 0) ? sqrt(sd2) : 1000.0;
 		}
-		
-		
-
-
-		WolfFile.close();
-		//*/
+		timeKnn += omp_get_wtime();
 
 		double tInflStop = omp_get_wtime();
 		timeInfl += tInflStop - tInflStart;
@@ -191,10 +165,7 @@ void BarnesHut::InfluenceComputation(std::vector<Point2D>& result, std::vector<d
 
 #pragma omp parallel for 			
 		for (int i = 0; i < n; ++i)
-		{
-			result[i] = IDPI * pointsCopy[i].veloCopy + prm.velInf;
-//			ADDOP(2);
-		}//for i
+			result[i] = IDPI * pointsCopy[i].veloCopy;
 
 		if (calcRadius)
 		{
@@ -202,12 +173,7 @@ void BarnesHut::InfluenceComputation(std::vector<Point2D>& result, std::vector<d
 			for (int i = 0; i < n; ++i)
 				epsast[i] = pointsCopy[i].epsast;
 		}
-
-//		t4 += omp_get_wtime();
-
-//		std::cout << "t: " << t1 << " " << t2 << " " << t3 << " " << t4 << std::endl;
-
-		}//InfluenceComputation(...)
+	}//InfluenceComputation(...)
 #endif
 
 }//namespace BH

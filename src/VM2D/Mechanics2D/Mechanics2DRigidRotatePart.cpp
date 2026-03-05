@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidRotatePart.cpp                                   |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include "Mechanics2DRigidRotatePart.h"
@@ -42,7 +42,6 @@
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
@@ -70,7 +69,7 @@ MechanicsRigidRotatePart::MechanicsRigidRotatePart(const World2D& W_, size_t num
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidRotatePart::GetHydroDynamForce()
 {
-	W.getTimestat().timeGetHydroDynamForce.first += omp_get_wtime();
+	W.getTimers().start("Force");
 
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
@@ -132,7 +131,7 @@ void MechanicsRigidRotatePart::GetHydroDynamForce()
 			viscousMoment += rho * (afl.viscousStress[i] * afl.tau[i]) & rK;
 		}
 
-	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
+	W.getTimers().stop("Force");
 }// GetHydroDynamForce()
 
 // Вычисление скорости центра масс
@@ -198,7 +197,7 @@ void MechanicsRigidRotatePart::Move()
 		
 
 	double dt = W.getPassport().timeDiscretizationProperties.dt;
-	double t = W.getPassport().physicalProperties.getCurrTime();
+	double t = W.getCurrentTime();
 	
 	
 	double addMom = (t > 3.0 * tAccel) ? externalTorque : 0.0;

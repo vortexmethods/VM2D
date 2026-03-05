@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DDeformable.h                                          |
 | Info: Source code of VM2D                                                   |
@@ -33,12 +33,13 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\author Серебровская Екатерина Александровна
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
-#ifndef MECHANICSDEFORMABLE_H
-#define MECHANICSDEFORMABLE_H
+#ifndef MECHANICS2DDEFORMABLE_H
+#define MECHANICS2DDEFORMABLE_H
 
 #include "Mechanics2D.h"
 
@@ -46,9 +47,22 @@ namespace VM2D
 {
 
 	class World2D;
+
+	/*!
+	\brief Вспомогательный класс Beam для описания упругой хорды деформируемой балки
+	\author Марчевский Илья Константинович
+	\author Сокол Ксения Сергеевна
+	\author Рятина Евгения Павловна
+	\author Колганова Александра Олеговна
+	\author Серебровская Екатерина Александровна
+	\Version 1.14
+	\date 6 марта 2026 г.
+	*/
 	class Beam
 	{
 	public:
+		const World2D& W;
+
 		double x0; //абсцисса начала балки
 		double L;  //длина балки
 
@@ -78,49 +92,11 @@ namespace VM2D
 		std::vector<std::vector<double>> presLastSteps;
 
 	public:
-		Beam(double x0_, double L_, int R_) :
-			rho(1000.0),
-			F(0.02),
-			EJ(1.11111),
-			R(R_),
-			x0(x0_),
-			L(L_)
-		{
-			qCoeff.resize(R);
-			currentPhi.resize(R);
-			currentDPhi.resize(R);
-			presLastSteps.reserve(nLastSteps);
-		};
-
-		double phi(int n, double t) const
-		{
-			return currentPhi[n];
-		}
-
-		void solveDU(int n, double dt)
-		{
-			double cm = rho * F;
-			double ck = EJ * sqr(sqr(unitLambda[n] / L));
-			double cq = qCoeff[n];
-
-			double omega = sqrt(ck / cm);
-			double cDamp = 0.005;
-
-			double phiAst = currentPhi[n] + 0.5 * dt * currentDPhi[n];
-			double psiAst = currentDPhi[n] + 0.5 * dt * (-ck * currentPhi[n] - cDamp * omega * currentDPhi[n] - cq) / cm;
-
-			currentPhi[n] += dt * psiAst;
-			currentDPhi[n] += dt * (-ck * phiAst - cDamp * omega * psiAst - cq) / cm;
-		}
-
-
-		double getTotalDisp(double x, double t) const //имитатор деформации упругой линии
-		{ 
-			double result = 0.0;
-			for (int i = 0; i < R; ++i)
-				result += phi(i, t) * shape(i, L, x);
-			return result;
-		}
+		Beam(const World2D& W_, double x0_, double L_, int R_);
+		double phi(int n, double t) const;
+		void solveDU(int n, double dt);
+		double getTotalDisp(double x, double t) const;
+		double getGivenLaw(double x, double t, double deformParam) const; //имитатор деформации упругой линии
 	};
 
 
@@ -136,22 +112,22 @@ namespace VM2D
 	/*!
 	\brief Класс, определяющий вид механической системы
 
-	Деформируемое
+	Деформируемое твердое тело
 
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
+	\author Колганова Александра Олеговна
 
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 
 	class MechanicsDeformable :
 		public Mechanics
 	{
 	private:
-
+		double deformParam;
 		
 
 	public:
@@ -193,10 +169,12 @@ namespace VM2D
 		size_t indexOfLowerLeftAngle;
 
 		std::vector<ChordPanel> chord;    //геометрия упругой линии
-		std::vector<double> upperShifts;  //превышения (по вертикали) точек верхней поверхности балки над хордой
-		std::vector<double> lowerShifts;  //превышения (по вертикали) точек нижней поверхности балки над хордой
+		std::vector<double> upperShifts;  //превышения (по вертикали) точек верхней половины торца балки над хордой
+		std::vector<double> lowerShifts;  //превышения (по вертикали) точек нижней половины торца балки над хордой
 
 		std::unique_ptr<Beam> beam;       //сама балка
+
+		std::vector<std::vector<Point2D>> initialPossibleWays;
 
 	};
 

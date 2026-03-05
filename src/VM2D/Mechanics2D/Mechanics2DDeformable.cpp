@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DDeformable.cpp                                        |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include "Mechanics2DDeformable.h"
@@ -43,13 +43,80 @@
 #include "Airfoil2DDeformable.h"
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
 
 using namespace VM2D;
+
+
+Beam::Beam(const World2D& W_, double x0_, double L_, int R_) :
+	W(W_),
+	rho(1000.0),
+	F(0.02),
+	EJ(1.11111),
+	R(R_),
+	x0(x0_),
+	L(L_)
+{
+	qCoeff.resize(R);
+	currentPhi.resize(R);
+	currentDPhi.resize(R);
+	presLastSteps.reserve(nLastSteps);
+};
+
+double Beam::phi(int n, double t) const
+{
+	return currentPhi[n];
+}
+
+void Beam::solveDU(int n, double dt)
+{
+	double cm = rho * F;
+	double ck = EJ * sqr(sqr(unitLambda[n] / L));
+	double cq = qCoeff[n];
+
+	double omega = sqrt(ck / cm);
+	double cDamp = 0.005;
+
+	double phiAst = currentPhi[n] + 0.5 * dt * currentDPhi[n];
+	double psiAst = currentDPhi[n] + 0.5 * dt * (-ck * currentPhi[n] - cDamp * omega * currentDPhi[n] - cq) / cm;
+
+	currentPhi[n] += dt * psiAst;
+	currentDPhi[n] += dt * (-ck * phiAst - cDamp * omega * psiAst - cq) / cm;
+}
+
+
+double Beam::getTotalDisp(double x, double t) const
+{
+	double result = 0.0;
+	for (int i = 0; i < R; ++i)
+		result += phi(i, t) * shape(i, L, x);
+	return result;
+}
+
+double Beam::getGivenLaw(double x, double t, double deformParam) const //имитатор деформации упругой линии
+{
+	const double c1 = -0.825;
+	const double c2 = 1.625;
+	const double alpha = 0.1;   //Fish
+	//const double alpha = 0.0;     //Turek
+
+	const double lambda = 1.0;
+	const double length = 1.0;
+	const double f = deformParam;
+
+	auto A = [c1, c2](double xi) {return 1.0 + (xi - 1.0) * c1 + (xi * xi - 1.0) * c2;};
+
+	//double result = alpha * A(x + 0.5) * sin(DPI * ((x + 0.5) / (length * lambda) - f * t));
+	double result = W.getPassport().physicalProperties.accelCft(t) * alpha * A(x + 0.5) * sin(DPI * ((x + 0.5) / (length * lambda) - f * t));
+
+	return result;
+}
+
+
+
 
 MechanicsDeformable::MechanicsDeformable(const World2D& W_, size_t numberInPassport_)
 	:
@@ -77,6 +144,7 @@ MechanicsDeformable::MechanicsDeformable(const World2D& W_, size_t numberInPassp
 		exit(2345);
 	}
 
+	/* //Turek
 	//Выделение упругой хорды
 	indexOfUpperRightAngle = 0;
 	double x0 = afl.getR(indexOfUpperRightAngle)[0];
@@ -88,7 +156,7 @@ MechanicsDeformable::MechanicsDeformable(const World2D& W_, size_t numberInPassp
 		x1 = afl.getR(indexOfUpperRightAngle)[0];
 	}
 	--indexOfUpperRightAngle;
-
+	
 	upperShifts.resize(indexOfUpperRightAngle - 1);
 	for (size_t i = 0; i < upperShifts.size(); ++i)
 		upperShifts[i] = afl.getR(i + 1)[1] - afl.getR(0)[1];
@@ -167,19 +235,45 @@ MechanicsDeformable::MechanicsDeformable(const World2D& W_, size_t numberInPassp
 		chord[i].infPanels = { idxUp, idxDn };
 		chord[i].rightSemiWidth = 0.5 * (rUpRight - rDnRight)[1];
 	}
+	/*/
+
+	//*  //Fish
+	int np = (int)afl.getNumberOfPanels();
+	chord.resize(np / 2);
+	
+	chord[0].beg = afl.getR(np / 2);
+	chord[np / 2 - 1].end = afl.getR(0);
+	chord[np / 2 - 1].rightSemiWidth = 0.0;
+
+	for (size_t i = 0; i < np / 2; ++i)
+	{
+		if (i != 0)
+			chord[i].beg = 0.5 * (afl.getR(np / 2 - i) + afl.getR(np / 2 + i));
+		
+		if (i != np/2 - 1)
+			chord[i].end = 0.5 * (afl.getR(np / 2 - i - 1) + afl.getR(np / 2 + i + 1));
+		
+		chord[i].infPanels = { np/2 - i, np/2 + i + 1 };
+		
+		if (i != np/2 - 1 )
+		chord[i].rightSemiWidth = (afl.getR(np / 2 - i - 1) - afl.getR(np / 2 + i + 1)).length() * 0.5;
+	}
+	//*/
 
 	//std::ofstream of("chord.txt");		
 	//for (size_t i = 0; i < chord.size(); ++i)
 	//	of << chord[i].beg[0] << " " << chord[i].beg[1] << " " << chord[i].end[0] << " " << chord[i].end[1] << " " << chord[i].infPanels.first << " " << chord[i].infPanels.second << std::endl;
 	//of.close();	
 
-	beam = std::make_unique<Beam>(chord[0].beg[0], chord.back().end[0] - chord[0].beg[0], 5);
+	beam = std::make_unique<Beam>(W, chord[0].beg[0], chord.back().end[0] - chord[0].beg[0], 5);
+
+	initialPossibleWays = afl.possibleWays;
 };
 
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsDeformable::GetHydroDynamForce()
 {
-	W.getTimestat().timeGetHydroDynamForce.first += omp_get_wtime();
+	W.getTimers().start("Force");	
 
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
@@ -204,7 +298,7 @@ void MechanicsDeformable::GetHydroDynamForce()
 		double gAtt = (velK & afl.tau[i]);
 
 		double gAttOld = 0.0;
-		if (W.currentStep > 0)
+		if (W.getCurrentStep() > 0)
 		{
 			auto oldAfl = W.getOldAirfoil(numberInPassport);
 			gAttOld = ((0.5 * (oldAfl.getV(i) + oldAfl.getV(i + 1))) & oldAfl.tau[i]);
@@ -243,7 +337,7 @@ void MechanicsDeformable::GetHydroDynamForce()
 			viscousMoment += rho * (afl.viscousStress[i] * afl.tau[i]) & rK;
 		}
 
-	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
+	W.getTimers().stop("Force");
 }// GetHydroDynamForce()
 
 // Вычисление скорости центра масс
@@ -279,6 +373,10 @@ void MechanicsDeformable::VeloOfAirfoilPanels(double currTime)
 {
 	std::vector<Point2D> veloW(afl.getNumberOfPanels(), {0.0, 0.0});
 
+	//if (W.getCurrentStep() == 0)
+	//	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
+	//		veloW[i] = { 0.0, 0.0 };//afl.getR(i).kcross();
+
 	if (W.getCurrentStep() > 0)
 		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 			veloW[i] = (1.0 / W.getPassport().timeDiscretizationProperties.dt) * (afl.getR(i) - W.getOldAirfoil(0).getR(i));
@@ -298,17 +396,55 @@ void MechanicsDeformable::VeloOfAirfoilPanels(double currTime)
 void MechanicsDeformable::Move()
 {
 	double x0 = chord[0].beg[0];
-	double t = W.getCurrentStep() * W.getPassport().timeDiscretizationProperties.dt;
+	double t = W.getCurrentTime();
 
+	/*
 	for (int i=0; i < beam->R; ++i)
-		beam->solveDU(i, W.getPassport().timeDiscretizationProperties.dt);
+		beam->solveDU(i, W.getPassport().timeDiscretizationProperties.dt);	
 
 	for (size_t i = 0; i < chord.size(); ++i)
 	{
 		chord[i].beg[1] = beam->getTotalDisp(chord[i].beg[0], t);
 		chord[i].end[1] = beam->getTotalDisp(chord[i].end[0], t);
 	}
-	
+	*/
+
+	//* //Fish
+	for (size_t i = 0; i < chord.size(); ++i)
+	{
+		chord[i].beg[1] = beam->getGivenLaw(chord[i].beg[0], t, deformParam);
+		chord[i].end[1] = beam->getGivenLaw(chord[i].end[0], t, deformParam);
+	}
+
+	std::vector<Point2D> upperPoints(chord.size());
+	std::vector<Point2D> lowerPoints(chord.size());
+
+	for (size_t i = 0; i < chord.size() - 1; ++i)
+	{
+		const Point2D& begIp1 = chord[i + 1].beg;
+		const Point2D& endI = chord[i].end;
+		Point2D normI = (endI - chord[i].beg).unit().kcross();
+		Point2D normIp1 = (chord[i + 1].end - begIp1).unit().kcross();
+		upperPoints[i] = endI + 0.5 * chord[i].rightSemiWidth * (normI + normIp1);
+		lowerPoints[i] = endI - 0.5 * chord[i].rightSemiWidth * (normI + normIp1);
+	}
+
+	Point2D normFront = (chord[0].end - chord[0].beg).unit().kcross();
+	Point2D normBack = (chord.back().end - chord.back().beg).unit().kcross();
+
+	int nph = (int)chord.size();
+
+	afl.setR(0) = chord.back().end;
+	afl.setR(nph) = chord[0].beg;
+	for (size_t i = 0; i < nph-1; ++i)
+	{
+		afl.setR(nph - 1 - i) = upperPoints[i];
+		afl.setR(nph + 1 + i) = lowerPoints[i];
+	}
+	//*/
+
+
+	/*  //Turek
 	std::vector<Point2D> upperPoints(chord.size() + upperShifts.size());
 	std::vector<Point2D> lowerPoints(chord.size() + lowerShifts.size());
 
@@ -338,6 +474,31 @@ void MechanicsDeformable::Move()
 
 	afl.CalcNrmTauLen();
 	afl.GetGabarits();
+	/*/
+
+
+
+	
+
+	afl.CalcNrmTauLen();
+	afl.GetGabarits();
+
+	afl.possibleWays.clear();
+	afl.possibleWays.resize(initialPossibleWays.size());
+
+	for (size_t w = 0; w < initialPossibleWays.size(); ++w)
+	{
+		std::vector<Point2D> initialWay = initialPossibleWays[w];
+		afl.possibleWays[w].resize(initialWay.size());
+		for (size_t p = 0; p < initialWay.size(); ++p)
+		{
+			double x = initialWay[p][0];
+			double y = beam->getGivenLaw(x, t, deformParam);
+			afl.possibleWays[w][p] = Point2D{ x,y };
+		}	
+	}
+
+	afl.lightningTest();
 }//Move()
 
 
@@ -349,6 +510,7 @@ void MechanicsDeformable::Move()
 #if defined(INITIAL) || defined(BRIDGE) 
 void MechanicsDeformable::ReadSpecificParametersFromDictionary()
 {
-
+	mechParamsParser->get("deformParam", deformParam);
+	W.getInfo('i') << "deformParam: " << "deformParam = " << deformParam << std::endl;
 }//ReadSpecificParametersFromDictionary()
 #endif

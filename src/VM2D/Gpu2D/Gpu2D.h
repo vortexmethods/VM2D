@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Gpu2D.h                                                          |
 | Info: Source code of VM2D                                                   |
@@ -33,13 +33,13 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 
-#ifndef GPU_H
-#define GPU_H
+#ifndef GPU2D_H
+#define GPU2D_H
 
 #include <limits>
 #include <memory>
@@ -47,7 +47,7 @@
 #include "cuLib2D.cuh"
 #include "Gpudefs.h"
 
-#include "wrapper.h"
+#include "cudaTreeInfo.h" 
 
 namespace VM2D
 {
@@ -60,9 +60,10 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\author Колганова Александра Олеговна
+
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 	class Gpu
 	{
@@ -75,6 +76,9 @@ namespace VM2D
 		//static int nReserve; //Для контроля паритета выделения и освобождения памяти
 
 #if defined(__CUDACC__) || defined(USE_CUDA)
+
+		int blocks;
+		int* dev_blocks;
 
 		/// \brief Освобождение видеопамяти на графической карте
 		/// \todo Откомментировать
@@ -97,7 +101,7 @@ namespace VM2D
 		/// \param[out] new_n ссылка на длину (внешнюю размерность) массива, под который выделена память (округляется вверх до длины, кратной размеру блока CUBLOCK)
 		/// \return адрес на графической карте - указатель на начало массива
 		template<typename T, size_t dim>
-		T* ReserveDevMem(size_t n, size_t& new_n)
+		T* ReserveDevMem(size_t n, size_t& new_n, int code = 0)
 		{
 			size_t nBlocks = n / CUBLOCK;
 			if (n % CUBLOCK)
@@ -107,7 +111,7 @@ namespace VM2D
 
 			void* ptr;
 
-			cuReserveDevMem(ptr, new_n * dim * sizeof(T));			
+			cuReserveDevMem(ptr, new_n * dim * sizeof(T), code);			
 			//++nReserve;
 
 			return (T*)ptr;
@@ -177,8 +181,7 @@ namespace VM2D
 
 		// Ниже - данные для вычисления скоростей	
 
-		/// Число профилей в задаче
-		size_t n_CUDA_afls;
+				
 
 		/// Указатели на массивы, которые хранятся на видеокарте и содержат число панелей и число виртуальных вихрей на всех профилях
 		size_t* dev_ptr_nPanels;
@@ -211,24 +214,38 @@ namespace VM2D
 		std::vector<size_t> n_CUDA_virtWake;
 		size_t n_CUDA_totalVirtWake;
 
-		/// Массив на хосте, содержащий число панелей на профилях; его длина равна числу профилей
-		std::vector<size_t> n_CUDA_panel;
-
-		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о следе (wake)
-		size_t n_CUDA_wake;
-		
-
 		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о следе (source)
 		size_t n_CUDA_source;
 
 		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о точках вычисления VP
 		size_t n_CUDA_velVP;
 
-		size_t n_CUDA_bodies;
-		BHcu::CUDApointers CUDAptrs;
+		//////////////////////////////////////////////////////
 
-		std::vector<BHcu::CUDApointers> CUDAptrsAirfoilVrt;
-		std::vector<BHcu::CUDApointers> CUDAptrsAirfoilSrc;
+		/// Длина массивов на видеокарте, зарезервированных на хранение сведений о следе (wake)
+		size_t n_CUDA_wake;	
+		
+		/// Число профилей в задаче
+		size_t n_CUDA_afls;
+
+		/// Общее число панелей на всех профилях
+		size_t n_CUDA_pnls;
+
+		/// Деревья для быстрого метода
+		std::unique_ptr<BHcu::CudaTreeInfo> inflTreeWake;
+		std::unique_ptr<BHcu::CudaTreeInfo> cntrTreeWake; 
+		
+		std::unique_ptr<BHcu::CudaTreeInfo> cntrTreePnl; 
+		std::unique_ptr<BHcu::CudaTreeInfo> inflTreePnlVortex; 
+		std::unique_ptr<BHcu::CudaTreeInfo> inflTreePnlSource;
+
+		std::unique_ptr<BHcu::CudaTreeInfo> cntrTreeVP; 
+
+		//для вспомогательных операций
+		std::unique_ptr<BHcu::CudaTreeInfo> auxTreePnl;
+		std::unique_ptr<BHcu::CudaTreeInfo> cntrTreePoint;    //точки Point2, для которых ищутся ближайшие панели 
+		std::unique_ptr<BHcu::CudaTreeInfo> cntrTreeSegment;  //отрезки 2 х Point2, для которых контролируются пересечения с профилем 
+
 
 		void AllocateSolution(double*& dev_sol, size_t n); 
 		void SetSolution(double* sol, double* dev_sol, size_t n);

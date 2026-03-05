@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2D.cpp                                                  |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include "Mechanics2D.h"
@@ -42,7 +42,6 @@
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
@@ -177,8 +176,6 @@ void Mechanics::GeneratePositionHeader()
 //Сохранение строки со статистикой в файл нагрузок
 void Mechanics::GenerateForcesString()
 {
-	W.getTimestat().timeOther.first += omp_get_wtime();
-
 	std::stringstream forceFileName, forceFileNameCsv;
 	forceFileName << W.getPassport().dir << "forces-airfoil-" << numberInPassport;
 	forceFileNameCsv << W.getPassport().dir << "forces-airfoil-" << numberInPassport << ".csv";
@@ -219,22 +216,19 @@ void Mechanics::GenerateForcesString()
 
 
 	std::ofstream forcesFile(forceFileName.str(), std::ios::app);
-	forcesFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << cartesianHydroForce[0] << "	" << cartesianHydroForce[1] << "	" << cartesianHydroMoment << "	" << cartesianViscoForce[0] << "	" << cartesianViscoForce[1] << "	" << cartesianViscoMoment;
+	forcesFile << std::endl << W.getCurrentStep() << "	" << W.getCurrentTime() << "	" << cartesianHydroForce[0] << "	" << cartesianHydroForce[1] << "	" << cartesianHydroMoment << "	" << cartesianViscoForce[0] << "	" << cartesianViscoForce[1] << "	" << cartesianViscoMoment;
 	forcesFile.close();
 
 	std::ofstream forcesFileCsv(forceFileNameCsv.str(), std::ios::app);
-	forcesFileCsv << std::endl << W.getCurrentStep() << "," << W.getPassport().physicalProperties.getCurrTime() << "," << cartesianHydroForce[0] << "," << cartesianHydroForce[1] << "," << cartesianHydroMoment << "," << cartesianViscoForce[0] << "," << cartesianViscoForce[1] << "," << cartesianViscoMoment;
+	forcesFileCsv << std::endl << W.getCurrentStep() << "," << W.getCurrentTime() << "," << cartesianHydroForce[0] << "," << cartesianHydroForce[1] << "," << cartesianHydroMoment << "," << cartesianViscoForce[0] << "," << cartesianViscoForce[1] << "," << cartesianViscoMoment;
 	forcesFileCsv.close();
 
-	W.getTimestat().timeOther.second += omp_get_wtime();
 }//GenerateForcesString()
 
 
 //Сохранение строки со статистикой в файл положения
 void Mechanics::GeneratePositionString()
 {
-	W.getTimestat().timeOther.first += omp_get_wtime();
-
 	if (isMoves)
 	{
 		std::stringstream positionFileName, positionFileNameCsv;
@@ -242,13 +236,11 @@ void Mechanics::GeneratePositionString()
 		positionFileNameCsv << W.getPassport().dir << "position-airfoil-" << numberInPassport << ".csv";
 
 		std::ofstream positionFile(positionFileName.str(), std::ios::app);
-		positionFile << std::endl << W.getCurrentStep() << "	" << W.getPassport().physicalProperties.getCurrTime() << "	" << afl.rcm[0] << "	" << afl.rcm[1] << "	" << Phi << "	" << Vcm[0] << "	" << Vcm[1] << "	" << Wcm;
+		positionFile << std::endl << W.getCurrentStep() << "	" << W.getCurrentTime() << "	" << afl.rcm[0] << "	" << afl.rcm[1] << "	" << Phi << "	" << Vcm[0] << "	" << Vcm[1] << "	" << Wcm;
 		positionFile.close();
 
 		std::ofstream positionFileCsv(positionFileNameCsv.str(), std::ios::app);
-		positionFileCsv << std::endl << W.getCurrentStep() << "," << W.getPassport().physicalProperties.getCurrTime() << "," << afl.rcm[0] << "," << afl.rcm[1] << "," << Phi << "," << Vcm[0] << "," << Vcm[1] << "," << Wcm;
+		positionFileCsv << std::endl << W.getCurrentStep() << "," << W.getCurrentTime() << "," << afl.rcm[0] << "," << afl.rcm[1] << "," << Phi << "," << Vcm[0] << "," << Vcm[1] << "," << Wcm;
 		positionFileCsv.close();
 	}
-
-	W.getTimestat().timeOther.second += omp_get_wtime();
 }//GeneratePositionString()
