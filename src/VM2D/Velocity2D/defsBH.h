@@ -1,44 +1,47 @@
-/*---------------------------------*- BH -*------------------*---------------*\
-|        #####   ##  ##         |                            | Version 1.5    |
-|        ##  ##  ##  ##         |  BH: Barnes-Hut method     | 2024/06/19     |
-|        #####   ######         |  for 2D vortex particles   *----------------*
-|        ##  ##  ##  ##         |  Open Source Code                           |
-|        #####   ##  ##         |  https://www.github.com/vortexmethods/fastm |
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2020-2024 I. Marchevsky, E. Ryatina, A. Kolganova             |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
-| File name: defs.h                                                           |
-| Info: Source code of BH                                                     |
+| File name: defsBH.h                                                         |
+| Info: Source code of VM2D                                                   |
 |                                                                             |
-| This file is part of BH.                                                    |
-| BH is free software: you can redistribute it and/or modify it               |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| BHcu is distributed in the hope that it will be useful, but WITHOUT         |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
-| along with BH.  If not, see <http://www.gnu.org/licenses/>.                 |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
 \*---------------------------------------------------------------------------*/
 
 /*!
 \file
-\brief Вспомогательные функции
+\brief Вспомогательные функции для метода Барнса - Хата для CPU
 \author Марчевский Илья Константинович
+\author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\version 1.5
-\date 19 июня 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #pragma once
 
 #include <iostream>
-#include "PointsCopy.h"
+#include "PointsCopyBH.h"
+
+#include "Gpudefs.h"
 
 #ifdef calcOp
 	#define ADDOP(n) BH::op += ((int)n)
@@ -56,11 +59,9 @@ namespace BH
 	static const double IPI = 1.0 / PI;
 	static const double IDPI = 0.5 / PI;
 
-	/// Длина мортоновского кода для каждой координаты (не более половины длины int в битах)
-	static const int codeLength = 14;
 
 	/// 2 в степени длины мортоновского кода (на каждую координату)
-	static const int twoPowCodeLength = (1 << codeLength);
+	static const int twoPowCodeLengthVar = (1 << codeLength);
 
 	
 	/// Вспомогательная функция корректировки capacity вектора (при необходимости - удваивает)
@@ -72,11 +73,11 @@ namespace BH
 
 
 	/// Умножение комплексных чисел
-	inline Point2D multz(const Point2D& a, const Point2D& b)
-	{
-		ADDOP(4);
-		return Point2D({ a[0] * b[0] - a[1] * b[1], a[1] * b[0] + a[0] * b[1] });
-	}
+	//inline Point2D multz(const Point2D& a, const Point2D& b)
+	//{
+	//	ADDOP(4);
+	//	return Point2D({ a[0] * b[0] - a[1] * b[1], a[1] * b[0] + a[0] * b[1] });
+	//}
 
 	/// Возведение в степень комплексных чисел
 	inline Point2D powz(const Point2D& z, double n)
@@ -89,11 +90,11 @@ namespace BH
 	}
 
 	/// Умножение a на комплексно сопряженноe к b
-	inline Point2D multzA(const Point2D& a, const Point2D& b)
-	{
-		ADDOP(4);
-		return Point2D({ a[0] * b[0] + a[1] * b[1], a[1] * b[0] - a[0] * b[1] });
-	}
+	//inline Point2D multzA(const Point2D& a, const Point2D& b)
+	//{
+	//	ADDOP(4);
+	//	return Point2D({ a[0] * b[0] + a[1] * b[1], a[1] * b[0] - a[0] * b[1] });
+	//}
 
 	/// Шаблонная функция возведения в квадрат
 	template <typename T>

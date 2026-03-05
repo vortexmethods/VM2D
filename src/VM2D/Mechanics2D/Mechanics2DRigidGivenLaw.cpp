@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidGivenLaw.cpp                                     |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include <algorithm>
@@ -46,7 +46,6 @@
 
 
 #include "MeasureVP2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
@@ -57,7 +56,7 @@ using namespace VM2D;
 MechanicsRigidGivenLaw::MechanicsRigidGivenLaw(const World2D& W_, size_t numberInPassport_)
 	: Mechanics(W_, numberInPassport_, true, false)
 {
-	ReadSpecificParametersFromDictionary();
+	MechanicsRigidGivenLaw::ReadSpecificParametersFromDictionary();
 	Initialize(VelocityOfCenterOfMass(0.0), PositionOfCenterOfMass(0.0), AngularVelocity(0.0), RotationAngle(0.0));
 };
 
@@ -65,7 +64,7 @@ MechanicsRigidGivenLaw::MechanicsRigidGivenLaw(const World2D& W_, size_t numberI
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidGivenLaw::GetHydroDynamForce()
 {
-	W.getTimestat().timeGetHydroDynamForce.first += omp_get_wtime();
+	W.getTimers().start("Force");
 
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
@@ -86,11 +85,11 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce()
 		
 	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
-		Point2D Vcm = VeloOfAirfoilRcm(W.getCurrentStep() * dt);
-		Point2D VcmOld = VeloOfAirfoilRcm((std::max(W.getCurrentStep(), (size_t)1) - 1) * dt);
+		/*Point2D*/ Vcm = VeloOfAirfoilRcm(W.getCurrentStep() * dt);
+		/*Point2D*/ VcmOld = VeloOfAirfoilRcm((std::max(W.getCurrentStep(), (size_t)1) - 1) * dt);
 		
-		double Wcm = AngularVelocityOfAirfoil(W.getCurrentStep() * dt);
-		double WcmOld = AngularVelocityOfAirfoil((std::max(W.getCurrentStep(), (size_t)1) - 1) * dt);
+		/*double*/ Wcm = AngularVelocityOfAirfoil(W.getCurrentStep() * dt);
+		/*double*/ WcmOld = AngularVelocityOfAirfoil((std::max(W.getCurrentStep(), (size_t)1) - 1) * dt);
 
 		Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i));
 		
@@ -126,7 +125,7 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce()
 	hydroDynamForce = rho * (hDFGam + hDFdelta * (1.0 / dt) + hDFQ);
 	hydroDynamMoment = rho * (hDMGam + hDMdelta / dt + hDMQ);
 
-	if ((W.getPassport().physicalProperties.nu > 0.0) && (W.currentStep > 0))
+	if ((W.getPassport().physicalProperties.nu > 0.0) && (W.getCurrentStep() > 0))
 		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 		{
 			Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
@@ -134,13 +133,28 @@ void MechanicsRigidGivenLaw::GetHydroDynamForce()
 			viscousMoment += rho * (afl.viscousStress[i] * afl.tau[i]) & rK;
 		}
 
-	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
+	W.getTimers().stop("Force");
 }// GetHydroDynamForce()
 
 
 // Вычисление скорости центра масс
 Point2D MechanicsRigidGivenLaw::VeloOfAirfoilRcm(double currTime)
 {
+	if (W.getPassport().physicalProperties.typeAccel.second == 3)
+	{
+		switch ((int)(W.getPassport().physicalProperties.timeAccel))
+		{
+		case 0:
+			return { -1.0, 0.0 };
+		case 1:
+			return { 0.0, -1.0 };
+		case 2:
+			return { 0.0, 0.0 };
+		default:
+			return { 0.0, 0.0 };
+		}
+	}
+
 	return VelocityOfCenterOfMass(currTime);
 }//VeloOfAirfoilRcm(...)
 
@@ -154,6 +168,21 @@ Point2D MechanicsRigidGivenLaw::PositionOfAirfoilRcm(double currTime)
 // Вычисление угловой скорости профиля вокруг центра масс
 double MechanicsRigidGivenLaw::AngularVelocityOfAirfoil(double currTime)
 {
+	if (W.getPassport().physicalProperties.typeAccel.second == 3)
+	{
+		switch ((int)(W.getPassport().physicalProperties.timeAccel))
+		{
+		case 0:
+			return 0.0;
+		case 1:
+			return 0.0;
+		case 2:
+			return -1.0;
+		default:
+			return 0.0;
+		}
+	}
+
 	return AngularVelocity(currTime);
 }//AngularVelocityOfAirfoil(...)
 
@@ -173,24 +202,25 @@ double MechanicsRigidGivenLaw::AngleOfAirfoil(double currTime)
 void MechanicsRigidGivenLaw::VeloOfAirfoilPanels(double currTime)
 {
 	Point2D veloRcm = VeloOfAirfoilRcm(currTime);
+	double angVelo = AngularVelocityOfAirfoil(currTime);
 
 	std::vector<Point2D> vel(afl.getNumberOfPanels(), { 0.0, 0.0 });
 	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
-		vel[i][0] = (afl.getR(i) - afl.rcm).kcross()[0] * Wcm;
-		vel[i][1] = (afl.getR(i) - afl.rcm).kcross()[1] * Wcm;
+		vel[i][0] = (afl.getR(i) - afl.rcm).kcross()[0] * angVelo;
+		vel[i][1] = (afl.getR(i) - afl.rcm).kcross()[1] * angVelo;
 		vel[i] += veloRcm;
 	}
 	
 	afl.setV(vel);
 
-	circulation = 2.0 * afl.area * Wcm;
+	circulation = 2.0 * afl.area * angVelo;
 	circulationOld = 2.0 * afl.area * WcmOld;
 }//VeloOfAirfoilPanels(...)
 
 void MechanicsRigidGivenLaw::Move()
 {
-	double t = W.getPassport().physicalProperties.getCurrTime();
+	double t = W.getCurrentTime();
 	double dt = W.getPassport().timeDiscretizationProperties.dt;
 
 	//Point2D airfoilVelo = VeloOfAirfoilRcm(t);
@@ -207,6 +237,7 @@ void MechanicsRigidGivenLaw::Move()
 
 void MechanicsRigidGivenLaw::ReadSpecificParametersFromDictionary()
 {
+	/*
 	mechParamsParser->get("timeAccel", timeAccel);
 	W.getInfo('i') << "time of accelerated movement: " << "timeAccel = " << timeAccel << std::endl;
 
@@ -218,7 +249,7 @@ void MechanicsRigidGivenLaw::ReadSpecificParametersFromDictionary()
 
 	mechParamsParser->get("targetAmplitude", targetAmplitude);
 	W.getInfo('i') << "target Amplitude: " << "targetAmplitude = " << targetAmplitude << std::endl;
-
+	*/
 
    /*
 	mechParamsParser->get("Comega", Comega);

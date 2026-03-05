@@ -1,20 +1,62 @@
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
+|                                                                             |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+*-----------------------------------------------------------------------------*
+| File name: Gmres2D.cpp                                                      |
+| Info: Source code of VM2D                                                   |
+|                                                                             |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
+| under the terms of the GNU General Public License as published by           |
+| the Free Software Foundation, either version 3 of the License, or           |
+| (at your option) any later version.                                         |
+|                                                                             |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
+| FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
+| for more details.                                                           |
+|                                                                             |
+| You should have received a copy of the GNU General Public License           |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
+\*---------------------------------------------------------------------------*/
+
+
+/*!
+\file
+\brief Файл кода с описанием функций метода GMRES
+\author Марчевский Илья Константинович
+\author Сокол Ксения Сергеевна
+\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
+\author Кобзарь Дарья Юрьевна
+\Version 1.14
+\date 6 марта 2026 г.
+*/
+
+
 #include "Gmres2D.h"
 
+#include "Airfoil2D.h"
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
-#include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
-#include "WakeDataBase2D.h"
-#include "World2D.h"
 #include "Wake2D.h"
+#include "World2D.h"
 
 
 using namespace VM2D;
 
-bool IterRot(std::vector<std::vector<double>>& H, const std::vector<double>& rhs, double& gs, std::vector<double>& c, std::vector<double>& s, int m, int n, double epsGMRES, int iter, bool residualShow)
+typedef Eigen::Map<const Eigen::VectorXd> MapVec;
+
+bool VM2D::IterRot(std::vector<std::vector<double>>& H, const double nrmRhs, double& gs, std::vector<double>& c, std::vector<double>& s, int m, int n, double epsGMRES, int iter, bool residualShow)
 {
 	bool fl;
 	double buf;
@@ -27,23 +69,28 @@ bool IterRot(std::vector<std::vector<double>>& H, const std::vector<double>& rhs
 		H[i + 1][m - 1] = -s[i] * buf + c[i] * H[i + 1][m - 1];
 	}
 
-	double zn = sqrt(H[m - 1][m - 1] * H[m - 1][m - 1] + H[m][m - 1] * H[m][m - 1]);
+	double izn = 1.0 / sqrt(H[m - 1][m - 1] * H[m - 1][m - 1] + H[m][m - 1] * H[m][m - 1]);
 
-	c.push_back(H[m - 1][m - 1] / zn);
-	s.push_back(H[m][m - 1] / zn);
+	c.push_back(H[m - 1][m - 1] * izn);
+	s.push_back(H[m][m - 1] * izn);
 	gs *= -s[m - 1];
+
+
+
 	H[m - 1][m - 1] = c[m - 1] * H[m - 1][m - 1] + s[m - 1] * H[m][m - 1];
 	H[m][m - 1] = 0.0;
 
-	if (residualShow)
-		std::cout << "Iteration: " << iter << ", residual = " << (fabs(gs) / norm(rhs)) << std::endl;
 
-	fl = ((fabs(gs) / norm(rhs)) < epsGMRES);
+
+	if (residualShow)
+		std::cout << "Iteration: " << iter << ", residual = " << (fabs(gs) / nrmRhs) << std::endl;
+
+	fl = ((fabs(gs) / nrmRhs) < epsGMRES);
 	return fl;
 }
 
 
-void SolCircleRundirect(const std::vector<double>& A, const std::vector<double>& rhs, size_t startRow, size_t startRowReg, size_t np, std::vector<double>& res)
+void VM2D::SolCircleRundirect(const std::vector<double>& A, const std::vector<double>& rhs, size_t startRow, size_t startRowReg, size_t np, std::vector<double>& res)
 {
 	size_t nAllVars = rhs.size();
 	std::vector<double> alpha(np + 2), beta(np + 2), gamma(np + 2);
@@ -80,7 +127,7 @@ void SolCircleRundirect(const std::vector<double>& A, const std::vector<double>&
 
 
 
-void SolMdirect(const std::vector<double>& A, const std::vector<double>& rhs, size_t startRow, size_t startRowReg, size_t np, std::vector<double>& res, bool lin)
+void VM2D::SolMdirect(const std::vector<double>& A, const std::vector<double>& rhs, size_t startRow, size_t startRowReg, size_t np, std::vector<double>& res, bool lin)
 {
 	std::vector<double> alpha(np), beta(np), gamma(np), delta(np), phi(np), xi(np), psi(np);
 	double yn, ynn;
@@ -156,8 +203,8 @@ void SolMdirect(const std::vector<double>& A, const std::vector<double>& rhs, si
 
 
 
-void GMRES_Direct(
-	const VM2D::World2D& W,
+void VM2D::GMRES_Direct(
+	const World2D& W,
 	int nAllVars,
 	int nafl,
 	const std::vector<double>& mtrDir,
@@ -184,7 +231,7 @@ void GMRES_Direct(
 
 	std::vector<double> h((nAllVars + 1) * maxIter, 0.0);
 	double beta = 0.0, gs, normb = 0.0;
-	size_t m;
+	size_t m = 0;
 
 	for (size_t i = 0; i < nAllVars; ++i)
 		normb += rhsDir[i] * rhsDir[i];
@@ -205,6 +252,21 @@ void GMRES_Direct(
 	beta = sqrt(beta);
 	gs = beta;
 	g[0] = beta;
+
+	//Досрочный выход, если правая часть нулевая
+	if (beta == 0)
+	{
+		for (size_t aflI = 0; aflI < nafl; ++aflI)
+		{
+			for (size_t i = 0; i < vsize[aflI]; ++i)
+				gam[aflI][i] = 0.0;
+			R[aflI] = 0.0;
+		}	
+		return;
+	}
+
+	for (size_t aflI = 0; aflI < nafl; ++aflI)
+		R[aflI] = x[x.size() - nafl + aflI];
 
 	for (size_t i = 0; i < nAllVars; ++i)
 		v[i * (maxIter + 1) + 0] = r[i] / beta;
@@ -260,7 +322,6 @@ void GMRES_Direct(
 			h[i * maxIter + j] = c[i] * buf + s[i] * h[(i + 1) * maxIter + j];
 			h[(i + 1) * maxIter + j] = -s[i] * buf + c[i] * h[(i + 1) * maxIter + j];
 		}
-
 
 		double zn = sqrt(h[j * maxIter + j] * h[j * maxIter + j] + h[(j + 1) * maxIter + j] * h[(j + 1) * maxIter + j]);
 		c[j] = fabs(h[j * maxIter + j] / zn);
@@ -329,9 +390,15 @@ void GMRES_Direct(
 
 
 
-void SolCircleRun(std::vector<double>& AX, const std::vector<double>& rhs, const Airfoil& afl, const std::vector<std::vector<Point2D>>& prea1, const std::vector<std::vector<Point2D>>& prec1, int p, int n)
+void VM2D::SolCircleRun(std::vector<double>& AX, const std::vector<double>& rhs, const Airfoil& afl, const std::vector<std::vector<Point2D>>& prea1, const std::vector<std::vector<Point2D>>& prec1, int p, int n, sweepVectors& sw)
 {
-	std::vector<double> alpha(n), beta(n), delta(n), phi(n), xi(n);
+	//std::vector<double> alpha(n), beta(n), delta(n), phi(n), xi(n);
+	std::vector<double>& alpha = sw.alpha;
+	std::vector<double>& beta = sw.beta;	
+	std::vector<double>& delta = sw.delta;
+	std::vector<double>& phi = sw.phi;
+	std::vector<double>& xi = sw.xi;
+	
 	double yn, a;
 
 	double len24 = afl.len[0] * 24.0;
@@ -374,12 +441,18 @@ void SolCircleRun(std::vector<double>& AX, const std::vector<double>& rhs, const
 
 
 
-void SolM(const World2D& W, std::vector<double>& AX, const std::vector<double>& rhs,
-	const std::vector<std::vector<Point2D>>& prea, const std::vector<std::vector<Point2D>>& prec, const std::vector<std::vector<Point2D>>& prea1, const std::vector<std::vector<Point2D>>& prec1, int p, int n, bool linScheme)
+void VM2D::SolM(std::vector<double>& AX, const std::vector<double>& rhs, const Airfoil& afl,
+	const std::vector<std::vector<Point2D>>& prea, const std::vector<std::vector<Point2D>>& prec, int p, int n, bool linScheme, sweepVectors& sw)
 {
-	const Airfoil& afl = W.getAirfoil(p);
+	//std::vector<double> alpha(n), beta(n), gamma(n), delta(n), phi(n), xi(n), psi(n);
+	std::vector<double>& alpha = sw.alpha;
+	std::vector<double>& beta = sw.beta;
+	std::vector<double>& gamma = sw.gamma;
+	std::vector<double>& delta = sw.delta;
+	std::vector<double>& phi = sw.phi;
+	std::vector<double>& xi = sw.xi;
+	std::vector<double>& psi = sw.psi;
 
-	std::vector<double> alpha(n), beta(n), gamma(n), delta(n), phi(n), xi(n), psi(n);
 	double yn, ynn;
 	double lam1, lam2, mu1, mu2, xi1, xi2;
 	double a;
@@ -447,16 +520,13 @@ void SolM(const World2D& W, std::vector<double>& AX, const std::vector<double>& 
 	AX[n - 1] = yn;
 	for (int i = n - 2; i >= 0; --i)
 		AX[i] = phi[i + 1] * yn + psi[i + 1] * ynn + xi[i + 1];
-
-	//Циклическая прогонка для линейной схемы
-	if (linScheme)
-		SolCircleRun(AX, rhs, afl, prea1, prec1, p, n);
-
 }
+
+
 
 // вычисление коэффициентов для применения предобуславливателя до начала итераций
 void PreCalculateCoef(
-const VM2D::Airfoil& aflP,
+const Airfoil& aflP,
 size_t nPanelsP,
 std::vector<Point2D> & prea,
 std::vector<Point2D>& prec,
@@ -529,7 +599,9 @@ bool linScheme)
 
 
 #ifdef USE_CUDA
-void GMRES(const VM2D::World2D& W,
+#include <cublas_v2.h>
+
+void VM2D::GMRES(const World2D& W,
 	std::vector<std::vector<double>>& X,
 	std::vector<double>& R,
 	const std::vector<std::vector<double>>& rhs,
@@ -537,6 +609,13 @@ void GMRES(const VM2D::World2D& W,
 	int& niter,
 	bool linScheme)
 {
+	VMlib::vmTimer tAll("All"), tPre("Pre"), tIter("Iter"), tPost("Post"), tIter1("Iter1"), tIterOther("IterOther"), 
+		tCG("tCG"), tGC("tGC"), tWrapper("tWrapper"), tSplit("tSplit"), tPrecond("tPrecond"), tRot("tRot"), 
+		tRotA("tRotA"), tRotB("tRotB"), tRotC("tRotC"), tRotD("tRotD");
+	
+	cublasHandle_t cublas_handle;
+	cublasCreate(&cublas_handle);
+
 	const size_t nAfl = W.getNumberOfAirfoil();
 
 	size_t totalVsize = 0;
@@ -550,16 +629,31 @@ void GMRES(const VM2D::World2D& W,
 	if (linScheme)
 		totalVsize *= 2;
 
-	size_t m;
+
 	const size_t iterSize = 50;
+
+	double* devViBund, *devw;
+	cudaMalloc((void**)&devViBund, (totalVsize + nAfl) * sizeof(double) * iterSize);
+	cudaMalloc((void**)&devw, (totalVsize + nAfl) * sizeof(double));
+	
+	double* mulptr;
+	cudaMalloc(&mulptr, iterSize * sizeof(double));
+	std::vector<double> mul(iterSize);
+
+	tAll.start();
+	tPre.start();
+
+	size_t m;
+	
 	double beta;
 	std::vector<double> w(totalVsize + nAfl), c, s;
 	c.reserve(iterSize);
 	s.reserve(iterSize);
 
-	std::vector<std::vector<double>> V, H, diag(nAfl);
-	V.reserve(iterSize);
-	V.resize(1);
+	std::vector<double> Vflat;
+	Vflat.reserve((totalVsize + nAfl) * iterSize);
+
+	std::vector<std::vector<double>> H, diag(nAfl);
 	H.resize(iterSize + 1);
 	for (int i = 0; i < iterSize + 1; ++i)
 		H[i].resize(iterSize);
@@ -582,16 +676,21 @@ void GMRES(const VM2D::World2D& W,
 		}
 	}
 
+	double nrmRhs = 0.0;
+#pragma omp parallel for reduction(+:nrmRhs)
+	for (int p = 0; p < (int)nAfl; ++p)
+		nrmRhs += norm2(rhs[p]);
+	nrmRhs = sqrt(nrmRhs);
 
 	std::vector<std::vector<double>> residual(nAfl);
 	for (size_t p = 0; p < nAfl; ++p)
 		residual[p] = rhs[p];
 
 	for (size_t i = 0; i < nAfl; ++i)
-		V[0].insert(V[0].end(), residual[i].begin(), residual[i].end());
+		Vflat.insert(Vflat.end(), residual[i].begin(), residual[i].end());
 
 	for (size_t i = 0; i < nAfl; ++i)
-		V[0].push_back(rhsReg[i]); // суммарная гамма
+		Vflat.push_back(rhsReg[i]);
 
 	// PRECONDITIONER
 	std::vector<std::vector<Point2D>> prea(nAfl), prec(nAfl), prea1(nAfl), prec1(nAfl);
@@ -609,55 +708,83 @@ void GMRES(const VM2D::World2D& W,
 		PreCalculateCoef(aflP, nPanelsP, prea[p], prec[p], prea1[p], prec1[p], linScheme);
 	}
 
-	std::vector<double> vbuf1;
-	size_t np = 0;
-
+	std::vector<sweepVectors> allSW(nAfl);
+	std::vector<std::vector<double>> allBuf2(nAfl);	
+	std::vector<size_t> np(nAfl, 0);
+		
 	for (size_t p = 0; p < nAfl; ++p)
 	{
 		size_t nPanelsP = W.getAirfoil(p).getNumberOfPanels();
-
+		
+		allSW[p].resize(nPanelsP);
+		
 		if (!linScheme)
-			vbuf1.resize(nPanelsP + 1);
+			allBuf2[p].resize(nPanelsP + 1);
 		else
-			vbuf1.resize(2 * nPanelsP + 1);
+			allBuf2[p].resize(2 * nPanelsP + 1);
+		
+		if (p == 0)
+			continue;
 
+		np[p] = np[p - 1];
 		if (!linScheme)
-			np += ((p == 0) ? 0 : W.getAirfoil(p - 1).getNumberOfPanels());
+			np[p] += (/*(p == 0) ? 0 :*/ W.getAirfoil(p - 1).getNumberOfPanels());
 		else
-			np += ((p == 0) ? 0 : 2 * W.getAirfoil(p - 1).getNumberOfPanels());
+			np[p] += (/*(p == 0) ? 0 :*/ 2 * W.getAirfoil(p - 1).getNumberOfPanels());
+	}
+
+#pragma omp parallel for
+	for (int p = 0; p < (int)nAfl; ++p)
+	{
+		std::vector<double>& vbuf1 = allBuf2[p];
+		size_t nPanelsP = W.getAirfoil(p).getNumberOfPanels();
 
 		for (size_t i = 0; i < nPanelsP; ++i)
 		{
-			vbuf1[i] = V[0][np + i];
+			vbuf1[i] = Vflat[np[p] + i];
 			if (linScheme)
-				vbuf1[i + nPanelsP] = V[0][np + nPanelsP + i];
+				vbuf1[i + nPanelsP] = Vflat[np[p] + nPanelsP + i];
 		}
 
 		if (!linScheme)
-			vbuf1[nPanelsP] = V[0][V[0].size() - (nAfl - p)];
+			vbuf1[nPanelsP] = Vflat[(totalVsize + nAfl) - (nAfl - p)];
 		else
-			vbuf1[2 * nPanelsP] = V[0][V[0].size() - (nAfl - p)];
+			vbuf1[2 * nPanelsP] = Vflat[(totalVsize + nAfl) - (nAfl - p)];
 
-		SolM(W, vbuf1, vbuf1, prea, prec, prea1, prec1, (int)p, (int)nPanelsP, linScheme);
 
-		for (size_t j = np; j < np + nPanelsP; ++j)
+		SolM(vbuf1, vbuf1, W.getAirfoil(p), prea, prec, (int)p, (int)nPanelsP, linScheme, allSW[p]);
+		
+		//Циклическая прогонка для линейной схемы
+		if (linScheme)
+			SolCircleRun(vbuf1, vbuf1, W.getAirfoil(p), prea1, prec1, p, (int)nPanelsP, allSW[p]);
+
+
+		for (size_t j = np[p]; j < np[p] + nPanelsP; ++j)
 		{
-			V[0][j] = vbuf1[j - np];
+			Vflat[j] = vbuf1[j - np[p]];
 			if (linScheme)
-				V[0][j + nPanelsP] = vbuf1[j - np + nPanelsP];
+				Vflat[j + nPanelsP] = vbuf1[j - np[p] + nPanelsP];
 		}
-
-		V[0][V[0].size() - (nAfl - p)] = vbuf1[vbuf1.size() - 1];
+		Vflat[(totalVsize + nAfl) - (nAfl - p)] = vbuf1[vbuf1.size() - 1];
 	}
 
-	beta = norm(V[0]);
+	beta = 0;
+	for (int t = 0; t < (totalVsize + nAfl); ++t)
+		beta += Vflat[t] * Vflat[t];
+	beta = sqrt(beta);
+
+	
 	if (beta > 0)
-		V[0] = (1.0 / beta) * V[0];
+		for (int t = 0; t < (totalVsize + nAfl); ++t)
+			Vflat[t] /= beta;
+
 	else
 	{
 		for (auto& xp : X)
 			for (auto& x : xp)
 				x = 0.0;
+
+		cublasDestroy(cublas_handle);
 		return;
 	}
 
@@ -665,63 +792,76 @@ void GMRES(const VM2D::World2D& W,
 
 	std::vector<double> bufnewSol((linScheme ? 2 : 1) * nTotPan), bufcurrentSol(totalVsize, 0.0);
 
+	auto& treePnlInfl = *W.getNonConstCuda().inflTreePnlVortex;
+	treePnlInfl.MemoryAllocateForGMRES();
+
 	W.getNonConstCuda().AllocateSolution(W.getNonConstCuda().dev_sol, nTotPan);
 	if (linScheme)
 		W.getNonConstCuda().AllocateSolution(W.getNonConstCuda().dev_solLin, nTotPan);
 	else
 		W.getNonConstCuda().dev_solLin = nullptr;
 
-	double*& dev_ptr_pt = W.getAirfoil(0).devRPtr;
+	double* dev_ptr_rhs = W.getAirfoil(0).devRhsPtr;	
+	double* dev_ptr_rhsLin = (linScheme ? W.getAirfoil(0).devRhsLinPtr : nullptr);
 
-	double*& dev_ptr_rhs = W.getAirfoil(0).devRhsPtr;
-	double*& dev_ptr_rhsLin = W.getAirfoil(0).devRhsLinPtr;
-	double* linPtr = (double*)(!linScheme ? nullptr : dev_ptr_rhsLin);
+	const double zero = 0.0, unit = 1.0;
+	tPre.stop();
 
-	double timingsToRHS[7];
+	tIter.start();
 
-	BHcu::wrapperMatrixToVector wrapper(
-		(double*)dev_ptr_pt,    //начала и концы панелей
-		(double*)dev_ptr_rhs,   //куда сохранить результат 
-		linPtr,
-		W.getNonConstCuda().CUDAptrsAirfoilVrt[0],  //указатели на дерево вихрей
-		true,                   //признак перестроения дерева вихрей				
-		(int)nTotPan,           //общее число панелей на всех профилях
-		timingsToRHS,           //засечки времени				
-		W.getPassport().numericalSchemes.fastGmresTheta,
-		W.getPassport().numericalSchemes.multipoleOrderGmres,
-		W.getPassport().numericalSchemes.boundaryCondition.second
-	);
 
 	//Iterations
 	for (int j = 0; j < totalVsize - 1; ++j) //+ n.size() 
 	{
+		if (j == 0)
+			tIter1.start();
+		else if (j == 1)
+			tIterOther.start();
+
+		tCG.start();
+
 		size_t npred = 0;
 		if (!linScheme)
 			for (size_t i = 0; i < W.getNumberOfAirfoil(); ++i)
 			{
-				for (size_t p = 0; p < W.getAirfoil(i).getNumberOfPanels(); ++p)
-					bufcurrentSol[npred + p] = V[j][npred + p] / W.getAirfoil(i).len[p];
+#pragma omp parallel for
+				for (int p = 0; p < (int)W.getAirfoil(i).getNumberOfPanels(); ++p)
+					bufcurrentSol[npred + p] = Vflat[(totalVsize + nAfl)*(j) + npred + p] / W.getAirfoil(i).len[p];
+				
 				npred += W.getAirfoil(i).getNumberOfPanels();
 			}
 		else
 		{
 			for (size_t i = 0; i < W.getNumberOfAirfoil(); ++i)
 			{
-				for (size_t p = 0; p < W.getAirfoil(i).getNumberOfPanels(); ++p)
+#pragma omp parallel for
+				for (int p = 0; p < (int)W.getAirfoil(i).getNumberOfPanels(); ++p)
 				{
-					bufcurrentSol[npred + p] = V[j][2 * npred + p] / W.getAirfoil(i).len[p];
-					bufcurrentSol[nTotPan + npred + p] = V[j][2 * npred + W.getAirfoil(i).getNumberOfPanels() + p] / W.getAirfoil(i).len[p];
+					bufcurrentSol[npred + p] = Vflat[(totalVsize + nAfl) * j + (2 * npred + p)] / W.getAirfoil(i).len[p];
+					bufcurrentSol[nTotPan + npred + p] = Vflat[(totalVsize + nAfl) * j + (2 * npred + W.getAirfoil(i).getNumberOfPanels() + p)] / W.getAirfoil(i).len[p];
 				}
 				npred += W.getAirfoil(i).getNumberOfPanels();
 			}
 			W.getNonConstCuda().SetSolution(bufcurrentSol.data() + nTotPan, W.getNonConstCuda().dev_solLin, nTotPan);
 		}
 		W.getNonConstCuda().SetSolution(bufcurrentSol.data(), W.getNonConstCuda().dev_sol, nTotPan);
+		
+		tCG.stop();
 
+		if (j>0)
+			tWrapper.start();
+		
+		int order = W.getPassport().numericalSchemes.gmresMultipoleOrder;
+		double theta = W.getPassport().numericalSchemes.gmresTheta;
 
-		wrapper.calculate(
-			(double*)W.getNonConstCuda().dev_sol,
-			(double*)W.getNonConstCuda().dev_solLin, j);
+		treePnlInfl.UpdatePanelFreeVortexIntensity(W.getNonConstCuda().dev_sol, W.getNonConstCuda().dev_solLin);
+		treePnlInfl.UpwardTraversal(order);
+		treePnlInfl.DownwardTraversalGMRES(dev_ptr_rhs, dev_ptr_rhsLin, theta, order, j);
+		
+		if (j>0)
+			tWrapper.stop();
+
+		tGC.start();
 
 		if (!linScheme)
 			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhs, w.data(), 22);
@@ -729,14 +869,19 @@ void GMRES(const VM2D::World2D& W,
 		if (linScheme)
 		{
 			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhs, bufnewSol.data(), 22);
-			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, linPtr, bufnewSol.data() + nTotPan, 22);
+			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhsLin, bufnewSol.data() + nTotPan, 22);
 		}
+
+		tGC.stop();
+
+		tSplit.start();
 
 		npred = 0;
 		if (linScheme)
 			for (size_t i = 0; i < W.getNumberOfAirfoil(); ++i)
 			{
-				for (size_t j = 0; j < W.getAirfoil(i).getNumberOfPanels(); ++j)
+#pragma omp parallel for
+				for (int j = 0; j < (int)W.getAirfoil(i).getNumberOfPanels(); ++j)
 				{
 					w[2 * npred + j] = bufnewSol[npred + j];
 					w[2 * npred + W.getAirfoil(i).getNumberOfPanels() + j] = bufnewSol[nTotPan + npred + j];
@@ -751,9 +896,9 @@ void GMRES(const VM2D::World2D& W,
 #pragma omp parallel for
 			for (int i = 0; i < (int)nPanelsPi; ++i)
 			{
-				w[cntr + i] += V[j][totalVsize + pi] - V[j][cntr + i] * diag[pi][i];
+				w[cntr + i] += Vflat[(totalVsize + nAfl) * j + (totalVsize + pi)] - Vflat[(totalVsize + nAfl) * j + (cntr + i)] * diag[pi][i];
 				if (linScheme)
-					w[cntr + i + nPanelsPi] += -V[j][cntr + i + nPanelsPi] * diag[pi][i + nPanelsPi];
+					w[cntr + i + nPanelsPi] += -Vflat[(totalVsize + nAfl) * j + (cntr + i + nPanelsPi)] * diag[pi][i + nPanelsPi];
 			}
 
 			cntr += nPanelsPi;
@@ -769,36 +914,29 @@ void GMRES(const VM2D::World2D& W,
 		{
 			size_t nPanelsI = W.getAirfoil(i).getNumberOfPanels();
 			for (size_t k = 0; k < nPanelsI; ++k)
-				w[totalVsize + i] += V[j][cntr + k];
+				w[totalVsize + i] += Vflat[(totalVsize + nAfl) * j + (cntr + k)];
 			cntr += nPanelsI;
 			if (linScheme)
 				cntr += nPanelsI;
 		}
+		tSplit.stop();
 
+		tPrecond.start();
 
-		// PRECONDITIONER
-		std::vector<double> vbuf2;
-		np = 0;
-
-		for (size_t p = 0; p < nAfl; ++p)
+		// PRECONDITIONER	
+		 
+#pragma omp parallel for
+		for (int p = 0; p < (int)nAfl; ++p)
 		{
+			std::vector<double>& vbuf2 = allBuf2[p];
+
 			size_t nPanelsP = W.getAirfoil(p).getNumberOfPanels();
-
-			if (!linScheme)
-				vbuf2.resize(nPanelsP + 1);
-			else
-				vbuf2.resize(2 * nPanelsP + 1);
-
-			if (!linScheme)
-				np += ((p == 0) ? 0 : W.getAirfoil(p - 1).getNumberOfPanels());
-			else
-				np += ((p == 0) ? 0 : 2 * W.getAirfoil(p - 1).getNumberOfPanels());
-
+			
 			for (size_t i = 0; i < nPanelsP; ++i)
 			{
-				vbuf2[i] = w[np + i];
+				vbuf2[i] = w[np[p] + i];
 				if (linScheme)
-					vbuf2[i + nPanelsP] = w[np + nPanelsP + i];
+					vbuf2[i + nPanelsP] = w[np[p] + nPanelsP + i];
 			}
 
 			if (!linScheme)
@@ -806,53 +944,123 @@ void GMRES(const VM2D::World2D& W,
 			else
 				vbuf2[2 * nPanelsP] = w[w.size() - (nAfl - p)];
 
-			SolM(W, vbuf2, vbuf2, prea, prec, prea1, prec1, (int)p, (int)nPanelsP, linScheme);
+			SolM(vbuf2, vbuf2, W.getAirfoil(p), prea, prec, (int)p, (int)nPanelsP, linScheme, allSW[p]);
 
-			for (size_t j = np; j < np + nPanelsP; ++j)
+			//Циклическая прогонка для линейной схемы
+			if (linScheme)
+				SolCircleRun(vbuf2, vbuf2, W.getAirfoil(p), prea1, prec1, p, (int)nPanelsP, allSW[p]);
+			
+
+			for (size_t j = np[p]; j < np[p] + nPanelsP; ++j)
 			{
-				w[j] = vbuf2[j - np];
+				w[j] = vbuf2[j - np[p]];
 				if (linScheme)
-					w[j + nPanelsP] = vbuf2[j - np + nPanelsP];
+					w[j + nPanelsP] = vbuf2[j - np[p] + nPanelsP];
 			}
 
 			w[w.size() - (nAfl - p)] = vbuf2[vbuf2.size() - 1];
 		}
+		tPrecond.stop();
+
+
+
+		tRot.start();
+
+		tRotA.start();
 
 		if (j == H.size() - 1)
 		{
-			H.resize(j * 2 + 1);
-			for (int i = 0; i < j * 2 + 1; ++i)
-				H[i].resize(j * 2);
-			V.reserve(j * 2);
+			H.resize(j * 2 + 2);
+			for (int i = 0; i < j * 2 + 2; ++i)
+				H[i].resize(j * 2 + 1);
+		
+			Vflat.reserve((totalVsize + nAfl) * j * 2);
 			c.reserve(j * 2);
 			s.reserve(j * 2);
+
+			mul.reserve(j * 2);
+			cudaFree(mulptr);
+			cudaMalloc((void**)&mulptr, j * 2 * sizeof(double));
+
+			double* devViBund_new;
+			cudaMalloc((void**)&devViBund_new, (totalVsize + nAfl) * j * 2 * sizeof(double));
+			cudaMemcpy(devViBund_new, devViBund, (totalVsize + nAfl) * j * sizeof(double), cudaMemcpyDeviceToDevice);
+			cudaFree(devViBund);
+			devViBund = devViBund_new;
 		}
+
+		tRotA.stop();
+		
+		tRotB.start();
+		cudaMemcpy(devViBund + w.size() * j, Vflat.data() + w.size() * j, (1) * w.size() * sizeof(double), cudaMemcpyHostToDevice); //was		
+		cudaMemcpy(devw, w.data(), w.size() * sizeof(double), cudaMemcpyHostToDevice); //was
+		
+		cublasDgemv(cublas_handle, CUBLAS_OP_T, (int)w.size(), (int)Vflat.size() / (int)w.size(), &unit, devViBund, (int)w.size(), devw, 1, &zero, mulptr, 1);
+		cudaMemcpy(mul.data(), mulptr, (j+1) * sizeof(double), cudaMemcpyDeviceToHost);
 
 		for (int i = 0; i <= j; ++i)
-		{
-			double scal = 0.0;
-#pragma omp parallel 
-			{
-#pragma omp for reduction(+:scal)
-				for (int q = 0; q < (int)w.size(); ++q)
-					scal += w[q] * V[i][q];
+		{	
+			double scal = 0.0;	
+			scal = mul[i];
+			H[i][j] = scal;	
+			scal *= -1;			
+			
+			cublasDaxpy(cublas_handle, \
+			(int)w.size(), \
+			&scal, \
+			devViBund + w.size() * i, 1, \
+			devw, 1);
+		}	
+		tRotB.stop();
 
-				H[i][j] = scal;
-#pragma omp for				
-				for (int q = 0; q < (int)w.size(); ++q)
-					w[q] -= scal * V[i][q];
-			}
-		}
+		tRotC.start();
+	
+        cudaMemcpy(w.data(), devw, w.size() * sizeof(double), cudaMemcpyDeviceToHost);
+		
 		m = j + 1;
-		H[m][j] = norm(w);
-		V.push_back((1 / H[m][j]) * w);
+		
+		double nrmw = 0.0;
+		
+		//cublasDdot(cublas_handle, \
+		//	w.size(), \
+		//	devw, 1,  /* указатель на w, шаг 1 */ \
+		//	devw, 1,  /* указатель на w, шаг 1 */ \
+		//	&nrmw);
+		//nrmw = sqrt(nrmw);		
+		//H[m][j] = nrmw;
 
-		if (IterRot(H, rhs[0], gs, c, s, (int)m, (int)totalVsize, W.getPassport().numericalSchemes.gmresEps, (int)m, false))
+		nrmw = norm(w);
+		H[m][j] = nrmw;
+
+		Vflat.insert(Vflat.end(), w.begin(), w.end());
+		for (int t = 0; t < (totalVsize + nAfl); ++t)
+			Vflat[Vflat.size() - t - 1] /= nrmw;	
+
+		tRotC.stop();
+
+		tRotD.start();
+
+		if (IterRot(H, nrmRhs, gs, c, s, (int)m, (int)totalVsize, W.getPassport().numericalSchemes.gmresEps, (int)m, false))
 		{
 			std::cout << "iterations in GMRES = " << j + 1 << std::endl;
+			if (j != 0) 
+				tIterOther.stop();
+			tRotD.stop();
+			tRot.stop();
+
 			break;
 		}
+
+		tRotD.stop();
+		tRot.stop();
+
+		if (j == 0)
+			tIter1.stop();
 	} // end of iterations
+	
+	tIter.stop();
+	
+	tPost.start();
 
 	W.getNonConstCuda().ReleaseSolution(W.getNonConstCuda().dev_sol);
 	if (linScheme)
@@ -897,7 +1105,7 @@ void GMRES(const VM2D::World2D& W,
 			{
 				sum = 0.0;
 				for (size_t j = 0; j < m; j++)
-					sum += V[j][i + cntr] * Y[j];
+					sum += Vflat[(totalVsize + nAfl) * j + (i + cntr)] * Y[j];
 				X[p][i] += sum;
 			}
 		else {
@@ -905,7 +1113,7 @@ void GMRES(const VM2D::World2D& W,
 			{
 				sum = 0.0;
 				for (size_t j = 0; j < m; j++)
-					sum += V[j][i + cntr] * Y[j];
+					sum += Vflat[(totalVsize + nAfl) * j + (i + cntr)] * Y[j];
 				X[p][i] += sum;
 			}
 		}
@@ -919,9 +1127,45 @@ void GMRES(const VM2D::World2D& W,
 	for (size_t p = 0; p < nAfl; p++)
 	{
 		for (size_t j = 0; j < m; j++)
-			sum += V[j][totalVsize + p] * Y[j];
+			sum += Vflat[(totalVsize + nAfl) * j + (totalVsize + p)] * Y[j];
+			//sum += V[j][totalVsize + p] * Y[j];
 		R[p] += sum;
 	}
+	
+	tPost.stop();
+
+	tAll.stop();
+
+	treePnlInfl.MemoryFreeForGMRES();
+	cudaFree(devViBund);
+	cudaFree(devw);
+    cudaFree(mulptr);
+	
+	cublasDestroy(cublas_handle);
+
+	/*
+	std::cout << "tAll   = " << tAll.duration() << std::endl;
+	std::cout << "tPre   = " << tPre.duration() << std::endl;
+	std::cout << "tIter  = " << tIter.duration() << std::endl;
+	std::cout << "tIter1 = " << tIter1.duration() << std::endl;
+	if(m > 1)
+		std::cout << "tIterN = " << tIterOther.duration() / (m-1.0) << std::endl;
+	else 
+		std::cout << "tIterN = " << 0.0 << std::endl;
+	std::cout << "tPost  = " << tPost.duration() << std::endl;
+	
+	std::cout << "tCG      = " << tCG.duration() / (double)(m) << std::endl;
+	std::cout << "tGC      = " << tGC.duration() / (double)(m) << std::endl;
+	std::cout << "tWrap(>0)= " << tWrapper.duration() / (double)(m - 1) << std::endl;
+	std::cout << "tSplit   = " << tSplit.duration() / (double)(m) << std::endl;
+	std::cout << "tPrecond = " << tPrecond.duration() / (double)(m) << std::endl;
+	std::cout << "tRot     = " << (tRotA.duration() + tRotB.duration() + tRotC.duration() +tRotD.duration()) / (double)(m) << std::endl;
+	//*/
+
+	//std::cout << "   tRotA = " << tRotA.duration() / (double)(m) << std::endl;
+	//std::cout << "   tRotB = " << tRotB.duration() / (double)(m) << std::endl;
+	//std::cout << "   tRotC = " << tRotC.duration() / (double)(m) << std::endl;
+	//std::cout << "   tRotD = " << tRotD.duration() / (double)(m) << std::endl;
 }
 
 #endif

@@ -30,11 +30,17 @@ if (CMAKE_COMPILER_IS_INTEL OR (${CMAKE_VS_PLATFORM_TOOLSET} MATCHES "Intel") OR
 	if (WIN32)
 	   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /O2 /fp:except /fp:precise")
 	else() 
-       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -fp-model=except -fp-model=precise")
+       #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -fp-model=except -fp-model=precise -Wno-deprecated-declarations")
+       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fp-model=precise -Wno-deprecated-declarations")
     endif()	   
 else()
     message (STATUS "Flags for non-Intel C++ compiler")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+	if (WIN32)
+	   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+	else()
+	   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wno-deprecated-declarations")
+	endif()
+
 endif()
 
 
@@ -43,6 +49,10 @@ find_package(OpenMP)
 if (OPENMP_FOUND)
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+	message (STATUS "OpenMP version: ${OpenMP_CXX_VERSION_MAJOR}")
+	if (OpenMP_CXX_VERSION_MAJOR LESS 3.0)
+		add_definitions(-DOLD_OMP)
+	endif()	
 endif()
 
 
@@ -70,12 +80,23 @@ include(CheckLanguage)
 check_language(CUDA)
 if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)
    enable_language(CUDA)   
+   set(CMAKE_CUDA_STANDARD 17)
+   
    #set (ARCHITECTURE "60")
-   set (ARCHITECTURE "60;70")
+   set (ARCHITECTURE "70")
+   #set (ARCHITECTURE "90")
    #set (ARCHITECTURE "70;80")  
+   include_directories("/usr/local/cuda/targets/x86_64-linux/include/")   
    
    #COMMENT THIS LINE IF THERE IS INSTALLED CUDA SDK BUT YOU DON'T WANT TO USE GPU   
    add_definitions(-DUSE_CUDA)   
+   #add_definitions(-DUSE_CUDNN)  
+
+   #find_package(CUDAToolkit REQUIRED)   
+   #list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/VMcuda/mlp/cmake)
+   #message(STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
+   #find_package(cuDNN REQUIRED)
+   #list(APPEND CMAKE_BUILD_RPATH "${cuDNN_LIBRARY_DIR}")
 endif()
 
 if(MSVC)
@@ -109,13 +130,16 @@ endif()
 
 IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")
 	add_subdirectory(src/VM2D)
-	set_target_properties(VM2D PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+#	set_target_properties(VM2D PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 	set_target_properties(VM2D PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
 	set_target_properties(VM2D PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/${VM2D_DIR}")
 		
 	if (CUDA_FOUND OR CMAKE_CUDA_COMPILER)		
-		set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr")
-		set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr")
+		set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr -Wno-deprecated-gpu-targets")
+		set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-extended-lambda --expt-relaxed-constexpr -Wno-deprecated-gpu-targets")
+		
+		target_compile_options(VM2D PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-Wno-deprecated-gpu-targets>
+)
 		
 		message(STATUS "-------------------------CUDA FLAGS-------------------------")
 		
@@ -123,6 +147,9 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")
 		set_target_properties(VMcuda PROPERTIES CUDA_ARCHITECTURES "${ARCHITECTURE}")
 		set_target_properties(VM2D PROPERTIES CUDA_ARCHITECTURES "${ARCHITECTURE}")
 		target_link_libraries(VM2D cusolver)
+		target_link_libraries(VM2D cublas)
+		
+#		target_link_libraries(VM2D ${CUDA_LIBRARIES} cudnn)
 	else()
 		add_dependencies(VM2D VMlib2)
 	endif()

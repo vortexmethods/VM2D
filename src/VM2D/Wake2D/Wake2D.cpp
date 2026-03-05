@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Wake2D.cpp                                                       |
 | Info: Source code of VM2D                                                   |
@@ -33,39 +33,33 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #if defined(_WIN32)
  #include <direct.h>
 #endif
 
-#include <fstream>
-#include <sys/stat.h>
-#include <sys/types.h>
-
 #include "Wake2D.h"
 
-#include "knnCPU-new.h"
-#include "knn.cuh"
+#include "knnCPU.h"
+#include "cuKnn.cuh"
 
-#include "intersection.cuh"
+#include "treeKernels.cuh"
 
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
-#include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "World2D.h"
-#include <algorithm>
 
 using namespace VM2D;
 
-bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough)
+bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough) const
 {
 	//const double porog_r = 1e-12;
 	
@@ -73,25 +67,39 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 	panThrough = -1;
 
 	//проверка габ. прямоугольника
+	
 	if (afl.isOutsideGabarits(newPos) && afl.isOutsideGabarits(oldPos))
+	{ 
+		++W.gabb;
 		return false;
+	}
 
 	//если внутри габ. прямоугольника - проводим контроль
 	bool hit = false;
 
+	
 	for (size_t j = 0; j < afl.getNumberOfPanels(); ++j)
 	{
 		const Point2D& aflRj = afl.getR(j);
 		const Point2D& aflRj1 = afl.getR(j + 1);
 
+		++W.checkPan;
+
 		if ((((aflRj - oldPos) ^ (newPos - oldPos)) * ((aflRj1 - oldPos) ^ (newPos - oldPos)) <= 0) && \
 			(((oldPos - aflRj) ^ (aflRj1 - aflRj)) * ((newPos - aflRj) ^ (aflRj1 - aflRj)) <= 0))
 		{
 			hit = true;
-			panThrough = j;
+			panThrough = j;						
 			break;
 		}
 	}//for j
+
+
+	
+	if (hit)
+		++W.check01;
+	else
+		++W.check02;
 
 	return hit;
 }//MoveInside(...)
@@ -167,7 +175,7 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 //}//MoveInside(...)
 
 
-bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, size_t& panThrough)
+bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const AirfoilGeometry& oldAfl, const Airfoil& afl, size_t& panThrough) const
 {
 	panThrough = -1;
 
@@ -262,7 +270,7 @@ bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos
 
 
 //Проверка пересечения вихрями следа профиля при перемещении
-void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves, const Airfoil& oldAfl)
+void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves, const AirfoilGeometry& oldAfl)
 {
 	std::vector<double> gamma;
 	gamma.resize(afl.getNumberOfPanels(), 0.0);
@@ -270,7 +278,7 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves
 	std::vector<int> through;
 	through.resize(vtx.size(), -1);
 
-#pragma omp parallel for default(none) shared(afl, oldAfl, isMoves, through, newPos) 
+//#pragma omp parallel for default(none) shared(afl, oldAfl, isMoves, through, newPos) 
 	for (int i = 0; i < (int)vtx.size(); ++i)
 	{		
 		size_t minN;
@@ -295,9 +303,6 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves
 	//for (size_t i = 0; i < gamma.size(); ++i)
 	//	of << through[i] << std::endl;
 	//of.close();
-
-	
-
 
 	for (size_t q = 0; q < through.size(); ++q)
 	if (through[q] > -1)
@@ -478,25 +483,27 @@ int Wake::Collaps(int type, int times)
 	{
 
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_PAIRS))	
-		
-		if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
+		W.timerMerging.reset();
+		W.timerMerging.start();
+		//if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
 		{
 			const_cast<Gpu&>(W.getCuda()).RefreshWake(3);
 			
 			double NeibStart = omp_get_wtime();
 			GPUGetPairs(type);
-			//GPUGetPairsClosestNeib(type);
 			double NeibFinish = omp_get_wtime();
 			std::cout << "GPU_direct_closest_neib = " << NeibFinish - NeibStart << std::endl;
 		}
-		else
-		{
-			double NeibStart = omp_get_wtime();
-			GetPairs(type);
-			//GetPairsClosestNeib(type);
-			double NeibFinish = omp_get_wtime();
-			std::cout << "CPU_direct_closest_neib = " << NeibFinish - NeibStart << std::endl;					
-		}
+		W.timerMerging.stop();
+
+		//else
+		//{
+		//	double NeibStart = omp_get_wtime();
+		//	GetPairs(type);
+		//	//GetPairsClosestNeib(type);
+		//	double NeibFinish = omp_get_wtime();
+		//	std::cout << "CPU_direct_closest_neib = " << NeibFinish - NeibStart << std::endl;					
+		//}
 #else
 		GetPairs(type);
 #endif			
@@ -609,16 +616,16 @@ int Wake::CollapsNew(int type, int times)
 			if (!flag[vt])
 			{			
 
-				for (int s = 0; s < knb; ++s)
+				for (int s = 0; s < knbForRestruct; ++s)
 				{
 					//int ssd = neighb[vt];
-					int ssd = neighbNew[vt * (knb)+s];
+					int ssd = neighbNew[vt * knbForRestruct + s];
 					if (ssd == 0)
 						continue;
 
 					Vortex2D& vtxK = vtx[ssd];
 
-					if ((ssd != 0) && (!flag[ssd]))
+					if (/*(ssd != 0) &&*/ (!flag[ssd])) //ssd==0 always true
 					{
 						
 
@@ -704,16 +711,16 @@ int Wake::CollapsNewFast(int type, int times, std::vector<Vortex2D>& ri, std::ve
 			if (!flag[vt])
 			{
 
-				for (int s = 0; s < knb; ++s)
+				for (int s = 0; s < knbForRestruct; ++s)
 				{
 					//int ssd = neighb[vt];
-					int ssd = neighbNew[vt * (knb)+s];
+					int ssd = neighbNew[vt * knbForRestruct + s];
 					if (ssd == 0)
 						continue;
 
 					Vortex2D& vtxK = vtx[ssd];
 
-					if ((ssd != 0) && (!flag[ssd]))
+					if (/*(ssd != 0) &&*/ (!flag[ssd])) //ssd==0 always true
 					{
 
 
@@ -737,8 +744,8 @@ int Wake::CollapsNewFast(int type, int times, std::vector<Vortex2D>& ri, std::ve
 						bool fl_hit = true;
 						size_t hitpan = -1;
 
-						for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl) //кол-во профилей
-						{
+						//for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl) //кол-во профилей
+						//{
 							ri.push_back(Vortex2D(vtxI.r(), vtxI.g()));
 							rj.push_back(Vortex2D(vtxK.r(), vtxK.g()));
 							rindex.push_back({ (int)vt, ssd });
@@ -752,7 +759,7 @@ int Wake::CollapsNewFast(int type, int times, std::vector<Vortex2D>& ri, std::ve
 							//	//std::cout << "HIT" << std::endl;
 							//	fl_hit = false;
 							//}
-						}//for
+						//}//for
 
 						//if (fl_hit)
 						//{
@@ -823,22 +830,11 @@ size_t Wake::RemoveZero()
 //Реструктуризация вихревого следа
 void Wake::Restruct()
 {
-	W.getTimestat().timeRestruct.first += omp_get_wtime();
+	W.getTimers().start("Restr");	
 
-	//double ttA = -omp_get_wtime();
-	double timePreKnn;
-	double timeCollaps;
-	double timeCollaps2;
-	double timeResize;
-	double timeKnn;
-	double timeCopy;
-	double timeCopy2;
-	double timeReserve;
-	double timeRay;
-	
 	if (W.getPassport().wakeDiscretizationProperties.epscol > 0)
 	{
-		timePreKnn = -omp_get_wtime();
+		double timePreKnn = -omp_get_wtime();
 
 		// Определение параметров, отвечающих за увеличение радиуса коллапса
 		std::vector<double> rightBorder, horizSpan;
@@ -868,164 +864,215 @@ void Wake::Restruct()
 		
 		timePreKnn += omp_get_wtime();
 
+		//std::cout << "timePreKnn = " << timePreKnn * 1000 << " ms" << std::endl;
 		
-		
-		//ttA += omp_get_wtime();
-
 
 		/////////////////////////////////////////////////////////////
 
-
-		/*
-		//CPU/GPU - прямой алгоритм
-		double timeCollaps = -omp_get_wtime();
-		Collaps(0, 1);
-		//Collaps(1, 1);
-		//Collaps(2, 1);
-		timeCollaps += omp_get_wtime();
-		//std::cout << "timeCollaps = " << timeCollaps * 1000 << " ms" << std::endl;
-		//*/
-
-
-		//закомментировано 29.09.2025
-		///*
-		//быстрый алгоритм
-		for (int collapsStep = 0; collapsStep <= 0; ++collapsStep)
+		
+		if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
 		{
-			//ttB = -omp_get_wtime();
-
-			timeResize = -omp_get_wtime();
-			neighbNew.resize(vtx.size() * (knb));
-			timeResize += omp_get_wtime();			
-
-			const double& cSP = collapseScaleParameter;
-			const double& cRBP = collapseRightBorderParameter;
-			const double& maxG = W.getPassport().wakeDiscretizationProperties.maxGamma;
-			const double& epsCol = W.getPassport().wakeDiscretizationProperties.epscol;
-
-			
-
-
-	///#define knnGPU
-	#ifndef USE_CUDA
-			//CPU
-			std::vector<std::vector<std::pair<double, size_t>>> initdist(vtx.size());
-			for (auto& d : initdist)
-				d.resize(2 * knb, { -1.0, -1 });
-			timeKnn = -omp_get_wtime();
-			WakekNNnew(vtx, knb, initdist, cSP, cRBP, maxG, epsCol, collapsStep);//CPU
-			timeKnn += omp_get_wtime();
-			//std::cout << "Time_Knn_CPU = " << timeKnn * 1000 << " ms" << std::endl;
-	#else			
-			std::vector<std::pair<double, size_t>> initdistcuda(knb * vtx.size());  //CUDA
-			timeKnn = -omp_get_wtime();
-			kNNcuda(vtx, knb, initdistcuda, vecForKnn, cSP, cRBP, maxG, epsCol, collapsStep);                             //CUDA
-			timeKnn += omp_get_wtime();			
-			//std::cout << "Time_Knn_GPU = " << timeKnn * 1000 << " ms" << std::endl;
-	#endif			
-
-			timeCopy = -omp_get_wtime();
-	#pragma omp parallel for
-			for (int i = 0; i < vtx.size(); ++i)
+			//CPU/GPU - прямой алгоритм
+			//double timeCollaps = -omp_get_wtime();
+			Collaps(0, 1);
+			//Collaps(1, 1);
+			//Collaps(2, 1);
+			//timeCollaps += omp_get_wtime();
+			//std::cout << "timeCollaps = " << timeCollaps * 1000 << " ms" << std::endl;
+		}
+		else
+		{
+			//быстрый алгоритм
+			for (int collapsStep = 0; collapsStep < 1; ++collapsStep)
 			{
-	#ifndef USE_CUDA
-				for (int j = 0; j < knb; ++j)
-					neighbNew[i * (knb) + j] = (int)initdist[i][j].second;
-	#else
-				for (int j = 0; j < knb; ++j)
-					neighbNew[i * (knb) + j] = (int)initdistcuda[(i * knb) + (j)].second;
-	#endif
-			}
-			timeCopy += omp_get_wtime();
-			
+				//ttB = -omp_get_wtime();
 
-			//
-			//std::ofstream initdistFile(W.getPassport().dir + "initdist-GPU" + std::to_string(W.currentStep));
-			//for (int i = 0; i < vtx.size(); ++i)
-			//{
-			//	initdistFile << i;
-			//	for (int k = 0; k < knb; ++k)
-			//		initdistFile << " " << neighbNew[i * (knb)+k] << " " << (vtx[i].r() - vtx[neighbNew[i * (knb)+k]].r()).length();
-			//	initdistFile << std::endl;
-			//	
-			//	//for (int k = 0; k < knb; ++k)
-			//		//initdistFile << " " << neighbNew[i * (knb)+k] << " " << vtx[neighbNew[i * (knb)+k]].g() << " " << (vtx[neighbNew[i * (knb)+k]].r() - vtx[i].r()).length() << "; ";					
-			//	//initdistFile << std::endl;
-			//}
-			//initdistFile.close();
-			//
-			timeReserve = -omp_get_wtime();
-			std::vector<Vortex2D> ri, rj;
-			std::vector<Point2D> rnew;
-			std::vector<std::pair<int,int>> rindex;
-			ri.reserve(vtx.size());
-			rj.reserve(vtx.size());
-			rnew.reserve(vtx.size());		
-			rindex.reserve(vtx.size());
-			timeReserve += omp_get_wtime();
+				double timeResize = -omp_get_wtime();
+				neighbNew.resize(vtx.size() * knbForRestruct);
+				timeResize += omp_get_wtime();
 
-			//CollapsNew(0, 1);
-			timeCollaps = -omp_get_wtime();
-			CollapsNewFast(0, 1, ri, rj, rnew, rindex);
-			timeCollaps += omp_get_wtime();
-	#ifdef	USE_CUDA
-			timeCopy2 = -omp_get_wtime();
-			Vortex2D* ridev = W.getNonConstCuda().ReserveDevMemAndCopyFixedArray<Vortex2D>(ri.size(), ri.data());
-			Vortex2D* rjdev = W.getNonConstCuda().ReserveDevMemAndCopyFixedArray<Vortex2D>(rj.size(), rj.data());
-			Point2D* rnewdev = W.getNonConstCuda().ReserveDevMemAndCopyFixedArray<Point2D>(rnew.size(), rnew.data());
-			timeCopy2 += omp_get_wtime();
-			int afl = 0;
+				//std::cout << "timeResize = " << timeResize * 1000 << " ms" << std::endl;
 
-			timeRay = -omp_get_wtime();
-			std::vector<int> hitA(ri.size(), -1);
-			std::vector<int> hitB(ri.size(), -1);
-				
-			if (W.getNumberOfAirfoil() > 0)
-			{
-				hitA = W.getNonConstAirfoil(0).penetrationControler.lbvh_check_inside_ray((int)W.currentStep, (int)ri.size(), (double*)ridev, (double*)rnewdev, (int)W.getAirfoil(afl).getNumberOfPanels(), W.getAirfoil(afl).devRPtr, false);
-				hitB = W.getNonConstAirfoil(0).penetrationControler.lbvh_check_inside_ray((int)W.currentStep, (int)rj.size(), (double*)rjdev, (double*)rnewdev, (int)W.getAirfoil(afl).getNumberOfPanels(), W.getAirfoil(afl).devRPtr, false);
+				const double& cSP = collapseScaleParameter;
+				const double& cRBP = collapseRightBorderParameter;
+				const double& maxG = W.getPassport().wakeDiscretizationProperties.maxGamma;
+				const double& epsCol = W.getPassport().wakeDiscretizationProperties.epscol;
+
+#ifndef USE_CUDA
+				//CPU
+				std::vector<std::vector<std::pair<double, size_t>>> initdist(vtx.size());
+				for (auto& d : initdist)
+					d.resize(2 * knbForRestruct, { -1.0, -1 });
+				double timeKnn = -omp_get_wtime();
+				WakekNNnewForCollaps(vtx, knbForRestruct, initdist, cSP, cRBP, maxG, epsCol, collapsStep);//CPU
+				timeKnn += omp_get_wtime();
+				//std::cout << "Time_Knn_CPU = " << timeKnn * 1000 << " ms" << std::endl;
+#else			
+				double timeAlloc = -omp_get_wtime();
+				std::vector<std::pair<double, size_t>> initdistcuda(knbForRestruct * vtx.size());  //CUDA
+				timeAlloc += omp_get_wtime();
+				//std::cout << "timeAlloc = " << timeAlloc * 1000 << " ms" << std::endl;
+
+				double timeKnn = -omp_get_wtime();
+				W.getNonConstCuda().RefreshWake(5);
+
+				W.timerMerging.reset();
+				W.timerMerging.start();
+				//Построение дерева для вихрей
+				BHcu::CudaTreeInfo knnTree(W.getCuda().blocks, tree_T::contr, object_T::point3, scheme_T::noScheme, false);
+				knnTree.MemoryAllocate((int)W.getCuda().n_CUDA_wake);
+				knnTree.Update((int)W.getWake().vtx.size(), W.getWake().devVtxPtr, W.getPassport().wakeDiscretizationProperties.eps);
+				knnTree.Build();
+
+				Point2D minr, maxr;
+
+				cudaMemcpy(&minr, knnTree.minrD, sizeof(Point2D), cudaMemcpyDeviceToHost);
+				cudaMemcpy(&maxr, knnTree.maxrD, sizeof(Point2D), cudaMemcpyDeviceToHost);
+
+
+				kNNcuda<knbForRestruct>(minr, maxr, W.getCuda().blocks, vtx, initdistcuda, vecForKnn, cSP, cRBP, maxG, epsCol, collapsStep);                             //CUDA
+				W.timerMerging.stop();
+				timeKnn += omp_get_wtime();
+				//std::cout << "Time_Knn_GPU = " << timeKnn * 1000 << " ms" << std::endl;
+#endif			
+
+				double timeCopy = -omp_get_wtime();
+#pragma omp parallel for
+				for (int i = 0; i < vtx.size(); ++i)
+				{
+#ifndef USE_CUDA
+					for (int j = 0; j < knbForRestruct; ++j)
+						neighbNew[i * knbForRestruct + j] = (int)initdist[i][j].second;
+#else
+					for (int j = 0; j < knbForRestruct; ++j)
+						neighbNew[i * knbForRestruct + j] = (int)initdistcuda[i * knbForRestruct + j].second;
+#endif
+				}
+				timeCopy += omp_get_wtime();
+				//std::cout << "timeCopy = " << timeCopy * 1000 << " ms" << std::endl;
+
+				//
+				//std::ofstream initdistFile(W.getPassport().dir + "initdist-GPU" + std::to_string(W.currentStep));
+				//for (int i = 0; i < vtx.size(); ++i)
+				//{
+				//	initdistFile << i;
+				//	for (int k = 0; k < knb; ++k)
+				//		initdistFile << " " << neighbNew[i * (knb)+k] << " " << (vtx[i].r() - vtx[neighbNew[i * (knb)+k]].r()).length();
+				//	initdistFile << std::endl;
+				//	
+				//	//for (int k = 0; k < knb; ++k)
+				//		//initdistFile << " " << neighbNew[i * (knb)+k] << " " << vtx[neighbNew[i * (knb)+k]].g() << " " << (vtx[neighbNew[i * (knb)+k]].r() - vtx[i].r()).length() << "; ";					
+				//	//initdistFile << std::endl;
+				//}
+				//initdistFile.close();
+				//
+
+
+				double timeReserve = -omp_get_wtime();
+				std::vector<Vortex2D> ri, rj;
+				std::vector<Point2D> rnew;
+				std::vector<std::pair<int, int>> rindex;
+				ri.reserve(vtx.size());
+				rj.reserve(vtx.size());
+				rnew.reserve(vtx.size());
+
+				rindex.reserve(vtx.size());
+				timeReserve += omp_get_wtime();
+				//std::cout << "timeReserve = " << timeReserve * 1000 << " ms" << std::endl;
+
+
+#ifdef	USE_CUDA
+			//поиск пар для объединения			
+				int nHlop = CollapsNewFast(0, 1, ri, rj, rnew, rindex); //тут заполняются ri, rj, rnew, rindex
+
+				//формирование траекторий объединямых вихрей
+				std::vector<std::pair<Point2D, Point2D>> segments(2 * ri.size());
+				for (size_t i = 0; i < ri.size(); ++i)
+				{
+					segments[2 * i + 0].first = ri[i];
+					segments[2 * i + 0].second = rnew[i];
+
+					segments[2 * i + 1].first = rj[i];
+					segments[2 * i + 1].second = rnew[i];
+				}
+
+				//контроль протыкания
+				std::vector<int> hit(segments.size());
+				if (ri.size() > 0)
+				{
+					double* devSegments_ptr;
+
+					cudaMalloc(&devSegments_ptr, segments.size() * sizeof(double) * 4);
+					cudaMemcpy(devSegments_ptr, segments.data(), segments.size() * sizeof(double) * 4, cudaMemcpyHostToDevice);
+
+					W.timerInside.start();
+					auto& cntrTreeSeg = *W.getCuda().cntrTreeSegment;
+					cntrTreeSeg.MemoryAllocate((int)W.getCuda().n_CUDA_wake);
+					cntrTreeSeg.UpdatePanelGeometry((int)segments.size(), (double4*)devSegments_ptr);
+					cntrTreeSeg.Build();
+
+					BHcu::treePanelsSegmentsIntersectionCalculationWrapper(*W.getNonConstCuda().auxTreePnl, cntrTreeSeg,
+						W.getWake().devNearestPanelPtr);
+
+					W.timerInside.stop();
+
+					cudaMemcpy(hit.data(), W.getWake().devNearestPanelPtr, segments.size() * sizeof(int), cudaMemcpyDeviceToHost);
+					cudaFree(devSegments_ptr);
+				}//if ri.size() > 0
 
 				for (size_t i = 0; i < ri.size(); ++i)
 				{
-					hitA[i] = -1;
-					hitB[i] = -1;
+					if (hit[2 * i + 0] == -1 && hit[2 * i + 1] == -1)
+					{
+						vtx[rindex[i].first].r() = rnew[i];
+						vtx[rindex[i].first].g() += vtx[rindex[i].second].g();
+
+						vtx[rindex[i].second].g() = 0.0;
+					}
 				}
 
-			}
-			timeRay += omp_get_wtime();
+#else
+				double timeCollaps;
+				//CollapsNew(0, 1);
+				timeCollaps = -omp_get_wtime();
+				int nHlop = CollapsNewFast(0, 1, ri, rj, rnew, rindex);
 
-			timeCollaps2 = -omp_get_wtime();
-			for (size_t i = 0; i < ri.size(); ++i)
-			{
-				if ((hitA[i] == -1) && (hitB[i] == -1))
+				timeCollaps += omp_get_wtime();
+
+				size_t hitA, hitB;
+				bool ifInside;
+#pragma omp parallel for private (hitA, hitB, ifInside)
+				for (int i = 0; i < (int)ri.size(); ++i)
 				{
-					vtx[rindex[i].first].r() = rnew[i];
-					vtx[rindex[i].first].g() += vtx[rindex[i].second].g();
+					ifInside = false;
+					for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+					{
+						MoveInside(rnew[i], ri[i], W.getAirfoil(q), hitA);
+						MoveInside(rnew[i], rj[i], W.getAirfoil(q), hitB);
+						if ((hitA != size_t(-1)) || (hitB != size_t(-1)))
+							ifInside = true;
+					}
+					if (!ifInside)
+					{
+						vtx[rindex[i].first].r() = rnew[i];
+						vtx[rindex[i].first].g() += vtx[rindex[i].second].g();
 
-					vtx[rindex[i].second].g() = 0.0;
+						vtx[rindex[i].second].g() = 0.0;
+
+					}
 				}
+#endif
 			}
-			timeCollaps2 += omp_get_wtime();
-
-			timeCopy2 -= omp_get_wtime();
-			W.getNonConstCuda().ReleaseDevMem(ridev, 901);
-			W.getNonConstCuda().ReleaseDevMem(rjdev, 902);
-			W.getNonConstCuda().ReleaseDevMem(rnewdev, 903);
-			timeCopy2 += omp_get_wtime();
-	#endif
-
-
-			
 		}
-		//*/
+	
 	}
 	double timeRemove = -omp_get_wtime();
 	RemoveFar();
 	RemoveZero();
 	timeRemove += omp_get_wtime();
-	
+	//std::cout << "timeRemove = " << timeRemove * 1000 << std::endl;
 
-	W.getTimestat().timeRestruct.second += omp_get_wtime();
+	W.getTimers().stop("Restr");
 //*
 //	std::cout << "Pre-knn time = " << timePreKnn * 1000.0 << " ms" << std::endl;
 //	std::cout << "Pre-knn resize time = " << timeResize * 1000.0 << " ms" << std::endl;
@@ -1038,31 +1085,6 @@ void Wake::Restruct()
 //	std::cout << "Collaps2_time = " << timeCollaps2 * 1000 << " ms" << std::endl;
 //	std::cout << "Remove_time = " << timeRemove * 1000 << " ms" << std::endl;
 	
-//	std::cout << "Summ_time = " << (W.getTimestat().timeRestruct.second - W.getTimestat().timeRestruct.first) * 1000 << " ms" << std::endl;
+
 //*/
 }//Restruct()
-
-
-//bool Wake::isPointInsideAirfoil(const Point2D& pos, const Airfoil& afl)
-//{
-//	Point2D posFar = { 100.0, 100.0 };
-//
-//	Point2D r1, r2;
-//
-//	int nIntersec = 0;
-//
-//	for (int i = 0; i < afl.np; ++i)
-//	{
-//		r1 = afl.r[i];
-//		r2 = afl.r[i+1];
-//
-//		if ((area(pos, posFar, r1) * area(pos, posFar, r2) <= -1.e-10) && (area(r1, r2, pos) * area(r1, r2, posFar) <= -1.e-10))
-//			nIntersec++;
-//	}
-//	return nIntersec % 2;
-//}
-//
-//double Wake::area(Point2D p1, Point2D p2, Point2D p3)
-//{
-//	return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]);
-//}

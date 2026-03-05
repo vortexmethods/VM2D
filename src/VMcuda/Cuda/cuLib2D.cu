@@ -1,37 +1,39 @@
-/*-------------------------------*- VMcuda -*----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2024/01/14     |
-| ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
-|  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
-|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: cuLib2D.cu                                                       |
-| Info: Source code of VMcuda                                                 |
+| Info: Source code of VM2D                                                   |
 |                                                                             |
-| This file is part of VMcuda.                                                |
-| VMcuda is free software: you can redistribute it and/or modify it           |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VMcuda is distributed in the hope that it will be useful, but WITHOUT       |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
-| along with VMcuda.  If not, see <http://www.gnu.org/licenses/>.             |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
 \*---------------------------------------------------------------------------*/
-
 
 /*!
 \file
-\brief Файл с реализацией функций библиотеки VMcuda для работы с CUDA
+\brief Реализация функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\Version 1.12
-\date 14 января 2024 г.
+\author Сокол Ксения Сергеевна
+\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include <iostream>
@@ -59,10 +61,6 @@ __device__ __constant__ double iDPIminEpsAst2;
 
 __device__ __constant__ int schemeSwitcher;
 __device__ __constant__ int currentStep;
-
-
-#define invdpi (0.15915494309189533576888376337251)
-#define pi (3.1415926535897932384626433832795)
 
 
 void cuAlloc(void** ptr, size_t numBytes)
@@ -321,8 +319,8 @@ __global__ void CU_calc_conv_epsast(
 	{
 		if (calcVelo)
 		{
-			vel[2 * i + 0] = velx * invdpi;
-			vel[2 * i + 1] = vely * invdpi;
+			vel[2 * i + 0] = velx * idpid;
+			vel[2 * i + 1] = vely * idpid;
 		}
 
 		if (calcRadius)
@@ -462,8 +460,8 @@ __global__ void CU_calc_conv_From_Panels(
 
 	if (i < npt)
 	{
-		vel[2 * i + 0] = velx * invdpi;
-		vel[2 * i + 1] = vely * invdpi;
+		vel[2 * i + 0] = velx * idpid;
+		vel[2 * i + 1] = vely * idpid;
 	}
 }
 
@@ -815,14 +813,14 @@ __global__ void  CU_calc_I0I3(
 					mnx = normx * expon;
 					mny = normy * expon;
 
-					if (val0 != -pi * rdi)
-					{
+					//if (val0 != -pi * rdi)
+					//{
 						val0 += (xix * mnx + xiy * mny) * (lxi + 1.0) / (lxi * lxi);
 						val3x += mnx;
 						val3y += mny;
-					}
+					//}
 
-					vs = ptg * expon / (pi * meanepsj2);
+					vs = ptg * expon / (valPi * meanepsj2);
 
 				}					
 				//else if ( (d >= 0 * lenj) || (fabs(s) >= 0 * lenj) )
@@ -862,17 +860,17 @@ __global__ void  CU_calc_I0I3(
 							mnx = normx * expon;
 							mny = normy * expon;
 
-							if (val0 != -pi * rdi)
-							{
+							//if (val0 != -pi * rdi)
+							//{
 								val0 += (xi_mx * mnx + xi_my * mny) * (lxi_m + 1.0) / (lxi_m * lxi_m);
 								val3x += mnx;
 								val3y += mny;
-							}
+							//}
 
 							vs += expon;
 						//}//for mm
 					}//for m
-					vs *= ptg / (pi * meanepsj2);
+					vs *= ptg / (valPi * meanepsj2);
 
 					/*
 					if ((d <= 0.001 * lenj) && (fabs(s) < 0.45 * lenj))
@@ -891,12 +889,12 @@ __global__ void  CU_calc_I0I3(
 				}  				
 				else
 				{
-					val0 = -pi * rdi;
+					val0 += -valPi * rdi;
 										
 					mnog1 = 2.0 * rdi * (1.0 - exp(-lenj * 0.5 * iDDomRad) * cosh(fabs(s) * iDDomRad));
-					val3x = mnog1 * normx;
-					val3y = mnog1 * normy;
-					vs = mnog1 * ptg / (pi * meanepsj2);
+					val3x += mnog1 * normx;
+					val3y += mnog1 * normy;
+					vs = mnog1 * ptg / (valPi * meanepsj2);
 
 				}
 				
@@ -1066,12 +1064,12 @@ __global__ void CU_calc_RHS(
 
 	if (i < npt)
 	{
-		val *= invdpi / dlen;
+		val *= idpid / dlen;
 		rhs[i] = val;
 
 		if (schemeSwitcher == 2)
 		{
-			valLin *= invdpi / dlen;
+			valLin *= idpid / dlen;
 			rhsLin[i] = valLin;
 		}
 	}
@@ -1210,9 +1208,54 @@ __global__ void CU_calc_closest_neib(
 }
 
 
-void cuDevice(int n)
+int cuSelect(int dev)
 {
-	cudaSetDevice(n);
+	int deviceCount;
+	cudaGetDeviceCount(&deviceCount);
+	if (deviceCount == 0) {
+		fprintf(stderr, "There is no device supporting CUDA\n");
+		exit(-1);
+	}
+
+	if ((dev < 0) || (deviceCount <= dev)) {
+		fprintf(stderr, "There is no device %d\n", dev);
+		exit(-1);
+	}
+	cudaSetDevice(dev);
+
+
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, dev);
+
+	int blocks = deviceProp.multiProcessorCount;
+
+	/*
+		printf("\n");
+		printf("                          GPU Device Properties                         \n");
+		printf("------------------------------------------------------------------------\n");
+		printf("Name:                                  %s\n", deviceProp.name);
+		//printf("CUDA driver/runtime version:           %d.%d/%d.%d\n", driverVersion / 1000, (driverVersion % 100) / 10, runtimeVersion / 1000, (runtimeVersion % 100) / 10);
+		printf("CUDA compute capabilitiy:              %d.%d\n", deviceProp.major, deviceProp.minor);
+		printf("Number of multiprocessors:             %d\n", deviceProp.multiProcessorCount);
+
+		if (false)
+		{
+			int fact = 1;
+			printf("GPU clock rate:                        %d (MHz)\n", deviceProp.clockRate / fact);
+			printf("Memory clock rate:                     %d (MHz)\n", deviceProp.memoryClockRate / fact);
+			printf("Memory bus width:                      %d-bit\n", deviceProp.memoryBusWidth);
+			printf("Theoretical memory bandwidth:          %d (GB/s)\n", (deviceProp.memoryClockRate / fact * (deviceProp.memoryBusWidth / 8) * 2) / fact);
+			printf("Device global memory:                  %d (MB)\n", (int)(deviceProp.totalGlobalMem / (fact * fact)));
+			printf("Shared memory per block:               %d (KB)\n", (int)(deviceProp.sharedMemPerBlock / fact));
+			printf("Constant memory:                       %d (KB)\n", (int)(deviceProp.totalConstMem / fact));
+			printf("Maximum number of threads per block:   %d\n", deviceProp.maxThreadsPerBlock);
+			printf("Maximum thread dimension:              [%d, %d, %d]\n", deviceProp.maxThreadsDim[0], deviceProp.maxThreadsDim[1], deviceProp.maxThreadsDim[2]);
+			printf("Maximum grid size:                     [%d, %d, %d]\n", deviceProp.maxGridSize[0], deviceProp.maxGridSize[1], deviceProp.maxGridSize[2]);
+		}
+		printf("------------------------------------------------------------------------\n");
+	*/
+
+	return blocks;
 }
 
 
@@ -1362,6 +1405,14 @@ void cuCopyFixedArrayPoint4D(double* dev_ptr, const Point2D* host_src, size_t np
 
 	if (err1 != cudaSuccess)
 		std::cout << cudaGetErrorString(err1) << " (erCopyFixedArrayPoint4D01, code = " << code << ")" << std::endl;
+}
+
+void cuCopyFixedArrayPoint6D(double* dev_ptr, const Point2D* host_src, size_t npts, int code)
+{
+	cudaError_t err1 = cudaMemcpy(dev_ptr, host_src, sizeof(double) * 6 * npts, cudaMemcpyHostToDevice);
+
+	if (err1 != cudaSuccess)
+		std::cout << cudaGetErrorString(err1) << " (erCopyFixedArrayPoint6D01, code = " << code << ")" << std::endl;
 }
 
 void cuCopyMemFromDev(void* host_ptr, void* dev_ptr, size_t nBytes, int code)

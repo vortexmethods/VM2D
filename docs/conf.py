@@ -18,15 +18,15 @@
 # -- Project information -----------------------------------------------------
 
 project = 'VM2D'
-# copyright = '2024, Марчевский И.К., Сокол К.С., Рятина Е.П., Колганова А.О.'
+# copyright = '2026, Марчевский И.К., Сокол К.С., Рятина Е.П., Колганова А.О.'
 # author = 'Марчевский И.К., Сокол К.С., Рятина Е.П., Колганова А.О.'
 
-copyright = '2024, Marchevsky I.K., Sokol K.S., Ryatina E.P., Kolganova A.O.'
+copyright = '2026, Marchevsky I.K., Sokol K.S., Ryatina E.P., Kolganova A.O.'
 author = 'Marchevsky I.K., Sokol K.S., Ryatina E.P., Kolganova A.O.'
 
 
 # The full version, including alpha/beta/rc tags.
-release = '1.12'
+release = '1.14'
 
 
 # -- General configuration ---------------------------------------------------

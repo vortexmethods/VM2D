@@ -1,0 +1,32 @@
+name: Deploy Doxygen Documentation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install Doxygen and Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen doxygen-doc doxygen-latex doxygen-gui graphviz
+      
+      - name: Generate Doxygen documentation
+        run: |
+          cd docs/_doxygen
+          doxygen Doxyfile 2>&1 | tee doxygen.log
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_doxygen/html
+          publish_branch: gh-pages  # или оставьте пустым для деплоя в текущую ветку
+          keep_files: false

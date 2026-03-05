@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Wake2D.h                                                         |
 | Info: Source code of VM2D                                                   |
@@ -33,12 +33,12 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
-#ifndef WAKE_H
-#define WAKE_H
+#ifndef WAKE2D_H
+#define WAKE2D_H
 
 #include "WakeDataBase2D.h"
 
@@ -46,15 +46,18 @@ namespace VM2D
 {
 
 	class Airfoil;
+	class AirfoilGeometry;
 
 	/*!
 	\brief Класс, опеделяющий вихревой след (пелену)
+
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
-	\Version 1.12
-	\date 14 января 2024 г.
+	\author Колганова Александра Олеговна
+
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 	class Wake : public WakeDataBase
 	{
@@ -62,7 +65,7 @@ namespace VM2D
 		/// Вектор потенциальных соседей для будущего коллапса
 		std::vector<int> neighb;
 
-		static const int knb = 5;  //количество ближайших соседей
+		//static const int knb = 5;  //количество ближайших соседей
 		std::vector<int> neighbNew;
 
 	public:
@@ -71,8 +74,10 @@ namespace VM2D
 		///
 		/// \param[in] W_ константная ссылка на решаемую задачу	
 		Wake(const World2D& W_)
-			: WakeDataBase(W_) 
+			: WakeDataBase(W_)
 		{
+			collapseRightBorderParameter = 0.0;
+			collapseScaleParameter = 1.0;
 		};
 
 		/// Деструктор
@@ -88,7 +93,7 @@ namespace VM2D
 		/// \param[in] isMoves признак того, что профиль подвижный
 		/// \param[in] oldAfl константная ссылка контролируемый профиль до перемещения (используется, если у профиля стоит признак того, что он движется)
 		/// \param[in,out] afl ссылка на контролируемый профиль (происходит изменение afl->gammaThrough)
-		void Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves, const Airfoil& oldAfl);
+		void Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves, const AirfoilGeometry& oldAfl);
 		
 		/// \brief Реструктуризация вихревого следа
 		///
@@ -112,7 +117,7 @@ namespace VM2D
 		/// \param[in] afl константная ссылка на контролируемый профиль
 		/// \param[out] panThrough номер "протыкаемой" панели
 		/// return признак пересечения профиля
-		bool MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough);
+		bool MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoil& afl, size_t& panThrough) const;
 
 		/// \brief Проверка проникновения точки через границу профиля
 		/// 
@@ -122,7 +127,7 @@ namespace VM2D
 		/// \param[in] afl константная ссылка на контролируемый профиль
 		/// \param[out] panThrough номер "протыкаемой" панели
 		/// return признак пересечения профиля
-		bool MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const Airfoil& oldAfl, const Airfoil& afl, size_t& panThrough);
+		bool MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos, const AirfoilGeometry& oldAfl, const Airfoil& afl, size_t& panThrough) const;
 
 		/// \brief Поиск ближайшего соседа
 		/// \param[in] type тип коллапса: 

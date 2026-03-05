@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidImmovable.cpp                                    |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include "Mechanics2DRigidImmovable.h"
@@ -42,7 +42,6 @@
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
@@ -54,7 +53,7 @@ using namespace VM2D;
 MechanicsRigidImmovable::MechanicsRigidImmovable(const World2D & W_, size_t numberInPassport_)
 	: Mechanics(W_, numberInPassport_, false, false)
 {
-	ReadSpecificParametersFromDictionary();
+	MechanicsRigidImmovable::ReadSpecificParametersFromDictionary();
 	Initialize({ 0.0, 0.0 }, W_.getAirfoil(numberInPassport_).rcm, 0.0, W_.getAirfoil(numberInPassport_).phiAfl);
 };
 
@@ -91,7 +90,7 @@ void MechanicsRigidImmovable::VeloOfAirfoilPanels(double currTime)
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidImmovable::GetHydroDynamForce()
 {
-	W.getTimestat().timeGetHydroDynamForce.first += omp_get_wtime();
+	W.getTimers().start("Force");
 
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
@@ -120,7 +119,7 @@ void MechanicsRigidImmovable::GetHydroDynamForce()
 	hydroDynamForce = (rho / dt) * hDFdelta;
 	hydroDynamMoment = (rho / dt) * hDMdelta;
 		
-	if (W.getPassport().physicalProperties.nu > 0.0)
+	if ((W.getPassport().physicalProperties.nu > 0.0) && (afl.viscousStress.size() > 0))
 		for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 		{
 			Point2D rK = 0.5 * (afl.getR(i + 1) + afl.getR(i)) - afl.rcm;
@@ -128,5 +127,5 @@ void MechanicsRigidImmovable::GetHydroDynamForce()
 			viscousMoment += rho * (afl.viscousStress[i] * afl.tau[i]) & rK;
 		}
 
-	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
+	W.getTimers().stop("Force");
 }//GetHydroDynamForce()
