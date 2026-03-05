@@ -1,37 +1,39 @@
-/*-------------------------------*- VMcuda -*----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2024/01/14     |
-| ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
-|  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
-|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: cuLib2D.cuh                                                      |
-| Info: Source code of VMcuda                                                 |
+| Info: Source code of VM2D                                                   |
 |                                                                             |
-| This file is part of VMcuda.                                                |
-| VMcuda is free software: you can redistribute it and/or modify it           |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VMcuda is distributed in the hope that it will be useful, but WITHOUT       |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
-| along with VMcuda.  If not, see <http://www.gnu.org/licenses/>.             |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
 \*---------------------------------------------------------------------------*/
-
 
 /*!
 \file
 \brief Заголовочный файл с описанием функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\Version 1.12
-\date 14 января 2024 г.
+\author Сокол Ксения Сергеевна
+\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #ifndef CUVELOCITYBIOTSAVART_CUH
@@ -43,9 +45,11 @@
 
 #include "Vortex2D.h"
 
-void cuDevice(int n);
 
-void cuSetConstants(size_t pos_, size_t posR_, size_t posG_, int code = 0);
+/// Возвращает число мутьтипроцессоров
+int cuSelect(int dev);
+
+void cuSetConstants(size_t pos_, size_t posR_, size_t posG_, size_t posS_, int code = 0);
 void cuSetAccelCoeff(double cft_, int code = 0);
 void cuSetCollapseCoeff(double pos_, double refLength_, int code = 0);
 void cuSetMaxGamma(double gam_, int code = 0);
@@ -62,23 +66,27 @@ void cuCopyWakeToDevAsync(size_t n, const Vortex2D* host_src, double* dev_ptr, i
 void cuCopyFixedArray(void* dev_ptr, void* host_src, size_t nBytes, int code = 0);
 void cuCopyFixedArrayPoint2D(double* dev_ptr, const Point2D* host_src, size_t npts, int code = 0);
 void cuCopyFixedArrayPoint4D(double* dev_ptr, const Point2D* host_src, size_t npts, int code = 0);
+void cuCopyFixedArrayPoint6D(double* dev_ptr, const Point2D* host_src, size_t npts, int code = 0);
 
 void cuCopyMemFromDev(void* host_ptr, void* dev_ptr, size_t nBytes, int code = 0);
 void cuDeleteFromDev(void* devPtr, int code = 0);
 
 ////////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double eps2, bool calcVelo, bool calcRadius);
-void cuCalculateConvVeloWakeFromVirtual(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* freegammalin, double* attgamma, double* attgammalin, double* attsource, double* attsourcelin, double* vel, double eps2);
+void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, bool calcVelo, bool calcRadius);
+void cuCalculateConvVeloWakeFromVirtual(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* freegammalin, double* attgamma, double* attgammalin, double* attsource, double* attsourcelin, double* vel);
 
 void cuCalculateDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd, double minRad);
 void cuCalculateDiffVeloWakeMesh(size_t npt, double* pt, size_t nvt, double* vt, int* mesh, double meshStep, double* i1, double* i2, double* rd);
 void cuCalculateDiffVeloWakeFromPanels(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* freegammalin, double* i1, double* i2, double* rd, double minRad);
 
 void cuCalculateSurfDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr);
-void cuCalculateRhs(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double eps2, double* rhs, double* rhsLin);
+void cuCalculateRhs(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double* rhs, double* rhsLin);
 void cuCalculatePairs(size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 void cuCalculatePairsClosestNeib(size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 
+void cuCalculatePressure(size_t npt, double* pt, size_t nvt, double* vt, double V0x, double V0y, double* vtxVel, double* vtxDiffVel, \
+	size_t npnl, double* rpnl, double* freegamma, double* attgamma, double* attsource, double* devOldVortexSheet, double* devOldSourceSheet, \
+	double* devGammaThroughIntensity, double* pressure);
 
 //void cuTEST(const std::string& str);
 

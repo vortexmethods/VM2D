@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Boundary2DLinLayerAver.h                                         |
 | Info: Source code of VM2D                                                   |
@@ -34,11 +34,11 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
-#ifndef BOUNDARYLINLAYERAVER_H
-#define BOUNDARYLINLAYERAVER_H
+#ifndef BOUNDARY2DLINLAYERAVER_H
+#define BOUNDARY2DLINLAYERAVER_H
 
 #include "Boundary2D.h"
 
@@ -57,10 +57,10 @@ namespace VM2D
 	\author Марчевский Илья Константинович
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
-\author Колганова Александра Олеговна
+	\author Колганова Александра Олеговна
 
-	\Version 1.12
-	\date 14 января 2024 г.
+	\Version 1.14
+	\date 6 марта 2026 г.
 	*/
 	class BoundaryLinLayerAver : public Boundary
 	{
@@ -88,7 +88,6 @@ namespace VM2D
 		virtual void CalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const override;
 #if defined(USE_CUDA)
 		virtual void GPUCalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const override;
-		virtual void GPUCalcConvVelocityToSetOfPointsFromSheetsFAST(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const override;
 #endif
 
 		virtual void ComputeAttachedSheetsIntensity() override;		

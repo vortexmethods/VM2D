@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: WakeDataBase2D.cpp                                               |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include "WakeDataBase2D.h"
@@ -43,12 +43,12 @@
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
 #include "Mechanics2D.h"
-#include "Passport2D.h"
 #include "Preprocessor.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
+#include "Gmres2D.h"
 
 using namespace VM2D;
 
@@ -58,7 +58,7 @@ void WakeDataBase::ReadFromFile(const std::string& dir, const std::string& fileN
 	std::string filename = dir + fileName;
 	std::ifstream wakeFile, testFile;
 	
-	char firstChar, secondChar;
+	char firstChar = '/', secondChar = '*';
 
 	if (fileExistTest(filename, W.getInfo(), true, { "txt", "TXT" }))
 	{		
@@ -82,6 +82,10 @@ void WakeDataBase::ReadFromFile(const std::string& dir, const std::string& fileN
 			VMlib::StreamParser wakeParser(XXX, "vortex wake file parser", wakeFile);
 
 			wakeParser.get("vtx", vtx);
+
+			for (auto& v : vtx)
+				v.sigma() = W.getPassport().wakeDiscretizationProperties.sigma0;
+
 		}
 	}
 	else
@@ -96,7 +100,8 @@ void WakeDataBase::ReadFromFile(const std::string& dir, const std::string& fileN
 			for (int i = 0; i < nnn; ++i)
 			{
 				Vortex2D v;
-				wakeFile >> v.r()[0] >> v.r()[1] >> v.g();
+				wakeFile >> v.r()[0] >> v.r()[1] >> v.g();				
+				v.sigma() = W.getPassport().wakeDiscretizationProperties.sigma0;
 				vtx.push_back(v);
 			}
 
@@ -109,8 +114,8 @@ void WakeDataBase::ReadFromFile(const std::string& dir, const std::string& fileN
 
 void WakeDataBase::SaveKadrVtk(const std::string& filePrefix) const
 {
-	W.getTimestat().timeSaveKadr.first += omp_get_wtime();
-
+	W.getTimers().start("Save");
+	
 	if (W.ifDivisible(W.getPassport().timeDiscretizationProperties.saveVtxStep))
 	{		
 		std::ofstream outfile;
@@ -128,47 +133,72 @@ void WakeDataBase::SaveKadrVtk(const std::string& filePrefix) const
 			std::string fname = VMlib::fileNameStep(filePrefix, W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "vtk");
 			outfile.open(W.getPassport().dir + "snapshots/" + fname);
 
-			outfile << "# vtk DataFile Version 2.0" << std::endl;
-			outfile << "VM2D VTK result: " << (W.getPassport().dir + "snapshots/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << std::endl;
-			outfile << "ASCII" << std::endl;
-			outfile << "DATASET UNSTRUCTURED_GRID" << std::endl;
-			outfile << "POINTS " << numberNonZero << " float" << std::endl;
+			outfile << "# vtk DataFile Version 2.0\n";
+			outfile << "VM2D VTK result: " << (W.getPassport().dir + "snapshots/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << '\n';
+			outfile << "ASCII\n";
+			outfile << "DATASET UNSTRUCTURED_GRID\n";
+			outfile << "POINTS " << numberNonZero << " float\n";
 
 			
 			if (vtx.size() > 0)
 				for (auto& v : vtx)
 				{
 					const Point2D& r = v.r();
-					outfile << r[0] << " " << r[1] << " " << "0.0" << std::endl;
+					outfile << r[0] << " " << r[1] << " " << "0.0\n";
 				}//for v		
 			else			
 				for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
 					for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
 					{
 						const Point2D& r = W.getAirfoil(q).getR(s);
-						outfile << r[0] << " " << r[1] << " " << "0.0" << std::endl;
+						outfile << r[0] << " " << r[1] << " " << "0.0\n";
 					}
 
-			outfile << "CELLS " << numberNonZero << " " << 2 * numberNonZero << std::endl;
+			outfile << "CELLS " << numberNonZero << " " << 2 * numberNonZero << '\n';
 			for (size_t i = 0; i < numberNonZero; ++i)
-				outfile << "1 " << i << std::endl;
+				outfile << "1 " << i << '\n';
 
-			outfile << "CELL_TYPES " << numberNonZero << std::endl;
+			outfile << "CELL_TYPES " << numberNonZero << '\n';
 			for (size_t i = 0; i < numberNonZero; ++i)
-				outfile << "1" << std::endl;
+				outfile << "1\n";
 
-			outfile << std::endl;
-			outfile << "POINT_DATA " << numberNonZero << std::endl;
-			outfile << "SCALARS Gamma float 1" << std::endl;
-			outfile << "LOOKUP_TABLE default" << std::endl;
+			outfile << '\n';
+			outfile << "POINT_DATA " << numberNonZero << '\n';
+			outfile << "SCALARS Gamma float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
 
 			if (vtx.size() > 0)
 				for (auto& v : vtx)
-					outfile << v.g() << std::endl;
+					outfile << v.g() << '\n';
 			else
 				for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
 					for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)											
-						outfile << "0.0" << std::endl;					
+						outfile << "0.0\n";					
+						
+			outfile << "SCALARS Sigma float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
+
+			if (vtx.size() > 0)
+				for (auto& v : vtx)
+					outfile << v.sigma() << '\n';
+			else
+				for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+					for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
+						outfile << "0.0\n";
+
+#ifdef TURB
+			outfile << "SCALARS nut float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
+
+			if (vtx.size() > 0)
+				for (auto& v : vtx)
+					outfile << sqr(v.sigma() / 4.48) / W.getPassport().timeDiscretizationProperties.dt - W.getPassport().physicalProperties.nu << '\n';
+			else
+				for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+					for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
+						outfile << "0.0\n";
+#endif
+
 
 			outfile.close();
 		}//if fileType = text
@@ -271,31 +301,217 @@ void WakeDataBase::SaveKadrVtk(const std::string& filePrefix) const
 				}
 			
 			outfile << eolnBIN;
+
+
+			//sigmas
+			outfile << eolnBIN << "SCALARS Sigma " << "float" << " 1" << eolnBIN;
+			outfile << "LOOKUP_TABLE default" << eolnBIN;
+
+			if (vtx.size() > 0)
+			{
+				Eigen::VectorXf pData = Eigen::VectorXf::Zero(numberNonZero);
+				for (int s = 0; s < vtx.size(); ++s)
+					pData(s) = (float)vtx[s].sigma();
+
+				if (littleEndian)
+					for (int i = 0; i < vtx.size(); ++i)
+						VMlib::SwapEnd(pData(i));
+				outfile.write(reinterpret_cast<char*>(pData.data()), vtx.size() * sizeof(float));
+			}
+			else
+				for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+				{
+					Eigen::VectorXf pData = Eigen::VectorXf::Zero(W.getAirfoil(q).getNumberOfPanels());
+					for (int s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
+						pData(s) = 0;
+
+					if (littleEndian)
+						for (int i = 0; i < W.getAirfoil(q).getNumberOfPanels(); ++i)
+							VMlib::SwapEnd(pData(i));
+					outfile.write(reinterpret_cast<char*>(pData.data()), W.getAirfoil(q).getNumberOfPanels() * sizeof(float));
+				}
+
+			outfile << eolnBIN;
+
+#ifdef TURB
+			//nut
+			outfile << eolnBIN << "SCALARS nut " << "float" << " 1" << eolnBIN;
+			outfile << "LOOKUP_TABLE default" << eolnBIN;
+
+			if (vtx.size() > 0)
+			{
+				Eigen::VectorXf pData = Eigen::VectorXf::Zero(numberNonZero);
+				for (int s = 0; s < vtx.size(); ++s)
+					pData(s) = (float)(sqr(vtx[s].sigma() / 4.48) / W.getPassport().timeDiscretizationProperties.dt - W.getPassport().physicalProperties.nu);;
+
+				if (littleEndian)
+					for (int i = 0; i < vtx.size(); ++i)
+						VMlib::SwapEnd(pData(i));
+				outfile.write(reinterpret_cast<char*>(pData.data()), vtx.size() * sizeof(float));
+			}
+			else
+				for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
+				{
+					Eigen::VectorXf pData = Eigen::VectorXf::Zero(W.getAirfoil(q).getNumberOfPanels());
+					for (int s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
+						pData(s) = 0;
+
+					if (littleEndian)
+						for (int i = 0; i < W.getAirfoil(q).getNumberOfPanels(); ++i)
+							VMlib::SwapEnd(pData(i));
+					outfile.write(reinterpret_cast<char*>(pData.data()), W.getAirfoil(q).getNumberOfPanels() * sizeof(float));
+				}
+
+			outfile << eolnBIN;
+#endif
+
+
 			outfile.close();
 		}//if binary
+
 		if (W.getPassport().timeDiscretizationProperties.fileTypeVtx.second == 2) //csv
 		{
 			std::string fname = VMlib::fileNameStep(filePrefix, W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "csv");
 			outfile.open(W.getPassport().dir + "snapshots/" + fname);
 
-			outfile << "point,x,y,G " << std::endl;
+			outfile << "point,x,y,G,S";
+#ifdef TURB
+			outfile << ",nut";
+#endif
+			outfile << '\n';
 
 			int counter = 0;
 
 			if (vtx.size() > 0)
-				for (auto& v : vtx)									
-					outfile << counter++ << "," << v.r()[0] << "," << v.r()[1] << "," << v.g() << std::endl;				
+				for (auto& v : vtx)
+				{
+					outfile << counter++ << "," << v.r()[0] << "," << v.r()[1] << "," << v.g() << "," << v.sigma();
+#ifdef TURB
+					outfile << "," << sqr(v.sigma() / 4.48) / W.getPassport().timeDiscretizationProperties.dt - W.getPassport().physicalProperties.nu;
+#endif
+					outfile << '\n';
+				}
 			else
 				for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
 					for (size_t s = 0; s < W.getAirfoil(q).getNumberOfPanels(); ++s)
 					{
 						const Point2D& r = W.getAirfoil(q).getR(s);
-						outfile << counter++ << "," << r[0] << "," << r[1] << "," << "0.0" << std::endl;
+						outfile << counter++ << "," << r[0] << "," << r[1] << "," << "0.0" << "," << "0.0";
+#ifdef TURB
+						outfile << "," << 0.0;
+#endif	
+						outfile << '\n';
 					}
 			outfile.close();
 		}//if fileType = text
 
 	}
 
-	W.getTimestat().timeSaveKadr.second += omp_get_wtime();
+	W.getTimers().stop("Save");
 }//SaveKadrVtk()
+
+#ifdef TURB
+void WakeDataBase::SaveScalarFields(const std::string& filePrefix,
+	const std::vector<double>& VIP,
+	const std::vector<double>& OIP,
+	const std::vector<double>& nut,
+	const std::vector<Point2D>& grNu,
+	const std::vector<double>& RIP,
+	const std::vector<double>& DELTAG
+) const
+{
+	//W.getTimestat().timeSaveKadr.first += omp_get_wtime();
+
+	if (W.ifDivisible(W.getPassport().timeDiscretizationProperties.saveVtxStep))
+	{
+		std::ofstream outfile;
+		size_t numberNonZero = vtx.size();
+
+		VMlib::CreateDirectory(W.getPassport().dir, "snapshots");
+
+		//if (W.getPassport().timeDiscretizationProperties.fileTypeVtx.second == 0) //text format vtk
+		{
+			std::string fname = VMlib::fileNameStep(filePrefix, W.getPassport().timeDiscretizationProperties.nameLength, W.getCurrentStep(), "vtk");
+			outfile.open(W.getPassport().dir + "snapshots/" + fname);
+
+			outfile << "# vtk DataFile Version 2.0\n";
+			outfile << "VM2D VTK result: " << (W.getPassport().dir + "snapshots/" + fname).c_str() << " saved " << VMlib::CurrentDataTime() << '\n';
+			outfile << "ASCII\n";
+			outfile << "DATASET UNSTRUCTURED_GRID\n";
+			outfile << "POINTS " << numberNonZero << " float\n";
+
+			for (auto& v : vtx)
+			{
+				const Point2D& r = v.r();
+				outfile << r[0] << " " << r[1] << " " << "0.0\n";
+			}//for v		
+
+
+			outfile << "CELLS " << numberNonZero << " " << 2 * numberNonZero << '\n';
+			for (size_t i = 0; i < numberNonZero; ++i)
+				outfile << "1 " << i << '\n';
+
+			outfile << "CELL_TYPES " << numberNonZero << '\n';
+			for (size_t i = 0; i < numberNonZero; ++i)
+				outfile << "1\n";
+
+			outfile << '\n';
+			outfile << "POINT_DATA " << numberNonZero << '\n';
+			outfile << "SCALARS Gamma float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
+
+			for (auto& v : vtx)
+				outfile << v.g() << '\n';
+
+
+			outfile << "SCALARS Sigma float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
+
+			for (auto& v : W.getWake().vtx)
+				outfile << v.sigma() << '\n';
+
+			outfile << "SCALARS VIP float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
+
+			for (auto& v : VIP)
+				outfile << v << '\n';
+
+			outfile << "SCALARS OIP float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
+
+			for (auto& v : OIP)
+				outfile << v << '\n';
+
+
+			outfile << "SCALARS nut float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
+
+
+			for (auto& v : nut)
+				outfile << v << '\n';
+
+			outfile << "SCALARS RIP float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
+
+			for (auto& v : RIP)
+				outfile << v << '\n';
+
+
+			outfile << "SCALARS DELTAG float 1\n";
+			outfile << "LOOKUP_TABLE default\n";
+
+			for (auto& v : DELTAG)
+				outfile << v << '\n';
+
+
+			outfile << "VECTORS grNu float\n";
+			for (auto& v : grNu)
+				outfile << v[0] << " " << v[1] << " 0.0\n";
+
+			outfile.close();
+		}//if fileType = text
+	}
+
+	//W.getTimestat().timeSaveKadr.second += omp_get_wtime();
+}//SaveScalarFields(...)
+#endif

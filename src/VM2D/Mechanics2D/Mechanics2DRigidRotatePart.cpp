@@ -1,11 +1,11 @@
 /*--------------------------------*- VM2D -*-----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2024/01/14     |
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
 | ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
 |  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
 |   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: Mechanics2DRigidRotatePart.cpp                                   |
 | Info: Source code of VM2D                                                   |
@@ -33,8 +33,8 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.12
-\date 14 января 2024 г.
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include "Mechanics2DRigidRotatePart.h"
@@ -42,11 +42,11 @@
 #include "Airfoil2D.h"
 #include "Boundary2D.h"
 #include "MeasureVP2D.h"
-#include "Passport2D.h"
 #include "StreamParser.h"
 #include "Velocity2D.h"
 #include "Wake2D.h"
 #include "World2D.h"
+#include "Gmres2D.h"
 
 using namespace VM2D;
 
@@ -63,14 +63,14 @@ MechanicsRigidRotatePart::MechanicsRigidRotatePart(const World2D& W_, size_t num
 	VcmOld = Vcm0;
 	RcmOld = Rcm;
 		
-	ReadSpecificParametersFromDictionary();
+	MechanicsRigidRotatePart::ReadSpecificParametersFromDictionary();
 	Initialize({ 0.0, 0.0 }, W_.getAirfoil(numberInPassport_).rcm, 0.0, W_.getAirfoil(numberInPassport_).phiAfl);
 };
 
 //Вычисление гидродинамической силы, действующей на профиль
 void MechanicsRigidRotatePart::GetHydroDynamForce()
 {
-	W.getTimestat().timeGetHydroDynamForce.first += omp_get_wtime();
+	W.getTimers().start("Force");
 
 	const double& dt = W.getPassport().timeDiscretizationProperties.dt;
 
@@ -132,7 +132,7 @@ void MechanicsRigidRotatePart::GetHydroDynamForce()
 			viscousMoment += rho * (afl.viscousStress[i] * afl.tau[i]) & rK;
 		}
 
-	W.getTimestat().timeGetHydroDynamForce.second += omp_get_wtime();
+	W.getTimers().stop("Force");
 }// GetHydroDynamForce()
 
 // Вычисление скорости центра масс
@@ -177,6 +177,9 @@ void MechanicsRigidRotatePart::Move()
 {
 	double Jeff = J;
 
+	//Point2D F = hydroDynamForce + viscousForce;
+	double M = hydroDynamMoment + viscousMoment;
+
 	PhiOld = Phi;
 	WcmOld = Wcm;
 	
@@ -198,7 +201,7 @@ void MechanicsRigidRotatePart::Move()
 		
 
 	double dt = W.getPassport().timeDiscretizationProperties.dt;
-	double t = W.getPassport().physicalProperties.getCurrTime();
+	double t = W.getCurrentTime();
 	
 	
 	double addMom = (t > 3.0 * tAccel) ? externalTorque : 0.0;
@@ -206,10 +209,10 @@ void MechanicsRigidRotatePart::Move()
 	if (t > 1.0 * tAccel)
 	{
 		Point2D kk[4];
-		kk[0] = { Wcm, (hydroDynamMoment - 2.0 * bw * Wcm - kw * Phi - addMom) / Jeff };
-		kk[1] = { Wcm + 0.5 * dt * kk[0][1], (hydroDynamMoment - 2.0 * bw * (Wcm + 0.5 * dt * kk[0][1]) - kw * (Phi + 0.5 * dt * kk[0][0]) - addMom) / Jeff };
-		kk[2] = { Wcm + 0.5 * dt * kk[1][1], (hydroDynamMoment - 2.0 * bw * (Wcm + 0.5 * dt * kk[1][1]) - kw * (Phi + 0.5 * dt * kk[1][0]) - addMom) / Jeff };
-		kk[3] = { Wcm + dt * kk[2][1], (hydroDynamMoment - 2.0 * bw * (Wcm + dt * kk[2][1]) - kw * (Phi + dt * kk[2][0]) - addMom) / Jeff };
+		kk[0] = { Wcm, (M - 2.0 * bw * Wcm - kw * Phi - addMom) / Jeff };
+		kk[1] = { Wcm + 0.5 * dt * kk[0][1], (M - 2.0 * bw * (Wcm + 0.5 * dt * kk[0][1]) - kw * (Phi + 0.5 * dt * kk[0][0]) - addMom) / Jeff };
+		kk[2] = { Wcm + 0.5 * dt * kk[1][1], (M - 2.0 * bw * (Wcm + 0.5 * dt * kk[1][1]) - kw * (Phi + 0.5 * dt * kk[1][0]) - addMom) / Jeff };
+		kk[3] = { Wcm + dt * kk[2][1], (M - 2.0 * bw * (Wcm + dt * kk[2][1]) - kw * (Phi + dt * kk[2][0]) - addMom) / Jeff };
 
 		dphi = dt * (kk[0][0] + 2. * kk[1][0] + 2. * kk[2][0] + kk[3][0]) / 6.0;
 		dw = dt * (kk[0][1] + 2. * kk[1][1] + 2. * kk[2][1] + kk[3][1]) / 6.0;

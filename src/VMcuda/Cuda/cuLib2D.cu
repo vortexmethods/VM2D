@@ -1,37 +1,39 @@
-/*-------------------------------*- VMcuda -*----------------*---------------*\
-| ##  ## ##   ##  ####  #####   |                            | Version 1.12   |
-| ##  ## ### ### ##  ## ##  ##  |  VMcuda: VM2D/VM3D Library | 2024/01/14     |
-| ##  ## ## # ##    ##  ##  ##  |  Open Source Code          *----------------*
-|  ####  ##   ##   ##   ##  ##  |  https://www.github.com/vortexmethods/VM2D  |
-|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM3D  |
+/*--------------------------------*- VM2D -*-----------------*---------------*\
+| ##  ## ##   ##  ####  #####   |                            | Version 1.14   |
+| ##  ## ### ### ##  ## ##  ##  |  VM2D: Vortex Method       | 2026/03/06     |
+| ##  ## ## # ##    ##  ##  ##  |  for 2D Flow Simulation    *----------------*
+|  ####  ##   ##   ##   ##  ##  |  Open Source Code                           |
+|   ##   ##   ## ###### #####   |  https://www.github.com/vortexmethods/VM2D  |
 |                                                                             |
-| Copyright (C) 2017-2024 Ilia Marchevsky                                     |
+| Copyright (C) 2017-2026 I. Marchevsky, K. Sokol, E. Ryatina, A. Kolganova   |
 *-----------------------------------------------------------------------------*
 | File name: cuLib2D.cu                                                       |
-| Info: Source code of VMcuda                                                 |
+| Info: Source code of VM2D                                                   |
 |                                                                             |
-| This file is part of VMcuda.                                                |
-| VMcuda is free software: you can redistribute it and/or modify it           |
+| This file is part of VM2D.                                                  |
+| VM2D is free software: you can redistribute it and/or modify it             |
 | under the terms of the GNU General Public License as published by           |
 | the Free Software Foundation, either version 3 of the License, or           |
 | (at your option) any later version.                                         |
 |                                                                             |
-| VMcuda is distributed in the hope that it will be useful, but WITHOUT       |
+| VM2D is distributed in the hope that it will be useful, but WITHOUT         |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       |
 | FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License       |
 | for more details.                                                           |
 |                                                                             |
 | You should have received a copy of the GNU General Public License           |
-| along with VMcuda.  If not, see <http://www.gnu.org/licenses/>.             |
+| along with VM2D.  If not, see <http://www.gnu.org/licenses/>.               |
 \*---------------------------------------------------------------------------*/
-
 
 /*!
 \file
-\brief Файл с реализацией функций библиотеки VMcuda для работы с CUDA
+\brief Реализация функций библиотеки VMcuda для работы с CUDA
 \author Марчевский Илья Константинович
-\Version 1.12
-\date 14 января 2024 г.
+\author Сокол Ксения Сергеевна
+\author Рятина Евгения Павловна
+\author Колганова Александра Олеговна
+\Version 1.14
+\date 6 марта 2026 г.
 */
 
 #include <iostream>
@@ -48,6 +50,7 @@
 __device__ __constant__ size_t sizeVort;
 __device__ __constant__ size_t posR;
 __device__ __constant__ size_t posG;
+__device__ __constant__ size_t posS;
 
 __device__ __constant__ double accelCoeff;
 
@@ -59,10 +62,6 @@ __device__ __constant__ double iDPIminEpsAst2;
 
 __device__ __constant__ int schemeSwitcher;
 __device__ __constant__ int currentStep;
-
-
-#define invdpi (0.15915494309189533576888376337251)
-#define pi (3.1415926535897932384626433832795)
 
 
 void cuAlloc(void** ptr, size_t numBytes)
@@ -152,7 +151,6 @@ __global__ void CU_calc_conv_epsast(
 	size_t npt, double* pt,
 	size_t nvt, double* vt,
 	size_t nsr, double* sr,
-	double eps2,
 	double* vel, double* rad,
 	size_t nAfls, size_t* nVtxs, double** ptrVtxs,
 	bool calcVelo, bool calcRadius)
@@ -160,6 +158,7 @@ __global__ void CU_calc_conv_epsast(
 	__shared__ double shx[CUBLOCK];
 	__shared__ double shy[CUBLOCK];
 	__shared__ double shg[CUBLOCK];
+	__shared__ double shs[CUBLOCK];
 
 	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -186,6 +185,7 @@ __global__ void CU_calc_conv_epsast(
 		shx[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 0];
 		shy[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posR + 1];
 		shg[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posG + 0];
+		shs[threadIdx.x] = vt[(j + threadIdx.x)*sizeVort + posS + 0];
 
 		__syncthreads();
 	
@@ -199,7 +199,7 @@ __global__ void CU_calc_conv_epsast(
 
 				if (calcVelo)
 				{
-					izn = shg[q] / myMax(dr2, eps2);// / CUboundDenom(dr2, eps2); //Сглаживать надо!!!
+					izn = shg[q] / myMax(dr2, sqr(shs[q]));// / CUboundDenom(dr2, eps2); //Сглаживать надо!!!
 										
 					velx -= dy * izn;
 					vely += dx * izn;
@@ -241,6 +241,7 @@ __global__ void CU_calc_conv_epsast(
 			shx[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posR + 0];
 			shy[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posR + 1];
 			shg[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posG + 0] * accelCoeff;
+			shs[threadIdx.x] = sr[(j + threadIdx.x)*sizeVort + posS + 0];
 
 			__syncthreads();
 
@@ -252,7 +253,7 @@ __global__ void CU_calc_conv_epsast(
 					dy = pty - shy[q];
 					dr2 = dx * dx + dy * dy;
 
-					izn = shg[q] / CUboundDenom(dr2, eps2); //Сглаживать надо!!!
+					izn = shg[q] / CUboundDenom(dr2, sqr(shs[q])); //Сглаживать надо!!!
 
 					velx += dx * izn;
 					vely += dy * izn;
@@ -321,8 +322,8 @@ __global__ void CU_calc_conv_epsast(
 	{
 		if (calcVelo)
 		{
-			vel[2 * i + 0] = velx * invdpi;
-			vel[2 * i + 1] = vely * invdpi;
+			vel[2 * i + 0] = velx * idpid;
+			vel[2 * i + 1] = vely * idpid;
 		}
 
 		if (calcRadius)
@@ -345,8 +346,7 @@ __global__ void CU_calc_conv_From_Panels(
 	size_t npnl, double* r, 
 	double* freegamma, double* freegammalin,
 	double* attgamma, double* attgammalin,
-	double* attsource, double* attsourcelin,
-	double eps2,
+	double* attsource, double* attsourcelin,	
 	double* vel)
 {
 	__shared__ double shx[CUBLOCK];
@@ -462,8 +462,8 @@ __global__ void CU_calc_conv_From_Panels(
 
 	if (i < npt)
 	{
-		vel[2 * i + 0] = velx * invdpi;
-		vel[2 * i + 1] = vely * invdpi;
+		vel[2 * i + 0] = velx * idpid;
+		vel[2 * i + 1] = vely * idpid;
 	}
 }
 
@@ -815,14 +815,14 @@ __global__ void  CU_calc_I0I3(
 					mnx = normx * expon;
 					mny = normy * expon;
 
-					if (val0 != -pi * rdi)
-					{
+					//if (val0 != -pi * rdi)
+					//{
 						val0 += (xix * mnx + xiy * mny) * (lxi + 1.0) / (lxi * lxi);
 						val3x += mnx;
 						val3y += mny;
-					}
+					//}
 
-					vs = ptg * expon / (pi * meanepsj2);
+					vs = ptg * expon / (valPi * meanepsj2);
 
 				}					
 				//else if ( (d >= 0 * lenj) || (fabs(s) >= 0 * lenj) )
@@ -862,17 +862,17 @@ __global__ void  CU_calc_I0I3(
 							mnx = normx * expon;
 							mny = normy * expon;
 
-							if (val0 != -pi * rdi)
-							{
+							//if (val0 != -pi * rdi)
+							//{
 								val0 += (xi_mx * mnx + xi_my * mny) * (lxi_m + 1.0) / (lxi_m * lxi_m);
 								val3x += mnx;
 								val3y += mny;
-							}
+							//}
 
 							vs += expon;
 						//}//for mm
 					}//for m
-					vs *= ptg / (pi * meanepsj2);
+					vs *= ptg / (valPi * meanepsj2);
 
 					/*
 					if ((d <= 0.001 * lenj) && (fabs(s) < 0.45 * lenj))
@@ -891,12 +891,12 @@ __global__ void  CU_calc_I0I3(
 				}  				
 				else
 				{
-					val0 = -pi * rdi;
+					val0 += -valPi * rdi;
 										
 					mnog1 = 2.0 * rdi * (1.0 - exp(-lenj * 0.5 * iDDomRad) * cosh(fabs(s) * iDDomRad));
-					val3x = mnog1 * normx;
-					val3y = mnog1 * normy;
-					vs = mnog1 * ptg / (pi * meanepsj2);
+					val3x += mnog1 * normx;
+					val3y += mnog1 * normy;
+					vs = mnog1 * ptg / (valPi * meanepsj2);
 
 				}
 				
@@ -931,13 +931,13 @@ __global__ void CU_calc_RHS(
 	size_t npt, double* pt,
 	size_t nvt, double* vt,
 	size_t nsr, double* sr,
-	double eps2,
 	double* rhs,
 	double* rhsLin)
 {
 	__shared__ double shx[CUBLOCK];
 	__shared__ double shy[CUBLOCK];
 	__shared__ double shg[CUBLOCK];
+	__shared__ double shs[CUBLOCK];
 
 	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 	   
@@ -970,6 +970,7 @@ __global__ void CU_calc_RHS(
 		shx[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posR + 0];
 		shy[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posR + 1];
 		shg[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posG + 0];
+		shs[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posS + 0];
 
 		__syncthreads();
 
@@ -989,11 +990,10 @@ __global__ void CU_calc_RHS(
 
 					tempVel = shg[q] * alpha;
 					val -= tempVel;
-					//printf("pnl = %d, val = %f\n", locI, val);
 				}
 
 				if (schemeSwitcher == 0)
-					val += 0.5*(shg[q] * dlen / myMax(dlen*dlen, eps2)) * (taux * (sx+px) + tauy * (sy+py));					
+					val += 0.5*(shg[q] * dlen / sqr(myMax(dlen, shs[q]))) * (taux * (sx + px) + tauy * (sy + py));
 								
 				if (schemeSwitcher == 2)
 				{
@@ -1019,6 +1019,7 @@ __global__ void CU_calc_RHS(
 		shx[threadIdx.x] = sr[(j + threadIdx.x) * sizeVort + posR + 0];
 		shy[threadIdx.x] = sr[(j + threadIdx.x) * sizeVort + posR + 1];
 		shg[threadIdx.x] = sr[(j + threadIdx.x) * sizeVort + posG + 0] * accelCoeff;
+		shs[threadIdx.x] = sr[(j + threadIdx.x) * sizeVort + posS + 0];
 
 		__syncthreads();
 
@@ -1042,7 +1043,7 @@ __global__ void CU_calc_RHS(
 
 				if (schemeSwitcher == 0)
 				{
-					val += 0.5*(shg[q] * dlen / myMax(dlen*dlen, eps2)) * (-tauy * (sx+px) + taux * (sy+py));
+					val += 0.5*(shg[q] * dlen / sqr(myMax(dlen, shs[q]))) * (-tauy * (sx + px) + taux * (sy + py));
 				}
 
 				if (schemeSwitcher == 2)
@@ -1066,12 +1067,12 @@ __global__ void CU_calc_RHS(
 
 	if (i < npt)
 	{
-		val *= invdpi / dlen;
+		val *= idpid / dlen;
 		rhs[i] = val;
 
 		if (schemeSwitcher == 2)
 		{
-			valLin *= invdpi / dlen;
+			valLin *= idpid / dlen;
 			rhsLin[i] = valLin;
 		}
 	}
@@ -1210,9 +1211,204 @@ __global__ void CU_calc_closest_neib(
 }
 
 
-void cuDevice(int n)
+
+
+
+__global__ void CU_calc_pres(
+	size_t npt, double* pt,
+	size_t nvt, double* vt,
+	double2 V0, double* vtxVel, double* vtxDiffVel,
+
+	size_t npnl, double* rpnl,
+	double* freegamma, //double* freegammalin, 
+	double* attgamma, //double* attgammalin, 
+	double* attsource, //double* attsourcelin
+	double* devOldVortexSheet,
+	double* devOldSourceSheet,
+	double* devGammaThroughIntensity,
+
+	double* pressure)
 {
-	cudaSetDevice(n);
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
+
+	__shared__ double shx[CUBLOCK];
+	__shared__ double shy[CUBLOCK];
+	__shared__ double shg[CUBLOCK];
+	__shared__ double shs[CUBLOCK];
+	__shared__ double shVx[CUBLOCK];
+	__shared__ double shVy[CUBLOCK];
+	__shared__ double shDiffVx[CUBLOCK];
+	__shared__ double shDiffVy[CUBLOCK];
+
+	__shared__ double shbegx[CUBLOCK];
+	__shared__ double shbegy[CUBLOCK];
+	__shared__ double shendx[CUBLOCK];
+	__shared__ double shendy[CUBLOCK];
+
+	__shared__ double shfreegam[CUBLOCK];
+	__shared__ double shattgam[CUBLOCK];
+	__shared__ double shattgamold[CUBLOCK];
+	__shared__ double shattsrc[CUBLOCK];
+	__shared__ double shattsrcold[CUBLOCK];
+	__shared__ double shgamthroughintensity[CUBLOCK];
+
+	double ipx, ipy;
+
+	if (i < npt)
+	{
+		ipx = pt[i * sizeVort + posR + 0];
+		ipy = pt[i * sizeVort + posR + 1];
+	}
+
+	double prs = 0.0;
+
+	for (int j = 0; j < nvt; j += CUBLOCK)
+	{
+		if (j + threadIdx.x < nvt)
+		{
+			shx[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posR + 0];
+			shy[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posR + 1];
+			shg[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posG + 0];
+			shs[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posS + 0];
+
+			shVx[threadIdx.x] = vtxVel[2 * (j + threadIdx.x) + 0];
+			shVy[threadIdx.x] = vtxVel[2 * (j + threadIdx.x) + 1];
+			shDiffVx[threadIdx.x] = vtxDiffVel[2 * (j + threadIdx.x) + 0];
+			shDiffVy[threadIdx.x] = vtxDiffVel[2 * (j + threadIdx.x) + 1];
+		}
+
+		__syncthreads();
+
+		for (int q = 0; q < CUBLOCK; ++q)
+		{
+			if (j + q < nvt)
+			{
+				double dx = ipx - shx[q];
+				double dy = ipy - shy[q];
+
+				double dr2 = dx * dx + dy * dy;
+
+				double Vjx = shVx[q] + shDiffVx[q] + V0.x;
+				double Vjy = shVy[q] + shDiffVy[q] + V0.y;
+
+				double izn = idpid * shg[q] / myMax(dr2, sqr(shs[q]));
+
+				double Wjx = izn * (-dy);
+				double Wjy = izn * (dx);
+
+				if (i < npt)
+					prs += Vjx * Wjx + Vjy * Wjy;
+			}
+		}
+
+		__syncthreads();
+	}
+
+
+	for (int pn = 0; pn < npnl; pn+= CUBLOCK)
+	{
+		if (pn + threadIdx.x < npnl)
+		{
+			shbegx[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 0];
+			shbegy[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 1];
+			shendx[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 2];
+			shendy[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 3];
+
+			shfreegam[threadIdx.x] = freegamma[pn + threadIdx.x];
+
+			shattgam[threadIdx.x] = attgamma[pn + threadIdx.x];
+			shattgamold[threadIdx.x] = devOldVortexSheet[pn + threadIdx.x];
+
+			shattsrc[threadIdx.x] = attsource[pn + threadIdx.x];
+			shattsrcold[threadIdx.x] = devOldSourceSheet[pn + threadIdx.x];
+			shgamthroughintensity[threadIdx.x] = devGammaThroughIntensity[pn + threadIdx.x];
+		}
+
+		__syncthreads();
+
+		for (int q = 0; q < CUBLOCK; ++q)
+		{
+			if (pn + q < npnl)
+			{
+				double2 s = { ipx - shbegx[q], ipy - shbegy[q]};
+				double2 p = { ipx - shendx[q], ipy - shendy[q]};	
+				double2 u0 = { shendx[q] - shbegx[q], shendy[q] - shbegy[q]};
+				double lenu0 = sqrt(u0.x * u0.x + u0.y * u0.y);
+				u0.x /= lenu0; u0.y /= lenu0;
+
+				double alpha = atan2(p.x * s.y - p.y * s.x, p.x * s.x + p.y * s.y);
+				double lambda = 0.5 * log((s.x * s.x + s.y * s.y) / (p.x * p.x + p.y * p.y));
+
+				double2 skos = { idpid * (-alpha * u0.y + lambda * u0.x), idpid * (alpha * u0.x + lambda * u0.y) };
+
+				prs += 0.5 * shfreegam[q] * (shfreegam[q] /* -shgamthroughintensity[q]*/) * (u0.x * skos.y - u0.y * skos.x);
+
+				double2 Vi = { 0.5 * (shbegx[q] + shendx[q]), 0.5 * (shbegy[q] + shendy[q])};
+				prs += (shattgam[q] - shattgamold[q]) * (Vi.x * skos.y - Vi.y * skos.x);
+				prs += (shattsrc[q] - shattsrcold[q]) * (Vi.x * skos.x + Vi.y * skos.y);
+			}
+		}
+
+		__syncthreads();
+	}
+
+
+	if (i < npt)
+		pressure[i] = prs;
+}
+
+
+
+
+
+int cuSelect(int dev)
+{
+	int deviceCount;
+	cudaGetDeviceCount(&deviceCount);
+	if (deviceCount == 0) {
+		fprintf(stderr, "There is no device supporting CUDA\n");
+		exit(-1);
+	}
+
+	if ((dev < 0) || (deviceCount <= dev)) {
+		fprintf(stderr, "There is no device %d\n", dev);
+		exit(-1);
+	}
+	cudaSetDevice(dev);
+
+
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, dev);
+
+	int blocks = deviceProp.multiProcessorCount;
+
+	/*
+		printf("\n");
+		printf("                          GPU Device Properties                         \n");
+		printf("------------------------------------------------------------------------\n");
+		printf("Name:                                  %s\n", deviceProp.name);
+		//printf("CUDA driver/runtime version:           %d.%d/%d.%d\n", driverVersion / 1000, (driverVersion % 100) / 10, runtimeVersion / 1000, (runtimeVersion % 100) / 10);
+		printf("CUDA compute capabilitiy:              %d.%d\n", deviceProp.major, deviceProp.minor);
+		printf("Number of multiprocessors:             %d\n", deviceProp.multiProcessorCount);
+
+		if (false)
+		{
+			int fact = 1;
+			printf("GPU clock rate:                        %d (MHz)\n", deviceProp.clockRate / fact);
+			printf("Memory clock rate:                     %d (MHz)\n", deviceProp.memoryClockRate / fact);
+			printf("Memory bus width:                      %d-bit\n", deviceProp.memoryBusWidth);
+			printf("Theoretical memory bandwidth:          %d (GB/s)\n", (deviceProp.memoryClockRate / fact * (deviceProp.memoryBusWidth / 8) * 2) / fact);
+			printf("Device global memory:                  %d (MB)\n", (int)(deviceProp.totalGlobalMem / (fact * fact)));
+			printf("Shared memory per block:               %d (KB)\n", (int)(deviceProp.sharedMemPerBlock / fact));
+			printf("Constant memory:                       %d (KB)\n", (int)(deviceProp.totalConstMem / fact));
+			printf("Maximum number of threads per block:   %d\n", deviceProp.maxThreadsPerBlock);
+			printf("Maximum thread dimension:              [%d, %d, %d]\n", deviceProp.maxThreadsDim[0], deviceProp.maxThreadsDim[1], deviceProp.maxThreadsDim[2]);
+			printf("Maximum grid size:                     [%d, %d, %d]\n", deviceProp.maxGridSize[0], deviceProp.maxGridSize[1], deviceProp.maxGridSize[2]);
+		}
+		printf("------------------------------------------------------------------------\n");
+	*/
+
+	return blocks;
 }
 
 
@@ -1226,11 +1422,12 @@ int cuCalcBlocks(size_t new_n)
 	return max((int)nBlocks, 1);
 }
 
-void cuSetConstants(size_t pos_, size_t posR_, size_t posG_, int code)
+void cuSetConstants(size_t pos_, size_t posR_, size_t posG_, size_t posS_, int code)
 {
 	cudaError_t err1 = cudaMemcpyToSymbol(sizeVort, &pos_,  sizeof(size_t));
 	cudaError_t err2 = cudaMemcpyToSymbol(posR,     &posR_, sizeof(size_t));
 	cudaError_t err3 = cudaMemcpyToSymbol(posG,     &posG_, sizeof(size_t));
+	cudaError_t err4 = cudaMemcpyToSymbol(posS,     &posS_, sizeof(size_t));
 
 	if (err1 != cudaSuccess)
 		std::cout << cudaGetErrorString(err1) << " (erSetConst01, code = " << code << ")" << std::endl;
@@ -1238,6 +1435,8 @@ void cuSetConstants(size_t pos_, size_t posR_, size_t posG_, int code)
 		std::cout << cudaGetErrorString(err2) << " (erSetConst02, code =" << code << ")" << std::endl;
 	if (err3 != cudaSuccess)
 		std::cout << cudaGetErrorString(err3) << " (erSetConst03, code =" << code << ")" << std::endl;
+	if (err4 != cudaSuccess)
+		std::cout << cudaGetErrorString(err4) << " (erSetConst04, code =" << code << ")" << std::endl;
 }
 
 void cuSetAccelCoeff(double cft_, int code)
@@ -1364,6 +1563,14 @@ void cuCopyFixedArrayPoint4D(double* dev_ptr, const Point2D* host_src, size_t np
 		std::cout << cudaGetErrorString(err1) << " (erCopyFixedArrayPoint4D01, code = " << code << ")" << std::endl;
 }
 
+void cuCopyFixedArrayPoint6D(double* dev_ptr, const Point2D* host_src, size_t npts, int code)
+{
+	cudaError_t err1 = cudaMemcpy(dev_ptr, host_src, sizeof(double) * 6 * npts, cudaMemcpyHostToDevice);
+
+	if (err1 != cudaSuccess)
+		std::cout << cudaGetErrorString(err1) << " (erCopyFixedArrayPoint6D01, code = " << code << ")" << std::endl;
+}
+
 void cuCopyMemFromDev(void* host_ptr, void* dev_ptr, size_t nBytes, int code)
 {
 	cudaError_t err1 = cudaMemcpy(host_ptr, dev_ptr, nBytes, cudaMemcpyDeviceToHost);
@@ -1380,7 +1587,7 @@ void cuDeleteFromDev(void* devPtr, int code)
 }
 
 /////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, double eps2, bool calcVelo, bool calcRadius)
+void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, bool calcVelo, bool calcRadius)
 {	
 	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
 
@@ -1393,7 +1600,7 @@ void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, siz
 	cudaEventRecord(start, 0); 
 	*/
 
-	CU_calc_conv_epsast <<< blocks, threads >>> (npt, pt, nvt, vt, nsr, sr, eps2, vel, rd, nAfls, nVtxs, ptrVtxs, calcVelo, calcRadius);
+	CU_calc_conv_epsast <<< blocks, threads >>> (npt, pt, nvt, vt, nsr, sr, vel, rd, nAfls, nVtxs, ptrVtxs, calcVelo, calcRadius);
 
 	/*
 	cudaThreadSynchronize();
@@ -1413,11 +1620,10 @@ void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, siz
 	cudaDeviceSynchronize();
 }
 
-
-void cuCalculateConvVeloWakeFromVirtual(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* freegammalin, double* attgamma, double* attgammalin, double* attsource, double* attsourcelin, double* vel, double eps2)
+void cuCalculateConvVeloWakeFromVirtual(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* freegammalin, double* attgamma, double* attgammalin, double* attsource, double* attsourcelin, double* vel)
 {
 	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
-	CU_calc_conv_From_Panels<<<blocks, threads>>>(npt, pt, npnl, r, freegamma, freegammalin, attgamma, attgammalin, attsource, attsourcelin, eps2, vel);
+	CU_calc_conv_From_Panels<<<blocks, threads>>>(npt, pt, npnl, r, freegamma, freegammalin, attgamma, attgammalin, attsource, attsourcelin, vel);
 
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
@@ -1475,11 +1681,11 @@ void cuCalculateSurfDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt,
 }
 
 
-void cuCalculateRhs(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double eps2, double* rhs, double* rhsLin)
+void cuCalculateRhs(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double* rhs, double* rhsLin)
 {
 	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
 	
-	CU_calc_RHS << < blocks, threads >> > (npt, pt, nvt, vt, nsr, sr, eps2, rhs, rhsLin);
+	CU_calc_RHS << < blocks, threads >> > (npt, pt, nvt, vt, nsr, sr, rhs, rhsLin);
 	
 	cudaError_t err1 = cudaGetLastError();
 	if (err1 != cudaSuccess)
@@ -1521,6 +1727,51 @@ void cuCalculatePairsClosestNeib(size_t npt, double* pt, int* mesh, int* nei, do
 	if (err2 != cudaSuccess)
 		std::cout << cudaGetErrorString(err2) << " (erCU_calc_nei01)" << std::endl;
 }
+
+
+void cuCalculatePressure(size_t npt, double* pt, size_t nvt, double* vt, double V0x, double V0y, double* vtxVel, double* vtxDiffVel,
+	size_t npnl, double* rpnl,
+	double* freegamma, //double* freegammalin, 
+	double* attgamma, //double* attgammalin, 
+	double* attsource, //double* attsourcelin
+	double* devOldVortexSheet, 
+	double* devOldSourceSheet,
+	double* devGammaThroughIntensity,
+	double* pressure)
+{
+	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
+
+
+	/*
+	cudaEvent_t start, stop;
+	float gpu_time = 0.0f;
+	cudaEventCreate(&start);
+	cudaEventCreate(&stop);
+	cudaEventRecord(start, 0);
+	*/
+
+	double2 V0{ V0x, V0y };
+	CU_calc_pres << < blocks, threads >> > (npt, pt, nvt, vt, V0, vtxVel, vtxDiffVel, npnl, rpnl, freegamma, attgamma, attsource, devOldVortexSheet, devOldSourceSheet, devGammaThroughIntensity, pressure);
+
+	/*
+	cudaThreadSynchronize();
+	cudaEventRecord(stop, 0);
+	cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&gpu_time, start, stop);
+	printf("\nTime spent: %.5f\n", gpu_time/1000.0f);
+	cudaEventDestroy(start);
+	cudaEventDestroy(stop);
+	*/
+
+
+	cudaError_t err1 = cudaGetLastError();
+	if (err1 != cudaSuccess)
+		std::cout << cudaGetErrorString(err1) << " (erCU_calc_pres01)" << std::endl;
+
+	cudaDeviceSynchronize();
+}
+
+
 
 
 /*
