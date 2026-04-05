@@ -1,5 +1,5 @@
 <map id="VM2D/TreeCPU2D/cpuTreeInfo.h" name="VM2D/TreeCPU2D/cpuTreeInfo.h">
-<area shape="rect" id="Node000001" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CPU." alt="" coords="13,5,241,31"/>
-<area shape="rect" id="Node000002" href="$d3/d9f/cpu_tree_info_8cpp.html" title="Ðåàëèçàöèÿ êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CPU." alt="" coords="5,79,248,104"/>
+<area shape="rect" id="Node000001" title="Заголовок класса дерева для реализации быстрых алгоритмов на CPU." alt="" coords="13,5,241,31"/>
+<area shape="rect" id="Node000002" href="$d3/d9f/cpu_tree_info_8cpp.html" title="Реализация класса дерева для реализации быстрых алгоритмов на CPU." alt="" coords="5,79,248,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,44,129,79,124,79,124,44"/>
 </map>

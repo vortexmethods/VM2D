@@ -141,11 +141,11 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d9/dd7/namespace_v_m2_d.html">VM2D</a></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>{</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">//&quot;Разрежение" двоичного представления беззнакового целого, вставляя по одному нулику между всеми битами</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">//&quot;Р Р°Р·СЂРµР¶РµРЅРёРµ&quot; РґРІРѕРёС‡РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ Р±РµР·Р·РЅР°РєРѕРІРѕРіРѕ С†РµР»РѕРіРѕ, РІСЃС‚Р°РІР»СЏСЏ РїРѕ РѕРґРЅРѕРјСѓ РЅСѓР»РёРєСѓ РјРµР¶РґСѓ РІСЃРµРјРё Р±РёС‚Р°РјРё</span></div>
 <div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="../../d9/dd7/namespace_v_m2_d.html#a963af10a34c006afe4ecf2215b5e3e97">   48</a></span>    <span class="keyword">inline</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d9/dd7/namespace_v_m2_d.html#a963af10a34c006afe4ecf2215b5e3e97">ExpandBits</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> v)</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="comment">// вставит 1 нуль</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="comment">// РІСЃС‚Р°РІРёС‚ 1 РЅСѓР»СЊ</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        v = (v | (v &lt;&lt; 8)) &amp; 0x00FF00FF;      <span class="comment">//  00000000`00000000`abcdefgh`ijklmnop </span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="comment">//                                      | 00000000`abcdefgh`ijklmnop`00000000</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="comment">//                                      = 00000000`abcdefgh`XXXXXXXX`ijklmnop</span></div>
@@ -173,7 +173,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    }</div>
 </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="comment">//Округление "в потолок&quot; результата деления на степень двойки</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="comment">//РћРєСЂСѓРіР»РµРЅРёРµ &quot;РІ РїРѕС‚РѕР»РѕРє&quot; СЂРµР·СѓР»СЊС‚Р°С‚Р° РґРµР»РµРЅРёСЏ РЅР° СЃС‚РµРїРµРЅСЊ РґРІРѕР№РєРё</span></div>
 <div class="foldopen" id="foldopen00078" data-start="{" data-end="}">
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../d9/dd7/namespace_v_m2_d.html#aa7c5401ed3fdf36d1281304b19d00314">   78</a></span>    <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d9/dd7/namespace_v_m2_d.html#aa7c5401ed3fdf36d1281304b19d00314">ceilpow2</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> p) <span class="comment">//  =ceil(x / 2^p)</span></div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    {</div>
@@ -181,9 +181,9 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
 </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="comment">//Округление "в потолок&quot; результата деления пополам</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="comment">//РћРєСЂСѓРіР»РµРЅРёРµ &quot;РІ РїРѕС‚РѕР»РѕРє&quot; СЂРµР·СѓР»СЊС‚Р°С‚Р° РґРµР»РµРЅРёСЏ РїРѕРїРѕР»Р°Рј</span></div>
 <div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d9/dd7/namespace_v_m2_d.html#a76342290060424e735390dcae68eb4b8">   84</a></span>    <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d9/dd7/namespace_v_m2_d.html#a76342290060424e735390dcae68eb4b8">ceilhalf</a>(<span class="keywordtype">int</span> x) <span class="comment">//  =ceil(x / 2), т.е. предыдущая функция при p=1</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d9/dd7/namespace_v_m2_d.html#a76342290060424e735390dcae68eb4b8">   84</a></span>    <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="../../d9/dd7/namespace_v_m2_d.html#a76342290060424e735390dcae68eb4b8">ceilhalf</a>(<span class="keywordtype">int</span> x) <span class="comment">//  =ceil(x / 2), С‚.Рµ. РїСЂРµРґС‹РґСѓС‰Р°СЏ С„СѓРЅРєС†РёСЏ РїСЂРё p=1</span></div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    {</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">return</span> (x &gt;&gt; 1) + (x &amp; 1);</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
@@ -204,15 +204,15 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ki = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a2ef322f3cfb23e4f8d150da8732709f2">mortonCodesKeyUnsort</a>[i];</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> kj = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a2ef322f3cfb23e4f8d150da8732709f2">mortonCodesKeyUnsort</a>[j];</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="comment">//Поиск номера самого старшего ненулевого бита в числе c </span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="comment">//РџРѕРёСЃРє РЅРѕРјРµСЂР° СЃР°РјРѕРіРѕ СЃС‚Р°СЂС€РµРіРѕ РЅРµРЅСѓР»РµРІРѕРіРѕ Р±РёС‚Р° РІ С‡РёСЃР»Рµ c </span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordtype">int</span> count = 0;</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> c = (ki ^ kj); c; c &gt;&gt;= 1, ++count);</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keywordflow">if</span> ((!count) &amp;&amp; (i != j))</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        {</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keywordtype">int</span> addCount = 0;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <span class="comment">//единички к номерам i и j добавлены для совместимости с Wolfram Mathematica, </span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="comment">//для кода они не важны, но дерево без них почти наверняка построится по-другому        </span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <span class="comment">//РµРґРёРЅРёС‡РєРё Рє РЅРѕРјРµСЂР°Рј i Рё j РґРѕР±Р°РІР»РµРЅС‹ РґР»СЏ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё СЃ Wolfram Mathematica, </span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="comment">//РґР»СЏ РєРѕРґР° РѕРЅРё РЅРµ РІР°Р¶РЅС‹, РЅРѕ РґРµСЂРµРІРѕ Р±РµР· РЅРёС… РїРѕС‡С‚Рё РЅР°РІРµСЂРЅСЏРєР° РїРѕСЃС‚СЂРѕРёС‚СЃСЏ РїРѕ-РґСЂСѓРіРѕРјСѓ        </span></div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> add = ((i + 1) ^ (j + 1)); add; add &gt;&gt;= 1, ++addCount);</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            <span class="keywordflow">return</span> 2 * <a class="code hl_define" href="../../d5/dde/_gpudefs_8h.html#a4398e75ff51abc7948c6d7c2d6a5d905">codeLength</a> + (2 * <a class="code hl_define" href="../../d5/dde/_gpudefs_8h.html#a4398e75ff51abc7948c6d7c2d6a5d905">codeLength</a> - addCount);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        }<span class="comment">//if ((!count) &amp;&amp; (i != j))</span></div>
@@ -312,7 +312,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 </div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="comment">//Сортировка листьев</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="comment">//РЎРѕСЂС‚РёСЂРѕРІРєР° Р»РёСЃС‚СЊРµРІ</span></div>
 <div class="foldopen" id="foldopen00207" data-start="{" data-end="}">
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a8bfb33ed9415b53f489e05668c1fb741">  207</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a8bfb33ed9415b53f489e05668c1fb741">CpuTreeInfo::RadixSortMortonCodes</a>()</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    {</div>
@@ -321,7 +321,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> threads = (<span class="keywordtype">unsigned</span> int)(omp_get_max_threads());</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="comment">//временные массивы</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="comment">//РІСЂРµРјРµРЅРЅС‹Рµ РјР°СЃСЃРёРІС‹</span></div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        std::vector&lt;unsigned int&gt; mortonCodesKeyTemp(nObject);</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        std::vector&lt;int&gt; mortonCodesIdxTemp(nObject);</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        std::vector&lt;unsigned int&gt; s(256 * threads);</div>
@@ -340,16 +340,16 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>            <span class="keywordtype">int</span>* sourceIdx = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a5f61c9f65ccb2eab527c7efb00450acf">mortonCodesIdx</a>.data();</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>            <span class="keywordtype">int</span>* destIdx = mortonCodesIdxTemp.data();</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> tid = (<span class="keywordtype">unsigned</span> int)(omp_get_thread_num()); <span class="comment">//текущий номер потока</span></div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nt = (<span class="keywordtype">unsigned</span> int)(omp_get_num_threads()); <span class="comment">//общее число потоков в секции</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> tid = (<span class="keywordtype">unsigned</span> int)(omp_get_thread_num()); <span class="comment">//С‚РµРєСѓС‰РёР№ РЅРѕРјРµСЂ РїРѕС‚РѕРєР°</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nt = (<span class="keywordtype">unsigned</span> int)(omp_get_num_threads()); <span class="comment">//РѕР±С‰РµРµ С‡РёСЃР»Рѕ РїРѕС‚РѕРєРѕРІ РІ СЃРµРєС†РёРё</span></div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            <span class="comment">//делим данные между потоками</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            <span class="comment">//РґРµР»РёРј РґР°РЅРЅС‹Рµ РјРµР¶РґСѓ РїРѕС‚РѕРєР°РјРё</span></div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> div = nObject / nt;</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> mod = nObject % nt;</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> chunk = div + (tid &lt; mod ? 1u : 0u); <span class="comment">//длина участка, который обрабатывает этот поток = div или div + 1</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> chunk = div + (tid &lt; mod ? 1u : 0u); <span class="comment">//РґР»РёРЅР° СѓС‡Р°СЃС‚РєР°, РєРѕС‚РѕСЂС‹Р№ РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚ СЌС‚РѕС‚ РїРѕС‚РѕРє = div РёР»Рё div + 1</span></div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            <span class="comment">//Если поток попадает в первые mod потоков, он получает кусок длины div + 1</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            <span class="comment">//Р•СЃР»Рё РїРѕС‚РѕРє РїРѕРїР°РґР°РµС‚ РІ РїРµСЂРІС‹Рµ mod РїРѕС‚РѕРєРѕРІ, РѕРЅ РїРѕР»СѓС‡Р°РµС‚ РєСѓСЃРѕРє РґР»РёРЅС‹ div + 1</span></div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> left_index = (tid &lt; mod) ? tid * (div + 1u) : mod * (div + 1u) + (tid - mod) * div;</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> right_index = (chunk == 0u) ? left_index : (left_index + chunk - 1u);</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
@@ -358,11 +358,11 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s_sum[256] = { 0 };</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s0[256] = { 0 };</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                <span class="comment">//Локальная гистограмма текущего байта</span></div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                <span class="comment">// Для каждого элемента берём текущий байт ключа: (sourceKey[i] &gt;&gt; (8 * digit)) &amp; 0xFF</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                <span class="comment">// сдвиг >&gt; переносит нужный байт в младшие 8 бит</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                <span class="comment">// &amp; 0xFF оставляет только этот байт</span></div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                <span class="comment">// bucket находится в диапазоне [0..255]</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                <span class="comment">//Р›РѕРєР°Р»СЊРЅР°СЏ РіРёСЃС‚РѕРіСЂР°РјРјР° С‚РµРєСѓС‰РµРіРѕ Р±Р°Р№С‚Р°</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                <span class="comment">// Р”Р»СЏ РєР°Р¶РґРѕРіРѕ СЌР»РµРјРµРЅС‚Р° Р±РµСЂС‘Рј С‚РµРєСѓС‰РёР№ Р±Р°Р№С‚ РєР»СЋС‡Р°: (sourceKey[i] &gt;&gt; (8 * digit)) &amp; 0xFF</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                <span class="comment">// СЃРґРІРёРі &gt;&gt; РїРµСЂРµРЅРѕСЃРёС‚ РЅСѓР¶РЅС‹Р№ Р±Р°Р№С‚ РІ РјР»Р°РґС€РёРµ 8 Р±РёС‚</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                <span class="comment">// &amp; 0xFF РѕСЃС‚Р°РІР»СЏРµС‚ С‚РѕР»СЊРєРѕ СЌС‚РѕС‚ Р±Р°Р№С‚</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                <span class="comment">// bucket РЅР°С…РѕРґРёС‚СЃСЏ РІ РґРёР°РїР°Р·РѕРЅРµ [0..255]</span></div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                <span class="keywordflow">if</span> (chunk != 0u)</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                {</div>
@@ -373,16 +373,16 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>                    }</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                }</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                <span class="comment">// Сохраняем локальную гистограмму текущего потока в общий буфер s.</span></div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                <span class="comment">// Для потока tid его участок — это: s[256 * tid + 0 ... 256 * tid + 255]</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                <span class="comment">// РЎРѕС…СЂР°РЅСЏРµРј Р»РѕРєР°Р»СЊРЅСѓСЋ РіРёСЃС‚РѕРіСЂР°РјРјСѓ С‚РµРєСѓС‰РµРіРѕ РїРѕС‚РѕРєР° РІ РѕР±С‰РёР№ Р±СѓС„РµСЂ s.</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                <span class="comment">// Р”Р»СЏ РїРѕС‚РѕРєР° tid РµРіРѕ СѓС‡Р°СЃС‚РѕРє вЂ” СЌС‚Рѕ: s[256 * tid + 0 ... 256 * tid + 255]</span></div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> b = 0; b &lt; 256u; ++b)</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                    s[256u * tid + b] = s0[b];</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="preprocessor">#pragma omp barrier</span></div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                <span class="comment">// Собираем суммарные размеры корзин и частичные смещения для текущего потока</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                <span class="comment">// Ниже:</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                <span class="comment">// s_sum[b] = общее количество элементов во всех потоках, которые попали в bucket b</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                <span class="comment">// s0[b] = количество элементов в bucket b у потоков с номерами меньше tid + локальное количество текущего потока</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                <span class="comment">// РЎРѕР±РёСЂР°РµРј СЃСѓРјРјР°СЂРЅС‹Рµ СЂР°Р·РјРµСЂС‹ РєРѕСЂР·РёРЅ Рё С‡Р°СЃС‚РёС‡РЅС‹Рµ СЃРјРµС‰РµРЅРёСЏ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ РїРѕС‚РѕРєР°</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                <span class="comment">// РќРёР¶Рµ:</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                <span class="comment">// s_sum[b] = РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІРѕ РІСЃРµС… РїРѕС‚РѕРєР°С…, РєРѕС‚РѕСЂС‹Рµ РїРѕРїР°Р»Рё РІ bucket b</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                <span class="comment">// s0[b] = РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ bucket b Сѓ РїРѕС‚РѕРєРѕРІ СЃ РЅРѕРјРµСЂР°РјРё РјРµРЅСЊС€Рµ tid + Р»РѕРєР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РµРєСѓС‰РµРіРѕ РїРѕС‚РѕРєР°</span></div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> t = 0; t &lt; nt; ++t)</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> b = 0; b &lt; 256u; ++b)                </div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                    {</div>
@@ -392,37 +392,37 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                            s0[b] += s[256u * t + b];</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                    }</div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                <span class="comment">// Ниже:</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                <span class="comment">// s_sum[b] = конец bucket b в глобальном выходном массиве</span></div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                <span class="comment">// s0[b]    = конец части bucket b, принадлежащей текущему потоку</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                <span class="comment">// РќРёР¶Рµ:</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                <span class="comment">// s_sum[b] = РєРѕРЅРµС† bucket b РІ РіР»РѕР±Р°Р»СЊРЅРѕРј РІС‹С…РѕРґРЅРѕРј РјР°СЃСЃРёРІРµ</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                <span class="comment">// s0[b]    = РєРѕРЅРµС† С‡Р°СЃС‚Рё bucket b, РїСЂРёРЅР°РґР»РµР¶Р°С‰РµР№ С‚РµРєСѓС‰РµРјСѓ РїРѕС‚РѕРєСѓ</span></div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> b = 1; b &lt; 256u; ++b)</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                {</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>                    s_sum[b] += s_sum[b - 1];</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                    s0[b] += s_sum[b - 1];</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>                }</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                <span class="comment">// каждый поток раскладывает свои элементы в нужные позиции выходного массива</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                <span class="comment">// РєР°Р¶РґС‹Р№ РїРѕС‚РѕРє СЂР°СЃРєР»Р°РґС‹РІР°РµС‚ СЃРІРѕРё СЌР»РµРјРµРЅС‚С‹ РІ РЅСѓР¶РЅС‹Рµ РїРѕР·РёС†РёРё РІС‹С…РѕРґРЅРѕРіРѕ РјР°СЃСЃРёРІР°</span></div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                <span class="keywordflow">if</span> (chunk != 0u)</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>                {</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = (<span class="keywordtype">int</span>)(right_index); i &gt;= (int)(left_index); --i)</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>                    {</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>                        <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bucket = (sourceKey[i] &gt;&gt; (8u * digit)) &amp; 0xFFu;</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                        <span class="comment">// Берём следующую свободную позицию в части корзины текущего потока</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                        <span class="comment">// Р‘РµСЂС‘Рј СЃР»РµРґСѓСЋС‰СѓСЋ СЃРІРѕР±РѕРґРЅСѓСЋ РїРѕР·РёС†РёСЋ РІ С‡Р°СЃС‚Рё РєРѕСЂР·РёРЅС‹ С‚РµРєСѓС‰РµРіРѕ РїРѕС‚РѕРєР°</span></div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                        <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> pos = --s0[bucket];</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                        <span class="comment">// Переносим и ключ, и индекс.</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                        <span class="comment">// сортируем по key, idx переставляется вместе с ним.</span></div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                        <span class="comment">// РџРµСЂРµРЅРѕСЃРёРј Рё РєР»СЋС‡, Рё РёРЅРґРµРєСЃ.</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                        <span class="comment">// СЃРѕСЂС‚РёСЂСѓРµРј РїРѕ key, idx РїРµСЂРµСЃС‚Р°РІР»СЏРµС‚СЃСЏ РІРјРµСЃС‚Рµ СЃ РЅРёРј.</span></div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>                        destKey[pos] = sourceKey[i];</div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>                        destIdx[pos] = sourceIdx[i];</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>                    }</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                }</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="preprocessor">#pragma omp barrier</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                <span class="comment">// Меняем местами source и dest. Cледующий проход по следующему байту будет читать уже из только что отсортированного массива.</span></div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                <span class="comment">// проход 0: source = mortonCodesKey,    dest = temp</span></div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                <span class="comment">// проход 1: source = temp,              dest = mortonCodesKey</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                <span class="comment">// проход 2: source = mortonCodesKey,    dest = temp</span></div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                <span class="comment">// проход 3: source = temp,              dest = mortonCodesKey</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                <span class="comment">// РњРµРЅСЏРµРј РјРµСЃС‚Р°РјРё source Рё dest. CР»РµРґСѓСЋС‰РёР№ РїСЂРѕС…РѕРґ РїРѕ СЃР»РµРґСѓСЋС‰РµРјСѓ Р±Р°Р№С‚Сѓ Р±СѓРґРµС‚ С‡РёС‚Р°С‚СЊ СѓР¶Рµ РёР· С‚РѕР»СЊРєРѕ С‡С‚Рѕ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ РјР°СЃСЃРёРІР°.</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                <span class="comment">// РїСЂРѕС…РѕРґ 0: source = mortonCodesKey,    dest = temp</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                <span class="comment">// РїСЂРѕС…РѕРґ 1: source = temp,              dest = mortonCodesKey</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                <span class="comment">// РїСЂРѕС…РѕРґ 2: source = mortonCodesKey,    dest = temp</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                <span class="comment">// РїСЂРѕС…РѕРґ 3: source = temp,              dest = mortonCodesKey</span></div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                std::swap(sourceKey, destKey);</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                std::swap(sourceIdx, destIdx);</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="preprocessor">#pragma omp barrier</span></div>
@@ -469,7 +469,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
 <div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>            <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> right_index = (chunk == 0u) ? left_index : (left_index + chunk - 1u);</div>
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>            <span class="comment">// Сортировка по байтам int</span></div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>            <span class="comment">// РЎРѕСЂС‚РёСЂРѕРІРєР° РїРѕ Р±Р°Р№С‚Р°Рј int</span></div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> digit = 0; digit &lt; <span class="keyword">sizeof</span>(int); ++digit)</div>
 <div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>            {</div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s_sum[256] = { 0 };</div>
@@ -544,7 +544,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span> </div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>        <span class="keywordtype">int</span> i, j, ch, flag;</div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span> </div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>        double4 lu[2]; <span class="comment">//bounding boxes двух детей</span></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>        double4 lu[2]; <span class="comment">//bounding boxes РґРІСѓС… РґРµС‚РµР№</span></div>
 <div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>        double2 mom0;</div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>        double2 mom1;</div>
@@ -559,15 +559,15 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>        double2 mom10;</div>
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>        double2 mom11;</div>
 <div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span> </div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>        double2 cen; <span class="comment">//центр текущего родительского узла</span></div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>        double2 dr;  <span class="comment">//вектор от центра родителя к центру ребенка </span></div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>        double2 cen; <span class="comment">//С†РµРЅС‚СЂ С‚РµРєСѓС‰РµРіРѕ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ СѓР·Р»Р°</span></div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>        double2 dr;  <span class="comment">//РІРµРєС‚РѕСЂ РѕС‚ С†РµРЅС‚СЂР° СЂРѕРґРёС‚РµР»СЏ Рє С†РµРЅС‚СЂСѓ СЂРµР±РµРЅРєР° </span></div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span> </div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>        <span class="keywordtype">int</span> m[2]; <span class="comment">//для листа это 1, для внутреннего узла это число листьев в нем </span></div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>        <span class="keywordtype">int</span> cm; <span class="comment">//масса текущего узла = сумма масс двух детей</span></div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>        <span class="keywordtype">int</span> m[2]; <span class="comment">//РґР»СЏ Р»РёСЃС‚Р° СЌС‚Рѕ 1, РґР»СЏ РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ СѓР·Р»Р° СЌС‚Рѕ С‡РёСЃР»Рѕ Р»РёСЃС‚СЊРµРІ РІ РЅРµРј </span></div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>        <span class="keywordtype">int</span> cm; <span class="comment">//РјР°СЃСЃР° С‚РµРєСѓС‰РµРіРѕ СѓР·Р»Р° = СЃСѓРјРјР° РјР°СЃСЃ РґРІСѓС… РґРµС‚РµР№</span></div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> nnodes = 2 * (int)<span class="keywordtype">object</span>.size() - 1;</div>
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> nbodies = (int)<span class="keywordtype">object</span>.size();</div>
 <div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span> </div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>        <span class="comment">//цикл по внутренним узлам снизу вверх</span></div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>        <span class="comment">//С†РёРєР» РїРѕ РІРЅСѓС‚СЂРµРЅРЅРёРј СѓР·Р»Р°Рј СЃРЅРёР·Сѓ РІРІРµСЂС…</span></div>
 <div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = nbodies; k &lt; nnodes; ++k)</div>
 <div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>        {</div>
 <div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>            <span class="comment">//MortonTree:</span></div>
@@ -587,7 +587,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>            <span class="keywordflow">while</span> (flag == 0)</div>
 <div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>            {</div>
 <div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span>                j = 2;</div>
-<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>                <span class="keywordtype">int</span> srt = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a42f90f56961039f751c3cfd065db379c">indexSort</a>[(nnodes - 1) - k]; <span class="comment">//проход снизу вверх - т.е. в обратном порядке</span></div>
+<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>                <span class="keywordtype">int</span> srt = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a42f90f56961039f751c3cfd065db379c">indexSort</a>[(nnodes - 1) - k]; <span class="comment">//РїСЂРѕС…РѕРґ СЃРЅРёР·Сѓ РІРІРµСЂС… - С‚.Рµ. РІ РѕР±СЂР°С‚РЅРѕРј РїРѕСЂСЏРґРєРµ</span></div>
 <div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span>                int2 chdPair = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#aff51adb60b7b7f2928f8b5216f2140ec">child</a>[srt];</div>
 <div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span> </div>
 <div class="line"><a id="l00479" name="l00479"></a><span class="lineno">  479</span> </div>
@@ -604,17 +604,17 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>                <span class="keywordflow">if</span> (j == 0)</div>
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>                {</div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>                    <span class="comment">// all children are ready</span></div>
-<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>                    <span class="keyword">const</span> <span class="keywordtype">int</span> kch = ((nnodes - 1) - k) * <a class="code hl_define" href="../../d5/dde/_gpudefs_8h.html#a47244f054592b2e1f57725189ff5cb31">orderAlignment</a>; <span class="comment">//позиция, куда будут записаны мм для текущего внутреннего узла в массиве moms</span></div>
-<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>                    <span class="comment">//moms хранится не по индексу srt, а по отсортированному порядку узлов</span></div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>                    <span class="keyword">const</span> <span class="keywordtype">int</span> kch = ((nnodes - 1) - k) * <a class="code hl_define" href="../../d5/dde/_gpudefs_8h.html#a47244f054592b2e1f57725189ff5cb31">orderAlignment</a>; <span class="comment">//РїРѕР·РёС†РёСЏ, РєСѓРґР° Р±СѓРґСѓС‚ Р·Р°РїРёСЃР°РЅС‹ РјРј РґР»СЏ С‚РµРєСѓС‰РµРіРѕ РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ СѓР·Р»Р° РІ РјР°СЃСЃРёРІРµ moms</span></div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>                    <span class="comment">//moms С…СЂР°РЅРёС‚СЃСЏ РЅРµ РїРѕ РёРЅРґРµРєСЃСѓ srt, Р° РїРѕ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРјСѓ РїРѕСЂСЏРґРєСѓ СѓР·Р»РѕРІ</span></div>
 <div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span><span class="comment">//cm = 0;</span></div>
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span> </div>
-<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span><span class="comment">//Считаем bounding box текущего узла из двух детей</span></div>
+<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span><span class="comment">//РЎС‡РёС‚Р°РµРј bounding box С‚РµРєСѓС‰РµРіРѕ СѓР·Р»Р° РёР· РґРІСѓС… РґРµС‚РµР№</span></div>
 <div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>                    <span class="keywordflow">for</span> (i = 0; i &lt; 2; i++)</div>
 <div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>                    {</div>
-<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>                        <span class="keyword">const</span> <span class="keywordtype">int</span> chd = i * chdPair.second + (1 - i) * chdPair.first; <span class="comment">// индекс i-го ребенка</span></div>
-<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>                        <span class="keywordflow">if</span> (chd &gt;= nbodies)<span class="comment">//если ребенок - это лист</span></div>
+<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>                        <span class="keyword">const</span> <span class="keywordtype">int</span> chd = i * chdPair.second + (1 - i) * chdPair.first; <span class="comment">// РёРЅРґРµРєСЃ i-РіРѕ СЂРµР±РµРЅРєР°</span></div>
+<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>                        <span class="keywordflow">if</span> (chd &gt;= nbodies)<span class="comment">//РµСЃР»Рё СЂРµР±РµРЅРѕРє - СЌС‚Рѕ Р»РёСЃС‚</span></div>
 <div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>                        {</div>
-<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>                            ch = chd - nbodies; <span class="comment">//номер частицы в отсортированном массиве </span></div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>                            ch = chd - nbodies; <span class="comment">//РЅРѕРјРµСЂ С‡Р°СЃС‚РёС†С‹ РІ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРј РјР°СЃСЃРёРІРµ </span></div>
 <div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>                            <span class="keyword">const</span> <span class="keywordtype">int</span> sortedBody = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a5f61c9f65ccb2eab527c7efb00450acf">mortonCodesIdx</a>[ch];</div>
 <div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span> </div>
 <div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>                            double4 xyAB = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#ab0b9f86bf7e64ca7d4b3313b13ff6f66">gabForLeaves</a>[sortedBody];</div>
@@ -626,17 +626,17 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>                        <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>                        {</div>
 <div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>                            ch = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#acbb5a4f4abe37e868d019de503de73c1">indexSortT</a>[chd];</div>
-<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>                            <span class="comment">// если внутренний узел, его bounding box уже должен быть посчитан, тк идем снизу вверх </span></div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>                            <span class="comment">// РµСЃР»Рё РІРЅСѓС‚СЂРµРЅРЅРёР№ СѓР·РµР», РµРіРѕ bounding box СѓР¶Рµ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїРѕСЃС‡РёС‚Р°РЅ, С‚Рє РёРґРµРј СЃРЅРёР·Сѓ РІРІРµСЂС… </span></div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>                            lu[i] = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#acd35f529749cecb7efeea595fc2e8fa2">lowerupper</a>[chd];</div>
 <div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>                        }</div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>                    }<span class="comment">//for i</span></div>
 <div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span> </div>
-<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>                    <span class="comment">// Объединяем bounding box двух детей:</span></div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>                    <span class="comment">// РћР±СЉРµРґРёРЅСЏРµРј bounding box РґРІСѓС… РґРµС‚РµР№:</span></div>
 <div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>                    <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#acd35f529749cecb7efeea595fc2e8fa2">lowerupper</a>[srt] = double4{</div>
 <div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>                        ::fmin(lu[0][0], lu[1][0]), ::fmin(lu[0][1], lu[1][1]),</div>
 <div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>                        ::fmax(lu[0][2], lu[1][2]), ::fmax(lu[0][3], lu[1][3])</div>
 <div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>                    };</div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>                    <span class="comment">// Центр текущего узла </span></div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>                    <span class="comment">// Р¦РµРЅС‚СЂ С‚РµРєСѓС‰РµРіРѕ СѓР·Р»Р° </span></div>
 <div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>                    cen = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a7ad4346645174e2935ee473deb49d977">center</a>[srt] = double2{ 0.5 * (<a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#acd35f529749cecb7efeea595fc2e8fa2">lowerupper</a>[srt][0] + <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#acd35f529749cecb7efeea595fc2e8fa2">lowerupper</a>[srt][2]),</div>
 <div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>                                                 0.5 * (<a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#acd35f529749cecb7efeea595fc2e8fa2">lowerupper</a>[srt][1] + <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#acd35f529749cecb7efeea595fc2e8fa2">lowerupper</a>[srt][3]) };</div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span> </div>
@@ -654,11 +654,11 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>                    double2 momh10 = zero;</div>
 <div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>                    double2 momh11 = zero;</div>
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span> </div>
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>                    <span class="comment">//переносим мультипольные моменты в центр родительской ячейки </span></div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>                    <span class="comment">//РїРµСЂРµРЅРѕСЃРёРј РјСѓР»СЊС‚РёРїРѕР»СЊРЅС‹Рµ РјРѕРјРµРЅС‚С‹ РІ С†РµРЅС‚СЂ СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ СЏС‡РµР№РєРё </span></div>
 <div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>                    <span class="keywordflow">for</span> (i = 0; i &lt; 2; i++)</div>
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>                    {</div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>                        <span class="keyword">const</span> <span class="keywordtype">int</span> chd = i * chdPair.second + (1 - i) * chdPair.first;</div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>                        <span class="keywordflow">if</span> (chd &gt;= nbodies) <span class="comment">//если ребенок - это лист</span></div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>                        <span class="keywordflow">if</span> (chd &gt;= nbodies) <span class="comment">//РµСЃР»Рё СЂРµР±РµРЅРѕРє - СЌС‚Рѕ Р»РёСЃС‚</span></div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>                        {</div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>                            ch = chd - nbodies;</div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>                            <span class="keyword">const</span> <span class="keywordtype">int</span> sortedBody = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a5f61c9f65ccb2eab527c7efb00450acf">mortonCodesIdx</a>[ch];</div>
@@ -666,7 +666,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>                            <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a822a180d49ded23ffaa24e2ab058813b">objectType</a> == <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cda4ce0e43b806457bbc21881748d6a50d2">object_T::point3</a>)</div>
 <div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>                            {</div>
 <div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>                                mom0 = double2{ <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a6779031edd7b8899cc8a853e4c8c9bc7">gamma</a>[sortedBody], 0.0 };</div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>                                <span class="comment">//для вихря все остальные мм нулевые </span></div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>                                <span class="comment">//РґР»СЏ РІРёС…СЂСЏ РІСЃРµ РѕСЃС‚Р°Р»СЊРЅС‹Рµ РјРј РЅСѓР»РµРІС‹Рµ </span></div>
 <div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>                                mom1 = mom2 = mom3 = mom4 = mom5 = mom6 = mom7 = mom8 = mom9 = mom10 = mom11 = double2{ 0.0, 0.0 };</div>
 <div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>                                double2 pos = <span class="keywordtype">object</span>[sortedBody];</div>
 <div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>                                dr = pos - cen;</div>
@@ -742,7 +742,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span><span class="comment">                            } //objectType == panel</span></div>
 <div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="comment">*/</span></div>
 <div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>                        }</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>                        <span class="keywordflow">else</span> <span class="comment">// если ребенок - внутренний узел</span></div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>                        <span class="keywordflow">else</span> <span class="comment">// РµСЃР»Рё СЂРµР±РµРЅРѕРє - РІРЅСѓС‚СЂРµРЅРЅРёР№ СѓР·РµР»</span></div>
 <div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>                        {</div>
 <div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>                            <span class="keyword">const</span> <span class="keywordtype">int</span> srtT = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#acbb5a4f4abe37e868d019de503de73c1">indexSortT</a>[chd];</div>
 <div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>                            ch = (nnodes - 1) - srtT;</div>
@@ -880,7 +880,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>                        momh11 += multz(mom0, z);</div>
 <div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>                    }</div>
 <div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span> </div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>                    <span class="comment">// Сохраняем итоговые моменты текущего внутреннего узла в общий массив</span></div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>                    <span class="comment">// РЎРѕС…СЂР°РЅСЏРµРј РёС‚РѕРіРѕРІС‹Рµ РјРѕРјРµРЅС‚С‹ С‚РµРєСѓС‰РµРіРѕ РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ СѓР·Р»Р° РІ РѕР±С‰РёР№ РјР°СЃСЃРёРІ</span></div>
 <div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>                    momh0[1] = 0;</div>
 <div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>                    <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a055f7c7a1dc83f986107829580ba16a2">moms</a>[kch + 0] = momh0;</div>
 <div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>                    <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a055f7c7a1dc83f986107829580ba16a2">moms</a>[kch + 1] = momh1;</div>
@@ -904,7 +904,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span> </div>
 <div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>                <span class="keywordflow">if</span> (flag != 0)</div>
 <div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>                {</div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>                    <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#ae5de7b164c9da3fc3783fca0568efa88">mass</a>[nnodes - 1 - k] = cm;<span class="comment">// Записываем массу текущего узла</span></div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>                    <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#ae5de7b164c9da3fc3783fca0568efa88">mass</a>[nnodes - 1 - k] = cm;<span class="comment">// Р—Р°РїРёСЃС‹РІР°РµРј РјР°СЃСЃСѓ С‚РµРєСѓС‰РµРіРѕ СѓР·Р»Р°</span></div>
 <div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>                    <span class="comment">//k += inc;</span></div>
 <div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>                    <span class="comment">//flag = 0;</span></div>
 <div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>                }</div>
@@ -1002,7 +1002,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span> </div>
 <div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>                    <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#acd35f529749cecb7efeea595fc2e8fa2">lowerupper</a>[srt] = loup;</div>
 <div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span> </div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>                    <span class="comment">// Центр текущего узла = центр его AABB</span></div>
+<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>                    <span class="comment">// Р¦РµРЅС‚СЂ С‚РµРєСѓС‰РµРіРѕ СѓР·Р»Р° = С†РµРЅС‚СЂ РµРіРѕ AABB</span></div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>                    <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a7ad4346645174e2935ee473deb49d977">center</a>[srt] = double2{</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>                        0.5 * (loup[0] + loup[2]),</div>
 <div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>                        0.5 * (loup[1] + loup[3])</div>
@@ -1039,7 +1039,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>            <span class="comment">//treeMortonCodes;</span></div>
 <div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>            <span class="keywordtype">double</span> lmax, quadSideFactor;</div>
 <div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>            lmax = std::max(<a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#abbfc64e0211e663d08cabd2b3881340c">maxr</a>[0] - <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a8d204b3b9de795000e2d9c6029ac9973">minr</a>[0], <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#abbfc64e0211e663d08cabd2b3881340c">maxr</a>[1] - <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a8d204b3b9de795000e2d9c6029ac9973">minr</a>[1]);</div>
-<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>            <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> rcen = 0.5 * (<a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#abbfc64e0211e663d08cabd2b3881340c">maxr</a> + <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a8d204b3b9de795000e2d9c6029ac9973">minr</a>); <span class="comment">//координаты центра</span></div>
+<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>            <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> rcen = 0.5 * (<a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#abbfc64e0211e663d08cabd2b3881340c">maxr</a> + <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a8d204b3b9de795000e2d9c6029ac9973">minr</a>); <span class="comment">//РєРѕРѕСЂРґРёРЅР°С‚С‹ С†РµРЅС‚СЂР°</span></div>
 <div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>            quadSideFactor = <a class="code hl_define" href="../../d5/dde/_gpudefs_8h.html#a354384d36cf396f7a6ff2c4b2cae1281">rbound</a> / lmax; <span class="comment">//1;</span></div>
 <div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span> </div>
 <div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span><span class="preprocessor">#pragma omp parallel for</span></div>
@@ -1171,28 +1171,28 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>         {</div>
 <div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span>             <span class="keywordtype">double</span> itolsq = 1.0 / (theta * theta);</div>
 <div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span> </div>
-<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span>             <span class="keyword">const</span> <span class="keywordtype">int</span> nbodies = (int)<span class="keywordtype">object</span>.size(); <span class="comment">//количество вихрей</span></div>
-<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span>             <span class="keyword">const</span> <span class="keywordtype">int</span> nnodes = 2 * nbodies - 1; <span class="comment">//количество узлов дерева вихрей (листья-вихри + внутренние узлы)</span></div>
-<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span>             <span class="keyword">const</span> <span class="keywordtype">int</span> npoints = (int)cntrTree.<a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a49cb5864af710301c360d7fa52ccd000">object</a>.size(); <span class="comment">//количество точек наблюдения</span></div>
+<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span>             <span class="keyword">const</span> <span class="keywordtype">int</span> nbodies = (int)<span class="keywordtype">object</span>.size(); <span class="comment">//РєРѕР»РёС‡РµСЃС‚РІРѕ РІРёС…СЂРµР№</span></div>
+<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span>             <span class="keyword">const</span> <span class="keywordtype">int</span> nnodes = 2 * nbodies - 1; <span class="comment">//РєРѕР»РёС‡РµСЃС‚РІРѕ СѓР·Р»РѕРІ РґРµСЂРµРІР° РІРёС…СЂРµР№ (Р»РёСЃС‚СЊСЏ-РІРёС…СЂРё + РІРЅСѓС‚СЂРµРЅРЅРёРµ СѓР·Р»С‹)</span></div>
+<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span>             <span class="keyword">const</span> <span class="keywordtype">int</span> npoints = (int)cntrTree.<a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a49cb5864af710301c360d7fa52ccd000">object</a>.size(); <span class="comment">//РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕС‡РµРє РЅР°Р±Р»СЋРґРµРЅРёСЏ</span></div>
 <div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span> </div>
-<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span>             <span class="keywordtype">int</span> nd;      <span class="comment">// индекс родительской ячейки дерева, которую обходим, и которая находится на верхушке стека; </span></div>
-<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span>             int2 chBoth; <span class="comment">//индексы обоих потомков узла nd</span></div>
-<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span>             <span class="keywordtype">int</span> pd;      <span class="comment">// 0 или 1 --- какого потомка ячейки nd обходим (левого или правого)   </span></div>
+<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span>             <span class="keywordtype">int</span> nd;      <span class="comment">// РёРЅРґРµРєСЃ СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ СЏС‡РµР№РєРё РґРµСЂРµРІР°, РєРѕС‚РѕСЂСѓСЋ РѕР±С…РѕРґРёРј, Рё РєРѕС‚РѕСЂР°СЏ РЅР°С…РѕРґРёС‚СЃСЏ РЅР° РІРµСЂС…СѓС€РєРµ СЃС‚РµРєР°; </span></div>
+<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span>             int2 chBoth; <span class="comment">//РёРЅРґРµРєСЃС‹ РѕР±РѕРёС… РїРѕС‚РѕРјРєРѕРІ СѓР·Р»Р° nd</span></div>
+<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span>             <span class="keywordtype">int</span> pd;      <span class="comment">// 0 РёР»Рё 1 --- РєР°РєРѕРіРѕ РїРѕС‚РѕРјРєР° СЏС‡РµР№РєРё nd РѕР±С…РѕРґРёРј (Р»РµРІРѕРіРѕ РёР»Рё РїСЂР°РІРѕРіРѕ)   </span></div>
 <div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span> </div>
-<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span>             <span class="comment">// для вычисления квадратов расстояний до трех ближайших вихрей</span></div>
+<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span>             <span class="comment">// РґР»СЏ РІС‹С‡РёСЃР»РµРЅРёСЏ РєРІР°РґСЂР°С‚РѕРІ СЂР°СЃСЃС‚РѕСЏРЅРёР№ РґРѕ С‚СЂРµС… Р±Р»РёР¶Р°Р№С€РёС… РІРёС…СЂРµР№</span></div>
 <div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span>             <span class="keywordtype">double</span> d_1, d_2, d_3, dst23, dst12;</div>
-<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>             <span class="keywordtype">int</span> indexOfPoint; <span class="comment">//истинный индекс точки наблюдения </span></div>
-<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span>             <span class="keywordtype">int</span> srtT;         <span class="comment">//истинный индекс внутреннего узла дерева</span></div>
+<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>             <span class="keywordtype">int</span> indexOfPoint; <span class="comment">//РёСЃС‚РёРЅРЅС‹Р№ РёРЅРґРµРєСЃ С‚РѕС‡РєРё РЅР°Р±Р»СЋРґРµРЅРёСЏ   </span></div>
+<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span>             <span class="keywordtype">int</span> srtT;         <span class="comment">//РёСЃС‚РёРЅРЅС‹Р№ РёРЅРґРµРєСЃ РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ СѓР·Р»Р° РґРµСЂРµРІР°</span></div>
 <div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span> </div>
-<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span>             double2 p;        <span class="comment">//координаты точки наблюдения</span></div>
-<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span>             double2 v{ 0.0,0.0 };        <span class="comment">//результат расчета скорости в точке наблюдения</span></div>
+<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span>             double2 p;        <span class="comment">//РєРѕРѕСЂРґРёРЅР°С‚С‹ С‚РѕС‡РєРё РЅР°Р±Р»СЋРґРµРЅРёСЏ</span></div>
+<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span>             double2 v{ 0.0,0.0 };        <span class="comment">//СЂРµР·СѓР»СЊС‚Р°С‚ СЂР°СЃС‡РµС‚Р° СЃРєРѕСЂРѕСЃС‚Рё РІ С‚РѕС‡РєРµ РЅР°Р±Р»СЋРґРµРЅРёСЏ</span></div>
 <div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span> </div>
-<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>             <span class="keywordtype">bool</span> isVortex;             <span class="comment">//признак того, что обрабатываемая вершина - лист</span></div>
-<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span>             double2 ps;       <span class="comment">//координаты влияющего вихря, если обрабатываемая вершина --- лист, или центра влияющей ячейки, если обрабатывается внутренняя ячейка дерева</span></div>
-<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span>             <span class="keywordtype">double</span> gm;        <span class="comment">//циркуляция вихря, если обрабатываемая вершина --- лист, или 0-й мультипольный момент (суммарная циркуляция вихрей) если обрабатывается внутренняя ячейка дерева</span></div>
-<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span>             <span class="keywordtype">double</span> sumSide2;  <span class="comment">//габариты обрабатываемой ячейки</span></div>
-<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span>             double2 dr;       <span class="comment">//радиус-вектор из центра влияющей ячейки в точку наблюдения    </span></div>
-<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span>             <span class="keywordtype">double</span> r2;        <span class="comment">//квадрат модуля предыдущего</span></div>
+<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>             <span class="keywordtype">bool</span> isVortex;             <span class="comment">//РїСЂРёР·РЅР°Рє С‚РѕРіРѕ, С‡С‚Рѕ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјР°СЏ РІРµСЂС€РёРЅР° - Р»РёСЃС‚</span></div>
+<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span>             double2 ps;       <span class="comment">//РєРѕРѕСЂРґРёРЅР°С‚С‹ РІР»РёСЏСЋС‰РµРіРѕ РІРёС…СЂСЏ, РµСЃР»Рё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјР°СЏ РІРµСЂС€РёРЅР° --- Р»РёСЃС‚, РёР»Рё С†РµРЅС‚СЂР° РІР»РёСЏСЋС‰РµР№ СЏС‡РµР№РєРё, РµСЃР»Рё РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚СЃСЏ РІРЅСѓС‚СЂРµРЅРЅСЏСЏ СЏС‡РµР№РєР° РґРµСЂРµРІР°</span></div>
+<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span>             <span class="keywordtype">double</span> gm;        <span class="comment">//С†РёСЂРєСѓР»СЏС†РёСЏ РІРёС…СЂСЏ, РµСЃР»Рё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјР°СЏ РІРµСЂС€РёРЅР° --- Р»РёСЃС‚, РёР»Рё 0-Р№ РјСѓР»СЊС‚РёРїРѕР»СЊРЅС‹Р№ РјРѕРјРµРЅС‚ (СЃСѓРјРјР°СЂРЅР°СЏ С†РёСЂРєСѓР»СЏС†РёСЏ РІРёС…СЂРµР№) РµСЃР»Рё РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚СЃСЏ РІРЅСѓС‚СЂРµРЅРЅСЏСЏ СЏС‡РµР№РєР° РґРµСЂРµРІР°</span></div>
+<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span>             <span class="keywordtype">double</span> sumSide2;  <span class="comment">//РіР°Р±Р°СЂРёС‚С‹ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјРѕР№ СЏС‡РµР№РєРё</span></div>
+<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span>             double2 dr;       <span class="comment">//СЂР°РґРёСѓСЃ-РІРµРєС‚РѕСЂ РёР· С†РµРЅС‚СЂР° РІР»РёСЏСЋС‰РµР№ СЏС‡РµР№РєРё РІ С‚РѕС‡РєСѓ РЅР°Р±Р»СЋРґРµРЅРёСЏ    </span></div>
+<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span>             <span class="keywordtype">double</span> r2;        <span class="comment">//РєРІР°РґСЂР°С‚ РјРѕРґСѓР»СЏ РїСЂРµРґС‹РґСѓС‰РµРіРѕ</span></div>
 <div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span> </div>
 <div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>             <span class="keyword">const</span> <span class="keywordtype">int</span> maxDepth = 32;</div>
 <div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span> </div>
@@ -1232,7 +1232,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>                         <span class="keywordflow">if</span> (isVortex)</div>
 <div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>                         {</div>
 <div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>                             n = chd - nbodies;</div>
-<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>                             <span class="keyword">const</span> <span class="keywordtype">int</span> vortexIndex = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a5f61c9f65ccb2eab527c7efb00450acf">mortonCodesIdx</a>[n]; <span class="comment">// истинный индекс вихря</span></div>
+<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>                             <span class="keyword">const</span> <span class="keywordtype">int</span> vortexIndex = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a5f61c9f65ccb2eab527c7efb00450acf">mortonCodesIdx</a>[n]; <span class="comment">// РёСЃС‚РёРЅРЅС‹Р№ РёРЅРґРµРєСЃ РІРёС…СЂСЏ</span></div>
 <div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span> </div>
 <div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>                             ps = <span class="keywordtype">object</span>[vortexIndex];</div>
 <div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>                             gm = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a6779031edd7b8899cc8a853e4c8c9bc7">gamma</a>[vortexIndex];</div>
@@ -1254,11 +1254,11 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span>                         r2 = dr[0] * dr[0] + dr[1] * dr[1];</div>
 <div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>                         <span class="keywordflow">if</span> (isVortex || ((sumSide2 + eps2) * itolsq &lt; r2))</div>
 <div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>                         {</div>
-<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>                             <span class="comment">// Если это ячейка, берём её mm</span></div>
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>                             <span class="comment">// Р•СЃР»Рё СЌС‚Рѕ СЏС‡РµР№РєР°, Р±РµСЂС‘Рј РµС‘ mm</span></div>
 <div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>                             <span class="keywordflow">if</span> (!isVortex)</div>
 <div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>                             {</div>
 <div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>                                 mom = <a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a055f7c7a1dc83f986107829580ba16a2">moms</a>.<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>() + srtT * <a class="code hl_define" href="../../d5/dde/_gpudefs_8h.html#a47244f054592b2e1f57725189ff5cb31">orderAlignment</a>;</div>
-<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>                                 gm = mom[0][0]; <span class="comment">// нулевой момент = суммарная циркуляция</span></div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>                                 gm = mom[0][0]; <span class="comment">// РЅСѓР»РµРІРѕР№ РјРѕРјРµРЅС‚ = СЃСѓРјРјР°СЂРЅР°СЏ С†РёСЂРєСѓР»СЏС†РёСЏ</span></div>
 <div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span>                             }</div>
 <div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span> </div>
 <div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>                             <span class="keywordflow">if</span> (calcRadius)</div>
@@ -1277,7 +1277,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>                             <span class="keyword">const</span> <span class="keywordtype">double</span> f = gm / std::fmax(r2, eps2);</div>
 <div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>                             v += f * dr;</div>
 <div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span> </div>
-<div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span>                             <span class="comment">// Вклад высших мм</span></div>
+<div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span>                             <span class="comment">// Р’РєР»Р°Рґ РІС‹СЃС€РёС… РјРј</span></div>
 <div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span>                             <span class="keywordflow">if</span> ((!isVortex) &amp;&amp; (order &gt; 1) &amp;&amp; r2 &gt; 0.0)</div>
 <div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span>                             {</div>
 <div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span>                                 <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> cftr = (1.0 / r2) * dr;</div>
@@ -1294,21 +1294,21 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span>                         }</div>
 <div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>                         <span class="keywordflow">else</span></div>
 <div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span>                         {</div>
-<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span>                             <span class="comment">// Ячейка слишком близка -&gt; спускаемся ниже по дереву</span></div>
+<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span>                             <span class="comment">// РЇС‡РµР№РєР° СЃР»РёС€РєРѕРј Р±Р»РёР·РєР° -&gt; СЃРїСѓСЃРєР°РµРјСЃСЏ РЅРёР¶Рµ РїРѕ РґРµСЂРµРІСѓ</span></div>
 <div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span>                             <span class="keywordflow">if</span> (depth + 1 &lt; maxDepth)</div>
 <div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span>                             {</div>
 <div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>                                 ++depth;</div>
 <div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span>                                 posStack[depth] = 0;</div>
 <div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span>                                 nodeStack[depth] = n;</div>
 <div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span> </div>
-<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>                                 <span class="comment">// Выходим из текущего while(pd &lt; 2),</span></div>
-<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>                                 <span class="comment">// чтобы начать обход нового узла с его левого ребёнка</span></div>
+<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>                                 <span class="comment">// Р’С‹С…РѕРґРёРј РёР· С‚РµРєСѓС‰РµРіРѕ while(pd &lt; 2),</span></div>
+<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>                                 <span class="comment">// С‡С‚РѕР±С‹ РЅР°С‡Р°С‚СЊ РѕР±С…РѕРґ РЅРѕРІРѕРіРѕ СѓР·Р»Р° СЃ РµРіРѕ Р»РµРІРѕРіРѕ СЂРµР±С‘РЅРєР°</span></div>
 <div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>                                 pd = 2;</div>
 <div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span>                             }</div>
 <div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span>                         }</div>
 <div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span>                     }<span class="comment">//while pd</span></div>
 <div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span> </div>
-<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>                      <span class="comment">// Оба потомка обработаны -&gt; снимаем узел со стека</span></div>
+<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>                      <span class="comment">// РћР±Р° РїРѕС‚РѕРјРєР° РѕР±СЂР°Р±РѕС‚Р°РЅС‹ -&gt; СЃРЅРёРјР°РµРј СѓР·РµР» СЃРѕ СЃС‚РµРєР°</span></div>
 <div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span>                     --depth;</div>
 <div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span>                 }<span class="comment">//while depth</span></div>
 <div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span> </div>
@@ -1332,7 +1332,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="ttc" id="a_gpudefs_8h_html_a4b02ab1d50fcd14c46d78cff3d6c443fa5fedbb89a1c0d795ee5a41e3b28193f6"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa5fedbb89a1c0d795ee5a41e3b28193f6">tree_T::contr</a></div><div class="ttdeci">@ contr</div></div>
 <div class="ttc" id="a_gpudefs_8h_html_a9d2349b1d3456ed2e949cc8af3ee5191"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a9d2349b1d3456ed2e949cc8af3ee5191">twoPowCodeLength</a></div><div class="ttdeci">#define twoPowCodeLength</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00098">Gpudefs.h:98</a></div></div>
 <div class="ttc" id="a_gpudefs_8h_html_aa1d4b858f5413e9ec2808de4ba12af76"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76">scheme_T</a></div><div class="ttdeci">scheme_T</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00150">Gpudefs.h:151</a></div></div>
-<div class="ttc" id="aclass_v_m2_d_1_1_cpu_tree_info_html"><div class="ttname"><a href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html">VM2D::CpuTreeInfo</a></div><div class="ttdoc">Структура, хранящая данные и указатели на массивы на GPU для оптимизации итерационного решения СЛАУ на GPU.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d56/cpu_tree_info_8h_source.html#l00096">cpuTreeInfo.h:97</a></div></div>
+<div class="ttc" id="aclass_v_m2_d_1_1_cpu_tree_info_html"><div class="ttname"><a href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html">VM2D::CpuTreeInfo</a></div><div class="ttdoc">РЎС‚СЂСѓРєС‚СѓСЂР°, С…СЂР°РЅСЏС‰Р°СЏ РґР°РЅРЅС‹Рµ Рё СѓРєР°Р·Р°С‚РµР»Рё РЅР° РјР°СЃСЃРёРІС‹ РЅР° GPU РґР»СЏ РѕРїС‚РёРјРёР·Р°С†РёРё РёС‚РµСЂР°С†РёРѕРЅРЅРѕРіРѕ СЂРµС€РµРЅРёСЏ РЎР›РђРЈ РЅ...</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d56/cpu_tree_info_8h_source.html#l00096">cpuTreeInfo.h:97</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_cpu_tree_info_html_a029a09733bcb0b7141671af389f85e64"><div class="ttname"><a href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a029a09733bcb0b7141671af389f85e64">VM2D::CpuTreeInfo::range</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; int, int &gt; &gt; range</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d56/cpu_tree_info_8h_source.html#l00140">cpuTreeInfo.h:140</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_cpu_tree_info_html_a055f7c7a1dc83f986107829580ba16a2"><div class="ttname"><a href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a055f7c7a1dc83f986107829580ba16a2">VM2D::CpuTreeInfo::moms</a></div><div class="ttdeci">std::vector&lt; Point2D &gt; moms</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d56/cpu_tree_info_8h_source.html#l00117">cpuTreeInfo.h:117</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_cpu_tree_info_html_a18a4b87347a76796b5f37df59e47bfbb"><div class="ttname"><a href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a18a4b87347a76796b5f37df59e47bfbb">VM2D::CpuTreeInfo::CpuTreeInfo</a></div><div class="ttdeci">CpuTreeInfo(tree_T treeType_, object_T objectType_, scheme_T schemeType_)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d9f/cpu_tree_info_8cpp_source.html#l00122">cpuTreeInfo.cpp:122</a></div></div>
@@ -1370,7 +1370,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="ttc" id="aclass_v_mlib_1_1_point2_d_html"><div class="ttname"><a href="../../da/dd5/class_v_mlib_1_1_point2_d.html">VMlib::Point2D</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d27/_point2_d_8h_source.html#l00138">Point2D.h:140</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1_point4_d_html"><div class="ttname"><a href="../../d6/d90/class_v_mlib_1_1_point4_d.html">VMlib::Point4D</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d27/_point2_d_8h_source.html#l00124">Point2D.h:126</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_aa3d9abd363f214e61551e3c9782306c6"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">VMlib::numvector::data</a></div><div class="ttdeci">T data[n]</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00101">numvector.h:101</a></div></div>
-<div class="ttc" id="acpu_tree_info_8h_html"><div class="ttname"><a href="../../d7/d56/cpu_tree_info_8h.html">cpuTreeInfo.h</a></div><div class="ttdoc">Заголовок класса дерева для реализации быстрых алгоритмов на CPU.</div></div>
+<div class="ttc" id="acpu_tree_info_8h_html"><div class="ttname"><a href="../../d7/d56/cpu_tree_info_8h.html">cpuTreeInfo.h</a></div><div class="ttdoc">Р—Р°РіРѕР»РѕРІРѕРє РєР»Р°СЃСЃР° РґРµСЂРµРІР° РґР»СЏ СЂРµР°Р»РёР·Р°С†РёРё Р±С‹СЃС‚СЂС‹С… Р°Р»РіРѕСЂРёС‚РјРѕРІ РЅР° CPU.</div></div>
 <div class="ttc" id="anamespace_v_m2_d_html"><div class="ttname"><a href="../../d9/dd7/namespace_v_m2_d.html">VM2D</a></div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00051">Airfoil2D.h:52</a></div></div>
 <div class="ttc" id="anamespace_v_m2_d_html_a76342290060424e735390dcae68eb4b8"><div class="ttname"><a href="../../d9/dd7/namespace_v_m2_d.html#a76342290060424e735390dcae68eb4b8">VM2D::ceilhalf</a></div><div class="ttdeci">int ceilhalf(int x)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d9f/cpu_tree_info_8cpp_source.html#l00084">cpuTreeInfo.cpp:84</a></div></div>
 <div class="ttc" id="anamespace_v_m2_d_html_a963af10a34c006afe4ecf2215b5e3e97"><div class="ttname"><a href="../../d9/dd7/namespace_v_m2_d.html#a963af10a34c006afe4ecf2215b5e3e97">VM2D::ExpandBits</a></div><div class="ttdeci">unsigned int ExpandBits(unsigned int v)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d9f/cpu_tree_info_8cpp_source.html#l00048">cpuTreeInfo.cpp:48</a></div></div>

@@ -139,7 +139,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d47/struct_v_m2_d_1_1_chord_panel.html">ChordPanel</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html">CpuTreeInfo</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Структура, хранящая данные и указатели на массивы на GPU для оптимизации итерационного решения СЛАУ на GPU.  <a href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">РЎС‚СЂСѓРєС‚СѓСЂР°, С…СЂР°РЅСЏС‰Р°СЏ РґР°РЅРЅС‹Рµ Рё СѓРєР°Р·Р°С‚РµР»Рё РЅР° РјР°СЃСЃРёРІС‹ РЅР° GPU РґР»СЏ РѕРїС‚РёРјРёР·Р°С†РёРё РёС‚РµСЂР°С†РёРѕРЅРЅРѕРіРѕ СЂРµС€РµРЅРёСЏ РЎР›РђРЈ РЅР° GPU.  <a href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d75/class_v_m2_d_1_1_gpu.html">Gpu</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">РљР»Р°СЃСЃ, РѕР±РµСЃРїРµС‡РёРІР°СЋС‰РёР№ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РІС‹РїРѕР»РЅРµРЅРёСЏ РІС‹С‡РёСЃР»РµРЅРёР№ РЅР° GPU РїРѕ С‚РµС…РЅРѕР»РѕРіРёРё Nvidia CUDA.  <a href="../../d0/d75/class_v_m2_d_1_1_gpu.html#details">More...</a><br /></td></tr>
@@ -359,7 +359,7 @@ Here is the caller graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="../../d3/d9f/cpu_tree_info_8cpp_source.html#l00048">48</a> of file <a class="el" href="../../d3/d9f/cpu_tree_info_8cpp_source.html">cpuTreeInfo.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   49</span>    {</div>
-<div class="line"><span class="lineno">   50</span>        <span class="comment">// вставит 1 нуль</span></div>
+<div class="line"><span class="lineno">   50</span>        <span class="comment">// РІСЃС‚Р°РІРёС‚ 1 РЅСѓР»СЊ</span></div>
 <div class="line"><span class="lineno">   51</span>        v = (v | (v &lt;&lt; 8)) &amp; 0x00FF00FF;      <span class="comment">//  00000000`00000000`abcdefgh`ijklmnop </span></div>
 <div class="line"><span class="lineno">   52</span>        <span class="comment">//                                      | 00000000`abcdefgh`ijklmnop`00000000</span></div>
 <div class="line"><span class="lineno">   53</span>        <span class="comment">//                                      = 00000000`abcdefgh`XXXXXXXX`ijklmnop</span></div>

@@ -324,13 +324,13 @@
 <area shape="poly" id="edge252_Node000064_Node000042" title=" " alt="" coords="5110,507,4940,558,4938,553,5108,501"/>
 <area shape="poly" id="edge251_Node000064_Node000055" title=" " alt="" coords="5287,486,6317,491,7854,501,9259,519,9712,531,9841,538,9892,546,9901,558,9902,571,9889,596,9864,619,9836,638,9833,634,9861,615,9885,593,9897,570,9896,560,9889,550,9840,543,9712,536,9259,524,7854,506,6317,496,5287,492"/>
 <area shape="poly" id="edge272_Node000066_Node000003" title=" " alt="" coords="3904,179,4027,223,4025,228,3902,184"/>
-<area shape="rect" id="Node000067" href="$d7/d56/cpu_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CPU." alt="" coords="1726,225,1954,251"/>
+<area shape="rect" id="Node000067" href="$d7/d56/cpu_tree_info_8h.html" title="Заголовок класса дерева для реализации быстрых алгоритмов на CPU." alt="" coords="1726,225,1954,251"/>
 <area shape="poly" id="edge255_Node000066_Node000067" title=" " alt="" coords="3744,172,2117,228,1954,234,1954,229,2117,223,3744,167"/>
 <area shape="rect" id="Node000069" href="$db/d80/_points_copy_b_h_8h.html" title="Заголовок класса&#45;обертки для точек и панелей для метода Барнса &#45; Хата для CPU." alt="" coords="2129,225,2372,251"/>
 <area shape="poly" id="edge257_Node000066_Node000069" title=" " alt="" coords="3744,174,2372,234,2372,229,3744,168"/>
 <area shape="rect" id="Node000077" href="$d5/d55/_vortex2_d_8cpp.html" title="Файл кода с описанием класса Vortex2D." alt="" coords="3750,225,3965,251"/>
 <area shape="poly" id="edge271_Node000066_Node000077" title=" " alt="" coords="3860,191,3860,225,3855,225,3855,191"/>
-<area shape="rect" id="Node000068" href="$d3/d9f/cpu_tree_info_8cpp.html" title="Ðåàëèçàöèÿ êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CPU." alt="" coords="209,306,452,331"/>
+<area shape="rect" id="Node000068" href="$d3/d9f/cpu_tree_info_8cpp.html" title="Реализация класса дерева для реализации быстрых алгоритмов на CPU." alt="" coords="209,306,452,331"/>
 <area shape="poly" id="edge256_Node000067_Node000068" title=" " alt="" coords="1712,244,1172,259,823,276,471,301,407,309,406,303,470,296,823,271,1171,254,1712,238"/>
 <area shape="rect" id="Node000070" href="$dc/db8/defs_b_h_8h.html" title="Вспомогательные функции для метода Барнса &#45; Хата для CPU." alt="" coords="793,306,991,331"/>
 <area shape="poly" id="edge258_Node000069_Node000070" title=" " alt="" coords="2116,250,992,314,991,309,2115,244"/>
