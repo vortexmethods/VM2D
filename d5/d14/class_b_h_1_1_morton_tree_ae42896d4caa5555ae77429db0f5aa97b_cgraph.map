@@ -1,0 +1,7 @@
+<map id="BH::MortonTree::CalcVeloBiotSavart" name="BH::MortonTree::CalcVeloBiotSavart">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,192,63"/>
+<area shape="rect" id="Node000002" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6bc3591c405e791a4dd542f53258e115" title="Геометрический поворот двумерного вектора на 90 градусов" alt="" coords="241,5,427,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,31,227,27,227,32,193,36"/>
+<area shape="rect" id="Node000003" href="$d6/dd4/class_v_mlib_1_1numvector.html#a70c07d1b3d53524ea664615f1d28879f" title="Установка всех компонент вектора в константу (по умолчанию — нуль)" alt="" coords="240,55,428,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,50,227,54,226,59,192,56"/>
+</map>

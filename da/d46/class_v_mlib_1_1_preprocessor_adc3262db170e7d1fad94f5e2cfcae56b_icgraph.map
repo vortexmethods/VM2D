@@ -1,7 +1,17 @@
 <map id="VMlib::Preprocessor::inCharParser" name="VMlib::Preprocessor::inCharParser">
-<area shape="rect" id="node2" href="$da/d46/class_v_mlib_1_1_preprocessor.html#a7dd4d3ecdc34ae9f4ca85091609472c8" title="Обработчик символа в режиме обычного состояния парcера " alt="" coords="193,71,333,112"/>
-<area shape="rect" id="node3" href="$da/d46/class_v_mlib_1_1_preprocessor.html#a3e7ae20403cc0a6828afa742f9c31579" title="Обработчик символа в режиме парсера строки (внутри двойных кавычек) " alt="" coords="403,5,543,47"/>
-<area shape="rect" id="node4" href="$da/d46/class_v_mlib_1_1_preprocessor.html#abeb1b180d45453c31f90271d143c02e4" title="Обработчик символа в режиме парсера однострочного комментария (после //) " alt="" coords="389,71,556,112"/>
-<area shape="rect" id="node6" href="$da/d46/class_v_mlib_1_1_preprocessor.html#a507c484392146b405a291ee06457bb7c" title="Обработчик символа в режиме парсера многострочного комментария " alt="" coords="381,136,564,177"/>
-<area shape="rect" id="node5" href="$da/d46/class_v_mlib_1_1_preprocessor.html#a191dd10eaa83c62a9714966bb49c87b4" title="Обработчик символа в режиме парсера выражения после слэша " alt="" coords="612,136,752,177"/>
+<area shape="rect" id="Node000001" title="Обработчик символа в режиме парсера символа (внутри одинарных кавычек)" alt="" coords="653,133,804,173"/>
+<area shape="rect" id="Node000002" href="$da/d46/class_v_mlib_1_1_preprocessor.html#a7dd4d3ecdc34ae9f4ca85091609472c8" title="Обработчик символа в режиме обычного состояния парcера" alt="" coords="455,133,605,173"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="640,165,606,165,606,159,640,160"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="619,142,653,142,653,147,619,147"/>
+<area shape="rect" id="Node000003" href="$da/d46/class_v_mlib_1_1_preprocessor.html#abeb1b180d45453c31f90271d143c02e4" title="Обработчик символа в режиме парсера однострочного комментария (после //)" alt="" coords="214,5,397,45"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="496,126,455,92,405,60,379,48,381,43,408,55,458,87,500,122"/>
+<area shape="rect" id="Node000005" href="$da/d46/class_v_mlib_1_1_preprocessor.html#a507c484392146b405a291ee06457bb7c" title="Обработчик символа в режиме парсера многострочного комментария" alt="" coords="204,69,407,109"/>
+<area shape="poly" id="edge6_Node000002_Node000005" title=" " alt="" coords="445,132,375,112,377,107,446,127"/>
+<area shape="rect" id="Node000006" href="$da/d46/class_v_mlib_1_1_preprocessor.html#a3e7ae20403cc0a6828afa742f9c31579" title="Обработчик символа в режиме парсера строки (внутри двойных кавычек)" alt="" coords="230,133,381,173"/>
+<area shape="poly" id="edge8_Node000002_Node000006" title=" " alt="" coords="441,165,381,165,381,159,441,159"/>
+<area shape="rect" id="Node000004" href="$da/d46/class_v_mlib_1_1_preprocessor.html#a191dd10eaa83c62a9714966bb49c87b4" title="Обработчик символа в режиме парсера выражения после слэша" alt="" coords="5,69,156,109"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="222,52,152,72,151,67,220,47"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="111,117,153,154,178,170,205,183,239,192,274,197,346,196,413,185,470,171,471,176,414,191,346,201,274,202,238,197,203,188,175,175,149,158,107,121"/>
+<area shape="poly" id="edge7_Node000005_Node000004" title=" " alt="" coords="190,92,156,92,156,87,190,87"/>
+<area shape="poly" id="edge9_Node000006_Node000002" title=" " alt="" coords="394,142,454,142,454,147,394,147"/>
 </map>

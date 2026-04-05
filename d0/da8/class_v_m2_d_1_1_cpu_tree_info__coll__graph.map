@@ -1,0 +1,19 @@
+<map id="VM2D::CpuTreeInfo" name="VM2D::CpuTreeInfo">
+<area shape="rect" id="Node000001" title="Ñòðóêòóðà, õðàíÿùàÿ äàííûå è óêàçàòåëè íà ìàññèâû íà GPU äëÿ îïòèìèçàöèè èòåðàöèîííîãî ðåøåíèÿ ÑËÀÓ íà GPU." alt="" coords="656,333,803,358"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="281,61,453,86"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="467,60,509,62,553,69,595,82,634,105,660,130,680,159,697,192,709,225,724,287,730,332,725,333,719,288,704,227,692,194,676,162,656,133,630,109,593,87,552,74,509,67,467,66"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="285,110,450,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="464,123,562,132,604,141,633,154,656,173,674,196,702,247,720,296,728,332,723,333,714,297,697,249,670,199,652,177,631,158,603,146,561,138,463,128"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="298,273,437,298"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="451,288,539,297,633,312,695,330,693,335,631,317,538,302,450,293"/>
+<area shape="rect" id="Node000005" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title=" " alt="" coords="308,333,427,358"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="440,343,656,343,656,348,440,348"/>
+<area shape="rect" id="Node000006" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="5,333,232,358"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="246,343,308,343,308,348,246,348"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="285,385,450,425"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="464,399,546,392,631,377,698,356,700,361,633,383,547,397,464,405"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="281,453,453,478"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="467,466,549,457,591,447,631,432,658,416,682,396,717,357,721,360,686,399,661,420,633,437,593,452,550,462,467,471"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="288,505,447,545"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="460,534,503,534,547,529,590,518,631,499,650,485,666,467,693,427,711,388,722,357,727,359,716,390,698,430,670,471,653,489,633,504,592,523,548,534,503,539,460,539"/>
+</map>

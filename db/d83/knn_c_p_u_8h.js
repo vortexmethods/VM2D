@@ -1,4 +1,5 @@
 var knn_c_p_u_8h =
 [
-    [ "WakekNN", "db/d83/knn_c_p_u_8h.html#a502dc2255024de1a1f2027de5ee9d518", null ]
+    [ "WakekNNnewForCollaps", "db/d83/knn_c_p_u_8h.html#a4d0d9439300bff8def02d4a5f551777b", null ],
+    [ "WakekNNnewForEpsast", "db/d83/knn_c_p_u_8h.html#a18de7e0e3511a441c1479d12f6555c2b", null ]
 ];

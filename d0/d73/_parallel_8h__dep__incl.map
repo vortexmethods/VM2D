@@ -1,6 +1,11 @@
 <map id="VMlib/Parallel/Parallel.h" name="VMlib/Parallel/Parallel.h">
-<area shape="rect" id="node2" href="$d0/d1f/_parallel_8cpp.html" title="Файл кода с описанием класса Parallel. " alt="" coords="5,80,180,107"/>
-<area shape="rect" id="node3" href="$d0/dc4/_queue_8h.html" title="Заголовочный файл с описанием класса Queue. " alt="" coords="204,80,355,107"/>
-<area shape="rect" id="node4" href="$d1/d0c/_v_m2_d_8cpp.html" title="Основной файл программы VM2D. " alt="" coords="101,155,268,181"/>
-<area shape="rect" id="node5" href="$d9/dde/_queue_8cpp.html" title="Файл кода с описанием класса Queue. " alt="" coords="292,155,456,181"/>
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса Parallel и структуры parProp." alt="" coords="113,5,288,31"/>
+<area shape="rect" id="Node000002" href="$d0/d1f/_parallel_8cpp.html" title="Файл кода с описанием класса Parallel." alt="" coords="5,79,196,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,41,119,81,115,76,172,36"/>
+<area shape="rect" id="Node000003" href="$d0/dc4/_queue_8h.html" title="Заголовочный файл с описанием класса Queue." alt="" coords="221,79,383,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="230,36,287,76,284,81,227,41"/>
+<area shape="rect" id="Node000004" href="$d1/d0c/_v_m2_d_8cpp.html" title="Основной файл программы VM2D." alt="" coords="113,152,288,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="276,114,219,154,216,150,273,110"/>
+<area shape="rect" id="Node000005" href="$d9/dde/_queue_8cpp.html" title="Файл кода с описанием класса Queue." alt="" coords="313,152,491,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="331,110,387,150,384,154,328,114"/>
 </map>

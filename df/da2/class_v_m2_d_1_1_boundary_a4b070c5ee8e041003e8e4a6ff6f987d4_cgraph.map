@@ -1,0 +1,5 @@
+<map id="VM2D::Boundary::GetUnknownsSize" name="VM2D::Boundary::GetUnknownsSize">
+<area shape="rect" id="Node000001" title="Возврат размерности вектора решения" alt="" coords="5,13,261,38"/>
+<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="309,5,483,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,23,296,23,296,28,262,28"/>
+</map>

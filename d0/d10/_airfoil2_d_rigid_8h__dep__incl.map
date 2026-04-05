@@ -1,0 +1,7 @@
+<map id="VM2D/Airfoil2D/Airfoil2DRigid.h" name="VM2D/Airfoil2D/Airfoil2DRigid.h">
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса AirfoilRect." alt="" coords="137,5,365,31"/>
+<area shape="rect" id="Node000002" href="$d8/d45/_airfoil2_d_rigid_8cpp.html" title="Файл кода с описанием класса AirfoilRigid." alt="" coords="5,79,248,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,40,148,81,146,76,218,35"/>
+<area shape="rect" id="Node000003" href="$d6/ddb/_world2_d_8cpp.html" title="Файл кода с описанием класса World2D." alt="" coords="273,79,479,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="284,35,357,76,354,81,281,40"/>
+</map>

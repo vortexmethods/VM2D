@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['difference_5ftype',['difference_type',['../da/d71/class_v_m2_d_1_1_my_alloc.html#ada1785972933c669eb3052b6efba2519',1,'VM2D::MyAlloc']]]
+  ['mapvec_0',['MapVec',['../df/d46/_gmres2_d_8cpp.html#ac8c9c8a088f2b60c25132b410c1d7e71',1,'Gmres2D.cpp']]],
+  ['ms_1',['ms',['../d9/d54/class_v_mlib_1_1vm_timer.html#a4d1bbb8860cc8f997e6eea18490cadcb',1,'VMlib::vmTimer']]]
 ];

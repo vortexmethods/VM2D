@@ -1,13 +1,66 @@
 <map id="VMlib/Queue/Queue.h" name="VMlib/Queue/Queue.h">
-<area shape="rect" id="node2" href="$d5/d64/defs_8h.html" title="Описание базовых вспомогательных функций " alt="" coords="502,80,561,107"/>
-<area shape="rect" id="node25" href="$d9/d4c/_parallel_8h.html" title="Заголовочный файл с описанием класса Parallel и структуры parProp. " alt="" coords="1111,304,1187,331"/>
-<area shape="rect" id="node26" href="$d5/dc5/_task_8h.html" title="Заголовочный файл с описанием класса Task. " alt="" coords="1025,80,1088,107"/>
-<area shape="rect" id="node10" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем " alt="" coords="127,155,210,181"/>
-<area shape="rect" id="node11" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream. " alt="" coords="846,229,942,256"/>
-<area shape="rect" id="node14" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D. " alt="" coords="335,155,423,181"/>
-<area shape="rect" id="node23" href="$d6/d1e/v3_d_8h.html" title="Заголовочный файл с описанием класса v3D. " alt="" coords="219,229,276,256"/>
-<area shape="rect" id="node24" href="$d2/dc6/_pair_int_8h.html" title="Файл кода с описанием класса PairInt. " alt="" coords="300,229,371,256"/>
-<area shape="rect" id="node15" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D. " alt="" coords="395,229,475,256"/>
-<area shape="rect" id="node16" href="$df/dc5/numvector_8h.html" title="Описание класса numvector. " alt="" coords="388,304,483,331"/>
-<area shape="rect" id="node27" href="$d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen. " alt="" coords="1002,155,1111,181"/>
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса Queue." alt="" coords="1021,5,1183,31"/>
+<area shape="rect" id="Node000002" href="$d5/d64/defs_8h.html" title="Описание базовых вспомогательных функций" alt="" coords="523,79,585,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1021,32,599,87,599,82,1020,27"/>
+<area shape="rect" id="Node000025" href="$d9/d4c/_parallel_8h.html" title="Заголовочный файл с описанием класса Parallel и структуры parProp." alt="" coords="1109,299,1191,324"/>
+<area shape="poly" id="edge27_Node000001_Node000025" title=" " alt="" coords="1113,29,1136,61,1166,108,1194,164,1214,225,1217,238,1214,252,1200,274,1181,292,1177,288,1195,271,1209,250,1211,238,1209,226,1189,166,1161,110,1132,64,1109,33"/>
+<area shape="rect" id="Node000026" href="$d5/dc5/_task_8h.html" title="Заголовочный файл с описанием класса Task." alt="" coords="1071,79,1133,104"/>
+<area shape="poly" id="edge29_Node000001_Node000026" title=" " alt="" coords="1105,31,1105,65,1099,65,1099,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="517,152,591,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="557,104,557,138,551,138,551,104"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="615,152,701,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="572,102,631,142,628,146,569,106"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="725,152,821,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="587,100,725,145,724,150,585,105"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="845,152,903,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="586,96,832,149,831,154,585,101"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="651,225,731,251"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="541,106,524,121,510,139,502,158,503,167,507,176,534,201,567,218,603,228,638,233,637,238,602,233,565,223,530,205,503,179,498,168,497,157,505,136,520,117,537,102"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="978,152,1021,177"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="586,93,747,113,853,129,960,149,965,151,964,156,959,155,852,134,746,118,585,99"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="5,152,108,177"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="523,99,356,121,122,155,121,149,355,116,522,94"/>
+<area shape="rect" id="Node000010" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="133,152,221,177"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="523,101,235,155,234,150,522,96"/>
+<area shape="rect" id="Node000011" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream." alt="" coords="845,225,949,251"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="586,90,665,93,765,102,858,119,894,133,917,150,925,165,925,182,914,214,909,212,920,182,920,167,913,154,891,138,857,124,764,107,665,98,586,96"/>
+<area shape="rect" id="Node000014" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="347,152,441,177"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="529,106,434,149,432,144,527,102"/>
+<area shape="rect" id="Node000023" href="$d6/d1e/v3_d_8h.html" title="Заголовочный файл с описанием класса v3D." alt="" coords="228,225,288,251"/>
+<area shape="poly" id="edge23_Node000002_Node000023" title=" " alt="" coords="523,97,480,102,429,111,374,128,324,154,294,183,272,214,268,211,290,179,320,150,372,123,427,106,480,96,522,92"/>
+<area shape="rect" id="Node000024" href="$d2/dc6/_pair_int_8h.html" title="Заголовочный файл с описанием класса pairInt." alt="" coords="313,225,387,251"/>
+<area shape="poly" id="edge25_Node000002_Node000024" title=" " alt="" coords="523,99,417,118,366,134,348,144,336,154,330,167,330,182,339,212,334,214,324,182,325,166,332,150,345,139,364,129,416,113,522,94"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="805,372,881,397"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="896,252,874,325,858,361,853,359,869,323,891,250"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="801,299,859,324"/>
+<area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="888,253,852,290,848,287,884,249"/>
+<area shape="rect" id="Node000015" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="411,225,497,251"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="406,176,438,213,433,217,402,179"/>
+<area shape="rect" id="Node000016" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="403,299,505,324"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="457,251,457,285,451,285,451,251"/>
+<area shape="poly" id="edge20_Node000016_Node000012" title=" " alt="" coords="506,319,792,371,791,377,505,325"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="253,372,309,397"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="427,326,323,369,321,364,425,322"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="333,372,396,397"/>
+<area shape="poly" id="edge17_Node000016_Node000018" title=" " alt="" coords="441,326,392,365,388,361,438,322"/>
+<area shape="rect" id="Node000019" title=" " alt="" coords="421,372,487,397"/>
+<area shape="poly" id="edge18_Node000016_Node000019" title=" " alt="" coords="457,324,457,358,451,358,451,324"/>
+<area shape="rect" id="Node000020" title=" " alt="" coords="512,372,623,397"/>
+<area shape="poly" id="edge19_Node000016_Node000020" title=" " alt="" coords="474,322,539,362,536,367,471,326"/>
+<area shape="rect" id="Node000021" title=" " alt="" coords="647,372,690,397"/>
+<area shape="poly" id="edge21_Node000016_Node000021" title=" " alt="" coords="489,321,635,369,633,375,488,327"/>
+<area shape="rect" id="Node000022" title=" " alt="" coords="955,372,1017,397"/>
+<area shape="poly" id="edge22_Node000016_Node000022" title=" " alt="" coords="506,317,941,375,941,380,505,322"/>
+<area shape="poly" id="edge24_Node000023_Node000016" title=" " alt="" coords="289,248,410,291,408,296,287,253"/>
+<area shape="poly" id="edge26_Node000024_Node000016" title=" " alt="" coords="368,248,427,288,424,293,365,253"/>
+<area shape="poly" id="edge28_Node000025_Node000022" title=" " alt="" coords="1125,326,1026,369,1024,364,1123,322"/>
+<area shape="rect" id="Node000027" href="$d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen." alt="" coords="1045,152,1159,177"/>
+<area shape="poly" id="edge30_Node000026_Node000027" title=" " alt="" coords="1105,104,1105,138,1099,138,1099,104"/>
+<area shape="poly" id="edge31_Node000027_Node000007" title=" " alt="" coords="1045,179,745,230,745,225,1044,173"/>
+<area shape="poly" id="edge35_Node000027_Node000011" title=" " alt="" coords="1070,180,944,223,942,218,1068,175"/>
+<area shape="poly" id="edge34_Node000027_Node000022" title=" " alt="" coords="1074,180,1041,199,1026,212,1014,227,998,260,990,295,987,358,981,358,985,294,993,258,1009,224,1022,208,1038,194,1071,175"/>
+<area shape="rect" id="Node000028" title=" " alt="" coords="1023,225,1098,251"/>
+<area shape="poly" id="edge32_Node000027_Node000028" title=" " alt="" coords="1097,179,1077,215,1072,212,1093,176"/>
+<area shape="rect" id="Node000029" title=" " alt="" coords="1122,225,1199,251"/>
+<area shape="poly" id="edge33_Node000027_Node000029" title=" " alt="" coords="1114,176,1145,213,1141,217,1110,179"/>
 </map>

@@ -2,7 +2,6 @@ var class_v_m2_d_1_1_boundary_const_layer_aver =
 [
     [ "BoundaryConstLayerAver", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a2d51449adff5a77c6f26c2be72f70169", null ],
     [ "~BoundaryConstLayerAver", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#abbb0b7ee68dd979f79eaa94826e35d21", null ],
-    [ "CalcConvVelocityAtVirtualVortexes", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a5f495683656ee42c315403611e50946a", null ],
     [ "CalcConvVelocityToSetOfPointsFromSheets", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d", null ],
     [ "ComputeAttachedSheetsIntensity", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a3564185641ce9f21f1b37d9af6006120", null ],
     [ "FillIQFromOther", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87280c88f7c038e85d894dec4f6c22f0", null ],
@@ -14,7 +13,7 @@ var class_v_m2_d_1_1_boundary_const_layer_aver =
     [ "GetInfluenceFromVInfToRectPanel", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a99112c1a4fd05113c87391f29d51f349", null ],
     [ "GetInfluenceFromVortexSheetAtRectPanelToVortex", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d", null ],
     [ "GetInfluenceFromVorticesToRectPanel", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae51b63e7ea4a0828fb9c9bbf379fe437", null ],
-    [ "GetUnknownsSize", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#acd103fc7af2620c974616cc8346b35e1", null ],
+    [ "GetUnknownsSize", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a4b070c5ee8e041003e8e4a6ff6f987d4", null ],
     [ "SolutionToFreeVortexSheetAndVirtualVortex", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae8187ac0ba509703fd8be02a7af16fbe", null ],
     [ "afl", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6777089d5cf305d67e4b3961e91e8b54", null ],
     [ "minVortexPerPanel", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ab342ef75b64cca43bc6da418f9aae245", null ],

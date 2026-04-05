@@ -1,0 +1,21 @@
+<map id="VM2D::World2D::CalcVortexVelo" name="VM2D::World2D::CalcVortexVelo">
+<area shape="rect" id="Node000001" title="Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных),..." alt="" coords="5,220,236,245"/>
+<area shape="rect" id="Node000002" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a174780bb8e877b96c05d7f15523deed9" title="Вычисление средних значений eps на панелях" alt="" coords="291,55,493,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,218,195,164,237,132,283,105,298,98,301,103,285,110,240,137,198,168,137,222"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#af4f6503f19c11fa94d9a60e010ae9d95" title="Возврат неконстантной ссылки на объект профиля" alt="" coords="284,119,500,159"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="153,217,283,169,307,161,309,166,285,174,155,222"/>
+<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad5fd79becfefeecd1067e09a7ce9bd63" title="Возврат количества граничных условий в задаче" alt="" coords="289,183,495,223"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="236,218,275,213,276,219,237,223"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a724533c5ac15595459d04136a6a2bb29" title="Возврат ссылки на временную статистику выполнения шага расчета по времени" alt="" coords="293,248,491,273"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="237,242,279,246,279,252,236,247"/>
+<area shape="rect" id="Node000009" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a9be199fa84f64c66a8592f1d12d59daf" title="Запуск счетчика" alt="" coords="304,297,480,323"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="159,243,285,283,317,292,316,297,283,289,157,248"/>
+<area shape="rect" id="Node000010" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a8259245a1091f74d655318c8c79bb5b0" title="Останов счетчика" alt="" coords="305,347,479,372"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="140,243,201,287,242,312,285,333,306,340,304,345,283,338,239,317,198,292,136,248"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac72e4692156b1f53ce1f706dfb9fa11b" title="Возврат константной ссылки на объект граничного условия" alt="" coords="548,5,763,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="484,53,583,31,584,36,485,58"/>
+<area shape="rect" id="Node000004" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="569,55,742,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="493,73,555,73,555,78,493,78"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a93698b2dc14c4b20b8364350c3f117e7" title="Возврат константной ссылки на объект для вычисления скоростей" alt="" coords="553,120,758,145"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="485,93,584,114,583,120,484,98"/>
+</map>

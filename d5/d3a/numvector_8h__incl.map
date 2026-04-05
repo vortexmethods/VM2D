@@ -1,2 +1,17 @@
 <map id="VMlib/numvector/numvector.h" name="VMlib/numvector/numvector.h">
+<area shape="rect" id="Node000001" title="Описание класса numvector." alt="" coords="211,5,429,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,61,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,33,75,81,74,76,270,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="86,79,149,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="288,33,163,77,161,72,287,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="173,79,240,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="303,33,238,74,235,69,300,28"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="265,79,375,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="323,31,323,65,317,65,317,31"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="399,79,475,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="340,28,408,69,405,74,337,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="500,79,543,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="353,28,488,75,486,80,351,33"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="567,79,630,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="366,28,554,76,553,81,365,33"/>
 </map>

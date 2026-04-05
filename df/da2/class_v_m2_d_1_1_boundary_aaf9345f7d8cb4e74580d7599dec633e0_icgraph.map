@@ -1,5 +1,7 @@
 <map id="VM2D::Boundary::GetInfluenceFromVInfToRectPanel" name="VM2D::Boundary::GetInfluenceFromVInfToRectPanel">
-<area shape="rect" id="node2" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a6193bd1858b7efde3445c9edc0ec1daa" title="Вычисление влияния набегающего потока на панель для правой части " alt="" coords="257,5,456,47"/>
-<area shape="rect" id="node4" href="$df/da2/class_v_m2_d_1_1_boundary.html#ae61caa08bceea2ed067cbf0f9605e515" title="Деструктор " alt="" coords="260,71,453,98"/>
-<area shape="rect" id="node3" href="$d2/d3e/class_v_m2_d_1_1_airfoil_rect.html#a3080e7a4295c88117408d9918897eb29" title="Деструктор " alt="" coords="504,5,640,47"/>
+<area shape="rect" id="Node000001" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части" alt="" coords="471,5,691,45"/>
+<area shape="rect" id="Node000002" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a96c32ca2c38f4a22069c4946d3e8d358" title="Вычисление влияния набегающего потока на панель для правой части" alt="" coords="224,5,423,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="457,28,423,28,423,23,457,23"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="5,13,176,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="210,28,176,28,176,23,210,23"/>
 </map>

@@ -1,0 +1,11 @@
+<map id="BH::MortonTree::MakeRootMortonTree" name="BH::MortonTree::MakeRootMortonTree">
+<area shape="rect" id="Node000001" title="Построение корня дерева и задание его общих параметров" alt="" coords="5,63,200,103"/>
+<area shape="rect" id="Node000002" href="$d5/d14/class_b_h_1_1_morton_tree.html#a5f48e9f09cf18dcbe25f7a44bee15622" title="Поиск габаритного прямоугольника системы точек (для OpenMP 2.0)" alt="" coords="248,5,467,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,60,254,46,255,51,193,65"/>
+<area shape="rect" id="Node000003" href="$d5/d14/class_b_h_1_1_morton_tree.html#a9f62786492444b4bca39dc62fb9f9489" title=" " alt="" coords="260,70,455,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="200,80,246,80,246,85,200,85"/>
+<area shape="rect" id="Node000005" href="$d5/d14/class_b_h_1_1_morton_tree.html#abf1c10c4804880318ba7346b11ba377a" title="Параллельная версия поразрядной сортировки мортоновских кодов" alt="" coords="275,120,440,160"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="193,100,262,116,261,121,192,105"/>
+<area shape="rect" id="Node000004" href="$d5/d14/class_b_h_1_1_morton_tree.html#aa8a20906dbec9618e4194516912f0b7d" title="&quot;Разрежение&quot; двоичного представления беззнакового целого, вставляя по одному нулику между всеми битам..." alt="" coords="515,70,717,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="455,80,501,80,501,85,455,85"/>
+</map>

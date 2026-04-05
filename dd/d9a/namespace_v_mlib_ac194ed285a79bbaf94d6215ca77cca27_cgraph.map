@@ -1,0 +1,6 @@
+<map id="VMlib::dist2" name="VMlib::dist2">
+<area shape="rect" id="Node000001" title="Вычисление квадрата расстояния между двумя точками" alt="" coords="5,29,104,55"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="23,31,16,21,19,11,33,5,55,3,81,6,93,15,89,19,79,11,55,8,34,10,23,15,21,20,27,28"/>
+<area shape="rect" id="Node000002" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="152,29,347,55"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="104,39,138,39,138,45,104,45"/>
+</map>

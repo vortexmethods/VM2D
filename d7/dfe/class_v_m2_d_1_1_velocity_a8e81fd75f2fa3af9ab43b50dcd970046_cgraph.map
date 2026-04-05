@@ -1,12 +1,29 @@
 <map id="VM2D::Velocity::CalcDiffVeloI0I3" name="VM2D::Velocity::CalcDiffVeloI0I3">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="255,5,445,47"/>
-<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="252,71,448,98"/>
-<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a58eb9fce5d0cd053a5a7daadc1a72b46" title="Возврат неконстантной ссылки на объект профиля " alt="" coords="249,123,451,164"/>
-<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a96f89cab550d0283c9991cd1867ffc2b" title="Возврат константной ссылки на вихревой след " alt="" coords="261,189,439,215"/>
-<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ac6ee1c09a1fdad6eaad1ab1f8e4c54c8" title="VM2D::Airfoil::GetDiffVelocity\lI0I3ToWakeAndViscousStresses" alt="" coords="243,240,457,281"/>
-<area shape="rect" id="node7" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a088a7850b255847d4f0f25d652bc71e1" title="Возврат количества граничных условий в задаче " alt="" coords="255,305,445,347"/>
-<area shape="rect" id="node8" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="251,371,449,398"/>
-<area shape="rect" id="node9" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a40e1b4ae25cc8fcb79c9d8332192c6b2" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек, обусловленных геометрией профиля, и вычисление вязкого трения " alt="" coords="224,423,476,464"/>
-<area shape="rect" id="node10" href="$db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a7d3941e28c9966512123e3242d4e40d1" title="Функция минимально возможного значения для epsAst. " alt="" coords="259,488,441,529"/>
-<area shape="rect" id="node11" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="309,554,391,581"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,266,184,306"/>
+<area shape="rect" id="Node000002" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a4ed73ccc2736648d1a193e117de9d2a9" title=" " alt="" coords="232,154,457,194"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,264,285,197,288,202,141,268"/>
+<area shape="rect" id="Node000005" href="$db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a1c8981ef6435a9f245ffd4baa16c4d32" title="Функция минимально возможного значения для epsAst." alt="" coords="827,269,1021,309"/>
+<area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="184,284,813,286,813,291,184,289"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="820,333,1028,359"/>
+<area shape="poly" id="edge14_Node000001_Node000006" title=" " alt="" coords="184,290,806,335,806,340,184,295"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a33e4bc208d515f522eaca4f0f99c7422" title="Возврат константной ссылки на вихревой след" alt="" coords="830,5,1018,31"/>
+<area shape="poly" id="edge15_Node000001_Node000008" title=" " alt="" coords="107,264,156,202,191,168,231,140,303,103,380,74,460,52,539,35,617,24,691,17,816,12,816,18,691,22,618,29,540,41,461,57,382,79,305,108,233,144,195,172,160,206,111,268"/>
+<area shape="rect" id="Node000011" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#af4f6503f19c11fa94d9a60e010ae9d95" title="Возврат неконстантной ссылки на объект профиля" alt="" coords="237,349,453,389"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="157,303,271,342,269,347,155,309"/>
+<area shape="rect" id="Node000012" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0277884d66fb825cebd681dba46c2858" title="Возврат количества профилей в задаче" alt="" coords="242,413,447,453"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="117,304,167,352,199,377,233,398,248,405,245,410,231,403,196,381,163,356,113,308"/>
+<area shape="rect" id="Node000003" href="$db/de9/class_v_m2_d_1_1_airfoil.html#accafa6df2943562f5421f0465126ab88" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек,..." alt="" coords="505,154,772,194"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="457,171,492,171,492,177,457,177"/>
+<area shape="poly" id="edge10_Node000002_Node000008" title=" " alt="" coords="414,151,597,99,819,39,852,31,853,36,821,45,598,104,415,157"/>
+<area shape="rect" id="Node000004" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d" title="Функция для доступа к циркуляции вихря" alt="" coords="853,104,995,129"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="738,151,846,129,847,135,739,157"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="681,192,746,222,821,254,842,262,840,267,819,259,744,227,679,196"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="661,192,728,255,773,289,821,318,841,327,839,332,819,323,770,294,724,259,657,196"/>
+<area shape="rect" id="Node000007" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="837,154,1011,194"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="772,171,824,171,824,177,772,177"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="698,151,735,133,770,109,785,92,793,74,801,57,818,40,828,34,831,39,822,44,806,60,798,77,789,95,774,113,738,138,700,156"/>
+<area shape="rect" id="Node000009" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="831,219,1017,244"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="739,191,847,213,846,219,738,197"/>
+<area shape="rect" id="Node000010" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="854,55,994,80"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="682,151,819,89,845,81,847,86,821,94,684,156"/>
 </map>

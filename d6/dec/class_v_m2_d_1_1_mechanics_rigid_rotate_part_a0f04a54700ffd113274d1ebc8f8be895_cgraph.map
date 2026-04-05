@@ -1,6 +1,24 @@
 <map id="VM2D::MechanicsRigidRotatePart::Move" name="VM2D::MechanicsRigidRotatePart::Move">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="252,5,448,32"/>
-<area shape="rect" id="node3" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a07acdb787188d8f83ae8587cc0b39df0" title="Возвращает текуще время " alt="" coords="262,57,438,98"/>
-<area shape="rect" id="node4" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="265,123,435,149"/>
-<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae6f87ad89e0743fd910af6f898c4d6e6" title="Поворот профиля " alt="" coords="277,173,423,200"/>
+<area shape="rect" id="Node000001" title="Перемещение профиля в соответствии с законом" alt="" coords="5,73,220,113"/>
+<area shape="rect" id="Node000002" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="268,5,508,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,70,267,39,303,31,304,36,269,45,170,75"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="284,55,492,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,80,270,75,271,81,220,85"/>
+<area shape="rect" id="Node000004" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a927ff9232411db3200aadea640281e6b" title="Перемещение профиля" alt="" coords="312,104,464,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="220,99,299,106,298,112,220,105"/>
+<area shape="rect" id="Node000010" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae70174fb0c012b6be31a45caeabb9dd8" title="Поворот профиля" alt="" coords="309,153,467,179"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="175,110,269,138,309,148,308,153,267,143,173,115"/>
+<area shape="rect" id="Node000005" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин" alt="" coords="556,104,773,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="464,114,542,114,542,119,464,119"/>
+<area shape="rect" id="Node000009" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a" title="Вычисляет габаритный прямоугольник профиля" alt="" coords="567,153,762,179"/>
+<area shape="poly" id="edge9_Node000004_Node000009" title=" " alt="" coords="460,127,580,148,579,153,459,132"/>
+<area shape="rect" id="Node000006" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="821,39,995,79"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="719,101,809,80,810,85,720,107"/>
+<area shape="rect" id="Node000007" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="1043,129,1229,155"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="734,127,822,138,928,143,1029,143,1029,148,928,148,821,143,733,132"/>
+<area shape="rect" id="Node000008" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8974f47ee5cf514aa6ac17b3af4daf62" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному" alt="" coords="823,104,993,129"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="774,114,809,114,809,119,774,119"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="994,124,1029,127,1029,133,994,129"/>
+<area shape="poly" id="edge11_Node000010_Node000005" title=" " alt="" coords="459,151,579,129,580,134,460,156"/>
+<area shape="poly" id="edge12_Node000010_Node000009" title=" " alt="" coords="467,163,554,163,554,169,467,169"/>
 </map>

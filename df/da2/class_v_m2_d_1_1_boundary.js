@@ -2,7 +2,6 @@ var class_v_m2_d_1_1_boundary =
 [
     [ "Boundary", "df/da2/class_v_m2_d_1_1_boundary.html#aee6b852d79dd1afbe3bfc26389644877", null ],
     [ "~Boundary", "df/da2/class_v_m2_d_1_1_boundary.html#ae61caa08bceea2ed067cbf0f9605e515", null ],
-    [ "CalcConvVelocityAtVirtualVortexes", "df/da2/class_v_m2_d_1_1_boundary.html#a42863c389f57e980fd93ed0e27d25e06", null ],
     [ "CalcConvVelocityToSetOfPointsFromSheets", "df/da2/class_v_m2_d_1_1_boundary.html#ae1b0804df779ed38c82e1ca2f180cd10", null ],
     [ "ComputeAttachedSheetsIntensity", "df/da2/class_v_m2_d_1_1_boundary.html#af75ebfcd1f4b93e7c80e9f4c25ec20bf", null ],
     [ "FillIQFromOther", "df/da2/class_v_m2_d_1_1_boundary.html#ab5147f3f7ff3d03f3f0728e32d25266f", null ],
@@ -14,7 +13,7 @@ var class_v_m2_d_1_1_boundary =
     [ "GetInfluenceFromVInfToRectPanel", "df/da2/class_v_m2_d_1_1_boundary.html#aaf9345f7d8cb4e74580d7599dec633e0", null ],
     [ "GetInfluenceFromVortexSheetAtRectPanelToVortex", "df/da2/class_v_m2_d_1_1_boundary.html#acf656639cdf47709c78697a87710d80d", null ],
     [ "GetInfluenceFromVorticesToRectPanel", "df/da2/class_v_m2_d_1_1_boundary.html#a211ce06f20fc153227aef9d17e9ed15a", null ],
-    [ "GetUnknownsSize", "df/da2/class_v_m2_d_1_1_boundary.html#acd103fc7af2620c974616cc8346b35e1", null ],
+    [ "GetUnknownsSize", "df/da2/class_v_m2_d_1_1_boundary.html#a4b070c5ee8e041003e8e4a6ff6f987d4", null ],
     [ "SolutionToFreeVortexSheetAndVirtualVortex", "df/da2/class_v_m2_d_1_1_boundary.html#a60b1936426f4a8d151f6342ff7748ce9", null ],
     [ "afl", "df/da2/class_v_m2_d_1_1_boundary.html#a6777089d5cf305d67e4b3961e91e8b54", null ],
     [ "minVortexPerPanel", "df/da2/class_v_m2_d_1_1_boundary.html#ab342ef75b64cca43bc6da418f9aae245", null ],

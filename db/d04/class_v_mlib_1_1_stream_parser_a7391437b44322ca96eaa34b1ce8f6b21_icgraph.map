@@ -1,7 +1,12 @@
 <map id="VMlib::StreamParser::VectorStringToString" name="VMlib::StreamParser::VectorStringToString">
-<area shape="rect" id="node2" href="$d2/d15/class_v_m2_d_1_1_passport.html#a875604d311bcf3c17ce56f2f0ea0aa09" title="Конструктор " alt="" coords="460,11,639,38"/>
-<area shape="rect" id="node3" href="$d2/d15/class_v_m2_d_1_1_passport.html#ae11560e6df417191603182d5b2c2ce09" title="Считывание всех параметров расчета из соответствующих потоков " alt="" coords="204,33,412,75"/>
-<area shape="rect" id="node4" href="$d1/d71/class_v_mlib_1_1_queue.html#a49c2777c5c15d373888f074a6450e268" title="Загрузка списка задач " alt="" coords="211,99,405,126"/>
-<area shape="rect" id="node6" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a8ec5a6023a29d932fee911cf16ade9a0" title="Деструктор " alt="" coords="237,151,379,192"/>
-<area shape="rect" id="node5" href="$d1/d0c/_v_m2_d_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title="main" alt="" coords="524,99,575,126"/>
+<area shape="rect" id="Node000001" title="Объединение вектора (списка) из строк в одну строку" alt="" coords="508,26,669,66"/>
+<area shape="rect" id="Node000002" href="$d2/d15/class_v_m2_d_1_1_passport.html#a875604d311bcf3c17ce56f2f0ea0aa09" title="Конструктор" alt="" coords="5,5,192,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="507,25,460,17,390,11,319,9,192,13,192,8,319,4,390,5,460,11,508,20"/>
+<area shape="rect" id="Node000003" href="$d2/d15/class_v_m2_d_1_1_passport.html#ae11560e6df417191603182d5b2c2ce09" title="Считывание всех параметров расчета из соответствующих потоков" alt="" coords="240,26,460,66"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="494,49,460,49,460,43,494,43"/>
+<area shape="rect" id="Node000004" href="$d1/d71/class_v_mlib_1_1_queue.html#a49c2777c5c15d373888f074a6450e268" title="Загрузка списка задач" alt="" coords="247,91,453,116"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="496,72,461,81,407,93,406,88,459,75,495,67"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="226,35,192,31,192,26,227,30"/>
+<area shape="rect" id="Node000005" href="$d1/d0c/_v_m2_d_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="71,91,126,116"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="233,106,126,106,126,101,233,101"/>
 </map>

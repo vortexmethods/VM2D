@@ -1,0 +1,13 @@
+<map id="VM2D::AirfoilGeometry" name="VM2D::AirfoilGeometry">
+<area shape="rect" id="Node000001" title="Класс, определяющий форму профиля" alt="" coords="537,103,711,129"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="284,17,456,42"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="432,43,460,52,592,101,590,106,458,57,430,49"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="281,67,459,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="472,96,537,103,537,109,472,101"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="287,131,453,157"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="466,133,513,128,536,125,537,130,514,133,467,138"/>
+<area shape="rect" id="Node000005" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title=" " alt="" coords="311,181,429,206"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="434,175,513,152,588,126,590,131,514,157,435,180"/>
+<area shape="rect" id="Node000006" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="5,181,232,206"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="246,191,311,191,311,196,246,196"/>
+</map>

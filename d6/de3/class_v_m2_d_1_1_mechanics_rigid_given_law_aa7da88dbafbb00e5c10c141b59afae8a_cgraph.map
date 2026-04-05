@@ -1,6 +1,16 @@
 <map id="VM2D::MechanicsRigidGivenLaw::VeloOfAirfoilPanels" name="VM2D::MechanicsRigidGivenLaw::VeloOfAirfoilPanels">
-<area shape="rect" id="node2" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a486b72e76c7712539adf50d68e3c557c" title="Вычисление скорости центра масс профиля " alt="" coords="248,5,443,47"/>
-<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="259,71,431,112"/>
-<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="277,137,413,163"/>
-<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afaa4428c98211d798542f0636d1c9516" title="Установка постоянной скорости всех вершин профиля " alt="" coords="278,187,413,214"/>
+<area shape="rect" id="Node000001" title="Вычисление скоростей начал панелей" alt="" coords="5,133,215,173"/>
+<area shape="rect" id="Node000002" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a98f57ed642d3dd9e48624b43d7480df5" title="Вычисление угловой скорости профиля" alt="" coords="263,5,473,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,131,193,93,262,55,279,48,281,53,264,60,195,98,139,136"/>
+<area shape="rect" id="Node000004" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="281,69,455,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="191,131,273,110,274,115,192,136"/>
+<area shape="rect" id="Node000005" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="281,133,455,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="215,151,267,151,267,156,215,156"/>
+<area shape="rect" id="Node000006" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a68afabb2904ac0341a0695e0d32d272c" title="Установка постоянной скорости всех вершин профиля" alt="" coords="281,197,455,237"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="192,171,274,191,273,197,191,176"/>
+<area shape="rect" id="Node000007" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a486b72e76c7712539adf50d68e3c557c" title="Вычисление скорости центра масс профиля" alt="" coords="263,261,473,301"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="139,171,195,209,264,247,281,254,279,259,262,252,193,214,136,176"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="521,141,729,166"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="445,43,474,55,542,93,598,130,595,135,540,97,472,60,443,48"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="443,259,472,247,540,210,595,172,598,176,542,214,474,252,445,264"/>
 </map>

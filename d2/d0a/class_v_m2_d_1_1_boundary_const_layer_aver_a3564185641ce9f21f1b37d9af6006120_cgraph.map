@@ -1,6 +1,11 @@
 <map id="VM2D::BoundaryConstLayerAver::ComputeAttachedSheetsIntensity" name="VM2D::BoundaryConstLayerAver::ComputeAttachedSheetsIntensity">
-<area shape="rect" id="node2" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a8016a5311758482564a0fcb0868477fa" title="VM2D::Sheet::getSheetSize" alt="" coords="313,5,500,32"/>
-<area shape="rect" id="node3" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a9431e357980548a5fabd5ffffb917665" title="VM2D::Sheet::attachedVortex\lSheet" alt="" coords="308,57,505,98"/>
-<area shape="rect" id="node4" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a49b7345512b924471bbac608c7129043" title="VM2D::Sheet::attachedSource\lSheet" alt="" coords="307,122,507,163"/>
-<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5b9bb928f446cad77a33ec6c01862d7a" title="Возврат константной ссылки на скорость вершины профиля " alt="" coords="339,188,474,215"/>
+<area shape="rect" id="Node000001" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников" alt="" coords="5,99,283,139"/>
+<area shape="rect" id="Node000002" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a7d0fff810d49ab8adc43169f2c74f212" title=" " alt="" coords="331,5,545,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,96,330,55,355,47,357,52,331,60,205,101"/>
+<area shape="rect" id="Node000003" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a42f6bd5f1af938e569e707ae3916643c" title=" " alt="" coords="331,69,545,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="283,102,317,99,318,104,283,107"/>
+<area shape="rect" id="Node000004" href="$de/d8b/class_v_m2_d_1_1_sheet.html#afe0a210b203d6dbef518e6a51b4ccb17" title=" " alt="" coords="339,134,537,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="283,129,325,133,325,139,283,135"/>
+<area shape="rect" id="Node000005" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa6c6a9fbf173f923e564b7e667614040" title="Возврат константной ссылки на скорость вершины профиля" alt="" coords="351,184,525,224"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="214,136,356,178,355,183,213,141"/>
 </map>

@@ -1,0 +1,9 @@
+<map id="VM2D::Airfoil::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses" name="VM2D::Airfoil::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses">
+<area shape="rect" id="Node000001" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек,..." alt="" coords="760,5,1027,45"/>
+<area shape="rect" id="Node000002" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a4ed73ccc2736648d1a193e117de9d2a9" title=" " alt="" coords="487,5,712,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="746,28,712,28,712,23,746,23"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e81fd75f2fa3af9ab43b50dcd970046" title=" " alt="" coords="260,5,439,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="473,28,439,28,439,23,473,23"/>
+<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="5,13,212,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="246,28,212,28,212,23,246,23"/>
+</map>

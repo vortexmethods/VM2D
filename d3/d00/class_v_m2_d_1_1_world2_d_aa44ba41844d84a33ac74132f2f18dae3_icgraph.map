@@ -1,0 +1,7 @@
+<map id="VM2D::World2D::getNonConstPassport" name="VM2D::World2D::getNonConstPassport">
+<area shape="rect" id="Node000001" title="Возврат неконстантной ссылки на паспорт" alt="" coords="259,23,475,63"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a458d892d4d9ebb62d8534a97e79902f6" title="Конструктор" alt="" coords="15,5,201,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,34,201,30,202,24,245,29"/>
+<area shape="rect" id="Node000003" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afa0496537fb81b12de574b8d4e7f441c" title="Считывание профиля из файла" alt="" coords="5,55,211,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="245,57,211,60,211,55,245,52"/>
+</map>

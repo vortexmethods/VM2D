@@ -1,5 +1,41 @@
 <map id="VM2D/Wake2D/knnCPU.h" name="VM2D/Wake2D/knnCPU.h">
-<area shape="rect" id="node2" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D. " alt="" coords="253,80,341,107"/>
-<area shape="rect" id="node3" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D. " alt="" coords="257,155,337,181"/>
-<area shape="rect" id="node4" href="$df/dc5/numvector_8h.html" title="Описание класса numvector. " alt="" coords="250,229,345,256"/>
+<area shape="rect" id="Node000001" title="Çàãîëîâî÷íûé ôàéë ñ ôóíêöèÿìè äëÿ ðåàëèçàöèè knn äëÿ CPU." alt="" coords="298,5,483,31"/>
+<area shape="rect" id="Node000002" href="$dc/d6c/_barnes_hut_8h.html" title="Заголовок основного класса BarnesHut." alt="" coords="339,79,442,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="393,31,393,65,388,65,388,31"/>
+<area shape="rect" id="Node000003" href="$d4/dc6/_tree_b_h_8h.html" title="Заголовок класса Tree для метода Барнса &#45; Хата для CPU." alt="" coords="351,152,431,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="393,104,393,138,388,138,388,104"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="300,225,377,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="384,179,357,216,353,213,380,176"/>
+<area shape="rect" id="Node000005" href="$dc/db8/defs_b_h_8h.html" title="Вспомогательные функции для метода Барнса &#45; Хата для CPU." alt="" coords="402,225,483,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="401,176,428,213,424,216,397,179"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="275,299,355,324"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="423,253,349,294,347,289,421,248"/>
+<area shape="rect" id="Node000007" href="$db/d80/_points_copy_b_h_8h.html" title="Заголовок класса&#45;обертки для точек и панелей для метода Барнса &#45; Хата для CPU." alt="" coords="379,299,506,324"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="445,251,445,285,440,285,440,251"/>
+<area shape="rect" id="Node000020" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="531,299,619,324"/>
+<area shape="poly" id="edge19_Node000005_Node000020" title=" " alt="" coords="465,248,542,290,540,294,463,253"/>
+<area shape="rect" id="Node000008" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="273,372,367,397"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="424,326,353,367,350,363,422,322"/>
+<area shape="rect" id="Node000018" href="$d1/d13/_params_b_h_8h.html" title="Параметры метода Барнса &#45; Хата для CPU." alt="" coords="392,372,493,397"/>
+<area shape="poly" id="edge17_Node000007_Node000018" title=" " alt="" coords="445,324,445,358,440,358,440,324"/>
+<area shape="rect" id="Node000019" title=" " alt="" coords="518,372,581,397"/>
+<area shape="poly" id="edge18_Node000007_Node000019" title=" " alt="" coords="461,322,522,362,519,367,458,326"/>
+<area shape="rect" id="Node000009" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="277,445,363,471"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="323,398,323,432,317,432,317,398"/>
+<area shape="rect" id="Node000010" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="269,519,371,544"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="323,471,323,505,317,505,317,471"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="5,592,61,617"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="271,547,75,594,74,589,270,541"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="86,592,149,617"/>
+<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="288,547,163,590,161,585,287,542"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="173,592,240,617"/>
+<area shape="poly" id="edge12_Node000010_Node000013" title=" " alt="" coords="303,546,238,587,235,582,300,542"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="265,592,375,617"/>
+<area shape="poly" id="edge13_Node000010_Node000014" title=" " alt="" coords="323,544,323,578,317,578,317,544"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="399,592,475,617"/>
+<area shape="poly" id="edge14_Node000010_Node000015" title=" " alt="" coords="340,542,408,582,405,587,337,546"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="500,592,543,617"/>
+<area shape="poly" id="edge15_Node000010_Node000016" title=" " alt="" coords="353,542,488,589,486,594,351,547"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="567,592,630,617"/>
+<area shape="poly" id="edge16_Node000010_Node000017" title=" " alt="" coords="366,542,554,589,553,594,365,547"/>
 </map>

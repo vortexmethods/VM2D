@@ -1,6 +1,13 @@
 <map id="VM2D::Mechanics" name="VM2D::Mechanics">
-<area shape="rect" id="node2" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html" title="Класс, определяющий вид механической системы " alt="" coords="187,5,405,32"/>
-<area shape="rect" id="node3" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html" title="Класс, определяющий вид механической системы " alt="" coords="184,56,408,83"/>
-<area shape="rect" id="node4" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html" title="Класс, определяющий вид механической системы " alt="" coords="187,107,405,133"/>
-<area shape="rect" id="node5" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html" title="Класс, определяющий вид механической системы " alt="" coords="185,157,407,184"/>
+<area shape="rect" id="Node000001" title="Абстрактный класс, определяющий вид механической системы" alt="" coords="5,104,144,129"/>
+<area shape="rect" id="Node000002" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html" title="Класс, определяющий вид механической системы" alt="" coords="207,5,422,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,94,142,65,191,40,226,28,228,33,193,44,144,70,104,98"/>
+<area shape="rect" id="Node000003" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html" title="Класс, определяющий вид механической системы" alt="" coords="197,55,432,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,98,191,89,247,77,248,83,193,94,147,104"/>
+<area shape="rect" id="Node000004" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html" title="Класс, определяющий вид механической системы" alt="" coords="192,104,437,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="157,114,192,114,192,119,157,119"/>
+<area shape="rect" id="Node000005" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html" title="Класс, определяющий вид механической системы" alt="" coords="199,153,431,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="151,130,253,151,251,156,150,135"/>
+<area shape="rect" id="Node000006" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html" title="Класс, определяющий вид механической системы" alt="" coords="195,203,434,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="104,135,145,163,193,188,233,200,231,205,191,192,142,167,101,140"/>
 </map>

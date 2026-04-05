@@ -8,7 +8,6 @@ var class_v_m2_d_1_1_passport =
     [ "airfoilsDir", "d2/d15/class_v_m2_d_1_1_passport.html#a648121232815e5e53effb2afd9eeaa37", null ],
     [ "calcCoefficients", "d2/d15/class_v_m2_d_1_1_passport.html#a3a2efb3311fe275413a191b7c0c2b342", null ],
     [ "dir", "d2/d15/class_v_m2_d_1_1_passport.html#a51ac0973e2e900b56f0769fa5bf09b8b", null ],
-    [ "geographicalAngles", "d2/d15/class_v_m2_d_1_1_passport.html#ac666b16fb9a2fdd4d7106adf31542a72", null ],
     [ "info", "d2/d15/class_v_m2_d_1_1_passport.html#a2a624a6c46795532e04747eec33ce1ba", null ],
     [ "numericalSchemes", "d2/d15/class_v_m2_d_1_1_passport.html#af8e7c0898e42ec93f2d722f1d2f65611", null ],
     [ "physicalProperties", "d2/d15/class_v_m2_d_1_1_passport.html#a300514dc57b591247834056a0fa92ca4", null ],

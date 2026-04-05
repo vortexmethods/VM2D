@@ -1,7 +1,11 @@
 <map id="VMlib::StreamParser::SplitString" name="VMlib::StreamParser::SplitString">
-<area shape="rect" id="node2" href="$d2/d15/class_v_m2_d_1_1_passport.html#ae11560e6df417191603182d5b2c2ce09" title="Считывание всех параметров расчета из соответствующих потоков " alt="" coords="196,5,404,47"/>
-<area shape="rect" id="node4" href="$d1/d71/class_v_mlib_1_1_queue.html#a49c2777c5c15d373888f074a6450e268" title="Загрузка списка задач " alt="" coords="203,71,397,98"/>
-<area shape="rect" id="node6" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a8ec5a6023a29d932fee911cf16ade9a0" title="Деструктор " alt="" coords="229,123,371,164"/>
-<area shape="rect" id="node3" href="$d2/d15/class_v_m2_d_1_1_passport.html#a875604d311bcf3c17ce56f2f0ea0aa09" title="Конструктор " alt="" coords="452,13,631,39"/>
-<area shape="rect" id="node5" href="$d1/d0c/_v_m2_d_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title="main" alt="" coords="516,71,567,98"/>
+<area shape="rect" id="Node000001" title="Разбор строки на пару ключ&#45;значение" alt="" coords="508,35,663,75"/>
+<area shape="rect" id="Node000002" href="$d2/d15/class_v_m2_d_1_1_passport.html#ae11560e6df417191603182d5b2c2ce09" title="Считывание всех параметров расчета из соответствующих потоков" alt="" coords="240,5,460,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="494,46,460,42,461,36,495,41"/>
+<area shape="rect" id="Node000004" href="$d1/d71/class_v_mlib_1_1_queue.html#a49c2777c5c15d373888f074a6450e268" title="Загрузка списка задач" alt="" coords="247,70,453,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="495,68,454,73,453,68,494,63"/>
+<area shape="rect" id="Node000003" href="$d2/d15/class_v_m2_d_1_1_passport.html#a875604d311bcf3c17ce56f2f0ea0aa09" title="Конструктор" alt="" coords="5,13,192,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="226,28,192,28,192,23,226,23"/>
+<area shape="rect" id="Node000005" href="$d1/d0c/_v_m2_d_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="71,70,126,95"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="233,85,126,85,126,80,233,80"/>
 </map>

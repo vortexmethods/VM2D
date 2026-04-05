@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['hd',['HD',['../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022',1,'HD():&#160;numvector.h'],['../d9/d27/_point2_d_8h.html#ac5dd4d2e9874e2956c370b24a462b022',1,'HD():&#160;Point2D.h']]]
+  ['deprecated_0',['DEPRECATED',['../df/dc5/numvector_8h.html#ac1e8a42306d8e67cb94ca31c3956ee78',1,'numvector.h']]],
+  ['dyn_5fschedule_1',['DYN_SCHEDULE',['../d5/d64/defs_8h.html#a8d8946b0dae7fb1ea1cd60325148a306',1,'defs.h']]]
 ];

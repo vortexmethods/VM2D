@@ -1,0 +1,16 @@
+<map id="VM2D::World2D::getNonConstCuda" name="VM2D::World2D::getNonConstCuda">
+<area shape="rect" id="Node000001" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="760,66,1009,92"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="225,9,443,34"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="843,63,782,39,711,20,643,12,572,9,443,13,443,7,572,3,643,6,713,15,784,34,845,58"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813" title="Вычисление скоростей в точках wakeVP." alt="" coords="515,30,699,70"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="750,67,698,62,699,57,751,62"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab4397193aff5c8a3109e5d0585fcd53c" title="Проверка проникновения вихрей внутрь профиля" alt="" coords="501,94,712,120"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="747,96,713,99,712,94,746,90"/>
+<area shape="rect" id="Node000007" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="523,144,690,169"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="833,98,713,135,667,146,666,141,711,130,832,93"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="500,41,443,35,443,30,501,36"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="215,87,453,127"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="488,110,454,110,454,104,488,104"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,94,167,120"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="201,110,167,110,167,104,201,104"/>
+</map>

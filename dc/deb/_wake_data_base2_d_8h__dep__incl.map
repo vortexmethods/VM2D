@@ -1,28 +1,90 @@
 <map id="VM2D/WakeDataBase2D/WakeDataBase2D.h" name="VM2D/WakeDataBase2D/WakeDataBase2D.h">
-<area shape="rect" id="node2" href="$de/dac/_airfoil2_d_8cpp.html" title="Файл кода с описанием класса Airfoil. " alt="" coords="253,266,445,293"/>
-<area shape="rect" id="node3" href="$d2/dad/_velocity2_d_8cpp.html" title="Файл кода с описанием класса Velocity. " alt="" coords="921,259,1106,300"/>
-<area shape="rect" id="node4" href="$d5/d31/_virtual_wake2_d_8h.html" title="Заголовочный файл с описанием класса VirtualWake. " alt="" coords="1829,95,1979,136"/>
-<area shape="rect" id="node26" href="$dc/d69/_wake_data_base2_d_8cpp.html" title="Файл кода с описанием класса WakeDataBase. " alt="" coords="3979,259,4151,300"/>
-<area shape="rect" id="node27" href="$dc/d4d/_wake2_d_8h.html" title="Заголовочный файл с описанием класса Wake. " alt="" coords="2769,184,2949,211"/>
-<area shape="rect" id="node5" href="$d6/d41/_boundary2_d_8h.html" title="Заголовочный файл с описанием класса Boundary. " alt="" coords="1793,184,2015,211"/>
-<area shape="rect" id="node6" href="$de/d45/_airfoil2_d_rect_8cpp.html" title="Файл кода с описанием класса AirfoilRect. " alt="" coords="3633,266,3853,293"/>
-<area shape="rect" id="node7" href="$da/dee/_boundary2_d_8cpp.html" title="Файл кода с описанием класса Boundary. " alt="" coords="1130,259,1331,300"/>
-<area shape="rect" id="node8" href="$d6/d56/_boundary2_d_const_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryConstLayerAver. " alt="" coords="27,259,229,300"/>
-<area shape="rect" id="node10" href="$d5/d96/_measure_v_p2_d_8cpp.html" title="Файл кода с описанием класса MeasureVP. " alt="" coords="27,348,229,389"/>
-<area shape="rect" id="node12" href="$d1/d2e/_boundary2_d_lin_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryLinLayerAver. " alt="" coords="470,259,671,300"/>
-<area shape="rect" id="node14" href="$d5/d0c/_boundary2_d_vortex_colloc_n_8h.html" title="Заголовочный файл с описанием класса BoundaryVortexCollocN. " alt="" coords="695,259,897,300"/>
-<area shape="rect" id="node16" href="$d5/d1b/_gpu2_d_8cpp.html" title="Файл кода с описанием класса Gpu. " alt="" coords="1355,266,1530,293"/>
-<area shape="rect" id="node17" href="$df/dde/_mechanics2_d_8cpp.html" title="Файл кода с описанием класса Mechanics.cpp. " alt="" coords="1554,259,1771,300"/>
-<area shape="rect" id="node18" href="$d0/d4f/_mechanics2_d_rigid_given_law_8cpp.html" title="Файл кода с описанием класса MechanicsRigidGivenLaw. " alt="" coords="1795,259,2013,300"/>
-<area shape="rect" id="node19" href="$d0/dfa/_mechanics2_d_rigid_immovable_8cpp.html" title="Файл кода с описанием класса MechanicsRigidImmovable. " alt="" coords="2037,259,2254,300"/>
-<area shape="rect" id="node20" href="$d1/da2/_mechanics2_d_rigid_oscill_part_8cpp.html" title="Файл кода с описанием класса MechanicsRigidOscillPart. " alt="" coords="2278,259,2495,300"/>
-<area shape="rect" id="node21" href="$d5/d9d/_mechanics2_d_rigid_rotate_part_8cpp.html" title="Файл кода с описанием класса Mechanics2DRigidRotatePart. " alt="" coords="2519,259,2737,300"/>
-<area shape="rect" id="node22" href="$d2/d24/_sheet2_d_8cpp.html" title="Файл кода с описанием класса Sheet. " alt="" coords="2761,266,2956,293"/>
-<area shape="rect" id="node23" href="$d2/d5a/_times2_d_8cpp.html" title="Файл кода с описанием класса Times. " alt="" coords="2981,266,3179,293"/>
-<area shape="rect" id="node24" href="$dd/d60/_velocity2_d_biot_savart_8cpp.html" title="Файл кода с описанием класса VelocityBiotSavart. " alt="" coords="3203,259,3389,300"/>
-<area shape="rect" id="node25" href="$d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake. " alt="" coords="3413,266,3608,293"/>
-<area shape="rect" id="node9" href="$de/d6b/_boundary2_d_const_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryConstLayerAver. " alt="" coords="2327,348,2529,389"/>
-<area shape="rect" id="node11" href="$d6/ddb/_world2_d_8cpp.html" title="Файл кода с описанием класса World2D. " alt="" coords="585,355,780,382"/>
-<area shape="rect" id="node13" href="$dc/d7a/_boundary2_d_lin_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryLinLayerAver. " alt="" coords="3314,348,3515,389"/>
-<area shape="rect" id="node15" href="$dd/d45/_boundary2_d_vortex_colloc_n_8cpp.html" title="Файл кода с описанием класса BoundaryVortexCollocN. " alt="" coords="3921,348,4122,389"/>
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса WakeDataBase." alt="" coords="2834,5,3016,45"/>
+<area shape="rect" id="Node000002" href="$d5/d31/_virtual_wake2_d_8h.html" title="Заголовочный файл с описанием класса VirtualWake." alt="" coords="2844,93,3006,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2928,59,2928,93,2922,93,2922,59"/>
+<area shape="rect" id="Node000030" href="$dc/d69/_wake_data_base2_d_8cpp.html" title="Файл кода с описанием класса WakeDataBase." alt="" coords="5025,255,5206,295"/>
+<area shape="poly" id="edge57_Node000001_Node000030" title=" " alt="" coords="3030,33,3362,63,3852,111,4427,175,5014,252,5025,254,5024,259,5013,257,4426,180,3852,116,3362,68,3029,38"/>
+<area shape="rect" id="Node000031" href="$dc/d4d/_wake2_d_8h.html" title="Заголовочный файл с описанием класса Wake." alt="" coords="2160,181,2346,207"/>
+<area shape="poly" id="edge32_Node000001_Node000031" title=" " alt="" coords="2837,51,2300,184,2299,179,2836,46"/>
+<area shape="rect" id="Node000003" href="$d6/d41/_boundary2_d_8h.html" title="Заголовочный файл с описанием класса Boundary." alt="" coords="2804,181,3046,207"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="2928,147,2928,181,2922,181,2922,147"/>
+<area shape="rect" id="Node000004" href="$de/dac/_airfoil2_d_8cpp.html" title="Файл кода с описанием класса Airfoil." alt="" coords="3518,262,3729,287"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="3060,204,3270,225,3507,252,3557,259,3556,265,3506,257,3270,230,3059,210"/>
+<area shape="rect" id="Node000005" href="$de/deb/_airfoil2_d_deformable_8cpp.html" title="Файл кода с описанием класса AirfoilDeformable." alt="" coords="3754,262,4040,287"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="3059,201,3371,221,3741,252,3808,259,3808,265,3741,257,3371,227,3059,206"/>
+<area shape="rect" id="Node000006" href="$d8/d45/_airfoil2_d_rigid_8cpp.html" title="Файл кода с описанием класса AirfoilRigid." alt="" coords="4065,262,4308,287"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="3060,196,3502,213,3777,230,4053,252,4114,259,4113,265,4053,257,3777,235,3501,219,3060,201"/>
+<area shape="rect" id="Node000007" href="$da/dee/_boundary2_d_8cpp.html" title="Файл кода с описанием класса Boundary." alt="" coords="3276,255,3494,295"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="3006,206,3276,252,3275,257,3005,212"/>
+<area shape="rect" id="Node000008" href="$d6/d56/_boundary2_d_const_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryConstLayerAver." alt="" coords="5473,255,5692,295"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="3060,194,3560,198,4253,208,4950,226,5241,238,5461,252,5473,253,5473,258,5461,257,5241,243,4950,231,4253,214,3560,203,3060,199"/>
+<area shape="rect" id="Node000011" href="$d1/d2e/_boundary2_d_lin_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryLinLayerAver." alt="" coords="4782,255,5001,295"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="3060,195,3928,214,4415,231,4617,241,4771,252,4782,253,4782,259,4770,257,4617,246,4415,236,3928,220,3060,200"/>
+<area shape="rect" id="Node000013" href="$d5/d0c/_boundary2_d_vortex_colloc_n_8h.html" title="Заголовочный файл с описанием класса BoundaryVortexCollocN." alt="" coords="5230,255,5449,295"/>
+<area shape="poly" id="edge13_Node000003_Node000013" title=" " alt="" coords="3060,194,4140,210,4762,228,5022,239,5219,252,5230,253,5230,258,5218,257,5021,244,4762,233,4140,216,3060,199"/>
+<area shape="rect" id="Node000015" href="$df/d46/_gmres2_d_8cpp.html" title="Ôàéë êîäà ñ îïèñàíèåì ôóíêöèé ìåòîäà GMRES." alt="" coords="4332,262,4550,287"/>
+<area shape="poly" id="edge16_Node000003_Node000015" title=" " alt="" coords="3060,193,3297,197,3610,207,3964,224,4320,252,4376,259,4375,265,4320,257,3963,230,3610,212,3297,203,3060,199"/>
+<area shape="rect" id="Node000016" href="$d5/d1b/_gpu2_d_8cpp.html" title="Файл кода с описанием класса Gpu." alt="" coords="4574,262,4758,287"/>
+<area shape="poly" id="edge17_Node000003_Node000016" title=" " alt="" coords="3060,195,3829,214,4253,231,4429,241,4563,252,4612,259,4611,265,4562,257,4428,246,4253,236,3829,220,3059,200"/>
+<area shape="rect" id="Node000017" href="$d5/d96/_measure_v_p2_d_8cpp.html" title="Файл кода с описанием класса MeasureVP." alt="" coords="134,255,350,295"/>
+<area shape="poly" id="edge18_Node000003_Node000017" title=" " alt="" coords="2791,201,1405,231,363,257,351,258,351,253,362,252,1405,226,2791,196"/>
+<area shape="rect" id="Node000018" href="$df/dde/_mechanics2_d_8cpp.html" title="Файл кода с описанием класса Mechanics.cpp." alt="" coords="375,255,608,295"/>
+<area shape="poly" id="edge19_Node000003_Node000018" title=" " alt="" coords="2791,201,1567,230,938,246,620,257,609,258,608,253,620,252,938,241,1567,224,2791,196"/>
+<area shape="rect" id="Node000019" href="$d9/ddb/_mechanics2_d_deformable_8cpp.html" title="Файл кода с описанием класса MechanicsDeformable." alt="" coords="632,255,866,295"/>
+<area shape="poly" id="edge20_Node000003_Node000019" title=" " alt="" coords="2791,201,1746,227,1196,243,877,257,866,258,866,253,877,252,1196,238,1746,221,2791,196"/>
+<area shape="rect" id="Node000020" href="$d0/d4f/_mechanics2_d_rigid_given_law_8cpp.html" title="Файл кода с описанием класса MechanicsRigidGivenLaw." alt="" coords="890,255,1123,295"/>
+<area shape="poly" id="edge21_Node000003_Node000020" title=" " alt="" coords="2791,201,1948,221,1478,237,1135,257,1124,258,1123,253,1134,252,1478,232,1948,215,2790,195"/>
+<area shape="rect" id="Node000021" href="$d0/dfa/_mechanics2_d_rigid_immovable_8cpp.html" title="Файл кода с описанием класса MechanicsRigidImmovable." alt="" coords="1147,255,1380,295"/>
+<area shape="poly" id="edge22_Node000003_Node000021" title=" " alt="" coords="2791,201,2072,223,1679,239,1392,257,1381,258,1380,253,1392,252,1679,234,2072,218,2791,196"/>
+<area shape="rect" id="Node000022" href="$d1/da2/_mechanics2_d_rigid_oscill_part_8cpp.html" title="Файл кода с описанием класса MechanicsRigidOscillPart." alt="" coords="1404,255,1638,295"/>
+<area shape="poly" id="edge23_Node000003_Node000022" title=" " alt="" coords="2791,200,2288,215,1970,232,1649,257,1638,258,1638,253,1649,252,1970,227,2288,210,2791,195"/>
+<area shape="rect" id="Node000023" href="$d5/d9d/_mechanics2_d_rigid_rotate_part_8cpp.html" title="Файл кода с описанием класса Mechanics2DRigidRotatePart." alt="" coords="1662,255,1895,295"/>
+<area shape="poly" id="edge24_Node000003_Node000023" title=" " alt="" coords="2791,202,2394,220,2151,236,1907,257,1896,259,1895,253,1906,252,2150,231,2394,215,2790,197"/>
+<area shape="rect" id="Node000024" href="$d2/d24/_sheet2_d_8cpp.html" title="Файл кода с описанием класса Sheet." alt="" coords="1919,262,2126,287"/>
+<area shape="poly" id="edge25_Node000003_Node000024" title=" " alt="" coords="2791,205,2491,224,2314,239,2137,257,2086,265,2086,259,2137,252,2314,233,2491,219,2791,199"/>
+<area shape="rect" id="Node000025" href="$d0/d9c/_optimized_velocity2_d_8cpp.html" title=" " alt="" coords="2150,255,2356,295"/>
+<area shape="poly" id="edge26_Node000003_Node000025" title=" " alt="" coords="2791,210,2592,231,2370,257,2357,259,2356,254,2369,252,2591,225,2790,205"/>
+<area shape="rect" id="Node000026" href="$d2/dad/_velocity2_d_8cpp.html" title="Файл кода с описанием класса Velocity." alt="" coords="2380,255,2579,295"/>
+<area shape="poly" id="edge27_Node000003_Node000026" title=" " alt="" coords="2847,212,2580,259,2579,253,2846,206"/>
+<area shape="rect" id="Node000027" href="$df/db2/_velocity2_d_barnes_hut_8cpp.html" title="Файл кода с описанием класса VelocityBarnesHut." alt="" coords="2603,255,2802,295"/>
+<area shape="poly" id="edge28_Node000003_Node000027" title=" " alt="" coords="2881,214,2757,257,2755,252,2879,209"/>
+<area shape="rect" id="Node000028" href="$dd/d60/_velocity2_d_biot_savart_8cpp.html" title="Файл кода с описанием класса VelocityBiotSavart." alt="" coords="2826,255,3024,295"/>
+<area shape="poly" id="edge29_Node000003_Node000028" title=" " alt="" coords="2928,220,2928,255,2922,255,2922,220"/>
+<area shape="rect" id="Node000029" href="$d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake." alt="" coords="3049,262,3252,287"/>
+<area shape="poly" id="edge30_Node000003_Node000029" title=" " alt="" coords="2972,209,3119,259,3117,264,2970,214"/>
+<area shape="poly" id="edge31_Node000003_Node000030" title=" " alt="" coords="3060,194,3480,199,4043,209,4604,227,4836,238,5013,252,5025,253,5024,259,5013,257,4836,244,4603,232,4043,215,3480,204,3060,199"/>
+<area shape="rect" id="Node000009" href="$de/d6b/_boundary2_d_const_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryConstLayerAver." alt="" coords="4241,343,4460,383"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="5460,297,5173,323,4893,341,4460,361,4460,355,4893,336,5173,318,5459,292"/>
+<area shape="rect" id="Node000010" href="$d6/ddb/_world2_d_8cpp.html" title="Файл кода с описанием класса World2D." alt="" coords="5012,350,5219,375"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="5467,300,5178,353,5177,347,5466,295"/>
+<area shape="poly" id="edge12_Node000011_Node000010" title=" " alt="" coords="4955,297,5087,347,5085,352,4953,302"/>
+<area shape="rect" id="Node000012" href="$dc/d7a/_boundary2_d_lin_layer_aver_8cpp.html" title="Файл кода с описанием класса BoundaryLinLayerAver." alt="" coords="588,343,806,383"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="4769,297,4490,310,4039,322,2840,341,807,363,807,358,2840,336,4039,316,4490,305,4768,292"/>
+<area shape="poly" id="edge15_Node000013_Node000010" title=" " alt="" coords="5279,302,5147,352,5145,347,5277,297"/>
+<area shape="rect" id="Node000014" href="$dd/d45/_boundary2_d_vortex_colloc_n_8cpp.html" title="Файл кода с описанием класса BoundaryVortexCollocN." alt="" coords="2942,343,3161,383"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="5217,297,5020,311,4767,323,4169,342,3162,362,3162,357,4169,337,4767,317,5020,305,5216,292"/>
+<area shape="poly" id="edge33_Node000031_Node000004" title=" " alt="" coords="2361,194,2572,198,2856,208,3180,225,3507,252,3561,259,3560,265,3506,257,3179,230,2856,213,2572,203,2360,199"/>
+<area shape="poly" id="edge34_Node000031_Node000005" title=" " alt="" coords="2360,196,3061,219,3454,235,3741,252,3813,259,3812,265,3741,257,3453,241,3060,225,2360,201"/>
+<area shape="poly" id="edge35_Node000031_Node000006" title=" " alt="" coords="2360,195,3208,215,3696,232,4053,252,4116,259,4115,265,4053,257,3696,237,3208,220,2360,200"/>
+<area shape="poly" id="edge36_Node000031_Node000007" title=" " alt="" coords="2360,196,2758,213,3010,229,3264,252,3276,253,3275,259,3264,257,3010,235,2758,218,2360,201"/>
+<area shape="poly" id="edge37_Node000031_Node000009" title=" " alt="" coords="2146,199,1646,204,964,216,356,233,160,244,103,251,80,257,74,266,72,275,74,284,80,292,118,298,218,303,569,312,1621,327,3173,340,4241,357,4241,362,3173,345,1621,333,569,318,218,308,117,303,77,297,69,286,66,275,69,263,77,252,102,245,160,239,356,228,964,210,1645,199,2146,194"/>
+<area shape="poly" id="edge56_Node000031_Node000010" title=" " alt="" coords="2146,199,1655,205,988,216,394,233,202,244,147,251,124,257,118,266,116,275,118,284,124,292,178,300,319,306,812,317,2290,332,4472,340,5012,355,5012,360,4472,345,2290,337,811,323,319,312,177,305,121,297,113,286,110,275,113,263,121,252,146,245,202,239,394,228,987,211,1655,199,2146,194"/>
+<area shape="poly" id="edge38_Node000031_Node000012" title=" " alt="" coords="2146,199,1632,204,929,215,301,232,99,244,40,250,16,257,10,266,8,274,10,284,16,293,43,307,95,319,247,337,426,349,588,356,588,361,426,355,246,343,94,324,42,312,13,297,5,286,3,275,5,263,13,252,39,245,99,239,301,227,929,210,1632,199,2146,193"/>
+<area shape="poly" id="edge39_Node000031_Node000014" title=" " alt="" coords="2146,199,1635,204,936,215,313,233,112,244,53,250,29,257,23,266,21,275,23,284,29,292,64,302,146,310,430,325,831,336,1303,344,2268,355,2942,358,2942,364,2268,360,1303,350,831,341,430,330,146,315,63,307,26,297,18,286,16,275,18,263,26,252,52,245,111,239,313,227,936,210,1635,199,2146,194"/>
+<area shape="poly" id="edge40_Node000031_Node000015" title=" " alt="" coords="2361,195,3416,220,3987,237,4320,252,4377,259,4377,265,4320,257,3987,242,3415,225,2360,200"/>
+<area shape="poly" id="edge41_Node000031_Node000016" title=" " alt="" coords="2361,195,3586,223,4234,240,4563,252,4613,259,4612,265,4562,257,4234,245,3585,228,2361,200"/>
+<area shape="poly" id="edge42_Node000031_Node000017" title=" " alt="" coords="2146,200,1256,218,740,235,526,246,363,257,351,258,351,253,362,252,525,240,740,230,1256,213,2146,194"/>
+<area shape="poly" id="edge43_Node000031_Node000018" title=" " alt="" coords="2146,198,1878,200,1500,208,1064,226,840,240,620,257,609,258,608,253,620,252,839,235,1063,221,1500,203,1878,195,2146,193"/>
+<area shape="poly" id="edge44_Node000031_Node000019" title=" " alt="" coords="2146,199,1916,203,1602,213,1242,230,877,257,866,258,866,253,877,252,1242,225,1601,207,1916,198,2146,194"/>
+<area shape="poly" id="edge45_Node000031_Node000020" title=" " alt="" coords="2147,200,1705,217,1421,234,1135,257,1124,259,1123,253,1134,252,1421,228,1705,212,2146,195"/>
+<area shape="poly" id="edge46_Node000031_Node000021" title=" " alt="" coords="2146,203,1809,222,1601,238,1392,257,1381,259,1380,253,1392,252,1601,232,1809,217,2146,197"/>
+<area shape="poly" id="edge47_Node000031_Node000022" title=" " alt="" coords="2146,207,1917,228,1649,257,1638,259,1638,253,1649,252,1917,223,2146,202"/>
+<area shape="poly" id="edge48_Node000031_Node000023" title=" " alt="" coords="2171,212,1893,257,1892,252,2170,206"/>
+<area shape="poly" id="edge49_Node000031_Node000024" title=" " alt="" coords="2207,214,2057,265,2055,259,2206,209"/>
+<area shape="poly" id="edge50_Node000031_Node000025" title=" " alt="" coords="2256,220,2256,255,2250,255,2250,220"/>
+<area shape="poly" id="edge51_Node000031_Node000026" title=" " alt="" coords="2300,209,2426,252,2424,257,2298,214"/>
+<area shape="poly" id="edge52_Node000031_Node000027" title=" " alt="" coords="2332,206,2604,253,2603,259,2331,212"/>
+<area shape="poly" id="edge53_Node000031_Node000028" title=" " alt="" coords="2360,202,2571,223,2815,252,2826,254,2825,259,2814,257,2570,228,2360,207"/>
+<area shape="poly" id="edge54_Node000031_Node000029" title=" " alt="" coords="2360,198,2665,217,2851,232,3037,252,3088,259,3087,265,3037,257,2851,238,2665,222,2360,203"/>
+<area shape="poly" id="edge55_Node000031_Node000030" title=" " alt="" coords="2360,195,5013,252,5025,253,5024,259,5013,257,2360,200"/>
 </map>

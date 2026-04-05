@@ -1,0 +1,39 @@
+<map id="VMlib::TimersGen" name="VMlib::TimersGen">
+<area shape="rect" id="Node000001" title="Класс для сбора статистики времени исполнения основных шагов алгоритма и вывода ее в файл" alt="" coords="1423,61,1562,86"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1827,116,1997,156"/>
+<area shape="poly" id="edge14_Node000012_Node000001" title=" " alt="" coords="1556,87,1612,99,1724,115,1827,126,1826,132,1723,120,1612,104,1555,92"/>
+<area shape="rect" id="Node000002" href="$d6/d3d/class_v_mlib_1_1_world_gen.html" title="Класс, опеделяющий текущую решаемую задачу" alt="" coords="2132,150,2263,175"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2154,147,2107,131,2053,116,1997,107,1878,92,1758,83,1562,76,1562,71,1759,78,1878,87,1998,101,2054,111,2109,125,2155,142"/>
+<area shape="rect" id="Node000003" href="$d1/dd8/class_v_mlib_1_1_log_stream.html" title="Класс, определяющий работу с потоком логов" alt="" coords="1424,246,1561,271"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1575,260,1663,262,1769,259,1883,250,1997,231,2090,203,2166,173,2168,178,2092,208,1998,236,1884,255,1769,265,1663,267,1575,266"/>
+<area shape="rect" id="Node000010" href="$d9/d9a/class_v_mlib_1_1_passport_gen.html" title="Абстрактный класс, опеделяющий паспорт задачи" alt="" coords="1838,181,1986,206"/>
+<area shape="poly" id="edge10_Node000010_Node000003" title=" " alt="" coords="1575,252,1683,242,1802,224,1875,204,1876,209,1803,229,1684,248,1575,257"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="1170,287,1274,313"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1287,289,1373,276,1424,268,1424,273,1374,281,1288,294"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="831,293,977,333"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="990,307,1169,299,1170,305,990,312"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="413,301,584,326"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="598,311,831,311,831,316,598,316"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="193,301,300,326"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="314,311,413,311,413,316,314,316"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="203,121,290,146"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="267,155,292,184,325,210,370,230,408,240,447,243,497,243,1223,243,1329,245,1424,251,1423,256,1329,251,1223,248,497,248,447,248,407,245,368,235,323,214,288,188,263,159"/>
+<area shape="poly" id="edge11_Node000010_Node000008" title=" " alt="" coords="293,148,387,176,442,187,497,191,1494,191,1838,191,1838,196,1494,196,497,196,441,192,385,181,292,153"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="608,121,795,146"/>
+<area shape="poly" id="edge16_Node000013_Node000008" title=" " alt="" coords="304,131,608,131,608,136,304,136"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="1135,41,1309,95"/>
+<area shape="poly" id="edge18_Node000014_Node000008" title=" " alt="" coords="303,115,324,111,436,95,552,84,779,70,981,64,1134,64,1134,69,981,69,779,75,552,89,437,101,324,116,304,120"/>
+<area shape="rect" id="Node000016" href="$d9/d54/class_v_mlib_1_1vm_timer.html" title="Класс засекания времени" alt="" coords="435,17,562,42"/>
+<area shape="poly" id="edge21_Node000016_Node000008" title=" " alt="" coords="266,108,291,83,323,62,379,41,435,31,436,36,380,46,325,66,294,87,269,112"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="5,113,144,153"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="158,131,203,131,203,136,158,136"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="2000,183,2108,172,2131,169,2132,174,2108,177,2000,188"/>
+<area shape="rect" id="Node000011" href="$d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени" alt="" coords="1397,116,1588,156"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="1602,147,1803,175,1838,180,1837,185,1802,180,1601,153"/>
+<area shape="poly" id="edge13_Node000002_Node000012" title=" " alt="" coords="2011,143,2132,154,2131,159,2010,148"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="809,131,1039,124,1174,116,1309,104,1433,83,1433,89,1310,109,1175,122,1039,130,809,136"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="1323,67,1423,69,1423,75,1323,73"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="819,5,989,45"/>
+<area shape="poly" id="edge19_Node000014_Node000015" title=" " alt="" coords="1003,36,1135,54,1134,59,1002,41"/>
+<area shape="poly" id="edge20_Node000015_Node000016" title=" " alt="" coords="575,26,818,24,819,29,575,31"/>
+</map>

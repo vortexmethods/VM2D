@@ -1,5 +1,9 @@
 <map id="VM2D::Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets" name="VM2D::Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets">
-<area shape="rect" id="node2" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе " alt="" coords="318,5,489,47"/>
-<area shape="rect" id="node4" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ac04ca51b096cd7f08703c45ebe00ad7e" title="VM2D::VelocityBiotSavart\l::CalcDiffVeloI1I2ToWakeFromSheets" alt="" coords="280,71,527,112"/>
-<area shape="rect" id="node3" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="575,13,771,39"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="735,5,976,45"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a2a6a6e63b271c286e4225e20c590bf13" title=" " alt="" coords="487,5,687,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="721,28,687,28,687,23,721,23"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе" alt="" coords="260,5,439,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="473,28,439,28,439,23,473,23"/>
+<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="5,13,212,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="246,28,212,28,212,23,246,23"/>
 </map>

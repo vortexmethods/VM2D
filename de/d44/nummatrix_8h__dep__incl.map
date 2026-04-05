@@ -1,3 +1,9 @@
 <map id="VMlib/numvector/nummatrix.h" name="VMlib/numvector/nummatrix.h">
-<area shape="rect" id="node2" href="$de/d45/_airfoil2_d_rect_8cpp.html" title="Файл кода с описанием класса AirfoilRect. " alt="" coords="5,80,225,107"/>
+<area shape="rect" id="Node000001" title="Описание класса nummatrix." alt="" coords="273,5,495,31"/>
+<area shape="rect" id="Node000002" href="$de/dac/_airfoil2_d_8cpp.html" title="Файл кода с описанием класса Airfoil." alt="" coords="5,79,216,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="328,37,156,81,154,76,326,32"/>
+<area shape="rect" id="Node000003" href="$de/deb/_airfoil2_d_deformable_8cpp.html" title="Файл кода с описанием класса AirfoilDeformable." alt="" coords="241,79,527,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="387,44,387,79,381,79,381,44"/>
+<area shape="rect" id="Node000004" href="$d8/d45/_airfoil2_d_rigid_8cpp.html" title="Файл кода с описанием класса AirfoilRigid." alt="" coords="552,79,795,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="444,31,627,76,626,81,443,37"/>
 </map>

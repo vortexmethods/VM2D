@@ -1,0 +1,9 @@
+<map id="VM2D::MeasureVP::getWakeVP" name="VM2D::MeasureVP::getWakeVP">
+<area shape="rect" id="Node000001" title="Возврат wakeVP." alt="" coords="503,35,725,60"/>
+<area shape="rect" id="Node000002" href="$d0/d75/class_v_m2_d_1_1_gpu.html#ac569e54b8579eacb3c3f252100324acc" title=" " alt="" coords="293,5,433,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="491,36,432,29,433,23,492,30"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813" title="Вычисление скоростей в точках wakeVP." alt="" coords="271,55,455,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="489,64,455,68,454,62,489,59"/>
+<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="5,63,223,88"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="257,78,223,78,223,73,257,73"/>
+</map>

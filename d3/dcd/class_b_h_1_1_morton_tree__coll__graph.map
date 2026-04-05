@@ -1,0 +1,36 @@
+<map id="BH::MortonTree" name="BH::MortonTree">
+<area shape="rect" id="Node000001" title="Структура, соответствующая мортоновскому дереву" alt="" coords="1503,299,1625,325"/>
+<area shape="rect" id="Node000002" href="$de/d3a/class_b_h_1_1params.html" title="Класс, содержащий параметры метода Баонса &#45; Хата для CPU." alt="" coords="1216,9,1315,34"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1329,12,1366,12,1406,18,1446,30,1480,51,1507,79,1527,112,1542,148,1552,184,1563,252,1566,299,1560,299,1558,252,1547,186,1537,150,1522,115,1502,83,1477,55,1443,35,1405,23,1366,18,1329,17"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="1155,350,1376,375"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1389,356,1478,343,1536,322,1537,327,1479,348,1390,361"/>
+<area shape="rect" id="Node000004" href="$df/d22/class_b_h_1_1_points_copy.html" title="Класс&#45;обертка для точек и панелей" alt="" coords="795,361,917,386"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="931,369,1154,363,1154,368,931,374"/>
+<area shape="rect" id="Node000005" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html" title="Класс, опеделяющий двумерный вихревой элемент" alt="" coords="513,413,639,438"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="653,409,794,382,795,387,653,414"/>
+<area shape="rect" id="Node000006" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title=" " alt="" coords="281,351,400,377"/>
+<area shape="poly" id="edge11_Node000001_Node000006" title=" " alt="" coords="389,344,474,321,524,313,575,309,1267,309,1503,309,1503,315,1267,315,575,315,525,318,476,326,390,350"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="414,363,794,370,794,375,414,368"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="383,380,425,395,513,414,512,419,423,400,381,385"/>
+<area shape="rect" id="Node000009" href="$d2/d1b/struct_b_h_1_1_t_particle_code.html" title="Структура, соответствующая частице и ее мортоновскому коду" alt="" coords="507,462,645,487"/>
+<area shape="poly" id="edge10_Node000009_Node000006" title=" " alt="" coords="369,383,417,418,477,448,513,459,512,464,475,453,415,422,366,388"/>
+<area shape="rect" id="Node000013" href="$d6/d8f/struct_b_h_1_1tree_cell_t.html" title="Структура, соответствующая ячейке мортоновского дерева" alt="" coords="802,189,910,214"/>
+<area shape="poly" id="edge17_Node000013_Node000006" title=" " alt="" coords="350,337,369,301,396,259,431,217,475,184,515,165,552,152,586,145,618,144,687,152,771,168,828,186,827,191,770,173,686,157,618,149,586,151,553,157,517,170,477,189,435,221,400,262,373,304,355,340"/>
+<area shape="rect" id="Node000007" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="5,351,232,377"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="246,361,281,361,281,367,246,367"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="941,419,1131,459"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="1144,435,1221,428,1306,415,1394,394,1477,362,1543,322,1546,327,1480,366,1396,399,1307,421,1221,434,1145,440"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="659,466,941,443,941,449,659,471"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="1183,463,1348,489"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="1362,486,1422,482,1451,473,1477,460,1495,447,1510,430,1533,392,1549,354,1557,324,1562,326,1554,356,1538,394,1514,433,1498,451,1480,465,1452,478,1422,487,1362,492"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="507,42,645,67"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="659,60,797,77,977,105,1178,145,1279,169,1377,197,1430,217,1480,244,1519,271,1550,297,1546,301,1515,275,1477,249,1428,222,1375,203,1277,174,1176,150,976,110,797,82,659,65"/>
+<area shape="poly" id="edge19_Node000013_Node000011" title=" " alt="" coords="642,69,677,84,701,103,736,118,772,134,811,161,842,187,839,191,808,165,769,138,734,123,699,108,675,89,640,74"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1162,213,1369,238"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="1324,239,1520,297,1519,302,1323,245"/>
+<area shape="poly" id="edge15_Node000012_Node000013" title=" " alt="" coords="924,203,1162,217,1162,222,924,208"/>
+<area shape="rect" id="Node000014" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="476,199,676,225"/>
+<area shape="poly" id="edge16_Node000013_Node000014" title=" " alt="" coords="690,205,802,201,802,206,690,210"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="490,249,662,274"/>
+<area shape="poly" id="edge18_Node000013_Node000015" title=" " alt="" coords="675,256,723,250,770,240,804,227,833,212,835,216,806,232,771,245,724,256,676,261"/>
+</map>

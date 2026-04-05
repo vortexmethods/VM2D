@@ -1,6 +1,6 @@
 var class_v_m2_d_1_1_mechanics =
 [
-    [ "Mechanics", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a44dca9161c734810e7bdb67ce613e79d", null ],
+    [ "Mechanics", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a51e762a8d2b263c73d2aee3bf1946d7e", null ],
     [ "~Mechanics", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a819c725204f9194531dc1d7344a1c649", null ],
     [ "AngleOfAirfoil", "d7/dc9/class_v_m2_d_1_1_mechanics.html#ae1b5a1cd6d16a556bc4ad97309541ca4", null ],
     [ "AngularVelocityOfAirfoil", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a5822957b7db2a8138c2aa7b4ac5a3fa6", null ],
@@ -18,12 +18,12 @@ var class_v_m2_d_1_1_mechanics =
     [ "VeloOfAirfoilRcm", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a683eb87448092e5d93fc9059d232080b", null ],
     [ "afl", "d7/dc9/class_v_m2_d_1_1_mechanics.html#adf7ba6b7e6f84fcf9ca33c6f43922037", null ],
     [ "boundary", "d7/dc9/class_v_m2_d_1_1_mechanics.html#af8aa0f0b6e3ce0e35252edfa92c79017", null ],
-    [ "degOfFreedom", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a4318c2144269d22ad046fec674297729", null ],
+    [ "circulation", "d7/dc9/class_v_m2_d_1_1_mechanics.html#af60d69cb9b243fc30f028f60b561de38", null ],
+    [ "circulationOld", "d7/dc9/class_v_m2_d_1_1_mechanics.html#acf87dcd3c6e375b7b05c8942590ad53e", null ],
     [ "hydroDynamForce", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a261bea35b2cbab2f5998fae260f5a72f", null ],
     [ "hydroDynamMoment", "d7/dc9/class_v_m2_d_1_1_mechanics.html#addcabcd49d1d963da64a68c2beac16db", null ],
     [ "isDeform", "d7/dc9/class_v_m2_d_1_1_mechanics.html#aa64443bbef224a143fa2aa658bcd3b4f", null ],
     [ "isMoves", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a1b5a496b28043625bbe819e4be1448c9", null ],
-    [ "isRotate", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a2d3fe6a5224df954ee9accd34fc31849", null ],
     [ "mechParamsParser", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a156cb77f0915ad14430b53ea7049fb5d", null ],
     [ "numberInPassport", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a315d64e6819f777d097026c9176d87d2", null ],
     [ "Phi", "d7/dc9/class_v_m2_d_1_1_mechanics.html#ac96585521bc56ba94208f1bdbe40a12c", null ],
@@ -32,12 +32,14 @@ var class_v_m2_d_1_1_mechanics =
     [ "Rcm", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a95c2d2997af542624374dc05e4d9133f", null ],
     [ "Rcm0", "d7/dc9/class_v_m2_d_1_1_mechanics.html#aa937cf3e80b53d6aa421eb259657656f", null ],
     [ "RcmOld", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a31f69d05c8defac397da1c62133bf132", null ],
+    [ "Vcm", "d7/dc9/class_v_m2_d_1_1_mechanics.html#ae0e1a0a048953f5652e18da1efc669fd", null ],
     [ "Vcm0", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a29097fc44c4af7d3f2f992f2c8424d1f", null ],
     [ "VcmOld", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a6b906490aee585c0ee20ea6aececda24", null ],
     [ "virtVortParams", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a14f6a62c2afffff3422453f2a0399069", null ],
     [ "viscousForce", "d7/dc9/class_v_m2_d_1_1_mechanics.html#acefc1ff3b97649be999631cab65bb103", null ],
     [ "viscousMoment", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a72766580b9393932f80dce8202f1348b", null ],
     [ "W", "d7/dc9/class_v_m2_d_1_1_mechanics.html#a7782bff3f6280cdf48013d5e3ff49dd6", null ],
+    [ "Wcm", "d7/dc9/class_v_m2_d_1_1_mechanics.html#ad00b53946c766c88b42615075d16f93e", null ],
     [ "Wcm0", "d7/dc9/class_v_m2_d_1_1_mechanics.html#af7514e4cd3fba9c7f75f2d2e2e05c701", null ],
     [ "WcmOld", "d7/dc9/class_v_m2_d_1_1_mechanics.html#ad4e7488969e95378f916cfa8e1dc91f5", null ]
 ];

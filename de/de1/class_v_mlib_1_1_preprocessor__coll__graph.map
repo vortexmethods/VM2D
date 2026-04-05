@@ -1,11 +1,22 @@
 <map id="VMlib::Preprocessor" name="VMlib::Preprocessor">
-<area shape="rect" id="node2" title="STL class. " alt="" coords="73,429,193,456"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="37,339,196,380"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="49,248,185,289"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="5,157,135,199"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="86,81,241,108"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="159,157,293,199"/>
-<area shape="rect" id="node7" title="STL class. " alt="" coords="113,5,213,32"/>
-<area shape="rect" id="node9" title="STL class. " alt="" coords="238,429,318,456"/>
-<area shape="rect" id="node10" title="STL class. " alt="" coords="220,339,347,380"/>
+<area shape="rect" id="Node000001" title="Класс, позволяющий выполнять предварительную обработку файлов" alt="" coords="95,540,246,565"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="37,423,123,448"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,462,81,489,92,514,106,528,124,538,121,542,103,532,87,518,76,490,74,462"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,333,144,373"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="79,387,82,422,77,423,74,387"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="187,423,320,448"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="251,462,242,490,226,518,212,532,196,542,193,538,208,527,222,514,237,488,246,460"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="169,333,343,373"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="258,387,256,423,251,422,252,387"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="181,244,331,284"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="259,298,259,333,253,333,253,298"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="103,155,244,195"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="203,203,240,242,236,246,199,206"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="171,80,341,105"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="236,117,195,157,191,153,232,113"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="269,155,414,195"/>
+<area shape="poly" id="edge10_Node000010_Node000008" title=" " alt="" coords="280,113,323,153,319,157,276,116"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="203,5,309,31"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="259,45,259,80,253,80,253,45"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="315,207,276,246,273,242,311,203"/>
 </map>

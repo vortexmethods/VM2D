@@ -1,4 +1,13 @@
 <map id="VM2D::MechanicsRigidOscillPart::VeloOfAirfoilPanels" name="VM2D::MechanicsRigidOscillPart::VeloOfAirfoilPanels">
-<area shape="rect" id="node2" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a53546cdcbd437471d6f8496e34ae3c54" title="Вычисление скорости центра масс профиля " alt="" coords="247,5,440,47"/>
-<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afaa4428c98211d798542f0636d1c9516" title="Установка постоянной скорости всех вершин профиля " alt="" coords="276,71,411,98"/>
+<area shape="rect" id="Node000001" title="Вычисление скоростей начал панелей" alt="" coords="5,127,212,167"/>
+<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="277,5,450,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,124,193,90,259,55,277,48,279,52,261,60,196,94,141,129"/>
+<area shape="rect" id="Node000003" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="277,69,450,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="198,124,263,109,264,114,199,129"/>
+<area shape="rect" id="Node000004" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6bc3591c405e791a4dd542f53258e115" title="Геометрический поворот двумерного вектора на 90 градусов" alt="" coords="270,134,457,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="212,144,257,144,257,149,212,149"/>
+<area shape="rect" id="Node000005" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a68afabb2904ac0341a0695e0d32d272c" title="Установка постоянной скорости всех вершин профиля" alt="" coords="277,184,450,224"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="199,164,264,179,263,184,198,169"/>
+<area shape="rect" id="Node000006" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a53546cdcbd437471d6f8496e34ae3c54" title="Вычисление скорости центра масс профиля" alt="" coords="260,248,467,288"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="141,165,196,199,261,234,279,241,277,246,259,238,193,204,138,169"/>
 </map>

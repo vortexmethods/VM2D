@@ -1,0 +1,16 @@
+<map id="VMlib::StreamParser::StreamParser" name="VMlib::StreamParser::StreamParser">
+<area shape="rect" id="Node000001" title="Конструктор, принимающий один поток" alt="" coords="5,67,160,107"/>
+<area shape="rect" id="Node000002" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a38970908d6109aab35ca752bee3d1331" title="Связывание потока логов с потоком вывода от другого потока логов" alt="" coords="208,20,395,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,68,194,60,195,65,161,73"/>
+<area shape="rect" id="Node000004" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a94b4e184da0c1af5530cab7753181a78" title="Парсинг заданного потока" alt="" coords="224,99,379,139"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,95,211,103,210,108,160,101"/>
+<area shape="rect" id="Node000003" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a9718b59c756960f3d793ef9e32b30199" title="Связывание потока логов с потоком вывода" alt="" coords="443,5,629,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="395,32,429,29,429,35,395,37"/>
+<area shape="rect" id="Node000005" href="$db/d04/class_v_mlib_1_1_stream_parser.html#afe6f78a62d43f0a1a1ffedf73d57e2b1" title="Замена переменных в строке их значениями" alt="" coords="456,69,616,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="379,106,442,98,443,104,380,112"/>
+<area shape="rect" id="Node000006" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="677,99,832,139"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="379,118,443,119,629,119,664,118,664,123,629,124,443,124,379,123"/>
+<area shape="rect" id="Node000007" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a2dfcd2239e37cb8bd6e5678408d8a298" title="Pазбор строки, содержащей запятые, на отдельные строки" alt="" coords="459,184,613,224"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="358,136,469,177,467,182,356,141"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="617,97,664,104,663,109,616,103"/>
+</map>

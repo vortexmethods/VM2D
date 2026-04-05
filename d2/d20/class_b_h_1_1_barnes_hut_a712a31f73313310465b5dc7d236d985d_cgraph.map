@@ -1,0 +1,5 @@
+<map id="BH::BarnesHut::BuildNecessaryTrees" name="BH::BarnesHut::BuildNecessaryTrees">
+<area shape="rect" id="Node000001" title="Построение всех нужных деревьев на основе заданных точек pointsCopy" alt="" coords="5,5,232,45"/>
+<area shape="rect" id="Node000002" href="$d2/d20/class_b_h_1_1_barnes_hut.html#a02182a0858cef7cdfa9ca78599757bec" title="Построение одного дерева tree на основе заданных точек pointsCopy" alt="" coords="280,13,491,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,23,266,23,266,28,232,28"/>
+</map>

@@ -1,3 +1,5 @@
 <map id="VMlib::PrintUniversalLogoToStream" name="VMlib::PrintUniversalLogoToStream">
-<area shape="rect" id="node2" href="$d1/d71/class_v_mlib_1_1_queue.html#ad88a984438b9be49aae262818e3e360d" title="Конструктор " alt="" coords="227,13,373,39"/>
+<area shape="rect" id="Node000001" title="Передача в поток вывода универсальной шапки программы VM2D/VM3D." alt="" coords="212,5,403,45"/>
+<area shape="rect" id="Node000002" href="$d1/d71/class_v_mlib_1_1_queue.html#a2ae8aee033f6b1577f58024d2c32c4e0" title="Конструктор" alt="" coords="5,13,164,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,28,164,28,164,23,198,23"/>
 </map>

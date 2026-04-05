@@ -1,0 +1,26 @@
+<map id="VMlib::WorldGen::getInfo" name="VMlib::WorldGen::getInfo">
+<area shape="rect" id="Node000001" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода" alt="" coords="789,241,973,266"/>
+<area shape="rect" id="Node000002" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a55aa30948b78236633e26f56a870a120" title="Конструктор" alt="" coords="507,5,722,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="867,229,848,191,820,145,784,98,740,60,719,48,721,43,743,55,788,95,824,142,852,188,872,227"/>
+<area shape="rect" id="Node000003" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#aa5a1d01b1c44bb7c6716017aa9baeec4" title="Инициализация векторов для вычисления скоростей и давлений Вызывается только на тех шагах расчета,..." alt="" coords="499,70,730,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="862,231,813,169,779,136,740,109,714,98,716,93,743,104,782,132,817,165,867,228"/>
+<area shape="rect" id="Node000004" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afa0496537fb81b12de574b8d4e7f441c" title="Считывание профиля из файла" alt="" coords="512,119,717,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="854,234,804,196,740,160,702,147,704,142,742,155,807,191,857,230"/>
+<area shape="rect" id="Node000005" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html#a1d24ee8c0b7f8464b21d8a06eb0025cb" title="Считывание вихревого следа из файла" alt="" coords="531,169,698,209"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="814,240,698,212,699,207,815,235"/>
+<area shape="rect" id="Node000006" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#ac11619e267d87505be152e3bf79767fc" title="Парсинг списка параметров механической системы" alt="" coords="488,233,741,273"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="776,256,742,256,742,251,776,251"/>
+<area shape="rect" id="Node000007" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#a1d975b5b255c40264f6784f2646d58db" title="Чтение точек, в которых нужно посчитать давление и скорость" alt="" coords="503,297,726,337"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="814,272,699,300,698,295,813,267"/>
+<area shape="rect" id="Node000008" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#ad00c8353de0fbf8b6a1c8a45355dfe1b" title="Чтение параметров конкретной механической системы" alt="" coords="492,362,737,417"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="856,277,805,314,743,352,713,364,711,359,740,347,802,310,853,272"/>
+<area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений" alt="" coords="511,441,719,481"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="869,279,849,314,821,354,785,395,743,430,717,444,715,439,740,426,781,392,817,351,845,311,865,277"/>
+<area shape="rect" id="Node000012" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,478,167,503"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="877,280,862,329,836,390,818,420,797,449,772,475,743,496,703,516,661,532,574,552,485,560,397,557,313,548,238,535,125,506,127,501,239,529,314,543,397,552,485,554,574,547,660,526,701,511,740,491,768,471,792,446,813,417,831,387,857,327,871,279"/>
+<area shape="rect" id="Node000009" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a59183858c817328199f449df792b6b5a" title="Конструктор" alt="" coords="215,369,440,409"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="478,392,440,392,440,387,478,387"/>
+<area shape="rect" id="Node000011" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5ff24012df7e7caa5bd13cd6552042ab" title="Набор матрицы, правой части и решение СЛАУ" alt="" coords="217,441,438,481"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="497,464,438,464,438,459,497,459"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="203,479,167,484,167,478,203,474"/>
+</map>

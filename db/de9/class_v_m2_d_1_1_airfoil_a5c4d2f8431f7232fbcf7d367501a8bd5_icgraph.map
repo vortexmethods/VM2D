@@ -1,0 +1,17 @@
+<map id="VM2D::Airfoil::isOutsideGabarits" name="VM2D::Airfoil::isOutsideGabarits">
+<area shape="rect" id="Node000001" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля" alt="" coords="740,121,917,161"/>
+<area shape="rect" id="Node000002" href="$df/d8f/class_v_m2_d_1_1_wake.html#a400fefddd41761ea02afd8a15fb7764e" title="Проверка проникновения точки через границу профиля" alt="" coords="481,99,668,124"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="726,131,668,125,669,119,726,126"/>
+<area shape="rect" id="Node000007" href="$df/d8f/class_v_m2_d_1_1_wake.html#a7d45c51ef437950292d39efc768ee1ea" title="Проверка проникновения точки через границу профиля" alt="" coords="457,149,692,189"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="727,155,693,158,692,153,726,149"/>
+<area shape="rect" id="Node000003" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="235,5,395,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="526,96,408,53,353,33,355,28,410,47,528,91"/>
+<area shape="rect" id="Node000004" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="5,31,172,56"/>
+<area shape="poly" id="edge6_Node000002_Node000004" title=" " alt="" coords="469,99,172,58,173,52,470,94"/>
+<area shape="rect" id="Node000005" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad9b7f5fc4d187f728eed9661ad345c3c" title=" " alt="" coords="220,107,409,132"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="467,117,410,119,410,114,467,112"/>
+<area shape="rect" id="Node000006" href="$df/d8f/class_v_m2_d_1_1_wake.html#ab5b0c3e66b903ed0f3ac55fbba4d7d79" title="Проверка пересечения вихрями следа профиля при перемещении" alt="" coords="239,156,390,181"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="502,130,458,139,372,159,371,153,457,134,501,124"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="221,31,172,37,172,31,221,26"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="444,171,390,171,390,166,444,166"/>
+</map>

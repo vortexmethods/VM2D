@@ -1,9 +1,23 @@
 <map id="VMlib::StreamParser" name="VMlib::StreamParser">
-<area shape="rect" id="node3" title="STL class. " alt="" coords="279,179,359,206"/>
-<area shape="rect" id="node6" href="$d1/dd8/class_v_mlib_1_1_log_stream.html" title="Класс, определяющий работу с потоком логов " alt="" coords="109,380,235,407"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="255,81,382,123"/>
-<area shape="rect" id="node7" title="STL class. " alt="" coords="35,276,130,303"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="16,172,149,213"/>
-<area shape="rect" id="node9" title="STL class. " alt="" coords="5,89,160,115"/>
-<area shape="rect" id="node10" title="STL class. " alt="" coords="33,5,133,32"/>
+<area shape="rect" id="Node000001" title="Класс, позволяющий выполнять разбор файлов и строк с настройками и параметрами" alt="" coords="152,521,307,547"/>
+<area shape="rect" id="Node000002" href="$d1/dd8/class_v_mlib_1_1_log_stream.html" title="Класс, определяющий работу с потоком логов" alt="" coords="71,375,209,400"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,411,224,520,220,523,152,413"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="39,272,143,297"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,308,137,373,132,376,100,311"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="18,169,163,209"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="93,223,93,272,88,272,88,223"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,87,176,113"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="93,127,93,169,88,169,88,127"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="37,5,144,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="93,44,93,87,88,87,88,44"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="233,177,319,202"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="262,215,150,376,146,373,258,212"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="233,360,407,415"/>
+<area shape="poly" id="edge9_Node000009_Node000007" title=" " alt="" coords="280,216,283,254,291,297,311,359,306,361,285,298,278,255,275,216"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="335,272,521,297"/>
+<area shape="poly" id="edge11_Node000010_Node000007" title=" " alt="" coords="308,207,411,270,408,274,305,211"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="207,80,345,120"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="279,134,279,176,273,176,273,134"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="299,428,239,523,234,520,294,425"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="408,309,350,362,347,358,404,305"/>
 </map>

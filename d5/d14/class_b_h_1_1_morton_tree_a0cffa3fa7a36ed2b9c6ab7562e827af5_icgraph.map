@@ -1,0 +1,15 @@
+<map id="BH::MortonTree::Delta" name="BH::MortonTree::Delta">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1072,45,1237,70"/>
+<area shape="rect" id="Node000002" href="$d5/d14/class_b_h_1_1_morton_tree.html#a0cb4196cf2fb58b89e984c92b1b34237" title="Функция построения i&#45;й внутренней ячейки дерева" alt="" coords="552,5,765,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1058,54,766,35,766,30,1058,49"/>
+<area shape="rect" id="Node000004" href="$d5/d14/class_b_h_1_1_morton_tree.html#ad65bcfeffb92b9d425db09d0dacb6a91" title=" " alt="" coords="813,70,1024,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1058,70,1024,74,1024,69,1058,65"/>
+<area shape="rect" id="Node000003" href="$d5/d14/class_b_h_1_1_morton_tree.html#a59cb5955be2e692760877ab13a425b17" title="Построение внутренних ячеек дерева" alt="" coords="5,37,215,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="538,35,215,54,215,49,538,30"/>
+<area shape="rect" id="Node000005" href="$d5/d14/class_b_h_1_1_morton_tree.html#a5bff4d27f68bfbafd33a29e2d89f951f" title=" " alt="" coords="575,70,742,95"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="800,85,742,85,742,80,800,80"/>
+<area shape="rect" id="Node000006" href="$d5/d14/class_b_h_1_1_morton_tree.html#af9bee1e3ffc60f8a00750de04836859c" title="Функция вычисления геометрических параметров внутренней ячейки дерева" alt="" coords="263,70,504,95"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="843,100,766,111,659,116,552,111,452,98,453,93,552,105,659,111,765,105,842,95"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="561,85,504,85,504,80,561,80"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="249,73,215,70,215,64,249,68"/>
+</map>

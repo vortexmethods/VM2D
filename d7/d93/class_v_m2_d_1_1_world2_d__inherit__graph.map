@@ -1,3 +1,5 @@
 <map id="VM2D::World2D" name="VM2D::World2D">
-<area shape="rect" id="node2" href="$d6/d3d/class_v_mlib_1_1_world_gen.html" title="Класс, опеделяющий текущую решаемую задачу " alt="" coords="5,5,127,32"/>
+<area shape="rect" id="Node000001" title="Класс, опеделяющий текущую решаемую задачу" alt="" coords="9,79,133,104"/>
+<area shape="rect" id="Node000002" href="$d6/d3d/class_v_mlib_1_1_world_gen.html" title="Класс, опеделяющий текущую решаемую задачу" alt="" coords="5,5,136,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,44,73,79,68,79,68,44"/>
 </map>

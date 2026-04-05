@@ -1,8 +1,18 @@
 <map id="VMlib::StreamParser::StreamParser" name="VMlib::StreamParser::StreamParser">
-<area shape="rect" id="node2" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a38970908d6109aab35ca752bee3d1331" title="Связывание потока логов с потоком вывода от другого потока логов " alt="" coords="196,19,365,60"/>
-<area shape="rect" id="node4" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a57d43743dfc737c97f61e1eb56588b39" title="Парсинг заданного потока " alt="" coords="209,109,352,151"/>
-<area shape="rect" id="node3" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a9718b59c756960f3d793ef9e32b30199" title="Связывание потока логов с потоком вывода " alt="" coords="413,5,585,47"/>
-<area shape="rect" id="node5" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр " alt="" coords="633,93,776,135"/>
-<area shape="rect" id="node6" href="$db/d04/class_v_mlib_1_1_stream_parser.html#afe6f78a62d43f0a1a1ffedf73d57e2b1" title="Замена переменных в строке их значениями " alt="" coords="424,123,575,164"/>
-<area shape="rect" id="node7" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a007421da8de6811255285ef8ca7c459c" title="Pазбор строки, содержащей запятые, на отдельные строки " alt="" coords="428,188,571,229"/>
+<area shape="rect" id="Node000001" title="Конструктор, принимающий четыре потока" alt="" coords="5,69,160,109"/>
+<area shape="rect" id="Node000002" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a38970908d6109aab35ca752bee3d1331" title="Связывание потока логов с потоком вывода от другого потока логов" alt="" coords="215,5,401,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,67,223,47,224,52,155,72"/>
+<area shape="rect" id="Node000004" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a88bf830bb2bbd983ec0524e0c69cf257" title="Слияние двух баз данных" alt="" coords="208,69,408,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="160,87,194,87,194,92,160,92"/>
+<area shape="rect" id="Node000005" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a94b4e184da0c1af5530cab7753181a78" title="Парсинг заданного потока" alt="" coords="231,133,385,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="155,107,224,127,223,132,153,112"/>
+<area shape="rect" id="Node000003" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a9718b59c756960f3d793ef9e32b30199" title="Связывание потока логов с потоком вывода" alt="" coords="456,5,643,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="402,23,442,23,442,28,402,28"/>
+<area shape="rect" id="Node000006" href="$db/d04/class_v_mlib_1_1_stream_parser.html#afe6f78a62d43f0a1a1ffedf73d57e2b1" title="Замена переменных в строке их значениями" alt="" coords="469,76,629,116"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="385,132,455,116,456,121,386,138"/>
+<area shape="rect" id="Node000007" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="691,105,845,145"/>
+<area shape="poly" id="edge8_Node000005_Node000007" title=" " alt="" coords="385,146,676,128,677,134,386,151"/>
+<area shape="rect" id="Node000008" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a2dfcd2239e37cb8bd6e5678408d8a298" title="Pазбор строки, содержащей запятые, на отдельные строки" alt="" coords="472,191,627,231"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="386,169,459,187,458,192,385,174"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="630,104,677,110,676,116,630,109"/>
 </map>

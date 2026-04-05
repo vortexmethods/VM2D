@@ -1,0 +1,5 @@
+<map id="VM2D::Wake::MoveInsideMovingBoundary" name="VM2D::Wake::MoveInsideMovingBoundary">
+<area shape="rect" id="Node000001" title="Проверка проникновения точки через границу профиля" alt="" coords="204,5,439,45"/>
+<area shape="rect" id="Node000002" href="$df/d8f/class_v_m2_d_1_1_wake.html#ab5b0c3e66b903ed0f3ac55fbba4d7d79" title="Проверка пересечения вихрями следа профиля при перемещении" alt="" coords="5,13,156,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="190,28,157,28,157,23,190,23"/>
+</map>

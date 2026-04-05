@@ -1,0 +1,48 @@
+<map id="VMlib::TimersGen::stop" name="VMlib::TimersGen::stop">
+<area shape="rect" id="Node000001" title="Останов счетчика" alt="" coords="795,459,969,484"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="515,5,733,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="878,445,874,366,868,313,857,257,840,198,817,142,785,89,745,44,729,33,732,29,748,40,790,86,821,139,845,197,862,256,873,313,880,365,884,445"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="521,55,727,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="877,445,870,374,850,278,833,227,811,178,781,132,745,93,726,81,729,77,748,89,786,129,815,175,838,225,855,277,875,373,882,444"/>
+<area shape="rect" id="Node000004" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="507,104,741,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="875,445,864,385,841,305,824,263,803,222,776,184,745,151,712,132,714,127,748,147,781,180,807,219,829,260,846,303,869,383,880,444"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a42a48cb3fcf4d65437fd954fae7a03d7" title="Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных),..." alt="" coords="219,155,449,180"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="874,446,861,392,838,324,821,289,800,256,775,226,745,202,704,179,659,163,612,153,564,147,473,148,397,157,396,152,472,143,564,142,612,147,660,158,706,174,748,197,779,223,804,253,825,287,843,322,866,390,879,444"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,235,167,260"/>
+<area shape="poly" id="edge25_Node000001_Node000006" title=" " alt="" coords="872,446,857,400,832,344,795,288,772,265,745,246,700,229,637,219,561,215,478,215,309,225,167,240,167,234,309,220,478,210,561,210,637,214,701,224,748,241,776,261,799,285,837,341,862,398,877,445"/>
+<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab4397193aff5c8a3109e5d0585fcd53c" title="Проверка проникновения вихрей внутрь профиля" alt="" coords="519,256,729,281"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="867,447,848,412,821,370,787,329,745,295,723,284,725,279,748,290,791,325,826,367,853,409,872,445"/>
+<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a76ca71da59452ac1670c228a6a8b3f09" title="Заполнение матрицы, состоящей из интегралов от (r&#45;xi) / |r&#45;xi|^2." alt="" coords="541,305,707,331"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="861,449,812,396,781,369,745,346,706,331,708,326,748,341,784,364,816,392,865,446"/>
+<area shape="rect" id="Node000011" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ada86302cbf92c7dff8124a610ae00e24" title="Заполнение матрицы системы для всех профилей" alt="" coords="527,355,721,395"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="844,455,798,432,746,410,709,398,710,393,748,405,800,427,847,450"/>
+<area shape="rect" id="Node000012" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a6c7401af9db2725436c8a570e5bec0cb" title="Вычисление гидродинамической силы, действующей на профиль" alt="" coords="517,419,731,459"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="781,461,731,455,732,450,781,456"/>
+<area shape="rect" id="Node000013" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a24c694bf820524c2c0828f2c920328ab" title="Вычисление гидродинамической силы, действующей на профиль" alt="" coords="519,483,729,523"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="781,486,729,493,728,488,781,481"/>
+<area shape="rect" id="Node000014" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a98f1a2f3b8065db981513c470c81cb34" title="Вычисление гидродинамической силы, действующей на профиль" alt="" coords="501,547,747,587"/>
+<area shape="poly" id="edge16_Node000001_Node000014" title=" " alt="" coords="847,493,800,516,748,538,710,550,709,545,746,533,798,511,844,488"/>
+<area shape="rect" id="Node000015" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a8e33f00ed56839ac4d103efb5534ca8b" title="Вычисление гидродинамической силы, действующей на профиль" alt="" coords="521,611,727,651"/>
+<area shape="poly" id="edge17_Node000001_Node000015" title=" " alt="" coords="865,497,816,550,783,578,748,602,722,614,719,609,745,597,780,574,812,546,861,493"/>
+<area shape="rect" id="Node000016" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#afbd4195a0e64487f0e15fc5a0386356e" title="Вычисление гидродинамической силы, действующей на профиль" alt="" coords="517,675,731,715"/>
+<area shape="poly" id="edge18_Node000001_Node000016" title=" " alt="" coords="872,498,854,536,827,581,791,627,748,666,727,678,724,673,745,661,787,623,822,578,849,533,868,496"/>
+<area shape="rect" id="Node000017" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#aa5a1d01b1c44bb7c6716017aa9baeec4" title="Инициализация векторов для вычисления скоростей и давлений Вызывается только на тех шагах расчета,..." alt="" coords="509,740,739,765"/>
+<area shape="poly" id="edge19_Node000001_Node000017" title=" " alt="" coords="877,499,863,548,838,611,800,675,776,705,748,729,726,742,723,738,745,725,772,701,796,672,833,609,858,547,872,497"/>
+<area shape="rect" id="Node000018" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ac7691c68a26170d074456241ba1c3e46" title="Очистка старых массивов под хранение скоростей, выделение новой памяти и обнуление" alt="" coords="511,789,737,815"/>
+<area shape="poly" id="edge20_Node000001_Node000018" title=" " alt="" coords="880,498,868,557,845,633,828,673,806,712,780,748,748,779,728,791,725,787,745,775,776,744,802,709,823,671,840,631,863,556,875,497"/>
+<area shape="rect" id="Node000019" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html#a97f706f2d0593bfc7cad435785e89eda" title="Сохранение вихревого следа в файл .vtk." alt="" coords="541,839,707,879"/>
+<area shape="poly" id="edge21_Node000001_Node000019" title=" " alt="" coords="881,498,872,564,850,653,833,701,811,747,783,790,748,828,730,841,709,850,707,846,727,837,745,824,779,787,806,744,828,698,845,652,867,563,876,497"/>
+<area shape="rect" id="Node000020" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#a2131c97c4107890c515b240d96d4ae45" title="Сохранение в файл вычисленных скоростей и давлений" alt="" coords="525,904,723,929"/>
+<area shape="poly" id="edge22_Node000001_Node000020" title=" " alt="" coords="883,498,879,576,872,628,860,683,843,740,820,796,789,848,748,893,725,908,722,904,745,889,784,845,815,794,838,739,855,682,866,627,873,576,878,498"/>
+<area shape="rect" id="Node000021" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений" alt="" coords="520,954,728,994"/>
+<area shape="poly" id="edge23_Node000001_Node000021" title=" " alt="" coords="884,498,882,583,876,640,865,703,849,768,824,832,792,892,749,944,730,958,727,953,745,940,787,889,820,830,843,766,860,702,871,640,876,583,879,498"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="269,186,216,202,119,237,118,232,214,197,267,181"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="215,255,453,295"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="505,274,454,275,454,270,505,269"/>
+<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="200,263,167,259,167,254,201,258"/>
+<area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5ff24012df7e7caa5bd13cd6552042ab" title="Набор матрицы, правой части и решение СЛАУ" alt="" coords="223,337,445,377"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="528,333,445,345,445,339,527,328"/>
+<area shape="poly" id="edge11_Node000010_Node000006" title=" " alt="" coords="269,334,214,310,112,263,115,258,216,305,271,329"/>
+<area shape="poly" id="edge13_Node000011_Node000010" title=" " alt="" coords="513,371,445,366,445,361,513,366"/>
+<area shape="poly" id="edge24_Node000021_Node000010" title=" " alt="" coords="507,950,499,944,470,911,444,875,402,797,372,714,352,630,340,549,333,477,332,377,337,377,339,477,345,548,357,628,377,712,407,795,448,873,474,908,503,940,510,946"/>
+</map>

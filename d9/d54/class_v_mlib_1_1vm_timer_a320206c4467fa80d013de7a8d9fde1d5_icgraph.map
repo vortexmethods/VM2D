@@ -1,0 +1,27 @@
+<map id="VMlib::vmTimer::stop" name="VMlib::vmTimer::stop">
+<area shape="rect" id="Node000001" title="Останов работающего счетчика времени" alt="" coords="767,181,929,207"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="501,5,719,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="831,171,786,106,754,73,717,44,693,33,695,28,720,40,758,69,790,103,835,168"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab4397193aff5c8a3109e5d0585fcd53c" title="Проверка проникновения вихрей внутрь профиля" alt="" coords="505,55,715,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="821,174,775,137,717,102,666,83,668,78,720,97,778,133,824,170"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,105,167,131"/>
+<area shape="poly" id="edge14_Node000001_Node000005" title=" " alt="" coords="809,178,766,160,718,146,644,133,567,123,415,113,277,112,167,115,167,110,277,106,415,108,568,118,644,127,719,141,768,155,811,173"/>
+<area shape="rect" id="Node000006" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="530,156,690,181"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="753,187,690,180,690,174,753,181"/>
+<area shape="rect" id="Node000007" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="251,181,417,207"/>
+<area shape="poly" id="edge11_Node000001_Node000007" title=" " alt="" coords="752,197,417,197,417,191,752,191"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ada86302cbf92c7dff8124a610ae00e24" title="Заполнение матрицы системы для всех профилей" alt="" coords="513,257,707,297"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="799,214,670,259,668,254,797,209"/>
+<area shape="rect" id="Node000010" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="525,321,695,347"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="829,219,783,266,753,290,720,311,688,324,686,319,717,306,750,286,779,262,826,215"/>
+<area shape="rect" id="Node000011" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений" alt="" coords="506,371,714,411"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="836,220,791,290,759,329,720,362,698,374,696,369,717,357,755,325,787,287,832,217"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="215,41,453,81"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="491,67,454,66,454,61,491,62"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="234,86,142,108,141,103,233,81"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="517,180,418,189,418,184,516,175"/>
+<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5ff24012df7e7caa5bd13cd6552042ab" title="Набор матрицы, правой части и решение СЛАУ" alt="" coords="223,257,445,297"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="499,279,445,279,445,274,499,274"/>
+<area shape="poly" id="edge9_Node000009_Node000005" title=" " alt="" coords="273,253,213,220,149,174,100,133,103,129,152,169,216,216,276,248"/>
+<area shape="poly" id="edge13_Node000011_Node000009" title=" " alt="" coords="521,370,500,362,430,330,370,299,373,295,433,326,502,357,523,365"/>
+</map>

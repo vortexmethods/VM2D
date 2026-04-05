@@ -1,5 +1,9 @@
 <map id="VM2D::Airfoil::calcMeanEpsOverPanel" name="VM2D::Airfoil::calcMeanEpsOverPanel">
-<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="253,5,425,47"/>
-<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a83f37cc868e5cbcc60b08007dc47db5c" title="Возврат константной ссылки на объект граничного условия " alt="" coords="240,71,439,98"/>
-<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a3b27cf9188066707092260ece7c35a6f" title="Возврат константной ссылки на объект для вычисления скоростей " alt="" coords="244,122,435,149"/>
+<area shape="rect" id="Node000001" title="Вычисление средних значений eps на панелях" alt="" coords="5,55,207,95"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac72e4692156b1f53ce1f706dfb9fa11b" title="Возврат константной ссылки на объект граничного условия" alt="" coords="255,5,469,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,53,291,31,292,36,197,58"/>
+<area shape="rect" id="Node000003" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="275,55,449,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,73,262,73,262,78,207,78"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a93698b2dc14c4b20b8364350c3f117e7" title="Возврат константной ссылки на объект для вычисления скоростей" alt="" coords="259,120,465,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="197,93,292,114,291,120,195,98"/>
 </map>

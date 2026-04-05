@@ -1,6 +1,13 @@
 <map id="VM2D::BoundaryConstLayerAver::GetInfluenceFromVInfToRectPanel" name="VM2D::BoundaryConstLayerAver::GetInfluenceFromVInfToRectPanel">
-<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="267,5,439,47"/>
-<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="255,71,451,98"/>
-<area shape="rect" id="node4" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb" title="Функция скорости набегающего потока с учетом разгона " alt="" coords="253,122,453,149"/>
-<area shape="rect" id="node5" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="501,115,677,156"/>
+<area shape="rect" id="Node000001" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части" alt="" coords="5,27,220,82"/>
+<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="268,5,441,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,39,254,35,255,40,220,44"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a788b3ba105982ad282142240e70e0172" title="Возврат текущей скорости набегающего потока" alt="" coords="269,70,440,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,64,256,69,256,74,220,70"/>
+<area shape="rect" id="Node000004" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="489,45,729,70"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="440,72,475,68,476,73,441,77"/>
+<area shape="rect" id="Node000005" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#ada3abfa665d3e6656788dfa12cbe9d33" title="Функция скорости набегающего потока с учетом разгона" alt="" coords="502,94,717,119"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="441,88,489,93,488,98,440,93"/>
+<area shape="rect" id="Node000006" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715" title="Функция&#45;множитель, позволяющая моделировать разгон" alt="" coords="777,87,967,127"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="717,104,764,104,764,109,717,109"/>
 </map>

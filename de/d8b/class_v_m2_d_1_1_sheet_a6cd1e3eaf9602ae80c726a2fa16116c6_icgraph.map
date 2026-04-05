@@ -1,4 +1,5 @@
 <map id="VM2D::Sheet::SetLayers" name="VM2D::Sheet::SetLayers">
-<area shape="rect" id="node2" href="$df/da2/class_v_m2_d_1_1_boundary.html#aee6b852d79dd1afbe3bfc26389644877" title="Конструктор " alt="" coords="221,5,407,32"/>
-<area shape="rect" id="node3" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a6dc6a0e144592bbb1e44edcb10215e12" title="Деструктор " alt="" coords="239,56,389,83"/>
+<area shape="rect" id="Node000001" title="Установка pазмерностей всех векторов и их обнуление" alt="" coords="253,5,432,31"/>
+<area shape="rect" id="Node000002" href="$df/da2/class_v_m2_d_1_1_boundary.html#aee6b852d79dd1afbe3bfc26389644877" title="Конструктор" alt="" coords="5,5,205,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,21,205,21,205,15,240,15"/>
 </map>

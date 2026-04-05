@@ -1,3 +1,5 @@
 <map id="VM2D::MechanicsRigidRotatePart::ReadSpecificParametersFromDictionary" name="VM2D::MechanicsRigidRotatePart::ReadSpecificParametersFromDictionary">
-<area shape="rect" id="node2" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="283,20,452,47"/>
+<area shape="rect" id="Node000001" title="Чтение параметров конкретной механической системы" alt="" coords="5,5,251,60"/>
+<area shape="rect" id="Node000002" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a7288c99d59eea9721bb38c9b8cbd154c" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода" alt="" coords="299,20,483,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,30,285,30,285,35,251,35"/>
 </map>

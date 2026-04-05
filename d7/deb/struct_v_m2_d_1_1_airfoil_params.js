@@ -5,6 +5,7 @@ var struct_v_m2_d_1_1_airfoil_params =
     [ "basePoint", "d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a2910d42694512f4c803333ae2b5afbd4", null ],
     [ "chord", "d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a03073446d2dbe36c9da8d1b4aeff59d8", null ],
     [ "fileAirfoil", "d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a54fc4eca58fa624ead8efb0670d49190", null ],
+    [ "initialGab", "d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a2800f7083e612c52f53995735086f95d", null ],
     [ "inverse", "d7/deb/struct_v_m2_d_1_1_airfoil_params.html#af475ba5c53070e5a48178dac0122b76f", null ],
     [ "mechanicalSystem", "d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a14226a209275ad62670d719aa7c177bf", null ],
     [ "mechanicalSystemParameters", "d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a744536e83ea0d8d55f5b04ff918cd039", null ],

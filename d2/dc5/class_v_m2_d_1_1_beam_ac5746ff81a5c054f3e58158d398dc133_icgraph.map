@@ -1,0 +1,7 @@
+<map id="VM2D::Beam::phi" name="VM2D::Beam::phi">
+<area shape="rect" id="Node000001" title=" " alt="" coords="249,31,384,56"/>
+<area shape="rect" id="Node000002" href="$d2/dc5/class_v_m2_d_1_1_beam.html#ad54887906cc4d7d717c276e6505af9d8" title=" " alt="" coords="5,5,201,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="235,36,201,32,202,27,236,31"/>
+<area shape="rect" id="Node000003" href="$d2/dc5/class_v_m2_d_1_1_beam.html#a28a8d4987d49dec9dae30a8afe361612" title=" " alt="" coords="6,55,201,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,55,201,59,201,54,235,50"/>
+</map>

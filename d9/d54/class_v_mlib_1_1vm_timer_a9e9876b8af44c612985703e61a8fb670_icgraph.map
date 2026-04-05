@@ -1,0 +1,29 @@
+<map id="VMlib::vmTimer::reset" name="VMlib::vmTimer::reset">
+<area shape="rect" id="Node000001" title="Сброс счетчика времени" alt="" coords="767,205,933,231"/>
+<area shape="rect" id="Node000002" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a6856c50fa00ec9e83ca081473cd8b76a" title="Конструктор, принимающий на вход имя счетчика" alt="" coords="513,5,707,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="835,194,817,159,791,119,757,78,717,44,695,33,697,28,720,40,761,74,795,115,821,157,840,191"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="501,55,719,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="829,196,783,144,752,116,717,94,691,83,693,78,720,89,755,112,786,140,833,193"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab4397193aff5c8a3109e5d0585fcd53c" title="Проверка проникновения вихрей внутрь профиля" alt="" coords="505,104,715,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="815,201,769,175,718,151,661,132,663,127,720,146,772,171,817,196"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,155,167,180"/>
+<area shape="poly" id="edge15_Node000001_Node000006" title=" " alt="" coords="780,205,718,195,566,182,414,174,167,169,167,164,414,168,566,176,719,190,780,200"/>
+<area shape="rect" id="Node000007" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="530,205,690,231"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="753,221,690,221,690,215,753,215"/>
+<area shape="rect" id="Node000008" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="251,231,417,256"/>
+<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="779,236,719,245,558,252,417,250,417,245,558,247,718,239,779,231"/>
+<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ada86302cbf92c7dff8124a610ae00e24" title="Заполнение матрицы системы для всех профилей" alt="" coords="513,306,707,346"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="817,240,720,290,673,308,671,303,718,285,814,235"/>
+<area shape="rect" id="Node000011" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="525,371,695,396"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="835,244,789,303,756,334,720,360,691,373,689,368,717,356,753,330,785,299,831,240"/>
+<area shape="rect" id="Node000012" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений" alt="" coords="506,421,714,461"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="840,245,822,282,796,327,762,372,720,411,700,423,697,418,717,407,758,368,792,324,818,279,836,242"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="215,90,453,130"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="491,116,454,116,454,110,491,111"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="234,136,142,157,141,152,233,131"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="517,229,418,238,418,233,516,224"/>
+<area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5ff24012df7e7caa5bd13cd6552042ab" title="Набор матрицы, правой части и решение СЛАУ" alt="" coords="223,306,445,346"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="499,329,445,329,445,323,499,323"/>
+<area shape="poly" id="edge10_Node000010_Node000006" title=" " alt="" coords="273,302,213,270,149,223,100,182,103,178,152,219,216,265,276,298"/>
+<area shape="poly" id="edge14_Node000012_Node000010" title=" " alt="" coords="521,419,500,411,430,380,370,349,373,344,433,375,502,406,523,414"/>
+</map>

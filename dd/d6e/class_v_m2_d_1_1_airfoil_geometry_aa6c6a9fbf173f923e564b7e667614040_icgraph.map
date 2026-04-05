@@ -1,0 +1,25 @@
+<map id="VM2D::AirfoilGeometry::getV" name="VM2D::AirfoilGeometry::getV">
+<area shape="rect" id="Node000001" title="Возврат константной ссылки на скорость вершины профиля" alt="" coords="331,290,504,330"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="35,5,253,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="407,277,393,225,368,161,332,97,308,68,281,44,252,29,254,24,284,40,312,65,336,94,373,159,398,223,412,276"/>
+<area shape="rect" id="Node000003" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="27,55,261,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="403,278,386,235,360,185,325,135,304,114,281,95,257,82,260,78,284,90,308,110,329,132,365,182,391,233,408,276"/>
+<area shape="rect" id="Node000004" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a3564185641ce9f21f1b37d9af6006120" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников" alt="" coords="5,105,283,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="395,280,348,217,317,185,281,159,257,147,259,142,284,154,320,181,352,214,399,276"/>
+<area shape="rect" id="Node000005" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a1fac4135ea015759fb8f6f1a39796202" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников" alt="" coords="20,169,268,209"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="380,284,334,252,282,223,249,211,251,206,284,218,337,247,383,279"/>
+<area shape="rect" id="Node000006" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#aae781aa0634953fff02a313a03745cbd" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников" alt="" coords="15,233,273,273"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="316,292,239,275,240,270,318,286"/>
+<area shape="rect" id="Node000007" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="59,297,229,323"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="317,313,229,313,229,307,317,307"/>
+<area shape="rect" id="Node000008" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a6c7401af9db2725436c8a570e5bec0cb" title="Вычисление гидродинамической силы, действующей на профиль" alt="" coords="37,347,251,387"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="318,334,240,350,239,345,316,328"/>
+<area shape="rect" id="Node000009" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a24c694bf820524c2c0828f2c920328ab" title="Вычисление гидродинамической силы, действующей на профиль" alt="" coords="39,411,249,451"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="383,341,337,373,284,402,250,414,248,409,282,397,334,368,380,336"/>
+<area shape="rect" id="Node000010" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a8e33f00ed56839ac4d103efb5534ca8b" title="Вычисление гидродинамической силы, действующей на профиль" alt="" coords="41,475,247,515"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="399,344,352,406,320,439,284,466,249,482,246,477,281,461,317,435,348,403,395,340"/>
+<area shape="rect" id="Node000011" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#afbd4195a0e64487f0e15fc5a0386356e" title="Вычисление гидродинамической силы, действующей на профиль" alt="" coords="37,539,251,579"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="407,345,390,387,364,438,329,487,284,530,253,546,250,541,281,525,325,484,359,435,385,385,402,343"/>
+<area shape="rect" id="Node000012" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a4c91c0a46911eb42de1d75904396334b" title="Вычисление скоростей начал панелей" alt="" coords="37,603,251,643"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="413,344,399,399,374,466,337,535,313,566,284,593,253,611,250,607,281,589,309,563,332,532,369,464,394,397,407,343"/>
+</map>

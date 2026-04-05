@@ -1,0 +1,7 @@
+<map id="VM2D::ChordPanel" name="VM2D::ChordPanel">
+<area shape="rect" id="Node000001" title=" " alt="" coords="47,183,190,208"/>
+<area shape="rect" id="Node000002" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title=" " alt="" coords="59,80,178,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,119,121,183,116,183,116,119"/>
+<area shape="rect" id="Node000003" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="5,5,232,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,45,121,80,116,80,116,45"/>
+</map>

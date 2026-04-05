@@ -1,7 +1,7 @@
 var nummatrix_8h =
 [
-    [ "nummatrix", "da/d3c/class_v_mlib_1_1nummatrix.html", "da/d3c/class_v_mlib_1_1nummatrix" ],
-    [ "operator&", "da/dbe/nummatrix_8h.html#ab9854653e1d1c226d0934452fc00642c", null ],
-    [ "operator<<", "da/dbe/nummatrix_8h.html#a21a6c908dd9fa49559b30c38e4f44725", null ],
-    [ "operator|", "da/dbe/nummatrix_8h.html#af93408f4de956732de53bd3180226b6f", null ]
+    [ "VMlib::nummatrix< T, n, m >", "da/d3c/class_v_mlib_1_1nummatrix.html", "da/d3c/class_v_mlib_1_1nummatrix" ],
+    [ "operator&", "da/dbe/nummatrix_8h.html#a5227e7b318a1325ae2fb736b9a606371", null ],
+    [ "operator<<", "da/dbe/nummatrix_8h.html#a93149a6847a66d680d7ad6b4e277dbe9", null ],
+    [ "operator|", "da/dbe/nummatrix_8h.html#a18a9dfa54c765bce668f886e9c0a372e", null ]
 ];

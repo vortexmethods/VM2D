@@ -1,11 +1,8 @@
 var struct_v_m2_d_1_1_physical_properties =
 [
     [ "PhysicalProperties", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#ad8f05bea78d4dcd53ba59a1561b7898f", null ],
-    [ "accelCft", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b", null ],
-    [ "addCurrTime", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aa26243123bdee03525b782f07ea673df", null ],
-    [ "getCurrTime", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a07acdb787188d8f83ae8587cc0b39df0", null ],
-    [ "setCurrTime", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aeac3c4a247f466bfc0716e79402beab3", null ],
-    [ "V0", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a77d30d43cb85aeb975fbcf49a8bf72cb", null ],
+    [ "accelCft", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715", null ],
+    [ "V0", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#ada3abfa665d3e6656788dfa12cbe9d33", null ],
     [ "nu", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8307ab012072b009132ca661f8ad50d5", null ],
     [ "rho", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#adb08275d443935b41ac4f5eb2c1eb94b", null ],
     [ "timeAccel", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8cd506205f7fbfe5bac0840fb5754988", null ],

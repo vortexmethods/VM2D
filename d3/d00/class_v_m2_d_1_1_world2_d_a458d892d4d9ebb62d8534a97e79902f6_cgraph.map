@@ -1,6 +1,19 @@
 <map id="VM2D::World2D::World2D" name="VM2D::World2D::World2D">
-<area shape="rect" id="node2" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a9718b59c756960f3d793ef9e32b30199" title="Связывание потока логов с потоком вывода " alt="" coords="233,5,405,47"/>
-<area shape="rect" id="node3" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#aeac3c4a247f466bfc0716e79402beab3" title="Установка текущего времени " alt="" coords="231,71,407,112"/>
-<area shape="rect" id="node4" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a189a69073636a4f93a1de3c7a8e13098" title="Вывод в поток логов пустой строки " alt="" coords="239,137,398,163"/>
-<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D. " alt="" coords="231,187,406,214"/>
+<area shape="rect" id="Node000001" title="Конструктор" alt="" coords="5,209,192,234"/>
+<area shape="rect" id="Node000002" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a9718b59c756960f3d793ef9e32b30199" title="Связывание потока логов с потоком вывода" alt="" coords="255,5,441,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,207,155,135,193,92,238,55,249,49,252,54,242,60,197,96,159,139,110,210"/>
+<area shape="rect" id="Node000003" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a189a69073636a4f93a1de3c7a8e13098" title="Вывод в поток логов пустой строки" alt="" coords="261,70,435,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="110,206,162,156,199,128,239,104,256,97,258,102,241,109,202,133,166,160,114,210"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4bb03a64c2fa1f064fac02e69c125187" title="Возврат константной ссылки на объект профиля" alt="" coords="252,119,444,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="123,206,176,181,239,155,270,146,272,151,241,160,178,185,125,211"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aa44ba41844d84a33ac74132f2f18dae3" title="Возврат неконстантной ссылки на паспорт" alt="" coords="240,169,456,209"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="192,207,226,202,227,208,193,212"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0277884d66fb825cebd681dba46c2858" title="Возврат количества профилей в задаче" alt="" coords="245,233,451,273"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="193,231,232,236,231,241,192,236"/>
+<area shape="rect" id="Node000007" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="261,297,435,337"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="126,232,241,283,263,291,261,296,239,288,124,237"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="244,362,452,387"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="112,232,163,288,200,320,241,347,260,355,258,360,239,352,197,324,160,292,108,236"/>
+<area shape="rect" id="Node000009" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D." alt="" coords="253,411,443,437"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="108,233,127,266,156,311,195,357,241,396,255,404,253,409,239,401,191,361,152,314,122,269,104,235"/>
 </map>

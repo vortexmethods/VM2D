@@ -1,0 +1,7 @@
+<map id="BH::MortonTree::Prefix" name="BH::MortonTree::Prefix">
+<area shape="rect" id="Node000001" title=" " alt="" coords="552,13,719,38"/>
+<area shape="rect" id="Node000002" href="$d5/d14/class_b_h_1_1_morton_tree.html#af9bee1e3ffc60f8a00750de04836859c" title="Функция вычисления геометрических параметров внутренней ячейки дерева" alt="" coords="263,13,504,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="538,28,504,28,504,23,538,23"/>
+<area shape="rect" id="Node000003" href="$d5/d14/class_b_h_1_1_morton_tree.html#a59cb5955be2e692760877ab13a425b17" title="Построение внутренних ячеек дерева" alt="" coords="5,5,215,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="249,28,215,28,215,23,249,23"/>
+</map>

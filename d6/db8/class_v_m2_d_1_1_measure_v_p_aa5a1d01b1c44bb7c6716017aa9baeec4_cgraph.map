@@ -1,7 +1,27 @@
 <map id="VM2D::MeasureVP::Initialization" name="VM2D::MeasureVP::Initialization">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="277,5,471,32"/>
-<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="276,56,472,83"/>
-<area shape="rect" id="node4" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a166a10941c37c9c73686c4981d13c584" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="265,107,483,133"/>
-<area shape="rect" id="node5" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="289,157,459,184"/>
-<area shape="rect" id="node6" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="309,208,439,235"/>
+<area shape="rect" id="Node000001" title="Инициализация векторов для вычисления скоростей и давлений Вызывается только на тех шагах расчета,..." alt="" coords="5,319,236,344"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4bb03a64c2fa1f064fac02e69c125187" title="Возврат константной ссылки на объект профиля" alt="" coords="306,5,498,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,318,138,265,169,189,190,148,216,108,247,71,282,40,292,33,295,38,286,44,251,75,220,111,195,151,174,192,143,267,128,319"/>
+<area shape="rect" id="Node000003" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#aa066a8e863abe903c85f9504f035daa6" title="Возврат константной ссылки на параметры распараллеливания по MPI." alt="" coords="284,55,520,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="124,317,143,273,175,210,222,144,251,115,282,89,292,83,295,88,286,94,254,118,226,148,180,213,148,275,129,319"/>
+<area shape="rect" id="Node000004" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a7288c99d59eea9721bb38c9b8cbd154c" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода" alt="" coords="310,104,494,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="127,317,149,281,183,233,228,182,254,159,283,140,298,132,301,137,285,144,258,163,232,186,187,236,153,284,131,320"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aeb7fbdeca79f460240002aea9c86195d" title="Возврат неконстантной ссылки на объект механики" alt="" coords="294,154,510,194"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="133,317,194,262,237,231,283,204,299,196,301,201,285,208,240,235,197,267,136,321"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0277884d66fb825cebd681dba46c2858" title="Возврат количества профилей в задаче" alt="" coords="299,218,505,258"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="152,316,283,267,309,259,311,264,285,273,154,321"/>
+<area shape="rect" id="Node000007" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="315,282,489,322"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="236,317,301,310,302,315,236,322"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="298,347,506,372"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="236,340,285,345,284,350,236,345"/>
+<area shape="rect" id="Node000009" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="315,397,489,437"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="161,342,285,381,317,390,315,395,283,386,160,347"/>
+<area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a724533c5ac15595459d04136a6a2bb29" title="Возврат ссылки на временную статистику выполнения шага расчета по времени" alt="" coords="303,461,501,487"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="137,342,198,393,240,422,285,446,309,455,307,460,283,451,237,426,195,397,134,346"/>
+<area shape="rect" id="Node000011" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="332,511,472,536"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="133,343,155,374,190,416,234,460,285,496,320,509,318,514,283,500,231,464,186,420,151,378,128,346"/>
+<area shape="rect" id="Node000012" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a9be199fa84f64c66a8592f1d12d59daf" title="Запуск счетчика" alt="" coords="314,560,490,585"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="130,343,150,383,183,438,229,497,256,523,285,545,302,554,300,559,283,550,252,527,225,500,179,441,145,386,125,345"/>
+<area shape="rect" id="Node000013" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a8259245a1091f74d655318c8c79bb5b0" title="Останов счетчика" alt="" coords="315,609,489,635"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="128,344,145,392,177,460,198,497,223,533,252,566,286,594,303,605,301,609,282,599,249,570,219,537,194,500,172,463,141,394,123,345"/>
 </map>

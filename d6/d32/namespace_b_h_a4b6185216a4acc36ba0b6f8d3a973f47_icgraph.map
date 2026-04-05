@@ -1,0 +1,10 @@
+<map id="BH::ceilhalf" name="BH::ceilhalf">
+<area shape="rect" id="Node000001" title="Округление &quot;в потолок&quot; результата деления пополам, эквивалент ceil(x / 2)" alt="" coords="552,42,649,67"/>
+<area shape="rect" id="Node000002" href="$d5/d14/class_b_h_1_1_morton_tree.html#a0cb4196cf2fb58b89e984c92b1b34237" title="Функция построения i&#45;й внутренней ячейки дерева" alt="" coords="277,5,490,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="538,49,490,42,491,37,539,44"/>
+<area shape="rect" id="Node000004" href="$d5/d14/class_b_h_1_1_morton_tree.html#af9bee1e3ffc60f8a00750de04836859c" title="Функция вычисления геометрических параметров внутренней ячейки дерева" alt="" coords="263,70,504,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="538,65,482,73,482,67,538,60"/>
+<area shape="rect" id="Node000003" href="$d5/d14/class_b_h_1_1_morton_tree.html#a59cb5955be2e692760877ab13a425b17" title="Построение внутренних ячеек дерева" alt="" coords="5,35,215,75"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="263,41,215,46,214,41,263,36"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="249,72,215,68,215,63,249,66"/>
+</map>

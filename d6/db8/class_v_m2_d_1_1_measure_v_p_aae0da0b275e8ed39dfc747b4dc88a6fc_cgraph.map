@@ -1,0 +1,17 @@
+<map id="VM2D::MeasureVP::SetPoints" name="VM2D::MeasureVP::SetPoints">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,216,129"/>
+<area shape="rect" id="Node000002" href="$dd/d9a/namespace_v_mlib.html#aa355deb397e5af9cd818ecaef4f10a3a" title="Создание каталога" alt="" coords="283,5,453,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,102,191,71,263,40,288,32,290,37,265,44,193,76,135,106"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a" title="Формирование имени файла" alt="" coords="291,55,445,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,101,287,80,288,85,178,107"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="264,104,472,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="216,114,250,114,250,119,216,119"/>
+<area shape="rect" id="Node000005" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D." alt="" coords="264,153,472,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="178,127,288,148,287,153,177,132"/>
+<area shape="rect" id="Node000006" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D." alt="" coords="272,203,464,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="136,127,193,157,265,187,294,197,293,202,263,193,191,162,133,132"/>
+<area shape="rect" id="Node000007" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой" alt="" coords="525,177,704,203"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="464,203,511,198,512,203,464,208"/>
+<area shape="rect" id="Node000008" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D." alt="" coords="520,227,709,252"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="464,222,507,226,506,231,464,227"/>
+</map>

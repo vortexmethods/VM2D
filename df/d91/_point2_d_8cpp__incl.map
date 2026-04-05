@@ -1,4 +1,23 @@
 <map id="VMlib/Point2D/Point2D.cpp" name="VMlib/Point2D/Point2D.cpp">
-<area shape="rect" id="node3" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D. " alt="" coords="257,80,337,107"/>
-<area shape="rect" id="node4" href="$df/dc5/numvector_8h.html" title="Описание класса numvector. " alt="" coords="250,155,345,181"/>
+<area shape="rect" id="Node000001" title="Файл кода с описанием класса Point2D." alt="" coords="170,5,366,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="179,79,253,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,33,235,69,230,66,257,29"/>
+<area shape="rect" id="Node000003" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="277,79,363,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="279,29,306,66,301,69,274,33"/>
+<area shape="rect" id="Node000004" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="269,152,371,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="323,104,323,138,317,138,317,104"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,225,61,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="271,180,75,228,74,222,270,175"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="86,225,149,251"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="288,180,163,224,161,219,287,175"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="173,225,240,251"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="303,180,238,220,235,216,300,175"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="265,225,375,251"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="323,178,323,212,317,212,317,178"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="399,225,475,251"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="340,175,408,216,405,220,337,180"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="500,225,543,251"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="353,175,488,222,486,227,351,180"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="567,225,630,251"/>
+<area shape="poly" id="edge10_Node000004_Node000011" title=" " alt="" coords="366,175,554,223,553,228,365,180"/>
 </map>

@@ -1,0 +1,9 @@
+<map id="VM2D::Wake::MoveInside" name="VM2D::Wake::MoveInside">
+<area shape="rect" id="Node000001" title="Проверка проникновения точки через границу профиля" alt="" coords="5,77,192,102"/>
+<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="242,5,415,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,74,242,46,244,52,146,79"/>
+<area shape="rect" id="Node000003" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="242,69,415,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,87,229,87,229,92,192,92"/>
+<area shape="rect" id="Node000004" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5c4d2f8431f7232fbcf7d367501a8bd5" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля" alt="" coords="240,133,417,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,100,244,127,242,132,145,105"/>
+</map>

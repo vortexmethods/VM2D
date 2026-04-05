@@ -1,6 +1,11 @@
 <map id="VM2D::AirfoilParams" name="VM2D::AirfoilParams">
-<area shape="rect" id="node2" title="STL class. " alt="" coords="29,96,109,123"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="5,5,132,47"/>
-<area shape="rect" id="node4" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title="Класс, опеделяющий двумерный вектор " alt="" coords="227,96,337,123"/>
-<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html" title="VMlib::numvector\&lt; double, 2 \&gt;" alt="" coords="181,13,383,39"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="111,212,267,237"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="31,95,118,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,134,69,161,72,175,78,186,93,201,112,211,110,215,90,205,74,190,67,176,64,162,65,133"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,5,144,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="77,59,77,94,72,94,72,59"/>
+<area shape="rect" id="Node000004" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title=" " alt="" coords="245,95,363,120"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="303,135,294,163,277,190,258,204,237,214,235,209,255,200,273,186,289,161,298,133"/>
+<area shape="rect" id="Node000005" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="191,13,417,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="307,52,307,95,301,95,301,52"/>
 </map>

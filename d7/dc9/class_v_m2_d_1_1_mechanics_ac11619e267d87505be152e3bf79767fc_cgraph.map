@@ -1,4 +1,7 @@
 <map id="VM2D::Mechanics::ReadParametersFromDictionary" name="VM2D::Mechanics::ReadParametersFromDictionary">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="289,5,485,32"/>
-<area shape="rect" id="node3" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="303,56,472,83"/>
+<area shape="rect" id="Node000001" title="Парсинг списка параметров механической системы" alt="" coords="5,23,259,63"/>
+<area shape="rect" id="Node000002" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a7288c99d59eea9721bb38c9b8cbd154c" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода" alt="" coords="319,5,503,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="259,29,305,25,305,30,259,34"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="307,55,515,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="259,52,293,55,293,60,259,57"/>
 </map>

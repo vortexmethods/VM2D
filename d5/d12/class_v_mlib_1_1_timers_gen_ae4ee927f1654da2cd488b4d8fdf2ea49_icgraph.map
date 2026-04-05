@@ -1,0 +1,5 @@
+<map id="VMlib::TimersGen::durationStep" name="VMlib::TimersGen::durationStep">
+<area shape="rect" id="Node000001" title="Вывод счетчика всего шага в секундах" alt="" coords="215,5,444,31"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,5,167,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,21,167,21,167,15,201,15"/>
+</map>

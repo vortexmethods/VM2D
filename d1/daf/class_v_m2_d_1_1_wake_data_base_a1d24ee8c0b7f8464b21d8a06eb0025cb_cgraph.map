@@ -1,6 +1,15 @@
 <map id="VM2D::WakeDataBase::ReadFromFile" name="VM2D::WakeDataBase::ReadFromFile">
-<area shape="rect" id="node2" href="$dd/d9a/namespace_v_mlib.html#a6b3aae108ba4e961d15ad5c278842901" title="Проверка существования файла " alt="" coords="229,5,365,32"/>
-<area shape="rect" id="node3" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="212,56,381,83"/>
-<area shape="rect" id="node4" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a9fae0e4418f1053a6633ca35408aff4b" title="Считывание вектора из двумерных точек из базы данных " alt="" coords="212,107,381,133"/>
-<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#a9f4fcb924d0d4b3f0e685bc8b2f4973f" title="Функция сверки строки с шаблоном, который может содержать знаки * и ? " alt="" coords="429,107,545,133"/>
+<area shape="rect" id="Node000001" title="Считывание вихревого следа из файла" alt="" coords="5,73,172,113"/>
+<area shape="rect" id="Node000002" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d" title="Функция для доступа к циркуляции вихря" alt="" coords="241,5,383,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,70,219,41,248,32,250,37,221,46,141,75"/>
+<area shape="rect" id="Node000003" href="$db/d04/class_v_mlib_1_1_stream_parser.html#ad78a1c26e72cc23533f26acbf2b91f43" title="Считывание вектора из двумерных точек из базы данных" alt="" coords="221,55,403,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,81,207,77,208,82,172,86"/>
+<area shape="rect" id="Node000006" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a7288c99d59eea9721bb38c9b8cbd154c" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода" alt="" coords="220,104,404,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="172,99,207,103,206,108,172,104"/>
+<area shape="rect" id="Node000007" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="242,153,382,179"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="140,110,221,139,246,147,245,152,219,145,139,115"/>
+<area shape="rect" id="Node000004" href="$dd/d9a/namespace_v_mlib.html#a9f4fcb924d0d4b3f0e685bc8b2f4973f" title="Функция сверки строки с шаблоном, который может содержать знаки * и ?" alt="" coords="466,27,593,52"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="403,53,452,47,453,52,404,58"/>
+<area shape="rect" id="Node000005" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="452,77,607,117"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="404,77,439,82,438,87,403,82"/>
 </map>

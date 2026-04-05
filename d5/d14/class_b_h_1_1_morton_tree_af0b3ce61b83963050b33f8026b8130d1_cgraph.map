@@ -1,0 +1,8 @@
+<map id="BH::MortonTree::CalculateMortonTreeParams" name="BH::MortonTree::CalculateMortonTreeParams">
+<area shape="rect" id="Node000001" title="Вычисление параметров дерева (циркуляций и высших моментов)" alt="" coords="5,29,196,69"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="56,30,53,20,60,10,76,5,101,3,129,6,144,13,142,18,127,11,101,8,77,10,64,15,58,21,61,28"/>
+<area shape="rect" id="Node000002" href="$d5/d14/class_b_h_1_1_morton_tree.html#ad4c477e1eb8c5bb4a0205aacc7e9aaed" title=" " alt="" coords="244,11,437,37"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="196,37,230,33,231,38,196,42"/>
+<area shape="rect" id="Node000003" href="$d6/dd4/class_v_mlib_1_1numvector.html#a70c07d1b3d53524ea664615f1d28879f" title="Установка всех компонент вектора в константу (по умолчанию — нуль)" alt="" coords="247,61,435,86"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="196,56,233,60,233,65,196,62"/>
+</map>

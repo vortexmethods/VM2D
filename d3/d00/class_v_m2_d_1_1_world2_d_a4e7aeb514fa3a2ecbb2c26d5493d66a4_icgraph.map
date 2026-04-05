@@ -1,0 +1,13 @@
+<map id="VM2D::World2D::getSource" name="VM2D::World2D::getSource">
+<area shape="rect" id="Node000001" title="Возврат константной ссылки на источники в области течения" alt="" coords="549,99,747,124"/>
+<area shape="rect" id="Node000002" href="$d0/d75/class_v_m2_d_1_1_gpu.html#ac569e54b8579eacb3c3f252100324acc" title=" " alt="" coords="293,5,433,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="611,95,560,69,501,46,432,30,434,25,502,41,562,64,614,90"/>
+<area shape="rect" id="Node000003" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#adb69aaa3d57a84f8a756a58390eb9743" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="224,55,501,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="535,100,501,96,502,90,536,95"/>
+<area shape="rect" id="Node000004" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab8d90fe8a6f6d0b6661c5f0e3db453b9" title=" " alt="" coords="249,120,476,175"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="536,128,477,136,476,130,535,123"/>
+<area shape="rect" id="Node000005" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a1ab2bf9266453b4a096dfd432c5a8b87" title="Генерация вектора влияния вихревого следа на профиль" alt="" coords="240,199,485,239"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="615,133,563,161,502,188,460,202,459,197,500,184,561,157,613,129"/>
+<area shape="rect" id="Node000006" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="5,207,176,232"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="226,222,176,222,176,217,226,217"/>
+</map>

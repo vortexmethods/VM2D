@@ -1,3 +1,5 @@
 <map id="VMlib::StreamParser::SplitString" name="VMlib::StreamParser::SplitString">
-<area shape="rect" id="node2" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр " alt="" coords="196,5,339,47"/>
+<area shape="rect" id="Node000001" title="Разбор строки на пару ключ&#45;значение" alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000002" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="208,5,363,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,23,194,23,194,28,160,28"/>
 </map>

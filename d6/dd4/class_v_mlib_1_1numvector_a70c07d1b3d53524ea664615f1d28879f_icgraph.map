@@ -1,0 +1,30 @@
+<map id="VMlib::numvector::toZero" name="VMlib::numvector::toZero">
+<area shape="rect" id="Node000001" title="Установка всех компонент вектора в константу (по умолчанию — нуль)" alt="" coords="331,481,519,507"/>
+<area shape="rect" id="Node000002" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="33,5,255,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="420,468,413,390,393,284,375,227,351,171,320,119,281,73,254,55,257,51,284,69,324,116,356,169,380,225,398,283,418,390,425,467"/>
+<area shape="rect" id="Node000003" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="27,84,261,139"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="418,468,406,404,383,318,365,273,342,229,314,188,281,152,260,137,263,133,284,148,318,184,347,226,369,271,388,317,412,403,423,467"/>
+<area shape="rect" id="Node000004" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#ae692f9338a5fa776245dd9a0fb365a41" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="23,163,265,217"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="414,469,398,419,372,355,333,288,309,258,281,232,262,220,265,215,284,228,313,255,337,285,376,352,403,417,419,467"/>
+<area shape="rect" id="Node000005" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#adb69aaa3d57a84f8a756a58390eb9743" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="5,242,283,282"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="411,470,392,431,363,384,326,336,281,296,260,284,262,280,284,292,330,332,368,381,396,429,415,468"/>
+<area shape="rect" id="Node000006" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab8d90fe8a6f6d0b6661c5f0e3db453b9" title=" " alt="" coords="31,307,257,361"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="401,473,349,424,316,398,281,376,254,364,256,359,284,372,320,394,353,420,404,469"/>
+<area shape="rect" id="Node000007" href="$d5/d14/class_b_h_1_1_morton_tree.html#af0b3ce61b83963050b33f8026b8130d1" title="Вычисление параметров дерева (циркуляций и высших моментов)" alt="" coords="49,410,239,450"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="354,481,232,453,233,447,355,476"/>
+<area shape="rect" id="Node000008" href="$d5/d14/class_b_h_1_1_morton_tree.html#ae42896d4caa5555ae77429db0f5aa97b" title=" " alt="" coords="51,474,237,514"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="317,497,238,497,238,491,317,491"/>
+<area shape="rect" id="Node000009" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6bca92af2a441ac0e8afe9196a24e37f" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения" alt="" coords="35,539,253,593"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="362,513,252,541,250,536,361,507"/>
+<area shape="rect" id="Node000010" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#ae8673423433664d57a3823fcef846055" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения" alt="" coords="26,617,262,672"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="403,518,351,563,318,587,284,607,255,620,253,615,281,602,315,582,348,559,399,514"/>
+<area shape="rect" id="Node000011" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения" alt="" coords="24,696,264,751"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="414,520,394,557,365,602,328,647,284,686,262,698,259,694,281,681,324,643,361,599,389,554,409,518"/>
+<area shape="rect" id="Node000012" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="36,775,252,829"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="420,521,404,572,377,638,338,706,313,737,284,764,253,783,251,778,281,760,309,733,333,703,372,635,399,570,414,519"/>
+<area shape="rect" id="Node000013" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="25,853,263,908"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="423,521,412,586,388,672,370,718,347,764,319,806,284,843,265,856,262,852,281,839,314,802,342,761,365,716,383,671,406,585,418,520"/>
+<area shape="rect" id="Node000014" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a173da8092f214682310319ef8d520772" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="27,932,261,987"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="425,521,418,599,398,706,380,764,356,821,324,874,284,921,263,937,260,933,281,917,320,871,351,819,375,762,393,705,413,598,420,520"/>
+<area shape="poly" id="edge7_Node000007_Node000007" title=" " alt="" coords="192,398,175,391,144,389,117,391,100,396,94,401,97,409,92,411,89,400,97,391,116,385,144,383,176,386,194,393"/>
+</map>

@@ -1,3 +1,5 @@
 <map id="VMlib::StreamParser::ReplaceVarsInString" name="VMlib::StreamParser::ReplaceVarsInString">
-<area shape="rect" id="node2" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр " alt="" coords="204,5,347,47"/>
+<area shape="rect" id="Node000001" title="Замена переменных в строке их значениями" alt="" coords="5,5,165,45"/>
+<area shape="rect" id="Node000002" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="213,5,368,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,23,199,23,199,28,166,28"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="VM2D::MechanicsRigidGivenLaw::ReadSpecificParametersFromDictionary" name="VM2D::MechanicsRigidGivenLaw::ReadSpecificParametersFromDictionary">
-<area shape="rect" id="node2" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#acb2bcd9d2c01173b75584afb13a5a15e" title="Конструктор " alt="" coords="287,5,492,47"/>
-<area shape="rect" id="node3" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a5424e2694887408f886168734f490a7a" title="Деструктор " alt="" coords="283,71,496,112"/>
+<area shape="rect" id="Node000001" title="Чтение параметров конкретной механической системы" alt="" coords="275,5,520,60"/>
+<area shape="rect" id="Node000002" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#acb2bcd9d2c01173b75584afb13a5a15e" title="Конструктор" alt="" coords="5,13,227,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="261,35,227,35,227,30,261,30"/>
 </map>

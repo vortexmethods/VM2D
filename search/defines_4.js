@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['radiuses',['radiuses',['../df/db0/gamma_circ_8h.html#a20bd3240ebe02f2925ff20ea982c3218',1,'gammaCirc.h']]]
+  ['hd_0',['hd',['../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022',1,'HD:&#160;numvector.h'],['../d9/d27/_point2_d_8h.html#ac5dd4d2e9874e2956c370b24a462b022',1,'HD:&#160;Point2D.h']]]
 ];

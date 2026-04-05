@@ -1,4 +1,19 @@
 <map id="VMlib/Task/Task.h" name="VMlib/Task/Task.h">
-<area shape="rect" id="node2" href="$d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen. " alt="" coords="125,80,235,107"/>
-<area shape="rect" id="node6" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream. " alt="" coords="277,155,373,181"/>
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса Task." alt="" coords="178,5,315,31"/>
+<area shape="rect" id="Node000002" href="$d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen." alt="" coords="189,79,304,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,31,249,65,244,65,244,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,85,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="215,107,92,150,90,145,213,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="109,152,184,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="232,106,176,146,173,142,229,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="208,152,285,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="249,104,249,138,244,138,244,104"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="310,152,373,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="263,102,316,141,313,146,260,106"/>
+<area shape="rect" id="Node000007" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream." alt="" coords="397,152,501,177"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="280,102,405,145,403,150,278,107"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="365,225,441,251"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="444,179,420,215,416,212,439,176"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="465,225,524,251"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="459,176,482,212,478,215,455,179"/>
 </map>

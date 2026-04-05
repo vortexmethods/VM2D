@@ -1,4 +1,13 @@
 <map id="VM2D/Gpu2D/Gpu2D.h" name="VM2D/Gpu2D/Gpu2D.h">
-<area shape="rect" id="node5" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем " alt="" coords="296,80,379,107"/>
-<area shape="rect" id="node6" href="$da/df1/wrapper_8h.html" title="wrapper.h" alt="" coords="403,80,482,107"/>
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса Gpu." alt="" coords="155,5,325,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,64,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,33,78,78,76,73,206,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="88,79,165,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,33,158,74,155,69,220,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="189,79,291,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="243,31,243,65,237,65,237,31"/>
+<area shape="rect" id="Node000005" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="315,79,403,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="260,28,329,69,326,74,258,33"/>
+<area shape="rect" id="Node000006" href="$db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="427,79,544,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="280,28,433,72,432,77,279,33"/>
 </map>

@@ -1,6 +1,6 @@
 var _task_8h =
 [
-    [ "Task", "d7/db3/class_v_mlib_1_1_task.html", "d7/db3/class_v_mlib_1_1_task" ],
+    [ "VMlib::Task", "d7/db3/class_v_mlib_1_1_task.html", "d7/db3/class_v_mlib_1_1_task" ],
     [ "TaskState", "d5/dc5/_task_8h.html#aaa724aedd18327e8572cb1768eefdf50", [
       [ "waiting", "d5/dc5/_task_8h.html#aaa724aedd18327e8572cb1768eefdf50acb05cab65afefab8fd3831d92cfc68be", null ],
       [ "starting", "d5/dc5/_task_8h.html#aaa724aedd18327e8572cb1768eefdf50a1ee85f6c60017a7f0646ba8dc5824de6", null ],

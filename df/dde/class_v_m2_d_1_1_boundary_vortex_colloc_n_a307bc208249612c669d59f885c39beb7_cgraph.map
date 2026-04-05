@@ -1,8 +1,15 @@
 <map id="VM2D::BoundaryVortexCollocN::SolutionToFreeVortexSheetAndVirtualVortex" name="VM2D::BoundaryVortexCollocN::SolutionToFreeVortexSheetAndVirtualVortex">
-<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="291,5,463,47"/>
-<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="279,71,475,98"/>
-<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="309,122,445,149"/>
-<area shape="rect" id="node5" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#a19fac3f92003a7a45d4e635585d8c1ef" title="Функция для доступа к циркуляции вихря " alt="" coords="311,173,444,199"/>
-<area shape="rect" id="node6" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="312,223,443,250"/>
-<area shape="rect" id="node7" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="276,274,479,301"/>
+<area shape="rect" id="Node000001" title="Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле" alt="" coords="5,127,244,181"/>
+<area shape="rect" id="Node000002" href="$de/d8b/class_v_m2_d_1_1_sheet.html#ab3279637a6ea77bfd5a39b89d2fd3447" title=" " alt="" coords="292,5,511,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,124,217,80,253,58,291,40,311,32,313,37,293,44,256,63,220,85,160,129"/>
+<area shape="rect" id="Node000003" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d" title="Функция для доступа к циркуляции вихря" alt="" coords="330,55,473,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,124,291,90,326,81,327,86,293,95,195,129"/>
+<area shape="rect" id="Node000004" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="315,105,488,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="244,139,301,133,301,138,244,144"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="297,169,505,195"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="244,163,284,167,283,173,244,169"/>
+<area shape="rect" id="Node000006" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="315,219,488,259"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="214,179,293,203,323,213,321,218,291,209,213,184"/>
+<area shape="rect" id="Node000007" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="331,284,471,309"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="158,179,219,226,255,249,293,269,319,279,317,284,291,274,252,254,215,230,155,183"/>
 </map>

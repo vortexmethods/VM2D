@@ -1,9 +1,17 @@
 <map id="VM2D::BoundaryLinLayerAver::ComputeAttachedSheetsIntensity" name="VM2D::BoundaryLinLayerAver::ComputeAttachedSheetsIntensity">
-<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a92d01d328488f22d812ddab97acc3f38" title="Возврат количества панелей на профиле " alt="" coords="303,5,475,47"/>
-<area shape="rect" id="node3" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a9431e357980548a5fabd5ffffb917665" title="VM2D::Sheet::attachedVortex\lSheet" alt="" coords="290,71,487,112"/>
-<area shape="rect" id="node4" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a49b7345512b924471bbac608c7129043" title="VM2D::Sheet::attachedSource\lSheet" alt="" coords="289,136,489,177"/>
-<area shape="rect" id="node5" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a166a10941c37c9c73686c4981d13c584" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="280,202,497,229"/>
-<area shape="rect" id="node6" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a84a232a628cbbab71fdba2d0c541a326" title="Возврат константной ссылки на объект старого профиля " alt="" coords="290,253,487,279"/>
-<area shape="rect" id="node7" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5b9bb928f446cad77a33ec6c01862d7a" title="Возврат константной ссылки на скорость вершины профиля " alt="" coords="321,303,456,330"/>
-<area shape="rect" id="node8" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="291,354,487,381"/>
+<area shape="rect" id="Node000001" title="Вычисление интенсивностей присоединенного вихревого слоя и присоединенного слоя источников" alt="" coords="5,184,253,224"/>
+<area shape="rect" id="Node000002" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a7d0fff810d49ab8adc43169f2c74f212" title=" " alt="" coords="312,5,527,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,182,210,119,253,85,300,55,315,48,317,53,303,60,256,89,214,123,150,186"/>
+<area shape="rect" id="Node000003" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a42f6bd5f1af938e569e707ae3916643c" title=" " alt="" coords="313,69,526,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,182,228,150,300,119,323,111,325,116,302,124,230,155,168,186"/>
+<area shape="rect" id="Node000004" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#aa066a8e863abe903c85f9504f035daa6" title="Возврат константной ссылки на параметры распараллеливания по MPI." alt="" coords="301,134,537,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="231,181,341,159,342,165,232,187"/>
+<area shape="rect" id="Node000005" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="333,184,506,224"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="253,201,319,201,319,207,253,207"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4da16d694946581e2b612a16484c94e7" title="Возврат константной ссылки на объект старого профиля" alt="" coords="312,249,527,274"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="232,221,342,243,341,249,231,227"/>
+<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="315,298,523,323"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="168,222,230,253,302,283,334,292,333,297,300,288,228,258,166,227"/>
+<area shape="rect" id="Node000008" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa6c6a9fbf173f923e564b7e667614040" title="Возврат константной ссылки на скорость вершины профиля" alt="" coords="333,348,506,388"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="153,222,217,277,258,307,303,332,321,341,319,346,300,337,256,311,214,281,150,226"/>
 </map>

@@ -1,0 +1,14 @@
+<map id="BH::MortonTree::SetCellGeometry" name="BH::MortonTree::SetCellGeometry">
+<area shape="rect" id="Node000001" title="Функция вычисления геометрических параметров внутренней ячейки дерева" alt="" coords="5,80,247,105"/>
+<area shape="rect" id="Node000002" href="$d6/d32/namespace_b_h.html#a4b6185216a4acc36ba0b6f8d3a973f47" title="Округление &quot;в потолок&quot; результата деления пополам, эквивалент ceil(x / 2)" alt="" coords="331,5,429,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,77,294,39,320,32,321,37,295,45,169,83"/>
+<area shape="rect" id="Node000003" href="$d5/d14/class_b_h_1_1_morton_tree.html#a5bff4d27f68bfbafd33a29e2d89f951f" title=" " alt="" coords="297,55,463,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="246,78,283,74,284,80,247,83"/>
+<area shape="rect" id="Node000004" href="$d5/d14/class_b_h_1_1_morton_tree.html#ad65bcfeffb92b9d425db09d0dacb6a91" title=" " alt="" coords="513,80,724,105"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="247,90,500,90,500,95,247,95"/>
+<area shape="rect" id="Node000006" href="$d6/dd4/class_v_mlib_1_1numvector.html#a814bfff790b482ba3e70dc3f48674858" title=" " alt="" coords="295,156,465,181"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="170,103,324,149,323,154,169,108"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="464,74,500,77,499,83,464,79"/>
+<area shape="rect" id="Node000005" href="$d5/d14/class_b_h_1_1_morton_tree.html#a0cffa3fa7a36ed2b9c6ab7562e827af5" title=" " alt="" coords="772,80,937,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="724,90,758,90,758,95,724,95"/>
+</map>

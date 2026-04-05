@@ -1,0 +1,37 @@
+<map id="VM2D/Velocity2D/TreeBH.h" name="VM2D/Velocity2D/TreeBH.h">
+<area shape="rect" id="Node000001" title="Заголовок класса Tree для метода Барнса &#45; Хата для CPU." alt="" coords="292,5,489,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="300,79,377,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="384,33,357,69,353,66,380,29"/>
+<area shape="rect" id="Node000003" href="$dc/db8/defs_b_h_8h.html" title="Вспомогательные функции для метода Барнса &#45; Хата для CPU." alt="" coords="402,79,483,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="401,29,428,66,424,69,397,33"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="275,152,355,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="423,106,349,147,347,143,421,102"/>
+<area shape="rect" id="Node000005" href="$db/d80/_points_copy_b_h_8h.html" title="Заголовок класса&#45;обертки для точек и панелей для метода Барнса &#45; Хата для CPU." alt="" coords="379,152,506,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="445,104,445,138,440,138,440,104"/>
+<area shape="rect" id="Node000018" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="531,152,619,177"/>
+<area shape="poly" id="edge17_Node000003_Node000018" title=" " alt="" coords="465,102,542,143,540,148,463,106"/>
+<area shape="rect" id="Node000006" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="273,225,367,251"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="424,180,353,221,350,216,422,175"/>
+<area shape="rect" id="Node000016" href="$d1/d13/_params_b_h_8h.html" title="Параметры метода Барнса &#45; Хата для CPU." alt="" coords="392,225,493,251"/>
+<area shape="poly" id="edge15_Node000005_Node000016" title=" " alt="" coords="445,178,445,212,440,212,440,178"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="518,225,581,251"/>
+<area shape="poly" id="edge16_Node000005_Node000017" title=" " alt="" coords="461,175,522,215,519,220,458,180"/>
+<area shape="rect" id="Node000007" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="277,299,363,324"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="323,251,323,285,317,285,317,251"/>
+<area shape="rect" id="Node000008" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="269,372,371,397"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="323,324,323,358,317,358,317,324"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="5,445,61,471"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="271,400,75,448,74,442,270,395"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="86,445,149,471"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="288,400,163,444,161,439,287,395"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="173,445,240,471"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="303,400,238,440,235,436,300,395"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="265,445,375,471"/>
+<area shape="poly" id="edge11_Node000008_Node000012" title=" " alt="" coords="323,398,323,432,317,432,317,398"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="399,445,475,471"/>
+<area shape="poly" id="edge12_Node000008_Node000013" title=" " alt="" coords="340,395,408,436,405,440,337,400"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="500,445,543,471"/>
+<area shape="poly" id="edge13_Node000008_Node000014" title=" " alt="" coords="353,395,488,442,486,447,351,400"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="567,445,630,471"/>
+<area shape="poly" id="edge14_Node000008_Node000015" title=" " alt="" coords="366,395,554,443,553,448,365,400"/>
+</map>

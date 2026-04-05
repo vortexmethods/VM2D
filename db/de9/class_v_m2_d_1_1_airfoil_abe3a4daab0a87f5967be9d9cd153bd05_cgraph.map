@@ -1,0 +1,22 @@
+<map id="VM2D::Airfoil::calcIQ" name="VM2D::Airfoil::calcIQ">
+<area shape="rect" id="Node000001" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2." alt="" coords="5,209,161,235"/>
+<area shape="rect" id="Node000002" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами" alt="" coords="255,5,359,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,208,103,175,129,129,164,82,208,41,241,26,243,30,211,46,168,85,133,132,108,177,92,210"/>
+<area shape="rect" id="Node000004" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="220,55,393,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="93,207,140,158,172,130,208,105,220,99,222,103,211,110,176,134,144,162,97,211"/>
+<area shape="rect" id="Node000005" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="220,119,393,159"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="114,207,208,169,229,161,231,166,210,174,116,212"/>
+<area shape="rect" id="Node000006" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d" title="Проверка, идет ли вершина i следом за вершиной j." alt="" coords="227,184,386,209"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="162,210,213,205,214,210,162,216"/>
+<area shape="rect" id="Node000007" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов" alt="" coords="247,233,366,259"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="162,228,234,236,233,241,162,233"/>
+<area shape="rect" id="Node000008" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="213,283,400,308"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="116,232,210,267,240,276,239,282,208,273,114,237"/>
+<area shape="rect" id="Node000009" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="209,332,404,357"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="99,233,146,274,177,297,211,317,230,325,228,330,208,322,174,302,142,278,95,237"/>
+<area shape="rect" id="Node000010" href="$dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины ." alt="" coords="249,381,364,407"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="94,233,138,298,171,335,211,366,237,379,235,384,208,371,168,339,134,301,90,236"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения" alt="" coords="452,193,561,219"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="360,21,383,29,406,41,439,73,465,110,485,148,499,179,494,181,480,150,461,113,435,76,402,45,381,34,358,27"/>
+<area shape="poly" id="edge10_Node000010_Node000003" title=" " alt="" coords="364,384,384,377,402,367,435,336,461,299,480,262,494,231,499,233,485,264,465,302,439,339,406,371,386,382,365,389"/>
+</map>

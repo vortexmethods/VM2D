@@ -1,3 +1,9 @@
 <map id="VM2D::World2D::FillIQ" name="VM2D::World2D::FillIQ">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="211,5,405,32"/>
+<area shape="rect" id="Node000001" title="Заполнение матрицы, состоящей из интегралов от (r&#45;xi) / |r&#45;xi|^2." alt="" coords="5,55,171,80"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a724533c5ac15595459d04136a6a2bb29" title="Возврат ссылки на временную статистику выполнения шага расчета по времени" alt="" coords="219,5,417,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,52,244,31,245,36,148,57"/>
+<area shape="rect" id="Node000003" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a9be199fa84f64c66a8592f1d12d59daf" title="Запуск счетчика" alt="" coords="230,55,406,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,65,216,65,216,70,171,70"/>
+<area shape="rect" id="Node000004" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a8259245a1091f74d655318c8c79bb5b0" title="Останов счетчика" alt="" coords="231,104,405,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="148,77,245,98,244,104,147,83"/>
 </map>

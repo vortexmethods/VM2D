@@ -1,8 +1,9 @@
 <map id="VM2D::Mechanics::GenerateForcesString" name="VM2D::Mechanics::GenerateForcesString">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="255,5,450,32"/>
-<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="255,56,451,83"/>
-<area shape="rect" id="node4" href="$da/dd5/class_v_mlib_1_1_point2_d.html#a5196e49b3155669a72d5730e8b1de8de" title="Поворот вектора на произвольный угол против часовой стрелки (по умолчанию 90 градусов) ..." alt="" coords="273,107,432,133"/>
-<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат " alt="" coords="312,157,393,184"/>
-<area shape="rect" id="node6" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a166a10941c37c9c73686c4981d13c584" title="Возврат константной ссылки на параметры распараллеливания по MPI. " alt="" coords="244,208,461,235"/>
-<area shape="rect" id="node7" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a07acdb787188d8f83ae8587cc0b39df0" title="Возвращает текуще время " alt="" coords="265,259,441,301"/>
+<area shape="rect" id="Node000001" title="Сохранение строки со статистикой в файл нагрузок" alt="" coords="5,47,212,87"/>
+<area shape="rect" id="Node000002" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#aa066a8e863abe903c85f9504f035daa6" title="Возврат константной ссылки на параметры распараллеливания по MPI." alt="" coords="262,5,498,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,46,296,30,297,36,213,51"/>
+<area shape="rect" id="Node000003" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="260,55,500,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,65,247,65,247,70,212,70"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="276,104,484,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="213,84,297,99,296,104,212,89"/>
 </map>

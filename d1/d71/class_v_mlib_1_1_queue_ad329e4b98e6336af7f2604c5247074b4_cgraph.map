@@ -1,12 +1,25 @@
 <map id="VMlib::Queue::TaskSplit" name="VMlib::Queue::TaskSplit">
-<area shape="rect" id="node2" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a189a69073636a4f93a1de3c7a8e13098" title="Вывод в поток логов пустой строки " alt="" coords="259,5,418,32"/>
-<area shape="rect" id="node3" href="$d1/d71/class_v_mlib_1_1_queue.html#a0d8a44e7b6707d2a3de99c81b364a52e" title="Процедура, нумерующая задачи в возрастающем порядке " alt="" coords="242,57,435,98"/>
-<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="508,185,704,212"/>
-<area shape="rect" id="node5" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aa941559917918a8294a3f4196eede246" title="VM2D::World2D::GenerateMechanics\lHeader" alt="" coords="217,174,460,215"/>
-<area shape="rect" id="node6" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="241,240,436,267"/>
-<area shape="rect" id="node7" href="$d8/da8/class_v_m2_d_1_1_times.html#a59e6f6a5fcfc440ea064ddc7dcf901f2" title="Генерация заголовка файла временной статистики " alt="" coords="245,291,433,333"/>
-<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D. " alt="" coords="516,273,696,300"/>
-<area shape="rect" id="node11" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D. " alt="" coords="509,324,703,351"/>
-<area shape="rect" id="node9" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D. " alt="" coords="752,248,927,275"/>
-<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой " alt="" coords="758,299,921,325"/>
+<area shape="rect" id="Node000001" title="Процедура постановка новых задач на отсчет и занятие процессоров" alt="" coords="5,159,180,185"/>
+<area shape="rect" id="Node000002" href="$d1/d71/class_v_mlib_1_1_queue.html#a0d8a44e7b6707d2a3de99c81b364a52e" title="Процедура, нумерующая задачи в возрастающем порядке" alt="" coords="255,5,462,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,157,153,107,188,79,227,55,243,48,245,53,229,60,191,83,157,111,107,161"/>
+<area shape="rect" id="Node000003" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a189a69073636a4f93a1de3c7a8e13098" title="Вывод в поток логов пустой строки" alt="" coords="272,70,445,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="115,157,166,131,227,105,262,96,263,101,229,111,168,136,118,161"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aa941559917918a8294a3f4196eede246" title=" " alt="" coords="228,120,489,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="180,159,214,155,215,160,181,164"/>
+<area shape="rect" id="Node000005" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a7f7e814aa0fd8596f077c89115768857" title="Формирование заголовка файла временной статистики" alt="" coords="255,184,462,224"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="181,180,242,187,241,193,180,185"/>
+<area shape="rect" id="Node000011" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="255,249,463,274"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="118,183,168,208,229,233,263,243,262,248,227,239,166,213,115,187"/>
+<area shape="rect" id="Node000012" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a724533c5ac15595459d04136a6a2bb29" title="Возврат ссылки на временную статистику выполнения шага расчета по времени" alt="" coords="259,298,458,323"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="107,183,156,233,191,261,229,284,247,292,245,297,227,289,188,266,152,237,103,187"/>
+<area shape="rect" id="Node000006" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a3ed84c08ddef7a5d3a4577cd84448cab" title=" " alt="" coords="537,142,777,167"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="462,184,566,167,567,172,463,190"/>
+<area shape="rect" id="Node000007" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D." alt="" coords="553,191,761,217"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="462,201,540,201,540,207,462,207"/>
+<area shape="rect" id="Node000008" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D." alt="" coords="561,241,753,266"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="463,218,567,236,566,241,462,224"/>
+<area shape="rect" id="Node000009" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой" alt="" coords="831,215,1009,241"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="753,241,817,235,817,241,754,247"/>
+<area shape="rect" id="Node000010" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D." alt="" coords="825,265,1015,290"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="754,259,812,265,811,270,753,265"/>
 </map>

@@ -1,0 +1,10 @@
+<map id="VMlib::StreamParser::ParseStream" name="VMlib::StreamParser::ParseStream">
+<area shape="rect" id="Node000001" title="Парсинг заданного потока" alt="" coords="5,63,160,103"/>
+<area shape="rect" id="Node000002" href="$db/d04/class_v_mlib_1_1_stream_parser.html#afe6f78a62d43f0a1a1ffedf73d57e2b1" title="Замена переменных в строке их значениями" alt="" coords="208,5,368,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,60,202,47,203,52,156,65"/>
+<area shape="rect" id="Node000003" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="416,35,571,75"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="160,75,402,58,402,63,160,80"/>
+<area shape="rect" id="Node000004" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a2dfcd2239e37cb8bd6e5678408d8a298" title="Pазбор строки, содержащей запятые, на отдельные строки" alt="" coords="211,120,365,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="156,100,203,114,202,119,154,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="369,34,403,39,402,44,368,39"/>
+</map>

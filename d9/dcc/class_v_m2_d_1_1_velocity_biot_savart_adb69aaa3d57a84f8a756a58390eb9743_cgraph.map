@@ -1,0 +1,27 @@
+<map id="VM2D::VelocityBiotSavart::CalcConvVeloToSetOfPointsFromWake" name="VM2D::VelocityBiotSavart::CalcConvVeloToSetOfPointsFromWake">
+<area shape="rect" id="Node000001" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="5,297,283,337"/>
+<area shape="rect" id="Node000002" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715" title="Функция&#45;множитель, позволяющая моделировать разгон" alt="" coords="356,5,545,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,296,175,247,213,181,265,113,296,82,329,55,342,47,345,52,332,60,299,86,269,117,218,184,180,249,156,298"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#ab2f8c946d498827f7f4827b538690fa3" title="Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба)" alt="" coords="373,70,528,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,296,181,255,220,202,270,149,299,125,329,104,359,92,361,97,332,109,302,129,274,153,224,206,185,258,159,299"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac72e4692156b1f53ce1f706dfb9fa11b" title="Возврат константной ссылки на объект граничного условия" alt="" coords="343,119,558,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="160,295,229,225,276,186,329,154,346,146,348,151,332,158,280,190,232,229,164,299"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a948b4561638d16d17c20671c608e9f91" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="357,169,544,194"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="171,295,240,248,284,224,330,203,353,195,355,200,332,208,286,228,243,253,174,299"/>
+<area shape="rect" id="Node000006" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="331,218,571,243"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="200,295,330,253,369,244,371,249,331,259,202,300"/>
+<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad5fd79becfefeecd1067e09a7ce9bd63" title="Возврат количества граничных условий в задаче" alt="" coords="348,268,553,308"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="283,301,334,296,335,302,283,307"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="347,333,555,358"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="283,327,333,332,333,337,283,333"/>
+<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4e7aeb514fa3a2ecbb2c26d5493d66a4" title="Возврат константной ссылки на источники в области течения" alt="" coords="352,382,549,407"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="214,335,331,367,374,377,372,382,330,372,212,340"/>
+<area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a33e4bc208d515f522eaca4f0f99c7422" title="Возврат константной ссылки на вихревой след" alt="" coords="357,431,545,457"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="177,335,246,376,332,416,362,426,360,431,330,421,244,381,174,340"/>
+<area shape="rect" id="Node000011" href="$dd/d60/_velocity2_d_biot_savart_8cpp.html#a24621439a1e24f7f518b40641d561467" title=" " alt="" coords="409,481,492,506"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="166,336,234,401,281,436,332,466,364,477,396,485,395,490,362,482,330,470,278,440,231,405,162,339"/>
+<area shape="rect" id="Node000012" href="$dd/d9a/namespace_v_mlib.html#a42960d06cf1001551b93dd8aedeff100" title="Модифицирует массив квадратов расстояний до ближайших вихрей из wake." alt="" coords="387,530,514,555"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="160,336,187,375,226,424,275,474,332,515,375,531,373,536,329,520,272,478,222,427,182,378,156,339"/>
+<area shape="rect" id="Node000013" href="$d6/dd4/class_v_mlib_1_1numvector.html#a70c07d1b3d53524ea664615f1d28879f" title="Установка всех компонент вектора в константу (по умолчанию — нуль)" alt="" coords="357,579,545,605"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="156,336,180,384,218,446,269,511,299,540,332,564,345,572,343,576,329,569,296,544,265,514,214,449,176,386,152,339"/>
+</map>

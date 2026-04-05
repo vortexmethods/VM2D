@@ -1,12 +1,58 @@
 <map id="VM2D::World2D::CalcAndSolveLinearSystem" name="VM2D::World2D::CalcAndSolveLinearSystem">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a198aa1abb3a1a6980111422622b97fa7" title="Вычисляем размер матрицы и резервируем память под нее и под правую часть " alt="" coords="263,5,485,47"/>
-<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="533,341,728,367"/>
-<area shape="rect" id="node5" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a44c734c3878981e37dfcadcc33ab65ca" title="Установка коэффициента разгона потока " alt="" coords="283,122,465,149"/>
-<area shape="rect" id="node6" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a94ba48734ca04561c6aa3a45b6e01a2b" title="Функция&#45;множитель, позволяющая моделировать разгон " alt="" coords="286,173,462,215"/>
-<area shape="rect" id="node7" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a689f7b0e4ae9ed7c56e3b077a50c4de2" title="Установка максимально допустимой циркуляции вихря " alt="" coords="280,239,468,266"/>
-<area shape="rect" id="node8" href="$d0/d75/class_v_m2_d_1_1_gpu.html#aff6cf9500f84f7d400034f1aedc5a369" title="Установка переключателя расчетных схем " alt="" coords="266,290,482,317"/>
-<area shape="rect" id="node9" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a76ca71da59452ac1670c228a6a8b3f09" title="Заполнение матрицы, состоящей из интегралов от (r&#45;xi) / |r&#45;xi|^2. " alt="" coords="295,341,453,367"/>
-<area shape="rect" id="node10" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ada86302cbf92c7dff8124a610ae00e24" title="Заполнение матрицы системы для всех профилей " alt="" coords="285,392,463,433"/>
-<area shape="rect" id="node11" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений " alt="" coords="277,457,471,499"/>
-<area shape="rect" id="node4" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="535,5,726,47"/>
+<area shape="rect" id="Node000001" title="Набор матрицы, правой части и решение СЛАУ" alt="" coords="5,406,227,446"/>
+<area shape="rect" id="Node000002" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715" title="Функция&#45;множитель, позволяющая моделировать разгон" alt="" coords="300,35,489,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,405,132,343,160,256,181,210,206,164,237,122,273,85,286,76,289,80,276,89,241,125,210,167,185,212,165,258,137,344,123,406"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a76ca71da59452ac1670c228a6a8b3f09" title="Заполнение матрицы, состоящей из интегралов от (r&#45;xi) / |r&#45;xi|^2." alt="" coords="312,100,477,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="120,405,136,350,166,277,186,238,211,200,240,166,273,136,297,123,300,127,276,140,244,169,215,204,191,241,171,279,141,352,125,407"/>
+<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ada86302cbf92c7dff8124a610ae00e24" title="Заполнение матрицы системы для всех профилей" alt="" coords="298,150,491,190"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="125,405,148,366,181,315,223,263,273,216,312,193,315,198,276,220,227,266,185,319,152,368,130,407"/>
+<area shape="rect" id="Node000011" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="275,492,515,517"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="184,443,275,470,332,486,331,491,274,475,183,449"/>
+<area shape="rect" id="Node000012" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a248cd24b129e8f1a875291a25e2de1d9" title="Возврат признака того, что хотя бы один из профилей подвижный или деформируемый" alt="" coords="563,581,787,621"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="227,427,309,433,392,442,466,457,494,466,516,477,528,488,535,499,542,522,548,545,565,567,571,571,568,576,561,571,543,548,537,524,530,501,524,491,513,482,492,471,464,462,391,447,308,438,227,432"/>
+<area shape="rect" id="Node000014" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a198aa1abb3a1a6980111422622b97fa7" title="Вычисляем размер матрицы и резервируем память под нее и под правую часть" alt="" coords="275,377,514,417"/>
+<area shape="poly" id="edge16_Node000001_Node000014" title=" " alt="" coords="227,412,261,408,262,413,227,417"/>
+<area shape="rect" id="Node000017" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a44c734c3878981e37dfcadcc33ab65ca" title="Установка коэффициента разгона потока" alt="" coords="299,541,491,567"/>
+<area shape="poly" id="edge20_Node000001_Node000017" title=" " alt="" coords="143,444,202,486,238,508,276,526,301,535,300,540,274,531,235,512,199,490,140,448"/>
+<area shape="rect" id="Node000018" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a689f7b0e4ae9ed7c56e3b077a50c4de2" title="Установка максимально допустимой циркуляции вихря" alt="" coords="293,591,496,616"/>
+<area shape="poly" id="edge21_Node000001_Node000018" title=" " alt="" coords="134,444,191,511,231,547,276,577,290,584,288,588,273,582,228,551,187,515,130,448"/>
+<area shape="rect" id="Node000019" href="$d0/d75/class_v_m2_d_1_1_gpu.html#aff6cf9500f84f7d400034f1aedc5a369" title="Установка переключателя расчетных схем" alt="" coords="279,640,510,665"/>
+<area shape="poly" id="edge22_Node000001_Node000019" title=" " alt="" coords="129,445,151,485,183,534,225,585,250,607,276,626,287,632,284,637,273,631,246,611,221,589,179,538,146,488,125,448"/>
+<area shape="rect" id="Node000020" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений" alt="" coords="291,230,499,270"/>
+<area shape="poly" id="edge23_Node000001_Node000020" title=" " alt="" coords="148,404,349,275,352,280,150,408"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a724533c5ac15595459d04136a6a2bb29" title="Возврат ссылки на временную статистику выполнения шага расчета по времени" alt="" coords="575,5,774,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="477,99,513,85,528,75,537,63,546,51,561,40,576,33,579,38,564,44,550,55,541,66,531,78,516,90,479,104"/>
+<area shape="rect" id="Node000005" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a9be199fa84f64c66a8592f1d12d59daf" title="Запуск счетчика" alt="" coords="587,55,763,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="473,97,582,80,583,85,474,103"/>
+<area shape="rect" id="Node000006" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a8259245a1091f74d655318c8c79bb5b0" title="Останов счетчика" alt="" coords="587,104,762,129"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="477,111,574,113,574,118,477,117"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="490,149,513,135,524,124,530,112,536,88,542,64,549,51,561,40,568,35,571,40,564,44,553,55,547,66,541,90,535,114,528,127,516,139,493,153"/>
+<area shape="poly" id="edge10_Node000007_Node000005" title=" " alt="" coords="484,148,513,134,527,124,536,112,546,100,561,89,576,82,579,87,564,94,550,104,541,115,531,127,516,139,486,152"/>
+<area shape="poly" id="edge12_Node000007_Node000006" title=" " alt="" coords="491,149,594,129,595,135,492,154"/>
+<area shape="rect" id="Node000008" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9e9876b8af44c612985703e61a8fb670" title="Сброс счетчика времени" alt="" coords="591,153,758,179"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="491,166,578,165,578,170,491,171"/>
+<area shape="rect" id="Node000009" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9a2edffcbf01cfab7f70422ce60391be" title="Запуск (первый или повторный) счетчика времени" alt="" coords="593,203,757,228"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="492,183,583,198,582,203,491,188"/>
+<area shape="rect" id="Node000010" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a320206c4467fa80d013de7a8d9fde1d5" title="Останов работающего счетчика времени" alt="" coords="593,252,756,277"/>
+<area shape="poly" id="edge11_Node000007_Node000010" title=" " alt="" coords="448,188,516,216,564,237,595,246,594,251,562,242,514,220,446,193"/>
+<area shape="rect" id="Node000013" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a512f981c7eb6af147422fd8c9ddb7033" title=" " alt="" coords="835,581,1057,621"/>
+<area shape="poly" id="edge15_Node000012_Node000013" title=" " alt="" coords="787,598,821,598,821,603,787,603"/>
+<area shape="poly" id="edge19_Node000014_Node000012" title=" " alt="" coords="489,415,516,433,530,451,537,468,541,502,545,535,552,551,565,567,569,571,566,575,561,571,547,554,540,537,536,503,532,469,526,453,513,437,486,419"/>
+<area shape="rect" id="Node000015" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0277884d66fb825cebd681dba46c2858" title="Возврат количества профилей в задаче" alt="" coords="572,517,777,557"/>
+<area shape="poly" id="edge17_Node000014_Node000015" title=" " alt="" coords="481,414,516,433,532,449,541,465,549,481,564,496,586,509,583,513,561,500,545,484,536,468,528,452,513,437,478,419"/>
+<area shape="rect" id="Node000016" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="842,441,1050,467"/>
+<area shape="poly" id="edge18_Node000014_Node000016" title=" " alt="" coords="460,414,516,433,539,443,563,450,631,459,700,463,828,461,828,467,700,468,630,464,562,455,537,448,514,438,458,419"/>
+<area shape="poly" id="edge26_Node000020_Node000004" title=" " alt="" coords="473,228,495,216,513,200,526,180,533,160,534,120,537,80,545,60,561,40,566,36,569,40,565,44,549,62,542,81,540,120,538,161,531,183,517,204,498,220,476,232"/>
+<area shape="poly" id="edge31_Node000020_Node000005" title=" " alt="" coords="470,228,493,216,513,200,524,186,530,173,535,145,541,117,548,103,561,89,572,81,575,86,564,93,552,106,546,119,540,146,535,174,528,189,517,204,496,220,472,232"/>
+<area shape="poly" id="edge33_Node000020_Node000006" title=" " alt="" coords="462,227,489,215,513,200,528,185,536,169,545,153,561,138,573,132,576,137,564,143,549,157,540,172,532,188,516,204,491,220,464,232"/>
+<area shape="poly" id="edge29_Node000020_Node000008" title=" " alt="" coords="445,227,562,187,593,179,595,184,563,193,447,233"/>
+<area shape="poly" id="edge30_Node000020_Node000009" title=" " alt="" coords="499,234,579,224,579,230,499,240"/>
+<area shape="poly" id="edge32_Node000020_Node000010" title=" " alt="" coords="499,253,580,257,580,262,499,258"/>
+<area shape="rect" id="Node000021" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a7288c99d59eea9721bb38c9b8cbd154c" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода" alt="" coords="583,301,767,327"/>
+<area shape="poly" id="edge24_Node000020_Node000021" title=" " alt="" coords="483,267,563,286,605,296,604,301,562,291,481,273"/>
+<area shape="rect" id="Node000022" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad5fd79becfefeecd1067e09a7ce9bd63" title="Возврат количества граничных условий в задаче" alt="" coords="572,351,777,391"/>
+<area shape="poly" id="edge25_Node000020_Node000022" title=" " alt="" coords="431,268,492,302,564,336,588,344,586,349,562,340,489,306,428,273"/>
+<area shape="rect" id="Node000023" href="$d9/dd7/namespace_v_m2_d.html#a3f3563f686db3c463f4f87bc29f33461" title=" " alt="" coords="593,416,756,441"/>
+<area shape="poly" id="edge27_Node000020_Node000023" title=" " alt="" coords="419,269,501,346,564,401,583,409,580,414,561,406,497,350,415,272"/>
+<area shape="poly" id="edge28_Node000023_Node000016" title=" " alt="" coords="756,434,829,440,828,446,756,439"/>
 </map>

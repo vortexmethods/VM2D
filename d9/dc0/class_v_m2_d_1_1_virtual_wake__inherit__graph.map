@@ -1,3 +1,5 @@
 <map id="VM2D::VirtualWake" name="VM2D::VirtualWake">
-<area shape="rect" id="node2" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей " alt="" coords="5,5,164,32"/>
+<area shape="rect" id="Node000001" title="Класс, опеделяющий вихревой след (пелену)" alt="" coords="15,79,162,104"/>
+<area shape="rect" id="Node000002" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей" alt="" coords="5,5,172,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,44,91,79,86,79,86,44"/>
 </map>

@@ -1,6 +1,5 @@
 var dir_a174265795d5eee350dc05a1e7839abb =
 [
-    [ "AirfoilGeometry", "dir_543a0ca734f70f0fb94f9e1eced43cef.html", "dir_543a0ca734f70f0fb94f9e1eced43cef" ],
     [ "defs", "dir_176d724bd514ce53c5f49b62b6a0567f.html", "dir_176d724bd514ce53c5f49b62b6a0567f" ],
     [ "LogStream", "dir_05c66e5e866e753ea11decddd424b3fa.html", "dir_05c66e5e866e753ea11decddd424b3fa" ],
     [ "numvector", "dir_7224bd67555603c703dfbc0e093fae4d.html", "dir_7224bd67555603c703dfbc0e093fae4d" ],

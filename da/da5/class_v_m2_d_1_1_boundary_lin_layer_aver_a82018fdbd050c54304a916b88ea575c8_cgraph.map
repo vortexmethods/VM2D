@@ -1,3 +1,24 @@
 <map id="VM2D::BoundaryLinLayerAver::FillIQSelf" name="VM2D::BoundaryLinLayerAver::FillIQSelf">
-<area shape="rect" id="node2" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aabbb2ec3c1363e0564936fb7709f6c44" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2. " alt="" coords="252,13,399,39"/>
+<area shape="rect" id="Node000001" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние профиля самого на себя" alt="" coords="5,202,220,242"/>
+<area shape="rect" id="Node000002" href="$db/de9/class_v_m2_d_1_1_airfoil.html#abe3a4daab0a87f5967be9d9cd153bd05" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2." alt="" coords="268,209,424,235"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,219,254,219,254,225,220,225"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами" alt="" coords="517,5,621,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,208,366,175,391,129,426,82,471,41,503,26,506,30,473,46,430,85,396,132,370,177,355,210"/>
+<area shape="rect" id="Node000005" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="483,55,656,95"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="356,207,403,158,435,130,471,105,483,99,485,103,473,110,438,134,406,162,360,211"/>
+<area shape="rect" id="Node000006" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="483,119,656,159"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="376,207,471,169,492,161,494,166,473,174,378,212"/>
+<area shape="rect" id="Node000007" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d" title="Проверка, идет ли вершина i следом за вершиной j." alt="" coords="490,184,649,209"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="424,210,476,205,476,210,425,216"/>
+<area shape="rect" id="Node000008" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов" alt="" coords="510,233,629,259"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="425,228,496,236,496,241,424,233"/>
+<area shape="rect" id="Node000009" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="476,283,663,308"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="379,232,473,267,503,276,501,282,471,273,377,237"/>
+<area shape="rect" id="Node000010" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="472,332,667,357"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="362,233,408,274,440,297,473,317,493,325,491,330,471,322,437,302,405,278,358,237"/>
+<area shape="rect" id="Node000011" href="$dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины ." alt="" coords="512,381,627,407"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="357,233,400,298,434,335,473,366,500,379,498,384,471,371,430,339,396,301,352,236"/>
+<area shape="rect" id="Node000004" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения" alt="" coords="715,193,824,219"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="622,21,646,29,668,41,701,73,728,110,748,148,762,179,757,181,743,150,723,113,697,76,665,45,644,34,621,27"/>
+<area shape="poly" id="edge11_Node000011_Node000004" title=" " alt="" coords="626,384,647,377,665,367,697,336,723,299,743,262,757,231,762,233,748,264,728,302,701,339,668,371,649,382,628,389"/>
 </map>

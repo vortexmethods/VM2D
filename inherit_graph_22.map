@@ -1,4 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d6/dd4/class_v_mlib_1_1numvector.html" title="VMlib::numvector\&lt; int, 2 \&gt;" alt="" coords="5,5,183,32"/>
-<area shape="rect" id="node2" href="$dc/d31/class_v_mlib_1_1_pair_int.html" title="Класс, опеделяющий пару целых чисел " alt="" coords="231,5,332,32"/>
+<area shape="rect" id="Node000000" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей" alt="" coords="5,31,172,56"/>
+<area shape="rect" id="Node000001" href="$d4/d07/class_v_m2_d_1_1_virtual_wake.html" title="Класс, опеделяющий вихревой след (пелену)" alt="" coords="220,5,367,31"/>
+<area shape="poly" id="edge15_Node000000_Node000001" title=" " alt="" coords="185,29,219,24,220,30,186,34"/>
+<area shape="rect" id="Node000002" href="$df/d8f/class_v_m2_d_1_1_wake.html" title="Класс, опеделяющий вихревой след (пелену)" alt="" coords="241,55,345,80"/>
+<area shape="poly" id="edge16_Node000000_Node000002" title=" " alt="" coords="186,52,242,59,241,64,185,57"/>
 </map>

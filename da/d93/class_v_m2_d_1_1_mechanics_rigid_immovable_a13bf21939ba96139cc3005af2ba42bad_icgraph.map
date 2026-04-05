@@ -1,3 +1,5 @@
 <map id="VM2D::MechanicsRigidImmovable::ReadSpecificParametersFromDictionary" name="VM2D::MechanicsRigidImmovable::ReadSpecificParametersFromDictionary">
-<area shape="rect" id="node2" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f" title="Конструктор " alt="" coords="317,5,541,47"/>
+<area shape="rect" id="Node000001" title="Чтение параметров конкретной механической системы" alt="" coords="299,5,585,45"/>
+<area shape="rect" id="Node000002" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f" title="Конструктор" alt="" coords="5,5,251,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="285,28,251,28,251,23,285,23"/>
 </map>

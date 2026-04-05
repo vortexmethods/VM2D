@@ -1,0 +1,11 @@
+<map id="if" name="if">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,44,56"/>
+<area shape="rect" id="Node000002" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D." alt="" coords="92,5,300,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="44,38,96,30,97,35,44,43"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D." alt="" coords="100,55,292,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="44,43,92,50,91,55,44,49"/>
+<area shape="rect" id="Node000004" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой" alt="" coords="353,29,532,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="292,55,339,50,340,55,292,60"/>
+<area shape="rect" id="Node000005" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D." alt="" coords="348,79,537,104"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="292,74,335,78,334,83,292,79"/>
+</map>

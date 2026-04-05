@@ -1,3 +1,5 @@
 <map id="VM2D::Passport::GetAllParamsFromParser" name="VM2D::Passport::GetAllParamsFromParser">
-<area shape="rect" id="node2" href="$d2/d15/class_v_m2_d_1_1_passport.html#a875604d311bcf3c17ce56f2f0ea0aa09" title="Конструктор " alt="" coords="261,13,440,39"/>
+<area shape="rect" id="Node000001" title="Считывание всех параметров расчета из соответствующих потоков" alt="" coords="240,5,460,45"/>
+<area shape="rect" id="Node000002" href="$d2/d15/class_v_m2_d_1_1_passport.html#a875604d311bcf3c17ce56f2f0ea0aa09" title="Конструктор" alt="" coords="5,13,192,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,28,192,28,192,23,226,23"/>
 </map>

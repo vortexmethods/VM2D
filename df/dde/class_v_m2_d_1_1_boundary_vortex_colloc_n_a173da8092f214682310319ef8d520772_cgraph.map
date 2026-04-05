@@ -1,14 +1,27 @@
 <map id="VM2D::BoundaryVortexCollocN::GetInfluenceFromVortexSheetAtRectPanelToVortex" name="VM2D::BoundaryVortexCollocN::GetInfluenceFromVortexSheetAtRectPanelToVortex">
-<area shape="rect" id="node2" href="$d6/dd4/class_v_mlib_1_1numvector.html#ab52c2bfa931d8533aae15b6999d718ab" title="Установка всех компонент вектора в константу (по умолчанию — нуль) " alt="" coords="286,5,455,32"/>
-<area shape="rect" id="node3" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#afb7db6466df1b93954f3a00610a05d0b" title="Функция для доступа к радиус&#45;вектору вихря " alt="" coords="305,56,436,83"/>
-<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#af1b83915a3c56f2a85a2cdd0301be2f3" title="Возврат константной ссылки на вершину профиля " alt="" coords="303,107,439,133"/>
-<area shape="rect" id="node5" href="$d6/dd4/class_v_mlib_1_1numvector.html#aeac4d166e1b761b24de9b5cff5414e88" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному " alt="" coords="294,157,447,184"/>
-<area shape="rect" id="node6" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами " alt="" coords="323,208,419,235"/>
-<area shape="rect" id="node9" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора " alt="" coords="809,233,984,260"/>
-<area shape="rect" id="node10" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов " alt="" coords="316,309,425,336"/>
-<area shape="rect" id="node11" href="$d6/dd4/class_v_mlib_1_1numvector.html#a1471ef55266b8e21d045c4f4e05912d9" title="Геометрический поворот двумерного вектора на 90 градусов " alt="" coords="285,360,456,387"/>
-<area shape="rect" id="node12" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a5bbc9ae3758b8da52ec9e13994648dd6" title="VM2D::Sheet::freeVortexSheet" alt="" coords="269,411,472,437"/>
-<area shape="rect" id="node13" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a9431e357980548a5fabd5ffffb917665" title="VM2D::Sheet::attachedVortex\lSheet" alt="" coords="272,462,469,503"/>
-<area shape="rect" id="node7" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения " alt="" coords="520,208,623,235"/>
-<area shape="rect" id="node8" href="$dd/d9a/namespace_v_mlib.html#a53a0c3504f463ab8fac683a8092aeb8a" title="Вычисление квадрата расстояния между двумя точками " alt="" coords="671,208,761,235"/>
+<area shape="rect" id="Node000001" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="5,245,240,300"/>
+<area shape="rect" id="Node000002" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами" alt="" coords="345,5,449,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,244,156,199,189,144,233,88,258,63,287,41,308,30,331,23,333,28,310,35,289,46,262,67,237,92,193,147,160,202,138,246"/>
+<area shape="rect" id="Node000004" href="$de/d8b/class_v_m2_d_1_1_sheet.html#a42f6bd5f1af938e569e707ae3916643c" title=" " alt="" coords="291,55,504,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="142,243,202,174,242,137,287,105,299,99,301,103,289,110,245,141,206,178,146,247"/>
+<area shape="rect" id="Node000005" href="$de/d8b/class_v_m2_d_1_1_sheet.html#ab3279637a6ea77bfd5a39b89d2fd3447" title=" " alt="" coords="288,120,507,145"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="154,243,213,198,249,175,287,156,311,147,313,152,289,160,252,180,216,202,157,247"/>
+<area shape="rect" id="Node000006" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="311,170,484,210"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="211,243,287,219,314,211,316,217,289,225,213,248"/>
+<area shape="rect" id="Node000007" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6bc3591c405e791a4dd542f53258e115" title="Геометрический поворот двумерного вектора на 90 градусов" alt="" coords="304,235,491,260"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="240,259,290,255,290,260,240,265"/>
+<area shape="rect" id="Node000008" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов" alt="" coords="338,284,457,309"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="240,280,325,288,324,293,240,286"/>
+<area shape="rect" id="Node000009" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="300,333,495,359"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="215,298,289,318,327,328,326,333,287,323,214,303"/>
+<area shape="rect" id="Node000010" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="327,383,467,408"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="164,298,222,334,289,368,315,376,314,382,287,372,219,339,161,303"/>
+<area shape="rect" id="Node000011" href="$d6/dd4/class_v_mlib_1_1numvector.html#a70c07d1b3d53524ea664615f1d28879f" title="Установка всех компонент вектора в константу (по умолчанию — нуль)" alt="" coords="303,432,491,457"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="149,299,209,359,247,391,289,417,308,425,306,430,287,422,244,395,205,363,145,302"/>
+<area shape="rect" id="Node000012" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8974f47ee5cf514aa6ac17b3af4daf62" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному" alt="" coords="312,481,483,507"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="141,299,165,338,198,384,240,430,289,468,300,474,298,478,287,472,237,433,194,387,161,341,137,302"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения" alt="" coords="593,5,703,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="449,15,579,15,579,21,449,21"/>
+<area shape="rect" id="Node000013" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="555,481,741,507"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="483,491,541,491,541,497,483,497"/>
 </map>

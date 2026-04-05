@@ -1,0 +1,43 @@
+<map id="VM2D::Airfoil::GetGabarits" name="VM2D::Airfoil::GetGabarits">
+<area shape="rect" id="Node000001" title="Вычисляет габаритный прямоугольник профиля" alt="" coords="1033,295,1228,321"/>
+<area shape="rect" id="Node000002" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a40bf363b8af4fa85b5bfbb8117e156f6" title="Перемещение профиля в соответствии с законом" alt="" coords="771,205,985,245"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1081,293,984,260,947,248,948,243,986,255,1083,288"/>
+<area shape="rect" id="Node000003" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a927ff9232411db3200aadea640281e6b" title="Перемещение профиля" alt="" coords="802,319,954,345"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1020,321,954,327,954,322,1019,316"/>
+<area shape="rect" id="Node000017" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae70174fb0c012b6be31a45caeabb9dd8" title="Поворот профиля" alt="" coords="799,270,957,295"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="1019,300,957,293,958,288,1020,294"/>
+<area shape="rect" id="Node000018" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a355ead9b4cc8f815d6b815adbe1fa131" title="Масштабирование профиля" alt="" coords="803,373,953,398"/>
+<area shape="poly" id="edge22_Node000001_Node000018" title=" " alt="" coords="1081,328,986,359,928,375,927,370,985,353,1079,323"/>
+<area shape="rect" id="Node000004" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости" alt="" coords="514,141,717,166"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="788,321,769,309,755,293,748,276,744,243,740,211,734,195,721,181,702,168,705,164,724,177,738,193,746,209,749,242,753,275,760,290,772,305,791,316"/>
+<area shape="rect" id="Node000010" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a647915f7ce1e3199d06943efa4e9baa7" title="Перемещение профиля в соответствии с законом" alt="" coords="511,191,720,231"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="788,319,769,309,753,293,744,276,736,260,721,245,700,233,703,229,724,241,740,257,749,274,757,290,772,305,790,314"/>
+<area shape="rect" id="Node000011" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#ac31474c4062bc76ec6bf97051515b084" title="Перемещение профиля в соответствии с законом" alt="" coords="512,255,719,295"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="805,319,707,297,708,292,806,314"/>
+<area shape="rect" id="Node000012" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a0f04a54700ffd113274d1ebc8f8be895" title="Перемещение профиля в соответствии с законом" alt="" coords="508,319,723,359"/>
+<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="788,337,723,339,723,333,788,332"/>
+<area shape="rect" id="Node000013" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a79f09bf78c8c6238b0fd9b1d7b6da11d" title=" " alt="" coords="512,433,719,473"/>
+<area shape="poly" id="edge12_Node000003_Node000013" title=" " alt="" coords="792,352,772,362,757,376,749,391,740,407,724,422,700,436,697,431,721,418,736,403,744,388,753,373,769,358,789,347"/>
+<area shape="rect" id="Node000016" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afa0496537fb81b12de574b8d4e7f441c" title="Считывание профиля из файла" alt="" coords="513,383,718,409"/>
+<area shape="poly" id="edge15_Node000003_Node000016" title=" " alt="" coords="814,351,723,373,671,386,670,381,722,368,813,345"/>
+<area shape="rect" id="Node000005" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a55aa30948b78236633e26f56a870a120" title="Конструктор" alt="" coords="230,197,445,237"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="547,172,426,200,424,195,545,167"/>
+<area shape="rect" id="Node000006" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#acb2bcd9d2c01173b75584afb13a5a15e" title="Конструктор" alt="" coords="227,261,448,301"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="522,174,510,181,494,197,486,215,478,234,462,251,441,263,438,259,458,247,474,231,481,213,489,194,506,177,519,169"/>
+<area shape="rect" id="Node000007" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f" title="Конструктор" alt="" coords="215,5,460,45"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="585,135,528,97,459,60,426,48,428,43,461,55,531,92,588,130"/>
+<area shape="rect" id="Node000008" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#af5c415c8acbbb2abcd3ee928fa69d614" title="Конструктор" alt="" coords="228,69,447,109"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="545,140,424,112,426,107,547,135"/>
+<area shape="rect" id="Node000009" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a59183858c817328199f449df792b6b5a" title="Конструктор" alt="" coords="225,133,450,173"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="500,156,450,156,450,151,500,151"/>
+<area shape="rect" id="Node000014" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="218,433,457,473"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="498,456,457,456,457,451,498,451"/>
+<area shape="rect" id="Node000015" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,441,167,466"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="204,456,167,456,167,451,204,451"/>
+<area shape="poly" id="edge17_Node000017_Node000004" title=" " alt="" coords="784,268,769,259,752,240,744,219,737,199,721,181,698,169,701,164,724,177,742,196,749,217,756,237,772,255,787,264"/>
+<area shape="poly" id="edge18_Node000017_Node000010" title=" " alt="" coords="807,269,770,260,722,245,683,233,684,228,723,240,771,255,808,264"/>
+<area shape="poly" id="edge19_Node000017_Node000011" title=" " alt="" coords="785,283,719,280,719,275,785,277"/>
+<area shape="poly" id="edge20_Node000017_Node000012" title=" " alt="" coords="805,301,710,321,709,316,804,296"/>
+<area shape="poly" id="edge21_Node000017_Node000016" title=" " alt="" coords="787,301,772,309,757,324,749,340,741,357,724,373,698,386,696,381,721,368,736,354,744,337,753,321,769,305,784,296"/>
+<area shape="poly" id="edge23_Node000018_Node000016" title=" " alt="" coords="789,392,718,395,718,389,789,386"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="VMlib::GeomPoint" name="VMlib::GeomPoint">
+<area shape="rect" id="Node000001" title="Класс, опеделяющий двумерный вектор" alt="" coords="49,152,188,177"/>
+<area shape="rect" id="Node000002" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title=" " alt="" coords="59,79,178,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,118,121,152,116,152,116,118"/>
+<area shape="rect" id="Node000003" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="5,5,232,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,44,121,79,116,79,116,44"/>
+</map>

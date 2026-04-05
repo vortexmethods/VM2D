@@ -1,4 +1,11 @@
 <map id="VMlib::StreamParser::ReplaceVarsInString" name="VMlib::StreamParser::ReplaceVarsInString">
-<area shape="rect" id="node2" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a57d43743dfc737c97f61e1eb56588b39" title="Парсинг заданного потока " alt="" coords="204,5,347,47"/>
-<area shape="rect" id="node3" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a36eac28b6262e596cf20724179b07097" title="Конструктор, принимающий четыре потока " alt="" coords="395,5,537,47"/>
+<area shape="rect" id="Node000001" title="Замена переменных в строке их значениями" alt="" coords="411,69,571,109"/>
+<area shape="rect" id="Node000002" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a94b4e184da0c1af5530cab7753181a78" title="Парсинг заданного потока" alt="" coords="208,69,363,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="397,92,363,92,363,87,397,87"/>
+<area shape="rect" id="Node000003" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a3e443ead3072f3955645e6e05dc3312e" title="Конструктор, принимающий один поток" alt="" coords="5,5,160,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="207,68,146,48,147,43,209,63"/>
+<area shape="rect" id="Node000004" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a36eac28b6262e596cf20724179b07097" title="Конструктор, принимающий четыре потока" alt="" coords="5,69,160,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="194,92,161,92,161,87,194,87"/>
+<area shape="rect" id="Node000005" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a1608fe2a19315c2274b66f16a52fc10a" title="Конструктор, принимающий два потока" alt="" coords="5,133,160,173"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="209,116,147,136,146,131,207,111"/>
 </map>

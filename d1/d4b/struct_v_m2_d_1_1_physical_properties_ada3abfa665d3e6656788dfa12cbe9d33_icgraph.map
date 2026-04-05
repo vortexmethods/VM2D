@@ -1,0 +1,24 @@
+<map id="VM2D::PhysicalProperties::V0" name="VM2D::PhysicalProperties::V0">
+<area shape="rect" id="Node000001" title="Функция скорости набегающего потока с учетом разгона" alt="" coords="1027,177,1241,202"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a788b3ba105982ad282142240e70e0172" title="Возврат текущей скорости набегающего потока" alt="" coords="808,177,979,202"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1013,192,979,192,979,187,1013,187"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="225,51,443,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="878,166,859,134,832,98,799,63,759,37,707,19,653,10,597,9,542,13,443,32,369,54,368,49,442,26,542,7,597,3,653,5,708,14,761,32,802,59,836,94,863,131,882,163"/>
+<area shape="rect" id="Node000004" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="513,47,748,73"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="868,169,821,127,791,105,759,88,723,75,725,70,761,83,794,101,824,122,872,165"/>
+<area shape="rect" id="Node000005" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813" title="Вычисление скоростей в точках wakeVP." alt="" coords="539,97,723,137"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="838,175,759,152,714,140,715,135,761,147,840,170"/>
+<area shape="rect" id="Node000006" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a99112c1a4fd05113c87391f29d51f349" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части" alt="" coords="523,162,738,217"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="794,192,738,192,738,187,794,187"/>
+<area shape="rect" id="Node000007" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ad5c57f263b9173f70bbb3700eecb21c5" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части" alt="" coords="506,241,755,281"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="837,208,761,230,711,244,710,239,759,225,836,203"/>
+<area shape="rect" id="Node000008" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a9607a340b9048060d15434c56d527fa2" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части" alt="" coords="501,305,760,345"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="871,214,823,256,793,277,761,296,731,308,729,303,759,291,790,273,820,251,868,210"/>
+<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a1e93757ef8a0bf80601cbb8022138af6" title="Вычисляем новые положения вихрей (в пелене и виртуальных)" alt="" coords="519,370,743,395"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="882,216,863,249,836,288,802,327,761,360,734,372,732,367,759,355,798,323,832,285,858,246,877,213"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="525,101,405,79,406,74,526,96"/>
+<area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="215,363,453,403"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="505,385,454,385,454,380,505,380"/>
+<area shape="rect" id="Node000011" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,370,167,395"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="201,385,167,385,167,380,201,380"/>
+</map>

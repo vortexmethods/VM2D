@@ -1,5 +1,10 @@
 <map id="VM2D::Velocity::LimitDiffVelo" name="VM2D::Velocity::LimitDiffVelo">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="251,5,447,32"/>
-<area shape="rect" id="node3" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6a1ef7e752852fd7a508497a037c2764" title="Вычисление 2&#45;нормы (длины) вектора " alt="" coords="265,56,432,83"/>
-<area shape="rect" id="node4" href="$d6/dd4/class_v_mlib_1_1numvector.html#ad8ae47c439a962678170722c9b0801fb" title="Нормирование вектора на заданную длину " alt="" coords="255,107,443,133"/>
+<area shape="rect" id="Node000001" title="Контроль больших значений диффузионных скоростей" alt="" coords="5,56,217,81"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="267,5,475,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,53,291,31,292,36,178,58"/>
+<area shape="rect" id="Node000003" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="524,81,711,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,71,511,86,510,91,217,77"/>
+<area shape="rect" id="Node000004" href="$d6/dd4/class_v_mlib_1_1numvector.html#ad8ae47c439a962678170722c9b0801fb" title="Нормирование вектора на заданную длину" alt="" coords="265,107,476,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="178,79,292,101,291,107,177,84"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="476,106,510,102,510,108,476,111"/>
 </map>

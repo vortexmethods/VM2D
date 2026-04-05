@@ -1,10 +1,34 @@
 <map id="VM2D::MechanicsRigidGivenLaw::Move" name="VM2D::MechanicsRigidGivenLaw::Move">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="248,5,444,32"/>
-<area shape="rect" id="node3" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a07acdb787188d8f83ae8587cc0b39df0" title="Возвращает текуще время " alt="" coords="258,57,434,98"/>
-<area shape="rect" id="node4" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae77606bfe37d99ef15cefa876e284277" title="Перемещение профиля " alt="" coords="276,123,416,149"/>
-<area shape="rect" id="node5" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a57a932604018b2b7b2b76a090c66d170" title="Вычисление положения центра масс профиля " alt="" coords="249,174,443,215"/>
-<area shape="rect" id="node6" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae6f87ad89e0743fd910af6f898c4d6e6" title="Поворот профиля " alt="" coords="273,240,419,267"/>
-<area shape="rect" id="node7" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#adf06862acd7724eb4ec955de2e525054" title="Вычисление угла поворота профиля " alt="" coords="249,291,443,333"/>
-<area shape="rect" id="node8" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a486b72e76c7712539adf50d68e3c557c" title="Вычисление скорости центра масс профиля " alt="" coords="249,357,443,398"/>
-<area shape="rect" id="node9" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a98f57ed642d3dd9e48624b43d7480df5" title="Вычисление угловой скорости профиля " alt="" coords="249,422,443,463"/>
+<area shape="rect" id="Node000001" title="Перемещение профиля в соответствии с законом" alt="" coords="5,213,215,253"/>
+<area shape="rect" id="Node000002" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#adf06862acd7724eb4ec955de2e525054" title="Вычисление угла поворота профиля" alt="" coords="278,5,487,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,211,177,139,216,98,261,62,286,48,289,53,264,66,220,101,181,142,126,215"/>
+<area shape="rect" id="Node000003" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a98f57ed642d3dd9e48624b43d7480df5" title="Вычисление угловой скорости профиля" alt="" coords="277,120,488,160"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="156,211,262,169,288,161,290,166,264,175,158,216"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="555,127,763,153"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="125,211,181,155,219,127,262,106,308,93,356,86,404,85,452,88,540,102,610,121,608,126,539,108,451,94,404,91,356,92,309,98,264,110,222,131,184,159,129,215"/>
+<area shape="rect" id="Node000005" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="263,249,503,274"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="215,241,249,245,249,250,215,247"/>
+<area shape="rect" id="Node000006" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a927ff9232411db3200aadea640281e6b" title="Перемещение профиля" alt="" coords="307,298,459,323"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="166,251,263,283,302,292,300,298,262,288,164,256"/>
+<area shape="rect" id="Node000012" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a57a932604018b2b7b2b76a090c66d170" title="Вычисление положения центра масс профиля" alt="" coords="278,397,487,437"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="128,252,183,316,221,352,264,382,279,390,277,394,261,386,218,356,180,320,124,255"/>
+<area shape="rect" id="Node000013" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae70174fb0c012b6be31a45caeabb9dd8" title="Поворот профиля" alt="" coords="303,347,462,373"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="137,252,193,293,227,314,264,332,290,342,288,347,262,337,225,319,190,297,134,256"/>
+<area shape="rect" id="Node000014" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a486b72e76c7712539adf50d68e3c557c" title="Вычисление скорости центра масс профиля" alt="" coords="278,184,487,224"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="215,219,264,214,265,219,215,225"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="488,137,542,137,542,143,488,143"/>
+<area shape="rect" id="Node000007" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин" alt="" coords="551,347,768,373"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="455,321,574,342,574,347,454,326"/>
+<area shape="rect" id="Node000011" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a" title="Вычисляет габаритный прямоугольник профиля" alt="" coords="562,298,757,323"/>
+<area shape="poly" id="edge12_Node000006_Node000011" title=" " alt="" coords="459,308,548,308,548,313,459,313"/>
+<area shape="rect" id="Node000008" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="816,283,989,323"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="714,345,767,332,804,323,805,328,769,337,715,350"/>
+<area shape="rect" id="Node000009" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="1037,373,1224,398"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="729,370,816,381,923,386,1024,386,1024,391,923,391,816,387,728,375"/>
+<area shape="rect" id="Node000010" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8974f47ee5cf514aa6ac17b3af4daf62" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному" alt="" coords="817,347,988,373"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="768,357,804,357,804,363,768,363"/>
+<area shape="poly" id="edge11_Node000010_Node000009" title=" " alt="" coords="989,367,1024,371,1024,376,988,372"/>
+<area shape="poly" id="edge15_Node000013_Node000007" title=" " alt="" coords="462,357,537,357,537,363,462,363"/>
+<area shape="poly" id="edge16_Node000013_Node000011" title=" " alt="" coords="454,345,574,323,574,328,455,350"/>
+<area shape="poly" id="edge18_Node000014_Node000004" title=" " alt="" coords="469,181,589,153,591,158,471,187"/>
 </map>

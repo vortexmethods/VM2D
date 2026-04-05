@@ -1,0 +1,48 @@
+<map id="VM2D::Airfoil::ReadFromFile" name="VM2D::Airfoil::ReadFromFile">
+<area shape="rect" id="Node000001" title="Считывание профиля из файла" alt="" coords="5,260,211,285"/>
+<area shape="rect" id="Node000002" href="$db/d04/class_v_mlib_1_1_stream_parser.html#ad78a1c26e72cc23533f26acbf2b91f43" title="Считывание вектора из двумерных точек из базы данных" alt="" coords="275,20,458,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,259,129,219,160,163,203,104,228,77,257,54,267,49,270,53,260,59,232,81,207,108,164,166,134,221,117,261"/>
+<area shape="rect" id="Node000005" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a7288c99d59eea9721bb38c9b8cbd154c" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода" alt="" coords="275,69,459,95"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="115,258,136,227,168,185,209,142,257,105,273,97,275,102,260,110,212,146,172,189,140,230,119,261"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aa44ba41844d84a33ac74132f2f18dae3" title="Возврат неконстантной ссылки на паспорт" alt="" coords="259,119,475,159"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="125,257,183,218,257,176,289,162,291,167,260,180,186,223,128,262"/>
+<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="537,199,745,224"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="211,258,523,222,523,227,211,264"/>
+<area shape="rect" id="Node000008" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="807,242,980,282"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="140,257,244,222,316,202,398,184,486,170,578,164,670,167,759,183,812,205,857,232,854,236,809,209,758,189,669,173,578,169,487,175,399,189,318,207,246,227,142,262"/>
+<area shape="rect" id="Node000009" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aac90f107a96ec84b794c180a3e5283ab" title="Тест на &quot;отвещенность&quot;." alt="" coords="267,285,466,311"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="211,280,254,284,253,290,211,285"/>
+<area shape="rect" id="Node000012" href="$d6/dd4/class_v_mlib_1_1numvector.html#a814bfff790b482ba3e70dc3f48674858" title=" " alt="" coords="555,415,726,440"/>
+<area shape="poly" id="edge27_Node000001_Node000012" title=" " alt="" coords="147,283,309,337,523,399,563,409,562,414,522,405,308,342,145,288"/>
+<area shape="rect" id="Node000013" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a927ff9232411db3200aadea640281e6b" title="Перемещение профиля" alt="" coords="291,415,443,440"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="128,283,186,324,260,372,326,406,323,411,257,376,183,329,125,288"/>
+<area shape="rect" id="Node000018" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae70174fb0c012b6be31a45caeabb9dd8" title="Поворот профиля" alt="" coords="287,464,446,489"/>
+<area shape="poly" id="edge21_Node000001_Node000018" title=" " alt="" coords="118,284,138,318,170,363,211,410,260,449,276,457,274,462,257,454,207,414,166,366,134,321,114,287"/>
+<area shape="rect" id="Node000019" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a355ead9b4cc8f815d6b815adbe1fa131" title="Масштабирование профиля" alt="" coords="291,513,442,539"/>
+<area shape="poly" id="edge24_Node000001_Node000019" title=" " alt="" coords="116,284,133,326,163,385,205,447,231,475,260,498,280,509,277,514,257,503,228,478,201,450,158,387,128,329,111,286"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a9f4fcb924d0d4b3f0e685bc8b2f4973f" title="Функция сверки строки с шаблоном, который может содержать знаки * и ?" alt="" coords="577,5,704,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="458,25,563,19,564,25,458,30"/>
+<area shape="rect" id="Node000004" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="563,55,718,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="449,43,550,59,549,64,448,48"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="415,283,474,264,522,241,572,225,573,230,524,246,476,268,417,288"/>
+<area shape="poly" id="edge12_Node000009_Node000008" title=" " alt="" coords="466,289,522,285,793,266,793,271,523,290,466,294"/>
+<area shape="rect" id="Node000010" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#aa066a8e863abe903c85f9504f035daa6" title="Возврат константной ссылки на параметры распараллеливания по MPI." alt="" coords="523,300,759,325"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="466,301,509,303,509,308,466,306"/>
+<area shape="rect" id="Node000011" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="554,350,727,390"/>
+<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="417,308,551,344,550,349,415,313"/>
+<area shape="poly" id="edge13_Node000009_Node000012" title=" " alt="" coords="423,308,450,319,476,335,492,352,501,369,509,385,524,400,543,410,541,414,521,404,504,388,496,371,488,355,473,339,448,324,421,313"/>
+<area shape="rect" id="Node000014" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин" alt="" coords="532,464,749,489"/>
+<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="438,437,556,459,555,464,437,443"/>
+<area shape="rect" id="Node000017" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a" title="Вычисляет габаритный прямоугольник профиля" alt="" coords="543,513,738,539"/>
+<area shape="poly" id="edge20_Node000013_Node000017" title=" " alt="" coords="444,436,476,449,492,461,501,475,510,487,524,498,541,506,538,511,521,503,506,491,496,478,488,465,473,454,442,441"/>
+<area shape="poly" id="edge16_Node000014_Node000008" title=" " alt="" coords="732,462,757,449,798,415,831,373,857,330,876,293,881,296,862,333,835,376,801,418,760,454,734,466"/>
+<area shape="rect" id="Node000015" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="1028,464,1215,489"/>
+<area shape="poly" id="edge17_Node000014_Node000015" title=" " alt="" coords="750,474,1014,474,1014,479,750,479"/>
+<area shape="rect" id="Node000016" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8974f47ee5cf514aa6ac17b3af4daf62" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному" alt="" coords="808,489,979,515"/>
+<area shape="poly" id="edge18_Node000014_Node000016" title=" " alt="" coords="750,485,795,489,794,495,749,490"/>
+<area shape="poly" id="edge19_Node000016_Node000015" title=" " alt="" coords="979,490,1014,486,1015,491,980,495"/>
+<area shape="poly" id="edge22_Node000018_Node000014" title=" " alt="" coords="446,474,518,474,518,479,446,479"/>
+<area shape="poly" id="edge23_Node000018_Node000017" title=" " alt="" coords="438,487,556,508,555,513,437,492"/>
+<area shape="poly" id="edge25_Node000019_Node000014" title=" " alt="" coords="437,511,555,489,556,495,438,516"/>
+<area shape="poly" id="edge26_Node000019_Node000017" title=" " alt="" coords="442,523,530,523,530,529,442,529"/>
+</map>

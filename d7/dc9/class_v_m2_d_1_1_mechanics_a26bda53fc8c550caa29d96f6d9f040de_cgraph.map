@@ -1,7 +1,13 @@
 <map id="VM2D::Mechanics::GeneratePositionHeader" name="VM2D::Mechanics::GeneratePositionHeader">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a00b9a0556248eef5f534de97b127df92" title="Возврат константной ссылки на паспорт " alt="" coords="244,5,440,32"/>
-<area shape="rect" id="node3" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D. " alt="" coords="252,56,432,83"/>
-<area shape="rect" id="node6" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D. " alt="" coords="245,107,439,133"/>
-<area shape="rect" id="node4" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D. " alt="" coords="488,31,663,57"/>
-<area shape="rect" id="node5" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой " alt="" coords="494,81,657,108"/>
+<area shape="rect" id="Node000001" title="Генерация заголовка файла положения профиля" alt="" coords="5,47,212,87"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="260,5,468,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,45,284,31,285,36,213,50"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D." alt="" coords="260,55,468,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,65,246,65,246,70,212,70"/>
+<area shape="rect" id="Node000004" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D." alt="" coords="268,104,460,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="213,85,285,99,284,104,212,90"/>
+<area shape="rect" id="Node000005" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой" alt="" coords="521,79,700,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="460,104,507,99,508,105,460,109"/>
+<area shape="rect" id="Node000006" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D." alt="" coords="516,128,705,153"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="460,123,503,128,502,133,460,129"/>
 </map>

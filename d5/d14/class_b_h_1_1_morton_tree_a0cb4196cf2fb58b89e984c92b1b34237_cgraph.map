@@ -1,0 +1,13 @@
+<map id="BH::MortonTree::BuildInternalTreeCell" name="BH::MortonTree::BuildInternalTreeCell">
+<area shape="rect" id="Node000001" title="Функция построения i&#45;й внутренней ячейки дерева" alt="" coords="5,97,219,137"/>
+<area shape="rect" id="Node000002" href="$d6/d32/namespace_b_h.html#a4b6185216a4acc36ba0b6f8d3a973f47" title="Округление &quot;в потолок&quot; результата деления пополам, эквивалент ceil(x / 2)" alt="" coords="303,5,401,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,94,203,67,266,40,289,31,291,37,268,44,206,71,152,99"/>
+<area shape="rect" id="Node000003" href="$d6/d32/namespace_b_h.html#a88233f068e8cb62e9a8334a5bf634135" title="Округление &quot;в потолок&quot; результата деления на степень двойки, эквивалент ceil(x / (2^p))" alt="" coords="299,55,405,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="209,94,285,78,286,84,210,99"/>
+<area shape="rect" id="Node000004" href="$d5/d14/class_b_h_1_1_morton_tree.html#a0cffa3fa7a36ed2b9c6ab7562e827af5" title=" " alt="" coords="269,104,435,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="219,114,256,114,256,119,219,119"/>
+<area shape="rect" id="Node000005" href="$d6/d32/namespace_b_h.html#aa460608f6b33c024505b2edf364bea10" title="Шаблонная функция знака числа Написана оптимизированная версия, которая работает самым быстрым возмож..." alt="" coords="314,153,390,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="210,134,301,153,300,158,209,139"/>
+<area shape="rect" id="Node000006" href="$d6/dd4/class_v_mlib_1_1numvector.html#a814bfff790b482ba3e70dc3f48674858" title=" " alt="" coords="267,203,437,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="152,134,206,161,268,188,292,196,290,201,266,192,204,166,150,139"/>
+</map>

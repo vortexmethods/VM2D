@@ -1,8 +1,26 @@
 <map id="VM2D::MechanicsRigidGivenLaw::MechanicsRigidGivenLaw" name="VM2D::MechanicsRigidGivenLaw::MechanicsRigidGivenLaw">
-<area shape="rect" id="node2" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#afc0346791f4611e1b923cfd5850c20fd" title="Чтение параметров конкретной механической системы " alt="" coords="259,5,488,61"/>
-<area shape="rect" id="node4" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости " alt="" coords="280,103,467,129"/>
-<area shape="rect" id="node3" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a1e4a5ddd756b4d42e0f6f2d1e6354ce6" title="Возврат ссылки на объект LogStream Используется в техничеcких целях для организации вывода ..." alt="" coords="540,11,709,37"/>
-<area shape="rect" id="node5" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae77606bfe37d99ef15cefa876e284277" title="Перемещение профиля " alt="" coords="555,61,695,88"/>
-<area shape="rect" id="node6" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5c6ef194cd0e41216935f82756e47793" title="Возврат константной ссылки на объект профиля " alt="" coords="536,112,713,139"/>
-<area shape="rect" id="node7" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae6f87ad89e0743fd910af6f898c4d6e6" title="Поворот профиля " alt="" coords="551,163,698,189"/>
+<area shape="rect" id="Node000001" title="Конструктор" alt="" coords="5,95,227,135"/>
+<area shape="rect" id="Node000002" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости" alt="" coords="296,70,499,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,99,282,93,283,98,227,105"/>
+<area shape="rect" id="Node000011" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#afc0346791f4611e1b923cfd5850c20fd" title="Чтение параметров конкретной механической системы" alt="" coords="275,119,520,174"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="227,125,261,129,261,134,226,130"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4bb03a64c2fa1f064fac02e69c125187" title="Возврат константной ссылки на объект профиля" alt="" coords="568,21,760,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="466,67,581,46,582,51,467,73"/>
+<area shape="rect" id="Node000004" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a927ff9232411db3200aadea640281e6b" title="Перемещение профиля" alt="" coords="588,119,740,145"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="467,93,582,114,581,119,466,98"/>
+<area shape="rect" id="Node000010" href="$db/de9/class_v_m2_d_1_1_airfoil.html#ae70174fb0c012b6be31a45caeabb9dd8" title="Поворот профиля" alt="" coords="585,70,743,95"/>
+<area shape="poly" id="edge10_Node000002_Node000010" title=" " alt="" coords="499,80,571,80,571,85,499,85"/>
+<area shape="rect" id="Node000005" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин" alt="" coords="808,70,1025,95"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="729,117,837,95,838,101,730,122"/>
+<area shape="rect" id="Node000009" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a" title="Вычисляет габаритный прямоугольник профиля" alt="" coords="819,119,1014,145"/>
+<area shape="poly" id="edge9_Node000004_Node000009" title=" " alt="" coords="740,129,806,129,806,135,740,135"/>
+<area shape="rect" id="Node000006" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="1073,5,1247,45"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="971,67,1061,46,1062,51,972,73"/>
+<area shape="rect" id="Node000007" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="1295,95,1481,121"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="982,93,1074,105,1180,110,1281,110,1281,115,1180,115,1073,111,981,98"/>
+<area shape="rect" id="Node000008" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8974f47ee5cf514aa6ac17b3af4daf62" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному" alt="" coords="1075,70,1245,95"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="1026,80,1061,80,1061,85,1026,85"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="1246,90,1281,93,1281,99,1246,95"/>
+<area shape="poly" id="edge11_Node000010_Node000005" title=" " alt="" coords="743,80,794,80,794,85,743,85"/>
+<area shape="poly" id="edge12_Node000010_Node000009" title=" " alt="" coords="730,93,838,114,837,119,729,98"/>
 </map>

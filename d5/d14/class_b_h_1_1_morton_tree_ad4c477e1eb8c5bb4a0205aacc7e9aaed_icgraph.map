@@ -1,0 +1,8 @@
+<map id="BH::MortonTree::getBinom" name="BH::MortonTree::getBinom">
+<area shape="rect" id="Node000001" title=" " alt="" coords="256,47,449,72"/>
+<area shape="rect" id="Node000002" href="$d5/d14/class_b_h_1_1_morton_tree.html#a45cbd11b17b0170b85b02e82841b6eb2" title=" " alt="" coords="5,5,208,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="263,47,182,33,183,28,264,42"/>
+<area shape="rect" id="Node000003" href="$d5/d14/class_b_h_1_1_morton_tree.html#af0b3ce61b83963050b33f8026b8130d1" title="Вычисление параметров дерева (циркуляций и высших моментов)" alt="" coords="11,79,202,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="261,77,203,86,202,81,260,72"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="148,68,134,61,107,58,83,60,69,65,63,71,66,78,61,80,58,70,66,60,82,55,107,53,135,56,151,63"/>
+</map>

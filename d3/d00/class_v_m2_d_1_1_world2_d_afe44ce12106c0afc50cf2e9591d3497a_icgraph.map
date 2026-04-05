@@ -1,0 +1,5 @@
+<map id="VM2D::World2D::getNonConstWake" name="VM2D::World2D::getNonConstWake">
+<area shape="rect" id="Node000001" title="Возврат неконстантной ссылки на вихревой след" alt="" coords="220,5,471,31"/>
+<area shape="rect" id="Node000002" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="5,5,172,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,21,172,21,172,15,206,15"/>
+</map>

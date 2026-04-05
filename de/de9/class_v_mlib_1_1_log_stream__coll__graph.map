@@ -1,8 +1,15 @@
 <map id="VMlib::LogStream" name="VMlib::LogStream">
-<area shape="rect" id="node2" title="STL class. " alt="" coords="39,248,119,275"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="5,157,132,199"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="149,248,244,275"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="157,157,290,199"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="146,81,301,108"/>
-<area shape="rect" id="node7" title="STL class. " alt="" coords="173,5,273,32"/>
+<area shape="rect" id="Node000001" title="Класс, определяющий работу с потоком логов" alt="" coords="111,332,249,357"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="68,244,172,269"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,279,174,330,169,333,134,282"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="18,155,163,195"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,207,118,243,113,245,100,208"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,80,176,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="93,119,93,155,88,155,88,119"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="37,5,144,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="93,45,93,80,88,80,88,45"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="209,244,295,269"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="236,282,192,333,188,330,232,278"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="188,155,327,195"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="258,208,255,244,250,244,253,208"/>
 </map>

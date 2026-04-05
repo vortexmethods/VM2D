@@ -1,7 +1,9 @@
 <map id="VMlib::boundDenom" name="VMlib::boundDenom">
-<area shape="rect" id="node2" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления " alt="" coords="214,5,437,32"/>
-<area shape="rect" id="node4" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a7100a11651be512adfa533cf589ad21a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа ..." alt="" coords="193,57,457,98"/>
-<area shape="rect" id="node3" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad0f8e3f273a36b8816552053fbb244e4" title="Деструктор " alt="" coords="505,5,724,32"/>
-<area shape="rect" id="node5" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a00034635414079c66c9ea546940bb285" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="772,82,947,123"/>
-<area shape="rect" id="node6" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a8efe4ad936349ae0282b37bc61ac2869" title="Вычисление скоростей в точках wakeVP. " alt="" coords="527,111,702,153"/>
+<area shape="rect" id="Node000001" title="Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба)" alt="" coords="331,85,485,110"/>
+<area shape="rect" id="Node000002" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#adb69aaa3d57a84f8a756a58390eb9743" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="5,5,283,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="356,83,282,60,235,48,237,43,283,55,358,78"/>
+<area shape="rect" id="Node000003" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab8d90fe8a6f6d0b6661c5f0e3db453b9" title=" " alt="" coords="31,70,257,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="317,100,258,100,258,95,317,95"/>
+<area shape="rect" id="Node000004" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="27,149,261,174"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="358,117,283,139,224,151,223,146,282,133,357,112"/>
 </map>

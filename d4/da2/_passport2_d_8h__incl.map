@@ -1,6 +1,35 @@
 <map id="VM2D/Passport2D/Passport2D.h" name="VM2D/Passport2D/Passport2D.h">
-<area shape="rect" id="node2" href="$d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen. " alt="" coords="179,80,289,107"/>
-<area shape="rect" id="node9" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D. " alt="" coords="354,80,434,107"/>
-<area shape="rect" id="node6" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream. " alt="" coords="27,155,123,181"/>
-<area shape="rect" id="node10" href="$df/dc5/numvector_8h.html" title="Описание класса numvector. " alt="" coords="388,155,483,181"/>
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса Passport (двумерный) и cоответствующими структурами" alt="" coords="223,5,449,31"/>
+<area shape="rect" id="Node000002" href="$d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen." alt="" coords="217,79,332,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="328,33,296,70,292,66,324,29"/>
+<area shape="rect" id="Node000010" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="427,79,512,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="359,28,437,70,434,74,356,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="184,152,264,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="268,106,242,142,238,139,264,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="288,152,363,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="285,103,311,139,307,142,281,106"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="387,152,464,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="300,102,389,144,387,148,298,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="258,225,321,251"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="240,107,212,119,186,136,171,155,170,165,174,176,188,193,206,206,246,224,243,229,203,211,184,197,170,179,165,166,166,153,182,132,209,114,238,102"/>
+<area shape="rect" id="Node000007" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream." alt="" coords="5,152,109,177"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="241,107,106,150,105,145,239,101"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="127,225,203,251"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="76,175,138,215,135,220,73,180"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="28,225,87,251"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="60,178,60,212,55,212,55,178"/>
+<area shape="rect" id="Node000011" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="489,152,591,177"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="483,102,521,140,517,144,479,106"/>
+<area shape="poly" id="edge17_Node000011_Node000006" title=" " alt="" coords="500,180,335,227,333,222,499,175"/>
+<area shape="poly" id="edge15_Node000011_Node000008" title=" " alt="" coords="489,178,217,230,216,224,488,173"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="428,225,484,251"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="528,179,482,218,479,214,525,175"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="509,225,571,251"/>
+<area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="543,178,543,212,537,212,537,178"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="596,225,663,251"/>
+<area shape="poly" id="edge13_Node000011_Node000014" title=" " alt="" coords="556,175,606,214,602,219,553,179"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="687,225,798,251"/>
+<area shape="poly" id="edge14_Node000011_Node000015" title=" " alt="" coords="573,175,698,218,696,223,572,180"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="361,225,404,251"/>
+<area shape="poly" id="edge16_Node000011_Node000016" title=" " alt="" coords="516,180,418,224,415,219,514,175"/>
 </map>

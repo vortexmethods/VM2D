@@ -1,4 +1,11 @@
 <map id="VM2D::World2D::ReserveMemoryForMatrixAndRhs" name="VM2D::World2D::ReserveMemoryForMatrixAndRhs">
-<area shape="rect" id="node2" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad6e8be35ddb45e8bafa59da745af8ef3" title="Возврат ссылки на временную статистику выполнения шага расчета по времени " alt="" coords="276,5,471,32"/>
-<area shape="rect" id="node3" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a330d022eaeee476bbf568602a31484fc" title="Возврат количества профилей в задаче " alt="" coords="278,57,469,98"/>
+<area shape="rect" id="Node000001" title="Вычисляем размер матрицы и резервируем память под нее и под правую часть" alt="" coords="5,63,244,103"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0277884d66fb825cebd681dba46c2858" title="Возврат количества профилей в задаче" alt="" coords="301,5,507,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,60,292,46,293,51,223,65"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="300,70,508,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="244,80,286,80,286,85,244,85"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a248cd24b129e8f1a875291a25e2de1d9" title="Возврат признака того, что хотя бы один из профилей подвижный или деформируемый" alt="" coords="292,120,516,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="223,100,293,115,292,120,222,105"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a512f981c7eb6af147422fd8c9ddb7033" title=" " alt="" coords="564,120,787,160"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="516,137,550,137,550,143,516,143"/>
 </map>

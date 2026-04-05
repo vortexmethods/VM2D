@@ -1,3 +1,5 @@
 <map id="VM2D::Velocity::CalcDiffVeloI0I3" name="VM2D::Velocity::CalcDiffVeloI0I3">
-<area shape="rect" id="node2" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей " alt="" coords="224,13,420,39"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="260,5,439,45"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="5,13,212,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,28,212,28,212,23,246,23"/>
 </map>

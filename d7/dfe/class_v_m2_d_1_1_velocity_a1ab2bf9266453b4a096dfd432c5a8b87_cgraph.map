@@ -1,0 +1,24 @@
+<map id="VM2D::Velocity::GetWakeInfluenceToRhs" name="VM2D::Velocity::GetWakeInfluenceToRhs">
+<area shape="rect" id="Node000001" title="Генерация вектора влияния вихревого следа на профиль" alt="" coords="5,177,251,217"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac72e4692156b1f53ce1f706dfb9fa11b" title="Возврат константной ссылки на объект граничного условия" alt="" coords="605,70,820,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,175,220,138,258,120,298,105,373,89,449,79,524,75,591,74,591,79,524,80,450,85,374,94,299,111,260,124,222,142,160,179"/>
+<area shape="rect" id="Node000003" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a28cfe00224378acd65ddd2b6bb9d0356" title="Вычисление влияния части подряд идущих источников из области течения на панель для правой части" alt="" coords="327,5,526,45"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,175,211,119,253,89,297,62,329,48,332,52,300,66,256,93,215,124,151,179"/>
+<area shape="rect" id="Node000005" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a91f675a2b667b3f35741003822dad1c2" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на панель для правой части" alt="" coords="327,120,526,160"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="232,175,313,159,314,164,233,180"/>
+<area shape="rect" id="Node000007" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="626,231,799,271"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="165,215,226,245,262,259,299,269,381,280,464,282,543,276,612,267,613,273,543,282,464,287,380,286,298,275,261,264,224,250,162,220"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4e7aeb514fa3a2ecbb2c26d5493d66a4" title="Возврат константной ссылки на источники в области течения" alt="" coords="328,234,525,259"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="250,215,336,229,335,234,249,220"/>
+<area shape="rect" id="Node000009" href="$df/da2/class_v_m2_d_1_1_boundary.html#a4b070c5ee8e041003e8e4a6ff6f987d4" title="Возврат размерности вектора решения" alt="" coords="299,185,555,210"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="251,195,285,195,285,200,251,200"/>
+<area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a33e4bc208d515f522eaca4f0f99c7422" title="Возврат константной ссылки на вихревой след" alt="" coords="333,335,521,361"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="154,215,217,265,257,291,300,314,344,329,342,334,298,318,255,296,214,269,151,220"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="527,43,636,65,635,70,526,48"/>
+<area shape="rect" id="Node000004" href="$df/da2/class_v_m2_d_1_1_boundary.html#a265bd0626c5273a4e0b1534bb7fe5ece" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="603,5,823,45"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="526,23,589,23,589,28,526,28"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="526,117,635,95,636,101,527,123"/>
+<area shape="rect" id="Node000006" href="$df/da2/class_v_m2_d_1_1_boundary.html#a211ce06f20fc153227aef9d17e9ed15a" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="603,120,823,160"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="526,137,589,137,589,143,526,143"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="496,207,613,229,612,235,495,213"/>
+</map>

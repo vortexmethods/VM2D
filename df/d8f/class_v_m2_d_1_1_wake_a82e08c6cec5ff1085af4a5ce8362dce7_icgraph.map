@@ -1,3 +1,5 @@
 <map id="VM2D::Wake::Collaps" name="VM2D::Wake::Collaps">
-<area shape="rect" id="node2" href="$df/d8f/class_v_m2_d_1_1_wake.html#a8445ca23e13732c4b7aa312c4e2c219d" title="Деструктор " alt="" coords="207,5,357,32"/>
+<area shape="rect" id="Node000001" title="Коллапс вихрей" alt="" coords="220,5,380,31"/>
+<area shape="rect" id="Node000002" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="5,5,172,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,21,172,21,172,15,206,15"/>
 </map>

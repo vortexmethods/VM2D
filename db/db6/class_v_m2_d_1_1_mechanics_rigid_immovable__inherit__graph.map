@@ -1,3 +1,5 @@
 <map id="VM2D::MechanicsRigidImmovable" name="VM2D::MechanicsRigidImmovable">
-<area shape="rect" id="node2" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html" title="Абстрактный класс, определяющий вид механической системы " alt="" coords="52,5,183,32"/>
+<area shape="rect" id="Node000001" title="Класс, определяющий вид механической системы" alt="" coords="5,79,251,104"/>
+<area shape="rect" id="Node000002" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html" title="Абстрактный класс, определяющий вид механической системы" alt="" coords="59,5,197,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,44,131,79,125,79,125,44"/>
 </map>

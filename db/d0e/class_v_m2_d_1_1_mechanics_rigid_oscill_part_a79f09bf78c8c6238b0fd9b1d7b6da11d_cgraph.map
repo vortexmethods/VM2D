@@ -1,0 +1,18 @@
+<map id="VM2D::MechanicsRigidOscillPart::MoveKinematic" name="VM2D::MechanicsRigidOscillPart::MoveKinematic">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,64,212,104"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="260,46,468,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,71,246,68,247,73,212,76"/>
+<area shape="rect" id="Node000003" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a927ff9232411db3200aadea640281e6b" title="Перемещение профиля" alt="" coords="288,95,440,121"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,91,274,97,274,102,212,96"/>
+<area shape="rect" id="Node000004" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин" alt="" coords="516,70,733,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="440,98,502,92,502,97,441,103"/>
+<area shape="rect" id="Node000008" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a" title="Вычисляет габаритный прямоугольник профиля" alt="" coords="527,119,722,145"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="441,112,514,119,513,124,440,118"/>
+<area shape="rect" id="Node000005" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="781,5,955,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="679,67,769,46,770,51,680,73"/>
+<area shape="rect" id="Node000006" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="1003,95,1189,121"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="734,86,989,100,989,105,733,91"/>
+<area shape="rect" id="Node000007" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8974f47ee5cf514aa6ac17b3af4daf62" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному" alt="" coords="783,121,953,146"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="687,93,794,115,793,120,686,98"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="954,121,989,117,989,123,954,126"/>
+</map>

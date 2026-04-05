@@ -1,4 +1,7 @@
 <map id="VM2D::MechanicsRigidImmovable::VeloOfAirfoilPanels" name="VM2D::MechanicsRigidImmovable::VeloOfAirfoilPanels">
-<area shape="rect" id="node2" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a64db0076fb412ea450866b61c124253d" title="Вычисление скорости центра масс профиля " alt="" coords="277,5,501,47"/>
-<area shape="rect" id="node3" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afaa4428c98211d798542f0636d1c9516" title="Установка постоянной скорости всех вершин профиля " alt="" coords="322,71,457,98"/>
+<area shape="rect" id="Node000001" title="Вычисление скоростей начал панелей" alt="" coords="5,37,251,77"/>
+<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a68afabb2904ac0341a0695e0d32d272c" title="Установка постоянной скорости всех вершин профиля" alt="" coords="335,5,508,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,41,320,34,321,39,251,47"/>
+<area shape="rect" id="Node000003" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#a64db0076fb412ea450866b61c124253d" title="Вычисление скорости центра масс профиля" alt="" coords="299,69,544,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="251,68,285,72,285,77,251,73"/>
 </map>

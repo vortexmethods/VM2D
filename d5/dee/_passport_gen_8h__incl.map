@@ -1,3 +1,17 @@
 <map id="VMlib/PassportGen/PassportGen.h" name="VMlib/PassportGen/PassportGen.h">
-<area shape="rect" id="node5" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream. " alt="" coords="277,95,373,121"/>
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса PasportGen." alt="" coords="145,5,348,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,85,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,48,89,91,87,86,197,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="109,93,184,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="224,48,174,87,171,82,221,43"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="208,93,285,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="249,46,249,79,244,79,244,46"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="310,93,373,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="271,43,318,82,315,86,268,48"/>
+<area shape="rect" id="Node000006" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream." alt="" coords="397,93,501,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="296,43,408,86,406,91,294,48"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="365,167,441,192"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="444,120,420,157,416,154,439,118"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="465,167,524,192"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="459,118,482,154,478,157,455,120"/>
 </map>

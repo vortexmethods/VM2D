@@ -1,0 +1,26 @@
+<map id="VM2D::World2D::getCuda" name="VM2D::World2D::getCuda">
+<area shape="rect" id="Node000001" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="827,269,1013,295"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="225,133,443,159"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="910,257,895,208,869,148,851,118,830,90,806,65,777,44,740,26,706,14,675,9,645,9,580,22,502,45,456,63,414,88,351,135,348,131,411,83,454,58,500,40,579,16,644,4,675,3,708,9,742,21,780,40,809,61,834,86,856,115,873,146,900,206,915,255"/>
+<area shape="rect" id="Node000003" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a317d8b5ef8b758769718800054fe1bc2" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="501,54,779,94"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="904,258,883,224,855,183,819,142,777,108,754,97,757,92,780,104,823,138,859,180,888,221,908,256"/>
+<area shape="rect" id="Node000004" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#adb69aaa3d57a84f8a756a58390eb9743" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="501,118,779,158"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="895,262,844,216,812,192,778,172,748,161,750,156,780,168,815,188,847,212,899,258"/>
+<area shape="rect" id="Node000005" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab8d90fe8a6f6d0b6661c5f0e3db453b9" title=" " alt="" coords="527,183,753,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="856,268,746,240,747,235,857,263"/>
+<area shape="rect" id="Node000006" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813" title="Вычисление скоростей в точках wakeVP." alt="" coords="548,262,732,302"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="813,285,732,285,732,279,813,279"/>
+<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab4397193aff5c8a3109e5d0585fcd53c" title="Проверка проникновения вихрей внутрь профиля" alt="" coords="535,327,745,352"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="853,300,779,317,714,329,713,324,778,311,852,295"/>
+<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,349,167,375"/>
+<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="894,305,843,339,812,354,779,366,695,384,608,396,521,401,436,401,281,392,161,377,161,372,281,387,436,396,521,395,608,390,694,379,778,361,810,349,840,334,891,301"/>
+<area shape="rect" id="Node000010" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="560,428,720,453"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="902,307,851,360,817,388,780,411,751,423,721,432,719,427,749,418,777,406,814,383,847,356,898,303"/>
+<area shape="rect" id="Node000011" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="251,453,417,479"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="911,309,892,347,864,392,827,435,804,454,780,468,728,489,673,501,618,507,562,507,460,497,381,481,382,476,461,492,563,502,617,501,673,496,727,484,777,464,801,449,823,431,860,389,887,344,906,307"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="534,263,500,251,456,230,414,205,350,161,353,157,417,200,458,225,502,246,536,258"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="215,313,453,353"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="521,339,453,338,454,333,521,334"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="201,351,167,355,167,350,200,346"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="546,451,418,462,417,457,546,446"/>
+</map>

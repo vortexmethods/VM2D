@@ -1,4 +1,5 @@
 <map id="VM2D::MechanicsRigidOscillPart::VeloOfAirfoilRcm" name="VM2D::MechanicsRigidOscillPart::VeloOfAirfoilRcm">
-<area shape="rect" id="node2" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#aeefa25aeb6cf8e5e10756926e0f47802" title="Вычисление скоростей начал панелей " alt="" coords="247,5,440,47"/>
-<area shape="rect" id="node3" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a75eec602bb770e89e41d7773afe53948" title="Деструктор " alt="" coords="488,35,700,76"/>
+<area shape="rect" id="Node000001" title="Вычисление скорости центра масс профиля" alt="" coords="260,5,467,45"/>
+<area shape="rect" id="Node000002" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#aeefa25aeb6cf8e5e10756926e0f47802" title="Вычисление скоростей начал панелей" alt="" coords="5,5,212,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,28,212,28,212,23,247,23"/>
 </map>
