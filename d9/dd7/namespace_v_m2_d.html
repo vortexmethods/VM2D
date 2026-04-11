@@ -466,171 +466,171 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00207">207</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  217</span>{</div>
-<div class="line"><span class="lineno">  218</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> maxIter = nAllVars + 1;</div>
-<div class="line"><span class="lineno">  219</span>    std::vector&lt;double&gt; x(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  220</span>    std::vector&lt;double&gt; y(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  221</span>    std::vector&lt;double&gt; residual(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  222</span>    std::vector&lt;double&gt; r(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  223</span>    std::vector&lt;double&gt; w(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  224</span>    std::vector&lt;double&gt; wOld(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  225</span>    std::vector&lt;double&gt; g(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  226</span>    std::vector&lt;double&gt; c(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  227</span>    std::vector&lt;double&gt; s(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  228</span>    std::vector&lt;double&gt; hisGs(nAllVars + 1, 0.0);</div>
-<div class="line"><span class="lineno">  229</span>    std::vector&lt;double&gt; v(nAllVars * (maxIter + 1), 0.0);</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>    std::vector&lt;double&gt; vecFromV(nAllVars, 0.0);</div>
-<div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>    std::vector&lt;double&gt; h((nAllVars + 1) * maxIter, 0.0);</div>
-<div class="line"><span class="lineno">  234</span>    <span class="keywordtype">double</span> beta = 0.0, gs, normb = 0.0;</div>
-<div class="line"><span class="lineno">  235</span>    <span class="keywordtype">size_t</span> m;</div>
-<div class="line"><span class="lineno">  236</span> </div>
-<div class="line"><span class="lineno">  237</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nAllVars; ++i)</div>
-<div class="line"><span class="lineno">  238</span>        normb += rhsDir[i] * rhsDir[i];</div>
-<div class="line"><span class="lineno">  239</span>    normb = sqrt(normb);</div>
-<div class="line"><span class="lineno">  240</span> </div>
-<div class="line"><span class="lineno">  241</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nAllVars; ++i)   </div>
-<div class="line"><span class="lineno">  242</span>        residual[i] = rhsDir[i];</div>
-<div class="line"><span class="lineno">  243</span> </div>
-<div class="line"><span class="lineno">  244</span><span class="preprocessor">#pragma omp parallel for </span></div>
-<div class="line"><span class="lineno">  245</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
-<div class="line"><span class="lineno">  246</span>    {</div>
-<div class="line"><span class="lineno">  247</span>        <span class="comment">// SolMdirect(mtrDir, residual, pos[aflI], nAllVars - nafl + aflI, W.getAirfoil(aflI).getNumberOfPanels(), r, (vsize[aflI] == 2*n[aflI]));</span></div>
-<div class="line"><span class="lineno">  248</span>        r = residual;</div>
-<div class="line"><span class="lineno">  249</span>    }</div>
-<div class="line"><span class="lineno">  250</span> </div>
-<div class="line"><span class="lineno">  251</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nAllVars; ++i)</div>
-<div class="line"><span class="lineno">  252</span>        beta += r[i] * r[i];</div>
-<div class="line"><span class="lineno">  253</span>    beta = sqrt(beta);</div>
-<div class="line"><span class="lineno">  254</span>    gs = beta;</div>
-<div class="line"><span class="lineno">  255</span>    g[0] = beta;</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span>    <span class="comment">//Досрочный выход, если правая часть нулевая</span></div>
-<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">if</span> (beta == 0)</div>
-<div class="line"><span class="lineno">  259</span>    {</div>
-<div class="line"><span class="lineno">  260</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
-<div class="line"><span class="lineno">  261</span>        {</div>
-<div class="line"><span class="lineno">  262</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; vsize[aflI]; ++i)</div>
-<div class="line"><span class="lineno">  263</span>                gam[aflI][i] = 0.0;</div>
-<div class="line"><span class="lineno">  264</span>            R[aflI] = 0.0;</div>
-<div class="line"><span class="lineno">  265</span>        }   </div>
-<div class="line"><span class="lineno">  266</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  267</span>    }</div>
-<div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
-<div class="line"><span class="lineno">  270</span>        R[aflI] = x[x.size() - nafl + aflI];</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nAllVars; ++i)</div>
-<div class="line"><span class="lineno">  273</span>        v[i * (maxIter + 1) + 0] = r[i] / beta;</div>
-<div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; nAllVars; ++j)</div>
-<div class="line"><span class="lineno">  276</span>    {</div>
-<div class="line"><span class="lineno">  277</span>        <span class="keywordtype">double</span> timer1 = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  278</span> </div>
-<div class="line"><span class="lineno">  279</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> p = 0; p &lt; nAllVars; ++p)</div>
-<div class="line"><span class="lineno">  280</span>            vecFromV[p] = v[p * (maxIter + 1) + j];</div>
-<div class="line"><span class="lineno">  281</span> </div>
-<div class="line"><span class="lineno">  282</span>        <span class="comment">//cblas_dgemv(CblasRowMajor, CblasNoTrans, nAllVars, nAllVars, 1.0, mtrDir.data(), nAllVars, &amp;v[0 * (maxIter + 1) + j], (nAllVars + 1), 0.0, wOld.data(), 1);</span></div>
-<div class="line"><span class="lineno">  283</span>        <span class="comment">//cblas_dgemv(CblasRowMajor, CblasNoTrans, nAllVars, nAllVars, 1.0, mtrDir.data(), nAllVars, vecFromV.data(), 1, 0.0, wOld.data(), 1);</span></div>
-<div class="line"><span class="lineno">  284</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nAllVars; ++i)</div>
-<div class="line"><span class="lineno">  285</span>        {</div>
-<div class="line"><span class="lineno">  286</span>            wOld[i] = 0.0;</div>
-<div class="line"><span class="lineno">  287</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> jj = 0; jj &lt; nAllVars; ++jj)</div>
-<div class="line"><span class="lineno">  288</span>            {</div>
-<div class="line"><span class="lineno">  289</span>                wOld[i] += mtrDir[i * nAllVars + jj] * vecFromV[jj];</div>
-<div class="line"><span class="lineno">  290</span>            }</div>
-<div class="line"><span class="lineno">  291</span>        }</div>
-<div class="line"><span class="lineno">  292</span> </div>
-<div class="line"><span class="lineno">  293</span>        <span class="keywordtype">double</span> timer2 = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  294</span> </div>
-<div class="line"><span class="lineno">  295</span><span class="preprocessor">#pragma omp parallel for</span></div>
-<div class="line"><span class="lineno">  296</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
-<div class="line"><span class="lineno">  297</span>        {</div>
-<div class="line"><span class="lineno">  298</span>            <span class="comment">// SolMdirect(mtrDir, wOld, pos[aflI], nAllVars - nafl + aflI, W.getAirfoil(aflI).getNumberOfPanels(), w, (vsize[aflI] == 2 * n[aflI]));</span></div>
-<div class="line"><span class="lineno">  299</span>            w = wOld;</div>
-<div class="line"><span class="lineno">  300</span>        }</div>
-<div class="line"><span class="lineno">  301</span> </div>
-<div class="line"><span class="lineno">  302</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt;= j; ++i)</div>
-<div class="line"><span class="lineno">  303</span>        {</div>
-<div class="line"><span class="lineno">  304</span>            h[i * maxIter + j] = 0.0;</div>
-<div class="line"><span class="lineno">  305</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; nAllVars; ++q)</div>
-<div class="line"><span class="lineno">  306</span>                h[i * maxIter + j] += w[q] * v[q * (maxIter + 1) + i];</div>
-<div class="line"><span class="lineno">  307</span> </div>
-<div class="line"><span class="lineno">  308</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; nAllVars; ++q)</div>
-<div class="line"><span class="lineno">  309</span>                w[q] -= h[i * maxIter + j] * v[q * (maxIter + 1) + i];</div>
-<div class="line"><span class="lineno">  310</span>        }<span class="comment">//for i</span></div>
-<div class="line"><span class="lineno">  311</span> </div>
-<div class="line"><span class="lineno">  312</span>        h[(j + 1) * maxIter + j] = 0.0;</div>
-<div class="line"><span class="lineno">  313</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> p = 0; p &lt; nAllVars; ++p)</div>
-<div class="line"><span class="lineno">  314</span>            h[(j + 1) * maxIter + j] += w[p] * w[p];</div>
-<div class="line"><span class="lineno">  315</span>        h[(j + 1) * maxIter + j] = sqrt(h[(j + 1) * maxIter + j]);</div>
-<div class="line"><span class="lineno">  316</span> </div>
-<div class="line"><span class="lineno">  317</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> p = 0; p &lt; nAllVars; ++p)</div>
-<div class="line"><span class="lineno">  318</span>            v[p * (maxIter + 1) + (j + 1)] = w[p] / h[(j + 1) * maxIter + j];</div>
-<div class="line"><span class="lineno">  319</span> </div>
-<div class="line"><span class="lineno">  320</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; j; ++i)</div>
-<div class="line"><span class="lineno">  321</span>        {</div>
-<div class="line"><span class="lineno">  322</span>            <span class="keywordtype">double</span> buf = h[i * maxIter + j];</div>
-<div class="line"><span class="lineno">  323</span>            h[i * maxIter + j] = c[i] * buf + s[i] * h[(i + 1) * maxIter + j];</div>
-<div class="line"><span class="lineno">  324</span>            h[(i + 1) * maxIter + j] = -s[i] * buf + c[i] * h[(i + 1) * maxIter + j];</div>
-<div class="line"><span class="lineno">  325</span>        }</div>
-<div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>        <span class="keywordtype">double</span> zn = sqrt(h[j * maxIter + j] * h[j * maxIter + j] + h[(j + 1) * maxIter + j] * h[(j + 1) * maxIter + j]);</div>
-<div class="line"><span class="lineno">  328</span>        c[j] = fabs(h[j * maxIter + j] / zn);</div>
-<div class="line"><span class="lineno">  329</span>        s[j] = c[j] * h[(j + 1) * maxIter + j] / h[j * maxIter + j];</div>
-<div class="line"><span class="lineno">  330</span> </div>
-<div class="line"><span class="lineno">  331</span>        gs *= -s[j];</div>
-<div class="line"><span class="lineno">  332</span> </div>
-<div class="line"><span class="lineno">  333</span>        h[j * maxIter + j] = c[j] * h[j * maxIter + j] + s[j] * h[(j + 1) * maxIter + j];</div>
-<div class="line"><span class="lineno">  334</span>        h[(j + 1) * maxIter + j] = 0.0;</div>
-<div class="line"><span class="lineno">  335</span>        hisGs[j] = fabs(gs) / normb;</div>
-<div class="line"><span class="lineno">  336</span> </div>
-<div class="line"><span class="lineno">  337</span>        <span class="keywordflow">if</span> ((fabs(gs) / normb) &lt; W.<a class="code hl_function" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4">getPassport</a>().<a class="code hl_variable" href="../../d2/d15/class_v_m2_d_1_1_passport.html#af8e7c0898e42ec93f2d722f1d2f65611">numericalSchemes</a>.<a class="code hl_variable" href="../../d2/d76/struct_v_m2_d_1_1_numerical_schemes.html#a1b208d2cbc9d228502cacbc02d4a6f56">gmresEps</a>)</div>
-<div class="line"><span class="lineno">  338</span>        {</div>
-<div class="line"><span class="lineno">  339</span>            m = j + 1;</div>
-<div class="line"><span class="lineno">  340</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  341</span>        }</div>
-<div class="line"><span class="lineno">  342</span>    }<span class="comment">//for j</span></div>
-<div class="line"><span class="lineno">  343</span> </div>
-<div class="line"><span class="lineno">  344</span>    <span class="comment">//Восстанавливаем решение</span></div>
-<div class="line"><span class="lineno">  345</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; m; ++i)</div>
-<div class="line"><span class="lineno">  346</span>    {</div>
-<div class="line"><span class="lineno">  347</span>        <span class="keywordtype">double</span> buf = g[i];</div>
-<div class="line"><span class="lineno">  348</span>        g[i] *= c[i];</div>
-<div class="line"><span class="lineno">  349</span>        <span class="keywordflow">if</span> (i &lt; (m - 1))</div>
-<div class="line"><span class="lineno">  350</span>            g[i + 1] = -s[i] * buf;</div>
-<div class="line"><span class="lineno">  351</span> </div>
-<div class="line"><span class="lineno">  352</span>    }</div>
-<div class="line"><span class="lineno">  353</span>    y[m - 1] = g[m - 1] / h[(m - 1) * maxIter + (m - 1)];</div>
-<div class="line"><span class="lineno">  354</span> </div>
-<div class="line"><span class="lineno">  355</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = m - 2; i + 1 &gt; 0; --i)</div>
-<div class="line"><span class="lineno">  356</span>    {</div>
-<div class="line"><span class="lineno">  357</span>        <span class="keywordtype">double</span> sum = 0;</div>
-<div class="line"><span class="lineno">  358</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = i + 1; j &lt; m; ++j)</div>
-<div class="line"><span class="lineno">  359</span>            sum += h[i * maxIter + j] * y[j];</div>
-<div class="line"><span class="lineno">  360</span> </div>
-<div class="line"><span class="lineno">  361</span>        y[i] = (g[i] - sum) / h[i * maxIter + i];</div>
-<div class="line"><span class="lineno">  362</span>    }</div>
-<div class="line"><span class="lineno">  363</span> </div>
-<div class="line"><span class="lineno">  364</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> p = 0; p &lt; nAllVars; ++p)</div>
-<div class="line"><span class="lineno">  365</span>    {</div>
-<div class="line"><span class="lineno">  366</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; m; ++q)</div>
-<div class="line"><span class="lineno">  367</span>            x[p] += v[p * (maxIter + 1) + q] * y[q];</div>
-<div class="line"><span class="lineno">  368</span>    }</div>
-<div class="line"><span class="lineno">  369</span> </div>
-<div class="line"><span class="lineno">  370</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;#iterations:     &quot;</span> &lt;&lt; m &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  371</span> </div>
-<div class="line"><span class="lineno">  372</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
-<div class="line"><span class="lineno">  373</span>    {</div>
-<div class="line"><span class="lineno">  374</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; vsize[aflI]; ++i)</div>
-<div class="line"><span class="lineno">  375</span>            gam[aflI][i] = x[pos[aflI] + i];</div>
-<div class="line"><span class="lineno">  376</span>    }</div>
-<div class="line"><span class="lineno">  377</span> </div>
-<div class="line"><span class="lineno">  378</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
-<div class="line"><span class="lineno">  379</span>        R[aflI] = x[x.size() - nafl + aflI];</div>
-<div class="line"><span class="lineno">  380</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00206">206</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  216</span>{</div>
+<div class="line"><span class="lineno">  217</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> maxIter = nAllVars + 1;</div>
+<div class="line"><span class="lineno">  218</span>    std::vector&lt;double&gt; x(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  219</span>    std::vector&lt;double&gt; y(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  220</span>    std::vector&lt;double&gt; residual(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  221</span>    std::vector&lt;double&gt; r(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  222</span>    std::vector&lt;double&gt; w(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  223</span>    std::vector&lt;double&gt; wOld(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  224</span>    std::vector&lt;double&gt; g(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  225</span>    std::vector&lt;double&gt; c(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  226</span>    std::vector&lt;double&gt; s(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  227</span>    std::vector&lt;double&gt; hisGs(nAllVars + 1, 0.0);</div>
+<div class="line"><span class="lineno">  228</span>    std::vector&lt;double&gt; v(nAllVars * (maxIter + 1), 0.0);</div>
+<div class="line"><span class="lineno">  229</span> </div>
+<div class="line"><span class="lineno">  230</span>    std::vector&lt;double&gt; vecFromV(nAllVars, 0.0);</div>
+<div class="line"><span class="lineno">  231</span> </div>
+<div class="line"><span class="lineno">  232</span>    std::vector&lt;double&gt; h((nAllVars + 1) * maxIter, 0.0);</div>
+<div class="line"><span class="lineno">  233</span>    <span class="keywordtype">double</span> beta = 0.0, gs, normb = 0.0;</div>
+<div class="line"><span class="lineno">  234</span>    <span class="keywordtype">size_t</span> m;</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nAllVars; ++i)</div>
+<div class="line"><span class="lineno">  237</span>        normb += rhsDir[i] * rhsDir[i];</div>
+<div class="line"><span class="lineno">  238</span>    normb = sqrt(normb);</div>
+<div class="line"><span class="lineno">  239</span> </div>
+<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nAllVars; ++i)   </div>
+<div class="line"><span class="lineno">  241</span>        residual[i] = rhsDir[i];</div>
+<div class="line"><span class="lineno">  242</span> </div>
+<div class="line"><span class="lineno">  243</span><span class="preprocessor">#pragma omp parallel for </span></div>
+<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
+<div class="line"><span class="lineno">  245</span>    {</div>
+<div class="line"><span class="lineno">  246</span>        <span class="comment">// SolMdirect(mtrDir, residual, pos[aflI], nAllVars - nafl + aflI, W.getAirfoil(aflI).getNumberOfPanels(), r, (vsize[aflI] == 2*n[aflI]));</span></div>
+<div class="line"><span class="lineno">  247</span>        r = residual;</div>
+<div class="line"><span class="lineno">  248</span>    }</div>
+<div class="line"><span class="lineno">  249</span> </div>
+<div class="line"><span class="lineno">  250</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nAllVars; ++i)</div>
+<div class="line"><span class="lineno">  251</span>        beta += r[i] * r[i];</div>
+<div class="line"><span class="lineno">  252</span>    beta = sqrt(beta);</div>
+<div class="line"><span class="lineno">  253</span>    gs = beta;</div>
+<div class="line"><span class="lineno">  254</span>    g[0] = beta;</div>
+<div class="line"><span class="lineno">  255</span> </div>
+<div class="line"><span class="lineno">  256</span>    <span class="comment">//Досрочный выход, если правая часть нулевая</span></div>
+<div class="line"><span class="lineno">  257</span>    <span class="keywordflow">if</span> (beta == 0)</div>
+<div class="line"><span class="lineno">  258</span>    {</div>
+<div class="line"><span class="lineno">  259</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
+<div class="line"><span class="lineno">  260</span>        {</div>
+<div class="line"><span class="lineno">  261</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; vsize[aflI]; ++i)</div>
+<div class="line"><span class="lineno">  262</span>                gam[aflI][i] = 0.0;</div>
+<div class="line"><span class="lineno">  263</span>            R[aflI] = 0.0;</div>
+<div class="line"><span class="lineno">  264</span>        }   </div>
+<div class="line"><span class="lineno">  265</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  266</span>    }</div>
+<div class="line"><span class="lineno">  267</span> </div>
+<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
+<div class="line"><span class="lineno">  269</span>        R[aflI] = x[x.size() - nafl + aflI];</div>
+<div class="line"><span class="lineno">  270</span> </div>
+<div class="line"><span class="lineno">  271</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nAllVars; ++i)</div>
+<div class="line"><span class="lineno">  272</span>        v[i * (maxIter + 1) + 0] = r[i] / beta;</div>
+<div class="line"><span class="lineno">  273</span> </div>
+<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; nAllVars; ++j)</div>
+<div class="line"><span class="lineno">  275</span>    {</div>
+<div class="line"><span class="lineno">  276</span>        <span class="keywordtype">double</span> timer1 = omp_get_wtime();</div>
+<div class="line"><span class="lineno">  277</span> </div>
+<div class="line"><span class="lineno">  278</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> p = 0; p &lt; nAllVars; ++p)</div>
+<div class="line"><span class="lineno">  279</span>            vecFromV[p] = v[p * (maxIter + 1) + j];</div>
+<div class="line"><span class="lineno">  280</span> </div>
+<div class="line"><span class="lineno">  281</span>        <span class="comment">//cblas_dgemv(CblasRowMajor, CblasNoTrans, nAllVars, nAllVars, 1.0, mtrDir.data(), nAllVars, &amp;v[0 * (maxIter + 1) + j], (nAllVars + 1), 0.0, wOld.data(), 1);</span></div>
+<div class="line"><span class="lineno">  282</span>        <span class="comment">//cblas_dgemv(CblasRowMajor, CblasNoTrans, nAllVars, nAllVars, 1.0, mtrDir.data(), nAllVars, vecFromV.data(), 1, 0.0, wOld.data(), 1);</span></div>
+<div class="line"><span class="lineno">  283</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nAllVars; ++i)</div>
+<div class="line"><span class="lineno">  284</span>        {</div>
+<div class="line"><span class="lineno">  285</span>            wOld[i] = 0.0;</div>
+<div class="line"><span class="lineno">  286</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> jj = 0; jj &lt; nAllVars; ++jj)</div>
+<div class="line"><span class="lineno">  287</span>            {</div>
+<div class="line"><span class="lineno">  288</span>                wOld[i] += mtrDir[i * nAllVars + jj] * vecFromV[jj];</div>
+<div class="line"><span class="lineno">  289</span>            }</div>
+<div class="line"><span class="lineno">  290</span>        }</div>
+<div class="line"><span class="lineno">  291</span> </div>
+<div class="line"><span class="lineno">  292</span>        <span class="keywordtype">double</span> timer2 = omp_get_wtime();</div>
+<div class="line"><span class="lineno">  293</span> </div>
+<div class="line"><span class="lineno">  294</span><span class="preprocessor">#pragma omp parallel for</span></div>
+<div class="line"><span class="lineno">  295</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
+<div class="line"><span class="lineno">  296</span>        {</div>
+<div class="line"><span class="lineno">  297</span>            <span class="comment">// SolMdirect(mtrDir, wOld, pos[aflI], nAllVars - nafl + aflI, W.getAirfoil(aflI).getNumberOfPanels(), w, (vsize[aflI] == 2 * n[aflI]));</span></div>
+<div class="line"><span class="lineno">  298</span>            w = wOld;</div>
+<div class="line"><span class="lineno">  299</span>        }</div>
+<div class="line"><span class="lineno">  300</span> </div>
+<div class="line"><span class="lineno">  301</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt;= j; ++i)</div>
+<div class="line"><span class="lineno">  302</span>        {</div>
+<div class="line"><span class="lineno">  303</span>            h[i * maxIter + j] = 0.0;</div>
+<div class="line"><span class="lineno">  304</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; nAllVars; ++q)</div>
+<div class="line"><span class="lineno">  305</span>                h[i * maxIter + j] += w[q] * v[q * (maxIter + 1) + i];</div>
+<div class="line"><span class="lineno">  306</span> </div>
+<div class="line"><span class="lineno">  307</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; nAllVars; ++q)</div>
+<div class="line"><span class="lineno">  308</span>                w[q] -= h[i * maxIter + j] * v[q * (maxIter + 1) + i];</div>
+<div class="line"><span class="lineno">  309</span>        }<span class="comment">//for i</span></div>
+<div class="line"><span class="lineno">  310</span> </div>
+<div class="line"><span class="lineno">  311</span>        h[(j + 1) * maxIter + j] = 0.0;</div>
+<div class="line"><span class="lineno">  312</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> p = 0; p &lt; nAllVars; ++p)</div>
+<div class="line"><span class="lineno">  313</span>            h[(j + 1) * maxIter + j] += w[p] * w[p];</div>
+<div class="line"><span class="lineno">  314</span>        h[(j + 1) * maxIter + j] = sqrt(h[(j + 1) * maxIter + j]);</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> p = 0; p &lt; nAllVars; ++p)</div>
+<div class="line"><span class="lineno">  317</span>            v[p * (maxIter + 1) + (j + 1)] = w[p] / h[(j + 1) * maxIter + j];</div>
+<div class="line"><span class="lineno">  318</span> </div>
+<div class="line"><span class="lineno">  319</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; j; ++i)</div>
+<div class="line"><span class="lineno">  320</span>        {</div>
+<div class="line"><span class="lineno">  321</span>            <span class="keywordtype">double</span> buf = h[i * maxIter + j];</div>
+<div class="line"><span class="lineno">  322</span>            h[i * maxIter + j] = c[i] * buf + s[i] * h[(i + 1) * maxIter + j];</div>
+<div class="line"><span class="lineno">  323</span>            h[(i + 1) * maxIter + j] = -s[i] * buf + c[i] * h[(i + 1) * maxIter + j];</div>
+<div class="line"><span class="lineno">  324</span>        }</div>
+<div class="line"><span class="lineno">  325</span> </div>
+<div class="line"><span class="lineno">  326</span>        <span class="keywordtype">double</span> zn = sqrt(h[j * maxIter + j] * h[j * maxIter + j] + h[(j + 1) * maxIter + j] * h[(j + 1) * maxIter + j]);</div>
+<div class="line"><span class="lineno">  327</span>        c[j] = fabs(h[j * maxIter + j] / zn);</div>
+<div class="line"><span class="lineno">  328</span>        s[j] = c[j] * h[(j + 1) * maxIter + j] / h[j * maxIter + j];</div>
+<div class="line"><span class="lineno">  329</span> </div>
+<div class="line"><span class="lineno">  330</span>        gs *= -s[j];</div>
+<div class="line"><span class="lineno">  331</span> </div>
+<div class="line"><span class="lineno">  332</span>        h[j * maxIter + j] = c[j] * h[j * maxIter + j] + s[j] * h[(j + 1) * maxIter + j];</div>
+<div class="line"><span class="lineno">  333</span>        h[(j + 1) * maxIter + j] = 0.0;</div>
+<div class="line"><span class="lineno">  334</span>        hisGs[j] = fabs(gs) / normb;</div>
+<div class="line"><span class="lineno">  335</span> </div>
+<div class="line"><span class="lineno">  336</span>        <span class="keywordflow">if</span> ((fabs(gs) / normb) &lt; W.<a class="code hl_function" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4">getPassport</a>().<a class="code hl_variable" href="../../d2/d15/class_v_m2_d_1_1_passport.html#af8e7c0898e42ec93f2d722f1d2f65611">numericalSchemes</a>.<a class="code hl_variable" href="../../d2/d76/struct_v_m2_d_1_1_numerical_schemes.html#a1b208d2cbc9d228502cacbc02d4a6f56">gmresEps</a>)</div>
+<div class="line"><span class="lineno">  337</span>        {</div>
+<div class="line"><span class="lineno">  338</span>            m = j + 1;</div>
+<div class="line"><span class="lineno">  339</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  340</span>        }</div>
+<div class="line"><span class="lineno">  341</span>    }<span class="comment">//for j</span></div>
+<div class="line"><span class="lineno">  342</span> </div>
+<div class="line"><span class="lineno">  343</span>    <span class="comment">//Восстанавливаем решение</span></div>
+<div class="line"><span class="lineno">  344</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; m; ++i)</div>
+<div class="line"><span class="lineno">  345</span>    {</div>
+<div class="line"><span class="lineno">  346</span>        <span class="keywordtype">double</span> buf = g[i];</div>
+<div class="line"><span class="lineno">  347</span>        g[i] *= c[i];</div>
+<div class="line"><span class="lineno">  348</span>        <span class="keywordflow">if</span> (i &lt; (m - 1))</div>
+<div class="line"><span class="lineno">  349</span>            g[i + 1] = -s[i] * buf;</div>
+<div class="line"><span class="lineno">  350</span> </div>
+<div class="line"><span class="lineno">  351</span>    }</div>
+<div class="line"><span class="lineno">  352</span>    y[m - 1] = g[m - 1] / h[(m - 1) * maxIter + (m - 1)];</div>
+<div class="line"><span class="lineno">  353</span> </div>
+<div class="line"><span class="lineno">  354</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = m - 2; i + 1 &gt; 0; --i)</div>
+<div class="line"><span class="lineno">  355</span>    {</div>
+<div class="line"><span class="lineno">  356</span>        <span class="keywordtype">double</span> sum = 0;</div>
+<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = i + 1; j &lt; m; ++j)</div>
+<div class="line"><span class="lineno">  358</span>            sum += h[i * maxIter + j] * y[j];</div>
+<div class="line"><span class="lineno">  359</span> </div>
+<div class="line"><span class="lineno">  360</span>        y[i] = (g[i] - sum) / h[i * maxIter + i];</div>
+<div class="line"><span class="lineno">  361</span>    }</div>
+<div class="line"><span class="lineno">  362</span> </div>
+<div class="line"><span class="lineno">  363</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> p = 0; p &lt; nAllVars; ++p)</div>
+<div class="line"><span class="lineno">  364</span>    {</div>
+<div class="line"><span class="lineno">  365</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; m; ++q)</div>
+<div class="line"><span class="lineno">  366</span>            x[p] += v[p * (maxIter + 1) + q] * y[q];</div>
+<div class="line"><span class="lineno">  367</span>    }</div>
+<div class="line"><span class="lineno">  368</span> </div>
+<div class="line"><span class="lineno">  369</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;#iterations:     &quot;</span> &lt;&lt; m &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  370</span> </div>
+<div class="line"><span class="lineno">  371</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
+<div class="line"><span class="lineno">  372</span>    {</div>
+<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; vsize[aflI]; ++i)</div>
+<div class="line"><span class="lineno">  374</span>            gam[aflI][i] = x[pos[aflI] + i];</div>
+<div class="line"><span class="lineno">  375</span>    }</div>
+<div class="line"><span class="lineno">  376</span> </div>
+<div class="line"><span class="lineno">  377</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
+<div class="line"><span class="lineno">  378</span>        R[aflI] = x[x.size() - nafl + aflI];</div>
+<div class="line"><span class="lineno">  379</span>}</div>
 <div class="ttc" id="aclass_v_m2_d_1_1_passport_html_af8e7c0898e42ec93f2d722f1d2f65611"><div class="ttname"><a href="../../d2/d15/class_v_m2_d_1_1_passport.html#af8e7c0898e42ec93f2d722f1d2f65611">VM2D::Passport::numericalSchemes</a></div><div class="ttdeci">NumericalSchemes numericalSchemes</div><div class="ttdoc">РЎС‚СЂСѓРєС‚СѓСЂР° СЃ РёСЃРїРѕР»СЊР·СѓРµРјС‹РјРё С‡РёСЃР»РµРЅРЅС‹РјРё СЃС…РµРјР°РјРё</div><div class="ttdef"><b>Definition</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00290">Passport2D.h:290</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_world2_d_html_a95be88dc18a41ba74bf09ab0e47627a4"><div class="ttname"><a href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4">VM2D::World2D::getPassport</a></div><div class="ttdeci">const Passport &amp; getPassport() const</div><div class="ttdoc">Р’РѕР·РІСЂР°С‚ РєРѕРЅСЃС‚Р°РЅС‚РЅРѕР№ СЃСЃС‹Р»РєРё РЅР° РїР°СЃРїРѕСЂС‚</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d87/_world2_d_8h_source.html#l00251">World2D.h:251</a></div></div>
 <div class="ttc" id="astruct_v_m2_d_1_1_numerical_schemes_html_a1b208d2cbc9d228502cacbc02d4a6f56"><div class="ttname"><a href="../../d2/d76/struct_v_m2_d_1_1_numerical_schemes.html#a1b208d2cbc9d228502cacbc02d4a6f56">VM2D::NumericalSchemes::gmresEps</a></div><div class="ttdeci">double gmresEps</div><div class="ttdef"><b>Definition</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00170">Passport2D.h:170</a></div></div>
@@ -745,38 +745,38 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00060">60</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordtype">bool</span> fl;</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordtype">double</span> buf;</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; m - 1; ++i)</div>
-<div class="line"><span class="lineno">   66</span>    {</div>
-<div class="line"><span class="lineno">   67</span>        buf = H[i][m - 1];</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>        H[i][m - 1] = c[i] * buf + s[i] * H[i + 1][m - 1];</div>
-<div class="line"><span class="lineno">   70</span>        H[i + 1][m - 1] = -s[i] * buf + c[i] * H[i + 1][m - 1];</div>
-<div class="line"><span class="lineno">   71</span>    }</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordtype">double</span> izn = 1.0 / sqrt(H[m - 1][m - 1] * H[m - 1][m - 1] + H[m][m - 1] * H[m][m - 1]);</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    c.push_back(H[m - 1][m - 1] * izn);</div>
-<div class="line"><span class="lineno">   76</span>    s.push_back(H[m][m - 1] * izn);</div>
-<div class="line"><span class="lineno">   77</span>    gs *= -s[m - 1];</div>
+<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00059">59</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordtype">bool</span> fl;</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordtype">double</span> buf;</div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; m - 1; ++i)</div>
+<div class="line"><span class="lineno">   65</span>    {</div>
+<div class="line"><span class="lineno">   66</span>        buf = H[i][m - 1];</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>        H[i][m - 1] = c[i] * buf + s[i] * H[i + 1][m - 1];</div>
+<div class="line"><span class="lineno">   69</span>        H[i + 1][m - 1] = -s[i] * buf + c[i] * H[i + 1][m - 1];</div>
+<div class="line"><span class="lineno">   70</span>    }</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordtype">double</span> izn = 1.0 / sqrt(H[m - 1][m - 1] * H[m - 1][m - 1] + H[m][m - 1] * H[m][m - 1]);</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>    c.push_back(H[m - 1][m - 1] * izn);</div>
+<div class="line"><span class="lineno">   75</span>    s.push_back(H[m][m - 1] * izn);</div>
+<div class="line"><span class="lineno">   76</span>    gs *= -s[m - 1];</div>
+<div class="line"><span class="lineno">   77</span> </div>
 <div class="line"><span class="lineno">   78</span> </div>
 <div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    H[m - 1][m - 1] = c[m - 1] * H[m - 1][m - 1] + s[m - 1] * H[m][m - 1];</div>
-<div class="line"><span class="lineno">   82</span>    H[m][m - 1] = 0.0;</div>
+<div class="line"><span class="lineno">   80</span>    H[m - 1][m - 1] = c[m - 1] * H[m - 1][m - 1] + s[m - 1] * H[m][m - 1];</div>
+<div class="line"><span class="lineno">   81</span>    H[m][m - 1] = 0.0;</div>
+<div class="line"><span class="lineno">   82</span> </div>
 <div class="line"><span class="lineno">   83</span> </div>
 <div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">if</span> (residualShow)</div>
-<div class="line"><span class="lineno">   87</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Iteration: &quot;</span> &lt;&lt; iter &lt;&lt; <span class="stringliteral">&quot;, residual = &quot;</span> &lt;&lt; (fabs(gs) / nrmRhs) &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>    fl = ((fabs(gs) / nrmRhs) &lt; epsGMRES);</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">return</span> fl;</div>
-<div class="line"><span class="lineno">   91</span>}</div>
+<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">if</span> (residualShow)</div>
+<div class="line"><span class="lineno">   86</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Iteration: &quot;</span> &lt;&lt; iter &lt;&lt; <span class="stringliteral">&quot;, residual = &quot;</span> &lt;&lt; (fabs(gs) / nrmRhs) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>    fl = ((fabs(gs) / nrmRhs) &lt; epsGMRES);</div>
+<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">return</span> fl;</div>
+<div class="line"><span class="lineno">   90</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -817,9 +817,9 @@ template&lt;typename T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="../../dc/d6f/_gmres2_d_8h_source.html#l00093">93</a> of file <a class="el" href="../../dc/d6f/_gmres2_d_8h_source.html">Gmres2D.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   94</span>    {</div>
 <div class="line"><span class="lineno">   95</span>        <span class="keywordtype">double</span> <a class="code hl_function" href="../../d9/dd7/namespace_v_m2_d.html#a542c22d12fd209fd1fcdfc6aa163aeb4">norm</a> = 0;</div>
-<div class="line"><span class="lineno">   96</span>        <span class="comment">//#ifndef OLD_OMP</span></div>
-<div class="line"><span class="lineno">   97</span>        <span class="comment">//#pragma omp simd reduction(+:norm)</span></div>
-<div class="line"><span class="lineno">   98</span>        <span class="comment">//#endif</span></div>
+<div class="line"><span class="lineno">   96</span><span class="preprocessor">        #ifndef OLD_OMP</span></div>
+<div class="line"><span class="lineno">   97</span><span class="preprocessor">        #pragma omp simd reduction(+:norm)</span></div>
+<div class="line"><span class="lineno">   98</span><span class="preprocessor">        #endif</span></div>
 <div class="line"><span class="lineno">   99</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; b.size(); i++)</div>
 <div class="line"><span class="lineno">  100</span>            norm += (b[i] * b[i]);</div>
 <div class="line"><span class="lineno">  101</span>        <span class="keywordflow">return</span> sqrt(norm);</div>
@@ -1027,54 +1027,54 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00394">394</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  395</span>{</div>
-<div class="line"><span class="lineno">  396</span>    <span class="comment">//std::vector&lt;double&gt; alpha(n), beta(n), delta(n), phi(n), xi(n);</span></div>
-<div class="line"><span class="lineno">  397</span>    std::vector&lt;double&gt;&amp; alpha = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abdc01387ef7e5d78b96af5432d33bb1f">alpha</a>;</div>
-<div class="line"><span class="lineno">  398</span>    std::vector&lt;double&gt;&amp; beta = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#a49f7111226cbe5843cd6a4f306b831a9">beta</a>;    </div>
-<div class="line"><span class="lineno">  399</span>    std::vector&lt;double&gt;&amp; delta = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abcb397a02078ade462bf14149251cec7">delta</a>;</div>
-<div class="line"><span class="lineno">  400</span>    std::vector&lt;double&gt;&amp; phi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#a3ad7b2ec63614771f8bbfe3451fca7f3">phi</a>;</div>
-<div class="line"><span class="lineno">  401</span>    std::vector&lt;double&gt;&amp; xi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#acba6da3b12579efafb60099abc52985b">xi</a>;</div>
-<div class="line"><span class="lineno">  402</span>    </div>
-<div class="line"><span class="lineno">  403</span>    <span class="keywordtype">double</span> yn, a;</div>
-<div class="line"><span class="lineno">  404</span> </div>
-<div class="line"><span class="lineno">  405</span>    <span class="keywordtype">double</span> len24 = afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[0] * 24.0;</div>
-<div class="line"><span class="lineno">  406</span> </div>
-<div class="line"><span class="lineno">  407</span>    alpha[1] = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[0] &amp; prec1[p][0]) * len24;</div>
-<div class="line"><span class="lineno">  408</span>    beta[1] = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[0] &amp; prea1[p][0]) * len24;</div>
-<div class="line"><span class="lineno">  409</span>    delta[1] = -len24 * rhs[n + 0];</div>
-<div class="line"><span class="lineno">  410</span>    <span class="keywordtype">double</span> zn;</div>
-<div class="line"><span class="lineno">  411</span> </div>
-<div class="line"><span class="lineno">  412</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; n - 1; ++i)</div>
-<div class="line"><span class="lineno">  413</span>    {</div>
-<div class="line"><span class="lineno">  414</span>        a = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] &amp; prea1[p][i]);</div>
-<div class="line"><span class="lineno">  415</span>        zn = a * alpha[i] - 1.0 / (24.0 * afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i]);</div>
-<div class="line"><span class="lineno">  416</span>        alpha[i + 1] = -(afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] &amp; prec1[p][i]) / zn;</div>
-<div class="line"><span class="lineno">  417</span>        beta[i + 1] = -a * beta[i] / zn;</div>
-<div class="line"><span class="lineno">  418</span>        delta[i + 1] = (rhs[n + i] - a * delta[i]) / zn;</div>
-<div class="line"><span class="lineno">  419</span>    }</div>
-<div class="line"><span class="lineno">  420</span> </div>
-<div class="line"><span class="lineno">  421</span>    a = afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 2] &amp; prea1[p][n - 2];</div>
-<div class="line"><span class="lineno">  422</span>    zn = alpha[n - 2] * a - 1.0 / (24.0 * afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[n - 2]);</div>
-<div class="line"><span class="lineno">  423</span>    phi[n - 1] = -((afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 2] &amp; prec1[p][n - 2]) + beta[n - 2] * a) / zn;</div>
-<div class="line"><span class="lineno">  424</span>    xi[n - 1] = (rhs[n + n - 2] - delta[n - 2] * a) / zn;</div>
-<div class="line"><span class="lineno">  425</span> </div>
-<div class="line"><span class="lineno">  426</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 2; i &gt; 0; --i)</div>
-<div class="line"><span class="lineno">  427</span>    {</div>
-<div class="line"><span class="lineno">  428</span>        phi[i] = alpha[i] * phi[i + 1] + beta[i];</div>
-<div class="line"><span class="lineno">  429</span>        xi[i] = alpha[i] * xi[i + 1] + delta[i];</div>
-<div class="line"><span class="lineno">  430</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00393">393</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  394</span>{</div>
+<div class="line"><span class="lineno">  395</span>    <span class="comment">//std::vector&lt;double&gt; alpha(n), beta(n), delta(n), phi(n), xi(n);</span></div>
+<div class="line"><span class="lineno">  396</span>    std::vector&lt;double&gt;&amp; alpha = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abdc01387ef7e5d78b96af5432d33bb1f">alpha</a>;</div>
+<div class="line"><span class="lineno">  397</span>    std::vector&lt;double&gt;&amp; beta = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#a49f7111226cbe5843cd6a4f306b831a9">beta</a>;    </div>
+<div class="line"><span class="lineno">  398</span>    std::vector&lt;double&gt;&amp; delta = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abcb397a02078ade462bf14149251cec7">delta</a>;</div>
+<div class="line"><span class="lineno">  399</span>    std::vector&lt;double&gt;&amp; phi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#a3ad7b2ec63614771f8bbfe3451fca7f3">phi</a>;</div>
+<div class="line"><span class="lineno">  400</span>    std::vector&lt;double&gt;&amp; xi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#acba6da3b12579efafb60099abc52985b">xi</a>;</div>
+<div class="line"><span class="lineno">  401</span>    </div>
+<div class="line"><span class="lineno">  402</span>    <span class="keywordtype">double</span> yn, a;</div>
+<div class="line"><span class="lineno">  403</span> </div>
+<div class="line"><span class="lineno">  404</span>    <span class="keywordtype">double</span> len24 = afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[0] * 24.0;</div>
+<div class="line"><span class="lineno">  405</span> </div>
+<div class="line"><span class="lineno">  406</span>    alpha[1] = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[0] &amp; prec1[p][0]) * len24;</div>
+<div class="line"><span class="lineno">  407</span>    beta[1] = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[0] &amp; prea1[p][0]) * len24;</div>
+<div class="line"><span class="lineno">  408</span>    delta[1] = -len24 * rhs[n + 0];</div>
+<div class="line"><span class="lineno">  409</span>    <span class="keywordtype">double</span> zn;</div>
+<div class="line"><span class="lineno">  410</span> </div>
+<div class="line"><span class="lineno">  411</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; n - 1; ++i)</div>
+<div class="line"><span class="lineno">  412</span>    {</div>
+<div class="line"><span class="lineno">  413</span>        a = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] &amp; prea1[p][i]);</div>
+<div class="line"><span class="lineno">  414</span>        zn = a * alpha[i] - 1.0 / (24.0 * afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i]);</div>
+<div class="line"><span class="lineno">  415</span>        alpha[i + 1] = -(afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] &amp; prec1[p][i]) / zn;</div>
+<div class="line"><span class="lineno">  416</span>        beta[i + 1] = -a * beta[i] / zn;</div>
+<div class="line"><span class="lineno">  417</span>        delta[i + 1] = (rhs[n + i] - a * delta[i]) / zn;</div>
+<div class="line"><span class="lineno">  418</span>    }</div>
+<div class="line"><span class="lineno">  419</span> </div>
+<div class="line"><span class="lineno">  420</span>    a = afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 2] &amp; prea1[p][n - 2];</div>
+<div class="line"><span class="lineno">  421</span>    zn = alpha[n - 2] * a - 1.0 / (24.0 * afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[n - 2]);</div>
+<div class="line"><span class="lineno">  422</span>    phi[n - 1] = -((afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 2] &amp; prec1[p][n - 2]) + beta[n - 2] * a) / zn;</div>
+<div class="line"><span class="lineno">  423</span>    xi[n - 1] = (rhs[n + n - 2] - delta[n - 2] * a) / zn;</div>
+<div class="line"><span class="lineno">  424</span> </div>
+<div class="line"><span class="lineno">  425</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 2; i &gt; 0; --i)</div>
+<div class="line"><span class="lineno">  426</span>    {</div>
+<div class="line"><span class="lineno">  427</span>        phi[i] = alpha[i] * phi[i + 1] + beta[i];</div>
+<div class="line"><span class="lineno">  428</span>        xi[i] = alpha[i] * xi[i + 1] + delta[i];</div>
+<div class="line"><span class="lineno">  429</span>    }</div>
+<div class="line"><span class="lineno">  430</span> </div>
 <div class="line"><span class="lineno">  431</span> </div>
-<div class="line"><span class="lineno">  432</span> </div>
-<div class="line"><span class="lineno">  433</span>    <span class="keywordtype">double</span> e = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 1] &amp; prec1[p][n - 1]);</div>
-<div class="line"><span class="lineno">  434</span>    a = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 1] &amp; prea1[p][n - 1]);</div>
-<div class="line"><span class="lineno">  435</span> </div>
-<div class="line"><span class="lineno">  436</span>    yn = (rhs[n + n - 1] - e * xi[1] - a * xi[n - 1]) / (e * phi[1] + a * phi[n - 1] - 1.0 / (24.0 * afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[n - 1]));</div>
-<div class="line"><span class="lineno">  437</span> </div>
-<div class="line"><span class="lineno">  438</span>    AX[n + n - 1] = yn;</div>
-<div class="line"><span class="lineno">  439</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 2; i &gt;= 0; --i)</div>
-<div class="line"><span class="lineno">  440</span>        AX[n + i] = phi[i + 1] * yn + xi[i + 1];</div>
-<div class="line"><span class="lineno">  441</span>}</div>
+<div class="line"><span class="lineno">  432</span>    <span class="keywordtype">double</span> e = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 1] &amp; prec1[p][n - 1]);</div>
+<div class="line"><span class="lineno">  433</span>    a = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 1] &amp; prea1[p][n - 1]);</div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>    yn = (rhs[n + n - 1] - e * xi[1] - a * xi[n - 1]) / (e * phi[1] + a * phi[n - 1] - 1.0 / (24.0 * afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[n - 1]));</div>
+<div class="line"><span class="lineno">  436</span> </div>
+<div class="line"><span class="lineno">  437</span>    AX[n + n - 1] = yn;</div>
+<div class="line"><span class="lineno">  438</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 2; i &gt;= 0; --i)</div>
+<div class="line"><span class="lineno">  439</span>        AX[n + i] = phi[i + 1] * yn + xi[i + 1];</div>
+<div class="line"><span class="lineno">  440</span>}</div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_geometry_html_a5bd4edab4726a4c4d14a6003f0b26dc4"><div class="ttname"><a href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">VM2D::AirfoilGeometry::len</a></div><div class="ttdeci">std::vector&lt; double &gt; len</div><div class="ttdoc">Р”Р»РёРЅС‹ РїР°РЅРµР»РµР№ РїСЂРѕС„РёР»СЏ</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00094">Airfoil2D.h:94</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_geometry_html_ace742750ec3eb3caea574982f510a86d"><div class="ttname"><a href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">VM2D::AirfoilGeometry::tau</a></div><div class="ttdeci">std::vector&lt; Point2D &gt; tau</div><div class="ttdoc">РљР°СЃР°С‚РµР»СЊРЅС‹Рµ Рє РїР°РЅРµР»СЏРј РїСЂРѕС„РёР»СЏ</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00091">Airfoil2D.h:91</a></div></div>
 <div class="ttc" id="astruct_v_m2_d_1_1sweep_vectors_html_a3ad7b2ec63614771f8bbfe3451fca7f3"><div class="ttname"><a href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#a3ad7b2ec63614771f8bbfe3451fca7f3">VM2D::sweepVectors::phi</a></div><div class="ttdeci">std::vector&lt; double &gt; phi</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d6f/_gmres2_d_8h_source.html#l00070">Gmres2D.h:70</a></div></div>
@@ -1135,39 +1135,39 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00094">94</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>{</div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordtype">size_t</span> nAllVars = rhs.size();</div>
-<div class="line"><span class="lineno">   97</span>    std::vector&lt;double&gt; alpha(np + 2), beta(np + 2), gamma(np + 2);</div>
-<div class="line"><span class="lineno">   98</span>    std::vector&lt;double&gt; u(np), v(np);</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordtype">double</span> zn = A[(startRow + np + 1) * nAllVars + (startRow + np + 1)];</div>
-<div class="line"><span class="lineno">  101</span>    alpha[2] = -A[(startRow + np + 1) * nAllVars + (startRow + np + 2)] / zn;</div>
-<div class="line"><span class="lineno">  102</span>    beta[2] = rhs[startRow + np + 1] / zn;</div>
-<div class="line"><span class="lineno">  103</span>    gamma[2] = -A[(startRow + np + 1) * nAllVars + (startRow + np + 0)] / zn;</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 2; i &lt;= np; ++i)</div>
-<div class="line"><span class="lineno">  106</span>    {</div>
-<div class="line"><span class="lineno">  107</span>        zn = A[(startRow + np + (i % np)) * nAllVars + (startRow + np + (i % np))] + alpha[i] * A[(startRow + np + (i % np)) * nAllVars + (startRow + np + ((i - 1) % np))];</div>
-<div class="line"><span class="lineno">  108</span>        alpha[i + 1] = -A[(startRow + np + (i % np)) * nAllVars + (startRow + np + ((i + 1) % np))] / zn;</div>
-<div class="line"><span class="lineno">  109</span>        beta[i + 1] = (rhs[startRow + np + (i % np)] - beta[i] * A[(startRow + np + (i % np)) * nAllVars + (startRow + np + ((i - 1) % np))]) / zn;</div>
-<div class="line"><span class="lineno">  110</span>        gamma[i + 1] = -(gamma[i] * A[(startRow + np + (i % np)) * nAllVars + (startRow + np + ((i - 1) % np))]) / zn;</div>
-<div class="line"><span class="lineno">  111</span>    }</div>
-<div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>    u[np - 1] = beta[np];</div>
-<div class="line"><span class="lineno">  114</span>    v[np - 1] = alpha[np] + gamma[np];</div>
-<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = np - 2; i &gt;= 1; --i)</div>
-<div class="line"><span class="lineno">  116</span>    {</div>
-<div class="line"><span class="lineno">  117</span>        u[i] = alpha[i + 1] * u[i + 1] + beta[i + 1];</div>
-<div class="line"><span class="lineno">  118</span>        v[i] = alpha[i + 1] * v[i + 1] + gamma[i + 1];</div>
-<div class="line"><span class="lineno">  119</span>    }</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>    res[startRow + np] = (beta[np + 1] + alpha[np + 1] * u[1]) / (1.0 - gamma[np + 1] - alpha[np + 1] * v[1]);</div>
-<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; np; ++i)</div>
-<div class="line"><span class="lineno">  123</span>        res[startRow + np + i] = u[i] + res[startRow + np] * v[i];</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  126</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00093">93</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordtype">size_t</span> nAllVars = rhs.size();</div>
+<div class="line"><span class="lineno">   96</span>    std::vector&lt;double&gt; alpha(np + 2), beta(np + 2), gamma(np + 2);</div>
+<div class="line"><span class="lineno">   97</span>    std::vector&lt;double&gt; u(np), v(np);</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordtype">double</span> zn = A[(startRow + np + 1) * nAllVars + (startRow + np + 1)];</div>
+<div class="line"><span class="lineno">  100</span>    alpha[2] = -A[(startRow + np + 1) * nAllVars + (startRow + np + 2)] / zn;</div>
+<div class="line"><span class="lineno">  101</span>    beta[2] = rhs[startRow + np + 1] / zn;</div>
+<div class="line"><span class="lineno">  102</span>    gamma[2] = -A[(startRow + np + 1) * nAllVars + (startRow + np + 0)] / zn;</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 2; i &lt;= np; ++i)</div>
+<div class="line"><span class="lineno">  105</span>    {</div>
+<div class="line"><span class="lineno">  106</span>        zn = A[(startRow + np + (i % np)) * nAllVars + (startRow + np + (i % np))] + alpha[i] * A[(startRow + np + (i % np)) * nAllVars + (startRow + np + ((i - 1) % np))];</div>
+<div class="line"><span class="lineno">  107</span>        alpha[i + 1] = -A[(startRow + np + (i % np)) * nAllVars + (startRow + np + ((i + 1) % np))] / zn;</div>
+<div class="line"><span class="lineno">  108</span>        beta[i + 1] = (rhs[startRow + np + (i % np)] - beta[i] * A[(startRow + np + (i % np)) * nAllVars + (startRow + np + ((i - 1) % np))]) / zn;</div>
+<div class="line"><span class="lineno">  109</span>        gamma[i + 1] = -(gamma[i] * A[(startRow + np + (i % np)) * nAllVars + (startRow + np + ((i - 1) % np))]) / zn;</div>
+<div class="line"><span class="lineno">  110</span>    }</div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>    u[np - 1] = beta[np];</div>
+<div class="line"><span class="lineno">  113</span>    v[np - 1] = alpha[np] + gamma[np];</div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = np - 2; i &gt;= 1; --i)</div>
+<div class="line"><span class="lineno">  115</span>    {</div>
+<div class="line"><span class="lineno">  116</span>        u[i] = alpha[i + 1] * u[i + 1] + beta[i + 1];</div>
+<div class="line"><span class="lineno">  117</span>        v[i] = alpha[i + 1] * v[i + 1] + gamma[i + 1];</div>
+<div class="line"><span class="lineno">  118</span>    }</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>    res[startRow + np] = (beta[np + 1] + alpha[np + 1] * u[1]) / (1.0 - gamma[np + 1] - alpha[np + 1] * v[1]);</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; np; ++i)</div>
+<div class="line"><span class="lineno">  122</span>        res[startRow + np + i] = u[i] + res[startRow + np] * v[i];</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  125</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1249,85 +1249,85 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00445">445</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  447</span>{</div>
-<div class="line"><span class="lineno">  448</span>    <span class="comment">//std::vector&lt;double&gt; alpha(n), beta(n), gamma(n), delta(n), phi(n), xi(n), psi(n);</span></div>
-<div class="line"><span class="lineno">  449</span>    std::vector&lt;double&gt;&amp; alpha = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abdc01387ef7e5d78b96af5432d33bb1f">alpha</a>;</div>
-<div class="line"><span class="lineno">  450</span>    std::vector&lt;double&gt;&amp; beta = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#a49f7111226cbe5843cd6a4f306b831a9">beta</a>;</div>
-<div class="line"><span class="lineno">  451</span>    std::vector&lt;double&gt;&amp; gamma = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#ac2438bf9e1615fbadf0e2549d7072261">gamma</a>;</div>
-<div class="line"><span class="lineno">  452</span>    std::vector&lt;double&gt;&amp; delta = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abcb397a02078ade462bf14149251cec7">delta</a>;</div>
-<div class="line"><span class="lineno">  453</span>    std::vector&lt;double&gt;&amp; phi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#a3ad7b2ec63614771f8bbfe3451fca7f3">phi</a>;</div>
-<div class="line"><span class="lineno">  454</span>    std::vector&lt;double&gt;&amp; xi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#acba6da3b12579efafb60099abc52985b">xi</a>;</div>
-<div class="line"><span class="lineno">  455</span>    std::vector&lt;double&gt;&amp; psi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#aacf5dd7a429bd56a140d2ee37bce85f1">psi</a>;</div>
-<div class="line"><span class="lineno">  456</span> </div>
-<div class="line"><span class="lineno">  457</span>    <span class="keywordtype">double</span> yn, ynn;</div>
-<div class="line"><span class="lineno">  458</span>    <span class="keywordtype">double</span> lam1, lam2, mu1, mu2, xi1, xi2;</div>
-<div class="line"><span class="lineno">  459</span>    <span class="keywordtype">double</span> a;</div>
-<div class="line"><span class="lineno">  460</span> </div>
-<div class="line"><span class="lineno">  461</span>    <span class="keywordtype">double</span> len2 = afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[0] * 2.0;</div>
-<div class="line"><span class="lineno">  462</span> </div>
-<div class="line"><span class="lineno">  463</span>    alpha[1] = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[0] &amp; prec[p][0]) * len2;</div>
-<div class="line"><span class="lineno">  464</span>    beta[1] = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[0] &amp; prea[p][0]) * len2;</div>
-<div class="line"><span class="lineno">  465</span>    gamma[1] = len2;</div>
-<div class="line"><span class="lineno">  466</span>    delta[1] = -len2 * rhs[0];</div>
-<div class="line"><span class="lineno">  467</span> </div>
-<div class="line"><span class="lineno">  468</span>    <span class="keywordtype">double</span> zn;</div>
-<div class="line"><span class="lineno">  469</span> </div>
-<div class="line"><span class="lineno">  470</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; n - 1; ++i)</div>
-<div class="line"><span class="lineno">  471</span>    {</div>
-<div class="line"><span class="lineno">  472</span>        a = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] &amp; prea[p][i]);</div>
-<div class="line"><span class="lineno">  473</span>        zn = a * alpha[i] - 0.5 / afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i];</div>
-<div class="line"><span class="lineno">  474</span>        alpha[i + 1] = -(afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] &amp; prec[p][i]) / zn;</div>
-<div class="line"><span class="lineno">  475</span>        beta[i + 1] = -a * beta[i] / zn;</div>
-<div class="line"><span class="lineno">  476</span>        gamma[i + 1] = -(1.0 + a * gamma[i]) / zn;</div>
-<div class="line"><span class="lineno">  477</span>        delta[i + 1] = (rhs[i] - a * delta[i]) / zn;</div>
-<div class="line"><span class="lineno">  478</span>    }</div>
-<div class="line"><span class="lineno">  479</span> </div>
-<div class="line"><span class="lineno">  480</span>    a = afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 2] &amp; prea[p][n - 2];</div>
-<div class="line"><span class="lineno">  481</span>    zn = alpha[n - 2] * a - 0.5 / afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[n - 2];</div>
-<div class="line"><span class="lineno">  482</span>    phi[n - 1] = -((afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 2] &amp; prec[p][n - 2]) + beta[n - 2] * a) / zn;</div>
-<div class="line"><span class="lineno">  483</span>    psi[n - 1] = -(1.0 + gamma[n - 2] * a) / zn;</div>
-<div class="line"><span class="lineno">  484</span>    xi[n - 1] = (rhs[n - 2] - delta[n - 2] * a) / zn;</div>
-<div class="line"><span class="lineno">  485</span> </div>
-<div class="line"><span class="lineno">  486</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 2; i &gt; 0; --i)</div>
-<div class="line"><span class="lineno">  487</span>    {</div>
-<div class="line"><span class="lineno">  488</span>        phi[i] = alpha[i] * phi[i + 1] + beta[i];</div>
-<div class="line"><span class="lineno">  489</span>        psi[i] = alpha[i] * psi[i + 1] + gamma[i];</div>
-<div class="line"><span class="lineno">  490</span>        xi[i] = alpha[i] * xi[i + 1] + delta[i];</div>
-<div class="line"><span class="lineno">  491</span>    }</div>
-<div class="line"><span class="lineno">  492</span> </div>
-<div class="line"><span class="lineno">  493</span>    <span class="keywordtype">double</span> e = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 1] &amp; prec[p][n - 1]);</div>
-<div class="line"><span class="lineno">  494</span>    a = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 1] &amp; prea[p][n - 1]);</div>
-<div class="line"><span class="lineno">  495</span>    lam1 = e * phi[1] + a * phi[n - 1] - 0.5 / afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[n - 1];</div>
-<div class="line"><span class="lineno">  496</span>    mu1 = e * psi[1] + a * psi[n - 1] + 1.0;</div>
-<div class="line"><span class="lineno">  497</span>    xi1 = rhs[n - 1] - e * xi[1] - a * xi[n - 1];</div>
-<div class="line"><span class="lineno">  498</span>    lam2 = mu2 = xi2 = 0.0;</div>
-<div class="line"><span class="lineno">  499</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; n - 1; ++j)</div>
-<div class="line"><span class="lineno">  500</span>    {</div>
-<div class="line"><span class="lineno">  501</span>        lam2 += phi[j + 1];</div>
-<div class="line"><span class="lineno">  502</span>        mu2 += psi[j + 1];</div>
-<div class="line"><span class="lineno">  503</span>        xi2 -= xi[j + 1];</div>
-<div class="line"><span class="lineno">  504</span>    }</div>
-<div class="line"><span class="lineno">  505</span>    lam2 += 1.0;</div>
-<div class="line"><span class="lineno">  506</span> </div>
-<div class="line"><span class="lineno">  507</span>    <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>)</div>
-<div class="line"><span class="lineno">  508</span>        xi2 += rhs[n];</div>
-<div class="line"><span class="lineno">  509</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>)</div>
-<div class="line"><span class="lineno">  510</span>        xi2 += rhs[2 * n];</div>
-<div class="line"><span class="lineno">  511</span> </div>
-<div class="line"><span class="lineno">  512</span>    zn = lam1 * mu2 - lam2 * mu1;</div>
-<div class="line"><span class="lineno">  513</span>    yn = (xi1 * mu2 - xi2 * mu1) / zn;</div>
-<div class="line"><span class="lineno">  514</span>    ynn = -(xi1 * lam2 - xi2 * lam1) / zn;</div>
-<div class="line"><span class="lineno">  515</span> </div>
-<div class="line"><span class="lineno">  516</span>    <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>)</div>
-<div class="line"><span class="lineno">  517</span>        AX[n] = ynn;</div>
-<div class="line"><span class="lineno">  518</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>)</div>
-<div class="line"><span class="lineno">  519</span>        AX[2 * n] = ynn;</div>
-<div class="line"><span class="lineno">  520</span> </div>
-<div class="line"><span class="lineno">  521</span>    AX[n - 1] = yn;</div>
-<div class="line"><span class="lineno">  522</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 2; i &gt;= 0; --i)</div>
-<div class="line"><span class="lineno">  523</span>        AX[i] = phi[i + 1] * yn + psi[i + 1] * ynn + xi[i + 1];</div>
-<div class="line"><span class="lineno">  524</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00444">444</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  446</span>{</div>
+<div class="line"><span class="lineno">  447</span>    <span class="comment">//std::vector&lt;double&gt; alpha(n), beta(n), gamma(n), delta(n), phi(n), xi(n), psi(n);</span></div>
+<div class="line"><span class="lineno">  448</span>    std::vector&lt;double&gt;&amp; alpha = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abdc01387ef7e5d78b96af5432d33bb1f">alpha</a>;</div>
+<div class="line"><span class="lineno">  449</span>    std::vector&lt;double&gt;&amp; beta = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#a49f7111226cbe5843cd6a4f306b831a9">beta</a>;</div>
+<div class="line"><span class="lineno">  450</span>    std::vector&lt;double&gt;&amp; gamma = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#ac2438bf9e1615fbadf0e2549d7072261">gamma</a>;</div>
+<div class="line"><span class="lineno">  451</span>    std::vector&lt;double&gt;&amp; delta = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abcb397a02078ade462bf14149251cec7">delta</a>;</div>
+<div class="line"><span class="lineno">  452</span>    std::vector&lt;double&gt;&amp; phi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#a3ad7b2ec63614771f8bbfe3451fca7f3">phi</a>;</div>
+<div class="line"><span class="lineno">  453</span>    std::vector&lt;double&gt;&amp; xi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#acba6da3b12579efafb60099abc52985b">xi</a>;</div>
+<div class="line"><span class="lineno">  454</span>    std::vector&lt;double&gt;&amp; psi = sw.<a class="code hl_variable" href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#aacf5dd7a429bd56a140d2ee37bce85f1">psi</a>;</div>
+<div class="line"><span class="lineno">  455</span> </div>
+<div class="line"><span class="lineno">  456</span>    <span class="keywordtype">double</span> yn, ynn;</div>
+<div class="line"><span class="lineno">  457</span>    <span class="keywordtype">double</span> lam1, lam2, mu1, mu2, xi1, xi2;</div>
+<div class="line"><span class="lineno">  458</span>    <span class="keywordtype">double</span> a;</div>
+<div class="line"><span class="lineno">  459</span> </div>
+<div class="line"><span class="lineno">  460</span>    <span class="keywordtype">double</span> len2 = afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[0] * 2.0;</div>
+<div class="line"><span class="lineno">  461</span> </div>
+<div class="line"><span class="lineno">  462</span>    alpha[1] = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[0] &amp; prec[p][0]) * len2;</div>
+<div class="line"><span class="lineno">  463</span>    beta[1] = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[0] &amp; prea[p][0]) * len2;</div>
+<div class="line"><span class="lineno">  464</span>    gamma[1] = len2;</div>
+<div class="line"><span class="lineno">  465</span>    delta[1] = -len2 * rhs[0];</div>
+<div class="line"><span class="lineno">  466</span> </div>
+<div class="line"><span class="lineno">  467</span>    <span class="keywordtype">double</span> zn;</div>
+<div class="line"><span class="lineno">  468</span> </div>
+<div class="line"><span class="lineno">  469</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; n - 1; ++i)</div>
+<div class="line"><span class="lineno">  470</span>    {</div>
+<div class="line"><span class="lineno">  471</span>        a = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] &amp; prea[p][i]);</div>
+<div class="line"><span class="lineno">  472</span>        zn = a * alpha[i] - 0.5 / afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i];</div>
+<div class="line"><span class="lineno">  473</span>        alpha[i + 1] = -(afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] &amp; prec[p][i]) / zn;</div>
+<div class="line"><span class="lineno">  474</span>        beta[i + 1] = -a * beta[i] / zn;</div>
+<div class="line"><span class="lineno">  475</span>        gamma[i + 1] = -(1.0 + a * gamma[i]) / zn;</div>
+<div class="line"><span class="lineno">  476</span>        delta[i + 1] = (rhs[i] - a * delta[i]) / zn;</div>
+<div class="line"><span class="lineno">  477</span>    }</div>
+<div class="line"><span class="lineno">  478</span> </div>
+<div class="line"><span class="lineno">  479</span>    a = afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 2] &amp; prea[p][n - 2];</div>
+<div class="line"><span class="lineno">  480</span>    zn = alpha[n - 2] * a - 0.5 / afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[n - 2];</div>
+<div class="line"><span class="lineno">  481</span>    phi[n - 1] = -((afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 2] &amp; prec[p][n - 2]) + beta[n - 2] * a) / zn;</div>
+<div class="line"><span class="lineno">  482</span>    psi[n - 1] = -(1.0 + gamma[n - 2] * a) / zn;</div>
+<div class="line"><span class="lineno">  483</span>    xi[n - 1] = (rhs[n - 2] - delta[n - 2] * a) / zn;</div>
+<div class="line"><span class="lineno">  484</span> </div>
+<div class="line"><span class="lineno">  485</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 2; i &gt; 0; --i)</div>
+<div class="line"><span class="lineno">  486</span>    {</div>
+<div class="line"><span class="lineno">  487</span>        phi[i] = alpha[i] * phi[i + 1] + beta[i];</div>
+<div class="line"><span class="lineno">  488</span>        psi[i] = alpha[i] * psi[i + 1] + gamma[i];</div>
+<div class="line"><span class="lineno">  489</span>        xi[i] = alpha[i] * xi[i + 1] + delta[i];</div>
+<div class="line"><span class="lineno">  490</span>    }</div>
+<div class="line"><span class="lineno">  491</span> </div>
+<div class="line"><span class="lineno">  492</span>    <span class="keywordtype">double</span> e = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 1] &amp; prec[p][n - 1]);</div>
+<div class="line"><span class="lineno">  493</span>    a = (afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[n - 1] &amp; prea[p][n - 1]);</div>
+<div class="line"><span class="lineno">  494</span>    lam1 = e * phi[1] + a * phi[n - 1] - 0.5 / afl.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[n - 1];</div>
+<div class="line"><span class="lineno">  495</span>    mu1 = e * psi[1] + a * psi[n - 1] + 1.0;</div>
+<div class="line"><span class="lineno">  496</span>    xi1 = rhs[n - 1] - e * xi[1] - a * xi[n - 1];</div>
+<div class="line"><span class="lineno">  497</span>    lam2 = mu2 = xi2 = 0.0;</div>
+<div class="line"><span class="lineno">  498</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; n - 1; ++j)</div>
+<div class="line"><span class="lineno">  499</span>    {</div>
+<div class="line"><span class="lineno">  500</span>        lam2 += phi[j + 1];</div>
+<div class="line"><span class="lineno">  501</span>        mu2 += psi[j + 1];</div>
+<div class="line"><span class="lineno">  502</span>        xi2 -= xi[j + 1];</div>
+<div class="line"><span class="lineno">  503</span>    }</div>
+<div class="line"><span class="lineno">  504</span>    lam2 += 1.0;</div>
+<div class="line"><span class="lineno">  505</span> </div>
+<div class="line"><span class="lineno">  506</span>    <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>)</div>
+<div class="line"><span class="lineno">  507</span>        xi2 += rhs[n];</div>
+<div class="line"><span class="lineno">  508</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>)</div>
+<div class="line"><span class="lineno">  509</span>        xi2 += rhs[2 * n];</div>
+<div class="line"><span class="lineno">  510</span> </div>
+<div class="line"><span class="lineno">  511</span>    zn = lam1 * mu2 - lam2 * mu1;</div>
+<div class="line"><span class="lineno">  512</span>    yn = (xi1 * mu2 - xi2 * mu1) / zn;</div>
+<div class="line"><span class="lineno">  513</span>    ynn = -(xi1 * lam2 - xi2 * lam1) / zn;</div>
+<div class="line"><span class="lineno">  514</span> </div>
+<div class="line"><span class="lineno">  515</span>    <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>)</div>
+<div class="line"><span class="lineno">  516</span>        AX[n] = ynn;</div>
+<div class="line"><span class="lineno">  517</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>)</div>
+<div class="line"><span class="lineno">  518</span>        AX[2 * n] = ynn;</div>
+<div class="line"><span class="lineno">  519</span> </div>
+<div class="line"><span class="lineno">  520</span>    AX[n - 1] = yn;</div>
+<div class="line"><span class="lineno">  521</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 2; i &gt;= 0; --i)</div>
+<div class="line"><span class="lineno">  522</span>        AX[i] = phi[i + 1] * yn + psi[i + 1] * ynn + xi[i + 1];</div>
+<div class="line"><span class="lineno">  523</span>}</div>
 <div class="ttc" id="a_gpudefs_8h_html_aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">scheme_T::linScheme</a></div><div class="ttdeci">@ linScheme</div></div>
 <div class="ttc" id="astruct_v_m2_d_1_1sweep_vectors_html_aacf5dd7a429bd56a140d2ee37bce85f1"><div class="ttname"><a href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#aacf5dd7a429bd56a140d2ee37bce85f1">VM2D::sweepVectors::psi</a></div><div class="ttdeci">std::vector&lt; double &gt; psi</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d6f/_gmres2_d_8h_source.html#l00072">Gmres2D.h:72</a></div></div>
 <div class="ttc" id="astruct_v_m2_d_1_1sweep_vectors_html_ac2438bf9e1615fbadf0e2549d7072261"><div class="ttname"><a href="../../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#ac2438bf9e1615fbadf0e2549d7072261">VM2D::sweepVectors::gamma</a></div><div class="ttdeci">std::vector&lt; double &gt; gamma</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d6f/_gmres2_d_8h_source.html#l00068">Gmres2D.h:68</a></div></div>
@@ -1390,80 +1390,80 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00131">131</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  132</span>{</div>
-<div class="line"><span class="lineno">  133</span>    std::vector&lt;double&gt; alpha(np), beta(np), gamma(np), delta(np), phi(np), xi(np), psi(np);</div>
-<div class="line"><span class="lineno">  134</span>    <span class="keywordtype">double</span> yn, ynn;</div>
-<div class="line"><span class="lineno">  135</span>    <span class="keywordtype">double</span> lam1, lam2, mu1, mu2, xi1, xi2;</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordtype">double</span> a;</div>
-<div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span>    <span class="keywordtype">size_t</span> nAllVars = rhs.size();</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>    <span class="keywordtype">double</span> izn = 1.0 / A[(startRow + 0) * nAllVars + (startRow + 0)];</div>
-<div class="line"><span class="lineno">  141</span>    alpha[1] = -A[(startRow + 0) * nAllVars + (startRow + 1)] * izn;</div>
-<div class="line"><span class="lineno">  142</span>    beta[1] = -A[(startRow + 0) * nAllVars + (startRow + np - 1)] * izn;</div>
-<div class="line"><span class="lineno">  143</span>    gamma[1] = -A[(startRow + 0) * nAllVars + (startRowReg)] * izn;</div>
-<div class="line"><span class="lineno">  144</span>    delta[1] = rhs[startRow] * izn;</div>
-<div class="line"><span class="lineno">  145</span>    <span class="keywordtype">double</span> zn;</div>
+<p class="definition">Definition at line <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html#l00130">130</a> of file <a class="el" href="../../df/d46/_gmres2_d_8cpp_source.html">Gmres2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
+<div class="line"><span class="lineno">  132</span>    std::vector&lt;double&gt; alpha(np), beta(np), gamma(np), delta(np), phi(np), xi(np), psi(np);</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordtype">double</span> yn, ynn;</div>
+<div class="line"><span class="lineno">  134</span>    <span class="keywordtype">double</span> lam1, lam2, mu1, mu2, xi1, xi2;</div>
+<div class="line"><span class="lineno">  135</span>    <span class="keywordtype">double</span> a;</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span>    <span class="keywordtype">size_t</span> nAllVars = rhs.size();</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>    <span class="keywordtype">double</span> izn = 1.0 / A[(startRow + 0) * nAllVars + (startRow + 0)];</div>
+<div class="line"><span class="lineno">  140</span>    alpha[1] = -A[(startRow + 0) * nAllVars + (startRow + 1)] * izn;</div>
+<div class="line"><span class="lineno">  141</span>    beta[1] = -A[(startRow + 0) * nAllVars + (startRow + np - 1)] * izn;</div>
+<div class="line"><span class="lineno">  142</span>    gamma[1] = -A[(startRow + 0) * nAllVars + (startRowReg)] * izn;</div>
+<div class="line"><span class="lineno">  143</span>    delta[1] = rhs[startRow] * izn;</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordtype">double</span> zn;</div>
+<div class="line"><span class="lineno">  145</span> </div>
 <div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; np - 1; ++i)</div>
-<div class="line"><span class="lineno">  149</span>    {</div>
-<div class="line"><span class="lineno">  150</span>        a = A[(startRow + i) * nAllVars + (startRow + i - 1)];</div>
-<div class="line"><span class="lineno">  151</span>        zn = a * alpha[i] + A[(startRow + i) * nAllVars + (startRow + i)];</div>
-<div class="line"><span class="lineno">  152</span>        alpha[i + 1] = -A[(startRow + i) * nAllVars + (startRow + i + 1)] / zn;</div>
-<div class="line"><span class="lineno">  153</span>        beta[i + 1] = -a * beta[i] / zn;</div>
-<div class="line"><span class="lineno">  154</span>        gamma[i + 1] = -(A[(startRow + i) * nAllVars + (startRowReg)] + a * gamma[i]) / zn;</div>
-<div class="line"><span class="lineno">  155</span>        delta[i + 1] = (rhs[startRow + i] - a * delta[i]) / zn;</div>
-<div class="line"><span class="lineno">  156</span>    }</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>    a = A[(startRow + (np - 2)) * nAllVars + (startRow + (np - 3))];</div>
-<div class="line"><span class="lineno">  159</span>    zn = alpha[np - 2] * a + A[(startRow + (np - 2)) * nAllVars + (startRow + (np - 2))];</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>    phi[np - 1] = -(A[(startRow + np - 2) * nAllVars + (startRow + np - 1)] + a * beta[np - 2]) / zn;</div>
-<div class="line"><span class="lineno">  162</span>    psi[np - 1] = -(A[(startRow + np - 2) * nAllVars + (startRowReg)] + gamma[np - 2] * a) / zn;</div>
-<div class="line"><span class="lineno">  163</span>    xi[np - 1] = (rhs[startRow + np - 2] - delta[np - 2] * a) / zn;</div>
-<div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = np - 2; i &gt; 0; --i)</div>
-<div class="line"><span class="lineno">  166</span>    {</div>
-<div class="line"><span class="lineno">  167</span>        phi[i] = alpha[i] * phi[i + 1] + beta[i];</div>
-<div class="line"><span class="lineno">  168</span>        psi[i] = alpha[i] * psi[i + 1] + gamma[i];</div>
-<div class="line"><span class="lineno">  169</span>        xi[i] = alpha[i] * xi[i + 1] + delta[i];</div>
-<div class="line"><span class="lineno">  170</span>    }</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; np - 1; ++i)</div>
+<div class="line"><span class="lineno">  148</span>    {</div>
+<div class="line"><span class="lineno">  149</span>        a = A[(startRow + i) * nAllVars + (startRow + i - 1)];</div>
+<div class="line"><span class="lineno">  150</span>        zn = a * alpha[i] + A[(startRow + i) * nAllVars + (startRow + i)];</div>
+<div class="line"><span class="lineno">  151</span>        alpha[i + 1] = -A[(startRow + i) * nAllVars + (startRow + i + 1)] / zn;</div>
+<div class="line"><span class="lineno">  152</span>        beta[i + 1] = -a * beta[i] / zn;</div>
+<div class="line"><span class="lineno">  153</span>        gamma[i + 1] = -(A[(startRow + i) * nAllVars + (startRowReg)] + a * gamma[i]) / zn;</div>
+<div class="line"><span class="lineno">  154</span>        delta[i + 1] = (rhs[startRow + i] - a * delta[i]) / zn;</div>
+<div class="line"><span class="lineno">  155</span>    }</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>    a = A[(startRow + (np - 2)) * nAllVars + (startRow + (np - 3))];</div>
+<div class="line"><span class="lineno">  158</span>    zn = alpha[np - 2] * a + A[(startRow + (np - 2)) * nAllVars + (startRow + (np - 2))];</div>
+<div class="line"><span class="lineno">  159</span> </div>
+<div class="line"><span class="lineno">  160</span>    phi[np - 1] = -(A[(startRow + np - 2) * nAllVars + (startRow + np - 1)] + a * beta[np - 2]) / zn;</div>
+<div class="line"><span class="lineno">  161</span>    psi[np - 1] = -(A[(startRow + np - 2) * nAllVars + (startRowReg)] + gamma[np - 2] * a) / zn;</div>
+<div class="line"><span class="lineno">  162</span>    xi[np - 1] = (rhs[startRow + np - 2] - delta[np - 2] * a) / zn;</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = np - 2; i &gt; 0; --i)</div>
+<div class="line"><span class="lineno">  165</span>    {</div>
+<div class="line"><span class="lineno">  166</span>        phi[i] = alpha[i] * phi[i + 1] + beta[i];</div>
+<div class="line"><span class="lineno">  167</span>        psi[i] = alpha[i] * psi[i + 1] + gamma[i];</div>
+<div class="line"><span class="lineno">  168</span>        xi[i] = alpha[i] * xi[i + 1] + delta[i];</div>
+<div class="line"><span class="lineno">  169</span>    }</div>
+<div class="line"><span class="lineno">  170</span> </div>
 <div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span> </div>
-<div class="line"><span class="lineno">  173</span>    <span class="keywordtype">double</span> e = A[(startRow + np - 1) * nAllVars + (startRow + 0)];</div>
-<div class="line"><span class="lineno">  174</span>    a = A[(startRow + np - 1) * nAllVars + (startRow + np - 2)];</div>
-<div class="line"><span class="lineno">  175</span>    lam1 = e * phi[1] + a * phi[np - 1] + A[(startRow + np - 1) * nAllVars + (startRow + np - 1)];</div>
-<div class="line"><span class="lineno">  176</span>    mu1 = e * psi[1] + a * psi[np - 1] + A[(startRow + np - 1) * nAllVars + (startRowReg)];</div>
-<div class="line"><span class="lineno">  177</span>    xi1 = rhs[startRow + np - 1] - e * xi[1] - a * xi[np - 1];</div>
-<div class="line"><span class="lineno">  178</span> </div>
-<div class="line"><span class="lineno">  179</span>    lam2 = mu2 = xi2 = 0.0;</div>
-<div class="line"><span class="lineno">  180</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; np - 1; ++j)</div>
-<div class="line"><span class="lineno">  181</span>    {</div>
-<div class="line"><span class="lineno">  182</span>        lam2 += phi[j + 1];</div>
-<div class="line"><span class="lineno">  183</span>        mu2 += psi[j + 1];</div>
-<div class="line"><span class="lineno">  184</span>        xi2 -= xi[j + 1];</div>
-<div class="line"><span class="lineno">  185</span>    }</div>
-<div class="line"><span class="lineno">  186</span>    lam2 += 1.0;</div>
-<div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span>    xi2 += rhs[startRowReg];</div>
-<div class="line"><span class="lineno">  189</span> </div>
-<div class="line"><span class="lineno">  190</span>    zn = lam1 * mu2 - lam2 * mu1;</div>
-<div class="line"><span class="lineno">  191</span>    yn = (xi1 * mu2 - xi2 * mu1) / zn;</div>
-<div class="line"><span class="lineno">  192</span>    ynn = -(xi1 * lam2 - xi2 * lam1) / zn;</div>
-<div class="line"><span class="lineno">  193</span> </div>
-<div class="line"><span class="lineno">  194</span>    res[startRowReg] = ynn;</div>
-<div class="line"><span class="lineno">  195</span> </div>
-<div class="line"><span class="lineno">  196</span>    res[startRow + np - 1] = yn;</div>
-<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = np - 2; i + 1 &gt; 0; --i)</div>
-<div class="line"><span class="lineno">  198</span>        res[startRow + i] = phi[i + 1] * yn + psi[i + 1] * ynn + xi[i + 1];</div>
-<div class="line"><span class="lineno">  199</span> </div>
-<div class="line"><span class="lineno">  200</span><span class="comment">//Циклическая прогонка для линейной схемы</span></div>
-<div class="line"><span class="lineno">  201</span>    <span class="keywordflow">if</span> (lin)</div>
-<div class="line"><span class="lineno">  202</span>        <a class="code hl_function" href="../../d9/dd7/namespace_v_m2_d.html#a8958269f8acbd782b1c8c815b0e71205">SolCircleRundirect</a>(A, rhs, startRow, startRowReg, np, res);</div>
-<div class="line"><span class="lineno">  203</span>}</div>
-<div class="ttc" id="anamespace_v_m2_d_html_a8958269f8acbd782b1c8c815b0e71205"><div class="ttname"><a href="../../d9/dd7/namespace_v_m2_d.html#a8958269f8acbd782b1c8c815b0e71205">VM2D::SolCircleRundirect</a></div><div class="ttdeci">void SolCircleRundirect(const std::vector&lt; double &gt; &amp;A, const std::vector&lt; double &gt; &amp;rhs, size_t startRow, size_t startRowReg, size_t np, std::vector&lt; double &gt; &amp;res)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d46/_gmres2_d_8cpp_source.html#l00094">Gmres2D.cpp:94</a></div></div>
+<div class="line"><span class="lineno">  172</span>    <span class="keywordtype">double</span> e = A[(startRow + np - 1) * nAllVars + (startRow + 0)];</div>
+<div class="line"><span class="lineno">  173</span>    a = A[(startRow + np - 1) * nAllVars + (startRow + np - 2)];</div>
+<div class="line"><span class="lineno">  174</span>    lam1 = e * phi[1] + a * phi[np - 1] + A[(startRow + np - 1) * nAllVars + (startRow + np - 1)];</div>
+<div class="line"><span class="lineno">  175</span>    mu1 = e * psi[1] + a * psi[np - 1] + A[(startRow + np - 1) * nAllVars + (startRowReg)];</div>
+<div class="line"><span class="lineno">  176</span>    xi1 = rhs[startRow + np - 1] - e * xi[1] - a * xi[np - 1];</div>
+<div class="line"><span class="lineno">  177</span> </div>
+<div class="line"><span class="lineno">  178</span>    lam2 = mu2 = xi2 = 0.0;</div>
+<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; np - 1; ++j)</div>
+<div class="line"><span class="lineno">  180</span>    {</div>
+<div class="line"><span class="lineno">  181</span>        lam2 += phi[j + 1];</div>
+<div class="line"><span class="lineno">  182</span>        mu2 += psi[j + 1];</div>
+<div class="line"><span class="lineno">  183</span>        xi2 -= xi[j + 1];</div>
+<div class="line"><span class="lineno">  184</span>    }</div>
+<div class="line"><span class="lineno">  185</span>    lam2 += 1.0;</div>
+<div class="line"><span class="lineno">  186</span> </div>
+<div class="line"><span class="lineno">  187</span>    xi2 += rhs[startRowReg];</div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  189</span>    zn = lam1 * mu2 - lam2 * mu1;</div>
+<div class="line"><span class="lineno">  190</span>    yn = (xi1 * mu2 - xi2 * mu1) / zn;</div>
+<div class="line"><span class="lineno">  191</span>    ynn = -(xi1 * lam2 - xi2 * lam1) / zn;</div>
+<div class="line"><span class="lineno">  192</span> </div>
+<div class="line"><span class="lineno">  193</span>    res[startRowReg] = ynn;</div>
+<div class="line"><span class="lineno">  194</span> </div>
+<div class="line"><span class="lineno">  195</span>    res[startRow + np - 1] = yn;</div>
+<div class="line"><span class="lineno">  196</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = np - 2; i + 1 &gt; 0; --i)</div>
+<div class="line"><span class="lineno">  197</span>        res[startRow + i] = phi[i + 1] * yn + psi[i + 1] * ynn + xi[i + 1];</div>
+<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  199</span><span class="comment">//Циклическая прогонка для линейной схемы</span></div>
+<div class="line"><span class="lineno">  200</span>    <span class="keywordflow">if</span> (lin)</div>
+<div class="line"><span class="lineno">  201</span>        <a class="code hl_function" href="../../d9/dd7/namespace_v_m2_d.html#a8958269f8acbd782b1c8c815b0e71205">SolCircleRundirect</a>(A, rhs, startRow, startRowReg, np, res);</div>
+<div class="line"><span class="lineno">  202</span>}</div>
+<div class="ttc" id="anamespace_v_m2_d_html_a8958269f8acbd782b1c8c815b0e71205"><div class="ttname"><a href="../../d9/dd7/namespace_v_m2_d.html#a8958269f8acbd782b1c8c815b0e71205">VM2D::SolCircleRundirect</a></div><div class="ttdeci">void SolCircleRundirect(const std::vector&lt; double &gt; &amp;A, const std::vector&lt; double &gt; &amp;rhs, size_t startRow, size_t startRowReg, size_t np, std::vector&lt; double &gt; &amp;res)</div><div class="ttdef"><b>Definition</b> <a href="../../df/d46/_gmres2_d_8cpp_source.html#l00093">Gmres2D.cpp:93</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

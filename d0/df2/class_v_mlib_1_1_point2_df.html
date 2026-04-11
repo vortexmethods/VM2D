@@ -472,10 +472,10 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>квадрат расстояния между точками </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00561">561</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  562</span>        {</div>
-<div class="line"><span class="lineno">  563</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span> - y).length2();</div>
-<div class="line"><span class="lineno">  564</span>        }<span class="comment">//dist2To(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00558">558</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  559</span>        {</div>
+<div class="line"><span class="lineno">  560</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span> - y).length2();</div>
+<div class="line"><span class="lineno">  561</span>        }<span class="comment">//dist2To(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -519,11 +519,11 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>расстояние между точками </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00574">574</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  575</span>        {</div>
-<div class="line"><span class="lineno">  576</span>            R res = (*<span class="keyword">this</span> - y) &amp; (*<span class="keyword">this</span> - y);</div>
-<div class="line"><span class="lineno">  577</span>            <span class="keywordflow">return</span> sqrt(res);</div>
-<div class="line"><span class="lineno">  578</span>        }<span class="comment">//distTo(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00571">571</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  572</span>        {</div>
+<div class="line"><span class="lineno">  573</span>            R res = (*<span class="keyword">this</span> - y) &amp; (*<span class="keyword">this</span> - y);</div>
+<div class="line"><span class="lineno">  574</span>            <span class="keywordflow">return</span> sqrt(res);</div>
+<div class="line"><span class="lineno">  575</span>        }<span class="comment">//distTo(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -561,13 +561,13 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>новый двумерный вектор, полученный поворотом исходного на 90 градусов </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00513">513</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  514</span>        {</div>
-<div class="line"><span class="lineno">  515</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, 2&gt;</a> res;</div>
-<div class="line"><span class="lineno">  516</span>            res[0] = -this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[1];</div>
-<div class="line"><span class="lineno">  517</span>            res[1] =  this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0];</div>
-<div class="line"><span class="lineno">  518</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  519</span>        }<span class="comment">//kcross()</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00510">510</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  511</span>        {</div>
+<div class="line"><span class="lineno">  512</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, 2&gt;</a> res;</div>
+<div class="line"><span class="lineno">  513</span>            res[0] = -this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[1];</div>
+<div class="line"><span class="lineno">  514</span>            res[1] =  this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0];</div>
+<div class="line"><span class="lineno">  515</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  516</span>        }<span class="comment">//kcross()</span></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив,...</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00098">numvector.h:99</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -605,11 +605,11 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>норма (длина) вектора </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00377">377</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  378</span>        {</div>
-<div class="line"><span class="lineno">  379</span>            P res = *<span class="keyword">this</span> &amp; *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  380</span>            <span class="keywordflow">return</span> sqrt(res);</div>
-<div class="line"><span class="lineno">  381</span>        }<span class="comment">//length()</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00374">374</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  375</span>        {</div>
+<div class="line"><span class="lineno">  376</span>            P res = *<span class="keyword">this</span> &amp; *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  377</span>            <span class="keywordflow">return</span> sqrt(res);</div>
+<div class="line"><span class="lineno">  378</span>        }<span class="comment">//length()</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -641,10 +641,10 @@ Protected Attributes</h2></td></tr>
 <p>Скалярный квадрат вектора</p>
 <dl class="section return"><dt>Returns</dt><dd>квадрат нормы (длины) вектора того же типа, что и компоненты вектора </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00389">389</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  390</span>        {</div>
-<div class="line"><span class="lineno">  391</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span> &amp; *<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">  392</span>        }<span class="comment">//length2()</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00386">386</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  387</span>        {</div>
+<div class="line"><span class="lineno">  388</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span> &amp; *<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  389</span>        }<span class="comment">//length2()</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -687,14 +687,14 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>позиция первого вхождения элемента s; если не входит &mdash; возвращает (-1), приведенный к типу size_t </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00436">436</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  437</span>        {</div>
-<div class="line"><span class="lineno">  438</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  439</span>                <span class="keywordflow">if</span> (this-&gt;data[i] == s)</div>
-<div class="line"><span class="lineno">  440</span>                    <span class="keywordflow">return</span> i;</div>
-<div class="line"><span class="lineno">  441</span> </div>
-<div class="line"><span class="lineno">  442</span>            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(-1);</div>
-<div class="line"><span class="lineno">  443</span>        }<span class="comment">//member(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00433">433</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  434</span>        {</div>
+<div class="line"><span class="lineno">  435</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  436</span>                <span class="keywordflow">if</span> (this-&gt;data[i] == s)</div>
+<div class="line"><span class="lineno">  437</span>                    <span class="keywordflow">return</span> i;</div>
+<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  439</span>            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(-1);</div>
+<div class="line"><span class="lineno">  440</span>        }<span class="comment">//member(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -726,13 +726,13 @@ Protected Attributes</h2></td></tr>
 <p>Сумма модулей компонент вектора</p>
 <dl class="section return"><dt>Returns</dt><dd>1-норма вектора </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00343">343</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  344</span>        {</div>
-<div class="line"><span class="lineno">  345</span>            <span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">typename</span> std::remove_reference&lt;<span class="keyword">decltype</span>(this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0])&gt;::type&gt;::type res = 0;</div>
-<div class="line"><span class="lineno">  346</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  347</span>                res += abs(this-&gt;data[i]);</div>
-<div class="line"><span class="lineno">  348</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  349</span>        }<span class="comment">//norm1()</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00340">340</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  341</span>        {</div>
+<div class="line"><span class="lineno">  342</span>            <span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">typename</span> std::remove_reference&lt;<span class="keyword">decltype</span>(this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0])&gt;::type&gt;::type res = 0;</div>
+<div class="line"><span class="lineno">  343</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  344</span>                res += abs(this-&gt;data[i]);</div>
+<div class="line"><span class="lineno">  345</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  346</span>        }<span class="comment">//norm1()</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -776,12 +776,12 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section warning"><dt>Warning</dt><dd>Работает корректно только для векторов с компонентами типа float и double </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00422">422</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  423</span>        {</div>
-<div class="line"><span class="lineno">  424</span>            <span class="keyword">auto</span> ilen = <span class="keyword">static_cast&lt;</span>decltype(this-<span class="keyword">&gt;</span><a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0] * newlen)&gt;(newlen / std::max(this-&gt;<a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>(), 1e-16));</div>
-<div class="line"><span class="lineno">  425</span>            *<span class="keyword">this</span> *= ilen;</div>
-<div class="line"><span class="lineno">  426</span>        }<span class="comment">//normalize(...)</span></div>
-<div class="ttc" id="aclass_v_mlib_1_1numvector_html_a8c8bd3c1e2a478e8b0b203c95dbefc64"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">VMlib::numvector&lt; float, 2 &gt;::length</a></div><div class="ttdeci">P length() const</div><div class="ttdoc">Вычисление 2-нормы (длины) вектора</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00377">numvector.h:377</a></div></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00419">419</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  420</span>        {</div>
+<div class="line"><span class="lineno">  421</span>            <span class="keyword">auto</span> ilen = <span class="keyword">static_cast&lt;</span>decltype(this-<span class="keyword">&gt;</span><a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0] * newlen)&gt;(newlen / std::max(this-&gt;<a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>(), 1e-16));</div>
+<div class="line"><span class="lineno">  422</span>            *<span class="keyword">this</span> *= ilen;</div>
+<div class="line"><span class="lineno">  423</span>        }<span class="comment">//normalize(...)</span></div>
+<div class="ttc" id="aclass_v_mlib_1_1numvector_html_a8c8bd3c1e2a478e8b0b203c95dbefc64"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">VMlib::numvector&lt; float, 2 &gt;::length</a></div><div class="ttdeci">P length() const</div><div class="ttdoc">Вычисление 2-нормы (длины) вектора</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00374">numvector.h:374</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -813,16 +813,16 @@ Protected Attributes</h2></td></tr>
 <p>Наибольшая по модулю компонента вектора</p>
 <dl class="section return"><dt>Returns</dt><dd>inf-норма вектора </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00357">357</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  358</span>        {</div>
-<div class="line"><span class="lineno">  359</span>            <span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">typename</span> std::remove_reference&lt;<span class="keyword">decltype</span>(this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0])&gt;::type&gt;::type res = 0;</div>
-<div class="line"><span class="lineno">  360</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  361</span>            {</div>
-<div class="line"><span class="lineno">  362</span>                <span class="keywordflow">if</span> (abs(this-&gt;data[i]) &gt; res)</div>
-<div class="line"><span class="lineno">  363</span>                    res = abs(this-&gt;data[i]);</div>
-<div class="line"><span class="lineno">  364</span>            }</div>
-<div class="line"><span class="lineno">  365</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  366</span>        }<span class="comment">//norminf()</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00354">354</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  355</span>        {</div>
+<div class="line"><span class="lineno">  356</span>            <span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">typename</span> std::remove_reference&lt;<span class="keyword">decltype</span>(this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0])&gt;::type&gt;::type res = 0;</div>
+<div class="line"><span class="lineno">  357</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  358</span>            {</div>
+<div class="line"><span class="lineno">  359</span>                <span class="keywordflow">if</span> (abs(this-&gt;data[i]) &gt; res)</div>
+<div class="line"><span class="lineno">  360</span>                    res = abs(this-&gt;data[i]);</div>
+<div class="line"><span class="lineno">  361</span>            }</div>
+<div class="line"><span class="lineno">  362</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  363</span>        }<span class="comment">//norminf()</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -858,13 +858,13 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>множество типа std::set, состоящее из тех же элементов, что исходный вектор </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00452">452</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  453</span>        {</div>
-<div class="line"><span class="lineno">  454</span>            std::set&lt;P&gt; newset;</div>
-<div class="line"><span class="lineno">  455</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  456</span>                newset.insert(this-&gt;data[i]);</div>
-<div class="line"><span class="lineno">  457</span>            <span class="keywordflow">return</span> newset;</div>
-<div class="line"><span class="lineno">  458</span>        }<span class="comment">//toSet()</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00449">449</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  450</span>        {</div>
+<div class="line"><span class="lineno">  451</span>            std::set&lt;P&gt; newset;</div>
+<div class="line"><span class="lineno">  452</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  453</span>                newset.insert(this-&gt;data[i]);</div>
+<div class="line"><span class="lineno">  454</span>            <span class="keywordflow">return</span> newset;</div>
+<div class="line"><span class="lineno">  455</span>        }<span class="comment">//toSet()</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -900,14 +900,14 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>вектор типа std::vector, состоящий из тех же элементов, что исходный вектор </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00466">466</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  467</span>        {</div>
-<div class="line"><span class="lineno">  468</span>            std::vector&lt;P&gt; vec;</div>
-<div class="line"><span class="lineno">  469</span>            vec.reserve(n);</div>
-<div class="line"><span class="lineno">  470</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  471</span>                vec.push_back(this-&gt;data[i]);</div>
-<div class="line"><span class="lineno">  472</span>            <span class="keywordflow">return</span> vec;</div>
-<div class="line"><span class="lineno">  473</span>        }</div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00463">463</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  464</span>        {</div>
+<div class="line"><span class="lineno">  465</span>            std::vector&lt;P&gt; vec;</div>
+<div class="line"><span class="lineno">  466</span>            vec.reserve(n);</div>
+<div class="line"><span class="lineno">  467</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  468</span>                vec.push_back(this-&gt;data[i]);</div>
+<div class="line"><span class="lineno">  469</span>            <span class="keywordflow">return</span> vec;</div>
+<div class="line"><span class="lineno">  470</span>        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -951,10 +951,10 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true, если векторы различаются, false в противном случае </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00330">330</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  331</span>        {</div>
-<div class="line"><span class="lineno">  332</span>            <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == y);</div>
-<div class="line"><span class="lineno">  333</span>        }<span class="comment">//operator!=(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00327">327</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  328</span>        {</div>
+<div class="line"><span class="lineno">  329</span>            <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == y);</div>
+<div class="line"><span class="lineno">  330</span>        }<span class="comment">//operator!=(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1049,13 +1049,13 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>результат умножения вектора на число, приведенный к соответствующему типу </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00273">273</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  274</span>        {</div>
-<div class="line"><span class="lineno">  275</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0] * c)&gt;::type, n&gt; res;</div>
-<div class="line"><span class="lineno">  276</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  277</span>                res[i] = c * this-&gt;data[i];</div>
-<div class="line"><span class="lineno">  278</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  279</span>        }<span class="comment">//operator*(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00270">270</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  271</span>        {</div>
+<div class="line"><span class="lineno">  272</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0] * c)&gt;::type, n&gt; res;</div>
+<div class="line"><span class="lineno">  273</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  274</span>                res[i] = c * this-&gt;data[i];</div>
+<div class="line"><span class="lineno">  275</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  276</span>        }<span class="comment">//operator*(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1142,10 +1142,10 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>константную ссылку на самого себя </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00301">301</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  302</span>        {</div>
-<div class="line"><span class="lineno">  303</span>            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  304</span>        }<span class="comment">//operator+()</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00298">298</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  299</span>        {</div>
+<div class="line"><span class="lineno">  300</span>            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  301</span>        }<span class="comment">//operator+()</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1282,13 +1282,13 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>противоположный вектор </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00287">287</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  288</span>        {</div>
-<div class="line"><span class="lineno">  289</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res;</div>
-<div class="line"><span class="lineno">  290</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  291</span>                res[i] = -this-&gt;data[i];</div>
-<div class="line"><span class="lineno">  292</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  293</span>        }<span class="comment">//operator-()</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00284">284</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  285</span>        {</div>
+<div class="line"><span class="lineno">  286</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res;</div>
+<div class="line"><span class="lineno">  287</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  288</span>                res[i] = -this-&gt;data[i];</div>
+<div class="line"><span class="lineno">  289</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  290</span>        }<span class="comment">//operator-()</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1336,12 +1336,9 @@ Protected Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  255</span>        {</div>
 <div class="line"><span class="lineno">  256</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(this-&gt;<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0] - y[0])&gt;::type, n&gt; res;</div>
 <div class="line"><span class="lineno">  257</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  258</span> </div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span> </div>
-<div class="line"><span class="lineno">  261</span>                res[i] = this-&gt;data[i] - y[i];</div>
-<div class="line"><span class="lineno">  262</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  263</span>        }<span class="comment">//operator-(...)</span></div>
+<div class="line"><span class="lineno">  258</span>                res[i] = this-&gt;data[i] - y[i];</div>
+<div class="line"><span class="lineno">  259</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  260</span>        }<span class="comment">//operator-(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1485,13 +1482,13 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true, если векторы одинаковые, false в противном случае </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00314">314</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  315</span>        {</div>
-<div class="line"><span class="lineno">  316</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  317</span>                <span class="keywordflow">if</span> (this-&gt;data[i] != y[i])</div>
-<div class="line"><span class="lineno">  318</span>                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  319</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  320</span>        }<span class="comment">//operator==(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00311">311</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  312</span>        {</div>
+<div class="line"><span class="lineno">  313</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  314</span>                <span class="keywordflow">if</span> (this-&gt;data[i] != y[i])</div>
+<div class="line"><span class="lineno">  315</span>                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  316</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  317</span>        }<span class="comment">//operator==(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1691,13 +1688,13 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>результирующий вектор </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00546">546</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  547</span>        {</div>
-<div class="line"><span class="lineno">  548</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res;</div>
-<div class="line"><span class="lineno">  549</span>            res = ((*<span class="keyword">this</span> &amp; v) / (v &amp; v))* v;</div>
-<div class="line"><span class="lineno">  550</span>            </div>
-<div class="line"><span class="lineno">  551</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  552</span>        }</div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00543">543</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  544</span>        {</div>
+<div class="line"><span class="lineno">  545</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res;</div>
+<div class="line"><span class="lineno">  546</span>            res = ((*<span class="keyword">this</span> &amp; v) / (v &amp; v))* v;</div>
+<div class="line"><span class="lineno">  547</span>            </div>
+<div class="line"><span class="lineno">  548</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  549</span>        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1790,25 +1787,25 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>вектор, полученный "вращением" исходного на k позиций влево </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00484">484</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  485</span>        {</div>
-<div class="line"><span class="lineno">  486</span>            <span class="keywordflow">if</span> (k &gt; n)</div>
-<div class="line"><span class="lineno">  487</span>                <span class="keywordflow">throw</span>;</div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00481">481</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  482</span>        {</div>
+<div class="line"><span class="lineno">  483</span>            <span class="keywordflow">if</span> (k &gt; n)</div>
+<div class="line"><span class="lineno">  484</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  485</span> </div>
+<div class="line"><span class="lineno">  486</span>            <span class="keywordflow">if</span> (k == n)</div>
+<div class="line"><span class="lineno">  487</span>                <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><span class="lineno">  488</span> </div>
-<div class="line"><span class="lineno">  489</span>            <span class="keywordflow">if</span> (k == n)</div>
-<div class="line"><span class="lineno">  490</span>                <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  491</span> </div>
-<div class="line"><span class="lineno">  492</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res;</div>
+<div class="line"><span class="lineno">  489</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res;</div>
+<div class="line"><span class="lineno">  490</span> </div>
+<div class="line"><span class="lineno">  491</span>            <span class="comment">//for (size_t i = 0; i &lt; n; ++i) </span></div>
+<div class="line"><span class="lineno">  492</span>            <span class="comment">//  res[i] = r[(i + k) % n];</span></div>
 <div class="line"><span class="lineno">  493</span> </div>
-<div class="line"><span class="lineno">  494</span>            <span class="comment">//for (size_t i = 0; i &lt; n; ++i) </span></div>
-<div class="line"><span class="lineno">  495</span>            <span class="comment">//  res[i] = r[(i + k) % n];</span></div>
-<div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n - k; ++i)</div>
-<div class="line"><span class="lineno">  498</span>                res[i] = this-&gt;data[i + k];</div>
-<div class="line"><span class="lineno">  499</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = n - k; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  500</span>                res[i] = this-&gt;data[i + k - n];</div>
-<div class="line"><span class="lineno">  501</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  502</span>        }<span class="comment">//rotateLeft(...)</span></div>
+<div class="line"><span class="lineno">  494</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n - k; ++i)</div>
+<div class="line"><span class="lineno">  495</span>                res[i] = this-&gt;data[i + k];</div>
+<div class="line"><span class="lineno">  496</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = n - k; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  497</span>                res[i] = this-&gt;data[i + k - n];</div>
+<div class="line"><span class="lineno">  498</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  499</span>        }<span class="comment">//rotateLeft(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1883,12 +1880,12 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ссылка на сам вектор </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00530">530</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  531</span>        {</div>
-<div class="line"><span class="lineno">  532</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  533</span>                this-&gt;data[i] = val;</div>
-<div class="line"><span class="lineno">  534</span>            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  535</span>        }</div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00527">527</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  528</span>        {</div>
+<div class="line"><span class="lineno">  529</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  530</span>                this-&gt;data[i] = val;</div>
+<div class="line"><span class="lineno">  531</span>            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  532</span>        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1933,11 +1930,11 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>вектор, коллинеарный исходному, заданной длины (по умолчанию 1.0)</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>для получения float-орта от вектора с компонентами типа float или целыми нужно явно указать параметр 1.0f </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00405">405</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  406</span>        {</div>
-<div class="line"><span class="lineno">  407</span>            <span class="keyword">auto</span> ilen = <span class="keyword">static_cast&lt;</span>decltype(this-<span class="keyword">&gt;</span><a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0] * newlen)&gt;(newlen / std::max(this-&gt;<a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>(), 1e-16));</div>
-<div class="line"><span class="lineno">  408</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span> * ilen);</div>
-<div class="line"><span class="lineno">  409</span>        }<span class="comment">//unit(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00402">402</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  403</span>        {</div>
+<div class="line"><span class="lineno">  404</span>            <span class="keyword">auto</span> ilen = <span class="keyword">static_cast&lt;</span>decltype(this-<span class="keyword">&gt;</span><a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>[0] * newlen)&gt;(newlen / std::max(this-&gt;<a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>(), 1e-16));</div>
+<div class="line"><span class="lineno">  405</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span> * ilen);</div>
+<div class="line"><span class="lineno">  406</span>        }<span class="comment">//unit(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>

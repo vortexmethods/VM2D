@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['r_0',['r',['../d2/d1b/struct_b_h_1_1_t_particle_code.html#a6746a06c147f947a14a3f58d1bd2e779',1,'BH::TParticleCode::r'],['../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2',1,'VMlib::Vortex2D::r()'],['../d0/de1/class_v_mlib_1_1_vortex2_d.html#adf59f23cadf61dfadd9e36d4cf0181a5',1,'VMlib::Vortex2D::r() const'],['../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf',1,'VM2D::Beam::R']]],
+  ['r_0',['r',['../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2',1,'VMlib::Vortex2D::r()'],['../d0/de1/class_v_mlib_1_1_vortex2_d.html#adf59f23cadf61dfadd9e36d4cf0181a5',1,'VMlib::Vortex2D::r() const'],['../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf',1,'VM2D::Beam::R'],['../d2/d1b/struct_b_h_1_1_t_particle_code.html#a6746a06c147f947a14a3f58d1bd2e779',1,'BH::TParticleCode::r']]],
   ['r_5f_1',['r_',['../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca',1,'VM2D::AirfoilGeometry']]],
   ['radiuses_2',['radiuses',['../df/db0/gamma_circ_8h.html#a20bd3240ebe02f2925ff20ea982c3218',1,'gammaCirc.h']]],
   ['radixsortinternalcells_3',['RadixSortInternalCells',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a78f004b18b648fb3b2571a209873dcd3',1,'VM2D::CpuTreeInfo']]],

@@ -12,10 +12,12 @@ var searchData=
   ['sol_9',['sol',['../d3/d00/class_v_m2_d_1_1_world2_d.html#ae8960ea914ba2b339c4c32dfadff1bf2',1,'VM2D::World2D']]],
   ['solving_10',['solving',['../d1/d71/class_v_mlib_1_1_queue.html#a52cf0db343ae78cdef81978395b8add9',1,'VMlib::Queue']]],
   ['source_11',['source',['../d3/d00/class_v_m2_d_1_1_world2_d.html#a5dc4f1e8dcba2de5c6e687fe15d381b8',1,'VM2D::World2D']]],
-  ['start_5f_12',['start_',['../d9/d54/class_v_mlib_1_1vm_timer.html#a1e075be1dee287fc09737fd179e09414',1,'VMlib::vmTimer']]],
-  ['startendkvant_13',['startEndKvant',['../d7/db3/class_v_mlib_1_1_task.html#a2b37e85d28d8d1ad14d86da06a04c464',1,'VMlib::Task']]],
-  ['state_14',['state',['../d7/db3/class_v_mlib_1_1_task.html#aec86b80b9283020ad2dc2fd8158caccf',1,'VMlib::Task']]],
-  ['stop_5f_15',['stop_',['../d9/d54/class_v_mlib_1_1vm_timer.html#a7d66c4223f8cb83b1a6490f51036e83c',1,'VMlib::vmTimer']]],
-  ['strongcoupling_16',['strongCoupling',['../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a20f9a2a116613f4f4ea545050e3aa96a',1,'VM2D::MechanicsRigidOscillPart']]],
-  ['switchers_17',['switchers',['../db/d04/class_v_mlib_1_1_stream_parser.html#a15900948d93c65f3f2e354589586722c',1,'VMlib::StreamParser']]]
+  ['sstr_12',['sstr',['../d6/db8/class_v_m2_d_1_1_measure_v_p.html#afa5a34d5b4656e5ac871bcbcd5a64f8c',1,'VM2D::MeasureVP']]],
+  ['sstrcounter_13',['sstrCounter',['../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad77a560fd136c0c621a7a43a610008c5',1,'VM2D::MeasureVP']]],
+  ['start_5f_14',['start_',['../d9/d54/class_v_mlib_1_1vm_timer.html#a1e075be1dee287fc09737fd179e09414',1,'VMlib::vmTimer']]],
+  ['startendkvant_15',['startEndKvant',['../d7/db3/class_v_mlib_1_1_task.html#a2b37e85d28d8d1ad14d86da06a04c464',1,'VMlib::Task']]],
+  ['state_16',['state',['../d7/db3/class_v_mlib_1_1_task.html#aec86b80b9283020ad2dc2fd8158caccf',1,'VMlib::Task']]],
+  ['stop_5f_17',['stop_',['../d9/d54/class_v_mlib_1_1vm_timer.html#a7d66c4223f8cb83b1a6490f51036e83c',1,'VMlib::vmTimer']]],
+  ['strongcoupling_18',['strongCoupling',['../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a20f9a2a116613f4f4ea545050e3aa96a',1,'VM2D::MechanicsRigidOscillPart']]],
+  ['switchers_19',['switchers',['../db/d04/class_v_mlib_1_1_stream_parser.html#a15900948d93c65f3f2e354589586722c',1,'VMlib::StreamParser']]]
 ];

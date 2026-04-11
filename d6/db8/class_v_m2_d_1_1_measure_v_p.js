@@ -19,6 +19,8 @@ var class_v_m2_d_1_1_measure_v_p =
     [ "historyPoints", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a291467cf1c4ac178bbf9d165d4fbe92e", null ],
     [ "initialPoints", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a03282398d9ce85985959254e354441d0", null ],
     [ "pressure", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a190e430f5999ec09e897ca405ab37bfc", null ],
+    [ "sstr", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#afa5a34d5b4656e5ac871bcbcd5a64f8c", null ],
+    [ "sstrCounter", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad77a560fd136c0c621a7a43a610008c5", null ],
     [ "velocity", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#af4ea2481e596c4605c52720cfa52a3a9", null ],
     [ "W", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a26af4e1561205b280786d41cb1f10ab6", null ],
     [ "wakeVP", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4", null ]
