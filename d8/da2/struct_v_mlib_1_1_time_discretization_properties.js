@@ -1,5 +1,6 @@
 var struct_v_mlib_1_1_time_discretization_properties =
 [
+    [ "TimeDiscretizationProperties", "d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#afe1c9a84989820ffc6fe1840617aa286", null ],
     [ "dt", "d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a245aa18283d8094ec213b464a3acfcac", null ],
     [ "fileTypeVP", "d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#af45a1dfecd7cdc74f42f64c90e956c81", null ],
     [ "fileTypeVtx", "d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a49663fe2a37ce64969bd7a4e9dd4ae9a", null ],

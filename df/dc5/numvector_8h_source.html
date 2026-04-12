@@ -543,7 +543,7 @@ $(document).ready(function(){initNavTree('df/dc5/numvector_8h_source.html','../.
 </div>
 <div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span> </div>
 <div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span> </div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aac6fee51fcadd02b1f41f23b491b5bfd">  579</a></span>        <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aac6fee51fcadd02b1f41f23b491b5bfd">numvector</a>() { };</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab75a0adba8f83f46f694f8d54ce57898">  579</a></span>        <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab75a0adba8f83f46f694f8d54ce57898">numvector</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span> </div>
 <div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span> </div>
 <div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> P&gt;</div>
@@ -577,480 +577,501 @@ $(document).ready(function(){initNavTree('df/dc5/numvector_8h_source.html','../.
 </div>
 <div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span> </div>
 <div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span> </div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> P&gt;</div>
-<div class="foldopen" id="foldopen00629" data-start="{" data-end="}">
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a58996df337bb277546a5360a4e645bfa">  629</a></span>        <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a58996df337bb277546a5360a4e645bfa">numvector</a>(<span class="keyword">const</span> std::vector&lt;P&gt;&amp; vec)</div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>        {</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>            <span class="keywordflow">if</span> (vec.size() != n)</div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>                this-&gt;data[i] = vec[i];</div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>        }<span class="comment">//numvector(...)</span></div>
+<div class="foldopen" id="foldopen00626" data-start="{" data-end="}">
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab258559a8668b56b9cc4192308c3eac8">  626</a></span>        <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T,n&gt;</a>&amp; <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab258559a8668b56b9cc4192308c3eac8">operator=</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; vec)</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>        {</div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>            <span class="comment">//for (size_t i = 0; i &lt; n; ++i)</span></div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>            <span class="comment">//  r[i] = vec[i];</span></div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>            memcpy(this-&gt;data, vec.<a class="code hl_variable" href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">data</a>, n * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>        }<span class="comment">//numvector(...)</span></div>
 </div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span> </div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span> </div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span><span class="preprocessor">#if !defined(__CUDACC__)</span></div>
-<div class="foldopen" id="foldopen00645" data-start="{" data-end="}">
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a73ad1455b1b5d0669e86c5422620f60a">  645</a></span>        <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a73ad1455b1b5d0669e86c5422620f60a">numvector</a>(<span class="keyword">const</span> std::initializer_list&lt;T&gt;&amp; z)</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>        {</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>            <span class="keywordflow">if</span> (z.size() != n)</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>                this-&gt;data[i] = *(z.begin() + i);</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>        }<span class="comment">//numvector(...)</span></div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span> </div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span> </div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> P&gt;</div>
+<div class="foldopen" id="foldopen00641" data-start="{" data-end="}">
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab35092bdffe333acc71afe79232aa658">  641</a></span>        <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T,n&gt;</a> <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab35092bdffe333acc71afe79232aa658">operator=</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&amp; vec)</div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>        {</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>                this-&gt;data[i] = vec[i];</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>        }<span class="comment">//numvector(...)</span></div>
 </div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span> </div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span> </div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> P&gt;</div>
-<div class="foldopen" id="foldopen00662" data-start="{" data-end="}">
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6ed51497ecd90d422b33d886000a72d4">  662</a></span>        <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6ed51497ecd90d422b33d886000a72d4">numvector</a>(<span class="keyword">const</span> std::initializer_list&lt;P&gt;&amp; z)</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        {</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>            <span class="keywordflow">if</span> (z.size() != n)</div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>                this-&gt;data[i] = *(z.begin() + i);</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>        }<span class="comment">//numvector(...)</span></div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span> </div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span> </div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> P&gt;</div>
+<div class="foldopen" id="foldopen00656" data-start="{" data-end="}">
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a58996df337bb277546a5360a4e645bfa">  656</a></span>        <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a58996df337bb277546a5360a4e645bfa">numvector</a>(<span class="keyword">const</span> std::vector&lt;P&gt;&amp; vec)</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>        {</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>            <span class="keywordflow">if</span> (vec.size() != n)</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>                this-&gt;data[i] = vec[i];</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>        }<span class="comment">//numvector(...)</span></div>
 </div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span><span class="preprocessor">#endif </span></div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span> </div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span> </div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> p&gt;</div>
-<div class="foldopen" id="foldopen00682" data-start="{" data-end="}">
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab0ddf4d94ec38daf910240bcc60a7f2a">  682</a></span>        <span class="keyword">explicit</span> <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab0ddf4d94ec38daf910240bcc60a7f2a">numvector</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, p&gt;</a>&amp; vec, T add = 0)</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>        {</div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>            <span class="keywordtype">size_t</span> minPN = (p &lt; n) ? p : n;</div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; minPN; ++i)</div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>                this-&gt;data[i] = vec[i];</div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = minPN; i &lt; n; ++i)</div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>                this-&gt;data[i] = add;</div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>        }<span class="comment">//numvector(...)   </span></div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span> </div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span> </div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span><span class="preprocessor">#if !defined(__CUDACC__)</span></div>
+<div class="foldopen" id="foldopen00672" data-start="{" data-end="}">
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a73ad1455b1b5d0669e86c5422620f60a">  672</a></span>        <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a73ad1455b1b5d0669e86c5422620f60a">numvector</a>(<span class="keyword">const</span> std::initializer_list&lt;T&gt;&amp; z)</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>        {</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>            <span class="keywordflow">if</span> (z.size() != n)</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>                this-&gt;data[i] = *(z.begin() + i);</div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        }<span class="comment">//numvector(...)</span></div>
 </div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> </div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span> </div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span><span class="comment">//      ////////////////////////////////////////////////////////////////////////////</span></div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span><span class="comment">//      //// Далее deprecate-функции для ПОЛНОЙ СОВМЕСТИМОСТИ со старой версией ////</span></div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span><span class="comment">//      ////                             --------------------                   ////</span></div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span><span class="comment">//      ////////////////////////////////////////////////////////////////////////////</span></div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span><span class="comment">//</span></div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span><span class="comment">//      /// \brief Оператор присваивания всем компонентам вектора одного и того же числа</span></div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span><span class="comment">//      DEPRECATED numvector&lt;T, n&gt;&amp; operator=(double c)</span></div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span><span class="comment">//      {</span></div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span><span class="comment">//          toZero(c);</span></div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span><span class="comment">//          return *this;           </span></div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span><span class="comment">//      }//operator(...)</span></div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span> </div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span> </div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span><span class="comment">//      /// \brief Построение множества std::set на основе вектора</span></div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span><span class="comment">//      ///</span></div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span><span class="comment">//      /// \return множество типа std::set, состоящее из тех же элементов, что исходный вектор</span></div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span><span class="comment">//      DEPRECATED std::set&lt;T&gt; toSet() const</span></div>
-<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span><span class="comment">//      {</span></div>
-<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span><span class="comment">//          //(deprecate: use implicit type conversion)</span></div>
-<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span><span class="comment">//</span></div>
-<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span><span class="comment">//          std::set&lt;T&gt; newset;</span></div>
-<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span><span class="comment">//          for (size_t i = 0; i &lt; n; ++i)</span></div>
-<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span><span class="comment">//              newset.insert(this-&gt;data[i]);</span></div>
-<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span><span class="comment">//          return newset;</span></div>
-<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span><span class="comment">//      }//toSet()</span></div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span> </div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span> </div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span> </div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> P&gt;</div>
+<div class="foldopen" id="foldopen00689" data-start="{" data-end="}">
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6ed51497ecd90d422b33d886000a72d4">  689</a></span>        <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6ed51497ecd90d422b33d886000a72d4">numvector</a>(<span class="keyword">const</span> std::initializer_list&lt;P&gt;&amp; z)</div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>        {</div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>            <span class="keywordflow">if</span> (z.size() != n)</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>                this-&gt;data[i] = *(z.begin() + i);</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>        }<span class="comment">//numvector(...)</span></div>
+</div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span><span class="preprocessor">#endif </span></div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span> </div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span> </div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> p&gt;</div>
+<div class="foldopen" id="foldopen00709" data-start="{" data-end="}">
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno"><a class="line" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab0ddf4d94ec38daf910240bcc60a7f2a">  709</a></span>        <span class="keyword">explicit</span> <a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab0ddf4d94ec38daf910240bcc60a7f2a">numvector</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, p&gt;</a>&amp; vec, T add = 0)</div>
+<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>        {</div>
+<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>            <span class="keywordtype">size_t</span> minPN = (p &lt; n) ? p : n;</div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; minPN; ++i)</div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>                this-&gt;data[i] = vec[i];</div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = minPN; i &lt; n; ++i)</div>
+<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>                this-&gt;data[i] = add;</div>
+<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>        }<span class="comment">//numvector(...)   </span></div>
+</div>
 <div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span> </div>
 <div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span> </div>
-<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span><span class="comment">//      /// \brief Построение вектора std::vector на основе вектора</span></div>
-<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span><span class="comment">//      ///</span></div>
-<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span><span class="comment">//      /// \return вектор типа std::vector, состоящий из тех же элементов, что исходный вектор</span></div>
-<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span><span class="comment">//      DEPRECATED std::vector&lt;T&gt; toVector() const</span></div>
-<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span><span class="comment">//      {</span></div>
-<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span><span class="comment">//          //(deprecate: use implicit type conversion)</span></div>
-<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span><span class="comment">//</span></div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span><span class="comment">//          std::vector&lt;T&gt; vec;</span></div>
-<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span><span class="comment">//          vec.reserve(n);</span></div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span><span class="comment">//          for (size_t i = 0; i &lt; n; ++i)</span></div>
-<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span><span class="comment">//              vec.push_back(this-&gt;data[i]);</span></div>
-<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span><span class="comment">//          return vec;</span></div>
-<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span><span class="comment">//      }</span></div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span> </div>
-<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>    }; <span class="comment">//class numvector</span></div>
-</div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span> </div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span><span class="comment">//    /// \todo Исследовать целесообразность наличия нешаблонного умножения</span></div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span><span class="comment">//  inline numvector&lt;double, 3&gt; operator*(double c, const numvector&lt;double, 3&gt;&amp; x)</span></div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span><span class="comment">//      numvector&lt;double, 3&gt; res(x);</span></div>
-<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span><span class="comment">//      for (size_t i = 0; i &lt; 3; ++i)</span></div>
-<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span><span class="comment">//          res[i] *= c;</span></div>
-<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span><span class="comment">//      return res;</span></div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span><span class="comment">//  }//operator*(...)</span></div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>    </div>
-<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00752" data-start="{" data-end="}">
-<div class="line"><a id="l00752" name="l00752"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">  752</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">operator*</a>(<span class="keywordtype">double</span> c, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x)</div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>    {</div>
-<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res(x);</div>
-<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>            res[i] *= c;</div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>    }<span class="comment">//operator*(...)</span></div>
-</div>
+<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span><span class="comment">//      ////////////////////////////////////////////////////////////////////////////</span></div>
+<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span><span class="comment">//      //// Далее deprecate-функции для ПОЛНОЙ СОВМЕСТИМОСТИ со старой версией ////</span></div>
+<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span><span class="comment">//      ////                             --------------------                   ////</span></div>
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span><span class="comment">//      ////////////////////////////////////////////////////////////////////////////</span></div>
+<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span><span class="comment">//</span></div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span><span class="comment">//      /// \brief Оператор присваивания всем компонентам вектора одного и того же числа</span></div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span><span class="comment">//      DEPRECATED numvector&lt;T, n&gt;&amp; operator=(double c)</span></div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span><span class="comment">//      {</span></div>
+<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span><span class="comment">//          toZero(c);</span></div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span><span class="comment">//          return *this;           </span></div>
+<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span><span class="comment">//      }//operator(...)</span></div>
+<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span> </div>
+<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span> </div>
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span><span class="comment">//      /// \brief Построение множества std::set на основе вектора</span></div>
+<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span><span class="comment">//      ///</span></div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span><span class="comment">//      /// \return множество типа std::set, состоящее из тех же элементов, что исходный вектор</span></div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span><span class="comment">//      DEPRECATED std::set&lt;T&gt; toSet() const</span></div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span><span class="comment">//      {</span></div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span><span class="comment">//          //(deprecate: use implicit type conversion)</span></div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span><span class="comment">//</span></div>
+<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span><span class="comment">//          std::set&lt;T&gt; newset;</span></div>
+<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span><span class="comment">//          for (size_t i = 0; i &lt; n; ++i)</span></div>
+<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span><span class="comment">//              newset.insert(this-&gt;data[i]);</span></div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span><span class="comment">//          return newset;</span></div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span><span class="comment">//      }//toSet()</span></div>
+<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span> </div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span> </div>
+<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span><span class="comment">//      /// \brief Построение вектора std::vector на основе вектора</span></div>
+<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span><span class="comment">//      ///</span></div>
+<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span><span class="comment">//      /// \return вектор типа std::vector, состоящий из тех же элементов, что исходный вектор</span></div>
+<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span><span class="comment">//      DEPRECATED std::vector&lt;T&gt; toVector() const</span></div>
+<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span><span class="comment">//      {</span></div>
+<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span><span class="comment">//          //(deprecate: use implicit type conversion)</span></div>
+<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span><span class="comment">//</span></div>
+<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span><span class="comment">//          std::vector&lt;T&gt; vec;</span></div>
+<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span><span class="comment">//          vec.reserve(n);</span></div>
+<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span><span class="comment">//          for (size_t i = 0; i &lt; n; ++i)</span></div>
+<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span><span class="comment">//              vec.push_back(this-&gt;data[i]);</span></div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span><span class="comment">//          return vec;</span></div>
+<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span><span class="comment">//      }</span></div>
 <div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span> </div>
-<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span> </div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00770" data-start="{" data-end="}">
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#ac451c50d43bdea409356df0c0a7f23cc">  770</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">operator*</a>(<span class="keyword">const</span> P c, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x) -&gt; <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * c)&gt;::type, n&gt;</div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>    {</div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * c)&gt;::type, n&gt; res;</div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>            res[i] = x[i] * c;</div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>    }<span class="comment">//operator*(...)</span></div>
+<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>    }; <span class="comment">//class numvector</span></div>
 </div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span> </div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span> </div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span><span class="preprocessor">#if !defined(__CUDACC__)</span></div>
-<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R&gt;</div>
-<div class="foldopen" id="foldopen00792" data-start="{" data-end="}">
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a383c34d2eb873d8868313324a391638b">  792</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a383c34d2eb873d8868313324a391638b">cross</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, 3&gt;</a>&amp; x, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, 3&gt;</a>&amp; y, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, 3&gt;</a>&amp; z)</div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>    {</div>
-<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>        z = { x[1] * y[2] - x[2] * y[1], x[2] * y[0] - x[0] * y[2], x[0] * y[1] - x[1] * y[0] };</div>
-<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>    }<span class="comment">//cross(...)</span></div>
+<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span> </div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span><span class="comment">//    /// \todo Исследовать целесообразность наличия нешаблонного умножения</span></div>
+<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span><span class="comment">//  inline numvector&lt;double, 3&gt; operator*(double c, const numvector&lt;double, 3&gt;&amp; x)</span></div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span><span class="comment">//      numvector&lt;double, 3&gt; res(x);</span></div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span><span class="comment">//      for (size_t i = 0; i &lt; 3; ++i)</span></div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span><span class="comment">//          res[i] *= c;</span></div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span><span class="comment">//      return res;</span></div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>    </div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00779" data-start="{" data-end="}">
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">  779</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">operator*</a>(<span class="keywordtype">double</span> c, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x)</div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>    {</div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res(x);</div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>            res[i] *= c;</div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>    }<span class="comment">//operator*(...)</span></div>
 </div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span> </div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span> </div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00808" data-start="{" data-end="}">
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#ac194ed285a79bbaf94d6215ca77cca27">  808</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac194ed285a79bbaf94d6215ca77cca27">dist2</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&amp; y) -&gt; <span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] - y[0])&gt;::type</div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>    {</div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] - y[0])&gt;::type, n&gt; p = x - y;</div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>        <span class="keywordflow">return</span> p.<a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>();</div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>    }<span class="comment">//dist2(...)</span></div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span> </div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span> </div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00797" data-start="{" data-end="}">
+<div class="line"><a id="l00797" name="l00797"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#ac451c50d43bdea409356df0c0a7f23cc">  797</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">operator*</a>(<span class="keyword">const</span> P c, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x) -&gt; <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * c)&gt;::type, n&gt;</div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>    {</div>
+<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * c)&gt;::type, n&gt; res;</div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>            res[i] = x[i] * c;</div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>    }<span class="comment">//operator*(...)</span></div>
 </div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span> </div>
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span> </div>
-<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> R = <span class="keywordtype">double</span>, <span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00824" data-start="{" data-end="}">
-<div class="line"><a id="l00824" name="l00824"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">  824</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> R <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&amp; y)</div>
-<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span>    {</div>
-<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, n&gt;</a> p = x - y;</div>
-<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>        <span class="keywordflow">return</span> sqrt(p&amp;p);</div>
-<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>    }<span class="comment">//dist(...)</span></div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span> </div>
+<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span> </div>
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span><span class="preprocessor">#if !defined(__CUDACC__)</span></div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R&gt;</div>
+<div class="foldopen" id="foldopen00819" data-start="{" data-end="}">
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a383c34d2eb873d8868313324a391638b">  819</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a383c34d2eb873d8868313324a391638b">cross</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, 3&gt;</a>&amp; x, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, 3&gt;</a>&amp; y, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, 3&gt;</a>&amp; z)</div>
+<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>    {</div>
+<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>        z = { x[1] * y[2] - x[2] * y[1], x[2] * y[0] - x[0] * y[2], x[0] * y[1] - x[1] * y[0] };</div>
+<div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>    }<span class="comment">//cross(...)</span></div>
 </div>
-<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span> </div>
-<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span> </div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00841" data-start="{" data-end="}">
-<div class="line"><a id="l00841" name="l00841"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a7a06314fdf9bf93cefb656b5608ee6bc">  841</a></span>    std::ostream&amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae63b5bf595336705f7aac6c8eb2bbb37">operator&lt;&lt; </a>(std::ostream&amp; str, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x)</div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>    {</div>
-<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span>;</div>
-<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n - 1; ++j)</div>
-<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>            str &lt;&lt; x[j] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>        str &lt;&lt; x[n - 1];</div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>        str &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
-<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>        <span class="keywordflow">return</span> str;</div>
-<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
+<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span> </div>
+<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span> </div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00835" data-start="{" data-end="}">
+<div class="line"><a id="l00835" name="l00835"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#ac194ed285a79bbaf94d6215ca77cca27">  835</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac194ed285a79bbaf94d6215ca77cca27">dist2</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&amp; y) -&gt; <span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] - y[0])&gt;::type</div>
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>    {</div>
+<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] - y[0])&gt;::type, n&gt; p = x - y;</div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>        <span class="keywordflow">return</span> p.<a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>();</div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>    }<span class="comment">//dist2(...)</span></div>
 </div>
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span> </div>
-<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span> </div>
-<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span> </div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span> </div>
+<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span> </div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> R = <span class="keywordtype">double</span>, <span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00851" data-start="{" data-end="}">
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">  851</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> R <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&amp; y)</div>
+<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>    {</div>
+<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, n&gt;</a> p = x - y;</div>
+<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>        <span class="keywordflow">return</span> sqrt(p&amp;p);</div>
+<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>    }<span class="comment">//dist(...)</span></div>
+</div>
 <div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span> </div>
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keyword">typename</span> S, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span> </div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> n&gt;</div>
 <div class="foldopen" id="foldopen00868" data-start="{" data-end="}">
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a56a4ceec6f36727b6f748f6b8cc65423">  868</a></span>    <span class="keyword">inline</span> std::pair&lt;numvector&lt;T, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a56a4ceec6f36727b6f748f6b8cc65423">operator+=</a>(std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a, <span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;S, n&gt;</a>&gt;&amp; b)</div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a7a06314fdf9bf93cefb656b5608ee6bc">  868</a></span>    std::ostream&amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae63b5bf595336705f7aac6c8eb2bbb37">operator&lt;&lt; </a>(std::ostream&amp; str, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x)</div>
 <div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>    {</div>
-<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>        a.first += b.first;</div>
-<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>        a.second += b.second;</div>
-<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>        <span class="keywordflow">return</span> a;</div>
-<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>    }<span class="comment">//operator+=(...)</span></div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span>;</div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n - 1; ++j)</div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>            str &lt;&lt; x[j] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>        str &lt;&lt; x[n - 1];</div>
+<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>        str &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>        <span class="keywordflow">return</span> str;</div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
 </div>
-<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span> </div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span> </div>
-<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keyword">typename</span> S, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00887" data-start="{" data-end="}">
-<div class="line"><a id="l00887" name="l00887"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a51a30b73860af2f5d7fe5b8755105818">  887</a></span>    <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a51a30b73860af2f5d7fe5b8755105818">operator+</a>(<span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a, <span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;S, n&gt;</a>&gt;&amp; b) -&gt; \</div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.first[0] + b.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.second[0] + b.second[0])&gt;::type, n &gt;&gt;</div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>    {</div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.first[0] + b.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.second[0] + b.second[0])&gt;::type, n &gt;&gt; res;</div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>        res.first = a.first + b.first;</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>        res.second = a.second + b.second;</div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>    }<span class="comment">//operator+(...)</span></div>
+<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span> </div>
+<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span> </div>
+<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span> </div>
+<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span> </div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keyword">typename</span> S, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00895" data-start="{" data-end="}">
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a56a4ceec6f36727b6f748f6b8cc65423">  895</a></span>    <span class="keyword">inline</span> std::pair&lt;numvector&lt;T, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a56a4ceec6f36727b6f748f6b8cc65423">operator+=</a>(std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a, <span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;S, n&gt;</a>&gt;&amp; b)</div>
+<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>    {</div>
+<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>        a.first += b.first;</div>
+<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>        a.second += b.second;</div>
+<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>        <span class="keywordflow">return</span> a;</div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>    }<span class="comment">//operator+=(...)</span></div>
 </div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span> </div>
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span> </div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00907" data-start="{" data-end="}">
-<div class="line"><a id="l00907" name="l00907"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a0a39d4ffe9dd85c21bb2940929d90c4f">  907</a></span>    <span class="keyword">inline</span> std::pair&lt;numvector&lt;T, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a0a39d4ffe9dd85c21bb2940929d90c4f">operator*=</a>(std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a, R c)</div>
-<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>    {</div>
-<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>        a.first *= c;</div>
-<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>        a.second *= c;</div>
-<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>        <span class="keywordflow">return</span> a;</div>
-<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>    }<span class="comment">//operator*=(...)</span></div>
+<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span> </div>
+<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span> </div>
+<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keyword">typename</span> S, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00914" data-start="{" data-end="}">
+<div class="line"><a id="l00914" name="l00914"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a51a30b73860af2f5d7fe5b8755105818">  914</a></span>    <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a51a30b73860af2f5d7fe5b8755105818">operator+</a>(<span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a, <span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;S, n&gt;</a>&gt;&amp; b) -&gt; \</div>
+<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.first[0] + b.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.second[0] + b.second[0])&gt;::type, n &gt;&gt;</div>
+<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>    {</div>
+<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.first[0] + b.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.second[0] + b.second[0])&gt;::type, n &gt;&gt; res;</div>
+<div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span>        res.first = a.first + b.first;</div>
+<div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span>        res.second = a.second + b.second;</div>
+<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>    }<span class="comment">//operator+(...)</span></div>
 </div>
-<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span> </div>
-<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span> </div>
-<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00925" data-start="{" data-end="}">
-<div class="line"><a id="l00925" name="l00925"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a819d501d04bff1cc7c430d7379a4a2c4">  925</a></span>    <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">operator*</a>(R c, <span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a) -&gt; \</div>
-<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.second[0])&gt;::type, n &gt;&gt;</div>
-<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>    {</div>
-<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.second[0])&gt;::type, n &gt;&gt; res;</div>
-<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>        res.first = c * a.first;</div>
-<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>        res.second = c * a.second;</div>
-<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span>    }<span class="comment">//operator*(...)</span></div>
+<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span> </div>
+<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span> </div>
+<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00934" data-start="{" data-end="}">
+<div class="line"><a id="l00934" name="l00934"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a0a39d4ffe9dd85c21bb2940929d90c4f">  934</a></span>    <span class="keyword">inline</span> std::pair&lt;numvector&lt;T, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a0a39d4ffe9dd85c21bb2940929d90c4f">operator*=</a>(std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a, R c)</div>
+<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>    {</div>
+<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span>        a.first *= c;</div>
+<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>        a.second *= c;</div>
+<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span>        <span class="keywordflow">return</span> a;</div>
+<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>    }<span class="comment">//operator*=(...)</span></div>
 </div>
-<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span> </div>
-<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span> </div>
-<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00945" data-start="{" data-end="}">
-<div class="line"><a id="l00945" name="l00945"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a4c0bdf47ee3637d2f1b56162fa00b425">  945</a></span>    <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">operator*</a>(<span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a, R c) -&gt; \</div>
-<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.first[0] * c)&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.second[0] * c)&gt;::type, n &gt;&gt;</div>
-<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>    {</div>
-<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>        <span class="keywordflow">return</span> c * a;</div>
-<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>    }<span class="comment">//operator*(...)</span></div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span> </div>
+<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span> </div>
+<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00952" data-start="{" data-end="}">
+<div class="line"><a id="l00952" name="l00952"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a819d501d04bff1cc7c430d7379a4a2c4">  952</a></span>    <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">operator*</a>(R c, <span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a) -&gt; \</div>
+<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.second[0])&gt;::type, n &gt;&gt;</div>
+<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>    {</div>
+<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.second[0])&gt;::type, n &gt;&gt; res;</div>
+<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>        res.first = c * a.first;</div>
+<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>        res.second = c * a.second;</div>
+<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>    }<span class="comment">//operator*(...)</span></div>
 </div>
-<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span> </div>
-<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span> </div>
-<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen00963" data-start="{" data-end="}">
-<div class="line"><a id="l00963" name="l00963"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#af539a4b46101a242e8828ea1a70aa4fd">  963</a></span>    std::ostream&amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae63b5bf595336705f7aac6c8eb2bbb37">operator&lt;&lt; </a>(std::ostream&amp; str, <span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; x)</div>
-<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    {</div>
-<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span> &lt;&lt; x.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; x.second &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
-<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>        <span class="keywordflow">return</span> str;</div>
-<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>    }<span class="comment">//operator&lt;&lt;</span></div>
+<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span> </div>
+<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span> </div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keyword">typename</span> R, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00972" data-start="{" data-end="}">
+<div class="line"><a id="l00972" name="l00972"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a4c0bdf47ee3637d2f1b56162fa00b425">  972</a></span>    <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">operator*</a>(<span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; a, R c) -&gt; \</div>
+<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.first[0] * c)&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.second[0] * c)&gt;::type, n &gt;&gt;</div>
+<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>    {</div>
+<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>        <span class="keywordflow">return</span> c * a;</div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>    }<span class="comment">//operator*(...)</span></div>
 </div>
-<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span> </div>
-<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span> </div>
-<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>    <span class="comment">// Далее deprecate-функции для ПОЛНОЙ СОВМЕСТИМОСТИ со старой версией //</span></div>
-<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>    <span class="comment">//                             --------------------                   //</span></div>
-<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span> </div>
-<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span><span class="comment">//  /// \brief Умножение квадратной матрицы на вектор (без приведения типов)</span></div>
-<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span><span class="comment">//  ///</span></div>
-<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span><span class="comment">//  /// \tparam T тип данных компонент матрицы и вектора</span></div>
-<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span><span class="comment">//  /// \tparam n размерность матрицы и вектора</span></div>
-<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span><span class="comment">//  /// \param[in] A константная ссылка на матрицу</span></div>
-<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span><span class="comment">//  /// \param[in] x константная ссылка на вектор</span></div>
-<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span><span class="comment">//  /// \return вектор результат умножения матрицы на вектор</span></div>
-<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
-<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span><span class="comment">//  DEPRECATED inline numvector&lt;T, n&gt; dot(const numvector&lt;numvector&lt;T, n&gt;, n&gt;&amp; A, const numvector&lt;T, n&gt;&amp; x)</span></div>
-<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span><span class="comment">//      //deprecate: use nummatrix.operator&amp; instead of dot(numvector&lt;numvector&lt;&gt;&gt;, numvector&lt;&gt;)</span></div>
-<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span><span class="comment">//</span></div>
-<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span><span class="comment">//      numvector&lt;T, n&gt; res;</span></div>
-<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
-<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span><span class="comment">//          res[i] = A[i] &amp; x;</span></div>
-<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span><span class="comment">//      return res;</span></div>
-<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span><span class="comment">//  }//dot(...)</span></div>
-<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span> </div>
-<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span> </div>
-<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span><span class="comment">//  /// \brief Умножение вектора на квадратную матрицу (без приведения типов)</span></div>
-<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span><span class="comment">//  ///</span></div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span><span class="comment">//  /// \tparam T тип данных компонент матрицы и вектора</span></div>
-<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span><span class="comment">//  /// \tparam n размерность матрицы и вектора</span></div>
-<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span><span class="comment">//  /// \param[in] A константная ссылка на матрицу</span></div>
-<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span><span class="comment">//  /// \param[in] x константная ссылка на вектор</span></div>
-<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span><span class="comment">//  /// \return вектор результат умножения матрицы на вектор</span></div>
-<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
-<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span><span class="comment">//  DEPRECATED inline numvector&lt;T, n&gt; dot(const numvector&lt;T, n&gt;&amp; x, const numvector&lt;numvector&lt;T, n&gt;, n&gt;&amp; A)</span></div>
-<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span><span class="comment">//      //deprecate: use operator&amp;(numvector&lt;&gt;, nummatrix&lt;&gt;) instead of dot(numvector&lt;&gt;, numvector&lt;numvector&lt;&gt;&gt;)</span></div>
-<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span><span class="comment">//</span></div>
-<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span><span class="comment">//      numvector&lt;T, n&gt; res;</span></div>
-<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span><span class="comment">//      {</span></div>
-<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span><span class="comment">//          res[i] = 0.0;</span></div>
-<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span><span class="comment">//          for (size_t j = 0; j &lt; n; ++j)</span></div>
-<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span><span class="comment">//              res[i] += x[j] * A[j][i];</span></div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span><span class="comment">//      }</span></div>
-<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span><span class="comment">//      return res;</span></div>
-<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span><span class="comment">//  }//dot(...)</span></div>
-<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span> </div>
-<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span> </div>
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span><span class="comment">//  /// \brief Умножение квадратной матрицы на вектор</span></div>
-<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span><span class="comment">//  ///</span></div>
-<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span><span class="comment">//  /// \tparam T тип данных вектора и матрицы</span></div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span><span class="comment">//  /// \tparam n длина вектора и размерность матрицы</span></div>
-<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span><span class="comment">//  /// \param[in] A константная ссылка на матрицу</span></div>
-<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span><span class="comment">//  /// \param[in] x константная ссылка на вектор</span></div>
-<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span><span class="comment">//  /// \return вектор --- результат умножения матрицы на вектор</span></div>
-<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
-<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span><span class="comment">//  DEPRECATED inline numvector&lt;T, n&gt; matDotVec(const numvector&lt;numvector&lt;T, n&gt;, n&gt;&amp; A, const numvector&lt;T, n&gt;&amp; x)</span></div>
-<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span><span class="comment">//      //deprecate: use nummatrix.operator&amp; instead of matDotVec(numvector&lt;numvector&lt;&gt;&gt;, numvector&lt;&gt;)</span></div>
-<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span><span class="comment">//</span></div>
-<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span><span class="comment">//      numvector&lt;T, n&gt; res;</span></div>
-<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
-<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span><span class="comment">//          res[i] = A[i] * x;</span></div>
-<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span><span class="comment">//      return res;</span></div>
-<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span><span class="comment">//  }//dot(...)</span></div>
-<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span> </div>
-<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span> </div>
-<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span><span class="comment">//  /// \brief Умножение вектора на вектор той же размерности внешним образом</span></div>
-<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span><span class="comment">//  ///</span></div>
-<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span><span class="comment">//  /// \tparam T тип данных компонент векторов</span></div>
-<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span><span class="comment">//  /// \tparam n размерность векторов</span></div>
-<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span><span class="comment">//  /// \param[in] x константная ссылка на первый вектор</span></div>
-<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span><span class="comment">//  /// \param[in] y константная ссылка на второй вектор</span></div>
-<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span><span class="comment">//  /// \return матрицу ранга 1, являющюуся внешним (кронекеровым) произведением двух векторов</span></div>
-<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
-<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span><span class="comment">//  DEPRECATED inline numvector&lt;numvector&lt;T, n&gt;, n&gt; KronProd(const numvector&lt;T, n&gt;&amp; x, const numvector&lt;T, n&gt;&amp; y)</span></div>
-<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span><span class="comment">//      //deprecate: use nummatrix.operator|(numvector&lt;&gt;, numvector&lt;&gt;) instead of KronProd(numvector&lt;&gt;, numvector&lt;&gt;)</span></div>
-<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span><span class="comment">//      numvector&lt;numvector&lt;T, n&gt;, n&gt; res;</span></div>
-<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
-<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span><span class="comment">//          for (size_t j = 0; j &lt; n; ++j)</span></div>
-<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span><span class="comment">//              res[i][j] = x[i] * y[j];</span></div>
-<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span><span class="comment">//      return res;</span></div>
-<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span><span class="comment">//  }//KronProd(...)</span></div>
-<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span> </div>
-<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span> </div>
-<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span><span class="comment">//  /// \brief Транспонирование квадратной матрицы</span></div>
-<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span><span class="comment">//  ///</span></div>
-<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span><span class="comment">//  /// \tparam T тип данных компонент матрицы</span></div>
-<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span><span class="comment">//  /// \tparam n размерность матрицы</span></div>
-<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span><span class="comment">//  /// \return транспонированную матрицу</span></div>
-<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
-<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span><span class="comment">//  DEPRECATED inline numvector&lt;numvector&lt;T, n&gt;, n&gt; Transpose(const numvector&lt;numvector&lt;T, n&gt;, n&gt;&amp; A)</span></div>
-<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span><span class="comment">//      //deprecate: use member class nummatrix.transpose() instead of Transpose(numvector&lt;numvector&gt;)</span></div>
-<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span><span class="comment">//</span></div>
-<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span><span class="comment">//      numvector&lt;numvector&lt;T, n&gt;, n&gt; res;</span></div>
-<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
-<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span><span class="comment">//          for (size_t j = 0; j &lt; n; ++j)</span></div>
-<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span><span class="comment">//              res[i][j] = A[j][i];</span></div>
-<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span><span class="comment">//      return res;</span></div>
-<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span><span class="comment">//  }</span></div>
-<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span> </div>
-<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span> </div>
-<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
-<div class="foldopen" id="foldopen01084" data-start="{" data-end="}">
-<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d"> 1084</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac1e8a42306d8e67cb94ca31c3956ee78">DEPRECATED</a> <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <span class="keywordtype">double</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d">cross3</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&amp; y)</div>
-<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>    {</div>
-<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>        <span class="comment">//deprecate: use numvector.operator^ instead of cross3(numvector&lt;&gt;,numvector&lt;&gt;)</span></div>
-<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span> </div>
-<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>        <span class="keywordflow">return</span> (x[0] * y[1] - x[1] * y[0]);</div>
-<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>    }<span class="comment">//cross3(...)</span></div>
+<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span> </div>
+<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span> </div>
+<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen00990" data-start="{" data-end="}">
+<div class="line"><a id="l00990" name="l00990"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#af539a4b46101a242e8828ea1a70aa4fd">  990</a></span>    std::ostream&amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae63b5bf595336705f7aac6c8eb2bbb37">operator&lt;&lt; </a>(std::ostream&amp; str, <span class="keyword">const</span> std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&gt;&amp; x)</div>
+<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>    {</div>
+<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span> &lt;&lt; x.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; x.second &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
+<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>        <span class="keywordflow">return</span> str;</div>
+<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>    }<span class="comment">//operator&lt;&lt;</span></div>
 </div>
-<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span> </div>
-<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span> </div>
-<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
-<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span><span class="comment">//  /// </span></div>
-<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
-<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
-<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
-<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span><span class="comment">//  DEPRECATED inline double operator*(const Point2D&amp; x, const Point2D&amp; y)</span></div>
-<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
-<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span><span class="comment">//</span></div>
-<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span><span class="comment">//      const numvector&lt;double, 2&gt; xx = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;x));</span></div>
-<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span><span class="comment">//      const numvector&lt;double, 2&gt; yy = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;y));</span></div>
-<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span><span class="comment">//      return (xx &amp; yy);</span></div>
-<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span><span class="comment">//  }//operator*(...)</span></div>
-<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span> </div>
-<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span> </div>
-<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
-<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span><span class="comment">//  /// </span></div>
-<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
-<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
-<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
-<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span><span class="comment">//  DEPRECATED inline double operator*(const numvector&lt;double, 2&gt;&amp; x, const Point2D&amp; y)</span></div>
-<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
-<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span><span class="comment">//</span></div>
-<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span><span class="comment">//      const numvector&lt;double, 2&gt; yy = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;y));</span></div>
-<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span><span class="comment">//      return (x &amp; yy);</span></div>
-<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span><span class="comment">//  }//operator*(...)</span></div>
-<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span> </div>
-<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span> </div>
-<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
-<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span><span class="comment">//  /// </span></div>
-<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
-<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
-<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
-<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span><span class="comment">//  DEPRECATED inline double operator*(const Point2D&amp; x, const numvector&lt;double, 2&gt;&amp; y)</span></div>
-<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
-<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span><span class="comment">//</span></div>
-<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span><span class="comment">//      const numvector&lt;double, 2&gt; xx = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;x));</span></div>
-<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span><span class="comment">//      return (xx &amp; y);</span></div>
-<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span> </div>
+<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span> </div>
+<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>    <span class="comment">// Далее deprecate-функции для ПОЛНОЙ СОВМЕСТИМОСТИ со старой версией //</span></div>
+<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>    <span class="comment">//                             --------------------                   //</span></div>
+<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span> </div>
+<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span><span class="comment">//  /// \brief Умножение квадратной матрицы на вектор (без приведения типов)</span></div>
+<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span><span class="comment">//  ///</span></div>
+<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span><span class="comment">//  /// \tparam T тип данных компонент матрицы и вектора</span></div>
+<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span><span class="comment">//  /// \tparam n размерность матрицы и вектора</span></div>
+<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span><span class="comment">//  /// \param[in] A константная ссылка на матрицу</span></div>
+<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span><span class="comment">//  /// \param[in] x константная ссылка на вектор</span></div>
+<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span><span class="comment">//  /// \return вектор результат умножения матрицы на вектор</span></div>
+<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
+<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span><span class="comment">//  DEPRECATED inline numvector&lt;T, n&gt; dot(const numvector&lt;numvector&lt;T, n&gt;, n&gt;&amp; A, const numvector&lt;T, n&gt;&amp; x)</span></div>
+<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span><span class="comment">//      //deprecate: use nummatrix.operator&amp; instead of dot(numvector&lt;numvector&lt;&gt;&gt;, numvector&lt;&gt;)</span></div>
+<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span><span class="comment">//</span></div>
+<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span><span class="comment">//      numvector&lt;T, n&gt; res;</span></div>
+<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
+<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span><span class="comment">//          res[i] = A[i] &amp; x;</span></div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span><span class="comment">//      return res;</span></div>
+<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span><span class="comment">//  }//dot(...)</span></div>
+<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span> </div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span> </div>
+<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span><span class="comment">//  /// \brief Умножение вектора на квадратную матрицу (без приведения типов)</span></div>
+<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span><span class="comment">//  ///</span></div>
+<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span><span class="comment">//  /// \tparam T тип данных компонент матрицы и вектора</span></div>
+<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span><span class="comment">//  /// \tparam n размерность матрицы и вектора</span></div>
+<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span><span class="comment">//  /// \param[in] A константная ссылка на матрицу</span></div>
+<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span><span class="comment">//  /// \param[in] x константная ссылка на вектор</span></div>
+<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span><span class="comment">//  /// \return вектор результат умножения матрицы на вектор</span></div>
+<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
+<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span><span class="comment">//  DEPRECATED inline numvector&lt;T, n&gt; dot(const numvector&lt;T, n&gt;&amp; x, const numvector&lt;numvector&lt;T, n&gt;, n&gt;&amp; A)</span></div>
+<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span><span class="comment">//      //deprecate: use operator&amp;(numvector&lt;&gt;, nummatrix&lt;&gt;) instead of dot(numvector&lt;&gt;, numvector&lt;numvector&lt;&gt;&gt;)</span></div>
+<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span><span class="comment">//</span></div>
+<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span><span class="comment">//      numvector&lt;T, n&gt; res;</span></div>
+<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
+<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span><span class="comment">//      {</span></div>
+<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span><span class="comment">//          res[i] = 0.0;</span></div>
+<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span><span class="comment">//          for (size_t j = 0; j &lt; n; ++j)</span></div>
+<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span><span class="comment">//              res[i] += x[j] * A[j][i];</span></div>
+<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span><span class="comment">//      }</span></div>
+<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span><span class="comment">//      return res;</span></div>
+<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span><span class="comment">//  }//dot(...)</span></div>
+<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span> </div>
+<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span> </div>
+<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span><span class="comment">//  /// \brief Умножение квадратной матрицы на вектор</span></div>
+<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span><span class="comment">//  ///</span></div>
+<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span><span class="comment">//  /// \tparam T тип данных вектора и матрицы</span></div>
+<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span><span class="comment">//  /// \tparam n длина вектора и размерность матрицы</span></div>
+<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span><span class="comment">//  /// \param[in] A константная ссылка на матрицу</span></div>
+<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span><span class="comment">//  /// \param[in] x константная ссылка на вектор</span></div>
+<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span><span class="comment">//  /// \return вектор --- результат умножения матрицы на вектор</span></div>
+<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
+<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span><span class="comment">//  DEPRECATED inline numvector&lt;T, n&gt; matDotVec(const numvector&lt;numvector&lt;T, n&gt;, n&gt;&amp; A, const numvector&lt;T, n&gt;&amp; x)</span></div>
+<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span><span class="comment">//      //deprecate: use nummatrix.operator&amp; instead of matDotVec(numvector&lt;numvector&lt;&gt;&gt;, numvector&lt;&gt;)</span></div>
+<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span><span class="comment">//</span></div>
+<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span><span class="comment">//      numvector&lt;T, n&gt; res;</span></div>
+<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
+<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span><span class="comment">//          res[i] = A[i] * x;</span></div>
+<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span><span class="comment">//      return res;</span></div>
+<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span><span class="comment">//  }//dot(...)</span></div>
+<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span> </div>
+<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span> </div>
+<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span><span class="comment">//  /// \brief Умножение вектора на вектор той же размерности внешним образом</span></div>
+<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span><span class="comment">//  ///</span></div>
+<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span><span class="comment">//  /// \tparam T тип данных компонент векторов</span></div>
+<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span><span class="comment">//  /// \tparam n размерность векторов</span></div>
+<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span><span class="comment">//  /// \param[in] x константная ссылка на первый вектор</span></div>
+<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span><span class="comment">//  /// \param[in] y константная ссылка на второй вектор</span></div>
+<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span><span class="comment">//  /// \return матрицу ранга 1, являющюуся внешним (кронекеровым) произведением двух векторов</span></div>
+<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
+<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span><span class="comment">//  DEPRECATED inline numvector&lt;numvector&lt;T, n&gt;, n&gt; KronProd(const numvector&lt;T, n&gt;&amp; x, const numvector&lt;T, n&gt;&amp; y)</span></div>
+<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span><span class="comment">//      //deprecate: use nummatrix.operator|(numvector&lt;&gt;, numvector&lt;&gt;) instead of KronProd(numvector&lt;&gt;, numvector&lt;&gt;)</span></div>
+<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span><span class="comment">//      numvector&lt;numvector&lt;T, n&gt;, n&gt; res;</span></div>
+<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
+<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span><span class="comment">//          for (size_t j = 0; j &lt; n; ++j)</span></div>
+<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span><span class="comment">//              res[i][j] = x[i] * y[j];</span></div>
+<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span><span class="comment">//      return res;</span></div>
+<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span><span class="comment">//  }//KronProd(...)</span></div>
+<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span> </div>
+<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span> </div>
+<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span><span class="comment">//  /// \brief Транспонирование квадратной матрицы</span></div>
+<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span><span class="comment">//  ///</span></div>
+<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span><span class="comment">//  /// \tparam T тип данных компонент матрицы</span></div>
+<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span><span class="comment">//  /// \tparam n размерность матрицы</span></div>
+<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span><span class="comment">//  /// \return транспонированную матрицу</span></div>
+<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span><span class="comment">//  template&lt;typename T, size_t n&gt;</span></div>
+<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span><span class="comment">//  DEPRECATED inline numvector&lt;numvector&lt;T, n&gt;, n&gt; Transpose(const numvector&lt;numvector&lt;T, n&gt;, n&gt;&amp; A)</span></div>
+<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span><span class="comment">//      //deprecate: use member class nummatrix.transpose() instead of Transpose(numvector&lt;numvector&gt;)</span></div>
+<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span><span class="comment">//</span></div>
+<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span><span class="comment">//      numvector&lt;numvector&lt;T, n&gt;, n&gt; res;</span></div>
+<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span><span class="comment">//      for (size_t i = 0; i &lt; n; ++i)</span></div>
+<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span><span class="comment">//          for (size_t j = 0; j &lt; n; ++j)</span></div>
+<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span><span class="comment">//              res[i][j] = A[j][i];</span></div>
+<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span><span class="comment">//      return res;</span></div>
+<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span><span class="comment">//  }</span></div>
+<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span> </div>
+<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span> </div>
+<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> P, <span class="keywordtype">size_t</span> n&gt;</div>
+<div class="foldopen" id="foldopen01111" data-start="{" data-end="}">
+<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"><a class="line" href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d"> 1111</a></span>    <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac1e8a42306d8e67cb94ca31c3956ee78">DEPRECATED</a> <a class="code hl_define" href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a> <span class="keywordtype">double</span> <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d">cross3</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a>&amp; x, <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;P, n&gt;</a>&amp; y)</div>
+<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>    {</div>
+<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>        <span class="comment">//deprecate: use numvector.operator^ instead of cross3(numvector&lt;&gt;,numvector&lt;&gt;)</span></div>
+<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span> </div>
+<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>        <span class="keywordflow">return</span> (x[0] * y[1] - x[1] * y[0]);</div>
+<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>    }<span class="comment">//cross3(...)</span></div>
+</div>
+<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span> </div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span> </div>
+<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span><span class="comment">//  /// </span></div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span><span class="comment">//  DEPRECATED inline double operator*(const Point2D&amp; x, const Point2D&amp; y)</span></div>
+<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
+<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span><span class="comment">//</span></div>
+<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span><span class="comment">//      const numvector&lt;double, 2&gt; xx = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;x));</span></div>
+<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span><span class="comment">//      const numvector&lt;double, 2&gt; yy = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;y));</span></div>
+<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span><span class="comment">//      return (xx &amp; yy);</span></div>
+<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span> </div>
 <div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span> </div>
-<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span> </div>
-<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
-<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span><span class="comment">//  /// </span></div>
-<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
-<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
-<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
-<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span><span class="comment">//  DEPRECATED inline double operator*(const Point&amp; x, const Point&amp; y)</span></div>
-<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
-<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span><span class="comment">//</span></div>
-<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span><span class="comment">//      const numvector&lt;double, 2&gt; xx = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;x));</span></div>
-<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span><span class="comment">//      const numvector&lt;double, 2&gt; yy = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;y));</span></div>
-<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span><span class="comment">//      return (xx &amp; yy);</span></div>
-<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span><span class="comment">//  }//operator*(...)</span></div>
-<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span> </div>
-<div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span> </div>
-<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
-<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span><span class="comment">//  /// </span></div>
-<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
-<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
-<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
-<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span><span class="comment">//  DEPRECATED inline double operator*(const numvector&lt;double, 2&gt;&amp; x, const Point&amp; y)</span></div>
-<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
-<div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span><span class="comment">//</span></div>
-<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span><span class="comment">//      const numvector&lt;double, 2&gt; yy = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;y));</span></div>
-<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span><span class="comment">//      return (x &amp; yy);</span></div>
-<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span><span class="comment">//  }//operator*(...)</span></div>
-<div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span> </div>
-<div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span> </div>
-<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
-<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span><span class="comment">//  /// </span></div>
-<div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
-<div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
-<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
-<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span><span class="comment">//  DEPRECATED inline double operator*(const Point&amp; x, const numvector&lt;double, 2&gt;&amp; y)</span></div>
-<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
-<div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span><span class="comment">//</span></div>
-<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span><span class="comment">//      const numvector&lt;double, 2&gt; xx = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;x));</span></div>
-<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span><span class="comment">//      return (xx &amp; y);</span></div>
-<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span><span class="comment">//  /// </span></div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
+<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span><span class="comment">//  DEPRECATED inline double operator*(const numvector&lt;double, 2&gt;&amp; x, const Point2D&amp; y)</span></div>
+<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
+<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span><span class="comment">//</span></div>
+<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span><span class="comment">//      const numvector&lt;double, 2&gt; yy = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;y));</span></div>
+<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span><span class="comment">//      return (x &amp; yy);</span></div>
+<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span> </div>
+<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span> </div>
+<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
+<div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span><span class="comment">//  /// </span></div>
+<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
+<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
+<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
+<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span><span class="comment">//  DEPRECATED inline double operator*(const Point2D&amp; x, const numvector&lt;double, 2&gt;&amp; y)</span></div>
+<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
+<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span><span class="comment">//</span></div>
+<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span><span class="comment">//      const numvector&lt;double, 2&gt; xx = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;x));</span></div>
+<div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span><span class="comment">//      return (xx &amp; y);</span></div>
+<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span> </div>
+<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span> </div>
+<div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
+<div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span><span class="comment">//  /// </span></div>
+<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
+<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
+<div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
+<div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span><span class="comment">//  DEPRECATED inline double operator*(const Point&amp; x, const Point&amp; y)</span></div>
+<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
+<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span><span class="comment">//</span></div>
+<div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span><span class="comment">//      const numvector&lt;double, 2&gt; xx = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;x));</span></div>
+<div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span><span class="comment">//      const numvector&lt;double, 2&gt; yy = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;y));</span></div>
+<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span><span class="comment">//      return (xx &amp; yy);</span></div>
+<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span> </div>
 <div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span> </div>
-<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span> </div>
-<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span> </div>
-<div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span> </div>
-<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
-<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span><span class="comment">//  /// </span></div>
-<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
-<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
-<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
-<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span><span class="comment">//  DEPRECATED inline double operator*(const numvector&lt;double, 2&gt;&amp; x, const numvector&lt;double, 2&gt;&amp; y)</span></div>
-<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
-<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span><span class="comment">//</span></div>
-<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span><span class="comment">//      return (x &amp; y);</span></div>
-<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span><span class="comment">//  }//operator*(...)</span></div>
-<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span> </div>
-<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span> </div>
-<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
-<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span><span class="comment">//  /// </span></div>
-<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
-<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
-<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
-<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span><span class="comment">//  DEPRECATED inline double operator*(const numvector&lt;double, 3&gt;&amp; x, const numvector&lt;double, 3&gt;&amp; y)</span></div>
-<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span><span class="comment">//  {</span></div>
-<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
-<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span><span class="comment">//</span></div>
-<div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span><span class="comment">//      return (x &amp; y);</span></div>
-<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
+<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span><span class="comment">//  /// </span></div>
+<div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
+<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
+<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
+<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span><span class="comment">//  DEPRECATED inline double operator*(const numvector&lt;double, 2&gt;&amp; x, const Point&amp; y)</span></div>
+<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
+<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span><span class="comment">//</span></div>
+<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span><span class="comment">//      const numvector&lt;double, 2&gt; yy = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;y));</span></div>
+<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span><span class="comment">//      return (x &amp; yy);</span></div>
+<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span> </div>
+<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span> </div>
+<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
+<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span><span class="comment">//  /// </span></div>
+<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
+<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
+<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
+<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span><span class="comment">//  DEPRECATED inline double operator*(const Point&amp; x, const numvector&lt;double, 2&gt;&amp; y)</span></div>
+<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
+<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span><span class="comment">//</span></div>
+<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span><span class="comment">//      const numvector&lt;double, 2&gt; xx = *(reinterpret_cast&lt;const numvector&lt;double, 2&gt;*&gt;(&amp;x));</span></div>
+<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span><span class="comment">//      return (xx &amp; y);</span></div>
+<div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span> </div>
 <div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span> </div>
-<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span>}<span class="comment">//namespace VMlib</span></div>
+<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span> </div>
 <div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span> </div>
-<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span><span class="keyword">using </span><a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>;</div>
-<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span><span class="keyword">using </span><a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac194ed285a79bbaf94d6215ca77cca27">VMlib::dist2</a>;</div>
-<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span> </div>
-<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
+<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span><span class="comment">//  /// </span></div>
+<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
+<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
+<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
+<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span><span class="comment">//  DEPRECATED inline double operator*(const numvector&lt;double, 2&gt;&amp; x, const numvector&lt;double, 2&gt;&amp; y)</span></div>
+<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
+<div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span><span class="comment">//</span></div>
+<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span><span class="comment">//      return (x &amp; y);</span></div>
+<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span> </div>
+<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span> </div>
+<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span><span class="comment">//  /// \brief Скалярное умножение двух векторов</span></div>
+<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span><span class="comment">//  /// </span></div>
+<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span><span class="comment">//  /// \param[in] x константная ссылка на первый множитель</span></div>
+<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span><span class="comment">//  /// \param[in] y константная ссылка на второй множитель</span></div>
+<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span><span class="comment">//  /// \return результат скалярного умножения</span></div>
+<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span><span class="comment">//  DEPRECATED inline double operator*(const numvector&lt;double, 3&gt;&amp; x, const numvector&lt;double, 3&gt;&amp; y)</span></div>
+<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span><span class="comment">//  {</span></div>
+<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span><span class="comment">//      //deprecate: use numvector.operator&amp; instead of operator*</span></div>
+<div class="line"><a id="l01228" name="l01228"></a><span class="lineno"> 1228</span><span class="comment">//</span></div>
+<div class="line"><a id="l01229" name="l01229"></a><span class="lineno"> 1229</span><span class="comment">//      return (x &amp; y);</span></div>
+<div class="line"><a id="l01230" name="l01230"></a><span class="lineno"> 1230</span><span class="comment">//  }//operator*(...)</span></div>
+<div class="line"><a id="l01231" name="l01231"></a><span class="lineno"> 1231</span> </div>
+<div class="line"><a id="l01232" name="l01232"></a><span class="lineno"> 1232</span>}<span class="comment">//namespace VMlib</span></div>
+<div class="line"><a id="l01233" name="l01233"></a><span class="lineno"> 1233</span> </div>
+<div class="line"><a id="l01234" name="l01234"></a><span class="lineno"> 1234</span><span class="keyword">using </span><a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a>;</div>
+<div class="line"><a id="l01235" name="l01235"></a><span class="lineno"> 1235</span><span class="keyword">using </span><a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac194ed285a79bbaf94d6215ca77cca27">VMlib::dist2</a>;</div>
+<div class="line"><a id="l01236" name="l01236"></a><span class="lineno"> 1236</span> </div>
+<div class="line"><a id="l01237" name="l01237"></a><span class="lineno"> 1237</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив,...</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00098">numvector.h:99</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a07e2f9d810ad851f4762fb906cb667d6"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a07e2f9d810ad851f4762fb906cb667d6">VMlib::numvector::operator+</a></div><div class="ttdeci">const numvector&lt; T, n &gt; &amp; operator+() const</div><div class="ttdoc">Оператор &quot;+&quot; унарного плюса</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00298">numvector.h:298</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a1ba7237ee953e4a14e0f18e87b2185ed"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a1ba7237ee953e4a14e0f18e87b2185ed">VMlib::numvector::rotateLeft</a></div><div class="ttdeci">numvector&lt; T, n &gt; rotateLeft(size_t k) const</div><div class="ttdoc">&quot;Вращение&quot; вектора на несколько позиций влево</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00481">numvector.h:481</a></div></div>
@@ -1064,14 +1085,14 @@ $(document).ready(function(){initNavTree('df/dc5/numvector_8h_source.html','../.
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a52bc81f06ce94bad448a5df61632c59e"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a52bc81f06ce94bad448a5df61632c59e">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector(const numvector&lt; T, n &gt; &amp;vec)</div><div class="ttdoc">Нешаблонный конструктор копирования</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00600">numvector.h:600</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a54c14f6ea72bd8278fa8bf5fc0cbcecb"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a54c14f6ea72bd8278fa8bf5fc0cbcecb">VMlib::numvector::proj</a></div><div class="ttdeci">numvector&lt; T, n &gt; proj(const numvector&lt; P, n &gt; &amp;v)</div><div class="ttdoc">Проекция вектора на вектор v.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00543">numvector.h:543</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a571b94dc2ae89c852f79ae4b45d1c4ad"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a571b94dc2ae89c852f79ae4b45d1c4ad">VMlib::numvector::dist2To</a></div><div class="ttdeci">auto dist2To(const numvector&lt; P, n &gt; &amp;y) const -&gt; typename std::remove_const&lt; decltype(this-&gt;data[0] - y[0])&gt;::type</div><div class="ttdoc">Вычисление квадрата расстояния до другой точки</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00558">numvector.h:558</a></div></div>
-<div class="ttc" id="aclass_v_mlib_1_1numvector_html_a58996df337bb277546a5360a4e645bfa"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a58996df337bb277546a5360a4e645bfa">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector(const std::vector&lt; P &gt; &amp;vec)</div><div class="ttdoc">Конструктор инициализации с помощью std::vector.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00629">numvector.h:629</a></div></div>
+<div class="ttc" id="aclass_v_mlib_1_1numvector_html_a58996df337bb277546a5360a4e645bfa"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a58996df337bb277546a5360a4e645bfa">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector(const std::vector&lt; P &gt; &amp;vec)</div><div class="ttdoc">Конструктор инициализации с помощью std::vector.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00656">numvector.h:656</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a6bc3591c405e791a4dd542f53258e115"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6bc3591c405e791a4dd542f53258e115">VMlib::numvector::kcross</a></div><div class="ttdeci">numvector&lt; T, 2 &gt; kcross() const</div><div class="ttdoc">Геометрический поворот двумерного вектора на 90 градусов</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00510">numvector.h:510</a></div></div>
-<div class="ttc" id="aclass_v_mlib_1_1numvector_html_a6ed51497ecd90d422b33d886000a72d4"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6ed51497ecd90d422b33d886000a72d4">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector(const std::initializer_list&lt; P &gt; &amp;z)</div><div class="ttdoc">Шаблонный конструктор инициализации списком</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00662">numvector.h:662</a></div></div>
+<div class="ttc" id="aclass_v_mlib_1_1numvector_html_a6ed51497ecd90d422b33d886000a72d4"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6ed51497ecd90d422b33d886000a72d4">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector(const std::initializer_list&lt; P &gt; &amp;z)</div><div class="ttdoc">Шаблонный конструктор инициализации списком</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00689">numvector.h:689</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a6f68eb11e99a7215635d90b410eec857"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857">VMlib::numvector::length2</a></div><div class="ttdeci">auto length2() const -&gt; typename std::remove_const&lt; typename std::remove_reference&lt; decltype(this-&gt;data[0])&gt;::type &gt;::type</div><div class="ttdoc">Вычисление квадрата нормы (длины) вектора</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00386">numvector.h:386</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a6f6b95c77d105dd685bce74e53235f02"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6f6b95c77d105dd685bce74e53235f02">VMlib::numvector::operator&amp;</a></div><div class="ttdeci">auto operator&amp;(const numvector&lt; P, n &gt; &amp;y) const -&gt; typename std::remove_const&lt; decltype(this-&gt;data[0] *y[0])&gt;::type</div><div class="ttdoc">Оператор &quot;&amp;&quot; скалярного умножения</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00126">numvector.h:126</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a6fe2b350b6e40e85b6825fb3d9da50db"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6fe2b350b6e40e85b6825fb3d9da50db">VMlib::numvector::operator+=</a></div><div class="ttdeci">numvector&lt; T, n &gt; &amp; operator+=(const numvector&lt; P, n &gt; &amp;y)</div><div class="ttdoc">Оператор &quot;+=&quot; прибавления другого вектора</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00207">numvector.h:207</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a70c07d1b3d53524ea664615f1d28879f"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a70c07d1b3d53524ea664615f1d28879f">VMlib::numvector::toZero</a></div><div class="ttdeci">numvector&lt; T, n &gt; &amp; toZero(P val=0)</div><div class="ttdoc">Установка всех компонент вектора в константу (по умолчанию — нуль)</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00527">numvector.h:527</a></div></div>
-<div class="ttc" id="aclass_v_mlib_1_1numvector_html_a73ad1455b1b5d0669e86c5422620f60a"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a73ad1455b1b5d0669e86c5422620f60a">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector(const std::initializer_list&lt; T &gt; &amp;z)</div><div class="ttdoc">Нешаблонный конструктор инициализации списком</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00645">numvector.h:645</a></div></div>
+<div class="ttc" id="aclass_v_mlib_1_1numvector_html_a73ad1455b1b5d0669e86c5422620f60a"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a73ad1455b1b5d0669e86c5422620f60a">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector(const std::initializer_list&lt; T &gt; &amp;z)</div><div class="ttdoc">Нешаблонный конструктор инициализации списком</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00672">numvector.h:672</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a7716fe1991be19316cb41cbb4345a1e9"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a7716fe1991be19316cb41cbb4345a1e9">VMlib::numvector::operator-</a></div><div class="ttdeci">numvector&lt; T, n &gt; operator-() const</div><div class="ttdoc">Оператор &quot;-&quot; унарного минуса</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00284">numvector.h:284</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a7ff9a405a26a465b057de3073a89ed98"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a7ff9a405a26a465b057de3073a89ed98">VMlib::numvector::member</a></div><div class="ttdeci">size_t member(const P &amp;s) const</div><div class="ttdoc">Проверка вхождения элемента в вектор</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00433">numvector.h:433</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a814bfff790b482ba3e70dc3f48674858"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a814bfff790b482ba3e70dc3f48674858">VMlib::numvector::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00114">numvector.h:114</a></div></div>
@@ -1080,10 +1101,12 @@ $(document).ready(function(){initNavTree('df/dc5/numvector_8h_source.html','../.
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a8c8bd3c1e2a478e8b0b203c95dbefc64"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">VMlib::numvector::length</a></div><div class="ttdeci">P length() const</div><div class="ttdoc">Вычисление 2-нормы (длины) вектора</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00374">numvector.h:374</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_aa039d1e786a3faeaeed51099e12d4f98"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa039d1e786a3faeaeed51099e12d4f98">VMlib::numvector::operator/=</a></div><div class="ttdeci">numvector&lt; T, n &gt; &amp; operator/=(P c)</div><div class="ttdoc">Оператор &quot;/=&quot; деления вектора на действительное число</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00191">numvector.h:191</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_aa3d9abd363f214e61551e3c9782306c6"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">VMlib::numvector::data</a></div><div class="ttdeci">T data[n]</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00101">numvector.h:101</a></div></div>
-<div class="ttc" id="aclass_v_mlib_1_1numvector_html_aac6fee51fcadd02b1f41f23b491b5bfd"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#aac6fee51fcadd02b1f41f23b491b5bfd">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector()</div><div class="ttdoc">Пустой конструктор</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00579">numvector.h:579</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_aaf05457b555bf33afc0e3de6db667efe"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#aaf05457b555bf33afc0e3de6db667efe">VMlib::numvector::norminf</a></div><div class="ttdeci">auto norminf() const -&gt; typename std::remove_const&lt; typename std::remove_reference&lt; decltype(this-&gt;data[0])&gt;::type &gt;::type</div><div class="ttdoc">Вычисление inf-нормы вектора</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00354">numvector.h:354</a></div></div>
-<div class="ttc" id="aclass_v_mlib_1_1numvector_html_ab0ddf4d94ec38daf910240bcc60a7f2a"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab0ddf4d94ec38daf910240bcc60a7f2a">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector(const numvector&lt; P, p &gt; &amp;vec, T add=0)</div><div class="ttdoc">Явный конструктор инициализации вектором другой размерности</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00682">numvector.h:682</a></div></div>
+<div class="ttc" id="aclass_v_mlib_1_1numvector_html_ab0ddf4d94ec38daf910240bcc60a7f2a"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab0ddf4d94ec38daf910240bcc60a7f2a">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector(const numvector&lt; P, p &gt; &amp;vec, T add=0)</div><div class="ttdoc">Явный конструктор инициализации вектором другой размерности</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00709">numvector.h:709</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_ab22b15f21d1af087286e6456c096c3e7"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab22b15f21d1af087286e6456c096c3e7">VMlib::numvector::norm1</a></div><div class="ttdeci">auto norm1() const -&gt; typename std::remove_const&lt; typename std::remove_reference&lt; decltype(this-&gt;data[0])&gt;::type &gt;::type</div><div class="ttdoc">Вычисление 1-нормы вектора</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00340">numvector.h:340</a></div></div>
+<div class="ttc" id="aclass_v_mlib_1_1numvector_html_ab258559a8668b56b9cc4192308c3eac8"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab258559a8668b56b9cc4192308c3eac8">VMlib::numvector::operator=</a></div><div class="ttdeci">numvector&lt; T, n &gt; &amp; operator=(const numvector&lt; T, n &gt; &amp;vec)</div><div class="ttdoc">Нешаблонный оператор копирования</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00626">numvector.h:626</a></div></div>
+<div class="ttc" id="aclass_v_mlib_1_1numvector_html_ab35092bdffe333acc71afe79232aa658"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab35092bdffe333acc71afe79232aa658">VMlib::numvector::operator=</a></div><div class="ttdeci">numvector&lt; T, n &gt; operator=(const numvector&lt; P, n &gt; &amp;vec)</div><div class="ttdoc">Шаблонный оператор копирования</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00641">numvector.h:641</a></div></div>
+<div class="ttc" id="aclass_v_mlib_1_1numvector_html_ab75a0adba8f83f46f694f8d54ce57898"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab75a0adba8f83f46f694f8d54ce57898">VMlib::numvector::numvector</a></div><div class="ttdeci">numvector()=default</div><div class="ttdoc">Пустой конструктор</div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_ab8254ca553ab1c673488d7bb16c85a50"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#ab8254ca553ab1c673488d7bb16c85a50">VMlib::numvector::operator^</a></div><div class="ttdeci">auto operator^(const numvector&lt; P, 3 &gt; &amp;y) const -&gt; numvector&lt; typename std::remove_const&lt; decltype(this-&gt;data[1] *y[2])&gt;::type, 3 &gt;</div><div class="ttdoc">Оператор &quot;^&quot; векторного произведения</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00143">numvector.h:143</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_ad8ae47c439a962678170722c9b0801fb"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#ad8ae47c439a962678170722c9b0801fb">VMlib::numvector::normalize</a></div><div class="ttdeci">void normalize(P newlen=1.0)</div><div class="ttdoc">Нормирование вектора на заданную длину</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00419">numvector.h:419</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_adc88b7b1531e2ea7a7b7ddf471b8db74"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#adc88b7b1531e2ea7a7b7ddf471b8db74">VMlib::numvector::operator-</a></div><div class="ttdeci">auto operator-(const numvector&lt; P, n &gt; &amp;y) const -&gt; numvector&lt; typename std::remove_const&lt; decltype(this-&gt;data[0] - y[0])&gt;::type, n &gt;</div><div class="ttdoc">Оператор &quot;-&quot; вычитания двух векторов</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00254">numvector.h:254</a></div></div>
@@ -1091,14 +1114,14 @@ $(document).ready(function(){initNavTree('df/dc5/numvector_8h_source.html','../.
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_aee0e068958459ab3852d38a11647a5ed"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#aee0e068958459ab3852d38a11647a5ed">VMlib::numvector::operator!=</a></div><div class="ttdeci">bool operator!=(const numvector&lt; P, n &gt; &amp;y) const</div><div class="ttdoc">Перегрузка оператора &quot;!=&quot; логического неравенства</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00327">numvector.h:327</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_af27d3824ac693eafd4136046b867a51d"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#af27d3824ac693eafd4136046b867a51d">VMlib::numvector::operator*=</a></div><div class="ttdeci">numvector&lt; T, n &gt; &amp; operator*=(P c)</div><div class="ttdoc">Оператор &quot;*=&quot; домножения вектора на действительное число</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00175">numvector.h:175</a></div></div>
 <div class="ttc" id="anamespace_v_mlib_html"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html">VMlib</a></div><div class="ttdef"><b>Definition</b> <a href="../../da/d3e/_mechanics2_d_8h_source.html#l00047">Mechanics2D.h:48</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_a00810f8bdc2d421449bd6cb2c1391291"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">VMlib::operator*</a></div><div class="ttdeci">numvector&lt; T, n &gt; operator*(double c, const numvector&lt; T, n &gt; &amp;x)</div><div class="ttdoc">Оператор &quot;*&quot; умножения вектора на число (число слева, вектор справа)</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00752">numvector.h:752</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_a0a39d4ffe9dd85c21bb2940929d90c4f"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a0a39d4ffe9dd85c21bb2940929d90c4f">VMlib::operator*=</a></div><div class="ttdeci">std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp; operator*=(std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp;a, R c)</div><div class="ttdoc">Оператор домножения &quot;*=&quot; пары векторов на число (пара слева, число справа)</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00907">numvector.h:907</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_a383c34d2eb873d8868313324a391638b"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a383c34d2eb873d8868313324a391638b">VMlib::cross</a></div><div class="ttdeci">void cross(const numvector&lt; T, 3 &gt; &amp;x, const numvector&lt; P, 3 &gt; &amp;y, numvector&lt; R, 3 &gt; &amp;z)</div><div class="ttdoc">Быстрое вычисление векторного произведения</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00792">numvector.h:792</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_a4707de62176aa2068f1f8628e0460f8c"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">VMlib::dist</a></div><div class="ttdeci">R dist(const numvector&lt; T, n &gt; &amp;x, const numvector&lt; P, n &gt; &amp;y)</div><div class="ttdoc">Вычисление расстояния между двумя точками</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00824">numvector.h:824</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_a51a30b73860af2f5d7fe5b8755105818"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a51a30b73860af2f5d7fe5b8755105818">VMlib::operator+</a></div><div class="ttdeci">auto operator+(const std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp;a, const std::pair&lt; numvector&lt; R, n &gt;, numvector&lt; S, n &gt; &gt; &amp;b) -&gt; std::pair&lt; numvector&lt; typename std::remove_const&lt; decltype(a.first[0]+b.first[0])&gt;::type, n &gt;, numvector&lt; typename std::remove_const&lt; decltype(a.second[0]+b.second[0])&gt;::type, n &gt; &gt;</div><div class="ttdoc">Оператор сложения &quot;+&quot; для пар векторов</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00887">numvector.h:887</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_a56a4ceec6f36727b6f748f6b8cc65423"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a56a4ceec6f36727b6f748f6b8cc65423">VMlib::operator+=</a></div><div class="ttdeci">std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp; operator+=(std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp;a, const std::pair&lt; numvector&lt; R, n &gt;, numvector&lt; S, n &gt; &gt; &amp;b)</div><div class="ttdoc">Оператор прибавления &quot;+=&quot; для пар векторов</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00868">numvector.h:868</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_a98540b7a51b343eb622b9bdc4749921d"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d">VMlib::cross3</a></div><div class="ttdeci">double cross3(const numvector&lt; T, n &gt; &amp;x, const numvector&lt; P, n &gt; &amp;y)</div><div class="ttdoc">Вычисление третьей компоненты векторного произведения</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l01084">numvector.h:1084</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_ac194ed285a79bbaf94d6215ca77cca27"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#ac194ed285a79bbaf94d6215ca77cca27">VMlib::dist2</a></div><div class="ttdeci">auto dist2(const numvector&lt; T, n &gt; &amp;x, const numvector&lt; P, n &gt; &amp;y) -&gt; typename std::remove_const&lt; decltype(x[0] - y[0])&gt;::type</div><div class="ttdoc">Вычисление квадрата расстояния между двумя точками</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00808">numvector.h:808</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_a00810f8bdc2d421449bd6cb2c1391291"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a00810f8bdc2d421449bd6cb2c1391291">VMlib::operator*</a></div><div class="ttdeci">numvector&lt; T, n &gt; operator*(double c, const numvector&lt; T, n &gt; &amp;x)</div><div class="ttdoc">Оператор &quot;*&quot; умножения вектора на число (число слева, вектор справа)</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00779">numvector.h:779</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_a0a39d4ffe9dd85c21bb2940929d90c4f"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a0a39d4ffe9dd85c21bb2940929d90c4f">VMlib::operator*=</a></div><div class="ttdeci">std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp; operator*=(std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp;a, R c)</div><div class="ttdoc">Оператор домножения &quot;*=&quot; пары векторов на число (пара слева, число справа)</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00934">numvector.h:934</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_a383c34d2eb873d8868313324a391638b"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a383c34d2eb873d8868313324a391638b">VMlib::cross</a></div><div class="ttdeci">void cross(const numvector&lt; T, 3 &gt; &amp;x, const numvector&lt; P, 3 &gt; &amp;y, numvector&lt; R, 3 &gt; &amp;z)</div><div class="ttdoc">Быстрое вычисление векторного произведения</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00819">numvector.h:819</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_a4707de62176aa2068f1f8628e0460f8c"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">VMlib::dist</a></div><div class="ttdeci">R dist(const numvector&lt; T, n &gt; &amp;x, const numvector&lt; P, n &gt; &amp;y)</div><div class="ttdoc">Вычисление расстояния между двумя точками</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00851">numvector.h:851</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_a51a30b73860af2f5d7fe5b8755105818"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a51a30b73860af2f5d7fe5b8755105818">VMlib::operator+</a></div><div class="ttdeci">auto operator+(const std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp;a, const std::pair&lt; numvector&lt; R, n &gt;, numvector&lt; S, n &gt; &gt; &amp;b) -&gt; std::pair&lt; numvector&lt; typename std::remove_const&lt; decltype(a.first[0]+b.first[0])&gt;::type, n &gt;, numvector&lt; typename std::remove_const&lt; decltype(a.second[0]+b.second[0])&gt;::type, n &gt; &gt;</div><div class="ttdoc">Оператор сложения &quot;+&quot; для пар векторов</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00914">numvector.h:914</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_a56a4ceec6f36727b6f748f6b8cc65423"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a56a4ceec6f36727b6f748f6b8cc65423">VMlib::operator+=</a></div><div class="ttdeci">std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp; operator+=(std::pair&lt; numvector&lt; T, n &gt;, numvector&lt; P, n &gt; &gt; &amp;a, const std::pair&lt; numvector&lt; R, n &gt;, numvector&lt; S, n &gt; &gt; &amp;b)</div><div class="ttdoc">Оператор прибавления &quot;+=&quot; для пар векторов</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00895">numvector.h:895</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_a98540b7a51b343eb622b9bdc4749921d"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d">VMlib::cross3</a></div><div class="ttdeci">double cross3(const numvector&lt; T, n &gt; &amp;x, const numvector&lt; P, n &gt; &amp;y)</div><div class="ttdoc">Вычисление третьей компоненты векторного произведения</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l01111">numvector.h:1111</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_ac194ed285a79bbaf94d6215ca77cca27"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#ac194ed285a79bbaf94d6215ca77cca27">VMlib::dist2</a></div><div class="ttdeci">auto dist2(const numvector&lt; T, n &gt; &amp;x, const numvector&lt; P, n &gt; &amp;y) -&gt; typename std::remove_const&lt; decltype(x[0] - y[0])&gt;::type</div><div class="ttdoc">Вычисление квадрата расстояния между двумя точками</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00835">numvector.h:835</a></div></div>
 <div class="ttc" id="anamespace_v_mlib_html_ae63b5bf595336705f7aac6c8eb2bbb37"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#ae63b5bf595336705f7aac6c8eb2bbb37">VMlib::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;_stream, const std::vector&lt; T &gt; &amp;_vec)</div><div class="ttdoc">Переопределение оператора &quot;&lt;&lt;&quot; для вывода в поток вектора std::vector.</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d64/defs_8h_source.html#l00292">defs.h:292</a></div></div>
 <div class="ttc" id="anumvector_8h_html_ac1e8a42306d8e67cb94ca31c3956ee78"><div class="ttname"><a href="../../df/dc5/numvector_8h.html#ac1e8a42306d8e67cb94ca31c3956ee78">DEPRECATED</a></div><div class="ttdeci">#define DEPRECATED</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00066">numvector.h:66</a></div></div>
 <div class="ttc" id="anumvector_8h_html_ac5dd4d2e9874e2956c370b24a462b022"><div class="ttname"><a href="../../df/dc5/numvector_8h.html#ac5dd4d2e9874e2956c370b24a462b022">HD</a></div><div class="ttdeci">#define HD</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00063">numvector.h:63</a></div></div>

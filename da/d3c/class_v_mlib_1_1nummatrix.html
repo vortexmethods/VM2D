@@ -293,8 +293,8 @@ template&lt;typename T , size_t n, size_t m&gt; </div>
 
 <p>Пустой конструктор </p>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00346">346</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  346</span>{ };</div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00347">347</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  347</span>{ };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -340,11 +340,11 @@ template&lt;typename P &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00354">354</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  355</span>        {</div>
-<div class="line"><span class="lineno">  356</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n*m; ++i)</div>
-<div class="line"><span class="lineno">  357</span>                this-&gt;data()[i] = z;</div>
-<div class="line"><span class="lineno">  358</span>        }<span class="comment">//nummatrix(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00355">355</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  356</span>        {</div>
+<div class="line"><span class="lineno">  357</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n*m; ++i)</div>
+<div class="line"><span class="lineno">  358</span>                this-&gt;data()[i] = z;</div>
+<div class="line"><span class="lineno">  359</span>        }<span class="comment">//nummatrix(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -392,11 +392,11 @@ template&lt;typename P &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00368">368</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  369</span>        {</div>
-<div class="line"><span class="lineno">  370</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n*m; ++i)</div>
-<div class="line"><span class="lineno">  371</span>                this-&gt;data()[i] = mtr.data()[i];</div>
-<div class="line"><span class="lineno">  372</span>        }<span class="comment">//nummatrix(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00369">369</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  370</span>        {</div>
+<div class="line"><span class="lineno">  371</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n*m; ++i)</div>
+<div class="line"><span class="lineno">  372</span>                this-&gt;data()[i] = mtr.data()[i];</div>
+<div class="line"><span class="lineno">  373</span>        }<span class="comment">//nummatrix(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -444,14 +444,14 @@ template&lt;typename P &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00382">382</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  383</span>        {</div>
-<div class="line"><span class="lineno">  384</span>            <span class="keywordflow">if</span> ((vec.size() != n) || (vec[0].size() != m))</div>
-<div class="line"><span class="lineno">  385</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  386</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  387</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
-<div class="line"><span class="lineno">  388</span>                    this-&gt;data()[i*m + j] = vec[i][j];</div>
-<div class="line"><span class="lineno">  389</span>        }<span class="comment">//nummatrix(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00383">383</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  384</span>        {</div>
+<div class="line"><span class="lineno">  385</span>            <span class="keywordflow">if</span> ((vec.size() != n) || (vec[0].size() != m))</div>
+<div class="line"><span class="lineno">  386</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  387</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  388</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
+<div class="line"><span class="lineno">  389</span>                    this-&gt;data()[i*m + j] = vec[i][j];</div>
+<div class="line"><span class="lineno">  390</span>        }<span class="comment">//nummatrix(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -499,12 +499,12 @@ template&lt;typename P &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00399">399</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  400</span>        {</div>
-<div class="line"><span class="lineno">  401</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  402</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
-<div class="line"><span class="lineno">  403</span>                    this-&gt;data()[i*m + j] = mtr[i][j];</div>
-<div class="line"><span class="lineno">  404</span>        }<span class="comment">//nummatrix(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00400">400</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  401</span>        {</div>
+<div class="line"><span class="lineno">  402</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  403</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
+<div class="line"><span class="lineno">  404</span>                    this-&gt;data()[i*m + j] = mtr[i][j];</div>
+<div class="line"><span class="lineno">  405</span>        }<span class="comment">//nummatrix(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -549,17 +549,17 @@ template&lt;typename T , size_t n, size_t m&gt; </div>
 </dl>
 <dl class="section warning"><dt>Warning</dt><dd>Длина списка инициализации проверяется, при несовпадении бросается исключение </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00413">413</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  414</span>        {</div>
-<div class="line"><span class="lineno">  415</span>            <span class="keywordflow">if</span> (z.size() != n)</div>
-<div class="line"><span class="lineno">  416</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  417</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  418</span>            {</div>
-<div class="line"><span class="lineno">  419</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, m&gt;</a>&amp; numv = *(z.begin() + i);</div>
-<div class="line"><span class="lineno">  420</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
-<div class="line"><span class="lineno">  421</span>                    this-&gt;data()[i*m + j] = numv[j];</div>
-<div class="line"><span class="lineno">  422</span>            }</div>
-<div class="line"><span class="lineno">  423</span>        }<span class="comment">//nummatrix(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00414">414</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  415</span>        {</div>
+<div class="line"><span class="lineno">  416</span>            <span class="keywordflow">if</span> (z.size() != n)</div>
+<div class="line"><span class="lineno">  417</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  418</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  419</span>            {</div>
+<div class="line"><span class="lineno">  420</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, m&gt;</a>&amp; numv = *(z.begin() + i);</div>
+<div class="line"><span class="lineno">  421</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
+<div class="line"><span class="lineno">  422</span>                    this-&gt;data()[i*m + j] = numv[j];</div>
+<div class="line"><span class="lineno">  423</span>            }</div>
+<div class="line"><span class="lineno">  424</span>        }<span class="comment">//nummatrix(...)</span></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив,...</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00098">numvector.h:99</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -607,17 +607,17 @@ template&lt;typename P &gt; </div>
 </dl>
 <dl class="section warning"><dt>Warning</dt><dd>Длина списка инициализации проверяется, при несовпадении бросается исключение </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00432">432</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  433</span>        {</div>
-<div class="line"><span class="lineno">  434</span>            <span class="keywordflow">if</span> (z.size() != n)</div>
-<div class="line"><span class="lineno">  435</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  436</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  437</span>            {</div>
-<div class="line"><span class="lineno">  438</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, m&gt;</a>&amp; numv = *(z.begin() + i);</div>
-<div class="line"><span class="lineno">  439</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
-<div class="line"><span class="lineno">  440</span>                    this-&gt;data()[i*m + j] = numv[j];</div>
-<div class="line"><span class="lineno">  441</span>            }</div>
-<div class="line"><span class="lineno">  442</span>        }<span class="comment">//nummatrix(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00433">433</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  434</span>        {</div>
+<div class="line"><span class="lineno">  435</span>            <span class="keywordflow">if</span> (z.size() != n)</div>
+<div class="line"><span class="lineno">  436</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  437</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  438</span>            {</div>
+<div class="line"><span class="lineno">  439</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, m&gt;</a>&amp; numv = *(z.begin() + i);</div>
+<div class="line"><span class="lineno">  440</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
+<div class="line"><span class="lineno">  441</span>                    this-&gt;data()[i*m + j] = numv[j];</div>
+<div class="line"><span class="lineno">  442</span>            }</div>
+<div class="line"><span class="lineno">  443</span>        }<span class="comment">//nummatrix(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -730,18 +730,18 @@ template&lt;typename T , size_t n, size_t m&gt; </div>
 <p>Приведение матрицы к типу std::vector из std::vector. </p>
 <dl class="section return"><dt>Returns</dt><dd>вектор типа std::vector, состоящий из std::vector, являющихся строками матрицы </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00449">449</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  450</span>        {</div>
-<div class="line"><span class="lineno">  451</span>            std::vector&lt;std::vector&lt;T&gt;&gt; vec;</div>
-<div class="line"><span class="lineno">  452</span>            vec.reserve(n);</div>
-<div class="line"><span class="lineno">  453</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  454</span>            {</div>
-<div class="line"><span class="lineno">  455</span>                vec[i].reserve(m);</div>
-<div class="line"><span class="lineno">  456</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
-<div class="line"><span class="lineno">  457</span>                    vec[i].push_back(this-&gt;data()[i*m + j]);</div>
-<div class="line"><span class="lineno">  458</span>            }</div>
-<div class="line"><span class="lineno">  459</span>            <span class="keywordflow">return</span> vec;</div>
-<div class="line"><span class="lineno">  460</span>        }</div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00450">450</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  451</span>        {</div>
+<div class="line"><span class="lineno">  452</span>            std::vector&lt;std::vector&lt;T&gt;&gt; vec;</div>
+<div class="line"><span class="lineno">  453</span>            vec.reserve(n);</div>
+<div class="line"><span class="lineno">  454</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  455</span>            {</div>
+<div class="line"><span class="lineno">  456</span>                vec[i].reserve(m);</div>
+<div class="line"><span class="lineno">  457</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
+<div class="line"><span class="lineno">  458</span>                    vec[i].push_back(this-&gt;data()[i*m + j]);</div>
+<div class="line"><span class="lineno">  459</span>            }</div>
+<div class="line"><span class="lineno">  460</span>            <span class="keywordflow">return</span> vec;</div>
+<div class="line"><span class="lineno">  461</span>        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -846,20 +846,20 @@ template&lt;typename P , size_t p&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>вектор &mdash; результат умножения матрицы на вектор </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000029">Todo:</a></b></dt><dd>напрашивается сразу инициализация нулем, а не последующее зануление всей матрицы </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00501">501</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  503</span>        {</div>
-<div class="line"><span class="lineno">  505</span>            <a class="code hl_class" href="../../da/d3c/class_v_mlib_1_1nummatrix.html">nummatrix</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(this-&gt;data()[0] * B.data()[0])&gt;::type, n, p&gt; res;</div>
-<div class="line"><span class="lineno">  506</span> </div>
-<div class="line"><span class="lineno">  507</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  508</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; p; ++j)</div>
-<div class="line"><span class="lineno">  509</span>                    res[i][j] = 0;</div>
-<div class="line"><span class="lineno">  510</span> </div>
-<div class="line"><span class="lineno">  511</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  512</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; p; ++j)</div>
-<div class="line"><span class="lineno">  513</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; k &lt; m; ++k)</div>
-<div class="line"><span class="lineno">  514</span>                        res[i][j] += (*<span class="keyword">this</span>)[i][k] * B[k][j];</div>
-<div class="line"><span class="lineno">  515</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  516</span>        }<span class="comment">//operator&amp;</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00502">502</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  504</span>        {</div>
+<div class="line"><span class="lineno">  506</span>            <a class="code hl_class" href="../../da/d3c/class_v_mlib_1_1nummatrix.html">nummatrix</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(this-&gt;data()[0] * B.data()[0])&gt;::type, n, p&gt; res;</div>
+<div class="line"><span class="lineno">  507</span> </div>
+<div class="line"><span class="lineno">  508</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  509</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; p; ++j)</div>
+<div class="line"><span class="lineno">  510</span>                    res[i][j] = 0;</div>
+<div class="line"><span class="lineno">  511</span> </div>
+<div class="line"><span class="lineno">  512</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  513</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; p; ++j)</div>
+<div class="line"><span class="lineno">  514</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; k &lt; m; ++k)</div>
+<div class="line"><span class="lineno">  515</span>                        res[i][j] += (*<span class="keyword">this</span>)[i][k] * B[k][j];</div>
+<div class="line"><span class="lineno">  516</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  517</span>        }<span class="comment">//operator&amp;</span></div>
 <div class="ttc" id="aclass_v_mlib_1_1nummatrix_html"><div class="ttname"><a href="../../da/d3c/class_v_mlib_1_1nummatrix.html">VMlib::nummatrix</a></div><div class="ttdoc">Шаблонный класс, определяющий матрицу фиксированного размера   Фактически представляет собой массив,...</div><div class="ttdef"><b>Definition</b> <a href="../../da/dbe/nummatrix_8h_source.html#l00065">nummatrix.h:66</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -910,15 +910,15 @@ template&lt;typename P &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>вектор &mdash; результат умножения матрицы на вектор </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00482">482</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  484</span>        {</div>
-<div class="line"><span class="lineno">  485</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(this-&gt;data()[0] * x[0])&gt;::type, n&gt; res;</div>
-<div class="line"><span class="lineno">  486</span> </div>
-<div class="line"><span class="lineno">  487</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  488</span>                res[i] = (*<span class="keyword">this</span>)[i] &amp; x;</div>
-<div class="line"><span class="lineno">  489</span> </div>
-<div class="line"><span class="lineno">  490</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  491</span>        }<span class="comment">//operator&amp;</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00483">483</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  485</span>        {</div>
+<div class="line"><span class="lineno">  486</span>            <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(this-&gt;data()[0] * x[0])&gt;::type, n&gt; res;</div>
+<div class="line"><span class="lineno">  487</span> </div>
+<div class="line"><span class="lineno">  488</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  489</span>                res[i] = (*<span class="keyword">this</span>)[i] &amp; x;</div>
+<div class="line"><span class="lineno">  490</span> </div>
+<div class="line"><span class="lineno">  491</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  492</span>        }<span class="comment">//operator&amp;</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1575,10 +1575,10 @@ template&lt;typename T , size_t n, size_t m&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>симметричную часть матрицы <br  />
  </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00340">340</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  341</span>        {</div>
-<div class="line"><span class="lineno">  342</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span> + this-&gt;<a class="code hl_function" href="../../da/d3c/class_v_mlib_1_1nummatrix.html#a0fc03b464f54a799acdcc9d463d26610">t</a>())*0.5;</div>
-<div class="line"><span class="lineno">  343</span>        }</div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00341">341</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  342</span>        {</div>
+<div class="line"><span class="lineno">  343</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span> + this-&gt;<a class="code hl_function" href="../../da/d3c/class_v_mlib_1_1nummatrix.html#a0fc03b464f54a799acdcc9d463d26610">t</a>())*0.5;</div>
+<div class="line"><span class="lineno">  344</span>        }</div>
 <div class="ttc" id="aclass_v_mlib_1_1nummatrix_html_a0fc03b464f54a799acdcc9d463d26610"><div class="ttname"><a href="../../da/d3c/class_v_mlib_1_1nummatrix.html#a0fc03b464f54a799acdcc9d463d26610">VMlib::nummatrix::t</a></div><div class="ttdeci">nummatrix&lt; T, m, n &gt; t() const</div><div class="ttdef"><b>Definition</b> <a href="../../da/dbe/nummatrix_8h_source.html#l00327">nummatrix.h:327</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1634,7 +1634,8 @@ template&lt;typename T , size_t n, size_t m&gt; </div>
 <div class="line"><span class="lineno">  330</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
 <div class="line"><span class="lineno">  331</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
 <div class="line"><span class="lineno">  332</span>                    res[j][i] = (*<span class="keyword">this</span>)[i][j];</div>
-<div class="line"><span class="lineno">  333</span>        }</div>
+<div class="line"><span class="lineno">  333</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  334</span>        }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1770,14 +1771,14 @@ template&lt;typename T , size_t n, size_t m&gt; </div>
 
 <p>Транспонирование </p>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00464">464</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  465</span>        {</div>
-<div class="line"><span class="lineno">  466</span>            <a class="code hl_class" href="../../da/d3c/class_v_mlib_1_1nummatrix.html">nummatrix&lt;T, m, n&gt;</a> res;</div>
-<div class="line"><span class="lineno">  467</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  468</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
-<div class="line"><span class="lineno">  469</span>                    res[j][i] = this-&gt;data()[i*m + j];</div>
-<div class="line"><span class="lineno">  470</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  471</span>        }<span class="comment">//Transpose(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00465">465</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  466</span>        {</div>
+<div class="line"><span class="lineno">  467</span>            <a class="code hl_class" href="../../da/d3c/class_v_mlib_1_1nummatrix.html">nummatrix&lt;T, m, n&gt;</a> res;</div>
+<div class="line"><span class="lineno">  468</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  469</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
+<div class="line"><span class="lineno">  470</span>                    res[j][i] = this-&gt;data()[i*m + j];</div>
+<div class="line"><span class="lineno">  471</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  472</span>        }<span class="comment">//Transpose(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -485,7 +485,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  231</span> </div>
 <div class="line"><span class="lineno">  232</span>    std::vector&lt;double&gt; h((nAllVars + 1) * maxIter, 0.0);</div>
 <div class="line"><span class="lineno">  233</span>    <span class="keywordtype">double</span> beta = 0.0, gs, normb = 0.0;</div>
-<div class="line"><span class="lineno">  234</span>    <span class="keywordtype">size_t</span> m;</div>
+<div class="line"><span class="lineno">  234</span>    <span class="keywordtype">size_t</span> m = 0;</div>
 <div class="line"><span class="lineno">  235</span> </div>
 <div class="line"><span class="lineno">  236</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nAllVars; ++i)</div>
 <div class="line"><span class="lineno">  237</span>        normb += rhsDir[i] * rhsDir[i];</div>
@@ -631,9 +631,9 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  377</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> aflI = 0; aflI &lt; nafl; ++aflI)</div>
 <div class="line"><span class="lineno">  378</span>        R[aflI] = x[x.size() - nafl + aflI];</div>
 <div class="line"><span class="lineno">  379</span>}</div>
-<div class="ttc" id="aclass_v_m2_d_1_1_passport_html_af8e7c0898e42ec93f2d722f1d2f65611"><div class="ttname"><a href="../../d2/d15/class_v_m2_d_1_1_passport.html#af8e7c0898e42ec93f2d722f1d2f65611">VM2D::Passport::numericalSchemes</a></div><div class="ttdeci">NumericalSchemes numericalSchemes</div><div class="ttdoc">Структура с используемыми численными схемами</div><div class="ttdef"><b>Definition</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00290">Passport2D.h:290</a></div></div>
+<div class="ttc" id="aclass_v_m2_d_1_1_passport_html_af8e7c0898e42ec93f2d722f1d2f65611"><div class="ttname"><a href="../../d2/d15/class_v_m2_d_1_1_passport.html#af8e7c0898e42ec93f2d722f1d2f65611">VM2D::Passport::numericalSchemes</a></div><div class="ttdeci">NumericalSchemes numericalSchemes</div><div class="ttdoc">Структура с используемыми численными схемами</div><div class="ttdef"><b>Definition</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00295">Passport2D.h:295</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_world2_d_html_a95be88dc18a41ba74bf09ab0e47627a4"><div class="ttname"><a href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4">VM2D::World2D::getPassport</a></div><div class="ttdeci">const Passport &amp; getPassport() const</div><div class="ttdoc">Возврат константной ссылки на паспорт</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d87/_world2_d_8h_source.html#l00251">World2D.h:251</a></div></div>
-<div class="ttc" id="astruct_v_m2_d_1_1_numerical_schemes_html_a1b208d2cbc9d228502cacbc02d4a6f56"><div class="ttname"><a href="../../d2/d76/struct_v_m2_d_1_1_numerical_schemes.html#a1b208d2cbc9d228502cacbc02d4a6f56">VM2D::NumericalSchemes::gmresEps</a></div><div class="ttdeci">double gmresEps</div><div class="ttdef"><b>Definition</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00170">Passport2D.h:170</a></div></div>
+<div class="ttc" id="astruct_v_m2_d_1_1_numerical_schemes_html_a1b208d2cbc9d228502cacbc02d4a6f56"><div class="ttname"><a href="../../d2/d76/struct_v_m2_d_1_1_numerical_schemes.html#a1b208d2cbc9d228502cacbc02d4a6f56">VM2D::NumericalSchemes::gmresEps</a></div><div class="ttdeci">double gmresEps</div><div class="ttdef"><b>Definition</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00175">Passport2D.h:175</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

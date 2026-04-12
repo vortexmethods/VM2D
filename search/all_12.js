@@ -7,7 +7,7 @@ var searchData=
   ['savevp_4',['SaveVP',['../d6/db8/class_v_m2_d_1_1_measure_v_p.html#a2131c97c4107890c515b240d96d4ae45',1,'VM2D::MeasureVP']]],
   ['savevpstep_5',['saveVPstep',['../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a7a83b423bb5aeac3ab35fe53acdb0269',1,'VMlib::TimeDiscretizationProperties']]],
   ['savevtxstep_6',['saveVtxStep',['../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a89af058541e566c8078c650f2be038bd',1,'VMlib::TimeDiscretizationProperties']]],
-  ['scale_7',['scale',['../db/de9/class_v_m2_d_1_1_airfoil.html#a355ead9b4cc8f815d6b815adbe1fa131',1,'VM2D::Airfoil::Scale()'],['../d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a9e5c918152100d035d6c60b3e2c994cd',1,'VM2D::AirfoilParams::scale']]],
+  ['scale_7',['scale',['../d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a9e5c918152100d035d6c60b3e2c994cd',1,'VM2D::AirfoilParams::scale'],['../db/de9/class_v_m2_d_1_1_airfoil.html#a355ead9b4cc8f815d6b815adbe1fa131',1,'VM2D::Airfoil::Scale()']]],
   ['scales_8',['scales',['../df/db0/gamma_circ_8h.html#a7e35cb73e31498113a352e974aa8f70f',1,'gammaCirc.h']]],
   ['scheme_5ft_9',['scheme_T',['../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76',1,'Gpudefs.h']]],
   ['schemetype_10',['schemeType',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#aad05eeb24349d335c99a948c10f7e287',1,'VM2D::CpuTreeInfo']]],

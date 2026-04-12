@@ -1,6 +1,6 @@
 var class_v_mlib_1_1numvector =
 [
-    [ "numvector", "d6/dd4/class_v_mlib_1_1numvector.html#aac6fee51fcadd02b1f41f23b491b5bfd", null ],
+    [ "numvector", "d6/dd4/class_v_mlib_1_1numvector.html#ab75a0adba8f83f46f694f8d54ce57898", null ],
     [ "numvector", "d6/dd4/class_v_mlib_1_1numvector.html#a4e5334cb39f3f21669181061c6580f9e", null ],
     [ "numvector", "d6/dd4/class_v_mlib_1_1numvector.html#a52bc81f06ce94bad448a5df61632c59e", null ],
     [ "numvector", "d6/dd4/class_v_mlib_1_1numvector.html#a45133c13b7edc603b11ac28df74da597", null ],
@@ -30,6 +30,8 @@ var class_v_mlib_1_1numvector =
     [ "operator-", "d6/dd4/class_v_mlib_1_1numvector.html#adc88b7b1531e2ea7a7b7ddf471b8db74", null ],
     [ "operator-=", "d6/dd4/class_v_mlib_1_1numvector.html#a2b6e9212fb3f49e3e6e414cecaf3a63d", null ],
     [ "operator/=", "d6/dd4/class_v_mlib_1_1numvector.html#aa039d1e786a3faeaeed51099e12d4f98", null ],
+    [ "operator=", "d6/dd4/class_v_mlib_1_1numvector.html#ab35092bdffe333acc71afe79232aa658", null ],
+    [ "operator=", "d6/dd4/class_v_mlib_1_1numvector.html#ab258559a8668b56b9cc4192308c3eac8", null ],
     [ "operator==", "d6/dd4/class_v_mlib_1_1numvector.html#aebacc8f5edc45e0eb4c51892f8b0f5a8", null ],
     [ "operator[]", "d6/dd4/class_v_mlib_1_1numvector.html#a325917bbc44dddfce9a2db4fdb1f537a", null ],
     [ "operator[]", "d6/dd4/class_v_mlib_1_1numvector.html#a29f9648a046eef8e3b6e7d7032f1f0e8", null ],

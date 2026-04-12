@@ -494,7 +494,7 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  263</span>{</div>
 <div class="line"><span class="lineno">  264</span>    <span class="keywordflow">return</span> atan2(<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d">cross3</a>(p, s), p &amp; s);</div>
 <div class="line"><span class="lineno">  265</span>}</div>
-<div class="ttc" id="anamespace_v_mlib_html_a98540b7a51b343eb622b9bdc4749921d"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d">VMlib::cross3</a></div><div class="ttdeci">double cross3(const numvector&lt; T, n &gt; &amp;x, const numvector&lt; P, n &gt; &amp;y)</div><div class="ttdoc">Вычисление третьей компоненты векторного произведения</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l01084">numvector.h:1084</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_a98540b7a51b343eb622b9bdc4749921d"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d">VMlib::cross3</a></div><div class="ttdeci">double cross3(const numvector&lt; T, n &gt; &amp;x, const numvector&lt; P, n &gt; &amp;y)</div><div class="ttdoc">Вычисление третьей компоненты векторного произведения</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l01111">numvector.h:1111</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -588,17 +588,17 @@ Here is the caller graph for this function:</div>
 
 <p>Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00560">560</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  561</span>    {</div>
-<div class="line"><span class="lineno">  562</span><span class="preprocessor">#ifndef LAMBVORTEX</span></div>
-<div class="line"><span class="lineno">  563</span>        <span class="keywordflow">return</span> std::max(r2, eps2);</div>
-<div class="line"><span class="lineno">  564</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">  565</span>        <span class="keywordflow">if</span> (r2 &gt; eps2)</div>
-<div class="line"><span class="lineno">  566</span>            <span class="keywordflow">return</span> std::max(r2, eps2);</div>
-<div class="line"><span class="lineno">  567</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  568</span>            <span class="keywordflow">return</span> (r2 &lt; 1e-10) ? 1e-10 : r2 / (1.0 - exp(-6.0*r2 / eps2));</div>
-<div class="line"><span class="lineno">  569</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  570</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00563">563</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  564</span>    {</div>
+<div class="line"><span class="lineno">  565</span><span class="preprocessor">#ifndef LAMBVORTEX</span></div>
+<div class="line"><span class="lineno">  566</span>        <span class="keywordflow">return</span> std::max(r2, eps2);</div>
+<div class="line"><span class="lineno">  567</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  568</span>        <span class="keywordflow">if</span> (r2 &gt; eps2)</div>
+<div class="line"><span class="lineno">  569</span>            <span class="keywordflow">return</span> std::max(r2, eps2);</div>
+<div class="line"><span class="lineno">  570</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  571</span>            <span class="keywordflow">return</span> (r2 &lt; 1e-10) ? 1e-10 : r2 / (1.0 - exp(-6.0*r2 / eps2));</div>
+<div class="line"><span class="lineno">  572</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  573</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -679,7 +679,10 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  428</span>        {</div>
 <div class="line"><span class="lineno">  429</span>            fwrite((<span class="keywordtype">void</span>*)buf.data(), 1, n, out);</div>
 <div class="line"><span class="lineno">  430</span>        }</div>
-<div class="line"><span class="lineno">  431</span>    }<span class="comment">//copyFile</span></div>
+<div class="line"><span class="lineno">  431</span> </div>
+<div class="line"><span class="lineno">  432</span>        std::fclose(in);</div>
+<div class="line"><span class="lineno">  433</span>        std::fclose(out);</div>
+<div class="line"><span class="lineno">  434</span>    }<span class="comment">//copyFile</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -726,14 +729,14 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00438">438</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  439</span>    {</div>
-<div class="line"><span class="lineno">  440</span><span class="preprocessor">#if defined(_WIN32)</span></div>
-<div class="line"><span class="lineno">  441</span>        _mkdir((dir + name).c_str());</div>
-<div class="line"><span class="lineno">  442</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">  443</span>        mkdir((dir + name).c_str(), S_IRWXU | S_IRGRP | S_IROTH);</div>
-<div class="line"><span class="lineno">  444</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  445</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00441">441</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  442</span>    {</div>
+<div class="line"><span class="lineno">  443</span><span class="preprocessor">#if defined(_WIN32)</span></div>
+<div class="line"><span class="lineno">  444</span>        _mkdir((dir + name).c_str());</div>
+<div class="line"><span class="lineno">  445</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  446</span>        mkdir((dir + name).c_str(), S_IRWXU | S_IRGRP | S_IROTH);</div>
+<div class="line"><span class="lineno">  447</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  448</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -813,10 +816,10 @@ template&lt;typename T , typename P , typename R &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00792">792</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  793</span>    {</div>
-<div class="line"><span class="lineno">  794</span>        z = { x[1] * y[2] - x[2] * y[1], x[2] * y[0] - x[0] * y[2], x[0] * y[1] - x[1] * y[0] };</div>
-<div class="line"><span class="lineno">  795</span>    }<span class="comment">//cross(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00819">819</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  820</span>    {</div>
+<div class="line"><span class="lineno">  821</span>        z = { x[1] * y[2] - x[2] * y[1], x[2] * y[0] - x[0] * y[2], x[0] * y[1] - x[1] * y[0] };</div>
+<div class="line"><span class="lineno">  822</span>    }<span class="comment">//cross(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -867,12 +870,12 @@ template&lt;typename T , typename P , size_t n&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>третья компонента вектороного произведения </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l01084">1084</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1085</span>    {</div>
-<div class="line"><span class="lineno"> 1086</span>        <span class="comment">//deprecate: use numvector.operator^ instead of cross3(numvector&lt;&gt;,numvector&lt;&gt;)</span></div>
-<div class="line"><span class="lineno"> 1087</span> </div>
-<div class="line"><span class="lineno"> 1088</span>        <span class="keywordflow">return</span> (x[0] * y[1] - x[1] * y[0]);</div>
-<div class="line"><span class="lineno"> 1089</span>    }<span class="comment">//cross3(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l01111">1111</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1112</span>    {</div>
+<div class="line"><span class="lineno"> 1113</span>        <span class="comment">//deprecate: use numvector.operator^ instead of cross3(numvector&lt;&gt;,numvector&lt;&gt;)</span></div>
+<div class="line"><span class="lineno"> 1114</span> </div>
+<div class="line"><span class="lineno"> 1115</span>        <span class="keywordflow">return</span> (x[0] * y[1] - x[1] * y[0]);</div>
+<div class="line"><span class="lineno"> 1116</span>    }<span class="comment">//cross3(...)</span></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1073,11 +1076,11 @@ template&lt;typename R  = double, typename T , typename P , size_t n&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>расстояние между точками </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00824">824</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  825</span>    {</div>
-<div class="line"><span class="lineno">  826</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, n&gt;</a> p = x - y;</div>
-<div class="line"><span class="lineno">  827</span>        <span class="keywordflow">return</span> sqrt(p&amp;p);</div>
-<div class="line"><span class="lineno">  828</span>    }<span class="comment">//dist(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00851">851</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  852</span>    {</div>
+<div class="line"><span class="lineno">  853</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;R, n&gt;</a> p = x - y;</div>
+<div class="line"><span class="lineno">  854</span>        <span class="keywordflow">return</span> sqrt(p&amp;p);</div>
+<div class="line"><span class="lineno">  855</span>    }<span class="comment">//dist(...)</span></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html">VMlib::numvector</a></div><div class="ttdoc">Шаблонный класс, определяющий вектор фиксированной длины   Фактически представляет собой массив,...</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00098">numvector.h:99</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1129,11 +1132,11 @@ template&lt;typename T , typename P , size_t n&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>квадрат расстояния между точками </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00808">808</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  809</span>    {</div>
-<div class="line"><span class="lineno">  810</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] - y[0])&gt;::type, n&gt; p = x - y;</div>
-<div class="line"><span class="lineno">  811</span>        <span class="keywordflow">return</span> p.<a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>();</div>
-<div class="line"><span class="lineno">  812</span>    }<span class="comment">//dist2(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00835">835</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  836</span>    {</div>
+<div class="line"><span class="lineno">  837</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] - y[0])&gt;::type, n&gt; p = x - y;</div>
+<div class="line"><span class="lineno">  838</span>        <span class="keywordflow">return</span> p.<a class="code hl_function" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>();</div>
+<div class="line"><span class="lineno">  839</span>    }<span class="comment">//dist2(...)</span></div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_a6f68eb11e99a7215635d90b410eec857"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857">VMlib::numvector::length2</a></div><div class="ttdeci">auto length2() const -&gt; typename std::remove_const&lt; typename std::remove_reference&lt; decltype(this-&gt;data[0])&gt;::type &gt;::type</div><div class="ttdoc">Вычисление квадрата нормы (длины) вектора</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00386">numvector.h:386</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1459,14 +1462,14 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  105</span>            }</div>
 <div class="line"><span class="lineno">  106</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (wildcard)</div>
 <div class="line"><span class="lineno">  107</span>            {</div>
-<div class="line"><span class="lineno">  108</span>                <span class="keywordflow">if</span> (*line == *pattern)</div>
-<div class="line"><span class="lineno">  109</span>                {</div>
-<div class="line"><span class="lineno">  110</span>                    wildcard = 0;</div>
-<div class="line"><span class="lineno">  111</span>                    line++;</div>
-<div class="line"><span class="lineno">  112</span>                    pattern++;</div>
-<div class="line"><span class="lineno">  113</span>                    last_line_start = line + 1;</div>
-<div class="line"><span class="lineno">  114</span>                }</div>
-<div class="line"><span class="lineno">  115</span>                <span class="keywordflow">else</span>                </div>
+<div class="line"><span class="lineno">  108</span>                <span class="comment">//if (*line == *pattern) //is always false</span></div>
+<div class="line"><span class="lineno">  109</span>                <span class="comment">//{</span></div>
+<div class="line"><span class="lineno">  110</span>                <span class="comment">//  wildcard = 0;</span></div>
+<div class="line"><span class="lineno">  111</span>                <span class="comment">//  line++;</span></div>
+<div class="line"><span class="lineno">  112</span>                <span class="comment">//  pattern++;</span></div>
+<div class="line"><span class="lineno">  113</span>                <span class="comment">//  last_line_start = line + 1;</span></div>
+<div class="line"><span class="lineno">  114</span>                <span class="comment">//}</span></div>
+<div class="line"><span class="lineno">  115</span>                <span class="comment">//else</span></div>
 <div class="line"><span class="lineno">  116</span>                    line++;             </div>
 <div class="line"><span class="lineno">  117</span>            }</div>
 <div class="line"><span class="lineno">  118</span>            <span class="keywordflow">else</span></div>
@@ -1702,11 +1705,11 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>аркосинус аргумента, если |x|&lt;1, или 0, или Pi, </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00463">463</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  464</span>    {</div>
-<div class="line"><span class="lineno">  465</span>        <span class="keywordtype">double</span> res = abs(x) &gt; 1.0 ? 0.5*<a class="code hl_variable" href="../../d5/d64/defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a>*(1 - sign(x)) : acos(x);</div>
-<div class="line"><span class="lineno">  466</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  467</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00466">466</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  467</span>    {</div>
+<div class="line"><span class="lineno">  468</span>        <span class="keywordtype">double</span> res = abs(x) &gt; 1.0 ? 0.5*<a class="code hl_variable" href="../../d5/d64/defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a>*(1 - sign(x)) : acos(x);</div>
+<div class="line"><span class="lineno">  469</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  470</span>    }</div>
 <div class="ttc" id="adefs_8h_html_a952eac791b596a61bba0a133a3bb439f"><div class="ttname"><a href="../../d5/d64/defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a></div><div class="ttdeci">const double PI</div><div class="ttdoc">Число .</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d64/defs_8h_source.html#l00082">defs.h:82</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -2024,17 +2027,17 @@ template&lt;typename T , typename P , size_t n, size_t m&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>вектор &mdash; результат умножения матрицы на вектор </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00531">531</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  533</span>    {</div>
-<div class="line"><span class="lineno">  534</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * A.data()[0])&gt;::type, m&gt; res;</div>
-<div class="line"><span class="lineno">  535</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; m; ++i)</div>
-<div class="line"><span class="lineno">  536</span>        {</div>
-<div class="line"><span class="lineno">  537</span>            res[i] = 0;</div>
-<div class="line"><span class="lineno">  538</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n; ++j)</div>
-<div class="line"><span class="lineno">  539</span>                res[i] += x[j] * A[j][i];</div>
-<div class="line"><span class="lineno">  540</span>        }</div>
-<div class="line"><span class="lineno">  541</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  542</span>    }<span class="comment">//operator&amp;(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00532">532</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  534</span>    {</div>
+<div class="line"><span class="lineno">  535</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * A.data()[0])&gt;::type, m&gt; res;</div>
+<div class="line"><span class="lineno">  536</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; m; ++i)</div>
+<div class="line"><span class="lineno">  537</span>        {</div>
+<div class="line"><span class="lineno">  538</span>            res[i] = 0;</div>
+<div class="line"><span class="lineno">  539</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n; ++j)</div>
+<div class="line"><span class="lineno">  540</span>                res[i] += x[j] * A[j][i];</div>
+<div class="line"><span class="lineno">  541</span>        }</div>
+<div class="line"><span class="lineno">  542</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  543</span>    }<span class="comment">//operator&amp;(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2085,13 +2088,13 @@ template&lt;typename T , typename P , size_t n&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>результат умножения вектора на число, приведенный к соответствующему типу </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00770">770</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  771</span>    {</div>
-<div class="line"><span class="lineno">  772</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * c)&gt;::type, n&gt; res;</div>
-<div class="line"><span class="lineno">  773</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  774</span>            res[i] = x[i] * c;</div>
-<div class="line"><span class="lineno">  775</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  776</span>    }<span class="comment">//operator*(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00797">797</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  798</span>    {</div>
+<div class="line"><span class="lineno">  799</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * c)&gt;::type, n&gt; res;</div>
+<div class="line"><span class="lineno">  800</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  801</span>            res[i] = x[i] * c;</div>
+<div class="line"><span class="lineno">  802</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  803</span>    }<span class="comment">//operator*(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2135,10 +2138,10 @@ template&lt;typename T , typename P , typename R , size_t n&gt; </div>
 <p>Оператор умножения "*" пары векторов на число (пара слева, число справа) </p>
 <p>tparam T тип данных вектора - первого компонента в паре tparam P тип данных вектора - второго компонента в паре tparam R тип данных числового множителя tparam n длина векторов - компонентов пары param[in] c числовой множитель param[in] a константная ссылка на пару return пару, получаемую при покомпонентном умножении пары на число, приведенную к нужному типу </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00945">945</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  947</span>    {</div>
-<div class="line"><span class="lineno">  948</span>        <span class="keywordflow">return</span> c * a;</div>
-<div class="line"><span class="lineno">  949</span>    }<span class="comment">//operator*(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00972">972</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  974</span>    {</div>
+<div class="line"><span class="lineno">  975</span>        <span class="keywordflow">return</span> c * a;</div>
+<div class="line"><span class="lineno">  976</span>    }<span class="comment">//operator*(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2188,13 +2191,13 @@ template&lt;typename T , size_t n&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>результат умножения вектора на число, приведенный к соответствующему типу </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00752">752</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  753</span>    {</div>
-<div class="line"><span class="lineno">  754</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res(x);</div>
-<div class="line"><span class="lineno">  755</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  756</span>            res[i] *= c;</div>
-<div class="line"><span class="lineno">  757</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  758</span>    }<span class="comment">//operator*(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00779">779</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  780</span>    {</div>
+<div class="line"><span class="lineno">  781</span>        <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector&lt;T, n&gt;</a> res(x);</div>
+<div class="line"><span class="lineno">  782</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  783</span>            res[i] *= c;</div>
+<div class="line"><span class="lineno">  784</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  785</span>    }<span class="comment">//operator*(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2284,13 +2287,13 @@ template&lt;typename T , typename P , typename R , size_t n&gt; </div>
 <p>Оператор умножения "*" числа на пару векторов (число слева, пара справа) </p>
 <p>tparam T тип данных вектора - первого компонента в паре tparam P тип данных вектора - второго компонента в паре tparam R тип данных числового множителя tparam n длина векторов - компонентов пары param[in] c числовой множитель param[in] a константная ссылка на пару return пару, получаемую при покомпонентном умножении пары на число, приведенную к нужному типу </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00925">925</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  927</span>    {</div>
-<div class="line"><span class="lineno">  928</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.second[0])&gt;::type, n &gt;&gt; res;</div>
-<div class="line"><span class="lineno">  929</span>        res.first = c * a.first;</div>
-<div class="line"><span class="lineno">  930</span>        res.second = c * a.second;</div>
-<div class="line"><span class="lineno">  931</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  932</span>    }<span class="comment">//operator*(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00952">952</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  954</span>    {</div>
+<div class="line"><span class="lineno">  955</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(c * a.second[0])&gt;::type, n &gt;&gt; res;</div>
+<div class="line"><span class="lineno">  956</span>        res.first = c * a.first;</div>
+<div class="line"><span class="lineno">  957</span>        res.second = c * a.second;</div>
+<div class="line"><span class="lineno">  958</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  959</span>    }<span class="comment">//operator*(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2374,12 +2377,12 @@ template&lt;typename T , typename P , typename R , size_t n&gt; </div>
 <p>Оператор домножения "*=" пары векторов на число (пара слева, число справа) </p>
 <p>tparam T тип данных вектора - первого компонента в паре tparam P тип данных вектора - второго компонента в паре tparam R тип данных числового множителя tparam n длина векторов - компонентов пары param[in] a ссылка на пару param[in] c числовой множитель return ссылка на пару после ее покомпонентного домножения на число </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00907">907</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  908</span>    {</div>
-<div class="line"><span class="lineno">  909</span>        a.first *= c;</div>
-<div class="line"><span class="lineno">  910</span>        a.second *= c;</div>
-<div class="line"><span class="lineno">  911</span>        <span class="keywordflow">return</span> a;</div>
-<div class="line"><span class="lineno">  912</span>    }<span class="comment">//operator*=(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00934">934</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  935</span>    {</div>
+<div class="line"><span class="lineno">  936</span>        a.first *= c;</div>
+<div class="line"><span class="lineno">  937</span>        a.second *= c;</div>
+<div class="line"><span class="lineno">  938</span>        <span class="keywordflow">return</span> a;</div>
+<div class="line"><span class="lineno">  939</span>    }<span class="comment">//operator*=(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2466,13 +2469,13 @@ template&lt;typename T , typename P , typename R , typename S , size_t n&gt; </d
 <p>Оператор сложения "+" для пар векторов </p>
 <p>tparam T тип данных вектора - первого компонента в левой паре tparam P тип данных вектора - второго компонента в левой паре tparam R тип данных вектора - первого компонента в правой паре tparam S тип данных вектора - второго компонента в правой паре tparam n длина векторов - компонентов обеих пар param[in] a константная ссылка на левую пару param[in] b константная ссылка на правую пару return пару, получаемую при покомпонентном суммировании левой и правой пар, приведенную к нужному типу </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00887">887</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  889</span>    {</div>
-<div class="line"><span class="lineno">  890</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.first[0] + b.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.second[0] + b.second[0])&gt;::type, n &gt;&gt; res;</div>
-<div class="line"><span class="lineno">  891</span>        res.first = a.first + b.first;</div>
-<div class="line"><span class="lineno">  892</span>        res.second = a.second + b.second;</div>
-<div class="line"><span class="lineno">  893</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  894</span>    }<span class="comment">//operator+(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00914">914</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  916</span>    {</div>
+<div class="line"><span class="lineno">  917</span>        std::pair&lt;<a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.first[0] + b.first[0])&gt;::type, n&gt;, <a class="code hl_class" href="../../d6/dd4/class_v_mlib_1_1numvector.html">numvector</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(a.second[0] + b.second[0])&gt;::type, n &gt;&gt; res;</div>
+<div class="line"><span class="lineno">  918</span>        res.first = a.first + b.first;</div>
+<div class="line"><span class="lineno">  919</span>        res.second = a.second + b.second;</div>
+<div class="line"><span class="lineno">  920</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  921</span>    }<span class="comment">//operator+(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2515,12 +2518,12 @@ template&lt;typename T , typename P , typename R , typename S , size_t n&gt; </d
 <p>Оператор прибавления "+=" для пар векторов </p>
 <p>tparam T тип данных вектора - первого компонента в паре tparam P тип данных вектора - второго компонента в паре tparam R тип данных вектора - первого компонента в прибавляемой паре tparam S тип данных вектора - второго компонента в прибавляемой паре tparam n длина векторов - компонентов обеих пар param[in] a ссылка на первую пару param[in] b константная ссылка на прибавляемую пару return ссылку на первую пару после прибавления к ней второй пары </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00868">868</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  869</span>    {</div>
-<div class="line"><span class="lineno">  870</span>        a.first += b.first;</div>
-<div class="line"><span class="lineno">  871</span>        a.second += b.second;</div>
-<div class="line"><span class="lineno">  872</span>        <span class="keywordflow">return</span> a;</div>
-<div class="line"><span class="lineno">  873</span>    }<span class="comment">//operator+=(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00895">895</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  896</span>    {</div>
+<div class="line"><span class="lineno">  897</span>        a.first += b.first;</div>
+<div class="line"><span class="lineno">  898</span>        a.second += b.second;</div>
+<div class="line"><span class="lineno">  899</span>        <span class="keywordflow">return</span> a;</div>
+<div class="line"><span class="lineno">  900</span>    }<span class="comment">//operator+=(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2823,15 +2826,15 @@ template&lt;typename T , size_t n, size_t m&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ссылка на поток вывода </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00571">571</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  572</span>    {</div>
-<div class="line"><span class="lineno">  573</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span>;</div>
-<div class="line"><span class="lineno">  574</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n - 1; ++j)</div>
-<div class="line"><span class="lineno">  575</span>            str &lt;&lt; x[j] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><span class="lineno">  576</span>        str &lt;&lt; x[n - 1];</div>
-<div class="line"><span class="lineno">  577</span>        str &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
-<div class="line"><span class="lineno">  578</span>        <span class="keywordflow">return</span> str;</div>
-<div class="line"><span class="lineno">  579</span>    }<span class="comment">//operator&lt;&lt;</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00572">572</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  573</span>    {</div>
+<div class="line"><span class="lineno">  574</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span>;</div>
+<div class="line"><span class="lineno">  575</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n - 1; ++j)</div>
+<div class="line"><span class="lineno">  576</span>            str &lt;&lt; x[j] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><span class="lineno">  577</span>        str &lt;&lt; x[n - 1];</div>
+<div class="line"><span class="lineno">  578</span>        str &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
+<div class="line"><span class="lineno">  579</span>        <span class="keywordflow">return</span> str;</div>
+<div class="line"><span class="lineno">  580</span>    }<span class="comment">//operator&lt;&lt;</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2881,15 +2884,15 @@ template&lt;typename T , size_t n&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ссылку на поток вывода </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00841">841</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  842</span>    {</div>
-<div class="line"><span class="lineno">  843</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span>;</div>
-<div class="line"><span class="lineno">  844</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n - 1; ++j)</div>
-<div class="line"><span class="lineno">  845</span>            str &lt;&lt; x[j] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><span class="lineno">  846</span>        str &lt;&lt; x[n - 1];</div>
-<div class="line"><span class="lineno">  847</span>        str &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
-<div class="line"><span class="lineno">  848</span>        <span class="keywordflow">return</span> str;</div>
-<div class="line"><span class="lineno">  849</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00868">868</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  869</span>    {</div>
+<div class="line"><span class="lineno">  870</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span>;</div>
+<div class="line"><span class="lineno">  871</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n - 1; ++j)</div>
+<div class="line"><span class="lineno">  872</span>            str &lt;&lt; x[j] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><span class="lineno">  873</span>        str &lt;&lt; x[n - 1];</div>
+<div class="line"><span class="lineno">  874</span>        str &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
+<div class="line"><span class="lineno">  875</span>        <span class="keywordflow">return</span> str;</div>
+<div class="line"><span class="lineno">  876</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2940,11 +2943,11 @@ template&lt;typename T , typename P , size_t n&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ссылку на поток вывода </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00963">963</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  964</span>    {</div>
-<div class="line"><span class="lineno">  965</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span> &lt;&lt; x.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; x.second &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
-<div class="line"><span class="lineno">  966</span>        <span class="keywordflow">return</span> str;</div>
-<div class="line"><span class="lineno">  967</span>    }<span class="comment">//operator&lt;&lt;</span></div>
+<p class="definition">Definition at line <a class="el" href="../../df/dc5/numvector_8h_source.html#l00990">990</a> of file <a class="el" href="../../df/dc5/numvector_8h_source.html">numvector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  991</span>    {</div>
+<div class="line"><span class="lineno">  992</span>        str &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span> &lt;&lt; x.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; x.second &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
+<div class="line"><span class="lineno">  993</span>        <span class="keywordflow">return</span> str;</div>
+<div class="line"><span class="lineno">  994</span>    }<span class="comment">//operator&lt;&lt;</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2987,16 +2990,16 @@ template&lt;typename T , typename P , size_t n, size_t m&gt; </div>
 
 <p>Умножение вектора на вектор внешним образом </p>
 
-<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00547">547</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  549</span>    {</div>
-<div class="line"><span class="lineno">  550</span>        <a class="code hl_class" href="../../da/d3c/class_v_mlib_1_1nummatrix.html">nummatrix</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * y[0])&gt;::type, n, m&gt; res;</div>
-<div class="line"><span class="lineno">  551</span> </div>
-<div class="line"><span class="lineno">  552</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">  553</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
-<div class="line"><span class="lineno">  554</span>                res[i][j] = x[i] * y[j];</div>
-<div class="line"><span class="lineno">  555</span> </div>
-<div class="line"><span class="lineno">  556</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  557</span>    }<span class="comment">//operator|(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../da/dbe/nummatrix_8h_source.html#l00548">548</a> of file <a class="el" href="../../da/dbe/nummatrix_8h_source.html">nummatrix.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  550</span>    {</div>
+<div class="line"><span class="lineno">  551</span>        <a class="code hl_class" href="../../da/d3c/class_v_mlib_1_1nummatrix.html">nummatrix</a>&lt;<span class="keyword">typename</span> std::remove_const&lt;<span class="keyword">decltype</span>(x[0] * y[0])&gt;::type, n, m&gt; res;</div>
+<div class="line"><span class="lineno">  552</span> </div>
+<div class="line"><span class="lineno">  553</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">  554</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m; ++j)</div>
+<div class="line"><span class="lineno">  555</span>                res[i][j] = x[i] * y[j];</div>
+<div class="line"><span class="lineno">  556</span> </div>
+<div class="line"><span class="lineno">  557</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  558</span>    }<span class="comment">//operator|(...)</span></div>
 <div class="ttc" id="aclass_v_mlib_1_1nummatrix_html"><div class="ttname"><a href="../../da/d3c/class_v_mlib_1_1nummatrix.html">VMlib::nummatrix</a></div><div class="ttdoc">Шаблонный класс, определяющий матрицу фиксированного размера   Фактически представляет собой массив,...</div><div class="ttdef"><b>Definition</b> <a href="../../da/dbe/nummatrix_8h_source.html#l00065">nummatrix.h:66</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -3538,13 +3541,13 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>знак числа в обычном математическом смысле, </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00476">476</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  477</span>    {</div>
-<div class="line"><span class="lineno">  478</span>        <span class="keywordtype">double</span> dx = (double)x;</div>
-<div class="line"><span class="lineno">  479</span>        <span class="keywordflow">if</span> (dx &gt; 0) <span class="keywordflow">return</span> 1;</div>
-<div class="line"><span class="lineno">  480</span>        <span class="keywordflow">if</span> ( (dx &lt; 0.0) || (dx &lt; -0.0) ) <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  481</span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  482</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00479">479</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  480</span>    {</div>
+<div class="line"><span class="lineno">  481</span>        <span class="keywordtype">double</span> dx = (double)x;</div>
+<div class="line"><span class="lineno">  482</span>        <span class="keywordflow">if</span> (dx &gt; 0) <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">  483</span>        <span class="keywordflow">if</span> ( (dx &lt; 0.0) || (dx &lt; -0.0) ) <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">  484</span>        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  485</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -3599,8 +3602,8 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>квадрат аргумента \( x^2 \) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00454">454</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  454</span>{ <span class="keywordflow">return</span> x * x; }</div>
+<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00457">457</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  457</span>{ <span class="keywordflow">return</span> x * x; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -3630,12 +3633,12 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00552">552</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  553</span>    {</div>
-<div class="line"><span class="lineno">  554</span>        <span class="keywordtype">char</span>* varArray = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(&amp;var);</div>
-<div class="line"><span class="lineno">  555</span>        <span class="keywordflow">for</span> (<span class="keywordtype">long</span> i = 0; i &lt; static_cast&lt;long&gt;(<span class="keyword">sizeof</span>(var) / 2); ++i)</div>
-<div class="line"><span class="lineno">  556</span>            std::swap(varArray[<span class="keyword">sizeof</span>(var) - 1 - i], varArray[i]);</div>
-<div class="line"><span class="lineno">  557</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d5/d64/defs_8h_source.html#l00555">555</a> of file <a class="el" href="../../d5/d64/defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  556</span>    {</div>
+<div class="line"><span class="lineno">  557</span>        <span class="keywordtype">char</span>* varArray = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(&amp;var);</div>
+<div class="line"><span class="lineno">  558</span>        <span class="keywordflow">for</span> (<span class="keywordtype">long</span> i = 0; i &lt; static_cast&lt;long&gt;(<span class="keyword">sizeof</span>(var) / 2); ++i)</div>
+<div class="line"><span class="lineno">  559</span>            std::swap(varArray[<span class="keyword">sizeof</span>(var) - 1 - i], varArray[i]);</div>
+<div class="line"><span class="lineno">  560</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

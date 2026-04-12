@@ -1,6 +1,6 @@
 var class_v_mlib_1_1_vortex2_d =
 [
-    [ "Vortex2D", "d0/de1/class_v_mlib_1_1_vortex2_d.html#a77a610caabb889c657ef7248727f2ea4", null ],
+    [ "Vortex2D", "d0/de1/class_v_mlib_1_1_vortex2_d.html#a58032f3ca753adc52d9ffb1d2bf8acb3", null ],
     [ "Vortex2D", "d0/de1/class_v_mlib_1_1_vortex2_d.html#ac85088a773662557950489dfc23a9133", null ],
     [ "~Vortex2D", "d0/de1/class_v_mlib_1_1_vortex2_d.html#abbabd39297623e36c4547dffb0f10ddc", null ],
     [ "g", "d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d", null ],
