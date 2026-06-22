@@ -1,64 +1,67 @@
 <map id="VM2D::Wake::Restruct" name="VM2D::Wake::Restruct">
-<area shape="rect" id="Node000001" title="Реструктуризация вихревого следа" alt="" coords="5,549,172,574"/>
-<area shape="rect" id="Node000002" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="265,346,425,371"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,547,111,515,138,472,174,427,219,389,251,373,253,377,221,393,178,430,142,475,115,517,98,550"/>
-<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4bb03a64c2fa1f064fac02e69c125187" title="Возврат константной ссылки на объект профиля" alt="" coords="525,85,717,110"/>
-<area shape="poly" id="edge23_Node000001_Node000004" title=" " alt="" coords="88,548,93,484,111,388,128,334,150,282,180,233,218,190,250,165,285,145,323,129,362,116,439,100,511,93,512,99,440,105,363,121,325,134,288,150,253,170,222,194,185,236,155,284,133,336,117,389,98,485,93,549"/>
-<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a948b4561638d16d17c20671c608e9f91" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="528,134,715,159"/>
-<area shape="poly" id="edge24_Node000001_Node000005" title=" " alt="" coords="89,548,99,495,121,417,138,375,160,333,186,294,218,259,251,234,287,213,364,181,442,161,514,150,515,155,443,166,366,186,289,218,254,239,222,263,190,297,164,336,143,377,126,419,104,496,94,549"/>
-<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0277884d66fb825cebd681dba46c2858" title="Возврат количества профилей в задаче" alt="" coords="519,184,724,224"/>
-<area shape="poly" id="edge27_Node000001_Node000006" title=" " alt="" coords="91,548,105,506,131,448,168,386,192,357,218,331,251,308,286,287,360,254,435,231,504,216,506,221,436,236,362,259,288,292,254,312,222,335,196,360,173,389,136,450,110,508,96,549"/>
-<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="1035,349,1243,374"/>
-<area shape="poly" id="edge28_Node000001_Node000009" title=" " alt="" coords="173,571,362,593,600,612,719,615,828,612,919,600,956,590,985,578,1013,560,1037,537,1078,485,1107,431,1126,387,1131,389,1112,433,1082,488,1041,541,1016,564,988,582,958,595,920,605,828,617,719,621,600,617,362,599,172,576"/>
-<area shape="rect" id="Node000011" href="$df/d8f/class_v_m2_d_1_1_wake.html#a400fefddd41761ea02afd8a15fb7764e" title="Проверка проникновения точки через границу профиля" alt="" coords="528,401,715,426"/>
-<area shape="poly" id="edge31_Node000001_Node000011" title=" " alt="" coords="103,547,152,509,184,489,219,472,294,448,371,432,447,421,514,415,515,420,447,426,372,437,295,454,221,477,187,494,155,513,106,551"/>
-<area shape="rect" id="Node000015" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9e9876b8af44c612985703e61a8fb670" title="Сброс счетчика времени" alt="" coords="538,450,705,475"/>
-<area shape="poly" id="edge32_Node000001_Node000015" title=" " alt="" coords="117,546,164,527,219,510,299,493,379,480,524,465,524,471,380,486,300,498,221,515,166,532,119,551"/>
-<area shape="rect" id="Node000016" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9a2edffcbf01cfab7f70422ce60391be" title="Запуск (первый или повторный) счетчика времени" alt="" coords="539,499,703,525"/>
-<area shape="poly" id="edge34_Node000001_Node000016" title=" " alt="" coords="172,546,220,540,381,525,525,515,526,520,382,530,220,545,172,551"/>
-<area shape="rect" id="Node000017" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a320206c4467fa80d013de7a8d9fde1d5" title="Останов работающего счетчика времени" alt="" coords="540,549,703,574"/>
-<area shape="poly" id="edge36_Node000001_Node000017" title=" " alt="" coords="172,559,526,559,526,564,172,564"/>
-<area shape="rect" id="Node000018" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad3ee3eecd03629e1af8f850cc043cdf4" title=" " alt="" coords="772,250,987,275"/>
-<area shape="poly" id="edge19_Node000001_Node000018" title=" " alt="" coords="87,549,88,475,93,421,102,360,118,297,142,234,174,176,218,126,280,76,340,40,399,16,458,5,520,5,584,16,652,38,725,70,752,85,776,104,817,150,848,197,869,236,864,239,843,199,813,153,772,108,749,90,723,74,650,43,582,21,519,10,459,10,400,21,342,45,283,81,222,130,179,179,146,236,123,298,108,361,98,421,93,475,92,549"/>
-<area shape="rect" id="Node000019" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5bc062225a158baa1a6c80c1f0870d79" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="221,650,470,675"/>
-<area shape="poly" id="edge25_Node000001_Node000019" title=" " alt="" coords="112,572,161,600,221,628,270,644,269,649,219,633,158,605,109,577"/>
-<area shape="rect" id="Node000020" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#afe44ce12106c0afc50cf2e9591d3497a" title="Возврат неконстантной ссылки на вихревой след" alt="" coords="220,699,471,725"/>
-<area shape="poly" id="edge26_Node000001_Node000020" title=" " alt="" coords="101,573,148,628,182,660,221,686,236,692,234,697,219,690,179,664,144,632,97,576"/>
-<area shape="rect" id="Node000021" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a724533c5ac15595459d04136a6a2bb29" title="Возврат ссылки на временную статистику выполнения шага расчета по времени" alt="" coords="246,749,445,774"/>
-<area shape="poly" id="edge29_Node000001_Node000021" title=" " alt="" coords="98,573,114,606,141,651,177,697,198,718,221,735,235,742,232,747,219,740,195,722,173,701,136,654,109,609,93,575"/>
-<area shape="rect" id="Node000022" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a33e4bc208d515f522eaca4f0f99c7422" title="Возврат константной ссылки на вихревой след" alt="" coords="251,798,439,823"/>
-<area shape="poly" id="edge30_Node000001_Node000022" title=" " alt="" coords="96,573,109,615,134,673,171,734,194,761,222,785,240,795,237,799,218,789,191,765,167,737,129,675,104,617,91,575"/>
-<area shape="rect" id="Node000023" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a5279e671bedc8f19f2ec9c7d62581508" title="Установка правой границы самого правого профиля (для организации увеличения радиуса коллапса)" alt="" coords="239,847,452,873"/>
-<area shape="poly" id="edge33_Node000001_Node000023" title=" " alt="" coords="95,574,105,623,127,695,144,733,165,771,191,805,222,834,228,839,225,843,218,838,187,808,161,773,139,735,122,697,100,625,89,575"/>
-<area shape="rect" id="Node000024" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a9be199fa84f64c66a8592f1d12d59daf" title="Запуск счетчика" alt="" coords="257,897,433,922"/>
-<area shape="poly" id="edge35_Node000001_Node000024" title=" " alt="" coords="94,574,101,631,121,716,138,762,159,807,187,848,222,883,245,897,243,902,218,888,183,851,155,809,133,764,116,717,96,632,88,574"/>
-<area shape="rect" id="Node000025" href="$d9/d47/knn_c_p_u_8cpp.html#a4d0d9439300bff8def02d4a5f551777b" title=" " alt="" coords="255,946,435,971"/>
-<area shape="poly" id="edge37_Node000001_Node000025" title=" " alt="" coords="93,574,98,639,115,736,131,790,154,843,184,891,222,933,243,946,241,951,218,937,179,894,149,845,126,792,110,738,92,639,88,574"/>
-<area shape="rect" id="Node000003" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d" title="Функция для доступа к циркуляции вихря" alt="" coords="1067,250,1210,275"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="425,351,469,336,484,325,493,311,501,297,517,285,584,255,640,243,772,235,879,228,987,235,1063,245,1063,250,986,240,879,234,772,240,640,248,585,260,520,289,505,301,497,314,488,328,472,341,427,357"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="350,345,370,301,406,240,455,175,485,145,517,119,527,114,530,118,520,124,488,149,459,178,410,243,375,304,354,347"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="355,344,432,252,479,202,517,170,533,162,535,167,520,174,483,206,436,255,359,347"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="364,344,517,240,547,227,549,232,520,245,367,348"/>
-<area shape="rect" id="Node000007" href="$df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа" alt="" coords="538,299,705,325"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="421,343,532,324,533,330,421,349"/>
-<area shape="rect" id="Node000010" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="1069,299,1209,325"/>
-<area shape="poly" id="edge15_Node000002_Node000010" title=" " alt="" coords="426,356,676,352,831,345,986,333,1055,324,1056,330,987,339,831,351,676,357,426,362"/>
-<area shape="poly" id="edge11_Node000002_Node000011" title=" " alt="" coords="411,369,544,395,543,401,410,374"/>
-<area shape="poly" id="edge16_Node000002_Node000015" title=" " alt="" coords="372,369,438,401,520,435,549,444,547,449,518,440,436,406,370,374"/>
-<area shape="poly" id="edge17_Node000002_Node000016" title=" " alt="" coords="362,370,427,425,472,457,520,484,542,493,540,498,518,489,469,462,423,429,358,374"/>
-<area shape="poly" id="edge18_Node000002_Node000017" title=" " alt="" coords="357,370,381,404,418,449,465,496,520,535,533,542,531,546,517,540,462,500,414,452,377,407,353,373"/>
-<area shape="rect" id="Node000008" href="$df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e" title=" " alt="" coords="788,299,971,325"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="705,309,774,309,774,315,705,315"/>
-<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="946,297,1057,275,1058,281,947,302"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="947,322,1058,344,1057,349,946,327"/>
-<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="971,309,1055,309,1055,315,971,315"/>
-<area shape="rect" id="Node000012" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="793,400,966,440"/>
-<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="715,413,779,415,779,420,715,419"/>
-<area shape="rect" id="Node000013" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="793,464,966,504"/>
-<area shape="poly" id="edge13_Node000011_Node000013" title=" " alt="" coords="680,424,725,435,773,450,799,458,798,463,771,455,723,440,678,429"/>
-<area shape="rect" id="Node000014" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5c4d2f8431f7232fbcf7d367501a8bd5" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля" alt="" coords="791,528,968,568"/>
-<area shape="poly" id="edge14_Node000011_Node000014" title=" " alt="" coords="705,424,726,435,743,455,751,475,758,495,774,514,781,519,778,524,770,518,753,498,746,477,739,458,722,440,702,428"/>
-<area shape="poly" id="edge20_Node000018_Node000003" title=" " alt="" coords="987,260,1053,260,1053,265,987,265"/>
-<area shape="poly" id="edge21_Node000018_Node000009" title=" " alt="" coords="962,273,988,284,1004,297,1013,310,1022,322,1036,334,1052,342,1050,347,1033,338,1018,326,1009,313,1000,300,985,289,960,278"/>
-<area shape="poly" id="edge22_Node000018_Node000010" title=" " alt="" coords="947,273,1058,294,1057,299,946,278"/>
+<area shape="rect" id="Node000001" title="Реструктуризация вихревого следа" alt="" coords="5,570,172,596"/>
+<area shape="rect" id="Node000002" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="265,365,425,390"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,569,111,537,138,494,174,449,219,410,254,392,257,397,221,415,178,452,143,497,116,539,98,571"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4bb03a64c2fa1f064fac02e69c125187" title="Возврат константной ссылки на объект профиля" alt="" coords="525,110,717,136"/>
+<area shape="poly" id="edge25_Node000001_Node000004" title=" " alt="" coords="89,570,99,516,122,436,139,391,160,347,187,305,218,268,250,240,285,216,361,178,439,152,511,135,512,140,440,157,363,183,288,221,253,244,222,272,191,308,165,350,144,394,127,437,105,517,94,571"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a948b4561638d16d17c20671c608e9f91" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="528,160,715,185"/>
+<area shape="poly" id="edge26_Node000001_Node000005" title=" " alt="" coords="92,569,107,529,133,471,170,408,193,378,218,351,256,317,291,292,324,273,357,259,428,234,518,202,561,187,563,192,520,207,430,239,359,263,327,278,294,296,260,321,222,354,197,381,175,411,138,474,112,531,97,571"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a0277884d66fb825cebd681dba46c2858" title="Возврат количества профилей в задаче" alt="" coords="519,412,724,452"/>
+<area shape="poly" id="edge29_Node000001_Node000006" title=" " alt="" coords="104,568,153,533,185,515,219,499,291,476,366,458,505,438,506,443,367,464,293,481,221,504,188,520,156,538,107,573"/>
+<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="1035,210,1243,236"/>
+<area shape="poly" id="edge30_Node000001_Node000009" title=" " alt="" coords="89,570,102,477,129,335,147,261,168,193,191,138,218,101,279,54,338,23,395,7,452,3,512,8,577,20,725,54,775,67,816,83,883,118,948,157,987,176,1036,195,1065,204,1064,209,1034,200,985,181,945,162,880,123,814,88,773,72,723,59,576,25,512,13,452,8,396,12,339,28,282,58,222,105,196,141,173,195,152,262,134,336,108,478,94,571"/>
+<area shape="rect" id="Node000011" href="$df/d8f/class_v_m2_d_1_1_wake.html#a400fefddd41761ea02afd8a15fb7764e" title="Проверка проникновения точки через границу профиля" alt="" coords="528,477,715,502"/>
+<area shape="poly" id="edge33_Node000001_Node000011" title=" " alt="" coords="121,568,167,551,219,537,373,510,514,494,514,500,374,515,221,542,168,557,122,573"/>
+<area shape="rect" id="Node000015" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9e9876b8af44c612985703e61a8fb670" title="Сброс счетчика времени" alt="" coords="538,526,705,552"/>
+<area shape="poly" id="edge34_Node000001_Node000015" title=" " alt="" coords="172,570,220,564,524,542,524,547,220,570,172,575"/>
+<area shape="rect" id="Node000017" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9a2edffcbf01cfab7f70422ce60391be" title="Запуск (первый или повторный) счетчика времени" alt="" coords="539,576,703,601"/>
+<area shape="poly" id="edge36_Node000001_Node000017" title=" " alt="" coords="172,581,526,585,526,590,172,587"/>
+<area shape="rect" id="Node000018" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a320206c4467fa80d013de7a8d9fde1d5" title="Останов работающего счетчика времени" alt="" coords="540,625,703,650"/>
+<area shape="poly" id="edge38_Node000001_Node000018" title=" " alt="" coords="173,589,526,625,526,631,172,594"/>
+<area shape="rect" id="Node000019" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad3ee3eecd03629e1af8f850cc043cdf4" title=" " alt="" coords="772,210,987,236"/>
+<area shape="poly" id="edge20_Node000001_Node000019" title=" " alt="" coords="88,570,92,504,110,401,127,344,149,288,179,235,218,188,278,135,336,95,393,68,452,53,513,49,578,55,648,71,725,95,767,116,805,143,861,198,857,202,801,147,764,120,723,100,647,76,577,60,513,54,453,58,395,73,339,100,281,139,222,192,184,238,154,290,132,346,115,402,98,504,93,571"/>
+<area shape="rect" id="Node000020" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5bc062225a158baa1a6c80c1f0870d79" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="221,672,470,697"/>
+<area shape="poly" id="edge27_Node000001_Node000020" title=" " alt="" coords="112,594,161,622,221,650,270,666,269,671,219,655,158,626,109,598"/>
+<area shape="rect" id="Node000021" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#afe44ce12106c0afc50cf2e9591d3497a" title="Возврат неконстантной ссылки на вихревой след" alt="" coords="220,721,471,746"/>
+<area shape="poly" id="edge28_Node000001_Node000021" title=" " alt="" coords="101,594,148,650,182,682,221,707,236,714,234,719,219,712,179,686,144,654,97,598"/>
+<area shape="rect" id="Node000022" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a724533c5ac15595459d04136a6a2bb29" title="Возврат ссылки на временную статистику выполнения шага расчета по времени" alt="" coords="246,770,445,796"/>
+<area shape="poly" id="edge31_Node000001_Node000022" title=" " alt="" coords="98,595,114,628,141,673,177,719,198,739,221,757,235,764,232,769,219,761,195,744,173,722,136,676,109,631,93,597"/>
+<area shape="rect" id="Node000023" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a33e4bc208d515f522eaca4f0f99c7422" title="Возврат константной ссылки на вихревой след" alt="" coords="251,820,439,845"/>
+<area shape="poly" id="edge32_Node000001_Node000023" title=" " alt="" coords="96,595,109,637,134,695,171,756,194,783,222,806,240,816,237,821,218,811,191,787,167,759,129,697,104,639,91,597"/>
+<area shape="rect" id="Node000024" href="$d0/d75/class_v_m2_d_1_1_gpu.html#a5279e671bedc8f19f2ec9c7d62581508" title="Установка правой границы самого правого профиля (для организации увеличения радиуса коллапса)" alt="" coords="239,869,452,894"/>
+<area shape="poly" id="edge35_Node000001_Node000024" title=" " alt="" coords="95,595,105,645,127,716,144,755,165,792,191,827,222,856,228,860,225,865,218,860,187,830,161,795,139,757,122,718,100,647,89,597"/>
+<area shape="rect" id="Node000025" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a9be199fa84f64c66a8592f1d12d59daf" title="Запуск счетчика" alt="" coords="257,918,433,944"/>
+<area shape="poly" id="edge37_Node000001_Node000025" title=" " alt="" coords="94,595,101,653,121,737,138,783,159,828,187,870,222,905,245,919,243,924,218,909,183,873,155,831,133,785,116,739,96,654,88,596"/>
+<area shape="rect" id="Node000026" href="$d9/d47/knn_c_p_u_8cpp.html#a4d0d9439300bff8def02d4a5f551777b" title=" " alt="" coords="255,968,435,993"/>
+<area shape="poly" id="edge39_Node000001_Node000026" title=" " alt="" coords="93,596,98,660,115,758,131,812,154,864,184,913,222,954,243,968,241,972,218,959,179,916,149,867,126,814,110,759,92,661,88,596"/>
+<area shape="rect" id="Node000003" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d" title="Функция для доступа к циркуляции вихря" alt="" coords="1067,261,1210,286"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="425,371,448,365,469,356,484,342,492,327,500,311,517,297,561,282,620,272,765,262,921,261,1053,266,1053,272,920,267,765,267,620,277,562,287,520,301,505,314,497,329,488,345,472,360,450,370,426,376"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="355,363,468,215,489,177,499,161,517,145,527,139,530,144,520,149,503,164,494,180,473,218,359,367"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="379,363,425,339,448,323,469,304,485,278,491,253,498,228,517,203,539,188,542,193,520,206,502,230,496,254,490,280,473,307,451,327,427,344,381,367"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="411,388,507,407,506,412,410,393"/>
+<area shape="rect" id="Node000007" href="$df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа" alt="" coords="538,312,705,337"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="411,362,541,337,542,342,412,368"/>
+<area shape="rect" id="Node000010" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="1069,312,1209,337"/>
+<area shape="poly" id="edge15_Node000002_Node000010" title=" " alt="" coords="426,374,676,367,831,359,986,346,1055,337,1055,342,987,351,831,364,676,372,426,380"/>
+<area shape="poly" id="edge11_Node000002_Node000011" title=" " alt="" coords="370,388,435,424,520,462,548,471,546,476,518,467,433,429,367,393"/>
+<area shape="poly" id="edge16_Node000002_Node000015" title=" " alt="" coords="361,389,425,448,471,482,520,511,540,520,538,525,517,516,468,487,422,452,357,393"/>
+<area shape="rect" id="Node000016" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ab8e90f2b527936a1bd495228c8bf3313" title="Функция для доступа к радиусу вихря" alt="" coords="1051,161,1226,186"/>
+<area shape="poly" id="edge17_Node000002_Node000016" title=" " alt="" coords="425,374,448,367,469,356,480,345,487,335,493,311,499,287,506,274,517,262,556,240,610,223,676,208,749,197,902,181,1037,174,1038,179,903,187,750,202,677,213,612,228,558,245,520,267,510,277,504,288,498,312,491,337,484,349,472,360,450,372,427,379"/>
+<area shape="poly" id="edge18_Node000002_Node000017" title=" " alt="" coords="357,389,381,424,417,470,465,519,520,561,535,568,533,573,517,565,461,523,413,474,376,427,352,392"/>
+<area shape="poly" id="edge19_Node000002_Node000018" title=" " alt="" coords="354,389,375,433,410,493,459,558,488,587,520,612,530,617,527,622,517,616,485,591,455,561,406,496,370,435,350,392"/>
+<area shape="rect" id="Node000008" href="$df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e" title=" " alt="" coords="788,312,971,337"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="705,322,774,322,774,327,705,327"/>
+<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="945,309,1059,286,1060,292,946,314"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="902,309,960,278,1034,246,1062,237,1064,242,1036,251,963,283,904,314"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="971,322,1055,322,1055,327,971,327"/>
+<area shape="rect" id="Node000012" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="793,412,966,452"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="679,474,778,452,780,457,680,480"/>
+<area shape="rect" id="Node000013" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="793,476,966,516"/>
+<area shape="poly" id="edge13_Node000011_Node000013" title=" " alt="" coords="715,490,779,491,779,497,715,495"/>
+<area shape="rect" id="Node000014" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5c4d2f8431f7232fbcf7d367501a8bd5" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля" alt="" coords="791,540,968,580"/>
+<area shape="poly" id="edge14_Node000011_Node000014" title=" " alt="" coords="680,500,725,511,773,526,799,534,798,539,771,531,723,516,678,505"/>
+<area shape="poly" id="edge21_Node000019_Node000003" title=" " alt="" coords="946,233,1060,256,1059,261,945,239"/>
+<area shape="poly" id="edge22_Node000019_Node000009" title=" " alt="" coords="987,220,1021,220,1021,226,987,226"/>
+<area shape="poly" id="edge23_Node000019_Node000010" title=" " alt="" coords="905,234,963,264,1036,295,1068,306,1066,311,1034,300,961,269,902,238"/>
+<area shape="poly" id="edge24_Node000019_Node000016" title=" " alt="" coords="946,208,1057,186,1058,192,947,213"/>
 </map>

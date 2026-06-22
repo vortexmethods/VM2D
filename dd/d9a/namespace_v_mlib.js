@@ -37,6 +37,7 @@ var namespace_v_mlib =
     [ "CreateDirectory", "dd/d9a/namespace_v_mlib.html#aa355deb397e5af9cd818ecaef4f10a3a", null ],
     [ "cross", "dd/d9a/namespace_v_mlib.html#a383c34d2eb873d8868313324a391638b", null ],
     [ "cross3", "dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d", null ],
+    [ "cubPower", "dd/d9a/namespace_v_mlib.html#a85b7e0a66ffa424d1f7ccc0e5974a7a5", null ],
     [ "CurrentDataTime", "dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b", null ],
     [ "dist", "dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c", null ],
     [ "dist2", "dd/d9a/namespace_v_mlib.html#ac194ed285a79bbaf94d6215ca77cca27", null ],

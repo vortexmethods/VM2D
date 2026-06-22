@@ -1,25 +1,38 @@
 <map id="VM2D/TreeCPU2D/cpuTreeInfo.h" name="VM2D/TreeCPU2D/cpuTreeInfo.h">
-<area shape="rect" id="Node000001" title="Заголовок класса дерева для реализации быстрых алгоритмов на CPU." alt="" coords="263,5,491,31"/>
-<area shape="rect" id="Node000002" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="273,79,367,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="370,33,340,70,336,66,366,29"/>
-<area shape="rect" id="Node000012" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="392,79,480,104"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="389,29,420,67,416,70,385,33"/>
-<area shape="rect" id="Node000003" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="277,152,363,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="323,104,323,138,317,138,317,104"/>
-<area shape="rect" id="Node000004" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="269,225,371,251"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="323,178,323,212,317,212,317,178"/>
+<area shape="rect" id="Node000001" title="Заголовок класса дерева для реализации быстрых алгоритмов на CPU." alt="" coords="466,5,694,31"/>
+<area shape="rect" id="Node000002" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="410,79,505,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="562,33,490,74,488,69,559,28"/>
+<area shape="rect" id="Node000012" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="536,79,624,104"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="583,31,583,65,577,65,577,31"/>
+<area shape="rect" id="Node000013" href="$d0/da6/cpu_radix_sorter_8h.html" title="Çàãîëîâîê êëàññà äëÿ ðåàëèçàöèè ïîðàçðÿäíîé ñîðòèðîâêè (RadixSort) íà CPU." alt="" coords="651,79,783,104"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="603,28,684,70,682,75,601,33"/>
+<area shape="rect" id="Node000003" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="407,152,492,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="459,105,455,139,449,138,453,104"/>
+<area shape="rect" id="Node000004" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="327,225,430,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="440,180,402,218,398,214,436,176"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="5,299,61,324"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="271,253,75,301,74,296,270,248"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="328,251,216,271,76,301,75,296,215,266,327,245"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="86,299,149,324"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="288,253,163,297,161,292,287,248"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="337,253,163,301,161,295,336,248"/>
 <area shape="rect" id="Node000007" title=" " alt="" coords="173,299,240,324"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="303,253,238,294,235,289,300,248"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="352,253,248,296,246,291,350,248"/>
 <area shape="rect" id="Node000008" title=" " alt="" coords="265,299,375,324"/>
-<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="323,251,323,285,317,285,317,251"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="371,253,340,290,336,287,367,249"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="399,299,475,324"/>
-<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="340,248,408,289,405,294,337,253"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="390,249,421,287,417,290,386,253"/>
 <area shape="rect" id="Node000010" title=" " alt="" coords="500,299,543,324"/>
-<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="353,248,488,295,486,300,351,253"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="403,248,489,291,487,296,400,253"/>
 <area shape="rect" id="Node000011" title=" " alt="" coords="567,299,630,324"/>
-<area shape="poly" id="edge10_Node000004_Node000011" title=" " alt="" coords="366,248,554,296,553,301,365,253"/>
+<area shape="poly" id="edge10_Node000004_Node000011" title=" " alt="" coords="415,248,555,293,553,298,413,253"/>
+<area shape="poly" id="edge14_Node000013_Node000011" title=" " alt="" coords="671,107,605,128,577,140,561,154,553,169,550,186,554,222,568,257,585,286,580,288,563,259,549,224,544,186,548,168,557,150,574,136,603,123,669,101"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="571,152,651,177"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="702,106,641,147,638,142,699,102"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="675,152,760,177"/>
+<area shape="poly" id="edge15_Node000013_Node000015" title=" " alt="" coords="720,104,720,138,715,138,715,104"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="785,152,877,177"/>
+<area shape="poly" id="edge16_Node000013_Node000016" title=" " alt="" coords="737,102,802,142,799,147,734,106"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="901,152,963,177"/>
+<area shape="poly" id="edge17_Node000013_Node000017" title=" " alt="" coords="753,101,888,146,887,151,751,107"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="988,152,1047,177"/>
+<area shape="poly" id="edge18_Node000013_Node000018" title=" " alt="" coords="771,101,975,149,974,154,769,107"/>
 </map>

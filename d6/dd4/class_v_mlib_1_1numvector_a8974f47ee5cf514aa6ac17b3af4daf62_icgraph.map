@@ -20,8 +20,8 @@
 <area shape="poly" id="edge32_Node000001_Node000027" title=" " alt="" coords="1400,477,1382,515,1355,562,1320,609,1278,650,1260,661,1257,657,1274,646,1316,606,1351,559,1377,513,1395,475"/>
 <area shape="rect" id="Node000028" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a173da8092f214682310319ef8d520772" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="1037,738,1272,793"/>
 <area shape="poly" id="edge33_Node000001_Node000028" title=" " alt="" coords="1405,478,1391,530,1367,598,1330,668,1306,700,1278,729,1262,740,1259,736,1274,725,1302,697,1325,665,1362,595,1386,529,1400,476"/>
-<area shape="rect" id="Node000029" href="$df/d46/_gmres2_d_8cpp.html#a7723f394d6c7c8d1d7ca52141761bb44" title=" " alt="" coords="1087,817,1222,842"/>
-<area shape="poly" id="edge34_Node000001_Node000029" title=" " alt="" coords="1409,477,1401,544,1380,634,1363,681,1341,728,1313,771,1278,807,1252,823,1223,831,1222,825,1250,818,1274,803,1309,767,1337,725,1359,679,1375,632,1396,543,1404,477"/>
+<area shape="rect" id="Node000029" href="$d6/d76/class_v_m2_d_1_1_gmres_solver.html#a99ec18388a3e5830fc358382cdab4f03" title=" " alt="" coords="1074,817,1235,857"/>
+<area shape="poly" id="edge34_Node000001_Node000029" title=" " alt="" coords="1409,477,1400,544,1379,633,1362,680,1340,726,1312,770,1278,807,1258,821,1237,830,1235,825,1256,816,1274,803,1308,766,1335,724,1357,678,1374,631,1395,543,1404,477"/>
 <area shape="rect" id="Node000006" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a40bf363b8af4fa85b5bfbb8117e156f6" title="Перемещение профиля в соответствии с законом" alt="" coords="771,205,985,245"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1063,295,1032,285,1008,273,984,260,951,248,953,243,986,255,1010,268,1034,280,1065,289"/>
 <area shape="rect" id="Node000007" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a927ff9232411db3200aadea640281e6b" title="Перемещение профиля" alt="" coords="802,319,954,345"/>
@@ -52,7 +52,7 @@
 <area shape="poly" id="edge11_Node000008_Node000012" title=" " alt="" coords="545,140,424,112,426,107,547,135"/>
 <area shape="rect" id="Node000013" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a59183858c817328199f449df792b6b5a" title="Конструктор" alt="" coords="225,133,450,173"/>
 <area shape="poly" id="edge12_Node000008_Node000013" title=" " alt="" coords="500,156,450,156,450,151,500,151"/>
-<area shape="rect" id="Node000018" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="218,433,457,473"/>
+<area shape="rect" id="Node000018" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a1ed0f93da4932830bf413dc56f19183f" title="Перемещение вихрей и профилей на шаге" alt="" coords="218,433,457,473"/>
 <area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="498,456,457,456,457,451,498,451"/>
 <area shape="rect" id="Node000019" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,441,167,466"/>
 <area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="204,456,167,456,167,451,204,451"/>

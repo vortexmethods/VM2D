@@ -1,47 +1,55 @@
 <map id="VM2D::World2D::getAirfoil" name="VM2D::World2D::getAirfoil">
-<area shape="rect" id="Node000001" title="Возврат константной ссылки на объект профиля" alt="" coords="791,442,983,467"/>
-<area shape="rect" id="Node000002" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a55aa30948b78236633e26f56a870a120" title="Конструктор" alt="" coords="230,5,445,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="881,428,873,357,851,262,833,212,809,164,779,119,741,82,708,60,672,43,634,30,595,22,517,14,445,14,445,9,517,8,596,16,636,25,674,38,711,55,744,78,783,116,814,161,838,210,856,261,878,356,887,428"/>
-<area shape="rect" id="Node000003" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f" title="Конструктор" alt="" coords="215,69,460,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="880,429,869,366,845,283,827,240,804,199,776,161,741,130,710,111,676,96,603,77,530,71,460,73,460,68,530,66,604,72,678,91,712,106,744,126,780,158,809,196,832,238,850,281,874,365,885,428"/>
-<area shape="rect" id="Node000004" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#af5c415c8acbbb2abcd3ee928fa69d614" title="Конструктор" alt="" coords="228,197,447,237"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="874,430,856,388,828,337,790,287,767,265,741,248,707,231,670,218,593,203,517,199,447,203,447,198,517,194,594,198,671,213,709,226,744,243,770,261,794,283,833,334,861,386,879,428"/>
-<area shape="rect" id="Node000005" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a59183858c817328199f449df792b6b5a" title="Конструктор" alt="" coords="225,261,450,301"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="872,431,852,395,823,353,786,313,765,296,742,282,702,267,660,257,618,251,575,249,492,253,421,264,420,259,492,248,575,244,618,246,661,252,704,262,744,278,768,292,790,309,828,350,857,392,876,428"/>
-<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a458d892d4d9ebb62d8534a97e79902f6" title="Конструктор" alt="" coords="532,293,719,318"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="864,434,812,381,778,354,741,332,712,321,714,316,744,327,781,350,816,377,868,430"/>
-<area shape="rect" id="Node000007" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="522,342,729,367"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="853,437,802,408,742,381,703,370,704,365,744,376,804,403,856,433"/>
-<area shape="rect" id="Node000008" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="508,391,743,417"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="806,442,691,419,692,414,807,437"/>
-<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab4397193aff5c8a3109e5d0585fcd53c" title="Проверка проникновения вихрей внутрь профиля" alt="" coords="520,493,731,518"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="807,473,692,495,691,490,806,467"/>
-<area shape="rect" id="Node000011" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,471,167,497"/>
-<area shape="poly" id="edge25_Node000001_Node000011" title=" " alt="" coords="777,461,167,484,167,478,777,456"/>
-<area shape="rect" id="Node000012" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="545,542,705,567"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="856,477,804,506,744,533,704,545,703,539,742,528,802,501,853,472"/>
-<area shape="rect" id="Node000013" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="254,574,421,599"/>
-<area shape="poly" id="edge22_Node000001_Node000013" title=" " alt="" coords="870,480,818,535,783,562,744,582,700,596,655,606,564,613,478,610,406,602,407,597,478,605,564,608,654,600,699,591,742,578,780,557,814,531,866,476"/>
-<area shape="rect" id="Node000014" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad9b7f5fc4d187f728eed9661ad345c3c" title=" " alt="" coords="531,643,720,669"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="874,481,823,553,786,593,744,626,700,646,698,641,741,622,783,589,819,550,869,478"/>
-<area shape="rect" id="Node000015" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="540,693,711,718"/>
-<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="879,481,861,526,833,581,794,637,771,662,744,684,712,699,710,694,741,679,767,658,790,634,829,578,857,524,874,479"/>
-<area shape="rect" id="Node000016" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#aa5a1d01b1c44bb7c6716017aa9baeec4" title="Инициализация векторов для вычисления скоростей и давлений Вызывается только на тех шагах расчета,..." alt="" coords="510,742,741,767"/>
-<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="882,482,867,535,841,604,822,639,800,674,774,706,744,733,725,744,722,740,741,729,770,702,796,671,818,637,836,601,862,533,877,480"/>
-<area shape="rect" id="Node000017" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости" alt="" coords="524,141,727,166"/>
-<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="876,429,861,378,834,312,794,245,769,214,741,187,706,169,708,164,744,183,773,211,798,242,838,310,866,376,882,428"/>
-<area shape="rect" id="Node000019" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html#a97f706f2d0593bfc7cad435785e89eda" title="Сохранение вихревого следа в файл .vtk." alt="" coords="542,792,709,832"/>
-<area shape="poly" id="edge23_Node000001_Node000019" title=" " alt="" coords="884,481,871,543,846,624,828,667,805,709,777,748,744,782,710,802,707,797,741,778,773,745,800,706,823,665,841,622,866,541,879,480"/>
-<area shape="rect" id="Node000020" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ac7ac5871e063f5b69bf21cbe311aaaee" title="Сохранение вязких напряжений" alt="" coords="515,857,735,882"/>
-<area shape="poly" id="edge24_Node000001_Node000020" title=" " alt="" coords="887,481,878,554,856,653,838,706,814,757,783,805,744,846,725,859,722,854,741,842,779,801,809,755,833,704,851,651,873,553,881,481"/>
-<area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="218,492,457,532"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="506,511,457,512,457,507,506,505"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="204,500,167,496,167,490,205,495"/>
-<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="532,568,421,580,421,575,532,562"/>
-<area shape="poly" id="edge17_Node000017_Node000002" title=" " alt="" coords="593,135,533,97,459,60,426,48,427,43,461,55,535,92,596,131"/>
-<area shape="poly" id="edge19_Node000017_Node000003" title=" " alt="" coords="554,140,427,112,428,107,555,135"/>
-<area shape="poly" id="edge20_Node000017_Node000004" title=" " alt="" coords="555,172,428,200,427,195,554,166"/>
-<area shape="poly" id="edge21_Node000017_Node000005" title=" " alt="" coords="596,176,535,214,461,252,427,264,426,259,459,247,533,210,593,172"/>
-<area shape="rect" id="Node000018" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#acb2bcd9d2c01173b75584afb13a5a15e" title="Конструктор" alt="" coords="227,133,448,173"/>
-<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="510,156,448,156,448,151,510,151"/>
+<area shape="rect" id="Node000001" title="Возврат константной ссылки на объект профиля" alt="" coords="791,523,983,549"/>
+<area shape="rect" id="Node000002" href="$d6/d76/class_v_m2_d_1_1_gmres_solver.html#ac35dbd0b0a044f9496176b236d5705d4" title=" " alt="" coords="545,5,706,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="883,509,877,425,870,368,858,306,840,242,815,178,783,119,741,66,724,53,705,43,707,38,727,48,745,62,787,116,820,176,845,240,863,305,875,367,883,424,888,509"/>
+<area shape="rect" id="Node000003" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a55aa30948b78236633e26f56a870a120" title="Конструктор" alt="" coords="230,36,445,76"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="882,510,876,432,868,382,856,327,838,271,814,216,782,166,741,123,720,111,691,100,616,83,529,71,445,64,445,58,529,66,617,77,693,95,723,106,744,119,786,163,818,214,843,269,861,325,874,381,881,432,888,509"/>
+<area shape="rect" id="Node000004" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f" title="Конструктор" alt="" coords="215,100,460,140"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="882,510,874,438,853,342,835,291,811,242,780,198,741,161,721,150,694,141,624,129,542,123,460,121,461,115,542,117,624,124,696,136,723,145,744,157,784,194,815,239,840,289,858,340,879,437,887,510"/>
+<area shape="rect" id="Node000005" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#af5c415c8acbbb2abcd3ee928fa69d614" title="Конструктор" alt="" coords="228,228,447,268"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="877,511,863,459,837,393,819,359,797,328,771,299,741,276,707,257,671,244,594,228,517,225,446,231,446,225,517,220,594,223,672,239,709,252,744,271,775,295,801,324,823,357,841,391,868,457,883,509"/>
+<area shape="rect" id="Node000006" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a59183858c817328199f449df792b6b5a" title="Конструктор" alt="" coords="225,292,450,332"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="876,511,859,465,832,410,793,355,769,332,741,313,701,295,658,283,614,277,570,275,484,281,411,295,410,289,483,276,569,270,615,272,659,278,703,290,744,308,772,328,797,351,836,407,864,463,881,509"/>
+<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a458d892d4d9ebb62d8534a97e79902f6" title="Конструктор" alt="" coords="532,323,719,349"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="870,513,850,478,821,437,784,396,741,362,718,351,720,346,744,358,788,392,825,433,854,475,875,510"/>
+<area shape="rect" id="Node000008" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="522,373,729,398"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="864,515,812,462,779,434,741,412,713,401,715,396,744,407,782,430,816,458,868,511"/>
+<area shape="rect" id="Node000009" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="508,422,743,447"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="849,519,799,494,742,469,680,450,682,445,744,464,801,489,851,514"/>
+<area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab4397193aff5c8a3109e5d0585fcd53c" title="Проверка проникновения вихрей внутрь профиля" alt="" coords="520,523,731,549"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="777,539,731,539,731,533,777,533"/>
+<area shape="rect" id="Node000012" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,502,167,527"/>
+<area shape="poly" id="edge29_Node000001_Node000012" title=" " alt="" coords="813,523,742,513,583,504,423,503,167,512,167,507,423,498,583,499,743,508,814,518"/>
+<area shape="rect" id="Node000013" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="545,573,705,598"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="806,554,694,575,693,570,805,549"/>
+<area shape="rect" id="Node000014" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="254,605,421,630"/>
+<area shape="poly" id="edge24_Node000001_Node000014" title=" " alt="" coords="858,559,806,589,775,603,743,613,659,629,572,635,491,634,421,630,421,624,491,629,572,629,658,623,742,608,773,598,804,584,855,554"/>
+<area shape="rect" id="Node000015" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad9b7f5fc4d187f728eed9661ad345c3c" title=" " alt="" coords="531,674,720,699"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="866,561,813,609,780,635,744,657,693,676,691,671,741,652,777,631,810,605,862,557"/>
+<area shape="rect" id="Node000016" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="540,723,711,749"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="875,562,854,597,825,639,788,680,744,714,712,728,710,723,741,710,784,676,821,635,850,594,870,559"/>
+<area shape="rect" id="Node000017" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#aa5a1d01b1c44bb7c6716017aa9baeec4" title="Инициализация векторов для вычисления скоростей и давлений Вызывается только на тех шагах расчета,..." alt="" coords="510,773,741,798"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="879,563,861,607,833,662,794,717,771,742,744,764,723,775,721,770,741,759,767,738,790,714,828,659,856,605,874,561"/>
+<area shape="rect" id="Node000018" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости" alt="" coords="524,171,727,197"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="879,510,866,450,840,371,822,329,800,289,773,251,741,218,707,199,710,194,744,214,777,247,804,286,827,327,845,369,871,449,884,509"/>
+<area shape="rect" id="Node000020" href="$d6/d76/class_v_m2_d_1_1_gmres_solver.html#a99ec18388a3e5830fc358382cdab4f03" title=" " alt="" coords="545,823,706,863"/>
+<area shape="poly" id="edge23_Node000001_Node000020" title=" " alt="" coords="882,562,866,615,839,683,799,753,774,785,744,813,708,832,705,828,741,809,770,781,795,750,834,680,861,613,877,561"/>
+<area shape="rect" id="Node000021" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html#a97f706f2d0593bfc7cad435785e89eda" title="Сохранение вихревого следа в файл .vtk." alt="" coords="542,887,709,927"/>
+<area shape="poly" id="edge25_Node000001_Node000021" title=" " alt="" coords="885,563,873,627,848,711,830,756,807,800,778,841,744,877,710,896,707,892,741,873,774,838,802,797,825,754,843,709,867,625,879,562"/>
+<area shape="rect" id="Node000022" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ac7ac5871e063f5b69bf21cbe311aaaee" title="Сохранение вязких напряжений" alt="" coords="515,951,735,977"/>
+<area shape="poly" id="edge26_Node000001_Node000022" title=" " alt="" coords="887,563,879,638,858,740,840,795,815,848,784,898,744,941,725,953,722,949,741,937,780,895,811,846,835,793,853,739,874,637,882,562"/>
+<area shape="rect" id="Node000023" href="$d6/d76/class_v_m2_d_1_1_gmres_solver.html#a19952d70a259c7cf3179de40f20ddca0" title=" " alt="" coords="545,1001,706,1041"/>
+<area shape="poly" id="edge27_Node000001_Node000023" title=" " alt="" coords="888,563,882,645,875,700,863,760,845,823,820,884,787,941,744,991,727,1004,708,1013,705,1008,724,1000,741,987,782,938,815,882,840,821,858,759,870,699,877,645,883,562"/>
+<area shape="rect" id="Node000024" href="$d6/d76/class_v_m2_d_1_1_gmres_solver.html#ae7de87da9a7ff289c313feb917162170" title=" " alt="" coords="529,1066,722,1091"/>
+<area shape="poly" id="edge28_Node000001_Node000024" title=" " alt="" coords="884,563,867,670,837,818,818,893,796,962,772,1017,745,1055,724,1069,721,1065,741,1051,767,1015,791,960,813,892,832,817,862,669,879,562"/>
+<area shape="rect" id="Node000011" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a1ed0f93da4932830bf413dc56f19183f" title="Перемещение вихрей и профилей на шаге" alt="" coords="218,523,457,563"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="506,541,457,543,457,537,506,536"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="204,531,167,526,167,521,205,525"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="532,598,421,611,421,605,532,593"/>
+<area shape="poly" id="edge18_Node000018_Node000003" title=" " alt="" coords="593,166,533,128,459,90,426,79,427,74,461,86,535,123,596,161"/>
+<area shape="poly" id="edge20_Node000018_Node000004" title=" " alt="" coords="554,171,427,143,428,137,555,166"/>
+<area shape="poly" id="edge21_Node000018_Node000005" title=" " alt="" coords="555,202,428,231,427,225,554,197"/>
+<area shape="poly" id="edge22_Node000018_Node000006" title=" " alt="" coords="596,207,535,245,461,282,427,294,426,289,459,278,533,240,593,202"/>
+<area shape="rect" id="Node000019" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#acb2bcd9d2c01173b75584afb13a5a15e" title="Конструктор" alt="" coords="227,164,448,204"/>
+<area shape="poly" id="edge19_Node000018_Node000019" title=" " alt="" coords="510,187,448,187,448,181,510,181"/>
 </map>

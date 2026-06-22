@@ -143,121 +143,129 @@ $(document).ready(function(){initNavTree('d5/dde/_gpudefs_8h_source.html','../..
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">//#define BRIDGE</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">// #define USE_CUDA</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">// #undef USE_CUDA</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">// далее -- технические &quot;обертки&quot; под CUDA</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a574ff3886314e7f2ba3c3191443e4c60">   63</a></span><span class="preprocessor">#define CUDA_ENABLE(a) a</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ae6a0b56f5d52dd9f097bc0fe38b814ed">   64</a></span><span class="preprocessor">#define CUDA_DISABLE(a)</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#if defined(USE_CUDA)</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#define CUDAdef CUDA_ENABLE</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a15b41244df5f01bee5af96d7d5f1242b">   69</a></span><span class="preprocessor">#define CUDAdef CUDA_DISABLE</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a4a4aad3419087ea541596e03a789e14c">   52</a></span><span class="preprocessor">#define TURB</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">//#define SPH</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">//#define OPTIMIZER</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">//#define OPTIMIZER_START_STEP 10000</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">//#define OPTIMIZER_STOP_STEP 12000</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">// #define USE_CUDA</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">// #undef USE_CUDA</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// далее -- технические &quot;обертки&quot; под CUDA</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a574ff3886314e7f2ba3c3191443e4c60">   69</a></span><span class="preprocessor">#define CUDA_ENABLE(a) a</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ae6a0b56f5d52dd9f097bc0fe38b814ed">   70</a></span><span class="preprocessor">#define CUDA_DISABLE(a)</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a9ae6130147e45d66da273cdd7f8ff656">   72</a></span><span class="preprocessor">#define IFCUDA_(e, a) e(a)</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a75e664c8ecc2ed40e4d068b8ee0b809e">   73</a></span><span class="preprocessor">#define IFCUDA(...) IFCUDA_(CUDAdef, __VA_ARGS__)</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a61dbbd89ec28421598d43ad69915721a">   76</a></span><span class="preprocessor">#define CUBLOCK (128)</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a69a08c95e557ddf492252d2c317d6fa7">   77</a></span><span class="preprocessor">#define INC_VORT_DEV (1024 * 100)</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ab07eeb36c14906a28cd37feefba726ef">   79</a></span><span class="preprocessor">#define CU_I1I2</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ad0badf4e2868062ea9696883e89e6edf">   80</a></span><span class="preprocessor">#define CU_RHS</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a64f3c8c53706a2b564a9a8c67b5cd5b2">   81</a></span><span class="preprocessor">#define CU_I0I3</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a379b5151bb13a87ac367e4f3072191d1">   82</a></span><span class="preprocessor">#define CU_CONV_TOWAKE</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a2558b96c0f7b43caefc8b11c3cbc227c">   83</a></span><span class="preprocessor">#define CU_CONV_TOBOU</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a1db96fa5ae3d3c3674ce8c3672656068">   84</a></span><span class="preprocessor">#define CU_CONVVIRT</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#affbcdb03fb8ab8a950258d273c0d0f5f">   85</a></span><span class="preprocessor">#define CU_PAIRS</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a7ab687864b5149c3424280154b434fca">   86</a></span><span class="preprocessor">#define CU_VP</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a47244f054592b2e1f57725189ff5cb31">   88</a></span><span class="preprocessor">#define orderAlignment 16</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a97fa153da8c3d001795fac0383a24bdc">   92</a></span><span class="preprocessor">#define idpid (0.15915494309189533576888376337251)</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a85cb1a541b8f730a7070d1b768f302ec">   93</a></span><span class="preprocessor">#define valPi (3.1415926535897932384626433832795)</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ad56205b716ad2fa1e2494d92f6e3689f">   94</a></span><span class="preprocessor">#define valPif (3.14159265f)</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#if defined(USE_CUDA)</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#define CUDAdef CUDA_ENABLE</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a15b41244df5f01bee5af96d7d5f1242b">   75</a></span><span class="preprocessor">#define CUDAdef CUDA_DISABLE</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a9ae6130147e45d66da273cdd7f8ff656">   78</a></span><span class="preprocessor">#define IFCUDA_(e, a) e(a)</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a75e664c8ecc2ed40e4d068b8ee0b809e">   79</a></span><span class="preprocessor">#define IFCUDA(...) IFCUDA_(CUDAdef, __VA_ARGS__)</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a61dbbd89ec28421598d43ad69915721a">   82</a></span><span class="preprocessor">#define CUBLOCK (128)</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a69a08c95e557ddf492252d2c317d6fa7">   83</a></span><span class="preprocessor">#define INC_VORT_DEV (1024 * 100)</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ab07eeb36c14906a28cd37feefba726ef">   85</a></span><span class="preprocessor">#define CU_I1I2</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ad0badf4e2868062ea9696883e89e6edf">   86</a></span><span class="preprocessor">#define CU_RHS</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a64f3c8c53706a2b564a9a8c67b5cd5b2">   87</a></span><span class="preprocessor">#define CU_I0I3</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a379b5151bb13a87ac367e4f3072191d1">   88</a></span><span class="preprocessor">#define CU_CONV_TOWAKE</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a2558b96c0f7b43caefc8b11c3cbc227c">   89</a></span><span class="preprocessor">#define CU_CONV_TOBOU</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a1db96fa5ae3d3c3674ce8c3672656068">   90</a></span><span class="preprocessor">#define CU_CONVVIRT</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#affbcdb03fb8ab8a950258d273c0d0f5f">   91</a></span><span class="preprocessor">#define CU_PAIRS</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a7ab687864b5149c3424280154b434fca">   92</a></span><span class="preprocessor">#define CU_VP</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a47244f054592b2e1f57725189ff5cb31">   94</a></span><span class="preprocessor">#define orderAlignment 16</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a4398e75ff51abc7948c6d7c2d6a5d905">   97</a></span><span class="preprocessor">#define codeLength 14</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a9d2349b1d3456ed2e949cc8af3ee5191">   98</a></span><span class="preprocessor">#define twoPowCodeLength (1 &lt;&lt; codeLength)</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a354384d36cf396f7a6ff2c4b2cae1281">   99</a></span><span class="preprocessor">#define rbound (1 - (double)1.0 / twoPowCodeLength)</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a97fa153da8c3d001795fac0383a24bdc">   96</a></span><span class="preprocessor">#define idpid (0.15915494309189533576888376337251)</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a85cb1a541b8f730a7070d1b768f302ec">   97</a></span><span class="preprocessor">#define valPi (3.1415926535897932384626433832795)</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ad56205b716ad2fa1e2494d92f6e3689f">   98</a></span><span class="preprocessor">#define valPif (3.14159265f)</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">//for tree</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a1bea69ac3c3b2d2e35ea3d51dd4683f0">  102</a></span><span class="preprocessor">#define FACTORgab 6</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a1fbad0d26a2005a942f369ab82626742">  103</a></span><span class="preprocessor">#define THREADSgab 32</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a4398e75ff51abc7948c6d7c2d6a5d905">  101</a></span><span class="preprocessor">#define codeLength 14</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a9d2349b1d3456ed2e949cc8af3ee5191">  102</a></span><span class="preprocessor">#define twoPowCodeLength (1 &lt;&lt; codeLength)</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a354384d36cf396f7a6ff2c4b2cae1281">  103</a></span><span class="preprocessor">#define rbound (1 - (double)1.0 / twoPowCodeLength)</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a1677cf9f7a0dd490f6e0272d3d050a9e">  105</a></span><span class="preprocessor">#define FACTORupward 4</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a9acd319e003288229dd8ea4d38986b13">  106</a></span><span class="preprocessor">#define THREADSupward 32</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a0c0e96bc26044bc4fd7c1e074756bade">  108</a></span><span class="preprocessor">#define FACTORforces 1</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a1fc25a46ae77804ce0cd156166c9b254">  109</a></span><span class="preprocessor">#define THREADSforces 1024</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ae7f82676302b3ae16152e8f604be98cd">  111</a></span><span class="preprocessor">#define FACTORrhs 1</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a67ef8cb90ef3b5454c06eb9835d556ec">  112</a></span><span class="preprocessor">#define maxTHREADSrhs 1024</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ae3f072d71ac327dcd5079a9ca956c2a0">  114</a></span><span class="preprocessor">#define FACTORpanToPoint 1</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ad0a6de661efa721f3883b86f96fb5c22">  115</a></span><span class="preprocessor">#define THREADSpanToPoint 1024</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a8e6bfda89c8ea99d02c4a5799fee9124">  117</a></span><span class="preprocessor">#define FACTORnear 1</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a6fddca1a4502d374b8f0be1c80549253">  118</a></span><span class="preprocessor">#define THREADSnear 32</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a6e9ce321c0e031d3ea6e6deb0cda6359">  120</a></span><span class="preprocessor">#define FACTORsegintersect 1</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ab6c3dd603d78f7249b769c26f83d68cd">  121</a></span><span class="preprocessor">#define THREADSsegintersect 32</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ab11b5f3c414cfd2de1f5d9aee6187cf3">  123</a></span><span class="preprocessor">#define THREADSslae 32</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a0119d6be4872bce2f007bfd1a1452e1e">  124</a></span><span class="preprocessor">#define FACTORslae 1</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ade8315664808db4624d352fdd7757291">  126</a></span><span class="preprocessor">#define maxTHREADSslae 1024</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">//for tree</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a083a708333a952356e34ca3d2f7d260b">  106</a></span><span class="preprocessor">#define THREADS1024 1024</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a4b50b75600a4385c7affd1c82998eef2">  107</a></span><span class="preprocessor">#define FACTOR1 1</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a1bea69ac3c3b2d2e35ea3d51dd4683f0">  110</a></span><span class="preprocessor">#define FACTORgab 6</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a1fbad0d26a2005a942f369ab82626742">  111</a></span><span class="preprocessor">#define THREADSgab 32</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a1677cf9f7a0dd490f6e0272d3d050a9e">  113</a></span><span class="preprocessor">#define FACTORupward 4</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a9acd319e003288229dd8ea4d38986b13">  114</a></span><span class="preprocessor">#define THREADSupward 32</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a0c0e96bc26044bc4fd7c1e074756bade">  116</a></span><span class="preprocessor">#define FACTORforces 1</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">//#define THREADSforces 1024</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ae7f82676302b3ae16152e8f604be98cd">  119</a></span><span class="preprocessor">#define FACTORrhs 1</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a67ef8cb90ef3b5454c06eb9835d556ec">  120</a></span><span class="preprocessor">#define maxTHREADSrhs 1024</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ae3f072d71ac327dcd5079a9ca956c2a0">  122</a></span><span class="preprocessor">#define FACTORpanToPoint 1</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ad0a6de661efa721f3883b86f96fb5c22">  123</a></span><span class="preprocessor">#define THREADSpanToPoint 1024</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a8e6bfda89c8ea99d02c4a5799fee9124">  125</a></span><span class="preprocessor">#define FACTORnear 1</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a6fddca1a4502d374b8f0be1c80549253">  126</a></span><span class="preprocessor">#define THREADSnear 32</span></div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a5d3fb6509d94b269dd7ac7248b30c898">  128</a></span><span class="preprocessor">#define THREADSI1I2 32</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a5fd2ade64b33285d99d8065b419fb8e7">  129</a></span><span class="preprocessor">#define THREADSI0I3 32</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a6e9ce321c0e031d3ea6e6deb0cda6359">  128</a></span><span class="preprocessor">#define FACTORsegintersect 1</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ab6c3dd603d78f7249b769c26f83d68cd">  129</a></span><span class="preprocessor">#define THREADSsegintersect 32</span></div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ad43176da28125e32cbf74edbbf08ad24">  131</a></span><span class="preprocessor">#define FACTORI1I2 1</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a5a737cc4bcc8e42d6c48c21508f63ba9">  132</a></span><span class="preprocessor">#define FACTORI0I3 1</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ab11b5f3c414cfd2de1f5d9aee6187cf3">  131</a></span><span class="preprocessor">#define THREADSslae 32</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a0119d6be4872bce2f007bfd1a1452e1e">  132</a></span><span class="preprocessor">#define FACTORslae 1</span></div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ade8315664808db4624d352fdd7757291">  134</a></span><span class="preprocessor">#define maxTHREADSslae 1024</span></div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">//Характеристики дерева</span></div>
-<div class="foldopen" id="foldopen00138" data-start="{" data-end="};">
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443f">  138</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443f">tree_T</a></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>{</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa5fedbb89a1c0d795ee5a41e3b28193f6">contr</a>, <span class="comment">//контрольное</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa53e5733361417423cbec0979f23b3def">aux</a>,   <span class="comment">//вспомогательное</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa5c19e1e0521f7b789a37a21c5cd5737b">vortex</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa36cd38f49b9afa08222c0dc9ebfe35eb">source</a>   <span class="comment">//влияющее</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>};</div>
-</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a5d3fb6509d94b269dd7ac7248b30c898">  136</a></span><span class="preprocessor">#define THREADSI1I2 32</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a5fd2ade64b33285d99d8065b419fb8e7">  137</a></span><span class="preprocessor">#define THREADSI0I3 32</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#ad43176da28125e32cbf74edbbf08ad24">  139</a></span><span class="preprocessor">#define FACTORI1I2 1</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a5a737cc4bcc8e42d6c48c21508f63ba9">  140</a></span><span class="preprocessor">#define FACTORI0I3 1</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a222629d5fb203eee300f669b8744da8b">  142</a></span><span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="../../d5/dde/_gpudefs_8h.html#a222629d5fb203eee300f669b8744da8b">ifac</a>[] = { 0.0, 1.0, 1.0, 1.0 / 2.0, 1.0 / 6.0, 1.0 / 24.0, 1.0 / 120.0, 1.0 / 720.0, 1.0 / 5040.0, 1.0 / 40320.0, 1.0 / 362880.0, 1.0 / 3628800.0, 1.0 / 39916800.0, 1.0 / 479001600.0, 1.0 / 6227020800.0, 1.0 / 87178291200.0 };</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">//Характеристики дерева</span></div>
 <div class="foldopen" id="foldopen00145" data-start="{" data-end="};">
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cd">  145</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cd">object_T</a></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443f">  145</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443f">tree_T</a></div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>{</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cda68e14af34685093f8fd0ac74b8c5a57c">point2</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cda4ce0e43b806457bbc21881748d6a50d2">point3</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>};</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa5fedbb89a1c0d795ee5a41e3b28193f6">contr</a>, <span class="comment">//контрольное</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa53e5733361417423cbec0979f23b3def">aux</a>,   <span class="comment">//вспомогательное</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa5c19e1e0521f7b789a37a21c5cd5737b">vortex</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa36cd38f49b9afa08222c0dc9ebfe35eb">source</a>   <span class="comment">//влияющее</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>};</div>
 </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="foldopen" id="foldopen00150" data-start="{" data-end="};">
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76">  150</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76">scheme_T</a></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>{</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76acc4df3eafb7a7b40cc8859dd2958e356">constScheme</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76a9175e71006ec990af36daeff4042a800">noScheme</a></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>};</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="foldopen" id="foldopen00152" data-start="{" data-end="};">
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cd">  152</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cd">object_T</a></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>{</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cda68e14af34685093f8fd0ac74b8c5a57c">point2</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdac7b1ec6c86991892132d134f554292ec">point4</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>};</div>
 </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="a_gpudefs_8h_html_a429b0c11c513590fb14baa35249be8cd"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cd">object_T</a></div><div class="ttdeci">object_T</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00145">Gpudefs.h:146</a></div></div>
-<div class="ttc" id="a_gpudefs_8h_html_a429b0c11c513590fb14baa35249be8cda4ce0e43b806457bbc21881748d6a50d2"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cda4ce0e43b806457bbc21881748d6a50d2">object_T::point3</a></div><div class="ttdeci">@ point3</div></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="foldopen" id="foldopen00157" data-start="{" data-end="};">
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76">  157</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76">scheme_T</a></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>{</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76acc4df3eafb7a7b40cc8859dd2958e356">constScheme</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">linScheme</a>, <a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76a9175e71006ec990af36daeff4042a800">noScheme</a></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>};</div>
+</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="a_gpudefs_8h_html_a222629d5fb203eee300f669b8744da8b"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a222629d5fb203eee300f669b8744da8b">ifac</a></div><div class="ttdeci">const double ifac[]</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00142">Gpudefs.h:142</a></div></div>
+<div class="ttc" id="a_gpudefs_8h_html_a429b0c11c513590fb14baa35249be8cd"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cd">object_T</a></div><div class="ttdeci">object_T</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00152">Gpudefs.h:153</a></div></div>
 <div class="ttc" id="a_gpudefs_8h_html_a429b0c11c513590fb14baa35249be8cda68e14af34685093f8fd0ac74b8c5a57c"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cda68e14af34685093f8fd0ac74b8c5a57c">object_T::point2</a></div><div class="ttdeci">@ point2</div></div>
+<div class="ttc" id="a_gpudefs_8h_html_a429b0c11c513590fb14baa35249be8cdac7b1ec6c86991892132d134f554292ec"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdac7b1ec6c86991892132d134f554292ec">object_T::point4</a></div><div class="ttdeci">@ point4</div></div>
 <div class="ttc" id="a_gpudefs_8h_html_a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">object_T::panel</a></div><div class="ttdeci">@ panel</div></div>
-<div class="ttc" id="a_gpudefs_8h_html_a4b02ab1d50fcd14c46d78cff3d6c443f"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443f">tree_T</a></div><div class="ttdeci">tree_T</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00138">Gpudefs.h:139</a></div></div>
+<div class="ttc" id="a_gpudefs_8h_html_a4b02ab1d50fcd14c46d78cff3d6c443f"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443f">tree_T</a></div><div class="ttdeci">tree_T</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00145">Gpudefs.h:146</a></div></div>
 <div class="ttc" id="a_gpudefs_8h_html_a4b02ab1d50fcd14c46d78cff3d6c443fa36cd38f49b9afa08222c0dc9ebfe35eb"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa36cd38f49b9afa08222c0dc9ebfe35eb">tree_T::source</a></div><div class="ttdeci">@ source</div></div>
 <div class="ttc" id="a_gpudefs_8h_html_a4b02ab1d50fcd14c46d78cff3d6c443fa53e5733361417423cbec0979f23b3def"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa53e5733361417423cbec0979f23b3def">tree_T::aux</a></div><div class="ttdeci">@ aux</div></div>
 <div class="ttc" id="a_gpudefs_8h_html_a4b02ab1d50fcd14c46d78cff3d6c443fa5c19e1e0521f7b789a37a21c5cd5737b"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa5c19e1e0521f7b789a37a21c5cd5737b">tree_T::vortex</a></div><div class="ttdeci">@ vortex</div></div>
 <div class="ttc" id="a_gpudefs_8h_html_a4b02ab1d50fcd14c46d78cff3d6c443fa5fedbb89a1c0d795ee5a41e3b28193f6"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa5fedbb89a1c0d795ee5a41e3b28193f6">tree_T::contr</a></div><div class="ttdeci">@ contr</div></div>
-<div class="ttc" id="a_gpudefs_8h_html_aa1d4b858f5413e9ec2808de4ba12af76"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76">scheme_T</a></div><div class="ttdeci">scheme_T</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00150">Gpudefs.h:151</a></div></div>
+<div class="ttc" id="a_gpudefs_8h_html_aa1d4b858f5413e9ec2808de4ba12af76"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76">scheme_T</a></div><div class="ttdeci">scheme_T</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00157">Gpudefs.h:158</a></div></div>
 <div class="ttc" id="a_gpudefs_8h_html_aa1d4b858f5413e9ec2808de4ba12af76a9175e71006ec990af36daeff4042a800"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76a9175e71006ec990af36daeff4042a800">scheme_T::noScheme</a></div><div class="ttdeci">@ noScheme</div></div>
 <div class="ttc" id="a_gpudefs_8h_html_aa1d4b858f5413e9ec2808de4ba12af76acc4df3eafb7a7b40cc8859dd2958e356"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76acc4df3eafb7a7b40cc8859dd2958e356">scheme_T::constScheme</a></div><div class="ttdeci">@ constScheme</div></div>
 <div class="ttc" id="a_gpudefs_8h_html_aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76ad5753c62e4d5b53b1d99f1aa62560b5e">scheme_T::linScheme</a></div><div class="ttdeci">@ linScheme</div></div>

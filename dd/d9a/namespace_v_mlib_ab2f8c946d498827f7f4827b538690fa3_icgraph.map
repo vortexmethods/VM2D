@@ -1,6 +1,6 @@
 <map id="VMlib::boundDenom" name="VMlib::boundDenom">
 <area shape="rect" id="Node000001" title="Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба)" alt="" coords="331,85,485,110"/>
-<area shape="rect" id="Node000002" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#adb69aaa3d57a84f8a756a58390eb9743" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="5,5,283,45"/>
+<area shape="rect" id="Node000002" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a52609f26e6434488288c685436cb6237" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="5,5,283,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="356,83,282,60,235,48,237,43,283,55,358,78"/>
 <area shape="rect" id="Node000003" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab8d90fe8a6f6d0b6661c5f0e3db453b9" title=" " alt="" coords="31,70,257,125"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="317,100,258,100,258,95,317,95"/>

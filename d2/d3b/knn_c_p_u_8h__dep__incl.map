@@ -1,9 +1,7 @@
 <map id="VM2D/Wake2D/knnCPU.h" name="VM2D/Wake2D/knnCPU.h">
-<area shape="rect" id="Node000001" title="Çàãîëîâî÷íûé ôàéë ñ ôóíêöèÿìè äëÿ ðåàëèçàöèè knn äëÿ CPU." alt="" coords="273,5,458,31"/>
-<area shape="rect" id="Node000002" href="$de/dfb/_barnes_hut_8cpp.html" title="Основные операции метода Барнса&#45;Хата" alt="" coords="5,79,240,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="314,37,163,81,161,76,313,32"/>
-<area shape="rect" id="Node000003" href="$d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake." alt="" coords="264,79,467,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="368,44,368,79,363,79,363,44"/>
-<area shape="rect" id="Node000004" href="$d9/d47/knn_c_p_u_8cpp.html" title="Файл с реализацией функций knn для CPU." alt="" coords="491,79,691,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="415,32,555,76,553,81,414,37"/>
+<area shape="rect" id="Node000001" title="Çàãîëîâî÷íûé ôàéë ñ ôóíêöèÿìè äëÿ ðåàëèçàöèè knn äëÿ CPU." alt="" coords="126,5,311,31"/>
+<area shape="rect" id="Node000002" href="$d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake." alt="" coords="5,79,208,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="190,40,126,81,124,76,187,36"/>
+<area shape="rect" id="Node000003" href="$d9/d47/knn_c_p_u_8cpp.html" title="Файл с реализацией функций knn для CPU." alt="" coords="232,79,432,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="250,36,315,76,312,81,247,40"/>
 </map>

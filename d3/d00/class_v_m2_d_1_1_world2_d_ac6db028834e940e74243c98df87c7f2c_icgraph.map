@@ -1,0 +1,7 @@
+<map id="VM2D::World2D::getCntrTreeWake" name="VM2D::World2D::getCntrTreeWake">
+<area shape="rect" id="Node000001" title=" " alt="" coords="331,35,573,60"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="35,5,253,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="316,37,253,31,253,26,317,32"/>
+<area shape="rect" id="Node000003" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a0160a8912f817723b297e3b07062ee0b" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="5,55,283,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="317,62,283,65,283,60,317,57"/>
+</map>

@@ -7,12 +7,15 @@ var searchData=
   ['airfoil_4',['airfoil',['../d3/d00/class_v_m2_d_1_1_world2_d.html#a231f07d77c536f623cc2b6823c0f4480',1,'VM2D::World2D']]],
   ['airfoilparams_5',['airfoilParams',['../d2/d15/class_v_m2_d_1_1_passport.html#a6c5162099d27d3b1ae9022b10ddf67b9',1,'VM2D::Passport']]],
   ['airfoilsdir_6',['airfoilsDir',['../d2/d15/class_v_m2_d_1_1_passport.html#a648121232815e5e53effb2afd9eeaa37',1,'VM2D::Passport']]],
-  ['allstepspressures_7',['allStepsPressures',['../d9/da5/class_optimized_velocity.html#a81631459887a117a67805caab5cba94f',1,'OptimizedVelocity']]],
-  ['allstepsvelocities_8',['allStepsVelocities',['../d9/da5/class_optimized_velocity.html#abb5cccc986aa10c4b0c1c48c98b217c2',1,'OptimizedVelocity']]],
-  ['alpha_9',['alpha',['../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abdc01387ef7e5d78b96af5432d33bb1f',1,'VM2D::sweepVectors']]],
-  ['angle_10',['angle',['../d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a6f95cf004d1317eba0d22f555b1f33e0',1,'VM2D::AirfoilParams']]],
-  ['angularvelocity_11',['AngularVelocity',['../d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a215462df8e06cb8db51c51c806c7d94d',1,'VM2D::MechanicsRigidGivenLaw']]],
-  ['area_12',['area',['../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6bb23111b507c2a3192dffb0f47116f0',1,'VM2D::AirfoilGeometry']]],
-  ['attachedsourcesheet_5f_13',['attachedSourceSheet_',['../de/d8b/class_v_m2_d_1_1_sheet.html#a56b1f64cd3a1a8112c169bb197f355d3',1,'VM2D::Sheet']]],
-  ['attachedvortexsheet_5f_14',['attachedVortexSheet_',['../de/d8b/class_v_m2_d_1_1_sheet.html#a00a8cbdb7e007856e899eff92a94ede2',1,'VM2D::Sheet']]]
+  ['allbuf2_7',['allBuf2',['../d6/d76/class_v_m2_d_1_1_gmres_solver.html#a5bb2523cb2ba53a59ddd2fcf0f040891',1,'VM2D::GmresSolver']]],
+  ['allstepspressures_8',['allStepsPressures',['../d9/da5/class_optimized_velocity.html#a81631459887a117a67805caab5cba94f',1,'OptimizedVelocity']]],
+  ['allstepsvelocities_9',['allStepsVelocities',['../d9/da5/class_optimized_velocity.html#abb5cccc986aa10c4b0c1c48c98b217c2',1,'OptimizedVelocity']]],
+  ['allsw_10',['allSW',['../d6/d76/class_v_m2_d_1_1_gmres_solver.html#abca53e499107b4464860600e07b3e037',1,'VM2D::GmresSolver']]],
+  ['alpha_11',['alpha',['../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abdc01387ef7e5d78b96af5432d33bb1f',1,'VM2D::sweepVectors']]],
+  ['angle_12',['angle',['../d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a6f95cf004d1317eba0d22f555b1f33e0',1,'VM2D::AirfoilParams']]],
+  ['angularvelocity_13',['AngularVelocity',['../d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a215462df8e06cb8db51c51c806c7d94d',1,'VM2D::MechanicsRigidGivenLaw']]],
+  ['area_14',['area',['../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6bb23111b507c2a3192dffb0f47116f0',1,'VM2D::AirfoilGeometry']]],
+  ['attachedsourcesheet_5f_15',['attachedSourceSheet_',['../de/d8b/class_v_m2_d_1_1_sheet.html#a56b1f64cd3a1a8112c169bb197f355d3',1,'VM2D::Sheet']]],
+  ['attachedvortexsheet_5f_16',['attachedVortexSheet_',['../de/d8b/class_v_m2_d_1_1_sheet.html#a00a8cbdb7e007856e899eff92a94ede2',1,'VM2D::Sheet']]],
+  ['auxtreepnl_17',['auxTreePnl',['../d3/d00/class_v_m2_d_1_1_world2_d.html#a316347047f9b67992e2c22b233328c0c',1,'VM2D::World2D']]]
 ];

@@ -1,0 +1,20 @@
+<map id="VMlib::vmTimer::duration" name="VMlib::vmTimer::duration">
+<area shape="rect" id="Node000001" title=" " alt="" coords="828,141,1016,166"/>
+<area shape="rect" id="Node000002" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a48305b940dfdf549177fea73a071ad58" title=" " alt="" coords="564,5,719,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="894,134,843,96,779,60,718,40,720,35,781,55,845,91,897,130"/>
+<area shape="rect" id="Node000005" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a0160a8912f817723b297e3b07062ee0b" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="503,69,780,109"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="851,140,729,112,731,107,853,135"/>
+<area shape="rect" id="Node000006" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a52609f26e6434488288c685436cb6237" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="503,133,780,173"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="814,156,780,156,780,151,814,151"/>
+<area shape="rect" id="Node000007" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a414dbf722416a4bce800f97beb0ed1ff" title=" " alt="" coords="525,198,758,253"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="859,172,749,201,748,195,858,167"/>
+<area shape="rect" id="Node000008" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a57f9209e714d574bfc470659b4f8de83" title=" " alt="" coords="564,277,719,317"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="901,178,849,224,816,248,781,268,720,288,718,283,779,263,813,243,846,220,897,174"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="5,110,223,135"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="551,43,271,93,176,113,174,107,270,88,550,38"/>
+<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813" title="Вычисление скоростей в точках wakeVP." alt="" coords="271,103,455,143"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="551,46,504,60,450,82,403,105,400,100,448,77,502,55,550,41"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="257,125,223,125,223,120,257,120"/>
+<area shape="poly" id="edge9_Node000008_Node000003" title=" " alt="" coords="550,281,502,268,398,234,297,198,145,138,147,133,299,193,400,229,503,263,551,276"/>
+<area shape="poly" id="edge10_Node000008_Node000004" title=" " alt="" coords="550,289,525,280,501,268,484,252,474,236,466,220,453,202,389,145,393,141,457,198,471,217,479,234,488,249,504,263,527,275,551,284"/>
+</map>

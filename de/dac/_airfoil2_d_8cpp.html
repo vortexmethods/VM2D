@@ -114,152 +114,173 @@ $(document).ready(function(){initNavTree('de/dac/_airfoil2_d_8cpp.html','../../'
 <code>#include &quot;<a class="el" href="../../dc/d81/_velocity2_d_8h_source.html">Velocity2D.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../d4/d87/_world2_d_8h_source.html">World2D.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../dc/d4d/_wake2_d_8h_source.html">Wake2D.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dc/d6f/_gmres2_d_8h_source.html">Gmres2D.h</a>&quot;</code><br />
 <code>#include &quot;spline/spline.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Airfoil2D.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d8/d98/_airfoil2_d_8cpp__incl.png" border="0" usemap="#a_v_m2_d_2_airfoil2_d_2_airfoil2_d_8cpp" alt=""/></div>
 <map name="a_v_m2_d_2_airfoil2_d_2_airfoil2_d_8cpp" id="a_v_m2_d_2_airfoil2_d_2_airfoil2_d_8cpp">
-<area shape="rect" title="Файл кода с описанием класса Airfoil." alt="" coords="1000,5,1211,31"/>
-<area shape="rect" href="../../d0/d75/_airfoil2_d_8h.html" title="Заголовочный файл с описанием класса Airfoil." alt="" coords="784,152,875,177"/>
-<area shape="poly" title=" " alt="" coords="1084,33,864,148,862,143,1082,29"/>
-<area shape="rect" href="../../d6/d41/_boundary2_d_8h.html" title="Заголовочный файл с описанием класса Boundary." alt="" coords="1627,79,1741,104"/>
-<area shape="poly" title=" " alt="" coords="1199,28,1613,79,1613,84,1198,33"/>
-<area shape="rect" href="../../d3/dc0/_measure_v_p2_d_8h.html" title="Заголовочный файл с описанием класса MeasureVP." alt="" coords="1571,225,1696,251"/>
-<area shape="poly" title=" " alt="" coords="1211,19,1364,25,1533,36,1677,52,1727,63,1755,77,1774,101,1781,125,1777,151,1764,179,1737,205,1704,223,1702,218,1734,201,1759,176,1772,150,1775,126,1769,103,1752,81,1725,68,1677,57,1533,41,1363,30,1211,24"/>
-<area shape="rect" href="../../da/d3e/_mechanics2_d_8h.html" title="Заголовочный файл с описанием класса Mechanics." alt="" coords="1198,225,1319,251"/>
-<area shape="poly" title=" " alt="" coords="1116,29,1244,212,1240,215,1111,33"/>
-<area shape="rect" href="../../da/dbe/nummatrix_8h.html" title="Описание класса nummatrix." alt="" coords="5,445,112,471"/>
-<area shape="poly" title=" " alt="" coords="1000,25,735,38,575,48,415,63,268,81,147,104,100,118,65,132,43,148,36,164,36,313,42,377,54,432,49,433,37,378,31,313,31,163,39,144,62,128,98,113,146,99,267,76,415,58,575,43,734,32,999,20"/>
-<area shape="rect" href="../../d1/d57/_preprocessor_8h.html" title="Заголовочный файл с описанием класса Preprocessor." alt="" coords="291,225,408,251"/>
-<area shape="poly" title=" " alt="" coords="1057,33,869,81,602,160,398,224,397,219,601,154,867,76,1056,28"/>
-<area shape="rect" href="../../d6/d75/_stream_parser_8h.html" title="Заголовочный файл с описанием класса StreamParser." alt="" coords="583,225,703,251"/>
-<area shape="poly" title=" " alt="" coords="1070,33,937,81,854,115,773,154,718,188,670,220,667,215,715,183,771,150,852,110,935,76,1068,28"/>
-<area shape="rect" href="../../dc/d81/_velocity2_d_8h.html" title="Заголовочный файл с описанием класса Velocity." alt="" coords="933,152,1037,177"/>
-<area shape="poly" title=" " alt="" coords="1098,33,1006,143,1002,140,1093,29"/>
-<area shape="rect" href="../../d4/d87/_world2_d_8h.html" title="Заголовочный файл с описанием класса World2D." alt="" coords="1363,79,1453,104"/>
-<area shape="poly" title=" " alt="" coords="1155,28,1350,74,1349,79,1153,33"/>
-<area shape="rect" href="../../dc/d4d/_wake2_d_8h.html" title="Заголовочный файл с описанием класса Wake." alt="" coords="1062,152,1149,177"/>
-<area shape="poly" title=" " alt="" coords="1108,31,1108,138,1103,138,1103,31"/>
-<area shape="rect" title=" " alt="" coords="1914,79,2030,104"/>
-<area shape="poly" title=" " alt="" coords="1211,22,1518,42,1895,76,1901,77,1900,82,1894,81,1518,48,1211,28"/>
-<area shape="rect" href="../../d5/d64/defs_8h.html" title="Описание базовых вспомогательных функций" alt="" coords="891,299,954,324"/>
-<area shape="poly" title=" " alt="" coords="811,180,791,194,773,212,763,231,763,240,768,249,790,272,818,288,849,298,878,304,877,309,847,303,816,293,787,276,763,252,758,241,758,230,769,209,788,190,808,175"/>
-<area shape="rect" title=" " alt="" coords="491,372,565,397"/>
-<area shape="poly" title=" " alt="" coords="892,323,872,327,728,350,579,375,578,369,727,345,872,321,891,317"/>
-<area shape="rect" title=" " alt="" coords="589,372,675,397"/>
-<area shape="poly" title=" " alt="" coords="892,323,689,372,687,367,890,318"/>
-<area shape="rect" title=" " alt="" coords="699,372,795,397"/>
-<area shape="poly" title=" " alt="" coords="895,326,789,369,787,364,893,322"/>
-<area shape="rect" title=" " alt="" coords="819,372,877,397"/>
-<area shape="poly" title=" " alt="" coords="913,326,872,364,868,361,909,322"/>
-<area shape="rect" title=" " alt="" coords="1200,372,1280,397"/>
-<area shape="poly" title=" " alt="" coords="955,317,1187,369,1186,374,954,322"/>
-<area shape="rect" title=" " alt="" coords="901,372,944,397"/>
-<area shape="poly" title=" " alt="" coords="925,324,925,358,920,358,920,324"/>
-<area shape="rect" title=" " alt="" coords="365,372,467,397"/>
-<area shape="poly" title=" " alt="" coords="892,323,872,327,765,343,679,352,592,360,481,375,481,369,592,355,679,347,764,338,872,321,891,318"/>
-<area shape="rect" href="../../d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="1088,372,1176,397"/>
-<area shape="poly" title=" " alt="" coords="955,321,1086,365,1085,370,953,326"/>
-<area shape="rect" href="../../d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream." alt="" coords="1304,372,1408,397"/>
-<area shape="poly" title=" " alt="" coords="955,315,1291,369,1290,374,954,320"/>
-<area shape="rect" href="../../d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="969,372,1063,397"/>
-<area shape="poly" title=" " alt="" coords="939,322,992,361,988,366,936,326"/>
-<area shape="rect" href="../../d6/d1e/v3_d_8h.html" title="Заголовочный файл с описанием класса v3D." alt="" coords="382,445,442,471"/>
-<area shape="poly" title=" " alt="" coords="892,323,872,327,770,332,600,338,433,350,374,360,354,367,343,374,339,381,338,389,345,405,360,421,380,436,377,440,357,426,340,408,332,390,334,380,339,370,352,362,373,355,433,345,600,332,770,327,872,321,891,318"/>
-<area shape="rect" href="../../d2/dc6/_pair_int_8h.html" title="Заголовочный файл с описанием класса pairInt." alt="" coords="760,445,835,471"/>
-<area shape="poly" title=" " alt="" coords="892,323,872,327,772,332,606,338,443,350,385,361,366,367,355,374,350,385,355,396,374,405,410,415,518,431,747,451,746,456,518,436,409,420,372,410,351,399,345,385,351,370,364,362,384,355,442,345,606,333,772,327,872,321,891,318"/>
-<area shape="rect" title=" " alt="" coords="1253,592,1329,617"/>
-<area shape="poly" title=" " alt="" coords="1355,398,1301,579,1296,578,1350,397"/>
-<area shape="rect" title=" " alt="" coords="285,445,344,471"/>
-<area shape="poly" title=" " alt="" coords="1304,398,1292,400,1152,413,1033,420,831,422,629,425,511,433,371,448,358,450,357,445,370,443,510,428,629,420,831,417,1033,415,1152,408,1292,395,1303,393"/>
-<area shape="rect" href="../../d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="996,445,1081,471"/>
-<area shape="poly" title=" " alt="" coords="1022,397,1033,431,1028,433,1017,398"/>
-<area shape="rect" href="../../df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="987,519,1090,544"/>
-<area shape="poly" title=" " alt="" coords="1041,471,1041,505,1036,505,1036,471"/>
-<area shape="poly" title=" " alt="" coords="1080,541,1240,586,1238,591,1078,547"/>
-<area shape="rect" title=" " alt="" coords="1135,592,1191,617"/>
-<area shape="poly" title=" " alt="" coords="1060,542,1132,583,1129,587,1057,546"/>
-<area shape="rect" title=" " alt="" coords="846,592,909,617"/>
-<area shape="poly" title=" " alt="" coords="1014,546,917,589,915,584,1012,542"/>
-<area shape="rect" title=" " alt="" coords="1625,592,1692,617"/>
-<area shape="poly" title=" " alt="" coords="1091,536,1612,595,1611,601,1090,541"/>
-<area shape="rect" title=" " alt="" coords="933,592,1043,617"/>
-<area shape="poly" title=" " alt="" coords="1032,546,1006,582,1002,579,1028,543"/>
-<area shape="rect" title=" " alt="" coords="1068,592,1111,617"/>
-<area shape="poly" title=" " alt="" coords="1049,543,1075,579,1071,582,1045,546"/>
-<area shape="rect" title=" " alt="" coords="1923,592,1986,617"/>
-<area shape="poly" title=" " alt="" coords="1091,534,1910,597,1910,603,1090,539"/>
-<area shape="poly" title=" " alt="" coords="443,460,974,520,973,525,442,465"/>
-<area shape="poly" title=" " alt="" coords="836,468,987,512,986,517,834,473"/>
-<area shape="rect" href="../../d3/d0a/_sheet2_d_8h.html" title="Заголовочный файл с описанием класса SheetV." alt="" coords="1891,299,1981,324"/>
-<area shape="poly" title=" " alt="" coords="1701,102,1763,150,1849,225,1916,287,1912,291,1845,229,1760,154,1698,106"/>
-<area shape="rect" href="../../d5/d31/_virtual_wake2_d_8h.html" title="Заголовочный файл с описанием класса VirtualWake." alt="" coords="1619,152,1749,177"/>
-<area shape="poly" title=" " alt="" coords="1687,104,1687,138,1681,138,1681,104"/>
-<area shape="poly" title=" " alt="" coords="1927,326,1681,584,1677,580,1923,322"/>
-<area shape="poly" title=" " alt="" coords="1948,323,1964,344,1976,371,1987,419,1988,457,1976,545,1967,580,1962,578,1971,543,1983,457,1981,420,1971,373,1959,347,1944,326"/>
-<area shape="rect" title=" " alt="" coords="1640,372,1717,397"/>
-<area shape="poly" title=" " alt="" coords="1895,327,1731,372,1730,367,1894,321"/>
-<area shape="rect" href="../../db/ddb/_wake_data_base2_d_8h.html" title="Заголовочный файл с описанием класса WakeDataBase." alt="" coords="1023,225,1174,251"/>
-<area shape="poly" title=" " alt="" coords="1619,176,1188,228,1187,223,1618,171"/>
-<area shape="poly" title=" " alt="" coords="1071,253,965,296,963,291,1069,248"/>
-<area shape="rect" href="../../d9/d01/_gpu2_d_8h.html" title="Заголовочный файл с описанием класса Gpu." alt="" coords="1097,299,1175,324"/>
-<area shape="poly" title=" " alt="" coords="1107,250,1126,285,1121,288,1102,252"/>
-<area shape="poly" title=" " alt="" coords="1138,324,1136,359,1131,358,1133,324"/>
-<area shape="poly" title=" " alt="" coords="1176,316,1210,321,1325,335,1416,343,1509,352,1626,369,1626,375,1508,358,1416,348,1325,340,1209,327,1175,322"/>
-<area shape="rect" title=" " alt="" coords="1557,372,1616,397"/>
-<area shape="poly" title=" " alt="" coords="1176,316,1210,321,1376,342,1450,352,1544,369,1543,375,1449,357,1375,347,1209,327,1175,322"/>
-<area shape="rect" title=" " alt="" coords="1432,372,1533,397"/>
-<area shape="poly" title=" " alt="" coords="1176,318,1419,368,1418,373,1175,323"/>
-<area shape="rect" href="../../db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="121,372,239,397"/>
-<area shape="poly" title=" " alt="" coords="1096,318,253,381,253,375,1096,313"/>
-<area shape="poly" title=" " alt="" coords="1571,252,1559,253,1220,289,968,309,968,304,1220,283,1558,248,1570,246"/>
-<area shape="poly" title=" " alt="" coords="1640,250,1673,358,1668,360,1634,252"/>
-<area shape="poly" title=" " alt="" coords="1205,253,968,303,967,298,1204,248"/>
-<area shape="poly" title=" " alt="" coords="1268,249,1296,286,1317,306,1340,322,1379,340,1413,351,1476,359,1543,361,1627,369,1626,375,1542,366,1476,364,1412,356,1377,345,1337,326,1313,310,1292,290,1264,253"/>
-<area shape="poly" title=" " alt="" coords="112,461,974,523,973,528,112,466"/>
-<area shape="poly" title=" " alt="" coords="301,253,252,269,200,294,150,328,129,349,112,373,105,393,111,409,127,422,151,433,211,446,271,452,271,458,210,452,149,438,124,427,107,412,100,393,107,371,125,346,147,324,197,289,250,264,299,248"/>
-<area shape="rect" title=" " alt="" coords="483,299,557,324"/>
-<area shape="poly" title=" " alt="" coords="378,248,481,291,479,296,376,253"/>
-<area shape="poly" title=" " alt="" coords="688,248,879,296,877,301,687,253"/>
-<area shape="poly" title=" " alt="" coords="704,245,1083,300,1083,305,703,251"/>
-<area shape="poly" title=" " alt="" coords="624,253,553,294,550,289,622,248"/>
-<area shape="rect" title=" " alt="" coords="581,299,667,324"/>
-<area shape="poly" title=" " alt="" coords="642,252,633,286,628,285,637,250"/>
-<area shape="rect" title=" " alt="" coords="691,299,815,324"/>
-<area shape="poly" title=" " alt="" coords="662,248,725,289,722,293,659,253"/>
-<area shape="poly" title=" " alt="" coords="985,179,977,212,962,252,941,288,937,286,958,250,972,210,980,177"/>
-<area shape="poly" title=" " alt="" coords="1038,172,1051,175,1095,180,1133,181,1199,180,1230,182,1262,188,1296,201,1334,223,1347,235,1355,248,1364,274,1372,299,1380,311,1392,322,1422,340,1449,351,1500,360,1556,362,1627,369,1626,375,1556,367,1500,366,1447,357,1419,345,1389,326,1376,314,1367,301,1359,275,1351,250,1343,238,1330,227,1294,206,1261,193,1230,187,1199,185,1133,186,1094,185,1050,180,1037,178"/>
-<area shape="poly" title=" " alt="" coords="933,175,726,203,571,228,468,261,368,299,216,368,214,363,366,295,466,256,570,223,725,198,933,170"/>
-<area shape="rect" href="../../dd/dea/_optimized_velocity2_d_8h.html" title=" " alt="" coords="777,225,948,251"/>
-<area shape="poly" title=" " alt="" coords="967,180,896,221,893,216,964,175"/>
-<area shape="poly" title=" " alt="" coords="875,249,906,286,902,290,871,253"/>
-<area shape="poly" title=" " alt="" coords="930,248,1189,296,1300,321,1462,345,1627,369,1626,375,1461,351,1300,327,1187,301,929,253"/>
-<area shape="poly" title=" " alt="" coords="864,252,855,289,845,309,829,326,757,337,599,352,253,380,252,375,598,346,756,331,827,322,841,306,850,287,859,250"/>
-<area shape="poly" title=" " alt="" coords="1408,105,1401,134,1387,174,1365,216,1334,253,1300,275,1262,291,1224,302,1189,308,1188,303,1223,297,1260,286,1297,271,1330,249,1360,213,1382,172,1396,133,1403,103"/>
-<area shape="poly" title=" " alt="" coords="1363,103,1051,155,1051,155,1050,149,1050,149,1362,97"/>
-<area shape="rect" href="../../d7/d50/_world_gen_8h.html" title="Заголовочный файл с описанием класса WorldGen." alt="" coords="1446,152,1543,177"/>
-<area shape="poly" title=" " alt="" coords="1424,102,1472,141,1468,145,1420,106"/>
-<area shape="rect" href="../../d7/db0/_passport2_d_8h.html" title="Заголовочный файл с описанием класса Passport (двумерный) и cоответствующими структурами" alt="" coords="1720,225,1827,251"/>
-<area shape="poly" title=" " alt="" coords="1440,102,1557,150,1608,175,1725,218,1723,223,1606,180,1555,154,1438,107"/>
-<area shape="rect" href="../../da/d3d/_times_gen_8h.html" title="Заголовочный файл с описанием класса TimesGen." alt="" coords="1446,225,1546,251"/>
-<area shape="poly" title=" " alt="" coords="1498,178,1498,212,1493,212,1492,178"/>
-<area shape="poly" title=" " alt="" coords="1446,248,968,307,968,302,1445,243"/>
-<area shape="poly" title=" " alt="" coords="1513,249,1655,361,1652,365,1509,253"/>
-<area shape="rect" title=" " alt="" coords="1403,299,1469,324"/>
-<area shape="poly" title=" " alt="" coords="1488,253,1457,290,1452,286,1484,249"/>
-<area shape="rect" title=" " alt="" coords="1493,299,1544,324"/>
-<area shape="poly" title=" " alt="" coords="1502,250,1513,285,1508,286,1497,252"/>
-<area shape="poly" title=" " alt="" coords="1789,249,1808,270,1825,297,1837,326,1845,351,1845,375,1830,399,1815,409,1790,418,1717,432,1620,442,1508,450,1276,457,1096,459,1095,454,1276,452,1508,444,1620,437,1717,426,1789,413,1812,404,1826,395,1840,373,1840,352,1832,328,1820,300,1804,273,1785,253"/>
-<area shape="rect" href="../../d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen." alt="" coords="1696,299,1811,324"/>
-<area shape="poly" title=" " alt="" coords="1773,252,1763,286,1758,285,1767,250"/>
-<area shape="poly" title=" " alt="" coords="1696,321,1520,341,1294,375,1293,369,1520,336,1696,316"/>
-<area shape="poly" title=" " alt="" coords="1696,325,1422,374,1421,369,1696,320"/>
-<area shape="poly" title=" " alt="" coords="1773,322,1801,343,1830,370,1862,408,1884,440,1925,518,1949,578,1944,580,1920,520,1879,442,1858,411,1826,374,1798,347,1770,327"/>
-<area shape="poly" title=" " alt="" coords="1743,326,1703,364,1699,361,1740,322"/>
-<area shape="rect" title=" " alt="" coords="1741,372,1816,397"/>
-<area shape="poly" title=" " alt="" coords="1760,323,1773,358,1768,360,1755,325"/>
-<area shape="poly" title=" " alt="" coords="1107,178,1104,212,1098,212,1102,177"/>
+<area shape="rect" title="Файл кода с описанием класса Airfoil." alt="" coords="870,5,1080,31"/>
+<area shape="rect" href="../../d0/d75/_airfoil2_d_8h.html" title="Заголовочный файл с описанием класса Airfoil." alt="" coords="1518,152,1608,177"/>
+<area shape="poly" title=" " alt="" coords="1010,28,1141,76,1168,90,1196,101,1255,115,1338,129,1504,153,1503,158,1337,135,1254,120,1194,107,1166,95,1139,81,1009,33"/>
+<area shape="rect" href="../../d6/d41/_boundary2_d_8h.html" title="Заголовочный файл с описанием класса Boundary." alt="" coords="523,79,638,104"/>
+<area shape="poly" title=" " alt="" coords="912,33,652,80,651,75,911,28"/>
+<area shape="rect" href="../../d3/dc0/_measure_v_p2_d_8h.html" title="Заголовочный файл с описанием класса MeasureVP." alt="" coords="1191,225,1316,251"/>
+<area shape="poly" title=" " alt="" coords="991,29,1230,215,1227,219,988,33"/>
+<area shape="rect" href="../../da/d3e/_mechanics2_d_8h.html" title="Заголовочный файл с описанием класса Mechanics." alt="" coords="1045,225,1166,251"/>
+<area shape="poly" title=" " alt="" coords="981,30,1007,94,1028,136,1052,176,1085,214,1081,217,1047,179,1023,138,1003,96,976,32"/>
+<area shape="rect" href="../../da/dbe/nummatrix_8h.html" title="Описание класса nummatrix." alt="" coords="1207,79,1314,104"/>
+<area shape="poly" title=" " alt="" coords="1021,28,1202,73,1200,78,1020,33"/>
+<area shape="rect" href="../../d1/d57/_preprocessor_8h.html" title="Заголовочный файл с описанием класса Preprocessor." alt="" coords="208,225,326,251"/>
+<area shape="poly" title=" " alt="" coords="870,26,560,46,421,62,373,71,346,81,317,109,296,144,282,181,274,212,269,211,277,179,291,142,313,106,343,76,371,66,420,56,559,40,869,21"/>
+<area shape="rect" href="../../d6/d75/_stream_parser_8h.html" title="Заголовочный файл с описанием класса StreamParser." alt="" coords="64,225,184,251"/>
+<area shape="poly" title=" " alt="" coords="870,24,729,29,569,39,421,56,361,67,316,81,262,110,214,147,174,185,144,217,140,213,170,181,211,143,260,106,314,76,360,62,420,51,569,34,729,24,870,19"/>
+<area shape="rect" href="../../dc/d81/_velocity2_d_8h.html" title="Заголовочный файл с описанием класса Velocity." alt="" coords="1346,152,1450,177"/>
+<area shape="poly" title=" " alt="" coords="996,28,1064,64,1152,101,1245,129,1332,149,1331,154,1244,135,1150,107,1062,69,994,33"/>
+<area shape="rect" href="../../d4/d87/_world2_d_8h.html" title="Заголовочный файл с описанием класса World2D." alt="" coords="862,79,952,104"/>
+<area shape="poly" title=" " alt="" coords="966,33,930,70,926,67,962,29"/>
+<area shape="rect" href="../../dc/d4d/_wake2_d_8h.html" title="Заголовочный файл с описанием класса Wake." alt="" coords="721,152,808,177"/>
+<area shape="poly" title=" " alt="" coords="945,33,899,53,851,81,814,112,785,143,781,139,811,108,848,76,897,48,942,28"/>
+<area shape="rect" href="../../dc/d6f/_gmres2_d_8h.html" title="Заголовочный файл с функциями для метода GMRES." alt="" coords="325,372,420,397"/>
+<area shape="poly" title=" " alt="" coords="870,27,669,46,577,61,540,70,512,81,478,101,451,121,431,143,416,167,394,225,376,299,373,329,373,358,367,358,367,329,371,298,389,223,411,165,427,140,448,117,475,96,510,76,538,65,576,56,669,40,869,22"/>
+<area shape="rect" title=" " alt="" coords="1338,79,1454,104"/>
+<area shape="poly" title=" " alt="" coords="1043,28,1326,75,1325,81,1042,33"/>
+<area shape="rect" href="../../d5/d64/defs_8h.html" title="Описание базовых вспомогательных функций" alt="" coords="1446,299,1509,324"/>
+<area shape="poly" title=" " alt="" coords="1576,176,1599,210,1604,231,1599,252,1583,270,1564,284,1523,303,1521,298,1562,280,1580,266,1594,249,1599,231,1594,212,1572,179"/>
+<area shape="rect" title=" " alt="" coords="1793,372,1866,397"/>
+<area shape="poly" title=" " alt="" coords="1510,316,1779,369,1778,374,1509,321"/>
+<area shape="rect" title=" " alt="" coords="1891,372,1976,397"/>
+<area shape="poly" title=" " alt="" coords="1510,314,1664,335,1878,369,1877,374,1663,341,1509,319"/>
+<area shape="rect" title=" " alt="" coords="2000,372,2096,397"/>
+<area shape="poly" title=" " alt="" coords="1510,313,1707,333,1987,369,1986,374,1706,338,1509,318"/>
+<area shape="rect" title=" " alt="" coords="1516,372,1575,397"/>
+<area shape="poly" title=" " alt="" coords="1491,322,1527,360,1523,364,1487,326"/>
+<area shape="rect" title=" " alt="" coords="636,445,716,471"/>
+<area shape="poly" title=" " alt="" coords="1452,327,1357,363,1296,383,1233,400,1092,425,951,442,731,458,730,452,951,437,1091,420,1232,395,1294,378,1355,358,1450,322"/>
+<area shape="rect" title=" " alt="" coords="1599,372,1642,397"/>
+<area shape="poly" title=" " alt="" coords="1502,322,1588,364,1586,369,1499,326"/>
+<area shape="rect" title=" " alt="" coords="1666,372,1769,397"/>
+<area shape="poly" title=" " alt="" coords="1510,319,1667,366,1666,371,1508,324"/>
+<area shape="rect" href="../../d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="495,372,583,397"/>
+<area shape="poly" title=" " alt="" coords="1446,316,1107,329,857,347,597,375,597,369,857,342,1107,324,1446,311"/>
+<area shape="rect" href="../../d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream." alt="" coords="1116,372,1220,397"/>
+<area shape="poly" title=" " alt="" coords="1447,322,1232,372,1231,366,1446,317"/>
+<area shape="rect" href="../../d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="1346,372,1441,397"/>
+<area shape="poly" title=" " alt="" coords="1466,326,1420,365,1416,361,1462,322"/>
+<area shape="rect" href="../../d6/d1e/v3_d_8h.html" title="Заголовочный файл с описанием класса v3D." alt="" coords="1421,445,1481,471"/>
+<area shape="poly" title=" " alt="" coords="1478,325,1458,432,1453,431,1473,324"/>
+<area shape="rect" href="../../d2/dc6/_pair_int_8h.html" title="Заголовочный файл с описанием класса pairInt." alt="" coords="1802,445,1876,471"/>
+<area shape="poly" title=" " alt="" coords="1509,311,1649,314,1839,324,2015,342,2077,354,2097,362,2110,370,2120,383,2124,395,2123,407,2117,416,2094,431,2060,442,1974,455,1891,459,1891,454,1973,450,2058,437,2091,427,2113,413,2118,405,2119,396,2115,386,2106,374,2095,366,2075,359,2014,347,1839,329,1648,320,1509,316"/>
+<area shape="rect" title=" " alt="" coords="1130,592,1206,617"/>
+<area shape="poly" title=" " alt="" coords="1171,398,1171,578,1166,578,1166,398"/>
+<area shape="rect" title=" " alt="" coords="428,445,487,471"/>
+<area shape="poly" title=" " alt="" coords="1116,398,1105,400,930,421,757,437,501,457,501,451,757,432,929,415,1104,395,1116,393"/>
+<area shape="rect" href="../../d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="1275,445,1360,471"/>
+<area shape="poly" title=" " alt="" coords="1383,399,1342,438,1338,434,1380,395"/>
+<area shape="rect" href="../../df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="1274,519,1377,544"/>
+<area shape="poly" title=" " alt="" coords="1322,471,1325,505,1320,505,1316,471"/>
+<area shape="poly" title=" " alt="" coords="1301,546,1207,589,1205,584,1299,542"/>
+<area shape="rect" title=" " alt="" coords="1298,592,1354,617"/>
+<area shape="poly" title=" " alt="" coords="1328,544,1328,578,1323,578,1323,544"/>
+<area shape="rect" title=" " alt="" coords="1378,592,1441,617"/>
+<area shape="poly" title=" " alt="" coords="1341,542,1387,581,1384,585,1337,546"/>
+<area shape="rect" title=" " alt="" coords="778,592,844,617"/>
+<area shape="poly" title=" " alt="" coords="1274,542,858,600,857,594,1274,537"/>
+<area shape="rect" title=" " alt="" coords="1465,592,1576,617"/>
+<area shape="poly" title=" " alt="" coords="1358,542,1477,585,1475,590,1356,547"/>
+<area shape="rect" title=" " alt="" coords="1231,592,1274,617"/>
+<area shape="poly" title=" " alt="" coords="1315,546,1276,584,1272,580,1312,542"/>
+<area shape="rect" title=" " alt="" coords="442,592,505,617"/>
+<area shape="poly" title=" " alt="" coords="1275,540,519,602,518,597,1274,534"/>
+<area shape="poly" title=" " alt="" coords="1432,473,1359,514,1357,509,1430,468"/>
+<area shape="poly" title=" " alt="" coords="1802,467,1391,524,1390,518,1801,462"/>
+<area shape="rect" href="../../d3/d0a/_sheet2_d_8h.html" title="Заголовочный файл с описанием класса SheetV." alt="" coords="386,299,476,324"/>
+<area shape="poly" title=" " alt="" coords="535,107,495,125,476,138,461,154,444,186,435,221,431,256,432,285,426,285,426,255,430,220,439,184,457,150,473,134,492,120,533,102"/>
+<area shape="rect" href="../../d5/d31/_virtual_wake2_d_8h.html" title="Заголовочный файл с описанием класса VirtualWake." alt="" coords="515,152,646,177"/>
+<area shape="poly" title=" " alt="" coords="583,104,583,138,578,138,578,104"/>
+<area shape="poly" title=" " alt="" coords="438,323,456,358,485,396,558,458,638,512,713,554,774,584,771,589,711,559,635,516,555,463,481,399,452,360,434,325"/>
+<area shape="poly" title=" " alt="" coords="386,317,273,327,207,338,144,352,90,372,70,385,54,398,44,413,40,430,43,448,54,469,79,491,117,512,166,531,221,548,335,575,429,593,428,599,334,581,219,553,164,536,115,517,76,495,50,472,38,450,35,430,39,411,50,395,67,380,88,368,142,347,206,332,272,322,386,312"/>
+<area shape="rect" title=" " alt="" coords="1015,372,1092,397"/>
+<area shape="poly" title=" " alt="" coords="476,319,489,321,631,338,743,344,857,352,1001,369,1001,375,856,357,743,350,630,343,488,327,476,325"/>
+<area shape="rect" href="../../db/ddb/_wake_data_base2_d_8h.html" title="Заголовочный файл с описанием класса WakeDataBase." alt="" coords="614,225,765,251"/>
+<area shape="poly" title=" " alt="" coords="599,175,662,215,659,220,596,180"/>
+<area shape="poly" title=" " alt="" coords="766,247,777,248,1156,283,1433,304,1432,310,1155,288,776,253,765,252"/>
+<area shape="rect" href="../../d9/d01/_gpu2_d_8h.html" title="Заголовочный файл с описанием класса Gpu." alt="" coords="634,299,713,324"/>
+<area shape="poly" title=" " alt="" coords="690,252,682,286,677,285,684,250"/>
+<area shape="poly" title=" " alt="" coords="653,326,574,368,572,363,651,322"/>
+<area shape="poly" title=" " alt="" coords="714,319,726,321,862,345,1002,369,1001,375,861,350,725,327,713,324"/>
+<area shape="rect" title=" " alt="" coords="732,372,791,397"/>
+<area shape="poly" title=" " alt="" coords="689,322,738,361,735,365,686,326"/>
+<area shape="rect" title=" " alt="" coords="607,372,708,397"/>
+<area shape="poly" title=" " alt="" coords="674,325,666,359,661,358,668,324"/>
+<area shape="rect" href="../../db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="2171,372,2288,397"/>
+<area shape="poly" title=" " alt="" coords="714,319,726,321,935,344,1113,356,1269,360,1416,359,1719,356,1898,359,2108,369,2157,373,2157,378,2108,375,1898,364,1719,361,1416,365,1269,365,1113,361,935,349,725,327,713,325"/>
+<area shape="poly" title=" " alt="" coords="1290,248,1434,293,1432,299,1289,253"/>
+<area shape="poly" title=" " alt="" coords="1239,253,1082,366,1079,362,1236,249"/>
+<area shape="poly" title=" " alt="" coords="1166,248,1433,299,1432,304,1165,253"/>
+<area shape="poly" title=" " alt="" coords="1104,252,1065,360,1060,358,1099,250"/>
+<area shape="poly" title=" " alt="" coords="1314,99,1326,101,1529,113,1867,132,2039,147,2185,168,2244,182,2288,197,2317,215,2326,225,2328,236,2328,387,2320,405,2296,421,2259,436,2212,449,2089,473,1942,491,1631,517,1391,530,1391,525,1631,512,1942,486,2088,467,2210,444,2258,431,2293,417,2316,401,2323,385,2323,237,2321,228,2314,219,2286,202,2242,187,2185,174,2038,153,1867,137,1528,119,1325,107,1313,105"/>
+<area shape="poly" title=" " alt="" coords="270,251,272,279,278,318,291,359,314,396,330,407,356,419,416,441,414,446,354,424,328,412,310,399,287,361,273,319,266,280,264,251"/>
+<area shape="rect" title=" " alt="" coords="175,299,250,324"/>
+<area shape="poly" title=" " alt="" coords="260,253,232,289,227,286,256,249"/>
+<area shape="poly" title=" " alt="" coords="185,247,197,248,466,267,833,284,1432,306,1432,311,832,289,466,272,196,253,184,252"/>
+<area shape="poly" title=" " alt="" coords="185,246,197,248,314,262,407,270,501,279,621,296,620,301,500,284,406,275,314,267,196,253,184,252"/>
+<area shape="poly" title=" " alt="" coords="140,249,189,288,186,292,137,253"/>
+<area shape="rect" title=" " alt="" coords="64,445,150,471"/>
+<area shape="poly" title=" " alt="" coords="81,253,45,271,29,284,16,300,9,318,9,337,14,355,24,374,52,408,82,435,78,439,48,411,20,377,9,357,4,337,4,317,11,297,25,280,42,267,79,248"/>
+<area shape="rect" title=" " alt="" coords="26,299,150,324"/>
+<area shape="poly" title=" " alt="" coords="121,252,103,288,98,285,116,250"/>
+<area shape="poly" title=" " alt="" coords="1450,165,1483,171,1518,181,1550,198,1576,224,1581,235,1581,246,1570,266,1548,282,1523,296,1520,291,1545,278,1566,262,1576,245,1576,236,1571,227,1547,203,1516,186,1482,176,1449,171"/>
+<area shape="poly" title=" " alt="" coords="1393,179,1367,215,1330,253,1273,292,1211,325,1103,370,1101,365,1209,320,1270,287,1327,249,1363,211,1388,176"/>
+<area shape="poly" title=" " alt="" coords="1442,175,2174,366,2172,371,1441,180"/>
+<area shape="rect" href="../../dd/dea/_optimized_velocity2_d_8h.html" title=" " alt="" coords="1391,225,1562,251"/>
+<area shape="poly" title=" " alt="" coords="1412,175,1455,214,1452,218,1409,179"/>
+<area shape="poly" title=" " alt="" coords="1479,251,1480,285,1475,285,1474,251"/>
+<area shape="poly" title=" " alt="" coords="1453,253,1376,288,1277,327,1187,354,1106,374,1105,369,1186,349,1275,321,1374,283,1451,248"/>
+<area shape="poly" title=" " alt="" coords="1537,248,2158,367,2157,372,1536,253"/>
+<area shape="poly" title=" " alt="" coords="863,104,789,124,709,154,652,186,622,207,604,227,601,244,609,261,623,276,642,290,638,294,620,280,604,264,596,245,599,224,619,203,649,182,707,150,788,119,861,99"/>
+<area shape="poly" title=" " alt="" coords="952,96,1332,151,1331,156,951,102"/>
+<area shape="rect" href="../../d7/d50/_world_gen_8h.html" title="Заголовочный файл с описанием класса WorldGen." alt="" coords="832,152,929,177"/>
+<area shape="poly" title=" " alt="" coords="905,105,892,140,887,138,900,103"/>
+<area shape="rect" href="../../d7/db0/_passport2_d_8h.html" title="Заголовочный файл с описанием класса Passport (двумерный) и cоответствующими структурами" alt="" coords="914,225,1020,251"/>
+<area shape="poly" title=" " alt="" coords="917,103,943,151,963,211,958,212,938,153,912,105"/>
+<area shape="rect" href="../../d7/d56/cpu_tree_info_8h.html" title="Заголовок класса дерева для реализации быстрых алгоритмов на CPU." alt="" coords="500,299,610,324"/>
+<area shape="poly" title=" " alt="" coords="863,99,654,119,555,136,522,145,505,154,496,169,493,186,494,203,499,222,517,257,538,287,534,290,513,260,494,224,489,204,487,185,491,167,501,150,520,140,554,130,653,114,862,93"/>
+<area shape="rect" href="../../da/d3d/_times_gen_8h.html" title="Заголовочный файл с описанием класса TimesGen." alt="" coords="789,225,889,251"/>
+<area shape="poly" title=" " alt="" coords="876,179,855,215,850,212,871,176"/>
+<area shape="poly" title=" " alt="" coords="890,246,902,248,1205,283,1433,304,1432,309,1204,289,901,253,889,251"/>
+<area shape="poly" title=" " alt="" coords="890,247,972,268,1008,282,1031,297,1042,311,1049,327,1055,358,1050,359,1044,328,1037,313,1028,301,1005,286,970,273,889,252"/>
+<area shape="rect" title=" " alt="" coords="812,299,879,324"/>
+<area shape="poly" title=" " alt="" coords="843,251,846,285,841,285,837,251"/>
+<area shape="rect" title=" " alt="" coords="738,299,788,324"/>
+<area shape="poly" title=" " alt="" coords="829,253,787,291,784,287,825,249"/>
+<area shape="poly" title=" " alt="" coords="998,248,1106,295,1171,330,1234,370,1271,401,1301,433,1297,437,1267,405,1231,374,1168,335,1104,300,996,253"/>
+<area shape="rect" href="../../d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen." alt="" coords="903,299,1018,324"/>
+<area shape="poly" title=" " alt="" coords="969,251,965,285,960,285,963,251"/>
+<area shape="poly" title=" " alt="" coords="941,327,804,400,715,442,713,437,802,395,938,322"/>
+<area shape="poly" title=" " alt="" coords="995,321,1122,365,1121,370,993,327"/>
+<area shape="poly" title=" " alt="" coords="947,326,847,400,730,473,610,538,511,588,508,583,608,533,727,468,844,395,944,322"/>
+<area shape="poly" title=" " alt="" coords="977,322,1029,361,1026,366,974,326"/>
+<area shape="rect" title=" " alt="" coords="916,372,991,397"/>
+<area shape="poly" title=" " alt="" coords="962,325,959,359,953,358,957,324"/>
+<area shape="poly" title=" " alt="" coords="555,325,547,359,542,358,550,324"/>
+<area shape="poly" title=" " alt="" coords="610,320,622,321,940,347,1333,376,1332,382,939,353,621,327,610,325"/>
+<area shape="rect" href="../../d0/da6/cpu_radix_sorter_8h.html" title="Çàãîëîâîê êëàññà äëÿ ðåàëèçàöèè ïîðàçðÿäíîé ñîðòèðîâêè (RadixSort) íà CPU." alt="" coords="117,372,249,397"/>
+<area shape="poly" title=" " alt="" coords="501,326,257,372,256,367,500,320"/>
+<area shape="poly" title=" " alt="" coords="249,393,623,446,622,452,249,398"/>
+<area shape="poly" title=" " alt="" coords="229,395,416,443,416,443,415,448,414,448,227,400"/>
+<area shape="poly" title=" " alt="" coords="187,397,195,432,203,452,214,469,238,492,264,513,322,548,380,573,430,590,428,595,378,578,320,553,261,518,234,496,210,472,198,454,190,434,182,398"/>
+<area shape="poly" title=" " alt="" coords="173,399,131,438,128,434,169,395"/>
+<area shape="rect" title=" " alt="" coords="225,445,317,471"/>
+<area shape="poly" title=" " alt="" coords="199,395,248,434,244,439,195,399"/>
+<area shape="rect" title=" " alt="" coords="341,445,404,471"/>
+<area shape="poly" title=" " alt="" coords="214,395,329,438,328,443,212,400"/>
+<area shape="poly" title=" " alt="" coords="754,179,714,218,710,214,750,175"/>
+<area shape="poly" title=" " alt="" coords="420,394,623,442,622,447,419,400"/>
+<area shape="poly" title=" " alt="" coords="388,395,435,434,432,439,384,399"/>
+<area shape="poly" title=" " alt="" coords="420,389,483,395,931,429,1261,451,1261,456,931,434,483,400,419,394"/>
+<area shape="poly" title=" " alt="" coords="375,398,375,432,370,432,370,398"/>
 </map>
 </div>
 </div>

@@ -3,7 +3,7 @@ var class_v_m2_d_1_1_velocity_barnes_hut =
     [ "VelocityBarnesHut", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a3719e60db6791eadcee9dcc62704d355", null ],
     [ "~VelocityBarnesHut", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#aa22ddda261a283cb30d19b8f0819ad63", null ],
     [ "CalcConvVelo", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a0b291203937525a05b8854f55bc269d8", null ],
-    [ "CalcConvVeloToSetOfPointsFromWake", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a317d8b5ef8b758769718800054fe1bc2", null ],
+    [ "CalcConvVeloToSetOfPointsFromWake", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a0160a8912f817723b297e3b07062ee0b", null ],
     [ "CalcConvVPVeloToSetOfPointsFromWake", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab8d90fe8a6f6d0b6661c5f0e3db453b9", null ],
     [ "CalcDiffVelo", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a12cf72877405eed5b5e671cf2d4f4d7e", null ],
     [ "CalcDiffVeloI0I3", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a8e81fd75f2fa3af9ab43b50dcd970046", null ],

@@ -13,6 +13,7 @@ var _gpudefs_8h =
     [ "CUDA_DISABLE", "d5/dde/_gpudefs_8h.html#ae6a0b56f5d52dd9f097bc0fe38b814ed", null ],
     [ "CUDA_ENABLE", "d5/dde/_gpudefs_8h.html#a574ff3886314e7f2ba3c3191443e4c60", null ],
     [ "CUDAdef", "d5/dde/_gpudefs_8h.html#a15b41244df5f01bee5af96d7d5f1242b", null ],
+    [ "FACTOR1", "d5/dde/_gpudefs_8h.html#a4b50b75600a4385c7affd1c82998eef2", null ],
     [ "FACTORforces", "d5/dde/_gpudefs_8h.html#a0c0e96bc26044bc4fd7c1e074756bade", null ],
     [ "FACTORgab", "d5/dde/_gpudefs_8h.html#a1bea69ac3c3b2d2e35ea3d51dd4683f0", null ],
     [ "FACTORI0I3", "d5/dde/_gpudefs_8h.html#a5a737cc4bcc8e42d6c48c21508f63ba9", null ],
@@ -32,7 +33,7 @@ var _gpudefs_8h =
     [ "maxTHREADSslae", "d5/dde/_gpudefs_8h.html#ade8315664808db4624d352fdd7757291", null ],
     [ "orderAlignment", "d5/dde/_gpudefs_8h.html#a47244f054592b2e1f57725189ff5cb31", null ],
     [ "rbound", "d5/dde/_gpudefs_8h.html#a354384d36cf396f7a6ff2c4b2cae1281", null ],
-    [ "THREADSforces", "d5/dde/_gpudefs_8h.html#a1fc25a46ae77804ce0cd156166c9b254", null ],
+    [ "THREADS1024", "d5/dde/_gpudefs_8h.html#a083a708333a952356e34ca3d2f7d260b", null ],
     [ "THREADSgab", "d5/dde/_gpudefs_8h.html#a1fbad0d26a2005a942f369ab82626742", null ],
     [ "THREADSI0I3", "d5/dde/_gpudefs_8h.html#a5fd2ade64b33285d99d8065b419fb8e7", null ],
     [ "THREADSI1I2", "d5/dde/_gpudefs_8h.html#a5d3fb6509d94b269dd7ac7248b30c898", null ],
@@ -41,12 +42,13 @@ var _gpudefs_8h =
     [ "THREADSsegintersect", "d5/dde/_gpudefs_8h.html#ab6c3dd603d78f7249b769c26f83d68cd", null ],
     [ "THREADSslae", "d5/dde/_gpudefs_8h.html#ab11b5f3c414cfd2de1f5d9aee6187cf3", null ],
     [ "THREADSupward", "d5/dde/_gpudefs_8h.html#a9acd319e003288229dd8ea4d38986b13", null ],
+    [ "TURB", "d5/dde/_gpudefs_8h.html#a4a4aad3419087ea541596e03a789e14c", null ],
     [ "twoPowCodeLength", "d5/dde/_gpudefs_8h.html#a9d2349b1d3456ed2e949cc8af3ee5191", null ],
     [ "valPi", "d5/dde/_gpudefs_8h.html#a85cb1a541b8f730a7070d1b768f302ec", null ],
     [ "valPif", "d5/dde/_gpudefs_8h.html#ad56205b716ad2fa1e2494d92f6e3689f", null ],
     [ "object_T", "d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cd", [
       [ "point2", "d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cda68e14af34685093f8fd0ac74b8c5a57c", null ],
-      [ "point3", "d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cda4ce0e43b806457bbc21881748d6a50d2", null ],
+      [ "point4", "d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdac7b1ec6c86991892132d134f554292ec", null ],
       [ "panel", "d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8", null ]
     ] ],
     [ "scheme_T", "d5/dde/_gpudefs_8h.html#aa1d4b858f5413e9ec2808de4ba12af76", [
@@ -59,5 +61,6 @@ var _gpudefs_8h =
       [ "aux", "d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa53e5733361417423cbec0979f23b3def", null ],
       [ "vortex", "d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa5c19e1e0521f7b789a37a21c5cd5737b", null ],
       [ "source", "d5/dde/_gpudefs_8h.html#a4b02ab1d50fcd14c46d78cff3d6c443fa36cd38f49b9afa08222c0dc9ebfe35eb", null ]
-    ] ]
+    ] ],
+    [ "ifac", "d5/dde/_gpudefs_8h.html#a222629d5fb203eee300f669b8744da8b", null ]
 ];

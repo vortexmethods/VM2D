@@ -1,0 +1,9 @@
+<map id="VM2D::World2D::MoveVortexes" name="VM2D::World2D::MoveVortexes">
+<area shape="rect" id="Node000001" title="Вычисляем новые положения вихрей (в пелене и виртуальных)" alt="" coords="5,70,229,95"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad5fd79becfefeecd1067e09a7ce9bd63" title="Возврат количества граничных условий в задаче" alt="" coords="279,5,484,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,67,275,46,276,51,177,73"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="277,70,485,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="229,80,264,80,264,85,229,85"/>
+<area shape="rect" id="Node000004" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="288,119,475,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="186,93,299,114,298,119,185,98"/>
+</map>

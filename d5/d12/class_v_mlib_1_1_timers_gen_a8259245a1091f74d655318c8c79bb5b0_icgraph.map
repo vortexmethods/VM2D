@@ -37,7 +37,7 @@
 <area shape="rect" id="Node000021" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений" alt="" coords="520,954,728,994"/>
 <area shape="poly" id="edge23_Node000001_Node000021" title=" " alt="" coords="884,498,882,583,876,640,865,703,849,768,824,832,792,892,749,944,730,958,727,953,745,940,787,889,820,830,843,766,860,702,871,640,876,583,879,498"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="269,186,216,202,119,237,118,232,214,197,267,181"/>
-<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a8e02b08bd476937402464bb08df2b3cb" title="Перемещение вихрей и профилей на шаге" alt="" coords="215,255,453,295"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a1ed0f93da4932830bf413dc56f19183f" title="Перемещение вихрей и профилей на шаге" alt="" coords="215,255,453,295"/>
 <area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="505,274,454,275,454,270,505,269"/>
 <area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="200,263,167,259,167,254,201,258"/>
 <area shape="rect" id="Node000010" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5ff24012df7e7caa5bd13cd6552042ab" title="Набор матрицы, правой части и решение СЛАУ" alt="" coords="223,337,445,377"/>

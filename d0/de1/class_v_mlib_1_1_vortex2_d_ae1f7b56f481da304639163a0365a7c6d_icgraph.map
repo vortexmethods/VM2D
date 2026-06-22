@@ -1,54 +1,54 @@
 <map id="VMlib::Vortex2D::g" name="VMlib::Vortex2D::g">
-<area shape="rect" id="Node000001" title="Функция для доступа к циркуляции вихря" alt="" coords="1093,485,1236,511"/>
-<area shape="rect" id="Node000002" href="$d8/d27/namespaceknn_new.html#a4c69c922a3007dafbee667dd841ae954" title=" " alt="" coords="829,5,977,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1158,472,1144,376,1120,247,1104,182,1086,124,1066,77,1044,45,1012,27,976,18,977,13,1014,22,1047,41,1071,74,1091,122,1110,181,1125,246,1149,375,1163,471"/>
-<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a9d62ab68ad9f30cb51837040128f5965" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек" alt="" coords="787,55,1019,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1161,472,1158,400,1142,301,1127,249,1107,198,1079,150,1044,109,1017,92,1020,88,1047,105,1083,147,1112,195,1133,247,1147,300,1163,399,1166,472"/>
-<area shape="rect" id="Node000007" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="269,285,429,311"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1156,472,1144,427,1123,371,1090,317,1069,294,1044,275,1022,264,995,256,930,247,854,244,773,247,611,261,487,275,406,288,406,283,486,270,611,256,772,242,854,239,931,241,996,251,1024,259,1047,270,1073,290,1094,314,1128,369,1149,425,1161,471"/>
-<area shape="rect" id="Node000009" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad9b7f5fc4d187f728eed9661ad345c3c" title=" " alt="" coords="808,184,997,209"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1157,472,1146,420,1126,355,1111,320,1092,287,1070,257,1044,231,1022,217,997,207,998,202,1024,212,1047,227,1074,253,1097,284,1116,318,1131,353,1152,419,1162,471"/>
-<area shape="rect" id="Node000010" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad3ee3eecd03629e1af8f850cc043cdf4" title=" " alt="" coords="492,647,707,672"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1162,525,1151,574,1130,634,1115,664,1096,693,1074,719,1047,740,1019,755,990,765,928,773,866,769,804,756,746,736,694,714,620,675,622,670,697,709,748,731,806,751,866,764,928,768,988,760,1017,750,1044,736,1070,715,1092,690,1110,662,1125,632,1146,572,1157,524"/>
-<area shape="rect" id="Node000011" href="$db/de9/class_v_m2_d_1_1_airfoil.html#accafa6df2943562f5421f0465126ab88" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек,..." alt="" coords="769,119,1036,159"/>
-<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="1159,472,1152,410,1134,329,1119,286,1099,245,1074,207,1044,173,1027,162,1030,157,1047,169,1079,203,1104,242,1124,284,1139,328,1157,409,1165,471"/>
-<area shape="rect" id="Node000014" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a31c902dce09493b899ec16ec99da4dfc" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="790,335,1015,389"/>
-<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="1139,477,1097,440,1044,404,1015,391,1017,386,1047,400,1100,436,1143,473"/>
-<area shape="rect" id="Node000015" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ada4f7f36671817b207e42756b5180608" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="765,414,1040,454"/>
-<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="1104,484,1045,469,994,457,996,451,1046,463,1105,479"/>
-<area shape="rect" id="Node000016" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a56c3fd943edc325d27313ca7579e0234" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="761,478,1045,518"/>
-<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="1080,501,1045,501,1045,495,1080,495"/>
-<area shape="rect" id="Node000017" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae51b63e7ea4a0828fb9c9bbf379fe437" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="789,543,1016,597"/>
-<area shape="poly" id="edge18_Node000001_Node000017" title=" " alt="" coords="1105,517,1003,545,1002,540,1104,512"/>
-<area shape="rect" id="Node000018" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#af88cfc75a4e1c24666e35c5e80effcb0" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="765,622,1040,662"/>
-<area shape="poly" id="edge19_Node000001_Node000018" title=" " alt="" coords="1147,523,1105,569,1077,593,1047,612,1019,624,1017,620,1044,608,1074,588,1101,565,1143,520"/>
-<area shape="rect" id="Node000019" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a1ebf9f265ea53bb19a94460457427b91" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="760,686,1045,726"/>
-<area shape="poly" id="edge20_Node000001_Node000019" title=" " alt="" coords="1156,525,1140,560,1116,601,1085,642,1047,676,1025,688,1022,684,1044,672,1081,638,1112,598,1135,557,1151,523"/>
-<area shape="rect" id="Node000020" href="$df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e" title=" " alt="" coords="811,285,994,311"/>
-<area shape="poly" id="edge21_Node000001_Node000020" title=" " alt="" coords="1151,474,1136,439,1112,399,1082,358,1044,326,1020,313,993,306,995,301,1022,309,1047,321,1086,355,1117,396,1140,437,1156,472"/>
-<area shape="rect" id="Node000022" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html#a1d24ee8c0b7f8464b21d8a06eb0025cb" title="Считывание вихревого следа из файла" alt="" coords="819,801,986,841"/>
-<area shape="poly" id="edge24_Node000001_Node000022" title=" " alt="" coords="1163,525,1152,579,1132,649,1117,686,1098,722,1075,755,1047,784,1019,802,987,814,985,809,1016,798,1044,780,1071,752,1093,719,1112,684,1127,647,1147,578,1157,524"/>
-<area shape="rect" id="Node000023" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae8187ac0ba509703fd8be02a7af16fbe" title="Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле" alt="" coords="786,865,1019,920"/>
-<area shape="poly" id="edge25_Node000001_Node000023" title=" " alt="" coords="1165,525,1159,591,1141,680,1126,727,1106,773,1080,817,1047,855,1021,873,1018,869,1044,851,1076,813,1101,771,1121,725,1136,678,1154,590,1160,524"/>
-<area shape="rect" id="Node000024" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a324a4b4c5f37e51c949534cdaff1151b" title="Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле" alt="" coords="767,944,1039,999"/>
-<area shape="poly" id="edge26_Node000001_Node000024" title=" " alt="" coords="1162,525,1147,616,1123,739,1089,857,1069,903,1047,934,1034,946,1030,942,1043,931,1064,900,1084,855,1117,737,1142,615,1157,524"/>
-<area shape="rect" id="Node000025" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a307bc208249612c669d59f885c39beb7" title="Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле" alt="" coords="783,1023,1022,1077"/>
-<area shape="poly" id="edge27_Node000001_Node000025" title=" " alt="" coords="1163,525,1151,631,1128,777,1112,851,1094,919,1072,975,1047,1013,1024,1031,1020,1027,1043,1010,1067,973,1089,918,1107,850,1123,776,1146,630,1158,524"/>
-<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a4299b095858b5cebd641fd4c61e2395a" title=" " alt="" coords="504,55,695,95"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="773,78,695,78,695,73,773,73"/>
-<area shape="rect" id="Node000005" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе" alt="" coords="260,55,439,95"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="490,78,439,78,439,73,490,73"/>
-<area shape="rect" id="Node000006" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="5,95,212,120"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="247,92,205,97,204,92,246,86"/>
-<area shape="rect" id="Node000008" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="25,311,192,336"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="256,311,192,317,192,312,255,305"/>
-<area shape="poly" id="edge10_Node000010_Node000008" title=" " alt="" coords="567,641,127,338,130,334,570,637"/>
-<area shape="rect" id="Node000012" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a4ed73ccc2736648d1a193e117de9d2a9" title=" " alt="" coords="487,119,712,159"/>
-<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="756,142,712,142,712,137,756,137"/>
-<area shape="rect" id="Node000013" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e81fd75f2fa3af9ab43b50dcd970046" title=" " alt="" coords="260,119,439,159"/>
-<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="473,142,439,142,439,137,473,137"/>
-<area shape="poly" id="edge14_Node000013_Node000006" title=" " alt="" coords="246,128,204,123,205,117,247,123"/>
-<area shape="rect" id="Node000021" href="$df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа" alt="" coords="516,285,683,311"/>
-<area shape="poly" id="edge22_Node000020_Node000021" title=" " alt="" coords="798,301,683,301,683,295,798,295"/>
-<area shape="poly" id="edge23_Node000021_Node000007" title=" " alt="" coords="502,301,430,301,430,295,502,295"/>
+<area shape="rect" id="Node000001" title="Функция для доступа к циркуляции вихря" alt="" coords="1095,521,1237,547"/>
+<area shape="rect" id="Node000002" href="$d8/d27/namespaceknn_new.html#a4c69c922a3007dafbee667dd841ae954" title=" " alt="" coords="830,5,978,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1159,508,1147,406,1124,266,1108,195,1090,131,1069,80,1045,45,1014,27,978,18,979,13,1016,22,1048,41,1073,77,1095,130,1114,194,1129,265,1152,405,1165,507"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a9d62ab68ad9f30cb51837040128f5965" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек" alt="" coords="788,55,1020,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1158,508,1144,418,1119,298,1085,183,1066,139,1045,109,1019,92,1022,87,1049,105,1070,136,1090,181,1124,296,1149,417,1164,507"/>
+<area shape="rect" id="Node000007" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="287,285,447,311"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1159,508,1150,456,1130,390,1115,357,1096,326,1073,298,1045,275,1024,265,998,257,932,247,852,245,764,248,586,266,441,288,440,283,586,261,764,243,852,239,932,242,999,251,1026,260,1048,270,1077,294,1101,323,1120,355,1135,389,1155,455,1165,507"/>
+<area shape="rect" id="Node000009" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad9b7f5fc4d187f728eed9661ad345c3c" title=" " alt="" coords="809,184,999,209"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1160,508,1151,450,1132,375,1117,335,1098,297,1074,261,1045,231,1023,216,998,207,1000,202,1025,212,1048,227,1078,258,1103,294,1122,333,1137,373,1157,449,1165,507"/>
+<area shape="rect" id="Node000010" href="$df/d8f/class_v_m2_d_1_1_wake.html#ad3ee3eecd03629e1af8f850cc043cdf4" title=" " alt="" coords="260,543,475,568"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1161,560,1148,602,1126,653,1093,702,1072,723,1048,740,1002,762,954,775,904,781,854,781,803,774,753,763,655,730,565,687,487,642,384,571,387,566,490,638,567,683,657,725,754,758,804,769,854,775,904,776,953,770,1000,757,1045,736,1069,719,1089,698,1121,650,1143,600,1156,559"/>
+<area shape="rect" id="Node000011" href="$db/de9/class_v_m2_d_1_1_airfoil.html#accafa6df2943562f5421f0465126ab88" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек,..." alt="" coords="771,119,1037,159"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="1162,508,1157,440,1140,349,1125,301,1105,254,1078,211,1045,173,1029,162,1032,157,1048,169,1083,208,1109,252,1130,299,1145,348,1162,439,1167,507"/>
+<area shape="rect" id="Node000013" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a31c902dce09493b899ec16ec99da4dfc" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="791,335,1017,389"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="1147,512,1105,457,1077,429,1045,404,1016,389,1018,385,1048,400,1081,425,1109,454,1152,508"/>
+<area shape="rect" id="Node000014" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ada4f7f36671817b207e42756b5180608" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="767,414,1041,454"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="1133,516,1093,491,1046,468,1009,457,1011,451,1048,464,1095,486,1136,511"/>
+<area shape="rect" id="Node000015" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a56c3fd943edc325d27313ca7579e0234" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="762,478,1046,518"/>
+<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="1081,525,1046,520,1046,515,1081,520"/>
+<area shape="rect" id="Node000016" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae51b63e7ea4a0828fb9c9bbf379fe437" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="791,543,1017,597"/>
+<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="1081,548,1018,557,1017,552,1080,543"/>
+<area shape="rect" id="Node000017" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#af88cfc75a4e1c24666e35c5e80effcb0" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="767,622,1041,662"/>
+<area shape="poly" id="edge18_Node000001_Node000017" title=" " alt="" coords="1140,557,1098,586,1048,612,1013,625,1011,619,1046,608,1095,581,1136,553"/>
+<area shape="rect" id="Node000018" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a1ebf9f265ea53bb19a94460457427b91" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="761,686,1047,726"/>
+<area shape="poly" id="edge19_Node000001_Node000018" title=" " alt="" coords="1153,560,1112,619,1082,650,1048,676,1024,688,1021,683,1045,672,1079,646,1107,616,1149,557"/>
+<area shape="rect" id="Node000019" href="$df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e" title=" " alt="" coords="813,285,995,311"/>
+<area shape="poly" id="edge20_Node000001_Node000019" title=" " alt="" coords="1155,509,1142,468,1119,417,1087,367,1068,345,1045,326,1021,313,995,305,996,300,1023,308,1048,321,1071,341,1092,364,1124,415,1147,466,1161,507"/>
+<area shape="rect" id="Node000021" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#aa5a1d01b1c44bb7c6716017aa9baeec4" title="Инициализация векторов для вычисления скоростей и давлений Вызывается только на тех шагах расчета,..." alt="" coords="789,801,1019,827"/>
+<area shape="poly" id="edge23_Node000001_Node000021" title=" " alt="" coords="1163,560,1151,609,1129,669,1096,731,1074,760,1048,784,1013,804,1010,799,1045,780,1070,756,1091,729,1124,667,1146,607,1158,559"/>
+<area shape="rect" id="Node000022" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html#a1d24ee8c0b7f8464b21d8a06eb0025cb" title="Считывание вихревого следа из файла" alt="" coords="821,851,987,891"/>
+<area shape="poly" id="edge24_Node000001_Node000022" title=" " alt="" coords="1165,561,1157,619,1137,695,1122,735,1103,774,1078,810,1048,841,1020,859,988,869,987,864,1018,854,1045,837,1074,807,1098,771,1117,733,1132,693,1151,618,1160,560"/>
+<area shape="rect" id="Node000023" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae8187ac0ba509703fd8be02a7af16fbe" title="Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле" alt="" coords="787,916,1021,971"/>
+<area shape="poly" id="edge25_Node000001_Node000023" title=" " alt="" coords="1167,560,1162,629,1144,722,1129,771,1109,820,1082,865,1048,905,1022,924,1019,919,1045,901,1078,862,1104,817,1124,769,1139,720,1156,628,1162,560"/>
+<area shape="rect" id="Node000024" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a324a4b4c5f37e51c949534cdaff1151b" title="Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле" alt="" coords="768,995,1040,1049"/>
+<area shape="poly" id="edge26_Node000001_Node000024" title=" " alt="" coords="1164,561,1149,655,1125,782,1109,846,1091,904,1071,952,1049,985,1035,997,1032,992,1045,982,1066,950,1086,903,1104,845,1120,781,1144,654,1159,560"/>
+<area shape="rect" id="Node000025" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a307bc208249612c669d59f885c39beb7" title="Пересчет решения на интенсивность вихревого слоя и на рождаемые вихри на конкретном профиле" alt="" coords="785,1073,1023,1128"/>
+<area shape="poly" id="edge27_Node000001_Node000025" title=" " alt="" coords="1165,560,1153,669,1130,820,1115,897,1096,967,1074,1024,1049,1064,1025,1082,1022,1078,1045,1060,1069,1022,1091,965,1109,895,1125,819,1148,668,1160,560"/>
+<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a4299b095858b5cebd641fd4c61e2395a" title=" " alt="" coords="523,55,713,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="774,78,714,78,714,73,774,73"/>
+<area shape="rect" id="Node000005" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе" alt="" coords="278,58,457,98"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="509,79,457,80,457,74,509,74"/>
+<area shape="rect" id="Node000006" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="5,96,212,121"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="265,93,213,99,212,94,264,88"/>
+<area shape="rect" id="Node000008" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="25,309,192,335"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="274,309,192,317,192,312,274,304"/>
+<area shape="poly" id="edge10_Node000010_Node000008" title=" " alt="" coords="340,535,123,337,126,333,344,531"/>
+<area shape="rect" id="Node000012" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e81fd75f2fa3af9ab43b50dcd970046" title=" " alt="" coords="529,119,707,159"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="757,142,708,142,708,137,757,137"/>
+<area shape="poly" id="edge13_Node000012_Node000006" title=" " alt="" coords="514,136,212,118,212,112,515,130"/>
+<area shape="rect" id="Node000020" href="$df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа" alt="" coords="535,285,701,311"/>
+<area shape="poly" id="edge21_Node000019_Node000020" title=" " alt="" coords="799,301,701,301,701,295,799,295"/>
+<area shape="poly" id="edge22_Node000020_Node000007" title=" " alt="" coords="521,301,448,301,448,295,521,295"/>
 </map>

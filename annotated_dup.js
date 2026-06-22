@@ -1,13 +1,5 @@
 var annotated_dup =
 [
-    [ "BH", "d6/d32/namespace_b_h.html", [
-      [ "BarnesHut", "d2/d20/class_b_h_1_1_barnes_hut.html", "d2/d20/class_b_h_1_1_barnes_hut" ],
-      [ "MortonTree", "d5/d14/class_b_h_1_1_morton_tree.html", "d5/d14/class_b_h_1_1_morton_tree" ],
-      [ "params", "de/d3a/class_b_h_1_1params.html", "de/d3a/class_b_h_1_1params" ],
-      [ "PointsCopy", "df/d22/class_b_h_1_1_points_copy.html", "df/d22/class_b_h_1_1_points_copy" ],
-      [ "TParticleCode", "d2/d1b/struct_b_h_1_1_t_particle_code.html", "d2/d1b/struct_b_h_1_1_t_particle_code" ],
-      [ "treeCellT", "d6/d8f/struct_b_h_1_1tree_cell_t.html", "d6/d8f/struct_b_h_1_1tree_cell_t" ]
-    ] ],
     [ "VM2D", "d9/dd7/namespace_v_m2_d.html", [
       [ "Airfoil", "db/de9/class_v_m2_d_1_1_airfoil.html", "db/de9/class_v_m2_d_1_1_airfoil" ],
       [ "AirfoilDeformable", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable" ],
@@ -20,7 +12,10 @@ var annotated_dup =
       [ "BoundaryLinLayerAver", "da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html", "da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver" ],
       [ "BoundaryVortexCollocN", "df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html", "df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n" ],
       [ "ChordPanel", "d3/d47/struct_v_m2_d_1_1_chord_panel.html", "d3/d47/struct_v_m2_d_1_1_chord_panel" ],
+      [ "ComplexData", "da/d4d/struct_v_m2_d_1_1_complex_data.html", "da/d4d/struct_v_m2_d_1_1_complex_data" ],
       [ "CpuTreeInfo", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info" ],
+      [ "GmresSolver", "d6/d76/class_v_m2_d_1_1_gmres_solver.html", "d6/d76/class_v_m2_d_1_1_gmres_solver" ],
+      [ "gmresVectors", "d6/d31/struct_v_m2_d_1_1gmres_vectors.html", "d6/d31/struct_v_m2_d_1_1gmres_vectors" ],
       [ "Gpu", "d0/d75/class_v_m2_d_1_1_gpu.html", "d0/d75/class_v_m2_d_1_1_gpu" ],
       [ "MeasureVP", "d6/db8/class_v_m2_d_1_1_measure_v_p.html", "d6/db8/class_v_m2_d_1_1_measure_v_p" ],
       [ "Mechanics", "d7/dc9/class_v_m2_d_1_1_mechanics.html", "d7/dc9/class_v_m2_d_1_1_mechanics" ],
@@ -30,6 +25,8 @@ var annotated_dup =
       [ "MechanicsRigidOscillPart", "db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html", "db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part" ],
       [ "MechanicsRigidRotatePart", "d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html", "d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part" ],
       [ "NumericalSchemes", "d2/d76/struct_v_m2_d_1_1_numerical_schemes.html", "d2/d76/struct_v_m2_d_1_1_numerical_schemes" ],
+      [ "OptimizedRadixSorter", "d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html", "d7/d47/class_v_m2_d_1_1_optimized_radix_sorter" ],
+      [ "OptimizedRadixSorter< ValueType * >", "d9/d22/class_v_m2_d_1_1_optimized_radix_sorter_3_01_value_type_01_5_01_4.html", "d9/d22/class_v_m2_d_1_1_optimized_radix_sorter_3_01_value_type_01_5_01_4" ],
       [ "Passport", "d2/d15/class_v_m2_d_1_1_passport.html", "d2/d15/class_v_m2_d_1_1_passport" ],
       [ "PhysicalProperties", "d1/d4b/struct_v_m2_d_1_1_physical_properties.html", "d1/d4b/struct_v_m2_d_1_1_physical_properties" ],
       [ "Sheet", "de/d8b/class_v_m2_d_1_1_sheet.html", "de/d8b/class_v_m2_d_1_1_sheet" ],

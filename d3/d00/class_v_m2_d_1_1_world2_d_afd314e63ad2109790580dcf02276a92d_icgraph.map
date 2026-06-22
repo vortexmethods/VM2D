@@ -1,0 +1,10 @@
+<map id="VM2D::World2D::getInflTreeWake" name="VM2D::World2D::getInflTreeWake">
+<area shape="rect" id="Node000001" title=" " alt="" coords="596,34,831,60"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="5,38,223,64"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="647,34,548,18,409,8,349,10,271,18,212,28,159,41,158,36,211,23,270,13,348,5,409,3,548,13,647,29"/>
+<area shape="rect" id="Node000003" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a0160a8912f817723b297e3b07062ee0b" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="271,27,548,67"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="582,50,548,50,548,44,582,44"/>
+<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813" title="Вычисление скоростей в точках wakeVP." alt="" coords="317,91,501,131"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="640,65,502,95,501,89,639,60"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="303,92,177,67,178,61,304,87"/>
+</map>

@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Возврат константной ссылки на источники в области течения" alt="" coords="549,99,747,124"/>
 <area shape="rect" id="Node000002" href="$d0/d75/class_v_m2_d_1_1_gpu.html#ac569e54b8579eacb3c3f252100324acc" title=" " alt="" coords="293,5,433,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="611,95,560,69,501,46,432,30,434,25,502,41,562,64,614,90"/>
-<area shape="rect" id="Node000003" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#adb69aaa3d57a84f8a756a58390eb9743" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="224,55,501,95"/>
+<area shape="rect" id="Node000003" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a52609f26e6434488288c685436cb6237" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="224,55,501,95"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="535,100,501,96,502,90,536,95"/>
 <area shape="rect" id="Node000004" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab8d90fe8a6f6d0b6661c5f0e3db453b9" title=" " alt="" coords="249,120,476,175"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="536,128,477,136,476,130,535,123"/>

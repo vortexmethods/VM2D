@@ -1,51 +1,51 @@
 <map id="VMlib::cross3" name="VMlib::cross3">
-<area shape="rect" id="Node000001" title="Вычисление третьей компоненты векторного произведения" alt="" coords="753,381,863,407"/>
-<area shape="rect" id="Node000002" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами" alt="" coords="596,484,700,509"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="777,417,671,486,668,482,774,412"/>
-<area shape="rect" id="Node000021" href="$dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины ." alt="" coords="591,245,705,271"/>
-<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="780,374,662,273,666,269,783,370"/>
-<area shape="rect" id="Node000003" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="294,863,517,917"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="650,523,646,589,632,678,619,725,601,771,576,815,544,853,518,872,515,868,541,849,572,812,596,769,614,723,627,677,641,589,644,523"/>
-<area shape="rect" id="Node000004" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="289,263,522,317"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="635,472,621,439,601,401,574,363,541,331,521,318,523,314,544,327,578,360,606,398,626,437,640,470"/>
-<area shape="rect" id="Node000005" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#ae692f9338a5fa776245dd9a0fb365a41" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="284,941,527,996"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="646,524,635,615,614,737,584,854,565,900,545,932,529,945,525,941,541,928,561,898,579,852,608,736,629,614,641,523"/>
-<area shape="rect" id="Node000006" href="$db/de9/class_v_m2_d_1_1_airfoil.html#abe3a4daab0a87f5967be9d9cd153bd05" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2." alt="" coords="327,341,483,367"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="630,474,594,425,569,400,541,380,513,368,483,361,484,356,515,363,544,376,573,396,598,421,634,470"/>
-<area shape="rect" id="Node000011" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="288,1020,523,1045"/>
-<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="648,524,639,630,621,776,607,851,590,918,569,973,545,1011,524,1025,521,1020,541,1007,565,971,585,916,602,849,615,776,634,629,642,523"/>
-<area shape="rect" id="Node000012" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6bca92af2a441ac0e8afe9196a24e37f" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения" alt="" coords="296,469,515,524"/>
-<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="582,499,515,499,515,494,582,494"/>
-<area shape="rect" id="Node000013" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#ae8673423433664d57a3823fcef846055" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения" alt="" coords="287,548,523,603"/>
-<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="604,517,544,539,508,550,506,545,542,534,602,512"/>
-<area shape="rect" id="Node000014" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения" alt="" coords="285,391,525,445"/>
-<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="601,482,542,461,502,448,504,443,544,455,602,477"/>
+<area shape="rect" id="Node000001" title="Вычисление третьей компоненты векторного произведения" alt="" coords="753,396,863,421"/>
+<area shape="rect" id="Node000002" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами" alt="" coords="596,499,700,524"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="777,431,671,501,668,496,774,427"/>
+<area shape="rect" id="Node000021" href="$dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины ." alt="" coords="591,256,705,281"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="780,389,662,284,666,280,784,385"/>
+<area shape="rect" id="Node000003" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#aa4666241d2356a86266e68acb8e3d13d" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="294,877,517,932"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="650,538,646,604,632,692,619,740,601,786,576,830,544,868,518,887,515,882,541,864,572,827,596,784,614,738,627,691,641,603,644,538"/>
+<area shape="rect" id="Node000004" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ac30d2d3edc235e7b820c74f5b5f1ef11" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="289,277,522,332"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="635,487,621,454,601,416,574,378,541,345,521,333,523,328,544,341,578,374,606,413,626,452,640,485"/>
+<area shape="rect" id="Node000005" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#ae692f9338a5fa776245dd9a0fb365a41" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="284,956,527,1011"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="646,538,635,629,614,751,584,869,565,915,545,946,529,960,525,956,541,943,561,912,579,867,608,750,629,629,641,538"/>
+<area shape="rect" id="Node000006" href="$db/de9/class_v_m2_d_1_1_airfoil.html#abe3a4daab0a87f5967be9d9cd153bd05" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2." alt="" coords="327,356,483,381"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="630,488,594,439,569,415,541,395,513,383,483,376,484,370,515,378,544,390,573,411,598,436,634,485"/>
+<area shape="rect" id="Node000011" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="288,1035,523,1060"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="648,538,639,645,621,791,607,865,590,933,569,988,545,1025,524,1040,521,1035,541,1021,565,985,585,931,602,864,615,790,634,644,642,538"/>
+<area shape="rect" id="Node000012" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a6bca92af2a441ac0e8afe9196a24e37f" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения" alt="" coords="296,484,515,539"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="582,514,515,514,515,509,582,509"/>
+<area shape="rect" id="Node000013" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#ae8673423433664d57a3823fcef846055" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения" alt="" coords="287,563,523,617"/>
+<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="604,532,544,554,508,565,506,560,542,549,602,527"/>
+<area shape="rect" id="Node000014" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#aa73fc0457fea338d02cf5e0d7b9fd469" title="Вычисление влияния слоя источников конкретной прямолинейной панели на вихрь в области течения" alt="" coords="285,405,525,460"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="601,496,542,475,502,463,504,457,544,470,602,491"/>
 <area shape="rect" id="Node000015" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ada4f7f36671817b207e42756b5180608" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="268,85,543,125"/>
-<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="637,472,586,279,558,183,541,138,525,127,529,123,545,135,563,182,591,277,643,470"/>
-<area shape="rect" id="Node000016" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="297,627,513,681"/>
-<area shape="poly" id="edge15_Node000002_Node000016" title=" " alt="" coords="634,523,597,571,572,596,544,618,515,632,512,628,541,613,569,592,593,567,629,519"/>
-<area shape="rect" id="Node000017" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a173da8092f214682310319ef8d520772" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="288,705,523,760"/>
-<area shape="poly" id="edge16_Node000002_Node000017" title=" " alt="" coords="643,523,630,562,610,608,582,656,544,696,524,709,521,705,541,692,578,652,606,606,625,560,638,522"/>
-<area shape="rect" id="Node000018" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae51b63e7ea4a0828fb9c9bbf379fe437" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="292,784,519,839"/>
-<area shape="poly" id="edge17_Node000002_Node000018" title=" " alt="" coords="647,524,639,576,622,644,608,679,591,714,570,746,544,775,520,791,517,787,541,771,566,743,587,711,603,677,617,642,634,575,642,523"/>
+<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="637,486,583,282,540,138,525,127,529,123,545,135,588,281,642,484"/>
+<area shape="rect" id="Node000016" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87f58f39dcee3455f92632cc2d12907d" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="297,641,513,696"/>
+<area shape="poly" id="edge15_Node000002_Node000016" title=" " alt="" coords="634,537,597,586,572,611,544,632,515,647,512,642,541,628,569,607,593,582,629,534"/>
+<area shape="rect" id="Node000017" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a173da8092f214682310319ef8d520772" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="288,720,523,775"/>
+<area shape="poly" id="edge16_Node000002_Node000017" title=" " alt="" coords="643,538,630,576,610,623,582,670,544,711,524,724,521,719,541,707,578,667,606,621,625,575,638,536"/>
+<area shape="rect" id="Node000018" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#ae51b63e7ea4a0828fb9c9bbf379fe437" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="292,799,519,853"/>
+<area shape="poly" id="edge17_Node000002_Node000018" title=" " alt="" coords="647,538,639,591,622,659,608,694,591,729,570,761,544,789,520,806,517,802,541,785,566,758,587,726,603,692,617,657,634,590,642,538"/>
 <area shape="rect" id="Node000019" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#af88cfc75a4e1c24666e35c5e80effcb0" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="268,149,543,189"/>
-<area shape="poly" id="edge18_Node000002_Node000019" title=" " alt="" coords="638,471,622,407,599,326,571,251,556,222,541,203,525,191,528,187,545,199,560,219,576,248,604,324,628,405,643,470"/>
-<area shape="rect" id="Node000020" href="$df/d46/_gmres2_d_8cpp.html#a7723f394d6c7c8d1d7ca52141761bb44" title=" " alt="" coords="338,213,473,239"/>
-<area shape="poly" id="edge19_Node000002_Node000020" title=" " alt="" coords="641,471,632,423,614,363,585,302,565,275,541,252,509,235,472,228,474,222,510,230,544,248,569,272,589,300,619,361,637,421,646,470"/>
-<area shape="rect" id="Node000007" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87280c88f7c038e85d894dec4f6c22f0" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние одного профиля на другой" alt="" coords="11,238,215,278"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="313,346,267,331,252,322,242,312,232,302,219,292,192,281,194,276,221,288,236,298,246,308,255,318,269,326,315,341"/>
-<area shape="rect" id="Node000008" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a7c6b76a2e1f1b830a6a849bfd5e8c77d" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние одного профиля на другой" alt="" coords="5,302,220,342"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="313,347,220,336,221,331,314,341"/>
-<area shape="rect" id="Node000009" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a51d64e373aa01f143cc042a72f6112ba" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние профиля самого на себя" alt="" coords="11,366,215,406"/>
-<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="314,367,215,378,215,372,313,361"/>
-<area shape="rect" id="Node000010" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a82018fdbd050c54304a916b88ea575c8" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние профиля самого на себя" alt="" coords="5,430,220,470"/>
-<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="315,366,269,380,255,389,246,399,236,410,221,420,195,432,192,427,219,416,233,406,242,396,252,385,267,376,313,361"/>
-<area shape="poly" id="edge21_Node000021_Node000004" title=" " alt="" coords="577,270,522,277,522,272,577,265"/>
-<area shape="poly" id="edge22_Node000021_Node000006" title=" " alt="" coords="623,282,587,308,544,331,484,348,483,343,542,326,584,304,619,278"/>
-<area shape="poly" id="edge23_Node000021_Node000014" title=" " alt="" coords="634,284,597,333,572,358,544,380,520,393,518,388,541,376,569,354,593,329,629,281"/>
-<area shape="poly" id="edge24_Node000021_Node000015" title=" " alt="" coords="630,235,594,185,569,160,541,139,517,127,520,122,544,134,573,156,598,182,635,232"/>
-<area shape="poly" id="edge26_Node000021_Node000019" title=" " alt="" coords="614,240,580,221,542,203,505,191,507,186,544,198,582,216,617,236"/>
-<area shape="poly" id="edge27_Node000021_Node000020" title=" " alt="" coords="576,251,472,237,473,232,577,246"/>
+<area shape="poly" id="edge18_Node000002_Node000019" title=" " alt="" coords="639,486,623,419,600,333,572,253,557,223,541,203,525,191,528,187,545,199,561,220,577,251,605,332,629,417,644,485"/>
+<area shape="rect" id="Node000020" href="$d6/d76/class_v_m2_d_1_1_gmres_solver.html#a99ec18388a3e5830fc358382cdab4f03" title=" " alt="" coords="325,213,486,253"/>
+<area shape="poly" id="edge19_Node000002_Node000020" title=" " alt="" coords="641,485,631,437,613,378,584,318,564,290,541,267,515,251,485,241,487,236,517,246,544,263,568,287,588,315,618,376,637,436,646,484"/>
+<area shape="rect" id="Node000007" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87280c88f7c038e85d894dec4f6c22f0" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние одного профиля на другой" alt="" coords="11,253,215,293"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="313,361,267,346,252,336,242,326,232,317,219,307,192,295,194,290,221,302,236,312,246,323,255,332,269,341,315,356"/>
+<area shape="rect" id="Node000008" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a7c6b76a2e1f1b830a6a849bfd5e8c77d" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние одного профиля на другой" alt="" coords="5,317,220,357"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="313,361,220,351,221,346,314,356"/>
+<area shape="rect" id="Node000009" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a51d64e373aa01f143cc042a72f6112ba" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние профиля самого на себя" alt="" coords="11,381,215,421"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="314,381,215,392,215,387,313,376"/>
+<area shape="rect" id="Node000010" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a82018fdbd050c54304a916b88ea575c8" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние профиля самого на себя" alt="" coords="5,445,220,485"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="315,380,269,395,255,404,246,414,236,425,221,435,195,447,192,442,219,430,233,421,242,410,252,400,267,390,313,375"/>
+<area shape="poly" id="edge21_Node000021_Node000004" title=" " alt="" coords="577,282,523,290,522,285,577,276"/>
+<area shape="poly" id="edge22_Node000021_Node000006" title=" " alt="" coords="624,293,588,321,544,346,484,363,483,358,542,341,585,316,621,289"/>
+<area shape="poly" id="edge23_Node000021_Node000014" title=" " alt="" coords="634,295,598,345,573,372,544,395,521,408,518,403,541,390,569,368,594,342,630,292"/>
+<area shape="poly" id="edge24_Node000021_Node000015" title=" " alt="" coords="632,245,596,191,571,162,541,139,518,127,521,122,544,134,574,159,600,187,636,242"/>
+<area shape="poly" id="edge26_Node000021_Node000019" title=" " alt="" coords="619,250,583,225,542,203,508,191,510,186,544,198,586,221,622,246"/>
+<area shape="poly" id="edge27_Node000021_Node000020" title=" " alt="" coords="576,261,486,247,487,242,577,256"/>
 <area shape="rect" id="Node000022" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#afe2548325e897169755da7f2fdb7018c" title="Вычисление влияния вихревых слоев (свободный + присоединенный) конкретной прямолинейной панели на вих..." alt="" coords="286,5,525,60"/>
-<area shape="poly" id="edge25_Node000021_Node000022" title=" " alt="" coords="637,233,624,197,604,154,576,111,541,75,522,62,525,58,544,71,580,108,608,152,628,195,642,231"/>
+<area shape="poly" id="edge25_Node000021_Node000022" title=" " alt="" coords="638,244,625,206,605,160,577,114,541,75,523,62,526,58,544,71,582,111,610,158,630,204,643,242"/>
 </map>

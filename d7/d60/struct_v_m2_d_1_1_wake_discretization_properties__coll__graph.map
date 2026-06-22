@@ -1,5 +1,5 @@
 <map id="VM2D::WakeDiscretizationProperties" name="VM2D::WakeDiscretizationProperties">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,197,200,237"/>
+<area shape="rect" id="Node000001" title="Структура, задающая параметры параметры дискретизации вихревого следа" alt="" coords="5,197,200,237"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="59,95,146,120"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,134,105,197,100,197,100,134"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="33,5,172,45"/>

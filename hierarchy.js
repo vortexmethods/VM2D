@@ -10,7 +10,6 @@ var hierarchy =
     [ "std::array< T >", null, [
       [ "VMlib::nummatrix< T, n, m >", "da/d3c/class_v_mlib_1_1nummatrix.html", null ]
     ] ],
-    [ "BH::BarnesHut", "d2/d20/class_b_h_1_1_barnes_hut.html", null ],
     [ "VM2D::Beam", "d2/dc5/class_v_m2_d_1_1_beam.html", null ],
     [ "VM2D::Boundary", "df/da2/class_v_m2_d_1_1_boundary.html", [
       [ "VM2D::BoundaryConstLayerAver", "d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html", null ],
@@ -18,7 +17,10 @@ var hierarchy =
       [ "VM2D::BoundaryVortexCollocN", "df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html", null ]
     ] ],
     [ "VM2D::ChordPanel", "d3/d47/struct_v_m2_d_1_1_chord_panel.html", null ],
+    [ "VM2D::ComplexData", "da/d4d/struct_v_m2_d_1_1_complex_data.html", null ],
     [ "VM2D::CpuTreeInfo", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html", null ],
+    [ "VM2D::GmresSolver", "d6/d76/class_v_m2_d_1_1_gmres_solver.html", null ],
+    [ "VM2D::gmresVectors", "d6/d31/struct_v_m2_d_1_1gmres_vectors.html", null ],
     [ "VM2D::Gpu", "d0/d75/class_v_m2_d_1_1_gpu.html", null ],
     [ "VMlib::LogStream", "d1/dd8/class_v_mlib_1_1_log_stream.html", null ],
     [ "VM2D::MeasureVP", "d6/db8/class_v_m2_d_1_1_measure_v_p.html", null ],
@@ -29,7 +31,6 @@ var hierarchy =
       [ "VM2D::MechanicsRigidOscillPart", "db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html", null ],
       [ "VM2D::MechanicsRigidRotatePart", "d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html", null ]
     ] ],
-    [ "BH::MortonTree", "d5/d14/class_b_h_1_1_morton_tree.html", null ],
     [ "VM2D::NumericalSchemes", "d2/d76/struct_v_m2_d_1_1_numerical_schemes.html", null ],
     [ "VMlib::numvector< T, n >", "d6/dd4/class_v_mlib_1_1numvector.html", null ],
     [ "VMlib::numvector< double, 2 >", "d6/dd4/class_v_mlib_1_1numvector.html", [
@@ -49,9 +50,11 @@ var hierarchy =
     [ "VMlib::numvector< int, 2 >", "d6/dd4/class_v_mlib_1_1numvector.html", [
       [ "VMlib::PairInt", "dc/d31/class_v_mlib_1_1_pair_int.html", null ]
     ] ],
+    [ "VM2D::OptimizedRadixSorter< ValueType >", "d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html", null ],
+    [ "VM2D::OptimizedRadixSorter< int >", "d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html", null ],
+    [ "VM2D::OptimizedRadixSorter< ValueType * >", "d9/d22/class_v_m2_d_1_1_optimized_radix_sorter_3_01_value_type_01_5_01_4.html", null ],
     [ "OptimizedVelocity", "d9/da5/class_optimized_velocity.html", null ],
     [ "VMlib::Parallel", "dd/de1/class_v_mlib_1_1_parallel.html", null ],
-    [ "BH::params", "de/d3a/class_b_h_1_1params.html", null ],
     [ "VMlib::parProp", "d4/dac/struct_v_mlib_1_1par_prop.html", null ],
     [ "VMlib::PassportGen", "d9/d9a/class_v_mlib_1_1_passport_gen.html", [
       [ "VM2D::Passport", "d2/d15/class_v_m2_d_1_1_passport.html", null ]
@@ -66,17 +69,13 @@ var hierarchy =
     [ "VMlib::TimeDiscretizationProperties", "d8/da2/struct_v_mlib_1_1_time_discretization_properties.html", null ],
     [ "VMlib::TimersGen", "d5/d12/class_v_mlib_1_1_timers_gen.html", null ],
     [ "VMlib::TimesGen", "d8/de6/class_v_mlib_1_1_times_gen.html", null ],
-    [ "BH::TParticleCode", "d2/d1b/struct_b_h_1_1_t_particle_code.html", null ],
     [ "VMlib::TParticleCode", "d2/d12/struct_v_mlib_1_1_t_particle_code.html", null ],
-    [ "BH::treeCellT", "d6/d8f/struct_b_h_1_1tree_cell_t.html", null ],
     [ "VM2D::Velocity", "d7/dfe/class_v_m2_d_1_1_velocity.html", [
       [ "VM2D::VelocityBarnesHut", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html", null ],
       [ "VM2D::VelocityBiotSavart", "d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html", null ]
     ] ],
     [ "VMlib::vmTimer", "d9/d54/class_v_mlib_1_1vm_timer.html", null ],
-    [ "VMlib::Vortex2D", "d0/de1/class_v_mlib_1_1_vortex2_d.html", [
-      [ "BH::PointsCopy", "df/d22/class_b_h_1_1_points_copy.html", null ]
-    ] ],
+    [ "VMlib::Vortex2D", "d0/de1/class_v_mlib_1_1_vortex2_d.html", null ],
     [ "VM2D::VortexesParams", "d2/d48/struct_v_m2_d_1_1_vortexes_params.html", null ],
     [ "VM2D::WakeDataBase", "d1/daf/class_v_m2_d_1_1_wake_data_base.html", [
       [ "VM2D::VirtualWake", "d4/d07/class_v_m2_d_1_1_virtual_wake.html", null ],

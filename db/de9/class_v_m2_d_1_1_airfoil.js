@@ -7,7 +7,6 @@ var class_v_m2_d_1_1_airfoil =
     [ "CalcNrmTauLen", "db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3", null ],
     [ "getA", "db/de9/class_v_m2_d_1_1_airfoil.html#aee4d35ddda33105b5e4d4b21b6f19131", null ],
     [ "GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses", "db/de9/class_v_m2_d_1_1_airfoil.html#accafa6df2943562f5421f0465126ab88", null ],
-    [ "GetDiffVelocityI0I3ToWakeAndViscousStresses", "db/de9/class_v_m2_d_1_1_airfoil.html#a4ed73ccc2736648d1a193e117de9d2a9", null ],
     [ "GetGabarits", "db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a", null ],
     [ "GetInfluenceFromSourceSheetToVortex", "db/de9/class_v_m2_d_1_1_airfoil.html#a2c783b496859b0afe7669398430e2e78", null ],
     [ "GetInfluenceFromSourcesToPanel", "db/de9/class_v_m2_d_1_1_airfoil.html#a28cfe00224378acd65ddd2b6bb9d0356", null ],

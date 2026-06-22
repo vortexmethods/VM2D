@@ -1,6 +1,5 @@
 var namespaces_dup =
 [
-    [ "BH", "d6/d32/namespace_b_h.html", "d6/d32/namespace_b_h" ],
     [ "defaults", "da/d29/namespacedefaults.html", [
       [ "defaultAirfoil", "da/d29/namespacedefaults.html#a836e6a09c06d0e8466fef0a70d1551bd", null ],
       [ "defaultBody", "da/d29/namespacedefaults.html#a358a46ebf491be7805ba9d64712df1c6", null ],
@@ -23,7 +22,6 @@ var namespaces_dup =
       [ "defaultCopyPath", "da/d29/namespacedefaults.html#a844b3deecc849628073f89a9494afe3a", null ],
       [ "defaultDelta", "da/d29/namespacedefaults.html#a4d3282534cdc11411470337c95c8b6d3", null ],
       [ "defaultDistFar", "da/d29/namespacedefaults.html#a1a04a8472a9487107315a98aaa2ef1c4", null ],
-      [ "defaultEps", "da/d29/namespacedefaults.html#ac6ff71e3290eb3e7102502fe0b3c0cc9", null ],
       [ "defaultEpsCol", "da/d29/namespacedefaults.html#a663244222f513abd0b07557c30e1c31c", null ],
       [ "defaultInitAngularDisplacement", "da/d29/namespacedefaults.html#a7c79f8bccc4a5a4ac7d2d1439db1abf4", null ],
       [ "defaultInitAngularVelocity", "da/d29/namespacedefaults.html#a611b4d5409f81e3b9085682cea666aca", null ],
@@ -46,6 +44,7 @@ var namespaces_dup =
       [ "defaultSaveVtx", "da/d29/namespacedefaults.html#a9c39587c007bdb7a3b233eaa4edf3475", null ],
       [ "defaultSaveVtxStep", "da/d29/namespacedefaults.html#ab1772a1fae3c59db975e7a1daaff88d0", null ],
       [ "defaultScale", "da/d29/namespacedefaults.html#a4be6323e35e9f548333025dca68964cb", null ],
+      [ "defaultSigma0", "da/d29/namespacedefaults.html#acbf08f8e8fb334fa08ba03f7f340bef3", null ],
       [ "defaultTimeAccel", "da/d29/namespacedefaults.html#a668e0166a410ca3246ad87323fc54154", null ],
       [ "defaultTimeStart", "da/d29/namespacedefaults.html#aa219b7ca1bd2f12057ac0846aa8a21c8", null ],
       [ "defaultVelAccel", "da/d29/namespacedefaults.html#a9d3a94b4dddfcdca50e88723c9443248", null ],

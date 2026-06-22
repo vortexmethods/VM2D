@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['scales_0',['scales',['../df/db0/gamma_circ_8h.html#a7e35cb73e31498113a352e974aa8f70f',1,'gammaCirc.h']]]
+  ['valpi_0',['valPi',['../d5/dde/_gpudefs_8h.html#a85cb1a541b8f730a7070d1b768f302ec',1,'Gpudefs.h']]],
+  ['valpif_1',['valPif',['../d5/dde/_gpudefs_8h.html#ad56205b716ad2fa1e2494d92f6e3689f',1,'Gpudefs.h']]]
 ];

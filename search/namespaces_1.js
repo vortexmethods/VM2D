@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['defaults_0',['defaults',['../da/d29/namespacedefaults.html',1,'']]]
+  ['knnnew_0',['knnNew',['../d8/d27/namespaceknn_new.html',1,'']]]
 ];

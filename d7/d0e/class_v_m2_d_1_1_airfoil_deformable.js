@@ -8,7 +8,6 @@ var class_v_m2_d_1_1_airfoil_deformable =
     [ "CalcNrmTauLen", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#aa59b6f9766d005930777ed8db48237f3", null ],
     [ "getA", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#aee4d35ddda33105b5e4d4b21b6f19131", null ],
     [ "GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#accafa6df2943562f5421f0465126ab88", null ],
-    [ "GetDiffVelocityI0I3ToWakeAndViscousStresses", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a4ed73ccc2736648d1a193e117de9d2a9", null ],
     [ "GetGabarits", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a88094b78a7911a9ea326b20cb27dfc9a", null ],
     [ "GetInfluenceFromSourceSheetToVortex", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a2c783b496859b0afe7669398430e2e78", null ],
     [ "GetInfluenceFromSourcesToPanel", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a28cfe00224378acd65ddd2b6bb9d0356", null ],

@@ -1,7 +1,13 @@
 <map id="VM2D::CpuTreeInfo::UpwardTraversal" name="VM2D::CpuTreeInfo::UpwardTraversal">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,160,77"/>
-<area shape="rect" id="Node000002" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#af4ce9156f3ca187b72f7e368ecf3865d" title=" " alt="" coords="208,5,363,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,43,194,37,195,42,161,48"/>
-<area shape="rect" id="Node000003" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#ae7c1fed5dc986ab061aba56772976a84" title=" " alt="" coords="208,69,363,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,67,195,72,194,78,160,72"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,112,160,152"/>
+<area shape="rect" id="Node000002" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#af4ce9156f3ca187b72f7e368ecf3865d" title=" " alt="" coords="225,5,379,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,109,156,82,207,55,223,48,225,53,209,60,159,87,115,114"/>
+<area shape="rect" id="Node000003" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a09ded2e7982e35af46d4899e2a31d359" title=" " alt="" coords="208,70,396,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,112,231,96,232,101,161,117"/>
+<area shape="rect" id="Node000004" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9a2edffcbf01cfab7f70422ce60391be" title="Запуск (первый или повторный) счетчика времени" alt="" coords="220,119,384,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="160,129,206,129,206,135,160,135"/>
+<area shape="rect" id="Node000005" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a320206c4467fa80d013de7a8d9fde1d5" title="Останов работающего счетчика времени" alt="" coords="221,169,383,194"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="161,147,232,163,231,168,160,152"/>
+<area shape="rect" id="Node000006" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#ae7c1fed5dc986ab061aba56772976a84" title=" " alt="" coords="225,219,379,259"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="116,150,159,176,209,203,228,211,226,216,207,208,157,181,113,154"/>
 </map>

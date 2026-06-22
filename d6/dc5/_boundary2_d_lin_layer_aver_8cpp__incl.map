@@ -1,135 +1,155 @@
 <map id="VM2D/Boundary2D/Boundary2DLinLayerAver.cpp" name="VM2D/Boundary2D/Boundary2DLinLayerAver.cpp">
-<area shape="rect" id="Node000001" title="Файл кода с описанием класса BoundaryLinLayerAver." alt="" coords="924,5,1143,45"/>
-<area shape="rect" id="Node000002" href="$d1/d2e/_boundary2_d_lin_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryLinLayerAver." alt="" coords="867,93,1064,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1019,47,986,84,982,81,1015,44"/>
-<area shape="rect" id="Node000035" href="$d0/d75/_airfoil2_d_8h.html" title="Заголовочный файл с описанием класса Airfoil." alt="" coords="752,93,843,119"/>
-<area shape="poly" id="edge41_Node000001_Node000035" title=" " alt="" coords="978,48,845,92,844,87,976,43"/>
-<area shape="rect" id="Node000036" href="$d3/dc0/_measure_v_p2_d_8h.html" title="Заголовочный файл с описанием класса MeasureVP." alt="" coords="1039,313,1164,339"/>
-<area shape="poly" id="edge43_Node000001_Node000036" title=" " alt="" coords="1051,44,1066,67,1079,92,1093,149,1102,207,1105,299,1100,300,1096,207,1088,150,1073,94,1061,69,1047,47"/>
-<area shape="rect" id="Node000037" href="$da/d3e/_mechanics2_d_8h.html" title="Заголовочный файл с описанием класса Mechanics." alt="" coords="1239,313,1361,339"/>
-<area shape="poly" id="edge46_Node000001_Node000037" title=" " alt="" coords="1054,44,1099,92,1283,301,1279,304,1095,95,1050,48"/>
-<area shape="rect" id="Node000038" href="$d6/d75/_stream_parser_8h.html" title="Заголовочный файл с описанием класса StreamParser." alt="" coords="559,313,679,339"/>
-<area shape="poly" id="edge49_Node000001_Node000038" title=" " alt="" coords="924,36,874,43,821,55,768,72,719,96,695,111,679,125,653,168,639,202,630,238,622,300,617,299,625,237,634,200,648,165,675,122,692,106,716,91,766,67,820,50,873,38,923,30"/>
-<area shape="rect" id="Node000042" href="$dc/d81/_velocity2_d_8h.html" title="Заголовочный файл с описанием класса Velocity." alt="" coords="1601,240,1705,265"/>
-<area shape="poly" id="edge55_Node000001_Node000042" title=" " alt="" coords="1131,43,1222,64,1318,91,1409,124,1497,164,1623,231,1621,236,1495,169,1407,129,1317,96,1221,69,1130,48"/>
-<area shape="rect" id="Node000044" href="$dc/d4d/_wake2_d_8h.html" title="Заголовочный файл с описанием класса Wake." alt="" coords="663,167,750,192"/>
-<area shape="poly" id="edge63_Node000001_Node000044" title=" " alt="" coords="924,43,816,65,771,79,742,95,731,108,723,122,713,153,708,152,718,120,726,105,738,91,769,74,815,60,923,38"/>
-<area shape="rect" id="Node000045" href="$d4/d87/_world2_d_8h.html" title="Заголовочный файл с описанием класса World2D." alt="" coords="1394,167,1483,192"/>
-<area shape="poly" id="edge65_Node000001_Node000045" title=" " alt="" coords="1115,43,1192,64,1272,91,1346,124,1409,158,1406,162,1344,129,1270,96,1190,69,1114,48"/>
-<area shape="rect" id="Node000003" href="$d6/d41/_boundary2_d_8h.html" title="Заголовочный файл с описанием класса Boundary." alt="" coords="916,167,1031,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="969,119,973,153,968,153,964,119"/>
-<area shape="rect" id="Node000004" href="$d3/d0a/_sheet2_d_8h.html" title="Заголовочный файл с описанием класса SheetV." alt="" coords="1087,387,1177,412"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="977,192,990,258,1006,300,1029,337,1056,361,1088,379,1085,384,1053,366,1025,340,1001,302,985,260,972,193"/>
-<area shape="rect" id="Node000008" href="$d5/d31/_virtual_wake2_d_8h.html" title="Заголовочный файл с описанием класса VirtualWake." alt="" coords="724,240,855,265"/>
-<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="945,195,833,237,831,232,943,190"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="1362,680,1425,705"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1177,403,1287,423,1337,438,1357,448,1370,458,1387,482,1398,510,1409,567,1408,623,1402,667,1396,666,1402,622,1403,568,1393,511,1382,485,1366,462,1354,452,1335,443,1286,428,1177,408"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="789,680,856,705"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="1140,412,1149,447,1148,467,1141,487,1129,501,1116,510,1090,519,1060,523,1028,536,975,570,925,608,847,673,843,669,921,604,972,566,1025,531,1059,518,1088,513,1114,506,1125,497,1136,484,1143,466,1143,447,1134,413"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="1684,460,1761,485"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="1177,403,1434,430,1670,457,1669,463,1434,435,1176,408"/>
-<area shape="rect" id="Node000009" href="$db/ddb/_wake_data_base2_d_8h.html" title="Заголовочный файл с описанием класса WakeDataBase." alt="" coords="703,313,854,339"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="790,266,785,300,780,299,785,265"/>
-<area shape="rect" id="Node000010" href="$d5/d64/defs_8h.html" title="Описание базовых вспомогательных функций" alt="" coords="851,387,914,412"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="797,336,856,376,853,381,794,341"/>
-<area shape="rect" id="Node000031" href="$d9/d01/_gpu2_d_8h.html" title="Заголовочный файл с описанием класса Gpu." alt="" coords="739,387,818,412"/>
-<area shape="poly" id="edge35_Node000009_Node000031" title=" " alt="" coords="781,339,781,373,776,373,776,339"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="621,460,694,485"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="852,413,708,458,706,453,850,408"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="719,460,804,485"/>
-<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="865,414,794,455,791,451,862,410"/>
-<area shape="rect" id="Node000013" title=" " alt="" coords="828,460,924,485"/>
-<area shape="poly" id="edge12_Node000010_Node000013" title=" " alt="" coords="884,413,881,447,876,446,879,412"/>
-<area shape="rect" id="Node000014" title=" " alt="" coords="948,460,1007,485"/>
-<area shape="poly" id="edge13_Node000010_Node000014" title=" " alt="" coords="899,410,952,449,949,454,896,414"/>
-<area shape="rect" id="Node000015" title=" " alt="" coords="1431,460,1511,485"/>
-<area shape="poly" id="edge14_Node000010_Node000015" title=" " alt="" coords="915,402,1417,462,1417,468,914,407"/>
-<area shape="rect" id="Node000016" title=" " alt="" coords="427,460,469,485"/>
-<area shape="poly" id="edge15_Node000010_Node000016" title=" " alt="" coords="851,411,831,415,735,428,658,435,581,444,483,463,482,458,580,439,658,430,734,423,830,409,850,405"/>
-<area shape="rect" id="Node000017" title=" " alt="" coords="494,460,597,485"/>
-<area shape="poly" id="edge16_Node000010_Node000017" title=" " alt="" coords="852,410,831,415,611,461,610,455,830,409,851,405"/>
-<area shape="rect" id="Node000018" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="213,460,301,485"/>
-<area shape="poly" id="edge17_Node000010_Node000018" title=" " alt="" coords="851,411,831,415,688,433,576,440,464,447,320,463,315,463,314,458,320,457,463,442,575,435,687,427,830,409,850,406"/>
-<area shape="rect" id="Node000019" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream." alt="" coords="1252,460,1356,485"/>
-<area shape="poly" id="edge18_Node000010_Node000019" title=" " alt="" coords="915,403,1239,458,1238,463,914,409"/>
-<area shape="rect" id="Node000022" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="1031,460,1126,485"/>
-<area shape="poly" id="edge21_Node000010_Node000022" title=" " alt="" coords="915,410,1035,453,1033,458,913,415"/>
-<area shape="rect" id="Node000029" href="$d6/d1e/v3_d_8h.html" title="Заголовочный файл с описанием класса v3D." alt="" coords="606,533,666,559"/>
-<area shape="poly" id="edge31_Node000010_Node000029" title=" " alt="" coords="851,411,831,415,788,418,733,419,605,418,541,420,484,427,436,441,418,450,405,462,394,482,395,490,399,497,418,510,446,521,520,534,592,541,592,546,520,540,445,526,415,515,395,501,390,491,389,481,401,458,415,446,435,436,483,422,541,415,605,412,733,413,788,413,830,409,850,406"/>
-<area shape="rect" id="Node000030" href="$d2/dc6/_pair_int_8h.html" title="Заголовочный файл с описанием класса pairInt." alt="" coords="1039,533,1113,559"/>
-<area shape="poly" id="edge33_Node000010_Node000030" title=" " alt="" coords="851,411,831,415,718,423,564,431,494,438,441,449,423,456,413,464,411,473,417,484,428,491,447,498,507,510,680,528,873,537,1025,541,1025,547,873,543,680,533,506,516,446,503,425,496,413,487,405,474,408,461,420,452,439,444,494,433,564,426,718,418,830,409,850,406"/>
-<area shape="rect" id="Node000020" title=" " alt="" coords="1250,680,1326,705"/>
-<area shape="poly" id="edge19_Node000019_Node000020" title=" " alt="" coords="1302,486,1288,534,1284,606,1288,666,1282,667,1279,606,1283,533,1297,485"/>
-<area shape="rect" id="Node000021" title=" " alt="" coords="1297,533,1356,559"/>
-<area shape="poly" id="edge20_Node000019_Node000021" title=" " alt="" coords="1310,485,1321,519,1316,521,1305,486"/>
-<area shape="rect" id="Node000023" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="1137,533,1223,559"/>
-<area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="1096,483,1154,523,1151,527,1093,488"/>
-<area shape="rect" id="Node000024" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="1045,607,1147,632"/>
-<area shape="poly" id="edge23_Node000023_Node000024" title=" " alt="" coords="1168,561,1122,600,1119,595,1165,557"/>
-<area shape="poly" id="edge30_Node000024_Node000005" title=" " alt="" coords="1144,629,1349,678,1348,683,1143,635"/>
-<area shape="poly" id="edge26_Node000024_Node000006" title=" " alt="" coords="1053,635,870,682,868,677,1051,629"/>
-<area shape="poly" id="edge28_Node000024_Node000020" title=" " alt="" coords="1128,630,1245,672,1243,677,1126,635"/>
-<area shape="rect" id="Node000025" title=" " alt="" coords="880,680,936,705"/>
-<area shape="poly" id="edge24_Node000024_Node000025" title=" " alt="" coords="1067,635,950,678,948,673,1065,630"/>
-<area shape="rect" id="Node000026" title=" " alt="" coords="961,680,1023,705"/>
-<area shape="poly" id="edge25_Node000024_Node000026" title=" " alt="" coords="1081,634,1022,674,1019,670,1078,630"/>
-<area shape="rect" id="Node000027" title=" " alt="" coords="1047,680,1158,705"/>
-<area shape="poly" id="edge27_Node000024_Node000027" title=" " alt="" coords="1100,632,1103,666,1098,667,1094,633"/>
-<area shape="rect" id="Node000028" title=" " alt="" coords="1183,680,1225,705"/>
-<area shape="poly" id="edge29_Node000024_Node000028" title=" " alt="" coords="1115,630,1176,670,1173,675,1112,634"/>
-<area shape="poly" id="edge32_Node000029_Node000024" title=" " alt="" coords="667,549,1031,605,1030,611,666,555"/>
-<area shape="poly" id="edge34_Node000030_Node000024" title=" " alt="" coords="1082,558,1092,593,1087,594,1077,560"/>
-<area shape="poly" id="edge37_Node000031_Node000007" title=" " alt="" coords="819,406,840,409,965,422,1071,428,1254,431,1436,435,1544,443,1670,457,1669,463,1543,448,1436,440,1253,436,1071,434,965,427,840,415,818,411"/>
-<area shape="poly" id="edge39_Node000031_Node000018" title=" " alt="" coords="739,412,727,415,613,431,524,440,435,448,320,463,315,463,314,458,320,457,434,443,523,435,612,426,726,409,739,407"/>
-<area shape="rect" id="Node000032" title=" " alt="" coords="5,460,64,485"/>
-<area shape="poly" id="edge36_Node000031_Node000032" title=" " alt="" coords="739,413,727,415,630,427,546,433,404,436,260,441,177,449,78,463,77,458,176,443,260,435,404,431,546,427,629,421,726,409,739,407"/>
-<area shape="rect" id="Node000033" title=" " alt="" coords="88,460,189,485"/>
-<area shape="poly" id="edge38_Node000031_Node000033" title=" " alt="" coords="739,412,727,415,582,433,467,440,351,447,203,463,203,457,351,442,467,435,581,427,726,409,739,407"/>
-<area shape="rect" id="Node000034" href="$db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="1785,460,1903,485"/>
-<area shape="poly" id="edge40_Node000031_Node000034" title=" " alt="" coords="819,406,840,409,980,423,1100,431,1304,435,1509,439,1630,445,1772,457,1771,463,1629,450,1509,444,1304,441,1099,436,980,429,840,415,818,411"/>
-<area shape="poly" id="edge42_Node000035_Node000010" title=" " alt="" coords="808,117,838,168,856,203,869,239,883,312,886,373,880,373,877,312,864,241,851,205,834,171,803,120"/>
-<area shape="poly" id="edge44_Node000036_Node000007" title=" " alt="" coords="1165,335,1267,355,1381,384,1447,409,1557,436,1671,457,1670,462,1556,441,1446,415,1379,389,1266,361,1164,341"/>
-<area shape="poly" id="edge45_Node000036_Node000010" title=" " alt="" coords="1067,341,928,386,926,381,1065,336"/>
-<area shape="poly" id="edge47_Node000037_Node000007" title=" " alt="" coords="1329,336,1414,370,1521,409,1671,455,1670,460,1519,415,1412,375,1327,341"/>
-<area shape="poly" id="edge48_Node000037_Node000010" title=" " alt="" coords="1240,340,929,393,928,388,1239,335"/>
-<area shape="poly" id="edge53_Node000038_Node000010" title=" " alt="" coords="662,336,839,383,837,389,660,341"/>
-<area shape="poly" id="edge54_Node000038_Node000031" title=" " alt="" coords="645,336,741,379,739,383,643,341"/>
-<area shape="rect" id="Node000039" title=" " alt="" coords="383,387,468,412"/>
-<area shape="poly" id="edge50_Node000038_Node000039" title=" " alt="" coords="589,341,470,384,469,379,587,336"/>
-<area shape="rect" id="Node000040" title=" " alt="" coords="492,387,567,412"/>
-<area shape="poly" id="edge51_Node000038_Node000040" title=" " alt="" coords="606,341,556,380,553,376,603,337"/>
-<area shape="rect" id="Node000041" title=" " alt="" coords="591,387,715,412"/>
-<area shape="poly" id="edge52_Node000038_Node000041" title=" " alt="" coords="627,338,644,373,639,375,622,340"/>
-<area shape="poly" id="edge56_Node000042_Node000007" title=" " alt="" coords="1659,265,1683,338,1700,386,1718,446,1713,447,1695,388,1677,340,1654,266"/>
-<area shape="poly" id="edge57_Node000042_Node000010" title=" " alt="" coords="1602,266,1588,268,1486,279,1406,284,1327,292,1229,316,1203,328,1177,341,1110,361,1042,376,928,395,927,390,1041,371,1109,356,1175,336,1201,323,1227,311,1327,287,1406,278,1486,274,1588,263,1601,261"/>
-<area shape="poly" id="edge58_Node000042_Node000034" title=" " alt="" coords="1706,258,1805,278,1849,293,1877,312,1886,328,1890,346,1888,384,1876,419,1861,449,1856,447,1871,417,1883,383,1885,347,1881,330,1873,315,1847,297,1804,283,1705,263"/>
-<area shape="rect" id="Node000043" href="$dd/dea/_optimized_velocity2_d_8h.html" title=" " alt="" coords="1692,313,1863,339"/>
-<area shape="poly" id="edge59_Node000042_Node000043" title=" " alt="" coords="1675,263,1747,304,1744,309,1672,268"/>
-<area shape="poly" id="edge60_Node000043_Node000007" title=" " alt="" coords="1775,340,1734,448,1729,446,1770,338"/>
-<area shape="poly" id="edge61_Node000043_Node000010" title=" " alt="" coords="1692,337,928,397,928,392,1692,331"/>
-<area shape="poly" id="edge62_Node000043_Node000034" title=" " alt="" coords="1785,338,1835,446,1831,449,1780,340"/>
-<area shape="poly" id="edge64_Node000044_Node000009" title=" " alt="" coords="707,192,706,226,708,246,714,264,730,286,750,304,746,308,726,290,710,267,703,247,700,226,702,192"/>
-<area shape="poly" id="edge66_Node000045_Node000031" title=" " alt="" coords="1403,195,1028,316,826,385,824,380,1026,311,1401,190"/>
-<area shape="poly" id="edge81_Node000045_Node000042" title=" " alt="" coords="1474,189,1606,233,1605,238,1472,195"/>
-<area shape="rect" id="Node000046" href="$d7/d50/_world_gen_8h.html" title="Заголовочный файл с описанием класса WorldGen." alt="" coords="1478,240,1575,265"/>
-<area shape="poly" id="edge67_Node000045_Node000046" title=" " alt="" coords="1454,190,1503,229,1500,233,1451,194"/>
-<area shape="rect" id="Node000050" href="$d7/db0/_passport2_d_8h.html" title="Заголовочный файл с описанием класса Passport (двумерный) и cоответствующими структурами" alt="" coords="1385,313,1492,339"/>
-<area shape="poly" id="edge73_Node000045_Node000050" title=" " alt="" coords="1441,192,1441,300,1436,300,1436,192"/>
-<area shape="rect" id="Node000047" href="$da/d3d/_times_gen_8h.html" title="Заголовочный файл с описанием класса TimesGen." alt="" coords="1517,313,1617,339"/>
-<area shape="poly" id="edge68_Node000046_Node000047" title=" " alt="" coords="1536,264,1556,300,1551,303,1531,267"/>
-<area shape="poly" id="edge71_Node000047_Node000007" title=" " alt="" coords="1557,341,1544,356,1534,374,1529,393,1534,410,1551,420,1585,432,1671,456,1670,461,1584,437,1549,425,1530,414,1524,393,1529,372,1540,353,1553,338"/>
-<area shape="poly" id="edge72_Node000047_Node000010" title=" " alt="" coords="1517,339,1504,341,1338,362,1174,378,928,398,928,392,1174,373,1338,356,1504,336,1516,334"/>
-<area shape="rect" id="Node000048" title=" " alt="" coords="1619,387,1685,412"/>
-<area shape="poly" id="edge69_Node000047_Node000048" title=" " alt="" coords="1582,337,1629,376,1626,380,1579,341"/>
-<area shape="rect" id="Node000049" title=" " alt="" coords="1544,387,1595,412"/>
-<area shape="poly" id="edge70_Node000047_Node000049" title=" " alt="" coords="1570,339,1571,373,1566,373,1564,339"/>
-<area shape="poly" id="edge80_Node000050_Node000023" title=" " alt="" coords="1386,340,1303,362,1267,375,1243,389,1219,419,1202,455,1191,490,1185,520,1180,519,1186,489,1197,453,1214,416,1240,385,1264,370,1301,357,1384,335"/>
-<area shape="rect" id="Node000051" href="$d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen." alt="" coords="1253,387,1368,412"/>
-<area shape="poly" id="edge74_Node000050_Node000051" title=" " alt="" coords="1419,341,1345,382,1343,377,1417,336"/>
-<area shape="poly" id="edge78_Node000051_Node000005" title=" " alt="" coords="1365,410,1463,434,1503,447,1525,458,1539,487,1540,518,1530,548,1514,578,1468,633,1422,673,1418,669,1464,629,1509,575,1525,546,1534,517,1533,489,1521,462,1501,451,1461,439,1363,415"/>
-<area shape="poly" id="edge77_Node000051_Node000007" title=" " alt="" coords="1369,407,1671,457,1670,462,1368,412"/>
-<area shape="poly" id="edge75_Node000051_Node000015" title=" " alt="" coords="1337,410,1433,452,1431,457,1335,414"/>
-<area shape="poly" id="edge79_Node000051_Node000019" title=" " alt="" coords="1312,413,1309,447,1304,446,1307,412"/>
-<area shape="rect" id="Node000052" title=" " alt="" coords="1585,460,1660,485"/>
-<area shape="poly" id="edge76_Node000051_Node000052" title=" " alt="" coords="1361,409,1572,457,1571,462,1360,415"/>
+<area shape="rect" id="Node000001" title="Файл кода с описанием класса BoundaryLinLayerAver." alt="" coords="1100,5,1319,45"/>
+<area shape="rect" id="Node000002" href="$d1/d2e/_boundary2_d_lin_layer_aver_8h.html" title="Заголовочный файл с описанием класса BoundaryLinLayerAver." alt="" coords="860,93,1057,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1150,48,1009,92,1008,87,1149,43"/>
+<area shape="rect" id="Node000035" href="$d0/d75/_airfoil2_d_8h.html" title="Заголовочный файл с описанием класса Airfoil." alt="" coords="1081,93,1172,119"/>
+<area shape="poly" id="edge41_Node000001_Node000035" title=" " alt="" coords="1191,47,1151,86,1147,82,1187,44"/>
+<area shape="rect" id="Node000036" href="$d3/dc0/_measure_v_p2_d_8h.html" title="Заголовочный файл с описанием класса MeasureVP." alt="" coords="1313,313,1439,339"/>
+<area shape="poly" id="edge43_Node000001_Node000036" title=" " alt="" coords="1222,44,1365,300,1360,302,1218,47"/>
+<area shape="rect" id="Node000037" href="$da/d3e/_mechanics2_d_8h.html" title="Заголовочный файл с описанием класса Mechanics." alt="" coords="1167,313,1289,339"/>
+<area shape="poly" id="edge46_Node000001_Node000037" title=" " alt="" coords="1213,46,1229,299,1224,300,1208,46"/>
+<area shape="rect" id="Node000038" href="$d6/d75/_stream_parser_8h.html" title="Заголовочный файл с описанием класса StreamParser." alt="" coords="433,313,553,339"/>
+<area shape="poly" id="edge49_Node000001_Node000038" title=" " alt="" coords="1100,36,968,55,897,72,829,96,780,118,733,145,644,204,569,261,517,306,514,302,566,257,640,199,730,140,778,113,827,91,896,67,967,50,1099,31"/>
+<area shape="rect" id="Node000042" href="$dc/d81/_velocity2_d_8h.html" title="Заголовочный файл с описанием класса Velocity." alt="" coords="1693,240,1797,265"/>
+<area shape="poly" id="edge55_Node000001_Node000042" title=" " alt="" coords="1266,43,1410,94,1581,164,1714,231,1712,236,1579,169,1408,99,1265,48"/>
+<area shape="rect" id="Node000044" href="$dc/d4d/_wake2_d_8h.html" title="Заголовочный файл с описанием класса Wake." alt="" coords="779,167,866,192"/>
+<area shape="poly" id="edge63_Node000001_Node000044" title=" " alt="" coords="1100,37,1027,45,954,57,891,74,867,84,850,95,840,108,833,122,826,153,821,152,828,120,835,105,846,91,864,79,889,69,952,52,1026,40,1100,32"/>
+<area shape="rect" id="Node000045" href="$d4/d87/_world2_d_8h.html" title="Заголовочный файл с описанием класса World2D." alt="" coords="1478,167,1567,192"/>
+<area shape="poly" id="edge65_Node000001_Node000045" title=" " alt="" coords="1250,43,1488,158,1486,163,1247,48"/>
+<area shape="rect" id="Node000057" href="$dc/d6f/_gmres2_d_8h.html" title="Заголовочный файл с функциями для метода GMRES." alt="" coords="2331,460,2426,485"/>
+<area shape="poly" id="edge92_Node000001_Node000057" title=" " alt="" coords="1319,27,1600,40,1770,51,1941,66,2098,86,2228,110,2278,124,2317,140,2342,158,2351,177,2351,327,2358,392,2373,446,2368,448,2353,393,2345,327,2345,179,2338,161,2314,145,2277,129,2227,115,2097,91,1940,72,1770,56,1600,45,1319,33"/>
+<area shape="rect" id="Node000003" href="$d6/d41/_boundary2_d_8h.html" title="Заголовочный файл с описанием класса Boundary." alt="" coords="901,167,1016,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="961,119,961,153,956,153,956,119"/>
+<area shape="rect" id="Node000004" href="$d3/d0a/_sheet2_d_8h.html" title="Заголовочный файл с описанием класса SheetV." alt="" coords="982,387,1071,412"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="972,191,990,212,1005,239,1017,274,1024,311,1029,373,1024,373,1019,311,1011,276,1000,241,985,215,968,194"/>
+<area shape="rect" id="Node000008" href="$d5/d31/_virtual_wake2_d_8h.html" title="Заголовочный файл с описанием класса VirtualWake." alt="" coords="860,240,991,265"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="956,193,939,229,934,227,951,191"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="1405,680,1467,705"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="982,412,967,415,909,420,845,421,723,418,675,422,645,432,638,440,637,451,642,465,654,484,677,506,700,520,723,525,748,527,804,524,835,525,870,531,1168,611,1392,675,1390,680,1167,616,869,536,835,530,804,529,748,532,722,531,698,524,674,511,650,487,637,468,631,451,633,438,642,428,674,417,722,413,845,415,909,415,966,409,981,407"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="513,680,580,705"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="982,412,967,415,915,421,870,422,792,419,756,420,719,426,678,439,633,462,610,481,591,505,576,532,565,561,553,619,549,666,544,666,548,618,560,559,571,530,586,502,606,477,631,458,676,434,717,421,755,415,792,414,870,416,915,415,966,409,981,407"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="1760,460,1837,485"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="1072,403,1138,409,1307,421,1441,427,1575,436,1746,457,1746,463,1574,442,1440,433,1307,427,1137,415,1071,408"/>
+<area shape="rect" id="Node000009" href="$db/ddb/_wake_data_base2_d_8h.html" title="Заголовочный файл с описанием класса WakeDataBase." alt="" coords="839,313,990,339"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="926,266,921,300,916,299,921,265"/>
+<area shape="rect" id="Node000010" href="$d5/d64/defs_8h.html" title="Описание базовых вспомогательных функций" alt="" coords="1149,387,1211,412"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="958,336,1136,383,1134,389,957,341"/>
+<area shape="rect" id="Node000031" href="$d9/d01/_gpu2_d_8h.html" title="Заголовочный файл с описанием класса Gpu." alt="" coords="877,387,955,412"/>
+<area shape="poly" id="edge35_Node000009_Node000031" title=" " alt="" coords="918,339,918,373,913,373,912,339"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="993,460,1066,485"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="1157,414,1068,456,1065,452,1155,410"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1091,460,1176,485"/>
+<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="1175,414,1151,450,1146,447,1170,411"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1312,460,1408,485"/>
+<area shape="poly" id="edge12_Node000010_Node000013" title=" " alt="" coords="1210,410,1319,452,1317,457,1208,415"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="664,460,723,485"/>
+<area shape="poly" id="edge13_Node000010_Node000014" title=" " alt="" coords="1149,407,938,434,737,463,736,458,937,429,1148,402"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="1563,533,1643,559"/>
+<area shape="poly" id="edge14_Node000010_Node000015" title=" " alt="" coords="1212,401,1418,423,1522,440,1558,449,1579,458,1590,471,1598,487,1605,519,1599,520,1593,489,1586,474,1576,462,1557,454,1521,445,1417,428,1212,406"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="747,460,789,485"/>
+<area shape="poly" id="edge15_Node000010_Node000016" title=" " alt="" coords="1149,408,980,432,803,463,802,458,979,426,1148,402"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="814,460,917,485"/>
+<area shape="poly" id="edge16_Node000010_Node000017" title=" " alt="" coords="1149,410,930,460,929,454,1148,405"/>
+<area shape="rect" id="Node000018" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="1200,460,1288,485"/>
+<area shape="poly" id="edge17_Node000010_Node000018" title=" " alt="" coords="1193,411,1227,448,1223,452,1189,414"/>
+<area shape="rect" id="Node000019" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream." alt="" coords="1912,460,2016,485"/>
+<area shape="poly" id="edge18_Node000010_Node000019" title=" " alt="" coords="1212,401,1850,457,1898,462,1898,467,1849,463,1211,406"/>
+<area shape="rect" id="Node000022" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="1641,460,1735,485"/>
+<area shape="poly" id="edge21_Node000010_Node000022" title=" " alt="" coords="1212,402,1622,457,1627,458,1626,463,1621,463,1211,407"/>
+<area shape="rect" id="Node000029" href="$d6/d1e/v3_d_8h.html" title="Заголовочный файл с описанием класса v3D." alt="" coords="798,533,858,559"/>
+<area shape="poly" id="edge31_Node000010_Node000029" title=" " alt="" coords="1149,410,1072,431,981,462,926,491,860,529,858,524,923,486,979,458,1070,426,1148,405"/>
+<area shape="rect" id="Node000030" href="$d2/dc6/_pair_int_8h.html" title="Заголовочный файл с описанием класса pairInt." alt="" coords="589,533,664,559"/>
+<area shape="poly" id="edge33_Node000010_Node000030" title=" " alt="" coords="1149,407,1084,415,987,418,860,420,796,423,738,431,689,443,654,462,643,474,636,489,630,520,625,519,631,487,639,471,650,458,687,438,737,425,796,418,860,414,986,413,1084,409,1148,402"/>
+<area shape="rect" id="Node000020" title=" " alt="" coords="1125,680,1201,705"/>
+<area shape="poly" id="edge19_Node000019_Node000020" title=" " alt="" coords="1923,488,1655,561,1215,680,1213,675,1654,556,1922,483"/>
+<area shape="rect" id="Node000021" title=" " alt="" coords="1760,533,1819,559"/>
+<area shape="poly" id="edge20_Node000019_Node000021" title=" " alt="" coords="1937,488,1832,530,1830,526,1935,483"/>
+<area shape="rect" id="Node000023" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="1931,533,2016,559"/>
+<area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="1734,483,1918,528,1917,533,1733,488"/>
+<area shape="rect" id="Node000024" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="755,607,858,632"/>
+<area shape="poly" id="edge23_Node000023_Node000024" title=" " alt="" coords="1931,559,1919,561,1768,579,1613,592,1312,610,1053,618,872,621,872,615,1053,613,1312,605,1613,587,1767,573,1918,556,1930,554"/>
+<area shape="poly" id="edge30_Node000024_Node000005" title=" " alt="" coords="859,627,878,629,1170,663,1391,685,1391,690,1170,669,877,635,858,632"/>
+<area shape="poly" id="edge26_Node000024_Node000006" title=" " alt="" coords="766,635,594,681,592,676,764,629"/>
+<area shape="poly" id="edge28_Node000024_Node000020" title=" " alt="" coords="859,628,1112,679,1111,684,858,633"/>
+<area shape="rect" id="Node000025" title=" " alt="" coords="933,680,989,705"/>
+<area shape="poly" id="edge24_Node000024_Node000025" title=" " alt="" coords="833,630,925,672,923,677,830,634"/>
+<area shape="rect" id="Node000026" title=" " alt="" coords="645,680,707,705"/>
+<area shape="poly" id="edge25_Node000024_Node000026" title=" " alt="" coords="787,634,710,676,708,671,784,630"/>
+<area shape="rect" id="Node000027" title=" " alt="" coords="731,680,842,705"/>
+<area shape="poly" id="edge27_Node000024_Node000027" title=" " alt="" coords="806,633,796,668,791,666,801,632"/>
+<area shape="rect" id="Node000028" title=" " alt="" coords="867,680,909,705"/>
+<area shape="poly" id="edge29_Node000024_Node000028" title=" " alt="" coords="821,630,866,669,863,673,818,634"/>
+<area shape="poly" id="edge32_Node000029_Node000024" title=" " alt="" coords="827,560,817,594,811,593,822,558"/>
+<area shape="poly" id="edge34_Node000030_Node000024" title=" " alt="" coords="657,556,766,599,764,604,655,561"/>
+<area shape="poly" id="edge37_Node000031_Node000007" title=" " alt="" coords="956,407,970,409,1086,423,1186,430,1356,433,1528,436,1628,444,1746,457,1746,463,1628,449,1527,442,1356,438,1185,435,1086,428,969,415,955,412"/>
+<area shape="poly" id="edge39_Node000031_Node000018" title=" " alt="" coords="956,407,1187,456,1186,462,955,412"/>
+<area shape="rect" id="Node000032" title=" " alt="" coords="429,460,488,485"/>
+<area shape="poly" id="edge36_Node000031_Node000032" title=" " alt="" coords="877,408,715,429,507,463,502,464,501,458,506,457,714,424,876,403"/>
+<area shape="rect" id="Node000033" title=" " alt="" coords="304,460,405,485"/>
+<area shape="poly" id="edge38_Node000031_Node000033" title=" " alt="" coords="877,407,684,428,419,463,419,457,683,423,876,402"/>
+<area shape="rect" id="Node000034" href="$db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="2189,460,2307,485"/>
+<area shape="poly" id="edge40_Node000031_Node000034" title=" " alt="" coords="956,407,970,409,1151,428,1306,437,1442,440,1570,439,1836,437,1992,443,2176,457,2175,463,1992,448,1836,442,1570,444,1442,445,1305,443,1151,434,969,415,955,412"/>
+<area shape="poly" id="edge42_Node000035_Node000010" title=" " alt="" coords="1130,119,1137,211,1145,274,1159,338,1171,373,1166,375,1153,339,1140,275,1131,211,1124,119"/>
+<area shape="poly" id="edge44_Node000036_Node000007" title=" " alt="" coords="1402,336,1565,409,1647,432,1747,457,1746,462,1645,437,1563,415,1400,341"/>
+<area shape="poly" id="edge45_Node000036_Node000010" title=" " alt="" coords="1345,341,1225,385,1223,380,1344,336"/>
+<area shape="poly" id="edge47_Node000037_Node000007" title=" " alt="" coords="1289,335,1373,355,1464,384,1486,397,1508,410,1571,429,1623,439,1678,446,1747,457,1746,462,1677,451,1623,444,1570,435,1506,414,1483,402,1462,389,1372,360,1288,341"/>
+<area shape="poly" id="edge48_Node000037_Node000010" title=" " alt="" coords="1222,341,1198,377,1193,374,1218,338"/>
+<area shape="poly" id="edge53_Node000038_Node000010" title=" " alt="" coords="554,330,1084,384,1135,390,1135,395,1084,389,553,336"/>
+<area shape="poly" id="edge54_Node000038_Node000031" title=" " alt="" coords="554,335,863,386,862,392,553,340"/>
+<area shape="rect" id="Node000039" title=" " alt="" coords="688,533,773,559"/>
+<area shape="poly" id="edge50_Node000038_Node000039" title=" " alt="" coords="456,341,392,365,326,399,301,418,285,439,282,461,294,484,321,502,361,515,410,522,465,525,579,527,675,531,674,536,579,532,465,531,409,527,360,520,319,507,290,487,277,462,281,437,297,415,323,394,390,360,454,336"/>
+<area shape="rect" id="Node000040" title=" " alt="" coords="5,387,80,412"/>
+<area shape="poly" id="edge51_Node000038_Node000040" title=" " alt="" coords="434,337,283,358,94,389,93,384,283,353,433,332"/>
+<area shape="rect" id="Node000041" title=" " alt="" coords="105,387,229,412"/>
+<area shape="poly" id="edge52_Node000038_Node000041" title=" " alt="" coords="441,341,234,386,232,381,440,336"/>
+<area shape="poly" id="edge56_Node000042_Node000007" title=" " alt="" coords="1799,262,1840,280,1859,294,1874,312,1882,331,1884,350,1880,369,1872,389,1849,424,1824,452,1820,448,1845,421,1867,386,1875,368,1878,350,1877,332,1870,315,1855,298,1837,285,1796,267"/>
+<area shape="poly" id="edge57_Node000042_Node000010" title=" " alt="" coords="1709,268,1594,302,1451,341,1225,392,1224,387,1450,336,1593,297,1708,263"/>
+<area shape="poly" id="edge58_Node000042_Node000034" title=" " alt="" coords="1785,263,1929,311,2019,345,2108,384,2170,418,2221,450,2219,455,2167,422,2105,389,2017,350,1927,316,1783,268"/>
+<area shape="rect" id="Node000043" href="$dd/dea/_optimized_velocity2_d_8h.html" title=" " alt="" coords="1689,313,1860,339"/>
+<area shape="poly" id="edge59_Node000042_Node000043" title=" " alt="" coords="1753,265,1767,300,1762,302,1748,267"/>
+<area shape="poly" id="edge60_Node000043_Node000007" title=" " alt="" coords="1779,339,1797,446,1792,447,1774,340"/>
+<area shape="poly" id="edge61_Node000043_Node000010" title=" " alt="" coords="1689,340,1225,395,1225,390,1689,335"/>
+<area shape="poly" id="edge62_Node000043_Node000034" title=" " alt="" coords="1854,336,1954,355,2062,384,2212,452,2210,457,2060,389,1953,361,1853,341"/>
+<area shape="poly" id="edge64_Node000044_Node000009" title=" " alt="" coords="827,192,834,226,850,264,868,285,888,303,884,307,864,289,846,267,829,227,822,193"/>
+<area shape="poly" id="edge66_Node000045_Node000031" title=" " alt="" coords="1492,195,961,385,960,380,1490,190"/>
+<area shape="poly" id="edge81_Node000045_Node000042" title=" " alt="" coords="1559,189,1697,233,1696,238,1558,195"/>
+<area shape="rect" id="Node000046" href="$d7/d50/_world_gen_8h.html" title="Заголовочный файл с описанием класса WorldGen." alt="" coords="1541,240,1638,265"/>
+<area shape="poly" id="edge67_Node000045_Node000046" title=" " alt="" coords="1536,191,1571,228,1567,232,1532,194"/>
+<area shape="rect" id="Node000050" href="$d7/db0/_passport2_d_8h.html" title="Заголовочный файл с описанием класса Passport (двумерный) и cоответствующими структурами" alt="" coords="2175,313,2281,339"/>
+<area shape="poly" id="edge73_Node000045_Node000050" title=" " alt="" coords="1568,187,2162,308,2160,314,1567,193"/>
+<area shape="rect" id="Node000053" href="$d7/d56/cpu_tree_info_8h.html" title="Заголовок класса дерева для реализации быстрых алгоритмов на CPU." alt="" coords="1341,387,1451,412"/>
+<area shape="poly" id="edge82_Node000045_Node000053" title=" " alt="" coords="1521,193,1496,257,1477,299,1453,340,1421,378,1417,375,1448,337,1472,297,1492,255,1516,191"/>
+<area shape="rect" id="Node000047" href="$da/d3d/_times_gen_8h.html" title="Заголовочный файл с описанием класса TimesGen." alt="" coords="1565,313,1665,339"/>
+<area shape="poly" id="edge68_Node000046_Node000047" title=" " alt="" coords="1596,265,1609,300,1604,301,1591,267"/>
+<area shape="poly" id="edge71_Node000047_Node000007" title=" " alt="" coords="1646,336,1688,356,1731,385,1762,415,1786,447,1782,450,1758,419,1728,389,1685,361,1643,341"/>
+<area shape="poly" id="edge72_Node000047_Node000010" title=" " alt="" coords="1565,338,1546,341,1225,393,1225,388,1545,336,1564,333"/>
+<area shape="rect" id="Node000048" title=" " alt="" coords="1651,387,1717,412"/>
+<area shape="poly" id="edge69_Node000047_Node000048" title=" " alt="" coords="1628,337,1665,375,1661,379,1624,341"/>
+<area shape="rect" id="Node000049" title=" " alt="" coords="1576,387,1627,412"/>
+<area shape="poly" id="edge70_Node000047_Node000049" title=" " alt="" coords="1615,339,1609,374,1603,373,1610,339"/>
+<area shape="poly" id="edge80_Node000050_Node000023" title=" " alt="" coords="2270,336,2337,360,2406,393,2433,414,2450,436,2454,461,2450,474,2440,487,2419,499,2381,509,2269,525,2030,544,2030,539,2268,520,2380,503,2417,494,2437,483,2445,472,2449,461,2445,439,2429,418,2403,398,2335,365,2268,341"/>
+<area shape="rect" id="Node000051" href="$d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen." alt="" coords="1935,387,2049,412"/>
+<area shape="poly" id="edge74_Node000050_Node000051" title=" " alt="" coords="2191,341,2044,385,2043,380,2189,336"/>
+<area shape="poly" id="edge78_Node000051_Node000005" title=" " alt="" coords="2004,411,2018,432,2031,459,2045,512,2044,535,2030,560,2014,576,1991,591,1932,616,1859,638,1777,655,1611,679,1481,691,1481,686,1610,673,1776,650,1857,632,1930,611,1989,586,2010,572,2026,557,2039,534,2040,513,2025,461,2014,435,1999,414"/>
+<area shape="poly" id="edge77_Node000051_Node000007" title=" " alt="" coords="1962,415,1844,458,1842,453,1960,410"/>
+<area shape="poly" id="edge75_Node000051_Node000015" title=" " alt="" coords="1975,415,1910,455,1850,488,1763,513,1657,536,1656,531,1762,507,1848,483,1908,450,1973,410"/>
+<area shape="poly" id="edge79_Node000051_Node000019" title=" " alt="" coords="1990,413,1976,448,1971,446,1985,411"/>
+<area shape="rect" id="Node000052" title=" " alt="" coords="2091,460,2165,485"/>
+<area shape="poly" id="edge76_Node000051_Node000052" title=" " alt="" coords="2015,410,2095,451,2093,456,2013,414"/>
+<area shape="poly" id="edge84_Node000053_Node000018" title=" " alt="" coords="1373,414,1282,457,1280,452,1370,410"/>
+<area shape="poly" id="edge83_Node000053_Node000022" title=" " alt="" coords="1444,409,1628,454,1627,459,1442,415"/>
+<area shape="rect" id="Node000054" href="$d0/da6/cpu_radix_sorter_8h.html" title="Çàãîëîâîê êëàññà äëÿ ðåàëèçàöèè ïîðàçðÿäíîé ñîðòèðîâêè (RadixSort) íà CPU." alt="" coords="1433,460,1565,485"/>
+<area shape="poly" id="edge85_Node000053_Node000054" title=" " alt="" coords="1414,410,1472,450,1469,454,1411,414"/>
+<area shape="poly" id="edge87_Node000054_Node000005" title=" " alt="" coords="1503,485,1506,519,1503,559,1480,621,1453,670,1449,667,1475,618,1497,558,1501,519,1498,486"/>
+<area shape="poly" id="edge86_Node000054_Node000015" title=" " alt="" coords="1517,483,1576,523,1573,527,1514,488"/>
+<area shape="poly" id="edge91_Node000054_Node000021" title=" " alt="" coords="1546,483,1747,532,1746,537,1545,488"/>
+<area shape="poly" id="edge88_Node000054_Node000039" title=" " alt="" coords="1433,486,1420,488,1244,503,1105,509,966,516,787,536,787,531,965,511,1105,504,1244,498,1420,483,1432,481"/>
+<area shape="rect" id="Node000055" title=" " alt="" coords="1395,533,1487,559"/>
+<area shape="poly" id="edge89_Node000054_Node000055" title=" " alt="" coords="1491,487,1461,524,1457,521,1487,484"/>
+<area shape="rect" id="Node000056" title=" " alt="" coords="1843,533,1906,559"/>
+<area shape="poly" id="edge90_Node000054_Node000056" title=" " alt="" coords="1566,482,1685,502,1830,531,1829,536,1684,507,1565,487"/>
+<area shape="poly" id="edge94_Node000057_Node000015" title=" " alt="" coords="2331,486,2319,488,1657,543,1657,538,2318,483,2331,481"/>
+<area shape="poly" id="edge96_Node000057_Node000021" title=" " alt="" coords="2331,486,2319,488,2184,503,2078,509,1970,517,1833,536,1832,531,1970,512,2077,504,2184,498,2318,483,2331,481"/>
+<area shape="poly" id="edge93_Node000057_Node000023" title=" " alt="" coords="2331,486,2319,488,2030,538,2029,533,2318,483,2330,480"/>
+<area shape="poly" id="edge95_Node000057_Node000056" title=" " alt="" coords="2331,486,2319,488,2209,502,2121,510,2033,519,1920,536,1919,531,2032,513,2121,504,2208,497,2318,483,2330,481"/>
 </map>

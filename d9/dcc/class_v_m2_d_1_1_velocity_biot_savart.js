@@ -3,7 +3,7 @@ var class_v_m2_d_1_1_velocity_biot_savart =
     [ "VelocityBiotSavart", "d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a9c594f94ac2bd11081c661bf3a3b5a48", null ],
     [ "~VelocityBiotSavart", "d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a2d26a9af67de374ccc38bc96b4bee12e", null ],
     [ "CalcConvVelo", "d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a0b291203937525a05b8854f55bc269d8", null ],
-    [ "CalcConvVeloToSetOfPointsFromWake", "d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#adb69aaa3d57a84f8a756a58390eb9743", null ],
+    [ "CalcConvVeloToSetOfPointsFromWake", "d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a52609f26e6434488288c685436cb6237", null ],
     [ "CalcConvVPVeloToSetOfPointsFromWake", "d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a1bc97d6d969e8f446f75099fd4aa0e90", null ],
     [ "CalcDiffVelo", "d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a12cf72877405eed5b5e671cf2d4f4d7e", null ],
     [ "CalcDiffVeloI0I3", "d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a8e81fd75f2fa3af9ab43b50dcd970046", null ],

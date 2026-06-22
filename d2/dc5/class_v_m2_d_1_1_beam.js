@@ -1,7 +1,7 @@
 var class_v_m2_d_1_1_beam =
 [
     [ "Beam", "d2/dc5/class_v_m2_d_1_1_beam.html#a4caedc6c1c689cc950f74ad72ac67e72", null ],
-    [ "getGivenLaw", "d2/dc5/class_v_m2_d_1_1_beam.html#a1b11794e4a737d490fa7b81727443eb2", null ],
+    [ "getGivenLaw", "d2/dc5/class_v_m2_d_1_1_beam.html#af3a5868aae202757f378ee5ae63801c5", null ],
     [ "getTotalDisp", "d2/dc5/class_v_m2_d_1_1_beam.html#ad54887906cc4d7d717c276e6505af9d8", null ],
     [ "phi", "d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133", null ],
     [ "shape", "d2/dc5/class_v_m2_d_1_1_beam.html#a792fa1297b72c166b71b19de1e33b590", null ],

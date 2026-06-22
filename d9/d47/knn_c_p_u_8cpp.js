@@ -8,6 +8,5 @@ var knn_c_p_u_8cpp =
     [ "newSort", "d9/d47/knn_c_p_u_8cpp.html#a7479682181b04ebd31dc1790b22ade7b", null ],
     [ "RSort_Parallel", "d9/d47/knn_c_p_u_8cpp.html#a27dde53adbbd808d368822d0c6db049a", null ],
     [ "WakekNNnewForCollaps", "d9/d47/knn_c_p_u_8cpp.html#a4d0d9439300bff8def02d4a5f551777b", null ],
-    [ "WakekNNnewForEpsast", "d9/d47/knn_c_p_u_8cpp.html#a18de7e0e3511a441c1479d12f6555c2b", null ],
     [ "twoPowCodeLengthVar", "d9/d47/knn_c_p_u_8cpp.html#a9efb3a651ceb85360016dafd21217c51", null ]
 ];

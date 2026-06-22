@@ -12,8 +12,8 @@
 <area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="593,277,543,292,501,304,500,299,542,287,592,272"/>
 <area shape="rect" id="Node000011" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#af88cfc75a4e1c24666e35c5e80effcb0" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="268,381,543,421"/>
 <area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="633,283,596,329,572,352,544,372,518,384,516,379,541,367,568,348,592,325,629,280"/>
-<area shape="rect" id="Node000012" href="$df/d46/_gmres2_d_8cpp.html#a7723f394d6c7c8d1d7ca52141761bb44" title=" " alt="" coords="338,446,473,471"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="642,284,628,319,608,360,580,401,544,436,510,452,474,460,472,455,508,447,541,431,576,398,604,358,624,317,637,282"/>
+<area shape="rect" id="Node000012" href="$d6/d76/class_v_m2_d_1_1_gmres_solver.html#a99ec18388a3e5830fc358382cdab4f03" title=" " alt="" coords="325,445,486,485"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="641,284,628,319,607,360,580,401,544,435,517,451,487,460,485,455,515,446,541,431,576,398,603,357,623,317,636,283"/>
 <area shape="rect" id="Node000004" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a87280c88f7c038e85d894dec4f6c22f0" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние одного профиля на другой" alt="" coords="11,5,215,45"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="313,114,267,98,252,89,242,79,232,69,219,60,192,48,194,43,221,55,236,65,246,75,255,85,269,94,315,109"/>
 <area shape="rect" id="Node000005" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a7c6b76a2e1f1b830a6a849bfd5e8c77d" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние одного профиля на другой" alt="" coords="5,69,220,109"/>

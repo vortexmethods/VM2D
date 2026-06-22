@@ -106,51 +106,35 @@ $(document).ready(function(){initNavTree('db/d83/knn_c_p_u_8h.html','../../'); i
 
 <p>������������ ���� � ��������� ��� ���������� knn ��� CPU.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="../../dc/d6c/_barnes_hut_8h_source.html">BarnesHut.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="../../d8/d19/_vortex2_d_8h_source.html">Vortex2D.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for knnCPU.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/daf/knn_c_p_u_8h__incl.png" border="0" usemap="#a_v_m2_d_2_wake2_d_2knn_c_p_u_8h" alt=""/></div>
 <map name="a_v_m2_d_2_wake2_d_2knn_c_p_u_8h" id="a_v_m2_d_2_wake2_d_2knn_c_p_u_8h">
-<area shape="rect" title="Çàãîëîâî÷íûé ôàéë ñ ôóíêöèÿìè äëÿ ðåàëèçàöèè knn äëÿ CPU." alt="" coords="298,5,483,31"/>
-<area shape="rect" href="../../dc/d6c/_barnes_hut_8h.html" title="Заголовок основного класса BarnesHut." alt="" coords="339,79,442,104"/>
-<area shape="poly" title=" " alt="" coords="393,31,393,65,388,65,388,31"/>
-<area shape="rect" href="../../d4/dc6/_tree_b_h_8h.html" title="Заголовок класса Tree для метода Барнса &#45; Хата для CPU." alt="" coords="351,152,431,177"/>
-<area shape="poly" title=" " alt="" coords="393,104,393,138,388,138,388,104"/>
-<area shape="rect" title=" " alt="" coords="300,225,377,251"/>
-<area shape="poly" title=" " alt="" coords="384,179,357,216,353,213,380,176"/>
-<area shape="rect" href="../../dc/db8/defs_b_h_8h.html" title="Вспомогательные функции для метода Барнса &#45; Хата для CPU." alt="" coords="402,225,483,251"/>
-<area shape="poly" title=" " alt="" coords="401,176,428,213,424,216,397,179"/>
-<area shape="rect" title=" " alt="" coords="275,299,355,324"/>
-<area shape="poly" title=" " alt="" coords="423,253,349,294,347,289,421,248"/>
-<area shape="rect" href="../../db/d80/_points_copy_b_h_8h.html" title="Заголовок класса&#45;обертки для точек и панелей для метода Барнса &#45; Хата для CPU." alt="" coords="379,299,506,324"/>
-<area shape="poly" title=" " alt="" coords="445,251,445,285,440,285,440,251"/>
-<area shape="rect" href="../../d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="531,299,619,324"/>
-<area shape="poly" title=" " alt="" coords="465,248,542,290,540,294,463,253"/>
-<area shape="rect" href="../../d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="273,372,367,397"/>
-<area shape="poly" title=" " alt="" coords="424,326,353,367,350,363,422,322"/>
-<area shape="rect" href="../../d1/d13/_params_b_h_8h.html" title="Параметры метода Барнса &#45; Хата для CPU." alt="" coords="392,372,493,397"/>
-<area shape="poly" title=" " alt="" coords="445,324,445,358,440,358,440,324"/>
-<area shape="rect" title=" " alt="" coords="518,372,581,397"/>
-<area shape="poly" title=" " alt="" coords="461,322,522,362,519,367,458,326"/>
-<area shape="rect" href="../../d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="277,445,363,471"/>
-<area shape="poly" title=" " alt="" coords="323,398,323,432,317,432,317,398"/>
-<area shape="rect" href="../../df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="269,519,371,544"/>
-<area shape="poly" title=" " alt="" coords="323,471,323,505,317,505,317,471"/>
-<area shape="rect" title=" " alt="" coords="5,592,61,617"/>
-<area shape="poly" title=" " alt="" coords="271,547,75,594,74,589,270,541"/>
-<area shape="rect" title=" " alt="" coords="86,592,149,617"/>
-<area shape="poly" title=" " alt="" coords="288,547,163,590,161,585,287,542"/>
-<area shape="rect" title=" " alt="" coords="173,592,240,617"/>
-<area shape="poly" title=" " alt="" coords="303,546,238,587,235,582,300,542"/>
-<area shape="rect" title=" " alt="" coords="265,592,375,617"/>
-<area shape="poly" title=" " alt="" coords="323,544,323,578,317,578,317,544"/>
-<area shape="rect" title=" " alt="" coords="399,592,475,617"/>
-<area shape="poly" title=" " alt="" coords="340,542,408,582,405,587,337,546"/>
-<area shape="rect" title=" " alt="" coords="500,592,543,617"/>
-<area shape="poly" title=" " alt="" coords="353,542,488,589,486,594,351,547"/>
-<area shape="rect" title=" " alt="" coords="567,592,630,617"/>
-<area shape="poly" title=" " alt="" coords="366,542,554,589,553,594,365,547"/>
+<area shape="rect" title="Çàãîëîâî÷íûé ôàéë ñ ôóíêöèÿìè äëÿ ðåàëèçàöèè knn äëÿ CPU." alt="" coords="71,5,256,31"/>
+<area shape="rect" title=" " alt="" coords="5,299,68,324"/>
+<area shape="poly" title=" " alt="" coords="161,32,50,287,45,285,156,30"/>
+<area shape="rect" href="../../d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="160,79,255,104"/>
+<area shape="poly" title=" " alt="" coords="173,30,195,66,191,68,168,32"/>
+<area shape="rect" href="../../d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="185,152,270,177"/>
+<area shape="poly" title=" " alt="" coords="213,104,223,138,218,140,208,105"/>
+<area shape="rect" href="../../df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="197,225,300,251"/>
+<area shape="poly" title=" " alt="" coords="233,177,244,211,239,213,228,178"/>
+<area shape="poly" title=" " alt="" coords="215,253,82,298,80,293,214,248"/>
+<area shape="rect" title=" " alt="" coords="93,299,149,324"/>
+<area shape="poly" title=" " alt="" coords="229,253,155,294,153,289,227,248"/>
+<area shape="rect" title=" " alt="" coords="173,299,236,324"/>
+<area shape="poly" title=" " alt="" coords="244,252,221,288,217,286,239,250"/>
+<area shape="rect" title=" " alt="" coords="261,299,327,324"/>
+<area shape="poly" title=" " alt="" coords="258,250,282,286,277,289,254,252"/>
+<area shape="rect" title=" " alt="" coords="352,299,463,324"/>
+<area shape="poly" title=" " alt="" coords="275,248,370,291,368,295,273,253"/>
+<area shape="rect" title=" " alt="" coords="487,299,563,324"/>
+<area shape="poly" title=" " alt="" coords="294,248,474,294,473,299,292,253"/>
+<area shape="rect" title=" " alt="" coords="587,299,630,324"/>
+<area shape="poly" title=" " alt="" coords="301,244,422,263,575,296,573,301,421,269,300,249"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -158,13 +142,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d3b/knn_c_p_u_8h__dep__incl.png" border="0" usemap="#a_v_m2_d_2_wake2_d_2knn_c_p_u_8hdep" alt=""/></div>
 <map name="a_v_m2_d_2_wake2_d_2knn_c_p_u_8hdep" id="a_v_m2_d_2_wake2_d_2knn_c_p_u_8hdep">
-<area shape="rect" title="Çàãîëîâî÷íûé ôàéë ñ ôóíêöèÿìè äëÿ ðåàëèçàöèè knn äëÿ CPU." alt="" coords="273,5,458,31"/>
-<area shape="rect" href="../../de/dfb/_barnes_hut_8cpp.html" title="Основные операции метода Барнса&#45;Хата" alt="" coords="5,79,240,104"/>
-<area shape="poly" title=" " alt="" coords="314,37,163,81,161,76,313,32"/>
-<area shape="rect" href="../../d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake." alt="" coords="264,79,467,104"/>
-<area shape="poly" title=" " alt="" coords="368,44,368,79,363,79,363,44"/>
-<area shape="rect" href="../../d9/d47/knn_c_p_u_8cpp.html" title="Файл с реализацией функций knn для CPU." alt="" coords="491,79,691,104"/>
-<area shape="poly" title=" " alt="" coords="415,32,555,76,553,81,414,37"/>
+<area shape="rect" title="Çàãîëîâî÷íûé ôàéë ñ ôóíêöèÿìè äëÿ ðåàëèçàöèè knn äëÿ CPU." alt="" coords="126,5,311,31"/>
+<area shape="rect" href="../../d8/da3/_wake2_d_8cpp.html" title="Файл кода с описанием класса Wake." alt="" coords="5,79,208,104"/>
+<area shape="poly" title=" " alt="" coords="190,40,126,81,124,76,187,36"/>
+<area shape="rect" href="../../d9/d47/knn_c_p_u_8cpp.html" title="Файл с реализацией функций knn для CPU." alt="" coords="232,79,432,104"/>
+<area shape="poly" title=" " alt="" coords="250,36,315,76,312,81,247,40"/>
 </map>
 </div>
 </div>
@@ -174,8 +156,6 @@ This graph shows which files directly or indirectly include this file:</div>
 Functions</h2></td></tr>
 <tr class="memitem:a4d0d9439300bff8def02d4a5f551777b" id="r_a4d0d9439300bff8def02d4a5f551777b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d83/knn_c_p_u_8h.html#a4d0d9439300bff8def02d4a5f551777b">WakekNNnewForCollaps</a> (const std::vector&lt; <a class="el" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a> &gt; &amp;vtx, const size_t k, std::vector&lt; std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &gt; &amp;initdist, double cSP, double cRBP, double maxG, double epsCol, int type)</td></tr>
 <tr class="separator:a4d0d9439300bff8def02d4a5f551777b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18de7e0e3511a441c1479d12f6555c2b" id="r_a18de7e0e3511a441c1479d12f6555c2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d83/knn_c_p_u_8h.html#a18de7e0e3511a441c1479d12f6555c2b">WakekNNnewForEpsast</a> (const std::vector&lt; <a class="el" href="../../df/d22/class_b_h_1_1_points_copy.html">BH::PointsCopy</a> &gt; &amp;vtx, const size_t k, std::vector&lt; std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &gt; &amp;initdist)</td></tr>
-<tr class="separator:a18de7e0e3511a441c1479d12f6555c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>������������ ���� � ��������� ��� ���������� knn ��� CPU. </p>
@@ -255,161 +235,161 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Поиск границ габаритного прямоугольника (левый нижний и правый верхний)</p>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00307">307</a> of file <a class="el" href="../../d9/d47/knn_c_p_u_8cpp_source.html">knnCPU.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  309</span>{</div>
-<div class="line"><span class="lineno">  310</span>    <span class="keyword">using namespace </span><a class="code hl_namespace" href="../../d8/d27/namespaceknn_new.html">knnNew</a>;</div>
-<div class="line"><span class="lineno">  311</span>    </div>
-<div class="line"><span class="lineno">  312</span>    <span class="keywordtype">double</span> preTime = -omp_get_wtime();</div>
-<div class="line"><span class="lineno">  313</span>    </div>
-<div class="line"><span class="lineno">  314</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> n = vtx.size();</div>
-<div class="line"><span class="lineno">  315</span> </div>
-<div class="line"><span class="lineno">  317</span>    <span class="keyword">auto</span> xx = std::minmax_element(vtx.begin(), vtx.end(), [](<span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P1, <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P2) {return P1.r()[0] &lt; P2.r()[0]; });</div>
-<div class="line"><span class="lineno">  318</span>    <span class="keyword">auto</span> yy = std::minmax_element(vtx.begin(), vtx.end(), [](<span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P1, <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P2) {return P1.r()[1] &lt; P2.r()[1]; });</div>
-<div class="line"><span class="lineno">  319</span>    </div>
-<div class="line"><span class="lineno">  320</span>    <span class="keywordtype">double</span> scale = std::max(xx.second-&gt;r()[0] - xx.first-&gt;r()[0], yy.second-&gt;r()[1] - yy.first-&gt;r()[1]);</div>
-<div class="line"><span class="lineno">  321</span> </div>
-<div class="line"><span class="lineno">  322</span>    <span class="comment">//сортировка массива (data) по мортоновским кодам</span></div>
-<div class="line"><span class="lineno">  323</span>    std::vector&lt;unsigned int&gt; s(256 * omp_get_max_threads());</div>
-<div class="line"><span class="lineno">  324</span> </div>
-<div class="line"><span class="lineno">  325</span>    std::vector&lt;TParticleCode&gt; mcdata(vtx.size());</div>
-<div class="line"><span class="lineno">  326</span>    std::vector&lt;TParticleCode&gt; mcdata_temp(vtx.size());</div>
-<div class="line"><span class="lineno">  327</span> </div>
-<div class="line"><span class="lineno">  328</span>    <span class="comment">//std::vector&lt;unsigned int&gt; iq;</span></div>
-<div class="line"><span class="lineno">  329</span> </div>
-<div class="line"><span class="lineno">  330</span>    <span class="comment">//Сдвигаем все точки</span></div>
-<div class="line"><span class="lineno">  331</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> nSdvig = 5;</div>
-<div class="line"><span class="lineno">  332</span>    <span class="keywordtype">double</span> tStart[nSdvig], tFinish[nSdvig];</div>
-<div class="line"><span class="lineno">  333</span>    <span class="keywordtype">double</span> tm[nSdvig][5];</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>    preTime += omp_get_wtime();</div>
-<div class="line"><span class="lineno">  336</span> </div>
-<div class="line"><span class="lineno">  337</span>    std::pair&lt;double, size_t&gt; zeroPair = std::make_pair&lt;double, size_t&gt;(0.0, 0);</div>
-<div class="line"><span class="lineno">  338</span>    std::pair&lt;double, size_t&gt; minusOnePair = std::make_pair&lt;double, size_t&gt;(-1.0, 0);</div>
-<div class="line"><span class="lineno">  339</span> </div>
-<div class="line"><span class="lineno">  340</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>(2 * k, { -1.0, 0 });</div>
-<div class="line"><span class="lineno">  341</span>    std::vector&lt;size_t&gt; loc(2 * k);</div>
-<div class="line"><span class="lineno">  342</span>    std::vector&lt;size_t&gt; counter(2 * k, 0);</div>
-<div class="line"><span class="lineno">  343</span>    std::vector&lt;size_t&gt; offset(2 * k, 0);</div>
-<div class="line"><span class="lineno">  344</span>    std::vector&lt;size_t&gt; counterScan(2 * k, 0);</div>
-<div class="line"><span class="lineno">  345</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; dstKeys1(2 * k, zeroPair);</div>
-<div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  347</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; updateNN(k, zeroPair);</div>
-<div class="line"><span class="lineno">  348</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; dstKeys(k, zeroPair);</div>
-<div class="line"><span class="lineno">  349</span> </div>
-<div class="line"><span class="lineno">  350</span>    <span class="comment">//14-05-2024</span></div>
-<div class="line"><span class="lineno">  351</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sdvig = 0; sdvig &lt; nSdvig <span class="comment">/*5*/</span>; ++sdvig) </div>
-<div class="line"><span class="lineno">  352</span>    {</div>
-<div class="line"><span class="lineno">  353</span>        tStart[sdvig] = omp_get_wtime();    </div>
-<div class="line"><span class="lineno">  354</span>        </div>
-<div class="line"><span class="lineno">  355</span>        <span class="keyword">const</span> <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>&amp; lowLeft = { xx.first-&gt;r()[0], yy.first-&gt;r()[1] };</div>
-<div class="line"><span class="lineno">  356</span>        <span class="keywordtype">double</span>* time = tm[sdvig];       </div>
-<div class="line"><span class="lineno">  357</span>        </div>
-<div class="line"><span class="lineno">  358</span>        <span class="comment">//масштабирование координат вихрей в [0;0.75)^2, поиск их мортоновских кодов </span></div>
-<div class="line"><span class="lineno">  359</span> </div>
-<div class="line"><span class="lineno">  360</span>        time[0] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  361</span><span class="preprocessor">#pragma omp parallel for</span></div>
-<div class="line"><span class="lineno">  362</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; vtx.size(); ++i)</div>
-<div class="line"><span class="lineno">  363</span>        {</div>
-<div class="line"><span class="lineno">  364</span>            <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> sh = (vtx[i].r() - lowLeft) * (0.75 / scale) + sdvig * <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>{ 0.05, 0.05 };</div>
-<div class="line"><span class="lineno">  365</span>            mcdata[i].key = <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a3d52293efe06d4edd5a7595a3ce90fbe">Morton2D</a>(sh);</div>
-<div class="line"><span class="lineno">  366</span>            mcdata[i].originNumber = i; </div>
-<div class="line"><span class="lineno">  367</span>        }</div>
-<div class="line"><span class="lineno">  368</span> </div>
-<div class="line"><span class="lineno">  369</span>        time[1] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  370</span>    </div>
-<div class="line"><span class="lineno">  371</span>        <span class="comment">//сортировка единого массива (data и query) по мортоновским кодам           </span></div>
-<div class="line"><span class="lineno">  372</span>        <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a27dde53adbbd808d368822d0c6db049a">RSort_Parallel</a>(mcdata.data(), mcdata_temp.data(), (<span class="keywordtype">int</span>)mcdata.size(), s.data());</div>
-<div class="line"><span class="lineno">  373</span> </div>
-<div class="line"><span class="lineno">  374</span>        time[2] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  375</span>        </div>
-<div class="line"><span class="lineno">  376</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; 2 * k; ++idx)</div>
-<div class="line"><span class="lineno">  377</span>        {</div>
-<div class="line"><span class="lineno">  378</span>            <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>[idx] = minusOnePair;</div>
-<div class="line"><span class="lineno">  379</span>            dstKeys1[idx] = zeroPair;</div>
-<div class="line"><span class="lineno">  380</span>            loc[idx] = counter[idx] = offset[idx] = counterScan[idx] = 0;</div>
-<div class="line"><span class="lineno">  381</span>        }</div>
-<div class="line"><span class="lineno">  382</span> </div>
-<div class="line"><span class="lineno">  383</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; k; ++idx)</div>
-<div class="line"><span class="lineno">  384</span>            updateNN[idx] = dstKeys[idx] = zeroPair;</div>
-<div class="line"><span class="lineno">  385</span> </div>
-<div class="line"><span class="lineno">  386</span>        time[3] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  387</span> </div>
-<div class="line"><span class="lineno">  388</span><span class="preprocessor">#pragma omp parallel for firstprivate(dist, loc, counter, offset, counterScan, updateNN, dstKeys, dstKeys1)</span></div>
-<div class="line"><span class="lineno">  389</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; initdist.size(); ++i)</div>
-<div class="line"><span class="lineno">  390</span>        {</div>
-<div class="line"><span class="lineno">  391</span>            <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; vtxi = vtx[mcdata[i].originNumber];</div>
-<div class="line"><span class="lineno">  392</span> </div>
-<div class="line"><span class="lineno">  393</span>            <span class="keywordtype">int</span> cntr = 0;</div>
-<div class="line"><span class="lineno">  394</span>            <span class="keywordtype">int</span> search = i - 1; <span class="comment">// iq[i];</span></div>
-<div class="line"><span class="lineno">  395</span>            std::vector&lt;std::pair&lt;double, size_t&gt;&gt;&amp; fillPosition = ((sdvig == 0) ? initdist[mcdata[i].originNumber] : <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>);</div>
-<div class="line"><span class="lineno">  396</span> </div>
-<div class="line"><span class="lineno">  397</span>            <span class="keywordflow">while</span> ((cntr &lt; k) &amp;&amp; (search &gt;= 0))</div>
-<div class="line"><span class="lineno">  398</span>            {</div>
-<div class="line"><span class="lineno">  399</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; vtxk = vtx[mcdata[search].originNumber];</div>
-<div class="line"><span class="lineno">  400</span>                <span class="keywordtype">bool</span> flagExit, check;</div>
-<div class="line"><span class="lineno">  401</span>                <span class="keywordtype">double</span> d2;</div>
-<div class="line"><span class="lineno">  402</span>                std::tie(flagExit, check) = <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a4c69c922a3007dafbee667dd841ae954">calcCheck</a>(vtxi, vtxk, maxG, cSP, cRBP, epsCol, type, d2);</div>
-<div class="line"><span class="lineno">  403</span> </div>
-<div class="line"><span class="lineno">  404</span>                <span class="keywordflow">if</span> (flagExit)</div>
-<div class="line"><span class="lineno">  405</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  406</span> </div>
-<div class="line"><span class="lineno">  407</span>                <span class="keywordflow">if</span> ((mcdata[search].originNumber &gt; mcdata[i].originNumber) &amp;&amp; check)</div>
-<div class="line"><span class="lineno">  408</span>                    fillPosition[cntr++] = { d2, mcdata[search].originNumber };</div>
-<div class="line"><span class="lineno">  409</span> </div>
-<div class="line"><span class="lineno">  410</span>                --search;</div>
-<div class="line"><span class="lineno">  411</span>            }</div>
-<div class="line"><span class="lineno">  412</span> </div>
-<div class="line"><span class="lineno">  413</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> w = cntr; w &lt; k; ++w)</div>
-<div class="line"><span class="lineno">  414</span>                fillPosition[cntr++] = { 100000000.0, 0 };</div>
-<div class="line"><span class="lineno">  415</span> </div>
-<div class="line"><span class="lineno">  416</span>            search = i + 1;</div>
-<div class="line"><span class="lineno">  417</span> </div>
-<div class="line"><span class="lineno">  418</span>            <span class="keywordflow">while</span> ((cntr &lt; 2 * k) &amp;&amp; (search &lt; mcdata.size()))</div>
-<div class="line"><span class="lineno">  419</span>            {</div>
-<div class="line"><span class="lineno">  420</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; vtxk = vtx[mcdata[search].originNumber];</div>
-<div class="line"><span class="lineno">  421</span>                <span class="keywordtype">bool</span> flagExit, check;</div>
-<div class="line"><span class="lineno">  422</span>                <span class="keywordtype">double</span> d2;</div>
-<div class="line"><span class="lineno">  423</span>                std::tie(flagExit, check) = <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a4c69c922a3007dafbee667dd841ae954">calcCheck</a>(vtxi, vtxk, maxG, cSP, cRBP, epsCol, type, d2);</div>
-<div class="line"><span class="lineno">  424</span> </div>
-<div class="line"><span class="lineno">  425</span>                <span class="keywordflow">if</span> (flagExit)</div>
-<div class="line"><span class="lineno">  426</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  427</span> </div>
-<div class="line"><span class="lineno">  428</span>                <span class="keywordflow">if</span> ((mcdata[search].originNumber &gt; mcdata[i].originNumber) &amp;&amp; check)</div>
-<div class="line"><span class="lineno">  429</span>                    fillPosition[cntr++] = { d2,  mcdata[search].originNumber };</div>
-<div class="line"><span class="lineno">  430</span> </div>
-<div class="line"><span class="lineno">  431</span>                ++search;</div>
-<div class="line"><span class="lineno">  432</span>            }</div>
-<div class="line"><span class="lineno">  433</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> w = cntr; w &lt; 2 * k; ++w)</div>
-<div class="line"><span class="lineno">  434</span>                fillPosition[cntr++] = { 100000000.0, 0 };</div>
-<div class="line"><span class="lineno">  435</span> </div>
-<div class="line"><span class="lineno">  436</span>            <span class="keywordflow">if</span> (sdvig == 0)</div>
-<div class="line"><span class="lineno">  437</span>            {</div>
-<div class="line"><span class="lineno">  438</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">newSort</a>(initdist[mcdata[i].originNumber], dstKeys1);</div>
-<div class="line"><span class="lineno">  439</span>                initdist[mcdata[i].originNumber].resize(k);</div>
-<div class="line"><span class="lineno">  440</span>            }</div>
-<div class="line"><span class="lineno">  441</span>            <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  442</span>            {</div>
-<div class="line"><span class="lineno">  443</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">newSort</a>(dist, dstKeys1);</div>
-<div class="line"><span class="lineno">  444</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a266d937f00cdc02f1b3ebb459198d31f">newMerge</a>(mcdata[i].originNumber, initdist[mcdata[i].originNumber], dist, loc, counter, offset, counterScan, updateNN);</div>
-<div class="line"><span class="lineno">  445</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">newSort</a>(initdist[mcdata[i].originNumber], dstKeys);</div>
-<div class="line"><span class="lineno">  446</span>            }</div>
-<div class="line"><span class="lineno">  447</span>        }</div>
-<div class="line"><span class="lineno">  448</span> </div>
-<div class="line"><span class="lineno">  449</span>        time[4] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  450</span>        </div>
-<div class="line"><span class="lineno">  451</span>        tFinish[sdvig] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  452</span> </div>
-<div class="line"><span class="lineno">  453</span>    }<span class="comment">//for sdvig</span></div>
-<div class="line"><span class="lineno">  454</span>} <span class="comment">// WakekNNnewForCollaps</span></div>
+<p class="definition">Definition at line <a class="el" href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00308">308</a> of file <a class="el" href="../../d9/d47/knn_c_p_u_8cpp_source.html">knnCPU.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  310</span>{</div>
+<div class="line"><span class="lineno">  311</span>    <span class="keyword">using namespace </span><a class="code hl_namespace" href="../../d8/d27/namespaceknn_new.html">knnNew</a>;</div>
+<div class="line"><span class="lineno">  312</span>    </div>
+<div class="line"><span class="lineno">  313</span>    <span class="keywordtype">double</span> preTime = -omp_get_wtime();</div>
+<div class="line"><span class="lineno">  314</span>    </div>
+<div class="line"><span class="lineno">  315</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> n = vtx.size();</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  318</span>    <span class="keyword">auto</span> xx = std::minmax_element(vtx.begin(), vtx.end(), [](<span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P1, <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P2) {return P1.r()[0] &lt; P2.r()[0]; });</div>
+<div class="line"><span class="lineno">  319</span>    <span class="keyword">auto</span> yy = std::minmax_element(vtx.begin(), vtx.end(), [](<span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P1, <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P2) {return P1.r()[1] &lt; P2.r()[1]; });</div>
+<div class="line"><span class="lineno">  320</span>    </div>
+<div class="line"><span class="lineno">  321</span>    <span class="keywordtype">double</span> scale = std::max(xx.second-&gt;r()[0] - xx.first-&gt;r()[0], yy.second-&gt;r()[1] - yy.first-&gt;r()[1]);</div>
+<div class="line"><span class="lineno">  322</span> </div>
+<div class="line"><span class="lineno">  323</span>    <span class="comment">//сортировка массива (data) по мортоновским кодам</span></div>
+<div class="line"><span class="lineno">  324</span>    std::vector&lt;unsigned int&gt; s(256 * omp_get_max_threads());</div>
+<div class="line"><span class="lineno">  325</span> </div>
+<div class="line"><span class="lineno">  326</span>    std::vector&lt;TParticleCode&gt; mcdata(vtx.size());</div>
+<div class="line"><span class="lineno">  327</span>    std::vector&lt;TParticleCode&gt; mcdata_temp(vtx.size());</div>
+<div class="line"><span class="lineno">  328</span> </div>
+<div class="line"><span class="lineno">  329</span>    <span class="comment">//std::vector&lt;unsigned int&gt; iq;</span></div>
+<div class="line"><span class="lineno">  330</span> </div>
+<div class="line"><span class="lineno">  331</span>    <span class="comment">//Сдвигаем все точки</span></div>
+<div class="line"><span class="lineno">  332</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> nSdvig = 5;</div>
+<div class="line"><span class="lineno">  333</span>    <span class="keywordtype">double</span> tStart[nSdvig], tFinish[nSdvig];</div>
+<div class="line"><span class="lineno">  334</span>    <span class="keywordtype">double</span> tm[nSdvig][5];</div>
+<div class="line"><span class="lineno">  335</span> </div>
+<div class="line"><span class="lineno">  336</span>    preTime += omp_get_wtime();</div>
+<div class="line"><span class="lineno">  337</span> </div>
+<div class="line"><span class="lineno">  338</span>    std::pair&lt;double, size_t&gt; zeroPair = std::make_pair&lt;double, size_t&gt;(0.0, 0);</div>
+<div class="line"><span class="lineno">  339</span>    std::pair&lt;double, size_t&gt; minusOnePair = std::make_pair&lt;double, size_t&gt;(-1.0, 0);</div>
+<div class="line"><span class="lineno">  340</span> </div>
+<div class="line"><span class="lineno">  341</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>(2 * k, { -1.0, 0 });</div>
+<div class="line"><span class="lineno">  342</span>    std::vector&lt;size_t&gt; loc(2 * k);</div>
+<div class="line"><span class="lineno">  343</span>    std::vector&lt;size_t&gt; counter(2 * k, 0);</div>
+<div class="line"><span class="lineno">  344</span>    std::vector&lt;size_t&gt; offset(2 * k, 0);</div>
+<div class="line"><span class="lineno">  345</span>    std::vector&lt;size_t&gt; counterScan(2 * k, 0);</div>
+<div class="line"><span class="lineno">  346</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; dstKeys1(2 * k, zeroPair);</div>
+<div class="line"><span class="lineno">  347</span> </div>
+<div class="line"><span class="lineno">  348</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; updateNN(k, zeroPair);</div>
+<div class="line"><span class="lineno">  349</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; dstKeys(k, zeroPair);</div>
+<div class="line"><span class="lineno">  350</span> </div>
+<div class="line"><span class="lineno">  351</span>    <span class="comment">//14-05-2024</span></div>
+<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sdvig = 0; sdvig &lt; nSdvig <span class="comment">/*5*/</span>; ++sdvig) </div>
+<div class="line"><span class="lineno">  353</span>    {</div>
+<div class="line"><span class="lineno">  354</span>        tStart[sdvig] = omp_get_wtime();    </div>
+<div class="line"><span class="lineno">  355</span>        </div>
+<div class="line"><span class="lineno">  356</span>        <span class="keyword">const</span> <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>&amp; lowLeft = { xx.first-&gt;r()[0], yy.first-&gt;r()[1] };</div>
+<div class="line"><span class="lineno">  357</span>        <span class="keywordtype">double</span>* time = tm[sdvig];       </div>
+<div class="line"><span class="lineno">  358</span>        </div>
+<div class="line"><span class="lineno">  359</span>        <span class="comment">//масштабирование координат вихрей в [0;0.75)^2, поиск их мортоновских кодов </span></div>
+<div class="line"><span class="lineno">  360</span> </div>
+<div class="line"><span class="lineno">  361</span>        time[0] = omp_get_wtime();</div>
+<div class="line"><span class="lineno">  362</span><span class="preprocessor">#pragma omp parallel for</span></div>
+<div class="line"><span class="lineno">  363</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; vtx.size(); ++i)</div>
+<div class="line"><span class="lineno">  364</span>        {</div>
+<div class="line"><span class="lineno">  365</span>            <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> sh = (vtx[i].r() - lowLeft) * (0.75 / scale) + sdvig * <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>{ 0.05, 0.05 };</div>
+<div class="line"><span class="lineno">  366</span>            mcdata[i].key = <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a3d52293efe06d4edd5a7595a3ce90fbe">Morton2D</a>(sh);</div>
+<div class="line"><span class="lineno">  367</span>            mcdata[i].originNumber = i; </div>
+<div class="line"><span class="lineno">  368</span>        }</div>
+<div class="line"><span class="lineno">  369</span> </div>
+<div class="line"><span class="lineno">  370</span>        time[1] = omp_get_wtime();</div>
+<div class="line"><span class="lineno">  371</span>    </div>
+<div class="line"><span class="lineno">  372</span>        <span class="comment">//сортировка единого массива (data и query) по мортоновским кодам           </span></div>
+<div class="line"><span class="lineno">  373</span>        <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a27dde53adbbd808d368822d0c6db049a">RSort_Parallel</a>(mcdata.data(), mcdata_temp.data(), (<span class="keywordtype">int</span>)mcdata.size(), s.data());</div>
+<div class="line"><span class="lineno">  374</span> </div>
+<div class="line"><span class="lineno">  375</span>        time[2] = omp_get_wtime();</div>
+<div class="line"><span class="lineno">  376</span>        </div>
+<div class="line"><span class="lineno">  377</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; 2 * k; ++idx)</div>
+<div class="line"><span class="lineno">  378</span>        {</div>
+<div class="line"><span class="lineno">  379</span>            <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>[idx] = minusOnePair;</div>
+<div class="line"><span class="lineno">  380</span>            dstKeys1[idx] = zeroPair;</div>
+<div class="line"><span class="lineno">  381</span>            loc[idx] = counter[idx] = offset[idx] = counterScan[idx] = 0;</div>
+<div class="line"><span class="lineno">  382</span>        }</div>
+<div class="line"><span class="lineno">  383</span> </div>
+<div class="line"><span class="lineno">  384</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; k; ++idx)</div>
+<div class="line"><span class="lineno">  385</span>            updateNN[idx] = dstKeys[idx] = zeroPair;</div>
+<div class="line"><span class="lineno">  386</span> </div>
+<div class="line"><span class="lineno">  387</span>        time[3] = omp_get_wtime();</div>
+<div class="line"><span class="lineno">  388</span> </div>
+<div class="line"><span class="lineno">  389</span><span class="preprocessor">#pragma omp parallel for firstprivate(dist, loc, counter, offset, counterScan, updateNN, dstKeys, dstKeys1)</span></div>
+<div class="line"><span class="lineno">  390</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; initdist.size(); ++i)</div>
+<div class="line"><span class="lineno">  391</span>        {</div>
+<div class="line"><span class="lineno">  392</span>            <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; vtxi = vtx[mcdata[i].originNumber];</div>
+<div class="line"><span class="lineno">  393</span> </div>
+<div class="line"><span class="lineno">  394</span>            <span class="keywordtype">int</span> cntr = 0;</div>
+<div class="line"><span class="lineno">  395</span>            <span class="keywordtype">int</span> search = i - 1; <span class="comment">// iq[i];</span></div>
+<div class="line"><span class="lineno">  396</span>            std::vector&lt;std::pair&lt;double, size_t&gt;&gt;&amp; fillPosition = ((sdvig == 0) ? initdist[mcdata[i].originNumber] : <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>);</div>
+<div class="line"><span class="lineno">  397</span> </div>
+<div class="line"><span class="lineno">  398</span>            <span class="keywordflow">while</span> ((cntr &lt; k) &amp;&amp; (search &gt;= 0))</div>
+<div class="line"><span class="lineno">  399</span>            {</div>
+<div class="line"><span class="lineno">  400</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; vtxk = vtx[mcdata[search].originNumber];</div>
+<div class="line"><span class="lineno">  401</span>                <span class="keywordtype">bool</span> flagExit, check;</div>
+<div class="line"><span class="lineno">  402</span>                <span class="keywordtype">double</span> d2;</div>
+<div class="line"><span class="lineno">  403</span>                std::tie(flagExit, check) = <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a4c69c922a3007dafbee667dd841ae954">calcCheck</a>(vtxi, vtxk, maxG, cSP, cRBP, epsCol, type, d2);</div>
+<div class="line"><span class="lineno">  404</span> </div>
+<div class="line"><span class="lineno">  405</span>                <span class="keywordflow">if</span> (flagExit)</div>
+<div class="line"><span class="lineno">  406</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  407</span> </div>
+<div class="line"><span class="lineno">  408</span>                <span class="keywordflow">if</span> ((mcdata[search].originNumber &gt; mcdata[i].originNumber) &amp;&amp; check)</div>
+<div class="line"><span class="lineno">  409</span>                    fillPosition[cntr++] = { d2, mcdata[search].originNumber };</div>
+<div class="line"><span class="lineno">  410</span> </div>
+<div class="line"><span class="lineno">  411</span>                --search;</div>
+<div class="line"><span class="lineno">  412</span>            }</div>
+<div class="line"><span class="lineno">  413</span> </div>
+<div class="line"><span class="lineno">  414</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> w = cntr; w &lt; k; ++w)</div>
+<div class="line"><span class="lineno">  415</span>                fillPosition[cntr++] = { 100000000.0, 0 };</div>
+<div class="line"><span class="lineno">  416</span> </div>
+<div class="line"><span class="lineno">  417</span>            search = i + 1;</div>
+<div class="line"><span class="lineno">  418</span> </div>
+<div class="line"><span class="lineno">  419</span>            <span class="keywordflow">while</span> ((cntr &lt; 2 * k) &amp;&amp; (search &lt; mcdata.size()))</div>
+<div class="line"><span class="lineno">  420</span>            {</div>
+<div class="line"><span class="lineno">  421</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; vtxk = vtx[mcdata[search].originNumber];</div>
+<div class="line"><span class="lineno">  422</span>                <span class="keywordtype">bool</span> flagExit, check;</div>
+<div class="line"><span class="lineno">  423</span>                <span class="keywordtype">double</span> d2;</div>
+<div class="line"><span class="lineno">  424</span>                std::tie(flagExit, check) = <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a4c69c922a3007dafbee667dd841ae954">calcCheck</a>(vtxi, vtxk, maxG, cSP, cRBP, epsCol, type, d2);</div>
+<div class="line"><span class="lineno">  425</span> </div>
+<div class="line"><span class="lineno">  426</span>                <span class="keywordflow">if</span> (flagExit)</div>
+<div class="line"><span class="lineno">  427</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  428</span> </div>
+<div class="line"><span class="lineno">  429</span>                <span class="keywordflow">if</span> ((mcdata[search].originNumber &gt; mcdata[i].originNumber) &amp;&amp; check)</div>
+<div class="line"><span class="lineno">  430</span>                    fillPosition[cntr++] = { d2,  mcdata[search].originNumber };</div>
+<div class="line"><span class="lineno">  431</span> </div>
+<div class="line"><span class="lineno">  432</span>                ++search;</div>
+<div class="line"><span class="lineno">  433</span>            }</div>
+<div class="line"><span class="lineno">  434</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> w = cntr; w &lt; 2 * k; ++w)</div>
+<div class="line"><span class="lineno">  435</span>                fillPosition[cntr++] = { 100000000.0, 0 };</div>
+<div class="line"><span class="lineno">  436</span> </div>
+<div class="line"><span class="lineno">  437</span>            <span class="keywordflow">if</span> (sdvig == 0)</div>
+<div class="line"><span class="lineno">  438</span>            {</div>
+<div class="line"><span class="lineno">  439</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">newSort</a>(initdist[mcdata[i].originNumber], dstKeys1);</div>
+<div class="line"><span class="lineno">  440</span>                initdist[mcdata[i].originNumber].resize(k);</div>
+<div class="line"><span class="lineno">  441</span>            }</div>
+<div class="line"><span class="lineno">  442</span>            <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  443</span>            {</div>
+<div class="line"><span class="lineno">  444</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">newSort</a>(dist, dstKeys1);</div>
+<div class="line"><span class="lineno">  445</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a266d937f00cdc02f1b3ebb459198d31f">newMerge</a>(mcdata[i].originNumber, initdist[mcdata[i].originNumber], dist, loc, counter, offset, counterScan, updateNN);</div>
+<div class="line"><span class="lineno">  446</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">newSort</a>(initdist[mcdata[i].originNumber], dstKeys);</div>
+<div class="line"><span class="lineno">  447</span>            }</div>
+<div class="line"><span class="lineno">  448</span>        }</div>
+<div class="line"><span class="lineno">  449</span> </div>
+<div class="line"><span class="lineno">  450</span>        time[4] = omp_get_wtime();</div>
+<div class="line"><span class="lineno">  451</span>        </div>
+<div class="line"><span class="lineno">  452</span>        tFinish[sdvig] = omp_get_wtime();</div>
+<div class="line"><span class="lineno">  453</span> </div>
+<div class="line"><span class="lineno">  454</span>    }<span class="comment">//for sdvig</span></div>
+<div class="line"><span class="lineno">  455</span>} <span class="comment">// WakekNNnewForCollaps</span></div>
 <div class="ttc" id="aclass_v_mlib_1_1_point2_d_html"><div class="ttname"><a href="../../da/dd5/class_v_mlib_1_1_point2_d.html">VMlib::Point2D</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d27/_point2_d_8h_source.html#l00138">Point2D.h:140</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1_vortex2_d_html"><div class="ttname"><a href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">VMlib::Vortex2D</a></div><div class="ttdoc">Класс, опеделяющий двумерный вихревой элемент</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d19/_vortex2_d_8h_source.html#l00058">Vortex2D.h:59</a></div></div>
 <div class="ttc" id="anamespace_v_mlib_html_a4707de62176aa2068f1f8628e0460f8c"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">VMlib::dist</a></div><div class="ttdeci">R dist(const numvector&lt; T, n &gt; &amp;x, const numvector&lt; P, n &gt; &amp;y)</div><div class="ttdoc">Вычисление расстояния между двумя точками</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00851">numvector.h:851</a></div></div>
-<div class="ttc" id="anamespaceknn_new_html"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html">knnNew</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00045">knnCPU.cpp:46</a></div></div>
-<div class="ttc" id="anamespaceknn_new_html_a266d937f00cdc02f1b3ebb459198d31f"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a266d937f00cdc02f1b3ebb459198d31f">knnNew::newMerge</a></div><div class="ttdeci">void newMerge(int iii, std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;currentNN, const std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;candidateNN, std::vector&lt; size_t &gt; &amp;loc, std::vector&lt; size_t &gt; &amp;counter, std::vector&lt; size_t &gt; &amp;offset, std::vector&lt; size_t &gt; &amp;counterScan, std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;updateNN)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00211">knnCPU.cpp:211</a></div></div>
-<div class="ttc" id="anamespaceknn_new_html_a27dde53adbbd808d368822d0c6db049a"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a27dde53adbbd808d368822d0c6db049a">knnNew::RSort_Parallel</a></div><div class="ttdeci">void RSort_Parallel(TParticleCode *m, TParticleCode *m_temp, unsigned int n, unsigned int *s)</div><div class="ttdoc">Сортировка массива из мортоновский кодов</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00095">knnCPU.cpp:95</a></div></div>
-<div class="ttc" id="anamespaceknn_new_html_a3d52293efe06d4edd5a7595a3ce90fbe"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a3d52293efe06d4edd5a7595a3ce90fbe">knnNew::Morton2D</a></div><div class="ttdeci">unsigned int Morton2D(const Point2D &amp;r)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00085">knnCPU.cpp:85</a></div></div>
-<div class="ttc" id="anamespaceknn_new_html_a4c69c922a3007dafbee667dd841ae954"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a4c69c922a3007dafbee667dd841ae954">knnNew::calcCheck</a></div><div class="ttdeci">std::pair&lt; bool, bool &gt; calcCheck(const Vortex2D &amp;vtxi, const Vortex2D &amp;vtxk, double maxG, double cSP, double cRBP, double epsCol, int type, double &amp;d2)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00263">knnCPU.cpp:263</a></div></div>
-<div class="ttc" id="anamespaceknn_new_html_a7479682181b04ebd31dc1790b22ade7b"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">knnNew::newSort</a></div><div class="ttdeci">void newSort(std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;mass, std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;dstKeys)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00189">knnCPU.cpp:189</a></div></div>
+<div class="ttc" id="anamespaceknn_new_html"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html">knnNew</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00046">knnCPU.cpp:47</a></div></div>
+<div class="ttc" id="anamespaceknn_new_html_a266d937f00cdc02f1b3ebb459198d31f"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a266d937f00cdc02f1b3ebb459198d31f">knnNew::newMerge</a></div><div class="ttdeci">void newMerge(int iii, std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;currentNN, const std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;candidateNN, std::vector&lt; size_t &gt; &amp;loc, std::vector&lt; size_t &gt; &amp;counter, std::vector&lt; size_t &gt; &amp;offset, std::vector&lt; size_t &gt; &amp;counterScan, std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;updateNN)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00212">knnCPU.cpp:212</a></div></div>
+<div class="ttc" id="anamespaceknn_new_html_a27dde53adbbd808d368822d0c6db049a"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a27dde53adbbd808d368822d0c6db049a">knnNew::RSort_Parallel</a></div><div class="ttdeci">void RSort_Parallel(TParticleCode *m, TParticleCode *m_temp, unsigned int n, unsigned int *s)</div><div class="ttdoc">Сортировка массива из мортоновский кодов</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00096">knnCPU.cpp:96</a></div></div>
+<div class="ttc" id="anamespaceknn_new_html_a3d52293efe06d4edd5a7595a3ce90fbe"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a3d52293efe06d4edd5a7595a3ce90fbe">knnNew::Morton2D</a></div><div class="ttdeci">unsigned int Morton2D(const Point2D &amp;r)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00086">knnCPU.cpp:86</a></div></div>
+<div class="ttc" id="anamespaceknn_new_html_a4c69c922a3007dafbee667dd841ae954"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a4c69c922a3007dafbee667dd841ae954">knnNew::calcCheck</a></div><div class="ttdeci">std::pair&lt; bool, bool &gt; calcCheck(const Vortex2D &amp;vtxi, const Vortex2D &amp;vtxk, double maxG, double cSP, double cRBP, double epsCol, int type, double &amp;d2)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00264">knnCPU.cpp:264</a></div></div>
+<div class="ttc" id="anamespaceknn_new_html_a7479682181b04ebd31dc1790b22ade7b"><div class="ttname"><a href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">knnNew::newSort</a></div><div class="ttdeci">void newSort(std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;mass, std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &amp;dstKeys)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00190">knnCPU.cpp:190</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -418,187 +398,6 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title=" " alt="" coords="220,5,400,31"/>
 <area shape="rect" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="5,5,172,31"/>
 <area shape="poly" title=" " alt="" coords="206,21,172,21,172,15,206,15"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a18de7e0e3511a441c1479d12f6555c2b" name="a18de7e0e3511a441c1479d12f6555c2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18de7e0e3511a441c1479d12f6555c2b">&#9670;&#160;</a></span>WakekNNnewForEpsast()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WakekNNnewForEpsast </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="../../df/d22/class_b_h_1_1_points_copy.html">BH::PointsCopy</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>vtx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>k</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; std::vector&lt; std::pair&lt; double, size_t &gt; &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>initdist</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Поиск границ габаритного прямоугольника (левый нижний и правый верхний)</p>
-
-<p class="definition">Definition at line <a class="el" href="../../d9/d47/knn_c_p_u_8cpp_source.html#l00458">458</a> of file <a class="el" href="../../d9/d47/knn_c_p_u_8cpp_source.html">knnCPU.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  459</span>{</div>
-<div class="line"><span class="lineno">  460</span>    <span class="keyword">using namespace </span><a class="code hl_namespace" href="../../d8/d27/namespaceknn_new.html">knnNew</a>;</div>
-<div class="line"><span class="lineno">  461</span> </div>
-<div class="line"><span class="lineno">  462</span>    <span class="keywordtype">double</span> preTime = -omp_get_wtime();</div>
-<div class="line"><span class="lineno">  463</span> </div>
-<div class="line"><span class="lineno">  464</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> n = vtx.size();</div>
-<div class="line"><span class="lineno">  465</span> </div>
-<div class="line"><span class="lineno">  467</span>    <span class="keyword">auto</span> xx = std::minmax_element(vtx.begin(), vtx.end(), [](<span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P1, <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P2) {return P1.r()[0] &lt; P2.r()[0]; });</div>
-<div class="line"><span class="lineno">  468</span>    <span class="keyword">auto</span> yy = std::minmax_element(vtx.begin(), vtx.end(), [](<span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P1, <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; P2) {return P1.r()[1] &lt; P2.r()[1]; });</div>
-<div class="line"><span class="lineno">  469</span> </div>
-<div class="line"><span class="lineno">  470</span>    <span class="keywordtype">double</span> scale = std::max(xx.second-&gt;r()[0] - xx.first-&gt;r()[0], yy.second-&gt;r()[1] - yy.first-&gt;r()[1]);</div>
-<div class="line"><span class="lineno">  471</span> </div>
-<div class="line"><span class="lineno">  472</span>    <span class="comment">//сортировка массива (data) по мортоновским кодам</span></div>
-<div class="line"><span class="lineno">  473</span>    std::vector&lt;unsigned int&gt; s(256 * omp_get_max_threads());</div>
-<div class="line"><span class="lineno">  474</span> </div>
-<div class="line"><span class="lineno">  475</span>    std::vector&lt;TParticleCode&gt; mcdata(vtx.size());</div>
-<div class="line"><span class="lineno">  476</span>    std::vector&lt;TParticleCode&gt; mcdata_temp(vtx.size());</div>
-<div class="line"><span class="lineno">  477</span> </div>
-<div class="line"><span class="lineno">  478</span>    <span class="comment">//std::vector&lt;unsigned int&gt; iq;</span></div>
-<div class="line"><span class="lineno">  479</span> </div>
-<div class="line"><span class="lineno">  480</span>    <span class="comment">//Сдвигаем все точки</span></div>
-<div class="line"><span class="lineno">  481</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> nSdvig = 5;</div>
-<div class="line"><span class="lineno">  482</span>    <span class="keywordtype">double</span> tStart[nSdvig], tFinish[nSdvig];</div>
-<div class="line"><span class="lineno">  483</span>    <span class="keywordtype">double</span> tm[nSdvig][5];</div>
-<div class="line"><span class="lineno">  484</span> </div>
-<div class="line"><span class="lineno">  485</span>    preTime += omp_get_wtime();</div>
-<div class="line"><span class="lineno">  486</span> </div>
-<div class="line"><span class="lineno">  487</span>    std::pair&lt;double, size_t&gt; zeroPair = std::make_pair&lt;double, size_t&gt;(0.0, 0);</div>
-<div class="line"><span class="lineno">  488</span>    std::pair&lt;double, size_t&gt; minusOnePair = std::make_pair&lt;double, size_t&gt;(-1.0, 0);</div>
-<div class="line"><span class="lineno">  489</span> </div>
-<div class="line"><span class="lineno">  490</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>(2 * k, { -1.0, 0 });</div>
-<div class="line"><span class="lineno">  491</span>    std::vector&lt;size_t&gt; loc(2 * k);</div>
-<div class="line"><span class="lineno">  492</span>    std::vector&lt;size_t&gt; counter(2 * k, 0);</div>
-<div class="line"><span class="lineno">  493</span>    std::vector&lt;size_t&gt; offset(2 * k, 0);</div>
-<div class="line"><span class="lineno">  494</span>    std::vector&lt;size_t&gt; counterScan(2 * k, 0);</div>
-<div class="line"><span class="lineno">  495</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; dstKeys1(2 * k, zeroPair);</div>
-<div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; updateNN(k, zeroPair);</div>
-<div class="line"><span class="lineno">  498</span>    std::vector&lt;std::pair&lt;double, size_t&gt;&gt; dstKeys(k, zeroPair);</div>
-<div class="line"><span class="lineno">  499</span> </div>
-<div class="line"><span class="lineno">  500</span>    <span class="comment">//14-05-2024</span></div>
-<div class="line"><span class="lineno">  501</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sdvig = 0; sdvig &lt; nSdvig <span class="comment">/*5*/</span>; ++sdvig)</div>
-<div class="line"><span class="lineno">  502</span>    {</div>
-<div class="line"><span class="lineno">  503</span>        tStart[sdvig] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  504</span> </div>
-<div class="line"><span class="lineno">  505</span>        <span class="keyword">const</span> <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>&amp; lowLeft = { xx.first-&gt;r()[0], yy.first-&gt;r()[1] };</div>
-<div class="line"><span class="lineno">  506</span>        <span class="keywordtype">double</span>* time = tm[sdvig];</div>
-<div class="line"><span class="lineno">  507</span> </div>
-<div class="line"><span class="lineno">  508</span>        <span class="comment">//масштабирование координат вихрей в [0;0.75)^2, поиск их мортоновских кодов </span></div>
-<div class="line"><span class="lineno">  509</span> </div>
-<div class="line"><span class="lineno">  510</span>        time[0] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  511</span><span class="preprocessor">#pragma omp parallel for</span></div>
-<div class="line"><span class="lineno">  512</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; vtx.size(); ++i)</div>
-<div class="line"><span class="lineno">  513</span>        {</div>
-<div class="line"><span class="lineno">  514</span>            <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> sh = (vtx[i].r() - lowLeft) * (0.75 / scale) + sdvig * <a class="code hl_class" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a>{ 0.05, 0.05 };</div>
-<div class="line"><span class="lineno">  515</span>            mcdata[i].key = <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a3d52293efe06d4edd5a7595a3ce90fbe">Morton2D</a>(sh);</div>
-<div class="line"><span class="lineno">  516</span>            mcdata[i].originNumber = i;</div>
-<div class="line"><span class="lineno">  517</span>        }</div>
-<div class="line"><span class="lineno">  518</span> </div>
-<div class="line"><span class="lineno">  519</span>        time[1] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  520</span> </div>
-<div class="line"><span class="lineno">  521</span>        <span class="comment">//сортировка единого массива (data и query) по мортоновским кодам           </span></div>
-<div class="line"><span class="lineno">  522</span>        <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a27dde53adbbd808d368822d0c6db049a">RSort_Parallel</a>(mcdata.data(), mcdata_temp.data(), (<span class="keywordtype">int</span>)mcdata.size(), s.data());</div>
-<div class="line"><span class="lineno">  523</span> </div>
-<div class="line"><span class="lineno">  524</span>        time[2] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  525</span> </div>
-<div class="line"><span class="lineno">  526</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; 2 * k; ++idx)</div>
-<div class="line"><span class="lineno">  527</span>        {</div>
-<div class="line"><span class="lineno">  528</span>            <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>[idx] = minusOnePair;</div>
-<div class="line"><span class="lineno">  529</span>            dstKeys1[idx] = zeroPair;</div>
-<div class="line"><span class="lineno">  530</span>            loc[idx] = counter[idx] = offset[idx] = counterScan[idx] = 0;</div>
-<div class="line"><span class="lineno">  531</span>        }</div>
-<div class="line"><span class="lineno">  532</span> </div>
-<div class="line"><span class="lineno">  533</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; k; ++idx)</div>
-<div class="line"><span class="lineno">  534</span>            updateNN[idx] = dstKeys[idx] = zeroPair;</div>
-<div class="line"><span class="lineno">  535</span> </div>
-<div class="line"><span class="lineno">  536</span>        time[3] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  537</span> </div>
-<div class="line"><span class="lineno">  538</span><span class="preprocessor">#pragma omp parallel for firstprivate(dist, loc, counter, offset, counterScan, updateNN, dstKeys, dstKeys1)</span></div>
-<div class="line"><span class="lineno">  539</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; initdist.size(); ++i)</div>
-<div class="line"><span class="lineno">  540</span>        {</div>
-<div class="line"><span class="lineno">  541</span>            <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; vtxi = vtx[mcdata[i].originNumber];</div>
-<div class="line"><span class="lineno">  542</span> </div>
-<div class="line"><span class="lineno">  543</span>            <span class="keywordtype">int</span> cntr = 0;</div>
-<div class="line"><span class="lineno">  544</span>            <span class="keywordtype">int</span> search = i - 1; <span class="comment">// iq[i];</span></div>
-<div class="line"><span class="lineno">  545</span>            std::vector&lt;std::pair&lt;double, size_t&gt;&gt;&amp; fillPosition = ((sdvig == 0) ? initdist[mcdata[i].originNumber] : <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4707de62176aa2068f1f8628e0460f8c">dist</a>);</div>
-<div class="line"><span class="lineno">  546</span> </div>
-<div class="line"><span class="lineno">  547</span>            <span class="keywordflow">while</span> ((cntr &lt; k) &amp;&amp; (search &gt;= 0))</div>
-<div class="line"><span class="lineno">  548</span>            {</div>
-<div class="line"><span class="lineno">  549</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; vtxk = vtx[mcdata[search].originNumber];</div>
-<div class="line"><span class="lineno">  550</span>                <span class="keywordtype">double</span> d2 = (vtxi.<a class="code hl_function" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2">r</a>()-vtxk.<a class="code hl_function" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2">r</a>()).length2();</div>
-<div class="line"><span class="lineno">  551</span>                fillPosition[cntr++] = { d2, mcdata[search].originNumber };</div>
-<div class="line"><span class="lineno">  552</span>                --search;</div>
-<div class="line"><span class="lineno">  553</span>            }</div>
-<div class="line"><span class="lineno">  554</span> </div>
-<div class="line"><span class="lineno">  555</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> w = cntr; w &lt; k; ++w)</div>
-<div class="line"><span class="lineno">  556</span>                fillPosition[cntr++] = { 100000000.0, 0 };</div>
-<div class="line"><span class="lineno">  557</span> </div>
-<div class="line"><span class="lineno">  558</span>            search = i + 1;</div>
-<div class="line"><span class="lineno">  559</span> </div>
-<div class="line"><span class="lineno">  560</span>            <span class="keywordflow">while</span> ((cntr &lt; 2 * k) &amp;&amp; (search &lt; mcdata.size()))</div>
-<div class="line"><span class="lineno">  561</span>            {</div>
-<div class="line"><span class="lineno">  562</span>                <span class="keyword">const</span> <a class="code hl_class" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html">Vortex2D</a>&amp; vtxk = vtx[mcdata[search].originNumber];</div>
-<div class="line"><span class="lineno">  563</span>                <span class="keywordtype">double</span> d2 = (vtxi.<a class="code hl_function" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2">r</a>() - vtxk.<a class="code hl_function" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2">r</a>()).length2();</div>
-<div class="line"><span class="lineno">  564</span>                fillPosition[cntr++] = { d2,  mcdata[search].originNumber };</div>
-<div class="line"><span class="lineno">  565</span>                ++search;</div>
-<div class="line"><span class="lineno">  566</span>            }</div>
-<div class="line"><span class="lineno">  567</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> w = cntr; w &lt; 2 * k; ++w)</div>
-<div class="line"><span class="lineno">  568</span>                fillPosition[cntr++] = { 100000000.0, 0 };</div>
-<div class="line"><span class="lineno">  569</span> </div>
-<div class="line"><span class="lineno">  570</span>            <span class="keywordflow">if</span> (sdvig == 0)</div>
-<div class="line"><span class="lineno">  571</span>            {</div>
-<div class="line"><span class="lineno">  572</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">newSort</a>(initdist[mcdata[i].originNumber], dstKeys1);</div>
-<div class="line"><span class="lineno">  573</span>                initdist[mcdata[i].originNumber].resize(k);</div>
-<div class="line"><span class="lineno">  574</span>            }</div>
-<div class="line"><span class="lineno">  575</span>            <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  576</span>            {</div>
-<div class="line"><span class="lineno">  577</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">newSort</a>(dist, dstKeys1);</div>
-<div class="line"><span class="lineno">  578</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a266d937f00cdc02f1b3ebb459198d31f">newMerge</a>(mcdata[i].originNumber, initdist[mcdata[i].originNumber], dist, loc, counter, offset, counterScan, updateNN);</div>
-<div class="line"><span class="lineno">  579</span>                <a class="code hl_function" href="../../d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b">newSort</a>(initdist[mcdata[i].originNumber], dstKeys);</div>
-<div class="line"><span class="lineno">  580</span>            }</div>
-<div class="line"><span class="lineno">  581</span>        }</div>
-<div class="line"><span class="lineno">  582</span> </div>
-<div class="line"><span class="lineno">  583</span>        time[4] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  584</span> </div>
-<div class="line"><span class="lineno">  585</span>        tFinish[sdvig] = omp_get_wtime();</div>
-<div class="line"><span class="lineno">  586</span> </div>
-<div class="line"><span class="lineno">  587</span>    }<span class="comment">//for sdvig</span></div>
-<div class="line"><span class="lineno">  588</span> </div>
-<div class="line"><span class="lineno">  589</span>    <span class="comment">//for (size_t sd = 0; sd &lt; nSdvig; ++sd)</span></div>
-<div class="line"><span class="lineno">  590</span>    <span class="comment">//  std::cout &lt;&lt; &quot;knn[&quot; &lt;&lt; sd &lt;&lt; &quot;] = &quot; &lt;&lt; tFinish[sd] - tStart[sd] &lt;&lt; &quot;sec. &quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  591</span> </div>
-<div class="line"><span class="lineno">  592</span>}</div>
-<div class="ttc" id="aclass_v_mlib_1_1_vortex2_d_html_abeef4aba275fe1bd270a360ee86e99a2"><div class="ttname"><a href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2">VMlib::Vortex2D::r</a></div><div class="ttdeci">HD Point2D &amp; r()</div><div class="ttdoc">Функция для доступа к радиус-вектору вихря</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d19/_vortex2_d_8h_source.html#l00087">Vortex2D.h:87</a></div></div>
-</div><!-- fragment --><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="../../db/d83/knn_c_p_u_8h_a18de7e0e3511a441c1479d12f6555c2b_cgraph.png" border="0" usemap="#adb/d83/knn_c_p_u_8h_a18de7e0e3511a441c1479d12f6555c2b_cgraph" alt=""/></div>
-<map name="adb/d83/knn_c_p_u_8h_a18de7e0e3511a441c1479d12f6555c2b_cgraph" id="adb/d83/knn_c_p_u_8h_a18de7e0e3511a441c1479d12f6555c2b_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,180,31"/>
-<area shape="rect" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="228,5,368,31"/>
-<area shape="poly" title=" " alt="" coords="181,15,214,15,214,21,181,21"/>
 </map>
 </div>
 

@@ -1,43 +1,87 @@
 <map id="VM2D::Velocity::CalcVeloToWakeVP" name="VM2D::Velocity::CalcVeloToWakeVP">
-<area shape="rect" id="Node000001" title="Вычисление скоростей в точках wakeVP." alt="" coords="5,433,189,473"/>
-<area shape="rect" id="Node000002" href="$df/da2/class_v_m2_d_1_1_boundary.html#ae1b0804df779ed38c82e1ca2f180cd10" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="241,5,483,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,433,104,361,124,260,142,204,166,150,197,99,235,55,240,51,244,55,239,59,201,103,170,153,147,206,129,261,109,362,102,433"/>
-<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a61e3979842b5b391ec23c680a8092c8a" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="258,69,466,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="98,432,109,371,132,287,150,241,173,197,201,155,236,119,244,113,247,117,239,123,205,159,178,199,155,243,137,288,114,372,104,433"/>
-<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a1bc97d6d969e8f446f75099fd4aa0e90" title=" " alt="" coords="249,133,475,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="101,433,115,382,141,314,181,244,206,211,236,183,242,178,246,183,239,187,210,215,185,247,146,317,120,384,106,434"/>
-<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a948b4561638d16d17c20671c608e9f91" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="269,198,455,223"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="103,432,120,390,147,335,186,279,209,254,236,232,254,222,257,227,239,237,213,258,190,282,152,338,124,392,108,434"/>
-<area shape="rect" id="Node000006" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#aa066a8e863abe903c85f9504f035daa6" title="Возврат константной ссылки на параметры распараллеливания по MPI." alt="" coords="244,247,480,273"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="107,432,126,399,155,357,192,316,236,282,248,276,250,280,239,286,196,320,159,361,131,401,111,435"/>
-<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#af505544bbb7a1bb35176a888c8b37341" title="Возврат константной ссылки на measureVP." alt="" coords="249,297,475,322"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="114,431,165,381,199,354,236,332,257,324,259,329,239,337,202,359,169,385,118,435"/>
-<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aaf00cf61ba8a57a4e1519c2eaf701767" title="Возврат неконстантной ссылки на объект граничного условия" alt="" coords="254,347,470,387"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="145,431,236,396,263,388,265,393,238,401,147,436"/>
-<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5bc062225a158baa1a6c80c1f0870d79" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="237,411,487,437"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="189,441,233,436,234,441,190,446"/>
-<area shape="rect" id="Node000010" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#af2b0ef4f7d46e428ffcdc9babb7c7531" title="Возврат domainRadius." alt="" coords="245,461,479,501"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="190,460,231,465,231,470,189,466"/>
-<area shape="rect" id="Node000011" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a66f5ac1138b5cd4a2034013b829ab42c" title="Возврат неконстантной ссылки на measureVP." alt="" coords="254,525,470,565"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="141,471,238,511,264,519,262,524,236,516,139,476"/>
-<area shape="rect" id="Node000012" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#aa593344f530de5b17e2b74e87ebc01de" title="Возврат velocity." alt="" coords="245,589,479,629"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="118,472,169,524,202,551,239,575,253,582,251,587,236,580,199,556,165,528,114,476"/>
-<area shape="rect" id="Node000013" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad5fd79becfefeecd1067e09a7ce9bd63" title="Возврат количества граничных условий в задаче" alt="" coords="259,653,465,693"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="110,473,129,509,157,554,194,600,239,639,248,645,246,649,236,643,190,604,153,557,125,512,106,475"/>
-<area shape="rect" id="Node000014" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="258,718,466,743"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="106,473,121,521,147,584,186,649,211,678,239,703,249,710,246,714,236,707,207,682,182,652,142,586,116,523,101,474"/>
-<area shape="rect" id="Node000015" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a788b3ba105982ad282142240e70e0172" title="Возврат текущей скорости набегающего потока" alt="" coords="277,767,447,793"/>
-<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="104,473,116,530,140,606,158,646,180,686,207,722,239,753,265,767,262,772,236,757,203,725,176,689,153,649,135,608,111,531,99,474"/>
-<area shape="rect" id="Node000019" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#a40a7cc889889bac35b806293d89feeb3" title="Возврат wakeVP." alt="" coords="251,817,473,842"/>
-<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="103,473,112,537,134,627,151,675,174,722,203,765,239,802,247,808,244,812,236,806,199,768,170,725,146,677,129,629,106,538,98,474"/>
-<area shape="rect" id="Node000020" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a248cd24b129e8f1a875291a25e2de1d9" title="Возврат признака того, что хотя бы один из профилей подвижный или деформируемый" alt="" coords="250,867,474,907"/>
-<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="102,473,109,545,129,648,146,703,170,758,200,809,239,853,244,857,240,861,235,857,196,812,165,760,141,705,123,649,103,546,97,474"/>
-<area shape="rect" id="Node000016" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="535,743,775,769"/>
-<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="447,770,521,764,521,770,448,776"/>
-<area shape="rect" id="Node000017" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#ada3abfa665d3e6656788dfa12cbe9d33" title="Функция скорости набегающего потока с учетом разгона" alt="" coords="547,793,762,818"/>
-<area shape="poly" id="edge16_Node000015_Node000017" title=" " alt="" coords="448,785,534,792,533,798,447,790"/>
-<area shape="rect" id="Node000018" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715" title="Функция&#45;множитель, позволяющая моделировать разгон" alt="" coords="823,785,1012,825"/>
-<area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="762,803,809,803,809,808,762,808"/>
-<area shape="rect" id="Node000021" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a512f981c7eb6af147422fd8c9ddb7033" title=" " alt="" coords="543,867,766,907"/>
-<area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="474,884,529,884,529,889,474,889"/>
+<area shape="rect" id="Node000001" title="Вычисление скоростей в точках wakeVP." alt="" coords="5,947,189,987"/>
+<area shape="rect" id="Node000002" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a48305b940dfdf549177fea73a071ad58" title=" " alt="" coords="285,254,439,294"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,947,108,859,132,725,150,648,173,569,201,490,235,415,255,383,279,352,326,302,330,305,283,355,259,386,240,418,206,492,178,570,155,649,137,726,113,860,103,947"/>
+<area shape="rect" id="Node000015" href="$df/da2/class_v_m2_d_1_1_boundary.html#ae1b0804df779ed38c82e1ca2f180cd10" title="Вычисление конвективных скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на пр..." alt="" coords="241,493,483,533"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="96,947,102,871,109,819,121,762,138,703,163,645,195,590,235,543,240,539,244,543,239,547,199,593,167,647,143,705,126,764,114,820,107,872,102,947"/>
+<area shape="rect" id="Node000016" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a60064b27f5ddd30ac1c9d3bbd6969632" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="258,557,466,597"/>
+<area shape="poly" id="edge16_Node000001_Node000016" title=" " alt="" coords="98,947,107,881,129,789,147,740,170,691,199,646,236,607,244,600,247,604,239,611,204,649,175,694,152,742,134,791,112,882,103,947"/>
+<area shape="rect" id="Node000017" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#afa5a0894e4daf58be2a4b462b3ac2318" title=" " alt="" coords="254,621,470,676"/>
+<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="100,946,114,894,140,824,180,750,206,715,236,685,241,681,244,685,239,689,210,719,185,753,145,826,120,896,105,948"/>
+<area shape="rect" id="Node000019" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab3ec0645a43a1269ce69bf310ab74571" title=" " alt="" coords="250,700,474,725"/>
+<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="102,946,118,901,145,844,184,784,208,757,236,735,245,729,248,733,239,739,212,761,188,787,150,846,123,904,107,948"/>
+<area shape="rect" id="Node000020" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a948b4561638d16d17c20671c608e9f91" title="Возврат константной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="269,749,455,775"/>
+<area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="106,946,125,910,153,866,190,821,236,784,254,774,257,779,239,788,194,825,157,869,129,913,110,948"/>
+<area shape="rect" id="Node000021" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#aa066a8e863abe903c85f9504f035daa6" title="Возврат константной ссылки на параметры распараллеливания по MPI." alt="" coords="244,799,480,824"/>
+<area shape="poly" id="edge21_Node000001_Node000021" title=" " alt="" coords="112,945,162,889,197,858,236,833,251,826,253,831,239,838,200,862,166,892,116,949"/>
+<area shape="rect" id="Node000022" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#afd314e63ad2109790580dcf02276a92d" title=" " alt="" coords="245,848,479,873"/>
+<area shape="poly" id="edge22_Node000001_Node000022" title=" " alt="" coords="124,945,175,912,236,882,261,874,262,879,238,887,178,917,127,949"/>
+<area shape="rect" id="Node000023" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#af505544bbb7a1bb35176a888c8b37341" title="Возврат константной ссылки на measureVP." alt="" coords="249,897,475,923"/>
+<area shape="poly" id="edge23_Node000001_Node000023" title=" " alt="" coords="183,945,237,933,283,923,284,928,238,938,185,950"/>
+<area shape="rect" id="Node000024" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#aaf00cf61ba8a57a4e1519c2eaf701767" title="Возврат неконстантной ссылки на объект граничного условия" alt="" coords="254,947,470,987"/>
+<area shape="poly" id="edge24_Node000001_Node000024" title=" " alt="" coords="190,965,240,965,240,970,190,970"/>
+<area shape="rect" id="Node000025" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5bc062225a158baa1a6c80c1f0870d79" title="Возврат неконстантной ссылки на объект, связанный с видеокартой (GPU)" alt="" coords="237,1012,487,1037"/>
+<area shape="poly" id="edge25_Node000001_Node000025" title=" " alt="" coords="185,985,238,997,284,1007,283,1012,237,1002,183,990"/>
+<area shape="rect" id="Node000026" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#af2b0ef4f7d46e428ffcdc9babb7c7531" title="Возврат domainRadius." alt="" coords="245,1062,479,1102"/>
+<area shape="poly" id="edge26_Node000001_Node000026" title=" " alt="" coords="129,985,179,1016,238,1046,263,1055,261,1060,236,1051,177,1021,126,990"/>
+<area shape="rect" id="Node000027" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a66f5ac1138b5cd4a2034013b829ab42c" title="Возврат неконстантной ссылки на measureVP." alt="" coords="254,1126,470,1166"/>
+<area shape="poly" id="edge27_Node000001_Node000027" title=" " alt="" coords="114,986,164,1049,199,1083,239,1112,251,1118,249,1123,236,1116,196,1087,160,1052,110,989"/>
+<area shape="rect" id="Node000028" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#aa593344f530de5b17e2b74e87ebc01de" title="Возврат velocity." alt="" coords="245,1190,479,1230"/>
+<area shape="poly" id="edge28_Node000001_Node000028" title=" " alt="" coords="109,987,126,1027,154,1079,192,1131,214,1155,239,1176,248,1181,245,1186,236,1180,210,1159,188,1135,149,1081,121,1029,104,989"/>
+<area shape="rect" id="Node000029" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ad5fd79becfefeecd1067e09a7ce9bd63" title="Возврат количества граничных условий в задаче" alt="" coords="259,1254,465,1294"/>
+<area shape="poly" id="edge29_Node000001_Node000029" title=" " alt="" coords="105,987,119,1038,145,1107,163,1143,184,1179,210,1212,239,1240,249,1247,245,1251,236,1244,206,1215,180,1182,158,1146,140,1109,114,1040,100,988"/>
+<area shape="rect" id="Node000030" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="258,1319,466,1344"/>
+<area shape="poly" id="edge30_Node000001_Node000030" title=" " alt="" coords="103,987,113,1050,135,1136,153,1182,176,1227,204,1269,239,1304,247,1310,244,1314,236,1308,200,1272,171,1230,148,1184,130,1138,108,1051,98,988"/>
+<area shape="rect" id="Node000031" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a788b3ba105982ad282142240e70e0172" title="Возврат текущей скорости набегающего потока" alt="" coords="277,1368,447,1393"/>
+<area shape="poly" id="edge31_Node000001_Node000031" title=" " alt="" coords="102,987,109,1058,129,1157,146,1211,170,1263,201,1312,239,1353,265,1369,262,1373,236,1357,196,1315,165,1266,141,1213,124,1159,103,1059,97,988"/>
+<area shape="rect" id="Node000035" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#a40a7cc889889bac35b806293d89feeb3" title="Возврат wakeVP." alt="" coords="251,1417,473,1443"/>
+<area shape="poly" id="edge35_Node000001_Node000035" title=" " alt="" coords="101,988,105,1066,111,1120,122,1179,139,1241,164,1301,197,1356,239,1404,244,1408,240,1412,235,1408,192,1360,159,1303,134,1243,117,1181,106,1121,99,1067,96,988"/>
+<area shape="rect" id="Node000036" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a248cd24b129e8f1a875291a25e2de1d9" title="Возврат признака того, что хотя бы один из профилей подвижный или деформируемый" alt="" coords="250,1467,474,1507"/>
+<area shape="poly" id="edge36_Node000001_Node000036" title=" " alt="" coords="101,987,102,1073,108,1132,118,1198,135,1267,160,1335,194,1398,239,1453,243,1457,240,1461,235,1457,190,1401,155,1337,130,1269,113,1199,102,1133,97,1073,95,988"/>
+<area shape="rect" id="Node000038" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a28d495c4dfbe9e15c363503712e9a9de" title=" " alt="" coords="285,1531,439,1571"/>
+<area shape="poly" id="edge38_Node000001_Node000038" title=" " alt="" coords="104,987,118,1097,147,1257,165,1339,187,1415,212,1476,239,1518,255,1529,273,1538,270,1543,252,1534,235,1521,207,1479,182,1417,160,1341,141,1258,113,1098,98,988"/>
+<area shape="rect" id="Node000039" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a57f9209e714d574bfc470659b4f8de83" title=" " alt="" coords="285,429,439,469"/>
+<area shape="poly" id="edge39_Node000001_Node000039" title=" " alt="" coords="95,947,97,862,102,802,113,736,130,667,155,599,190,535,235,479,252,466,271,457,273,462,255,471,239,483,194,538,160,601,135,668,118,737,108,803,102,862,101,947"/>
+<area shape="rect" id="Node000003" href="$d9/dd7/namespace_v_m2_d.html#a76342290060424e735390dcae68eb4b8" title=" " alt="" coords="596,184,713,209"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="422,251,534,218,582,207,583,212,535,223,423,257"/>
+<area shape="rect" id="Node000004" href="$d9/dd7/namespace_v_m2_d.html#aa7c5401ed3fdf36d1281304b19d00314" title=" " alt="" coords="591,233,718,259"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="439,264,578,251,578,256,440,269"/>
+<area shape="rect" id="Node000005" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#af5f300e647d5d1558157bede4ead2411" title=" " alt="" coords="577,283,732,323"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="440,279,564,292,563,297,439,284"/>
+<area shape="rect" id="Node000006" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a09ded2e7982e35af46d4899e2a31d359" title=" " alt="" coords="561,348,749,373"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="415,292,535,333,573,342,572,348,534,338,413,297"/>
+<area shape="rect" id="Node000007" href="$d9/dd7/namespace_v_m2_d.html#a963af10a34c006afe4ecf2215b5e3e97" title=" " alt="" coords="583,5,726,31"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="370,253,392,208,428,150,475,91,503,64,533,41,569,25,571,30,536,46,506,68,479,94,432,153,397,211,375,255"/>
+<area shape="rect" id="Node000008" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a78f004b18b648fb3b2571a209873dcd3" title=" " alt="" coords="571,119,738,159"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="390,251,454,210,534,169,557,160,559,165,536,174,457,215,393,256"/>
+<area shape="rect" id="Node000012" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a8bfb33ed9415b53f489e05668c1fb741" title=" " alt="" coords="569,55,740,95"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="376,252,439,180,484,140,533,105,555,95,557,99,536,110,487,144,443,184,380,255"/>
+<area shape="rect" id="Node000013" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9a2edffcbf01cfab7f70422ce60391be" title="Запуск (первый или повторный) счетчика времени" alt="" coords="573,397,737,423"/>
+<area shape="poly" id="edge13_Node000002_Node000013" title=" " alt="" coords="390,292,454,338,494,362,536,382,562,391,560,396,534,387,491,367,451,342,387,297"/>
+<area shape="rect" id="Node000014" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a320206c4467fa80d013de7a8d9fde1d5" title="Останов работающего счетчика времени" alt="" coords="573,447,736,472"/>
+<area shape="poly" id="edge14_Node000002_Node000014" title=" " alt="" coords="381,293,443,362,487,400,536,432,561,442,559,447,533,436,484,404,440,366,377,296"/>
+<area shape="rect" id="Node000009" href="$d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a2e6c6fd305aa9a16657fac4e6ecaf7e3" title=" " alt="" coords="823,87,1035,127"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="738,127,808,119,809,124,738,132"/>
+<area shape="rect" id="Node000010" href="$d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a93249f98b2d0c424f6825e3985a730c9" title=" " alt="" coords="1083,55,1295,95"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1034,92,1069,87,1069,93,1035,97"/>
+<area shape="rect" id="Node000011" href="$d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#adb473b7839a245de05811fadbd3e508a" title=" " alt="" coords="1083,119,1295,159"/>
+<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="1035,118,1069,122,1069,127,1034,123"/>
+<area shape="poly" id="edge12_Node000012_Node000009" title=" " alt="" coords="741,83,809,91,809,96,740,88"/>
+<area shape="rect" id="Node000018" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="557,636,752,661"/>
+<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="470,646,543,646,543,651,470,651"/>
+<area shape="rect" id="Node000032" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="535,1392,775,1417"/>
+<area shape="poly" id="edge32_Node000031_Node000032" title=" " alt="" coords="448,1385,521,1391,521,1396,447,1390"/>
+<area shape="rect" id="Node000033" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#ada3abfa665d3e6656788dfa12cbe9d33" title="Функция скорости набегающего потока с учетом разгона" alt="" coords="547,1343,762,1368"/>
+<area shape="poly" id="edge33_Node000031_Node000033" title=" " alt="" coords="447,1371,533,1363,534,1368,448,1376"/>
+<area shape="rect" id="Node000034" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715" title="Функция&#45;множитель, позволяющая моделировать разгон" alt="" coords="834,1335,1023,1375"/>
+<area shape="poly" id="edge34_Node000033_Node000034" title=" " alt="" coords="762,1353,820,1353,820,1358,762,1358"/>
+<area shape="rect" id="Node000037" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a512f981c7eb6af147422fd8c9ddb7033" title=" " alt="" coords="543,1467,766,1507"/>
+<area shape="poly" id="edge37_Node000036_Node000037" title=" " alt="" coords="474,1485,529,1485,529,1490,474,1490"/>
+<area shape="poly" id="edge41_Node000039_Node000006" title=" " alt="" coords="410,426,469,403,534,382,567,374,568,379,535,387,471,409,412,431"/>
+<area shape="poly" id="edge42_Node000039_Node000013" title=" " alt="" coords="439,436,559,420,559,425,440,441"/>
+<area shape="poly" id="edge43_Node000039_Node000014" title=" " alt="" coords="440,449,560,453,560,459,439,454"/>
+<area shape="rect" id="Node000040" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#af4ce9156f3ca187b72f7e368ecf3865d" title=" " alt="" coords="577,561,732,601"/>
+<area shape="poly" id="edge40_Node000039_Node000040" title=" " alt="" coords="440,457,465,466,488,479,505,496,513,514,521,531,536,547,565,562,563,566,533,551,516,534,508,516,501,499,485,483,463,471,438,462"/>
+<area shape="rect" id="Node000041" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#ae7c1fed5dc986ab061aba56772976a84" title=" " alt="" coords="577,497,732,537"/>
+<area shape="poly" id="edge44_Node000039_Node000041" title=" " alt="" coords="440,464,565,493,563,498,439,469"/>
 </map>
