@@ -106,6 +106,10 @@ World2D::World2D(const VMlib::PassportGen& passport_) :
 		inflTreeWake.reset(new CpuTreeInfo(tree_T::vortex, object_T::point4, scheme_T::noScheme));
 		cntrTreeWake.reset(new CpuTreeInfo(tree_T::contr, object_T::point4, scheme_T::noScheme));
 		cntrTreeVP.reset(new CpuTreeInfo(tree_T::contr, object_T::point2, scheme_T::noScheme));
+		if(passport.numericalSchemes.boundaryCondition.second == 0)
+			cntrTreePnl.reset(new CpuTreeInfo(tree_T::contr, object_T::panel, scheme_T::constScheme));
+		else 
+			cntrTreePnl.reset(new CpuTreeInfo(tree_T::contr, object_T::panel, scheme_T::linScheme));
 		break;
 	}
 
@@ -384,9 +388,27 @@ void World2D::Step() // ЮИ
 					treePnlVrt.UpwardTraversal(getPassport().numericalSchemes.nbodyMultipoleOrder);
 				}
 #else
-				//inflTreeWake->Update(getWake().vtx, getPassport().wakeDiscretizationProperties.eps);
-				//inflTreeWake->Build();
-				//inflTreeWake->UpwardTraversal(getPassport().numericalSchemes.nbodyMultipoleOrder);
+				if (getWake().vtx.size() > 0)
+				{
+					inflTreeWake->Update(getWake().vtx);
+					inflTreeWake->Build();
+					inflTreeWake->UpwardTraversal(getPassport().numericalSchemes.nbodyMultipoleOrder);
+				}
+				std::vector<std::pair<Point2D, Point2D>> panels;
+
+				for (size_t bou = 0; bou < getNumberOfAirfoil(); ++bou)
+				{
+					const auto& afl = getAirfoil(bou);
+
+					for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
+						panels.push_back({ afl.getR(i), afl.getR(i + 1) });
+				}
+				if (panels.size() > 0)
+				{
+					cntrTreePnl->UpdatePanelGeometry(panels, std::max(4, (int)(log2(panels.size())) - 2));
+					cntrTreePnl->Build();
+					cntrTreePnl->UpwardTraversal(getPassport().numericalSchemes.nbodyMultipoleOrder);
+				}
 #endif
 			}
 			timerInitialBuild.stop();

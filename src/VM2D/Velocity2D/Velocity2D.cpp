@@ -653,7 +653,33 @@ void Velocity::GetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wa
 	}//for i
 }//GetWakeInfluenceToRhs(...)
 
+void Velocity::CPUGetFASTWakeInfluenceToRhs(std::vector<double>& wakeRhs, std::vector<double>& wakeRhsLin) const
+{
+	const size_t nvt = W.getWake().vtx.size();
 
+
+	size_t nTotPan = 0;
+
+	for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+		nTotPan += W.getAirfoil(s).getNumberOfPanels();
+
+	wakeRhs.assign(nTotPan, 0.0);
+	wakeRhsLin.assign(nTotPan, 0.0);
+
+	if (nvt > 0)
+	{
+		auto& inflTree = W.getInflTreeWake();
+
+		auto& cntrTree = W.getCntrTreePnl();
+
+		inflTree.DownwardTraversalVorticesToPanels(
+			cntrTree,
+			wakeRhs,
+			wakeRhsLin,
+			W.getPassport().numericalSchemes.nbodyTheta,
+			W.getPassport().numericalSchemes.nbodyMultipoleOrder);
+	}
+}//CPUGetFASTWakeInfluenceToRhs(...)
 
 #if defined(USE_CUDA)
 //Генерация вектора влияния вихревого следа на профиль
@@ -678,8 +704,6 @@ void Velocity::GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>&
 
 		std::vector<double> locrhs(nTotPan);
 		std::vector<double> locrhsLin(nTotPan);
-
-
 
 		if ((nvt > 0) || (nsr > 0))
 		{
@@ -796,6 +820,16 @@ void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 		nAllVars += W.getBoundary(bou).GetUnknownsSize();
 
+	//Временные массивы для хранения правой части по быстрому методу (размеры задаются внутри CPUGetFASTWakeInfluenceToRhs)
+	std::vector<double> fastWakeRhs;
+	std::vector<double> fastWakeRhsLin;
+
+#ifndef USE_CUDA
+	if (W.getPassport().numericalSchemes.velocityComputation.second == 1) //Быстрый метод на CPU
+		CPUGetFASTWakeInfluenceToRhs(fastWakeRhs, fastWakeRhsLin);	
+#endif
+	size_t curGlobPnl = 0;
+
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 	{
 		const Airfoil& afl = W.getAirfoil(bou);
@@ -805,7 +839,6 @@ void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
 
 		nVars = W.getBoundary(bou).GetUnknownsSize();
 		locRhs.resize(nVars);
-
 
 		std::vector<double> wakeRhs;
 
@@ -820,7 +853,32 @@ void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
 			GPUGetWakeInfluenceToRhs(afl, wakeRhs);
 		W.timerRhs.stop();
 #else
-		GetWakeInfluenceToRhs(afl, wakeRhs);
+		if (W.getPassport().numericalSchemes.velocityComputation.second == 1) //Собираем результат из быстрого метода
+		{
+			size_t shDim = W.getBoundary(afl.numberInPassport).sheetDim;
+
+			wakeRhs.assign(np * shDim, 0.0);
+
+			for (size_t i = 0; i < np; ++i)
+			{
+				wakeRhs[i] = fastWakeRhs[curGlobPnl + i];
+
+				if (shDim != 1)
+					wakeRhs[np + i] = fastWakeRhsLin[curGlobPnl + i];
+			}
+			curGlobPnl += np;
+		}
+		else
+			GetWakeInfluenceToRhs(afl, wakeRhs); //Прямой расчет
+
+		//std::string vname = VMlib::fileNameStep("rhsLinBH", 0, wakeRhs.size(), "txt");
+		//std::ofstream velofile;
+		//velofile.open(W.getPassport().dir + vname);
+
+		//for (int i = 0; i < wakeRhs.size(); ++i)
+		//	velofile << wakeRhs[i] << "\n";
+		//velofile.close();
+		//exit(-124);
 #endif	
 		std::vector<double> vInfRhs;
 		afl.GetInfluenceFromVInfToPanel(vInfRhs);
@@ -1035,7 +1093,7 @@ void Velocity::CalcConvVelo()
 	{
 		if (W.getPassport().numericalSchemes.velocityComputation.second == 1)
 		{
-			int estOptLevel = std::max(4, (int)(log2(W.getWake().vtx.size())) - 3);
+			int estOptLevel = std::max(4, (int)(log2(W.getWake().vtx.size())) - 2);
 
 			timeUpd1 = W.getInflTreeWake().Update(W.getWake().vtx, estOptLevel);
 			timeBld1 = W.getInflTreeWake().Build();
@@ -1055,6 +1113,15 @@ void Velocity::CalcConvVelo()
 		
 		timeDnw = CalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
 		
+		//std::string vname = VMlib::fileNameStep("VeloBH", 0, wakeVortexesParams.convVelo.size(), "txt");
+		//std::ofstream velofile;
+		//velofile.open(W.getPassport().dir + vname);
+
+		//for (int i = 0; i < wakeVortexesParams.convVelo.size(); ++i)
+		//	velofile << wakeVortexesParams.convVelo[i][0] << " " << wakeVortexesParams.convVelo[i][1] << "\n";
+		//velofile.close();
+		//exit(-124);
+
 		//std::cout << "timeDnw = " << timeDnw << '\n';
 	}
 	fullTimer.stop();

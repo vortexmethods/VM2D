@@ -180,7 +180,7 @@ namespace VM2D
         bool inflTree = (treeType == tree_T::vortex || treeType == tree_T::source);
 
         object.resize(nObject);
-        if (objectType == object_T::point4 && inflTree) 
+        //if (objectType == object_T::point4 && inflTree) 
         {
             gamma.resize(nObject);
             sigma.resize(nObject);
@@ -214,10 +214,13 @@ namespace VM2D
         {
             Point2D r = vtx[v].r();
             object[v] = r;
-            if (objectType == object_T::point4 && inflTree) //влияющее дерево вихрей
+            if (objectType == object_T::point4 /* && inflTree*/) //влияющее дерево вихрей
             {
-                gamma[v] = vtx[v].g();
-                sigma[v] = vtx[v].sigma();
+                //if (inflTree)
+                {
+                    gamma[v] = vtx[v].g();
+                    sigma[v] = vtx[v].sigma();
+                }
                 gabForLeaves[v] = Point4D({ r[0] - sigma[v], r[1] - sigma[v], r[0] + sigma[v], r[1] + sigma[v] });
             }  
             else
@@ -419,7 +422,6 @@ namespace VM2D
 
                     if (j == 0)
                     {
-
                         for (i = 0; i < 2; i++)
                         {
                             const int chd = i * chdPair.second + (1 - i) * chdPair.first;
@@ -965,10 +967,7 @@ namespace VM2D
       return (float)timer.duration();
   }
 
-
-
-        
-
+      
     float CpuTreeInfo::DownwardTraversalVorticesToPoints(CpuTreeInfo& cntrTree, std::vector<Point2D>& vel, std::vector<double>& epsast, double theta, int order, bool calcRadius)
     {
         float t1 = (float)omp_get_wtime();
@@ -1249,4 +1248,222 @@ namespace VM2D
         return (t2 - t1);
     }//DownwardTraversalVorticesToPoints(...)
 
-}
+
+  float CpuTreeInfo::DownwardTraversalVorticesToPanels(CpuTreeInfo& cntrTree, std::vector<double>& rhs, std::vector<double>& rhsLin, double theta, int order)
+  {
+      float t1 = (float)omp_get_wtime();
+
+      using double4 = Point4D;
+      using double2 = Point2D;
+      using int2 = std::pair<int, int>;
+
+      const int nbodies = (int)object.size(); //количество вихрей
+      const int npoints = (int)cntrTree.object.size(); //количество панелей
+
+      rhs.assign(npoints, 0.0);
+      bool scheme = false;
+      if (cntrTree.schemeType == scheme_T::linScheme)
+          scheme = true;
+
+      if(scheme)
+          rhsLin.assign(npoints, 0.0); 
+      else
+          rhsLin.clear();
+
+      if (nbodies <= 0 || npoints <= 0)
+          return 0.0f;
+
+//#pragma omp parallel
+      {
+          double itolsq = 1.0 / (theta * theta);
+          const int nnodes = 2 * nbodies - 1; //количество узлов дерева вихрей (листья-вихри + внутренние узлы) 
+
+          const int maxDepth = 32;
+
+#pragma omp parallel for schedule(dynamic, 1)//Временно: обход по панелям как на GPU!!!
+          for (int k = 0; k < npoints; ++k)
+          {
+              const int indexOfPoint = cntrTree.mortonCodesIdx[k];      //истинный индекс точки наблюдения	
+              const double2 p = cntrTree.object[indexOfPoint];          //координаты центра панели
+              const double4& pnl = cntrTree.gabForLeaves[indexOfPoint]; //начало и конец панели наблюдения
+              const double2 beg{ pnl[0], pnl[1] };                      //отдельно начало
+              const double2 end{ pnl[2], pnl[3] };                      //отдельно конец
+              const double2 rPan = end - beg;                           //направляющий вектор панели
+              const double dlen2 = rPan.length2();                      //длина панели в квадрате
+              const double idlen = 1.0 / sqrt(dlen2);                   //обратная длина
+              const double2 tau = idlen * rPan;                         //вектор касательной к панели, направленный от начала к концу
+              double val = 0.0;                                         //обнуление результата (константная составляющая скорости)
+              double vallin = 0.0;                                      //обнуление результата (линейная составляющая скорости)
+              int posStack[maxDepth];
+              int nodeStack[maxDepth];
+              std::array<double2, orderAlignment> Eloc;                 //коэффициенты локальных разложений
+
+              int depth = 0;
+              posStack[0] = 0;
+              nodeStack[0] = nnodes - 1;
+              while (depth >= 0)
+              {
+                  int pd = posStack[depth];                             //0 или 1 --- какого потомка ячейки nd обходим (левого или правого)   
+                  int nd = nodeStack[depth];                            //индекс родительской ячейки дерева, которую обходим, и которая находится на верхушке стека;  
+
+                  int2 chBoth = child[indexSort[(nnodes - 1) - nd]];    //индексы обоих потомков узла nd
+                  while (pd < 2)
+                  {
+                      const int chd = (pd == 0) ? chBoth.first : chBoth.second;
+                      ++pd;
+                      posStack[depth] = pd;
+                      
+                      const bool isVortex = (chd >= nbodies);           //признак того, что обрабатывамая ячейка --- лист (в правой половине дерева в порядке karrasOrder)
+
+                      int n;                                            //для хранения индекса вихря или индекса ячейки
+                      int srtT = -1;                                    //истинный индекс внутреннего узла дерева
+
+                      double2 ps;                                       //координаты влияющего вихря, если обрабатываемая вершина --- лист, или центра влияющей ячейки, если обрабатывается внутренняя ячейка дерева
+                      double gm = 0.0;                                  //циркуляция вихря, если обрабатываемая вершина --- лист, или 0-й мультипольный момент (суммарная циркуляция вихрей) если обрабатывается внутренняя ячейка дерева
+
+                      double sumSide2 = 0.0;                            //габариты обрабатываемой ячейки
+
+                      const Point2D* mom = nullptr;                     //указатель на набор мультипольных моментов влияющей ячейки
+                      
+                      if (isVortex)                                     //если лист
+                      {
+                          n = chd - nbodies;                            //номер вихря в Мортоновском порядке
+                          const int vortexIndex = mortonCodesIdx[n];    //истинный номер вихря
+                            
+                          ps = object[vortexIndex];                     //координаты влияющего вихря
+                          gm = gamma[vortexIndex];                      //циркуляция влияющего вихря
+
+                          sumSide2 = 0.0;                               //листовая ячейка (вихрь) размера не имеет, т.к. является точкой
+                      }//if (isVortex)
+                      else
+                      {
+                          srtT = indexSortT[chd];                       //номер внутреннего узла в "развернутом порядке burtscherOrder" (когда корень --- 0-й), отвечающий узлу chd
+                          n = (nnodes - 1) - srtT;                      //номер внутреннего узла в порядке burtscherOrder (когда корень --- последний)
+                          ps = center[chd];                             //координаты центра внутреннего узла --- влияющей ячейки
+
+                          const double4& gab = lowerupper[chd];                     //габарит влияющей ячейки
+                          const double sumSide = gab[2] - gab[0] + gab[3] - gab[1]; //сумма габаритов (полупериметр)
+                          sumSide2 = sumSide * sumSide;                             //квадрат суммы габаритов влияющей ячейки    
+                      }//if (!isVortex)
+
+                      const double2 dr = p - ps;                        //радиус-вектор из центра влияющей ячейки в точку наблюдения  
+                      const double r2 = dr[0] * dr[0] + dr[1] * dr[1];  //квадрат модуля предыдущего
+
+                      // Для вихря всегда считаем точное влияние. Для ячейки проверяем MAC.
+                      if (isVortex || (sumSide2 + dlen2) * itolsq < r2)
+                      {
+                          if (isVortex)                     //если лист --- считаем напрямую
+                          {
+                              const double2 ss = ps - beg;
+                              const double2 pp = ps - end;
+
+                              const double alpha = atan2(pp[0] * ss[1] - pp[1] * ss[0], pp[0] * ss[0] + pp[1] * ss[1]);
+
+                              if (r2 > 1e-20)
+                                  val -= gm * alpha;
+
+                              if (scheme) //если схема Т1
+                              {
+                                  const double txx = tau[0] * tau[0];
+                                  const double txy = tau[0] * tau[1];
+                                  const double tyy = tau[1] * tau[1];
+
+                                  double2 u1;
+
+                                  u1[0] = (pp[0] + ss[0]) * (txx - tyy) + 2.0 * (pp[1] + ss[1]) * txy;
+
+                                  u1[1] = (pp[1] + ss[1]) * (tyy - txx) + 2.0 * (pp[0] + ss[0]) * txy;
+
+                                  const double lambda = 0.5 * log(ss.length2() / pp.length2());
+
+                                  const double tempVelLin = gm * (alpha * (u1[0] * tau[0] + u1[1] * tau[1]) +
+                                                                 lambda * (-u1[1] * tau[0] + u1[0] * tau[1]));
+
+                                  vallin -= 0.5 * idlen * tempVelLin;
+                              }//if(linScheme)
+                          }//if (isVortex)
+                          else              //если не лист --- мультипольное приближение
+                          {
+                              mom = moms.data() + srtT * orderAlignment;
+                              //std::vector<double2> Eloc(order, double2{ 0.0, 0.0 });
+                              std::fill(Eloc.begin(), Eloc.begin() + order, double2{ 0.0, 0.0 }); //обнуляем коэффициенты локального разложения 
+
+                              double2 thetaLoc = (1.0 / r2) * (p - ps);
+
+                              // Коэффициенты локального разложения
+                              for (int q = 0; q < order; ++q)
+                              {
+                                  for (int s = q; s >= 0; --s)
+                                  {
+                                      const double sign = ((2 * q - s) & 1) ? -1.0 : 1.0;
+
+                                      Eloc[s] += sign * ifac[q - s + 1] * multzA(thetaLoc, mom[q - s]);
+                                  }
+
+                                  thetaLoc = ((q + 1.0) / r2) * multz(thetaLoc, p - ps);
+                              }
+
+                              // Интегрирование локального разложения по панели для T0 и T1
+                              double2 v = 0.5 * Eloc[0];
+
+                              double2 vL{ 0.0, 0.0 };
+
+                              double2 kp = rPan;
+                              double2 mulP = kp;
+
+                              double2 taudL = (0.5 / dlen2) * rPan;
+
+                              const double2 taudLc = taudL;
+
+                              for (int kk = 1; kk < order; ++kk)
+                              {
+                                  mulP = multz(mulP, kp);
+
+                                  taudL *= 0.5;
+                                  
+                                  if (!(kk & 1))              // Константная проекционная функция
+                                    v += ifac[kk + 2] * multz(Eloc[kk], multzA(taudL, mulP));                                  
+                                  else if(scheme)             // Линейная проекционная функция 
+                                    vL += ifac[kk + 3] * multz(Eloc[kk], multzA(multz(taudL, taudLc), multz(mulP, (kk + 1.0) * rPan)));
+                              }
+
+                              val += 2.0 * (-v[1] * rPan[0] + v[0] * rPan[1]);
+                              if(scheme)
+                                  vallin += 2.0 * (-vL[1] * rPan[0] + vL[0] * rPan[1]);
+                          }
+                      }//MAC                
+                      else //ячейка близкая --- спускаемся по дереву
+                      {
+                          if (depth + 1 < maxDepth)
+                          {
+                              if (pd == 1)          //если это была обработка левого потомка, и по нему пришлось идти вниз по дереву
+                              {
+                                  posStack[depth] = 1;
+                                  nodeStack[depth] = nd;
+
+                                  ++depth;
+                              }
+
+                              nd = n;
+                              pd = 0;
+
+                              chBoth = child[indexSort[(nnodes - 1) - nd]];
+                          }
+                      }
+                  }//while (pd < 2)
+                  --depth;          // Оба потомка обработаны -> снимаем узел со стека
+              }//while (depth >= 0)
+
+              const double cf = IDPI * idlen;
+
+              rhs[indexOfPoint] = cf * val;
+              if(scheme)
+                  rhsLin[indexOfPoint] = cf * vallin;
+          }//for npoints
+      }
+
+      float t2 = (float)omp_get_wtime();
+      return (t2 - t1);
+  }//DownwardTraversalVorticesToPanels(...)
+
+}//namespace VM2D

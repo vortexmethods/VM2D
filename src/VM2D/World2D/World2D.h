@@ -113,6 +113,7 @@ public:
 		std::unique_ptr<CpuTreeInfo> inflTreeWake;
 		std::unique_ptr<CpuTreeInfo> cntrTreeWake;
 		std::unique_ptr<CpuTreeInfo> cntrTreeVP;
+		std::unique_ptr<CpuTreeInfo> cntrTreePnl;
 
 		//для вспомогательных операций
 		std::unique_ptr<CpuTreeInfo> auxTreePnl;
@@ -239,7 +240,7 @@ public:
 		CpuTreeInfo& getCntrTreeWake() const { return *cntrTreeWake; };
 		CpuTreeInfo& getAuxTreePnl() const { return *auxTreePnl; };
 		CpuTreeInfo& getCntrTreeVP() const { return *cntrTreeVP; };
-
+		CpuTreeInfo& getCntrTreePnl() const { return *cntrTreePnl; }
 
 		/// \brief Возврат константной ссылки на источники в области течения
 		///

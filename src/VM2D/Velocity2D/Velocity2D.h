@@ -203,6 +203,8 @@ namespace VM2D
 		/// \param[in] afl константная ссылка на профиль, правая часть для которого вычисляется
 		/// \param[out] wakeRhs ссылка на вектор влияния вихревого следа на ОДИН профиль
 		void GetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeRhs) const;
+
+		void CPUGetFASTWakeInfluenceToRhs(std::vector<double>& wakeRhs, std::vector<double>& wakeRhsLin) const;
 #if defined(USE_CUDA)
 		void GPUGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeVelo) const;
 		void GPUFASTGetWakeInfluenceToRhs(const Airfoil& afl, std::vector<double>& wakeVelo) const;
