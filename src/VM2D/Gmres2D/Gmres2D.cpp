@@ -727,7 +727,8 @@ GmresSolver::~GmresSolver()
 }
 
 
-#ifdef USE_CUDA
+
+
 void GmresSolver::GMRES(
 	std::vector<std::vector<double>>& X,
 	std::vector<double>& R,
@@ -750,10 +751,20 @@ void GmresSolver::GMRES(
 	int order = W.getPassport().numericalSchemes.gmresMultipoleOrder;
 	double theta = W.getPassport().numericalSchemes.gmresTheta;
 	double itheta2 = 1.0 / (theta * theta);
+
+#ifdef USE_CUDA
 	auto& treePnlInfl = *W.getNonConstCuda().inflTreePnlVortex;
+#else
+	auto& treePnlInfl = W.getInflTreePnl();
+#endif
+
 
 	if (W.isAnyMovableOrDeformable() || W.getCurrentStep() == 0)
+#ifdef USE_CUDA
 		treePnlInfl.MemoryAllocateForGMRES((W.getCurrentStep() == 0), itheta2);
+#else
+		{}
+#endif
 
 	if (W.getCurrentStep() == 0 || W.isAnyMovableOrDeformable())
 #pragma omp parallel for
@@ -847,9 +858,13 @@ void GmresSolver::GMRES(
 
 	double gs = beta;
 	
+
+#ifdef USE_CUDA
 	double* dev_ptr_rhs = W.getAirfoil(0).devRhsPtr;
 	double* dev_ptr_rhsLin = (linScheme ? W.getAirfoil(0).devRhsLinPtr : nullptr);
-
+#else
+	std::vector<double> host_rhs(totalVsize, 0.0), host_rhsLin(totalVsize, 0.0);
+#endif
 
 
 	const double zero = 0.0, unit = 1.0;
@@ -891,18 +906,29 @@ void GmresSolver::GMRES(
 				}
 				npred += W.getAirfoil(i).getNumberOfPanels();
 			}
+
+#ifdef USE_CUDA
 			W.getNonConstCuda().SetSolution(bufcurrentSol.data() + nTotPan, W.getNonConstCuda().dev_solLin, nTotPan);
+#endif
 		}
+
+#ifdef USE_CUDA
 		W.getNonConstCuda().SetSolution(bufcurrentSol.data(), W.getNonConstCuda().dev_sol, nTotPan);
-		
+#endif
 		tCG.stop();
 
 		if (j>0)
 			tWrapper.start();
 		
+#ifdef USE_CUDA	
 		treePnlInfl.UpdatePanelFreeVortexIntensity(W.getNonConstCuda().dev_sol, W.getNonConstCuda().dev_solLin);
 		treePnlInfl.UpwardTraversal(order);
 		treePnlInfl.DownwardTraversalGMRES(dev_ptr_rhs, dev_ptr_rhsLin, itheta2, order, j, (W.isAnyMovableOrDeformable() || W.getCurrentStep()==0));
+#else
+		treePnlInfl.UpdatePanelGamma(bufcurrentSol);
+		treePnlInfl.UpwardTraversal(order);
+		treePnlInfl.DownwardTraversalVorticesToPanels(treePnlInfl, host_rhs, host_rhsLin, W.getPassport().numericalSchemes.gmresTheta, W.getPassport().numericalSchemes.gmresMultipoleOrder);
+#endif
 		
 		if (j>0)
 			tWrapper.stop();
@@ -910,12 +936,25 @@ void GmresSolver::GMRES(
 		tGC.start();
 
 		if (!linScheme)
+#ifdef USE_CUDA	
 			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhs, w.data(), 22);
+#else
+			for (size_t j = 0; j < nTotPan; ++j)
+				w[j] = host_rhs[j];
+#endif
 
 		if (linScheme)
 		{
+#ifdef USE_CUDA	
 			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhs, bufnewSol.data(), 22);
 			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhsLin, bufnewSol.data() + nTotPan, 22);
+#else
+			for (size_t j = 0; j < nTotPan; ++j)
+			{
+				bufnewSol[j] = host_rhs[j];
+				bufnewSol[j + nTotPan] = host_rhsLin[j];
+			}
+#endif
 		}
 
 		tGC.stop();
@@ -1027,12 +1066,13 @@ void GmresSolver::GMRES(
 			//mul.reserve(j * 2);
 			//cudaFree(mulptr);
 			//cudaMalloc((void**)&mulptr, j * 2 * sizeof(double));
-
+			/*
 			double* devViBund_new;
 			cudaMalloc((void**)&devViBund_new, (totalVsize + nAfl) * j * 2 * sizeof(double));
 			cudaMemcpy(devViBund_new, devViBund, (totalVsize + nAfl) * j * sizeof(double), cudaMemcpyDeviceToDevice);
 			cudaFree(devViBund);
 			devViBund = devViBund_new;
+			*/
 		}
 
 		tRotA.stop();		
@@ -1254,4 +1294,4 @@ void GmresSolver::GMRES(
 	//std::cout << "   tRotD = " << tRotD.duration() / (double)(m) << std::endl;
 }
 
-#endif
+

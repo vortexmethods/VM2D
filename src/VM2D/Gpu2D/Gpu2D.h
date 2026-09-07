@@ -252,10 +252,6 @@ namespace VM2D
 		std::unique_ptr<BHcu::CudaTreeInfo> cntrTreePoint;    //точки Point2, для которых ищутся ближайшие панели 
 		std::unique_ptr<BHcu::CudaTreeInfo> cntrTreeSegment;  //отрезки 2 х Point2, для которых контролируются пересечения с профилем 
 
-
-		/// Указатель на итерационный солвер
-		std::unique_ptr<GmresSolver> Gmres;
-
 		void AllocateSolution(double*& dev_sol, size_t n); 
 		void SetSolution(double* sol, double* dev_sol, size_t n);
 		void ReleaseSolution(double* dev_sol);

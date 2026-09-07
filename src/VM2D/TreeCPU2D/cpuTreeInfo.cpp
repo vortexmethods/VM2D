@@ -303,6 +303,21 @@ namespace VM2D
     }
 
 
+    float CpuTreeInfo::UpdatePanelGamma(const std::vector<double>& gamma_)
+    {
+        VMlib::vmTimer timer;
+        timer.reset();
+        timer.start();
+     
+        if (treeType != tree_T::aux && treeType != tree_T::contr)
+        {
+            gamma = gamma_;        
+        }
+
+        timer.stop();
+        return (float)timer.duration();
+    }
+
 
 
     //Сортировка листьев
@@ -1280,7 +1295,7 @@ namespace VM2D
 
           const int maxDepth = 32;
 
-#pragma omp parallel for schedule(dynamic, 1)//Временно: обход по панелям как на GPU!!!
+//#pragma omp parallel for schedule(dynamic, 1)//Временно: обход по панелям как на GPU!!!
           for (int k = 0; k < npoints; ++k)
           {
               const int indexOfPoint = cntrTree.mortonCodesIdx[k];      //истинный индекс точки наблюдения	
@@ -1354,33 +1369,109 @@ namespace VM2D
                       {
                           if (isVortex)                     //если лист --- считаем напрямую
                           {
-                              const double2 ss = ps - beg;
-                              const double2 pp = ps - end;
-
-                              const double alpha = atan2(pp[0] * ss[1] - pp[1] * ss[0], pp[0] * ss[0] + pp[1] * ss[1]);
-
-                              if (r2 > 1e-20)
-                                  val -= gm * alpha;
-
-                              if (scheme) //если схема Т1
+                              if (this->objectType == object_T::point4)
                               {
-                                  const double txx = tau[0] * tau[0];
-                                  const double txy = tau[0] * tau[1];
-                                  const double tyy = tau[1] * tau[1];
+                                  const double2 ss = ps - beg;
+                                  const double2 pp = ps - end;
 
-                                  double2 u1;
+                                  const double alpha = atan2(pp[0] * ss[1] - pp[1] * ss[0], pp[0] * ss[0] + pp[1] * ss[1]);
 
-                                  u1[0] = (pp[0] + ss[0]) * (txx - tyy) + 2.0 * (pp[1] + ss[1]) * txy;
+                                  if (r2 > 1e-20)
+                                      val -= gm * alpha;
 
-                                  u1[1] = (pp[1] + ss[1]) * (tyy - txx) + 2.0 * (pp[0] + ss[0]) * txy;
+                                  if (scheme) //если схема Т1
+                                  {
+                                      const double txx = tau[0] * tau[0];
+                                      const double txy = tau[0] * tau[1];
+                                      const double tyy = tau[1] * tau[1];
 
-                                  const double lambda = 0.5 * log(ss.length2() / pp.length2());
+                                      double2 u1;
 
-                                  const double tempVelLin = gm * (alpha * (u1[0] * tau[0] + u1[1] * tau[1]) +
-                                                                 lambda * (-u1[1] * tau[0] + u1[0] * tau[1]));
+                                      u1[0] = (pp[0] + ss[0]) * (txx - tyy) + 2.0 * (pp[1] + ss[1]) * txy;
 
-                                  vallin -= 0.5 * idlen * tempVelLin;
-                              }//if(linScheme)
+                                      u1[1] = (pp[1] + ss[1]) * (tyy - txx) + 2.0 * (pp[0] + ss[0]) * txy;
+
+                                      const double lambda = 0.5 * log(ss.length2() / pp.length2());
+
+                                      const double tempVelLin = gm * (alpha * (u1[0] * tau[0] + u1[1] * tau[1]) +
+                                          lambda * (-u1[1] * tau[0] + u1[0] * tau[1]));
+
+                                      vallin -= 0.5 * idlen * tempVelLin;
+                                  }//if(linScheme)
+                              } //if objectType == object_T::point4
+
+
+                              else if (this->objectType == object_T::panel)
+                              {
+                                  int infn = chd - (int)object.size();
+                                  const double4& infgab = gabForLeaves[mortonCodesIdx[infn]]; //начало и конец влияющей панели
+                                  const double2 infbeg{ infgab[0], infgab[1] };      //отдельно начало
+                                  const double2 infend{ infgab[2], infgab[3] };      // и конец
+
+                                  const double2 infpan = infend - infbeg;
+
+                                  if (r2 > 1e-20)
+                                  {
+                                      double2 i00;
+                                      double2 dj;
+                                      const double2& di = rPan;
+                                      double djlen;
+                                      double ilenj;
+                                      double2 tauj;
+                                      double2 p1, s1, p2, s2;
+                                      bool condBefore, condAfter;
+                                      //if (iter == 0)
+                                      {
+                                          dj = infpan;
+
+                                          ilenj = 1.0 / dj.length();
+                                          djlen = 1.0 / ilenj;
+                                          tauj = dj * ilenj;
+
+                                          p1 = end - infend;
+                                          s1 = end - infbeg;
+                                          p2 = beg - infend;
+                                          s2 = beg - infbeg;
+
+                                          condBefore = ((beg - infend).length2() < 1e-20);
+                                          condAfter = ((end - infbeg).length2() < 1e-20);
+
+                                          double alpha[3] = { \
+                                              condAfter ? 0.0 : Alpha(s2, s1), \
+                                              Alpha(s2, p1), \
+                                              condBefore ? 0.0 : Alpha(p1, p2) \
+                                          };
+
+                                          double lambda[3] = { \
+                                              condAfter ? 0.0 : Lambda(s2, s1), \
+                                              Lambda(s2, p1), \
+                                              condBefore ? 0.0 : Lambda(p1, p2) \
+                                          };
+
+                                          double2 v00_0 = Omega(s1, tau, tauj);
+                                          double2 v00_1 = Omega(di, tau, tauj);
+
+                                          double2 v00_2 = Omega(p2, tau, tauj);
+
+                                          i00[0] =
+                                              ilenj * (alpha[0] * v00_0[0] - alpha[1] * v00_1[0] + alpha[2] * v00_2[0] \
+                                                  - (lambda[0] * v00_0[1] - lambda[1] * v00_1[1] + lambda[2] * v00_2[1]));
+                                          i00[1] =
+                                              ilenj * (alpha[0] * v00_0[1] - alpha[1] * v00_1[1] + alpha[2] * v00_2[1] \
+                                                  + (lambda[0] * v00_0[0] - lambda[1] * v00_1[0] + lambda[2] * v00_2[0]));
+
+                                          //i00save[ClosePrefixSuml[indexOfPoint] + closecntr] = i00;
+                                      }
+                                      //else
+                                      //    i00 = i00save[ClosePrefixSuml[indexOfPoint] + closecntr];
+                                                                            
+
+                                      double tempVelNew = -gm * (i00 & tau);
+                                      val -= tempVelNew;
+                                  }//dr != 0
+
+                              }//objectType == object_T::panel
+                                  
                           }//if (isVortex)
                           else              //если не лист --- мультипольное приближение
                           {

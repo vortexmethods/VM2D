@@ -106,10 +106,16 @@ World2D::World2D(const VMlib::PassportGen& passport_) :
 		inflTreeWake.reset(new CpuTreeInfo(tree_T::vortex, object_T::point4, scheme_T::noScheme));
 		cntrTreeWake.reset(new CpuTreeInfo(tree_T::contr, object_T::point4, scheme_T::noScheme));
 		cntrTreeVP.reset(new CpuTreeInfo(tree_T::contr, object_T::point2, scheme_T::noScheme));
-		if(passport.numericalSchemes.boundaryCondition.second == 0)
+		if (passport.numericalSchemes.boundaryCondition.second == 0)
+		{
 			cntrTreePnl.reset(new CpuTreeInfo(tree_T::contr, object_T::panel, scheme_T::constScheme));
-		else 
+			inflTreePnl.reset(new CpuTreeInfo(tree_T::vortex, object_T::panel, scheme_T::constScheme));
+		}
+		else
+		{
 			cntrTreePnl.reset(new CpuTreeInfo(tree_T::contr, object_T::panel, scheme_T::linScheme));
+			inflTreePnl.reset(new CpuTreeInfo(tree_T::vortex, object_T::panel, scheme_T::linScheme));
+		}
 		break;
 	}
 
@@ -211,12 +217,10 @@ World2D::World2D(const VMlib::PassportGen& passport_) :
 			info('i') << "airfoil #" << afl << " chord = " << prm.chord << " is calculated automatically" << std::endl;
 		}
 
-
-#ifdef USE_CUDA
 	if (getNumberOfAirfoil() > 0)
 		if (passport.numericalSchemes.linearSystemSolver.second == 1 || passport.numericalSchemes.linearSystemSolver.second == 2)
-			cuda.Gmres.reset(new GmresSolver(*this));
-#endif		
+			Gmres.reset(new GmresSolver(*this));
+
 
 	//2026-03-28
 	//считываем массив точек для подсчета и вывода поля скоростей и давлений
@@ -408,6 +412,9 @@ void World2D::Step() // ЮИ
 					cntrTreePnl->UpdatePanelGeometry(panels, std::max(4, (int)(log2(panels.size())) - 2));
 					cntrTreePnl->Build();
 					cntrTreePnl->UpwardTraversal(getPassport().numericalSchemes.nbodyMultipoleOrder);
+										
+					inflTreePnl->UpdatePanelGeometry(panels, std::max(4, (int)(log2(panels.size())) - 2));
+					inflTreePnl->Build();
 				}
 #endif
 			}
@@ -1143,9 +1150,62 @@ void World2D::SolveLinearSystem()
 	}
 */
 
+
+	if (linSystemScheme == 2) // Fast GMRES
+	{
+		int nFullVars = (int)getNumberOfBoundary();
+		for (int i = 0; i < getNumberOfBoundary(); ++i)
+			nFullVars += (int)(boundary[i]->GetUnknownsSize());
+
+		std::vector<std::vector<double>> Ggam(getNumberOfBoundary());
+		for (int i = 0; i < getNumberOfBoundary(); ++i)
+			Ggam[i].resize(boundary[i]->GetUnknownsSize());
+
+		std::vector<double> GR(getNumberOfBoundary());
+
+
+		// for fast GMRES
+		std::vector<std::vector<double>> GGrhs(getNumberOfBoundary());
+		int cntrRhs = 0;
+		for (int i = 0; i < getNumberOfBoundary(); ++i)
+			GGrhs[i].resize(boundary[i]->GetUnknownsSize());
+		for (int i = 0; i < getNumberOfBoundary(); ++i)
+			for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
+				GGrhs[i][j] = rhsReord(cntrRhs++);
+
+		std::vector<double> GrhsReg(getNumberOfBoundary());
+		for (int i = 0; i < getNumberOfBoundary(); ++i)
+			GrhsReg[i] = rhsReord[nFullVars - (getNumberOfBoundary() - i)];
+
+
+		int niter;
+		bool linScheme = (passport.numericalSchemes.boundaryCondition.second == 2);
+
+		double time_GMRES = -omp_get_wtime();
+		Gmres->GMRES(Ggam, GR, GGrhs, GrhsReg, niter);//, linScheme);
+		time_GMRES += omp_get_wtime();
+		//std::cout << "Time_GMRES = " << time_GMRES << std::endl;
+
+		sol.resize(nFullVars);
+		int cntr = 0;
+		for (int i = 0; i < getNumberOfBoundary(); ++i)
+			for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
+				sol(cntr++) = Ggam[i][j] / airfoil[i]->len[j % airfoil[i]->getNumberOfPanels()];
+		for (int i = 0; i < getNumberOfBoundary(); ++i)
+			sol(cntr++) = GR[i];
+
+		/*
+		std::ofstream solFile(getPassport().dir + "/sol-fast-new-gmres" + std::to_string(currentStep) + ".txt");
+		solFile.precision(16);
+		for (int i = 0; i < sol.size(); ++i)
+			solFile << sol(i) << std::endl;
+		solFile.close();
+		exit(1010110);
+		//*/
+	}
 	
 
-	if ((linSystemScheme == 1 || linSystemScheme == 2)) // GMRES
+	if (linSystemScheme == 1) // Direct GMRES
 	{
 		int nFullVars = (int)getNumberOfBoundary();
 		for (int i = 0; i < getNumberOfBoundary(); ++i)
@@ -1170,7 +1230,7 @@ void World2D::SolveLinearSystem()
 		for (int i = 0; i < getNumberOfBoundary(); ++i)
 			Gvsize[i] = (int)(boundary[i]->GetUnknownsSize());
 
-		if (passport.numericalSchemes.linearSystemSolver.second == 1)
+		//if (passport.numericalSchemes.linearSystemSolver.second == 1)
 		{
 			//for direct GMRES
 			std::vector<double> Gmatr(nFullVars * nFullVars);
@@ -1200,60 +1260,13 @@ void World2D::SolveLinearSystem()
 			//for (int i = 0; i < sol.size(); ++i)
 			//	solFile << sol(i) << std::endl;
 			//solFile.close();
-		}
-		if (passport.numericalSchemes.linearSystemSolver.second == 2)
-		{
-			getInfo('e') << "Fast GMRES without CUDA is not implemented" << std::endl;
-			exit(-2);
-		}
+		}		
 #else		
 		if (passport.numericalSchemes.linearSystemSolver.second == 1)
 		{
 			getInfo('e') << "Direct GMRES for CUDA is not implemented" << std::endl;
 			exit(-2);
-		}
-
-		if ( (passport.numericalSchemes.linearSystemSolver.second == 2))
-		{
-			// for fast GMRES
-			std::vector<std::vector<double>> GGrhs(getNumberOfBoundary());
-			int cntrRhs = 0;
-			for (int i = 0; i < getNumberOfBoundary(); ++i)
-				GGrhs[i].resize(boundary[i]->GetUnknownsSize());
-			for (int i = 0; i < getNumberOfBoundary(); ++i)
-				for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
-					GGrhs[i][j] = rhsReord(cntrRhs++);
-
-			std::vector<double> GrhsReg(getNumberOfBoundary());
-			for (int i = 0; i < getNumberOfBoundary(); ++i)
-				GrhsReg[i] = rhsReord[nFullVars - (getNumberOfBoundary() - i)];
-
-
-			int niter;
-			bool linScheme = (passport.numericalSchemes.boundaryCondition.second == 2);
-
-			double time_GMRES = -omp_get_wtime();
-			getNonConstCuda().Gmres->GMRES(Ggam, GR, GGrhs, GrhsReg, niter);//, linScheme);
-			time_GMRES += omp_get_wtime();
-			//std::cout << "Time_GMRES = " << time_GMRES << std::endl;
- 
-			sol.resize(nFullVars);
-			int cntr = 0;
-			for (int i = 0; i < getNumberOfBoundary(); ++i)
-				for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
-					sol(cntr++) = Ggam[i][j] / airfoil[i]->len[j % airfoil[i]->getNumberOfPanels()];
-			for (int i = 0; i < getNumberOfBoundary(); ++i)
-				sol(cntr++) = GR[i];
-			
-			/*
-			std::ofstream solFile(getPassport().dir + "/sol-fast-new-gmres" + std::to_string(currentStep) + ".txt");
-			solFile.precision(16);
-			for (int i = 0; i < sol.size(); ++i)
-				solFile << sol(i) << std::endl;
-			solFile.close();
-			exit(1010110);
-			//*/
-		}		
+		}				
 #endif
 	}
 

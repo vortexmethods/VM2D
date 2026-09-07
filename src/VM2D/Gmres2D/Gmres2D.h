@@ -207,7 +207,6 @@ namespace VM2D
 		void SolM(std::vector<double>& AX, const std::vector<double>& rhs, int p);
 		void SolCircleRun(std::vector<double>& AX, const std::vector<double>& rhs, int p);
 
-#ifdef USE_CUDA
 		void GMRES(
 			std::vector<std::vector<double>>& X,
 			std::vector<double>& R,
@@ -215,7 +214,6 @@ namespace VM2D
 			const std::vector<double>& rhsReg,
 			int& niter);
 			//bool linScheme);
-#endif
 
 	};//class GmresSolver
 

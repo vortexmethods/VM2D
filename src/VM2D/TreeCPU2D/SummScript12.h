@@ -129,16 +129,81 @@
                                 {
                                     mom0 = double2{ gamma[sortedBody], 0.0 };
                                     //для вихря все остальные мм нулевые
-mom1 = mom2 = mom3 = mom4 = mom5 = mom6 = mom7 = mom8 = mom9 = mom10 = mom11 = double2{ 0.0, 0.0 };
+                                    mom1 = mom2 = mom3 = mom4 = mom5 = mom6 = mom7 = mom8 = mom9 = mom10 = mom11 = double2{ 0.0, 0.0 };
                                     double2 pos = object[sortedBody];
                                     dr = pos - cen;
                                     m[i] = 1;
                                 } //objectType==point4
 
                                 if (objectType == object_T::panel)
-								{
-								  //...
-                                } //objectType == panel
+                                {
+                                    double2 panBegin, panEnd;
+                                    panBegin = { gabForLeaves[ch][0], gabForLeaves[ch][1] };
+                                    panEnd = { gabForLeaves[ch][2], gabForLeaves[ch][3] };
+
+                                    double2 rcur, rd2Pow;
+                                    rcur = rd2Pow = multz(0.5 * (panEnd - panBegin), 0.5 * (panEnd - panBegin));
+                                    double gam = gamma[sortedBody];
+                                    //double2 gammVort;
+                                    //switch (fromVortexOrSource)
+                                    //{
+                                    //case tree_T::vortex:
+                                    //    gammVort = *(double2*)(&vtxd[sortedBody * 12 + 6]);
+                                    //    gam = gammVort.x + gammVort.y;
+                                    //   break;
+                                    //
+                                    //case tree_T::source:
+                                    //    gam = vtxd[sortedBody * 12 + 8];
+                                    //    break;
+                                    //};
+
+                                    mom1 = mom3 = mom5 = mom7 = mom9 = mom11 = zero;
+                                    mom0 = double2{ gam, 0.0 };
+
+                                    mom2 = (gam / 3) * rcur;
+                                    rcur = multz(rcur, rd2Pow);
+                                    mom4 = (gam / 5) * rcur;
+                                    rcur = multz(rcur, rd2Pow);
+                                    mom6 = (gam / 7) * rcur;
+                                    rcur = multz(rcur, rd2Pow);
+                                    mom8 = (gam / 9) * rcur;
+                                    rcur = multz(rcur, rd2Pow);
+                                    mom10 = (gam / 11) * rcur;
+
+                                    /*
+                                    if (constOrLin == scheme_T::linScheme)
+                                    {
+                                        double gamLin;
+
+                                        switch (fromVortexOrSource)
+                                        {
+                                        case tree_T::vortex:
+                                            gamLin = vtxd[sortedBody * 12 + 9] + vtxd[sortedBody * 12 + 10];
+                                            break;
+                                        case tree_T::source:
+                                            gamLin = vtxd[sortedBody * 12 + 11];
+                                            break;
+                                        };
+
+                                        rcur = 0.5 * (panEnd - panBegin);
+                                        mom1 = gamLin * (0.5 / 3) * rcur;
+                                        rcur = multz(rcur, rd2Pow);
+                                        mom3 = gamLin * (0.5 / 5) * rcur;
+                                        rcur = multz(rcur, rd2Pow);
+                                        mom5 = gamLin * (0.5 / 7) * rcur;
+                                        rcur = multz(rcur, rd2Pow);
+                                        mom7 = gamLin * (0.5 / 9) * rcur;
+                                        rcur = multz(rcur, rd2Pow);
+                                        mom9 = gamLin * (0.5 / 11) * rcur;
+                                        rcur = multz(rcur, rd2Pow);
+                                        mom11 = gamLin * (0.5 / 13) * rcur;
+                                    }
+                                    */
+
+                                    double2 pos = object[sortedBody];
+                                    dr = pos - cen;
+                                    m[i] = 1;
+                                } //objectType == panel                       
 
                             }
                             else // если ребенок - внутренний узел

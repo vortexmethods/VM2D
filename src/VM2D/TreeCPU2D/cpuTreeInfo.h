@@ -147,6 +147,7 @@ namespace VM2D
         float Update(const std::vector<Vortex2D>& vtx, int cntrLev = 0);
 
         float UpdatePanelGeometry(const std::vector<std::pair<Point2D, Point2D>>& panels, int cntrLev);
+        float UpdatePanelGamma(const std::vector<double>& gamma);
 
 //        void UpdatePanelFreeVortexIntensity(const double* dev_ptr_freeVortexSheet, const double* dev_ptr_freeVortexSheetLin);//функция нулит attached vortex sheet
 //        void UpdatePanelAttachedVortexIntensity(const double* dev_ptr_attachedVortexSheet, const double* dev_ptr_attachedVortexSheetLin);//функция нулит free vortex sheet
@@ -174,9 +175,7 @@ namespace VM2D
         float DownwardTraversalClosestPanelToPoints(CpuTreeInfo& cntrTree, std::vector<std::pair<int, double>>& indexPnlDist, bool findOnlyInside, double* pseudonormals);
 
         float DownwardTraversalVorticesToPanels(CpuTreeInfo& cntrTree, std::vector<double>& rhs, std::vector<double>& rhsLin, double theta, int order);
-
-
-
+        
 
 //        float DownwardTraversalVorticesToPoints(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double eps2, double theta, int order, bool calcRadius);
 //        float DownwardTraversalVorticesToPanels(CudaTreeInfo& cntrTree, double* rhsD, double* rhsLinD, double theta, int order);

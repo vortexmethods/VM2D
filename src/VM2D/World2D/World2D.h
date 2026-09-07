@@ -104,6 +104,9 @@ namespace VM2D
 		std::unique_ptr<MeasureVP> measureVP;
 
 public:	
+		/// Указатель на итерационный солвер
+		std::unique_ptr<GmresSolver> Gmres;
+
 		mutable int gabb;
 		mutable int check01;
 		mutable int check02;
@@ -114,6 +117,7 @@ public:
 		std::unique_ptr<CpuTreeInfo> cntrTreeWake;
 		std::unique_ptr<CpuTreeInfo> cntrTreeVP;
 		std::unique_ptr<CpuTreeInfo> cntrTreePnl;
+		std::unique_ptr<CpuTreeInfo> inflTreePnl;
 
 		//для вспомогательных операций
 		std::unique_ptr<CpuTreeInfo> auxTreePnl;
@@ -241,6 +245,7 @@ public:
 		CpuTreeInfo& getAuxTreePnl() const { return *auxTreePnl; };
 		CpuTreeInfo& getCntrTreeVP() const { return *cntrTreeVP; };
 		CpuTreeInfo& getCntrTreePnl() const { return *cntrTreePnl; }
+		CpuTreeInfo& getInflTreePnl() const { return *inflTreePnl; }
 
 		/// \brief Возврат константной ссылки на источники в области течения
 		///
