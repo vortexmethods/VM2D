@@ -824,6 +824,10 @@ namespace VM2D
               double L_minmaxdist2 = minmaxdist2(L_box, query);
               double R_minmaxdist2 = minmaxdist2(R_box, query);
 
+              //oooo
+              bool pushLeft = false;
+              bool pushRight = false;
+
               if (L_mindist2 <= R_minmaxdist2 * onePlusMachineEps) // L is worth considering
               {
                   if (isLeftLeaf) // leaf node
@@ -839,8 +843,10 @@ namespace VM2D
                   }
                   else
                   {
-                      ++depth;
-                      stack[depth] = { chBoth.first, L_mindist2 };
+                      //++depth;
+                      //stack[depth] = { chBoth.first, L_mindist2 };
+                      //oooo
+                      pushLeft = true;
                   }
               }
 
@@ -859,6 +865,41 @@ namespace VM2D
                   }
                   else
                   {
+                      //++depth;
+                      //stack[depth] = { chBoth.second, R_mindist2 };
+                      //oooo
+                      pushRight = true;
+                  }
+              }
+
+              //oooo
+              if (pushLeft && !pushRight)
+              {
+                  ++depth;
+                  stack[depth] = { chBoth.first, L_mindist2 };
+              }
+              else if (!pushLeft && pushRight)
+              {
+                  ++depth;
+                  stack[depth] = { chBoth.second, R_mindist2 };
+              }
+              else if (pushLeft && pushRight)
+              {
+                  if (L_mindist2 < R_mindist2)
+                  {
+                      // Сначала добавляем правый (дальний) вниз стека
+                      ++depth;
+                      stack[depth] = { chBoth.second, R_mindist2 };
+                      // Потом левый (ближний) наверх - будет обработан первым
+                      ++depth;
+                      stack[depth] = { chBoth.first, L_mindist2 };
+                  }
+                  else
+                  {
+                      // Сначала добавляем левый (дальний) вниз стека
+                      ++depth;
+                      stack[depth] = { chBoth.first, L_mindist2 };
+                      // Потом правый (ближний) наверх - будет обработан первым
                       ++depth;
                       stack[depth] = { chBoth.second, R_mindist2 };
                   }

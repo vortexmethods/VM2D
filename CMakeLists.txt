@@ -4,9 +4,9 @@ project(VM)
 
 ##############################################
 
-set(ENABLE_CUDA ON)
-set(CUDA_ARCHITECTURE "70")
-set(ENABLE_CUDNN ON)
+set(ENABLE_CUDA OFF)
+set(CUDA_ARCHITECTURE "120")
+set(ENABLE_CUDNN OFF)
 
 set(ENABLE_FMM OFF)
 
@@ -127,7 +127,13 @@ if(ENABLE_CUDA)
 endif()
 
 if(MSVC)
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+
+    # Use the standard-conforming MSVC preprocessor
+    add_compile_options(
+        $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/Zc:preprocessor>
+        $<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:-Xcompiler=/Zc:preprocessor>
+    )
 endif()
 
 IF(EXISTS "${CMAKE_SOURCE_DIR}/src/VM2D/CMakeLists.txt")

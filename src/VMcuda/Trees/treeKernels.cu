@@ -1191,6 +1191,9 @@ namespace BHcu
     }
 
 
+    //oooo
+    // √лобальна€ переменна€ дл€ подсчета проверок узлов
+    __device__ unsigned long long d_totalNodeChecks = 0;
 
     __global__
         __launch_bounds__(THREADSnear, FACTORnear)
@@ -1248,6 +1251,10 @@ namespace BHcu
             do
             {                
                 const double2 node = *--stack_ptr;
+
+                //счетчик
+                atomicAdd(&d_totalNodeChecks, 1ULL);
+
                 if (node.y > dist_to_nearest_object)
                 {
                     // if aabb mindist > already_found_mindist, it cannot have a nearest
@@ -1290,6 +1297,10 @@ namespace BHcu
                 const double L_minmaxdist2 = minmaxdist2(L_box, query);
                 const double R_minmaxdist2 = minmaxdist2(R_box, query);
 
+                //oooo
+                bool pushLeft = false;
+                bool pushRight = false;
+
                 if (L_mindist2 <= R_minmaxdist2 * onePlusMachineEps) // L is worth considering
                 {
                     if (isLeftLeaf) // leaf node
@@ -1305,7 +1316,9 @@ namespace BHcu
                     }
                     else
                     {
-                        *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
+                        //*stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
+                        //oooo
+                        pushLeft = true;
                     }
                 }
 
@@ -1324,9 +1337,39 @@ namespace BHcu
                     }
                     else
                     {                        
+                        //*stack_ptr++ = make_double2(__longlong_as_double(LR_idx.y), R_mindist2);
+                        //oooo
+                        pushRight = true;
+                    }
+                } 
+
+                //oooo
+                if (pushLeft && !pushRight)
+                {
+                    *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
+                }
+                else if (!pushLeft && pushRight)
+                {
+                    *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.y), R_mindist2);
+                }
+                else if (pushLeft && pushRight)
+                {
+                    if (L_mindist2 < R_mindist2)
+                    {
+                        // —начала добавл€ем правый (дальний) вниз стека
+                        *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.y), R_mindist2);
+                        // ѕотом левый (ближний) наверх --- будет обработан первым
+                        *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
+                    }
+                    else
+                    {
+                        // —начала добавл€ем левый (дальний) вниз стека
+                        *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
+                        // ѕотом правый (ближний) наверх --- будет обработан первым
                         *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.y), R_mindist2);
                     }
-                }                
+                }
+
             } while (stack < stack_ptr); 
             
             //ѕроверка внутри-снаружи
@@ -2368,6 +2411,8 @@ namespace BHcu
 
         cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
 
+        
+
         treeClosestPanelToPointsCalculationKernel << <(controlTreeInfo.nObject + THREADSnear - 1) / THREADSnear, THREADSnear >> > (
             treePanelsInfo.nNode,
             treePanelsInfo.nObject,
@@ -2384,6 +2429,11 @@ namespace BHcu
             findOnlyInside,
             pseudoNormals
             );
+
+        cudaDeviceSynchronize();
+        unsigned long long h_total = 0;
+        cudaError_t err = cudaMemcpyFromSymbol(&h_total, d_totalNodeChecks, sizeof(unsigned long));
+        
 
         CudaTestError("treeClosestPanelToPointsCalculationKernel launch failed");
 
