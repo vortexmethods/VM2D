@@ -33,7 +33,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -109,6 +109,10 @@ namespace defaults
 
 	/// Шаг подсчета поля скорости и давления
 	const int defaultSaveVisStress = 0;
+
+	/// Шаг обновления паспорта и перечень перечитываемых параметров
+	const int defaultRevisePassportStep = 10;
+	const std::vector<std::string> defaultReviseParameters = { "nameLength", "timeStop", "dt", "vInf", "vRef", "saveVtx", "saveVP" };
 
 	/// Число разрядов в имени файла
 	const int defaultNameLength = 5;

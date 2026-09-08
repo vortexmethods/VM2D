@@ -33,7 +33,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -68,7 +68,7 @@ namespace VMlib
 	- поворота на заданный угол против часовой стрелки;
 
 	\author Марчевский Илья Константинович
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	
@@ -236,7 +236,7 @@ namespace VMlib
 	\author Рятина Евгения Павловна
 	\author Колганова Александра Олеговна
 	
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.	
 	*/
 	struct GeomPoint : public Point2D

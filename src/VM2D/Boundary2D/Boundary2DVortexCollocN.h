@@ -34,7 +34,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -61,7 +61,7 @@ namespace VM2D
 	\author Рятина Евгения Павловна
 	\author Колганова Александра Олеговна
 
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	class BoundaryVortexCollocN : public Boundary

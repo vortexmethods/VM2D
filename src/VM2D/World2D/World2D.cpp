@@ -33,7 +33,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -279,6 +279,19 @@ void World2D::Step() // ЮИ
 
 		//Засечка времени в начале шага
 		getTimers().start("Step");
+
+		//Обновление параметров паспорта
+		if (passport.timeDiscretizationProperties.revisePassportStep != 0 && currentStep && (currentStep % passport.timeDiscretizationProperties.revisePassportStep == 0))
+		{
+			std::unique_ptr<Passport> revisePspPtr;
+			revisePspPtr.reset(new VM2D::Passport(info, passport.dir, passport.problemNumber, 
+				passport.fileFullName, passport.mechanicsFileFullName, passport.defaultsFileFullName, passport.switchersFileFullName, passport.varLine, 
+				passport.timeDiscretizationProperties.reviseParameters));
+
+			this->getNonConstPassport().GetReviseParamsFromParser(*revisePspPtr, passport.timeDiscretizationProperties.reviseParameters);
+
+		}
+
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

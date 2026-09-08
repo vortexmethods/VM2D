@@ -33,7 +33,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -718,7 +718,7 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mec
 	std::string extSwitchersFile = _switchersFile;
 
 	if (
-		fileExistTest(extTasksFile, info, true, {"txt", "TXT"}) &&
+		fileExistTest(extTasksFile, info, true, { "txt", "TXT" }) &&
 		fileExistTest(extDefaultsFile, info, true, { "txt", "TXT" }) &&
 		fileExistTest(extSwitchersFile, info, true, { "txt", "TXT" })
 	)
@@ -817,9 +817,9 @@ void Queue::LoadTasksList(const std::string& _tasksFile, const std::string& _mec
 #endif
 
 				std::unique_ptr<PassportGen> ptrPsp;
-				
+
 #ifdef CODE2D				
-				ptrPsp.reset(new VM2D::Passport(info, dir, i, pspFile, extMechanicsFile, extDefaultsFile, extSwitchersFile, vecTaskLineSecond));
+				ptrPsp.reset(new VM2D::Passport(info, dir, i, "./" + dir + "/" + pspFile, extMechanicsFile, extDefaultsFile, extSwitchersFile, vecTaskLineSecond, {""}));
 #endif
 
 #ifdef CODE3D			

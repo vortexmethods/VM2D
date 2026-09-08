@@ -33,7 +33,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -66,22 +66,29 @@ double PhysicalProperties::accelCft(double currentTime) const
 
 
 //Конструктор
-Passport::Passport(VMlib::LogStream& infoStream, const std::string& _problemName, const size_t _problemNumber, const std::string& _filePassport, const std::string& _mechanics, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars)
+Passport::Passport(VMlib::LogStream& infoStream, const std::string& _problemName, const size_t _problemNumber, const std::string& _filePassport, const std::string& _mechanics, const std::string& _defaults, const std::string& _switchers, const std::vector<std::string>& vars, const std::vector<std::string>& paramList)
 : PassportGen(infoStream, _problemName, _problemNumber, _filePassport, _mechanics, _defaults, _switchers, vars),
 physicalProperties(timeDiscretizationProperties)
 {
-	std::string fileFullName = dir + _filePassport;
-	std::string mechanicsFileFullName = _mechanics;
-	std::string defaultsFileFullName = _defaults;
-	std::string switchersFileFullName = _switchers;
+	fileFullName = _filePassport;
+	mechanicsFileFullName = _mechanics;
+	defaultsFileFullName = _defaults;
+	switchersFileFullName = _switchers;
+	varLine = vars;
+
+	bool readAll = ((paramList.size() == 1) && (paramList[0] == ""));
+
+	
+	VMlib::LogStream emptyStream;
+	VMlib::LogStream& infoOrEmptyStream = readAll ? info : emptyStream;
 
 	if (
-		fileExistTest(fileFullName, info, true, { "txt", "TXT"}) &&
-		fileExistTest(defaultsFileFullName, info, true, { "txt", "TXT" }) &&
-		fileExistTest(switchersFileFullName, info, true, { "txt", "TXT" }) &&
-		fileExistTest(mechanicsFileFullName, info, true, { "txt", "TXT" })
+		fileExistTest(fileFullName, infoOrEmptyStream, true, {"txt", "TXT"}) &&
+		fileExistTest(defaultsFileFullName, infoOrEmptyStream, true, { "txt", "TXT" }) &&
+		fileExistTest(switchersFileFullName, infoOrEmptyStream, true, { "txt", "TXT" }) &&
+		fileExistTest(mechanicsFileFullName, infoOrEmptyStream, true, { "txt", "TXT" })
 	   )
-	{
+	{		
 		std::string str = VMlib::StreamParser::VectorStringToString(vars);
 		std::stringstream varsStream(str);
 
@@ -97,45 +104,69 @@ physicalProperties(timeDiscretizationProperties)
 		std::stringstream switchersStream;
 		switchersStream << VMlib::Preprocessor(switchersFileFullName).resultString;
 
-		GetAllParamsFromParser(mainStream, mechanicsStream, defaultsStream, switchersStream, varsStream);
-
-		PrintAllParams();
+		
+		GetParamsFromParser(mainStream, mechanicsStream, defaultsStream, switchersStream, varsStream, paramList);
+		
+		if (readAll)
+			PrintAllParams();
+		
 	}
 }
 
 
 //Считывание всех параметров расчета из соответствующих потоков
-void Passport::GetAllParamsFromParser
+void Passport::GetParamsFromParser
 (
 	std::istream& mainStream,
 	std::istream& mechanicsStream,
 	std::istream& defaultStream,
 	std::istream& switcherStream,
-	std::istream& varsStream
+	std::istream& varsStream,
+	const std::vector<std::string> paramList
 )
-{	
+{
+	auto UP = VMlib::StreamParser::UpperCase;
+
+	bool readAll = ((paramList.size() == 1) && (paramList[0] == ""));
+	std::vector<std::string> PR;
+	for (const auto& s : paramList)
+		PR.push_back(UP(s));
+
+
+	auto ifUpdate = [&](const std::string& checkString) {return (readAll || std::count(PR.begin(), PR.end(), UP(checkString))); };
+
+
 	// 1. Разбор паспорта в целом
 
 	//создаем парсер и связываем его с нужным потоком
 	std::unique_ptr<VMlib::StreamParser> parser;
 	parser.reset(new VMlib::StreamParser(info, "parser", mainStream, defaultStream, switcherStream, varsStream));
-			
-	//считываем общие параметры
-	parser->get("rho", physicalProperties.rho);
-	parser->get("vInf", physicalProperties.vInf);
-	parser->get("vRef", physicalProperties.vRef, &defaults::defaultVRef);
 
-	if (physicalProperties.vRef == 0.0)
+	//считываем общие параметры
+	if (readAll)	
+		parser->get("rho", physicalProperties.rho);	
+
+	if (ifUpdate("vInf") || ifUpdate("vRef"))
 	{
-		if (physicalProperties.vInf.length() == 0.0)
+		if (ifUpdate("vInf"))
+			parser->get("vInf", physicalProperties.vInf);
+
+		parser->get("vRef", physicalProperties.vRef, &defaults::defaultVRef, false);
+
+		if (physicalProperties.vRef == 0.0)
 		{
-			info('e') << "Reference velocity should be non-zero!" << std::endl;
-			exit(1);
+			if (physicalProperties.vInf.length() == 0.0)
+			{
+				info('e') << "Reference velocity should be non-zero!" << std::endl;
+				exit(1);
+			}
+			physicalProperties.vRef = physicalProperties.vInf.length();
 		}
-		physicalProperties.vRef = physicalProperties.vInf.length();
 	}
 
+
 	//Считывание схемы разгона потока
+	if (readAll)
 	{
 		std::pair<std::pair<std::string, int>, std::string> velAccel;
 		bool defParamAccelVel = parser->get("accelVel", velAccel, &defaults::defaultVelAccel);
@@ -171,236 +202,350 @@ void Passport::GetAllParamsFromParser
 		}
 	}
 	
-	
-	parser->get("nu", physicalProperties.nu);
+	if (readAll)
+	{
+		parser->get("nu", physicalProperties.nu);
 
-	parser->get("timeStart", timeDiscretizationProperties.timeStart, &defaults::defaultTimeStart);
-	parser->get("timeStop", timeDiscretizationProperties.timeStop);
-	parser->get("dt", timeDiscretizationProperties.dt);
-	parser->get("nameLength", timeDiscretizationProperties.nameLength, &defaults::defaultNameLength);
+		parser->get("timeStart", timeDiscretizationProperties.timeStart, &defaults::defaultTimeStart);
+	}
 	
+	if (ifUpdate("timeStop"))
+		parser->get("timeStop", timeDiscretizationProperties.timeStop);
+	
+	if (ifUpdate("dt"))
+		parser->get("dt", timeDiscretizationProperties.dt);			
+
+	if (ifUpdate("nameLength"))
+		parser->get("nameLength", timeDiscretizationProperties.nameLength, &defaults::defaultNameLength);
+
 	
 	//Считывание схемы сохранения файлов Vtx
-	std::pair<std::pair<std::string, int>, std::string> saveVtx;
-	bool defParamSaveVtx = parser->get("saveVt?", saveVtx, &defaults::defaultSaveVtx);
-	if (saveVtx.first.second != -1)
+	if (ifUpdate("saveVtx"))
 	{
-		timeDiscretizationProperties.fileTypeVtx = saveVtx.first;
-		std::stringstream sstr(saveVtx.second);
-		std::istream& istr(sstr);
-
-		std::unique_ptr<VMlib::StreamParser> parserSaveVtx;
-
-		parserSaveVtx.reset(new VMlib::StreamParser(info, "parserSaveVtx", istr, defaultStream, switcherStream, varsStream));
-		parserSaveVtx->get("_DEFVAR_0", timeDiscretizationProperties.saveVtxStep, &defaults::defaultSaveVtxStep, defParamSaveVtx);
-	}
-	else
-	{
-		std::stringstream ss;
-		ss << saveVtx.first.first;
-		int step;
-		ss >> step;
-		if (!ss.fail())
+		std::pair<std::pair<std::string, int>, std::string> saveVtx;
+		bool defParamSaveVtx = parser->get("saveVt?", saveVtx, &defaults::defaultSaveVtx);
+		if (saveVtx.first.second != -1)
 		{
-			timeDiscretizationProperties.fileTypeVtx = defaults::defaultSaveVtx.first;
-			timeDiscretizationProperties.saveVtxStep = step;
+			timeDiscretizationProperties.fileTypeVtx = saveVtx.first;
+			std::stringstream sstr(saveVtx.second);
+			std::istream& istr(sstr);
+
+			std::unique_ptr<VMlib::StreamParser> parserSaveVtx;
+
+			parserSaveVtx.reset(new VMlib::StreamParser(info, "parserSaveVtx", istr, defaultStream, switcherStream, varsStream));
+			parserSaveVtx->get("_DEFVAR_0", timeDiscretizationProperties.saveVtxStep, &defaults::defaultSaveVtxStep, defParamSaveVtx);
 		}
 		else
 		{
-			info('e') << "Vtx file type <" << saveVtx.first.first << "> is unknown" << std::endl;
-			exit(1);
+			std::stringstream ss;
+			ss << saveVtx.first.first;
+			int step;
+			ss >> step;
+			if (!ss.fail())
+			{
+				timeDiscretizationProperties.fileTypeVtx = defaults::defaultSaveVtx.first;
+				timeDiscretizationProperties.saveVtxStep = step;
+			}
+			else
+			{
+				info('e') << "Vtx file type <" << saveVtx.first.first << "> is unknown" << std::endl;
+				exit(1);
+			}
 		}
 	}
-	
 	
 	//Считывание схемы сохранения файлов VP
-	std::pair<std::pair<std::string, int>, std::string> saveVP;
-	bool defParamSaveVP = parser->get("saveVP", saveVP, &defaults::defaultSaveVP);
-	if (saveVP.first.second != -1)
+	if (ifUpdate("saveVP"))
 	{
-		timeDiscretizationProperties.fileTypeVP = saveVP.first;
-		std::stringstream sstr(saveVP.second);
-		std::istream& istr(sstr);
-
-		std::unique_ptr<VMlib::StreamParser> parserSaveVP;
-
-		parserSaveVP.reset(new VMlib::StreamParser(info, "parserSaveVP", istr, defaultStream, switcherStream, varsStream));
-		parserSaveVP->get("_DEFVAR_0", timeDiscretizationProperties.saveVPstep, &defaults::defaultSaveVPstep, defParamSaveVP);
-	}
-	else
-	{
-		std::stringstream ss;
-		ss << saveVP.first.first;
-		int step;
-		ss >> step;
-		if (!ss.fail())
+		std::pair<std::pair<std::string, int>, std::string> saveVP;
+		bool defParamSaveVP = parser->get("saveVP", saveVP, &defaults::defaultSaveVP);
+		if (saveVP.first.second != -1)
 		{
-			timeDiscretizationProperties.fileTypeVP = defaults::defaultSaveVP.first;
-			timeDiscretizationProperties.saveVPstep = step;
+			timeDiscretizationProperties.fileTypeVP = saveVP.first;
+			std::stringstream sstr(saveVP.second);
+			std::istream& istr(sstr);
+
+			std::unique_ptr<VMlib::StreamParser> parserSaveVP;
+
+			parserSaveVP.reset(new VMlib::StreamParser(info, "parserSaveVP", istr, defaultStream, switcherStream, varsStream));
+			parserSaveVP->get("_DEFVAR_0", timeDiscretizationProperties.saveVPstep, &defaults::defaultSaveVPstep, defParamSaveVP);
 		}
 		else
 		{
-			info('e') << "VP file type <" << saveVP.first.first << "> is unknown" << std::endl;
-			exit(1);
+			std::stringstream ss;
+			ss << saveVP.first.first;
+			int step;
+			ss >> step;
+			if (!ss.fail())
+			{
+				timeDiscretizationProperties.fileTypeVP = defaults::defaultSaveVP.first;
+				timeDiscretizationProperties.saveVPstep = step;
+			}
+			else
+			{
+				info('e') << "VP file type <" << saveVP.first.first << "> is unknown" << std::endl;
+				exit(1);
+			}
 		}
 	}
 
-	parser->get("rotateVpPoints", rotateAngleVpPoints, &defaults::rotateAngleVpPoints);
-	
-	
-	parser->get("saveVisStress", timeDiscretizationProperties.saveVisStress, &defaults::defaultSaveVisStress);
-
-
-	double oldEpsilon;
-	parser->get("eps", oldEpsilon, &defaults::defaultSigma0);
-	if (oldEpsilon != 0)
+	if (readAll)
 	{
-		info('e') << "Rename 'eps' parameter in passport file: 'eps' -> 'sigma0'" << std::endl;
-		exit(1);
+		parser->get("revisePassportStep", timeDiscretizationProperties.revisePassportStep, &defaults::defaultRevisePassportStep);
+		parser->get("reviseParameters", timeDiscretizationProperties.reviseParameters, &defaults::defaultReviseParameters);
+
+		const std::vector<std::string> varParams = { UP("nameLength"), UP("timeStop"), UP("dt"), UP("vInf"), UP("vRef"), UP("saveVtx"), UP("saveVP") };
+		for (const auto& s : timeDiscretizationProperties.reviseParameters)
+			if (std::count(varParams.begin(), varParams.end(), UP(s)) == 0)
+			{
+				info('e') << "Parameter \"" << s << "\" can not be changable (i.e., re-readable)!" << std::endl;
+				exit(1);
+			}
+
 	}
 
-	
-	parser->get("sigma0", wakeDiscretizationProperties.sigma0, &defaults::defaultSigma0);	
-
-	parser->get("epscol", wakeDiscretizationProperties.epscol, &defaults::defaultEpsCol);
-	parser->get("distFar", wakeDiscretizationProperties.distFar, &defaults::defaultDistFar);
-	parser->get("delta", wakeDiscretizationProperties.delta, &defaults::defaultDelta);
-	parser->get("vortexPerPanel", wakeDiscretizationProperties.minVortexPerPanel, &defaults::defaultVortexPerPanel);
-	parser->get("maxGamma", wakeDiscretizationProperties.maxGamma, &defaults::defaultMaxGamma);
-	if (wakeDiscretizationProperties.maxGamma == 0.0)
-		wakeDiscretizationProperties.maxGamma = 1e+10;
-	
-	parser->get("linearSystemSolver", numericalSchemes.linearSystemSolver, &defaults::defaultLinearSystemSolver);
-	if (numericalSchemes.linearSystemSolver.second == 1 || numericalSchemes.linearSystemSolver.second == 2)
-		parser->get("gmresEps", numericalSchemes.gmresEps);
-
-	if (numericalSchemes.linearSystemSolver.second == 2) 
+	if (readAll)
 	{
-		parser->get("fastGmresTheta", numericalSchemes.gmresTheta);
-		parser->get("fastGmresMultipoleOrder", numericalSchemes.gmresMultipoleOrder);
+		parser->get("rotateVpPoints", rotateAngleVpPoints, &defaults::rotateAngleVpPoints);
+		parser->get("saveVisStress", timeDiscretizationProperties.saveVisStress, &defaults::defaultSaveVisStress);
 	}
 
-	parser->get("velocityComputation", numericalSchemes.velocityComputation, &defaults::defaultVelocityComputation);
-
-	if (numericalSchemes.velocityComputation.second == 1)
+	if (readAll)
 	{
-		parser->get("nbodyTheta", numericalSchemes.nbodyTheta);
-		parser->get("nbodyMultipoleOrder", numericalSchemes.nbodyMultipoleOrder);
+		double oldEpsilon;
+		parser->get("eps", oldEpsilon, &defaults::defaultSigma0);
+		if (oldEpsilon != 0)
+		{
+			info('e') << "Rename 'eps' parameter in passport file: 'eps' -> 'sigma0'" << std::endl;
+			exit(1);
+		}
+
+
+		parser->get("sigma0", wakeDiscretizationProperties.sigma0, &defaults::defaultSigma0);
+
+		parser->get("epscol", wakeDiscretizationProperties.epscol, &defaults::defaultEpsCol);
+		parser->get("distFar", wakeDiscretizationProperties.distFar, &defaults::defaultDistFar);
+		parser->get("delta", wakeDiscretizationProperties.delta, &defaults::defaultDelta);
+		parser->get("vortexPerPanel", wakeDiscretizationProperties.minVortexPerPanel, &defaults::defaultVortexPerPanel);
+		parser->get("maxGamma", wakeDiscretizationProperties.maxGamma, &defaults::defaultMaxGamma);
+		if (wakeDiscretizationProperties.maxGamma == 0.0)
+			wakeDiscretizationProperties.maxGamma = 1e+10;
 	}
 
-	//parser->get("wakeMotionIntegrator", numericalSchemes.wakeMotionIntegrator);
-	parser->get("boundaryConditionSatisfaction", numericalSchemes.boundaryCondition, &defaults::defaultBoundaryCondition);
-	
-	parser->get("airfoilsDir", airfoilsDir, &defaults::defaultAirfoilsDir);
-	parser->get("wakesDir",    wakesDir,    &defaults::defaultWakesDir);
+	if (readAll)
+	{
+		parser->get("linearSystemSolver", numericalSchemes.linearSystemSolver, &defaults::defaultLinearSystemSolver);
+		if (numericalSchemes.linearSystemSolver.second == 1 || numericalSchemes.linearSystemSolver.second == 2)
+			parser->get("gmresEps", numericalSchemes.gmresEps);
 
-	parser->get("fileWake", wakeDiscretizationProperties.fileWake, &defaults::defaultFileWake);
-	parser->get("fileSource", wakeDiscretizationProperties.fileSource, &defaults::defaultFileSource);
+		if (numericalSchemes.linearSystemSolver.second == 2)
+		{
+			parser->get("fastGmresTheta", numericalSchemes.gmresTheta);
+			parser->get("fastGmresMultipoleOrder", numericalSchemes.gmresMultipoleOrder);
+		}
 
-	//Для обдува ветром, когда углы считаются по компасу
-	//parser->get("geographicalAngles", geographicalAngles, &defaults::defaultGeographicalAngles);
-	//if (geographicalAngles && (physicalProperties.vInf[1] != 0.0))
-	//{
-	//	info('e') << "For geographical angles vInf should be horizontal; now vInf = " << physicalProperties.vInf << "." << std::endl;
-	//	exit(1);
-	//}
+		parser->get("velocityComputation", numericalSchemes.velocityComputation, &defaults::defaultVelocityComputation);
 
-	parser->get("rotateForces", rotateForces, &defaults::defaultRotateForces);
-	parser->get("calcCoefficients", calcCoefficients, &defaults::defaultCalcCoefficients);
+		if (numericalSchemes.velocityComputation.second == 1)
+		{
+			parser->get("nbodyTheta", numericalSchemes.nbodyTheta);
+			parser->get("nbodyMultipoleOrder", numericalSchemes.nbodyMultipoleOrder);
+		}
 
-	std::vector<std::string> airfoil;
-	parser->get("airfoil", airfoil, &defaults::defaultAirfoil);
+		//parser->get("wakeMotionIntegrator", numericalSchemes.wakeMotionIntegrator);
+		parser->get("boundaryConditionSatisfaction", numericalSchemes.boundaryCondition, &defaults::defaultBoundaryCondition);
+
+		parser->get("airfoilsDir", airfoilsDir, &defaults::defaultAirfoilsDir);
+		parser->get("wakesDir", wakesDir, &defaults::defaultWakesDir);
+
+		parser->get("fileWake", wakeDiscretizationProperties.fileWake, &defaults::defaultFileWake);
+		parser->get("fileSource", wakeDiscretizationProperties.fileSource, &defaults::defaultFileSource);
+
+		//Для обдува ветром, когда углы считаются по компасу
+		//parser->get("geographicalAngles", geographicalAngles, &defaults::defaultGeographicalAngles);
+		//if (geographicalAngles && (physicalProperties.vInf[1] != 0.0))
+		//{
+		//	info('e') << "For geographical angles vInf should be horizontal; now vInf = " << physicalProperties.vInf << "." << std::endl;
+		//	exit(1);
+		//}
+
+		parser->get("rotateForces", rotateForces, &defaults::defaultRotateForces);
+		parser->get("calcCoefficients", calcCoefficients, &defaults::defaultCalcCoefficients);		
+	}
 
 	// 2. Разбор параметров профилей
-
-	//определяем число профилей и организуем цикл по ним
-	size_t nAirfoil = airfoil.size();
-	//*(defaults::defaultPinfo) << "Number of airfoils = " << nAirfoil << endl;
-	for (size_t i = 0; i < nAirfoil; ++i) 
+	if (readAll)
 	{
-		//делим имя файла + выражение в скобках на 2 подстроки
-		std::pair<std::string, std::string> airfoilLine = VMlib::StreamParser::SplitString(info, airfoil[i], false);
+		std::vector<std::string> airfoil;
+		parser->get("airfoil", airfoil, &defaults::defaultAirfoil);
 
-		AirfoilParams prm;
-		//первая подстрока - имя файла
-		prm.fileAirfoil = airfoilLine.first;
-
-		//вторую подстроку разделяем на вектор из строк по запятым, стоящим вне фигурных скобок		
-		std::vector<std::string> vecAirfoilLineSecond = VMlib::StreamParser::StringToVector(airfoilLine.second, '{', '}');
-				
-		//создаем парсер и связываем его с параметрами профиля
-		std::stringstream aflStream(VMlib::StreamParser::VectorStringToString(vecAirfoilLineSecond));
-		std::unique_ptr<VMlib::StreamParser> parserAirfoil;
-
-		parserAirfoil.reset(new VMlib::StreamParser(info, "airfoil parser", aflStream, defaultStream, switcherStream, varsStream));
-
-		//считываем нужные параметры с учетом default-значений
-		parserAirfoil->get("nPanels", prm.requiredNPanels, &defaults::defaultRequiredNPanels);
-
-		parserAirfoil->get("basePoint", prm.basePoint, &defaults::defaultBasePoint);
-		
-		std::vector<double> tmpScale, defaultTmpScale = { defaults::defaultScale[0], defaults::defaultScale[1] };
-		
-		parserAirfoil->get("scale", tmpScale, &defaultTmpScale);
-		switch (tmpScale.size())
+		//определяем число профилей и организуем цикл по ним
+		size_t nAirfoil = airfoil.size();
+		//*(defaults::defaultPinfo) << "Number of airfoils = " << nAirfoil << endl;
+		for (size_t i = 0; i < nAirfoil; ++i)
 		{
-		case 1:
-			prm.scale[0] = prm.scale[1] = tmpScale[0];
-			break;
-		case 2:
-			prm.scale[0] = tmpScale[0];
-			prm.scale[1] = tmpScale[1];
-			break;
-		default:
-			info('e') << "Error in _scale_ value for airfoil" << std::endl;
-			exit(1);
-		}		
-		//parserAirfoil->get("scale", prm.scalexy, &defaults::defaultScale);
-		
-		
-		parserAirfoil->get("angle", prm.angle, &defaults::defaultAngle);
-		prm.angle *= PI / 180.0;
+			//делим имя файла + выражение в скобках на 2 подстроки
+			std::pair<std::string, std::string> airfoilLine = VMlib::StreamParser::SplitString(info, airfoil[i], false);
 
-		parserAirfoil->get("chord", prm.chord, &defaults::defaultChord);
-
-		parserAirfoil->get("addedMass", prm.addedMass, &defaults::defaultAddedMass);
-
-
-		parserAirfoil->get("inverse", prm.inverse, &defaults::defaultInverse);		
-		parserAirfoil->get("mechanicalSystem", prm.mechanicalSystem, &defaults::defaultMechanicalSystem);
-
-		if (prm.mechanicalSystem == defaults::defaultMechanicalSystem)
-		{
-			prm.mechanicalSystemType = 0;
-			prm.mechanicalSystemParameters = "";
-		}
-		else
-		{
-			std::unique_ptr<VMlib::StreamParser> parserMechanicsList;
-			std::unique_ptr<VMlib::StreamParser> parserSwitchers;
-			parserMechanicsList.reset(new VMlib::StreamParser(info, "mechanical parser", mechanicsStream, defaultStream, switcherStream, varsStream, { prm.mechanicalSystem }));
-			parserSwitchers.reset(new VMlib::StreamParser(info, "switchers parser" ,switcherStream));
-
-			std::string mechString;
-
-			parserMechanicsList->get(prm.mechanicalSystem, mechString);
-			
-			//делим тип мех.системы + выражение в скобках (ее параметры) на 2 подстроки
-			std::pair<std::string, std::string> mechanicsLine = VMlib::StreamParser::SplitString(info, mechString);
-
-			std::string mechTypeAlias = mechanicsLine.first;
-			parserSwitchers->get(mechTypeAlias, prm.mechanicalSystemType);
+			AirfoilParams prm;
+			//первая подстрока - имя файла
+			prm.fileAirfoil = airfoilLine.first;
 
 			//вторую подстроку разделяем на вектор из строк по запятым, стоящим вне фигурных скобок		
-			std::vector<std::string> vecMechLineSecond = VMlib::StreamParser::StringToVector(mechanicsLine.second, '{', '}');
-			prm.mechanicalSystemParameters = VMlib::StreamParser::VectorStringToString(vecMechLineSecond);
-		}
+			std::vector<std::string> vecAirfoilLineSecond = VMlib::StreamParser::StringToVector(airfoilLine.second, '{', '}');
 
-		//отправляем считанные параметры профиля в структуру данных паспорта 
-		airfoilParams.push_back(prm);
+			//создаем парсер и связываем его с параметрами профиля
+			std::stringstream aflStream(VMlib::StreamParser::VectorStringToString(vecAirfoilLineSecond));
+			std::unique_ptr<VMlib::StreamParser> parserAirfoil;
 
-	} //for i
+			parserAirfoil.reset(new VMlib::StreamParser(info, "airfoil parser", aflStream, defaultStream, switcherStream, varsStream));
+
+			//считываем нужные параметры с учетом default-значений
+			parserAirfoil->get("nPanels", prm.requiredNPanels, &defaults::defaultRequiredNPanels);
+
+			parserAirfoil->get("basePoint", prm.basePoint, &defaults::defaultBasePoint);
+
+			std::vector<double> tmpScale, defaultTmpScale = { defaults::defaultScale[0], defaults::defaultScale[1] };
+
+			parserAirfoil->get("scale", tmpScale, &defaultTmpScale);
+			switch (tmpScale.size())
+			{
+			case 1:
+				prm.scale[0] = prm.scale[1] = tmpScale[0];
+				break;
+			case 2:
+				prm.scale[0] = tmpScale[0];
+				prm.scale[1] = tmpScale[1];
+				break;
+			default:
+				info('e') << "Error in _scale_ value for airfoil" << std::endl;
+				exit(1);
+			}
+			//parserAirfoil->get("scale", prm.scalexy, &defaults::defaultScale);
+
+
+			parserAirfoil->get("angle", prm.angle, &defaults::defaultAngle);
+			prm.angle *= PI / 180.0;
+
+			parserAirfoil->get("chord", prm.chord, &defaults::defaultChord);
+
+			parserAirfoil->get("addedMass", prm.addedMass, &defaults::defaultAddedMass);
+
+
+			parserAirfoil->get("inverse", prm.inverse, &defaults::defaultInverse);
+			parserAirfoil->get("mechanicalSystem", prm.mechanicalSystem, &defaults::defaultMechanicalSystem);
+
+			if (prm.mechanicalSystem == defaults::defaultMechanicalSystem)
+			{
+				prm.mechanicalSystemType = 0;
+				prm.mechanicalSystemParameters = "";
+			}
+			else
+			{
+				std::unique_ptr<VMlib::StreamParser> parserMechanicsList;
+				std::unique_ptr<VMlib::StreamParser> parserSwitchers;
+				parserMechanicsList.reset(new VMlib::StreamParser(info, "mechanical parser", mechanicsStream, defaultStream, switcherStream, varsStream, { prm.mechanicalSystem }));
+				parserSwitchers.reset(new VMlib::StreamParser(info, "switchers parser", switcherStream));
+
+				std::string mechString;
+
+				parserMechanicsList->get(prm.mechanicalSystem, mechString);
+
+				//делим тип мех.системы + выражение в скобках (ее параметры) на 2 подстроки
+				std::pair<std::string, std::string> mechanicsLine = VMlib::StreamParser::SplitString(info, mechString);
+
+				std::string mechTypeAlias = mechanicsLine.first;
+				parserSwitchers->get(mechTypeAlias, prm.mechanicalSystemType);
+
+				//вторую подстроку разделяем на вектор из строк по запятым, стоящим вне фигурных скобок		
+				std::vector<std::string> vecMechLineSecond = VMlib::StreamParser::StringToVector(mechanicsLine.second, '{', '}');
+				prm.mechanicalSystemParameters = VMlib::StreamParser::VectorStringToString(vecMechLineSecond);
+			}
+
+			//отправляем считанные параметры профиля в структуру данных паспорта 
+			airfoilParams.push_back(prm);
+
+		} //for i
+	}//readAll
 }//GetAllParamsFromParser(...)
+
+
+
+
+void Passport::GetReviseParamsFromParser
+(
+	const Passport& newPassport,
+	const std::vector<std::string> paramList
+)
+{
+	auto UP = VMlib::StreamParser::UpperCase;
+
+	bool readAll = ((paramList.size() == 1) && (paramList[0] == ""));
+	std::vector<std::string> PR;
+	for (const auto& s : paramList)
+		PR.push_back(UP(s));
+
+
+	auto ifUpdate = [&](const std::string& checkString) {return (readAll || std::count(PR.begin(), PR.end(), UP(checkString))); };
+
+	if (ifUpdate("nameLength") && (this->timeDiscretizationProperties.nameLength != newPassport.timeDiscretizationProperties.nameLength))
+	{
+		this->timeDiscretizationProperties.nameLength = newPassport.timeDiscretizationProperties.nameLength;
+		info('i') << "updated nameLength = " << timeDiscretizationProperties.nameLength << std::endl;
+	}
+	
+	if (ifUpdate("timeStop") && (timeDiscretizationProperties.timeStop != newPassport.timeDiscretizationProperties.timeStop))
+	{
+		timeDiscretizationProperties.timeStop = newPassport.timeDiscretizationProperties.timeStop;
+		info('i') << "updated timeStop = " << timeDiscretizationProperties.timeStop << std::endl;
+	}
+
+	if (ifUpdate("dt") && (timeDiscretizationProperties.dt != newPassport.timeDiscretizationProperties.dt))
+	{
+		timeDiscretizationProperties.dt = newPassport.timeDiscretizationProperties.dt;
+		info('i') << "updated dt = " << timeDiscretizationProperties.dt << std::endl;
+	}
+
+	if (ifUpdate("vInf") && (physicalProperties.vInf != newPassport.physicalProperties.vInf))
+	{
+		physicalProperties.vInf = newPassport.physicalProperties.vInf;		
+		info('i') << "updated vInf = " << physicalProperties.vInf << std::endl;
+		
+		if (physicalProperties.vRef != newPassport.physicalProperties.vRef)
+		{
+			physicalProperties.vRef = newPassport.physicalProperties.vRef;
+			info('i') << "updated vRef = " << physicalProperties.vRef << std::endl;
+		}
+	}
+
+	if (ifUpdate("vRef") && (physicalProperties.vRef != newPassport.physicalProperties.vRef))
+	{
+		physicalProperties.vRef = newPassport.physicalProperties.vRef;
+		info('i') << "updated vRef = " << physicalProperties.vRef << std::endl;	
+	}
+
+
+	if (ifUpdate("saveVtx") &&
+		(timeDiscretizationProperties.fileTypeVtx != newPassport.timeDiscretizationProperties.fileTypeVtx || timeDiscretizationProperties.saveVtxStep != newPassport.timeDiscretizationProperties.saveVtxStep))
+	{
+		timeDiscretizationProperties.fileTypeVtx = newPassport.timeDiscretizationProperties.fileTypeVtx;
+		timeDiscretizationProperties.saveVtxStep = newPassport.timeDiscretizationProperties.saveVtxStep;
+
+		info('-') << "updated saveVtx = " << timeDiscretizationProperties.fileTypeVtx.first << "( " << timeDiscretizationProperties.saveVtxStep << " )" << std::endl;		
+	}
+
+	if (ifUpdate("saveVP") &&
+		(timeDiscretizationProperties.fileTypeVP != newPassport.timeDiscretizationProperties.fileTypeVP || timeDiscretizationProperties.saveVPstep != newPassport.timeDiscretizationProperties.saveVPstep))
+	{
+		timeDiscretizationProperties.fileTypeVP = newPassport.timeDiscretizationProperties.fileTypeVP;
+		timeDiscretizationProperties.saveVPstep = newPassport.timeDiscretizationProperties.saveVPstep;
+
+		info('-') << "updated saveVtx = " << timeDiscretizationProperties.fileTypeVP.first << "( " << timeDiscretizationProperties.saveVPstep << " )" << std::endl;
+	}
+
+}//GetReviseParamsFromParser
+
+
 
 
 //Печать всех параметров расчета в поток логов
@@ -421,6 +566,13 @@ void Passport::PrintAllParams()
 	info('-') << "nameLength = " << timeDiscretizationProperties.nameLength << std::endl;
 	info('-') << "saveVtx = " << timeDiscretizationProperties.fileTypeVtx.first << "( " << timeDiscretizationProperties.saveVtxStep << " )" << std::endl;
 	info('-') << "saveVP = " << timeDiscretizationProperties.fileTypeVP.first << "( " << timeDiscretizationProperties.saveVPstep << " )" << std::endl;
+	
+	info('-') << "revisePassportStep = " << timeDiscretizationProperties.revisePassportStep << std::endl;
+	info('-') << "reviseParameters = {";
+	for (const auto& s : timeDiscretizationProperties.reviseParameters)
+		info('-') << s << "";
+	info('-') << "}" << std::endl;
+		
 	info('-') << "saveVisStress = " << timeDiscretizationProperties.saveVisStress << std::endl;
 	info('-') << "sigma0 = " << wakeDiscretizationProperties.sigma0 << std::endl;	
 	info('-') << "epscol = " << wakeDiscretizationProperties.epscol << std::endl;

@@ -41,7 +41,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -62,7 +62,7 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 	\author Колганова Александра Олеговна
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	struct PhysicalProperties
@@ -117,7 +117,7 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 	\author Колганова Александра Олеговна
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	struct WakeDiscretizationProperties
@@ -165,7 +165,7 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
     \author Колганова Александра Олеговна
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	struct NumericalSchemes
@@ -198,7 +198,7 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 	\author Колганова Александра Олеговна
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	struct AirfoilParams
@@ -246,21 +246,23 @@ namespace VM2D
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 	\author Колганова Александра Олеговна
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	class Passport : public VMlib::PassportGen
 	{
 	private:
 		//далее -- реализации виртуальных функций
-		virtual void GetAllParamsFromParser
+		virtual void GetParamsFromParser
 		(
 			std::istream& mainStream,
 			std::istream& mechanicsStream,
 			std::istream& defaultStream,
 			std::istream& switcherStream,
-			std::istream& varsStream
+			std::istream& varsStream,
+			const std::vector<std::string> paramList
 		) override;
+
 		virtual void PrintAllParams() override;
 
 	public:
@@ -272,6 +274,15 @@ namespace VM2D
 
 		/// Список структур с параметрами профилей 
 		std::vector<AirfoilParams> airfoilParams;
+
+		/// Имена файлов
+		std::string fileFullName;
+		std::string mechanicsFileFullName;
+		std::string defaultsFileFullName;
+		std::string switchersFileFullName;
+		std::vector<std::string> varLine;
+
+
 
 		/// Признак работы в "географической" системе координат
 		//bool geographicalAngles; //Для обдува ветром, когда углы считаются по компасу
@@ -316,11 +327,19 @@ namespace VM2D
 			const std::string& _mechanics,
 			const std::string& _defaults,
 			const std::string& _switchers,
-			const std::vector<std::string>& vars
+			const std::vector<std::string>& vars,
+			const std::vector<std::string>& paramList
 		);
 
 		/// Деструктор
 		virtual ~Passport() { };
+
+		/// Считывание измененных параметров
+		void GetReviseParamsFromParser
+		(
+			const Passport& newPassport,
+			const std::vector<std::string> paramList
+		);
 	};
 
 }//namespace VM2D

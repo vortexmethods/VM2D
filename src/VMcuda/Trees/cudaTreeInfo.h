@@ -32,7 +32,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -57,7 +57,7 @@ namespace BHcu
     \author Рятина Евгения Павловна
     \author Колганова Александра Олеговна
     
-    \Version 1.14
+    \version 1.14
     \date 6 марта 2026 г.
     */
     struct infoForMatVecMul
@@ -105,7 +105,7 @@ namespace BHcu
     \author Рятина Евгения Павловна
     \author Колганова Александра Олеговна
 
-    \Version 1.14
+    \version 1.14
     \date 6 марта 2026 г.
     */
 

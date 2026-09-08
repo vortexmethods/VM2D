@@ -33,7 +33,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -51,7 +51,7 @@ namespace VMlib
 	/*!
 	\brief Стрктура, содержащая параметры исполнения задачи в параллельном MPI-режиме
 	\author Марчевский Илья Константинович
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	struct parProp
@@ -80,7 +80,7 @@ namespace VMlib
 	\author Сокол Ксения Сергеевна
 	\author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	class Parallel

@@ -33,7 +33,7 @@
 \author Сокол Ксения Сергеевна
 \author Рятина Евгения Павловна
 \author Колганова Александра Олеговна
-\Version 1.14
+\version 1.14
 \date 6 марта 2026 г.
 */
 
@@ -52,7 +52,7 @@ namespace VMlib
 	/*!
 	\brief Структура, задающая параметры процесса интегрирования по времени
 	\author Марчевский Илья Константинович
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	struct TimeDiscretizationProperties
@@ -65,6 +65,12 @@ namespace VMlib
 
 		/// Шаг по времени
 		double dt;
+
+		/// Шаг перечитывания паспорта
+		int revisePassportStep;
+
+		/// Список перечитываемых параметров
+		std::vector<std::string> reviseParameters;
 
 		/// Число разрядов в имени файла
 		int nameLength;
@@ -89,7 +95,7 @@ namespace VMlib
 	/*!
 	\brief Абстрактный класс, опеделяющий паспорт задачи
 	\author Марчевский Илья Константинович
-	\Version 1.14
+	\version 1.14
 	\date 6 марта 2026 г.
 	*/
 	class PassportGen
@@ -102,13 +108,14 @@ namespace VMlib
 		/// \param[in] defaultStream ссылка на поток с параметрами по умолчанию
 		/// \param[in] switcherStream ссылка на поток со значениями параметров-переключателей
 		/// \param[in] varsStream ссылка на поток с параметрами конкретной задачи и переменными
-		virtual void GetAllParamsFromParser
+		virtual void GetParamsFromParser
 		(
 			std::istream& mainStream,
 			std::istream& mechanicsStream,
 			std::istream& defaultStream,
 			std::istream& switcherStream,
-			std::istream& varsStream
+			std::istream& varsStream,
+			const std::vector<std::string> paramList
 		) = 0;
 
 		/// Поток для вывода логов и сообщений об ошибках
