@@ -1127,7 +1127,7 @@ void Velocity::CalcConvVelo()
 	fullTimer.stop();
 	
 	W.timerConvVelo.stop();
-	std::cout << "theta = " << W.getPassport().numericalSchemes.nbodyTheta << "\n";
+	//std::cout << "theta = " << W.getPassport().numericalSchemes.nbodyTheta << "\n";
 	
 	/// FMM ///
 	/*

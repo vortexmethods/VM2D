@@ -4,8 +4,8 @@ project(VM)
 
 ##############################################
 
-set(ENABLE_CUDA OFF)
-set(CUDA_ARCHITECTURE "120")
+set(ENABLE_CUDA ON)
+set(CUDA_ARCHITECTURE "70")
 set(ENABLE_CUDNN OFF)
 
 set(ENABLE_FMM OFF)

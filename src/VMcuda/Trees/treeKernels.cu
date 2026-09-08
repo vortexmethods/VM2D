@@ -1191,9 +1191,8 @@ namespace BHcu
     }
 
 
-    //oooo
     // Глобальная переменная для подсчета проверок узлов
-    __device__ unsigned long long d_totalNodeChecks = 0;
+    //__device__ unsigned long long d_totalNodeChecks = 0;
 
     __global__
         __launch_bounds__(THREADSnear, FACTORnear)
@@ -1253,7 +1252,7 @@ namespace BHcu
                 const double2 node = *--stack_ptr;
 
                 //счетчик
-                atomicAdd(&d_totalNodeChecks, 1ULL);
+                //atomicAdd(&d_totalNodeChecks, 1ULL);
 
                 if (node.y > dist_to_nearest_object)
                 {
@@ -1297,7 +1296,6 @@ namespace BHcu
                 const double L_minmaxdist2 = minmaxdist2(L_box, query);
                 const double R_minmaxdist2 = minmaxdist2(R_box, query);
 
-                //oooo
                 bool pushLeft = false;
                 bool pushRight = false;
 
@@ -1315,11 +1313,7 @@ namespace BHcu
                         }
                     }
                     else
-                    {
-                        //*stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
-                        //oooo
                         pushLeft = true;
-                    }
                 }
 
                 if (R_mindist2 <= L_minmaxdist2 * onePlusMachineEps) // R is worth considering
@@ -1336,14 +1330,9 @@ namespace BHcu
                         }
                     }
                     else
-                    {                        
-                        //*stack_ptr++ = make_double2(__longlong_as_double(LR_idx.y), R_mindist2);
-                        //oooo
                         pushRight = true;
-                    }
                 } 
 
-                //oooo
                 if (pushLeft && !pushRight)
                 {
                     *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
@@ -2411,8 +2400,6 @@ namespace BHcu
 
         cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
 
-        
-
         treeClosestPanelToPointsCalculationKernel << <(controlTreeInfo.nObject + THREADSnear - 1) / THREADSnear, THREADSnear >> > (
             treePanelsInfo.nNode,
             treePanelsInfo.nObject,
@@ -2430,11 +2417,10 @@ namespace BHcu
             pseudoNormals
             );
 
-        cudaDeviceSynchronize();
-        unsigned long long h_total = 0;
-        cudaError_t err = cudaMemcpyFromSymbol(&h_total, d_totalNodeChecks, sizeof(unsigned long));
+        //cudaDeviceSynchronize();
+        //unsigned long long h_total = 0;
+        //cudaError_t err = cudaMemcpyFromSymbol(&h_total, d_totalNodeChecks, sizeof(unsigned long));
         
-
         CudaTestError("treeClosestPanelToPointsCalculationKernel launch failed");
 
         cudaEventDestroy(start);  cudaEventDestroy(stop);

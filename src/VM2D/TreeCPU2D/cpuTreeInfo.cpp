@@ -824,7 +824,6 @@ namespace VM2D
               double L_minmaxdist2 = minmaxdist2(L_box, query);
               double R_minmaxdist2 = minmaxdist2(R_box, query);
 
-              //oooo
               bool pushLeft = false;
               bool pushRight = false;
 
@@ -842,12 +841,7 @@ namespace VM2D
                       }
                   }
                   else
-                  {
-                      //++depth;
-                      //stack[depth] = { chBoth.first, L_mindist2 };
-                      //oooo
                       pushLeft = true;
-                  }
               }
 
               if (R_mindist2 <= L_minmaxdist2 * onePlusMachineEps) // R is worth considering
@@ -864,15 +858,9 @@ namespace VM2D
                       }
                   }
                   else
-                  {
-                      //++depth;
-                      //stack[depth] = { chBoth.second, R_mindist2 };
-                      //oooo
                       pushRight = true;
-                  }
               }
 
-              //oooo
               if (pushLeft && !pushRight)
               {
                   ++depth;
