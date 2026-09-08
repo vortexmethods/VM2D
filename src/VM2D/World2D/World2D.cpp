@@ -1086,7 +1086,7 @@ void World2D::SolveLinearSystem()
 		t1 += omp_get_wtime();
 
 		//std::cout << " Time in Gauss = " << t1 << std::endl;
-/*
+//*
 		std::ofstream solFile(getPassport().dir + "/sol" + std::to_string(currentStep) + "-Gauss.txt");
 		solFile.precision(16);
 		for (int i = 0; i < sol.size(); ++i)
@@ -1187,15 +1187,16 @@ void World2D::SolveLinearSystem()
 		//std::cout << "Time_GMRES = " << time_GMRES << std::endl;
 
 		sol.resize(nFullVars);
-		int cntr = 0;
+		int 
+			cntr = 0;
 		for (int i = 0; i < getNumberOfBoundary(); ++i)
 			for (int j = 0; j < boundary[i]->GetUnknownsSize(); ++j)
 				sol(cntr++) = Ggam[i][j] / airfoil[i]->len[j % airfoil[i]->getNumberOfPanels()];
 		for (int i = 0; i < getNumberOfBoundary(); ++i)
 			sol(cntr++) = GR[i];
 
-		/*
-		std::ofstream solFile(getPassport().dir + "/sol-fast-new-gmres" + std::to_string(currentStep) + ".txt");
+		//*
+		std::ofstream solFile(getPassport().dir + "/sol-cpu" + std::to_string(currentStep) + ".txt");
 		solFile.precision(16);
 		for (int i = 0; i < sol.size(); ++i)
 			solFile << sol(i) << std::endl;
@@ -1255,7 +1256,7 @@ void World2D::SolveLinearSystem()
 			for (int i = 0; i < getNumberOfBoundary(); ++i)
 				sol(cntr++) = GR[i];
 
-			//std::ofstream solFile(getPassport().dir + "/dbg/sol-direct-gmres" + std::to_string(currentStep) + ".txt");
+			//std::ofstream solFile(getPassport().dir + "/dbg/sol-direct-GMRES" + std::to_string(currentStep) + ".txt");
 			//solFile.precision(16);
 			//for (int i = 0; i < sol.size(); ++i)
 			//	solFile << sol(i) << std::endl;

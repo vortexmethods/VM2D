@@ -311,7 +311,18 @@ namespace VM2D
      
         if (treeType != tree_T::aux && treeType != tree_T::contr)
         {
-            gamma = gamma_;        
+           
+            //gamma = gamma_;    // было   
+
+            for (int i = 0; i < gamma_.size(); ++i)
+            {
+                const auto infgab = gabForLeaves[i]; //начало и конец влияющей панели
+                const Point2D infbeg{ infgab[0], infgab[1] };      //отдельно начало
+                const Point2D infend{ infgab[2], infgab[3] };      // и конец
+                const Point2D infpan = infend - infbeg;
+
+                gamma[i] = infpan.length() * gamma_[i];      // стало  
+            }
         }
 
         timer.stop();
@@ -1460,11 +1471,17 @@ namespace VM2D
                                               ilenj * (alpha[0] * v00_0[1] - alpha[1] * v00_1[1] + alpha[2] * v00_2[1] \
                                                   + (lambda[0] * v00_0[0] - lambda[1] * v00_1[0] + lambda[2] * v00_2[0]));
 
+                                          //printf("cntr = %d, inf = %d, i00 = {%f, %f}\n", indexOfPoint, mortonCodesIdx[infn], i00[0], i00[1]);
+
                                           //i00save[ClosePrefixSuml[indexOfPoint] + closecntr] = i00;
                                       }
                                       //else
                                       //    i00 = i00save[ClosePrefixSuml[indexOfPoint] + closecntr];
                                                                             
+                                      //printf("cntr = %d, inf = %d, gm = %f, i00 = {%f, %f}, tau = {%f, %f}\n", indexOfPoint, mortonCodesIdx[infn], gm, i00[0], i00[1], tau[0], tau[1]);
+
+                                      //if (indexOfPoint == 500)
+                                        //  printf("inf = %d ", mortonCodesIdx[infn]);
 
                                       double tempVelNew = -gm * (i00 & tau);
                                       val -= tempVelNew;

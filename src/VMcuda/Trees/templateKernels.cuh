@@ -956,6 +956,11 @@ namespace BHcu
                                     else
                                         i00 = i00save[ClosePrefixSuml[indexOfPoint] + closecntr];
 
+                                    if (indexOfPoint == 500)
+                                        printf("inf = %d ", MmortonCodesIdxd[chd - nbodiesd]);
+
+                                    //printf("cntr = %d, inf = %d, gm = %f, i00 = {%f, %f}, tau = {%f, %f}\n", indexOfPoint, MmortonCodesIdxd[chd - nbodiesd], gm, i00.x, i00.y, tau.x, tau.y);
+
                                     tempVelNew = -gm * (i00.x * tau.x + i00.y * tau.y);
                                     val -= tempVelNew;
 

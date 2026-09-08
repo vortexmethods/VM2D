@@ -4,7 +4,7 @@ project(VM)
 
 ##############################################
 
-set(ENABLE_CUDA ON)
+set(ENABLE_CUDA OFF)
 set(CUDA_ARCHITECTURE "70")
 set(ENABLE_CUDNN ON)
 

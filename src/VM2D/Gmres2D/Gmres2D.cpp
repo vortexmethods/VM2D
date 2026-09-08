@@ -912,10 +912,16 @@ void GmresSolver::GMRES(
 #endif
 		}
 
+
 #ifdef USE_CUDA
 		W.getNonConstCuda().SetSolution(bufcurrentSol.data(), W.getNonConstCuda().dev_sol, nTotPan);
 #endif
 		tCG.stop();
+
+		for (size_t i = 0; i < bufcurrentSol.size(); ++i)
+		{
+			//std::cout << bufcurrentSol[i] << std::endl;
+		}
 
 		if (j>0)
 			tWrapper.start();
@@ -973,6 +979,12 @@ void GmresSolver::GMRES(
 				}
 				npred += W.getAirfoil(i).getNumberOfPanels();
 			}
+
+		//for (size_t i = 0; i < w.size(); ++i)
+		//{
+		//	std::cout << w[i] << std::endl;
+		//}
+
 
 		size_t cntr = 0;
 		for (size_t pi = 0; pi < nAfl; ++pi)
@@ -1175,6 +1187,8 @@ void GmresSolver::GMRES(
 		tRotC.stop();
 
 		tRotD.start();
+
+		//exit(1010110);
 
 		if (IterRot(nrmRhs, gs, (int)m, false))
 		{
