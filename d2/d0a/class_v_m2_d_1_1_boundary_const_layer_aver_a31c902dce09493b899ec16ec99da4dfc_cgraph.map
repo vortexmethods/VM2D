@@ -1,0 +1,7 @@
+<map id="VM2D::BoundaryConstLayerAver::GetInfluenceFromSourcesToRectPanel" name="VM2D::BoundaryConstLayerAver::GetInfluenceFromSourcesToRectPanel">
+<area shape="rect" id="Node000001" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="5,27,231,82"/>
+<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="279,5,452,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,39,265,35,265,40,231,44"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов" alt="" coords="306,70,425,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="231,65,292,72,292,77,231,70"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="VM2D::World2D::getV0" name="VM2D::World2D::getV0">
+<area shape="rect" id="Node000001" title="Возврат текущей скорости набегающего потока" alt="" coords="5,31,176,56"/>
+<area shape="rect" id="Node000002" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="224,5,464,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,32,210,29,211,34,176,37"/>
+<area shape="rect" id="Node000003" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#ada3abfa665d3e6656788dfa12cbe9d33" title="Функция скорости набегающего потока с учетом разгона" alt="" coords="237,55,451,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="176,49,223,53,223,59,176,54"/>
+<area shape="rect" id="Node000004" href="$d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715" title="Функция&#45;множитель, позволяющая моделировать разгон" alt="" coords="512,47,701,87"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="451,65,498,65,498,70,451,70"/>
+</map>

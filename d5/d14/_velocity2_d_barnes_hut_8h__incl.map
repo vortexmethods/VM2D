@@ -1,0 +1,16 @@
+<map id="VM2D/Velocity2D/Velocity2DBarnesHut.h" name="VM2D/Velocity2D/Velocity2DBarnesHut.h">
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса VelocityBarnesHut." alt="" coords="99,5,298,45"/>
+<area shape="rect" id="Node000002" href="$dc/d81/_velocity2_d_8h.html" title="Заголовочный файл с описанием класса Velocity." alt="" coords="147,93,251,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,46,201,79,196,79,196,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,240,83,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="147,114,119,121,90,131,63,147,42,168,36,182,34,196,38,226,33,227,29,196,31,180,38,165,60,142,87,126,117,116,146,109"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="121,240,183,265"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="212,118,235,151,241,172,237,193,217,218,193,236,190,231,214,214,232,191,236,172,231,153,208,121"/>
+<area shape="rect" id="Node000005" href="$db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="237,240,355,265"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="213,117,235,138,257,165,275,196,289,226,284,228,270,199,252,168,231,142,210,121"/>
+<area shape="rect" id="Node000006" href="$dd/dea/_optimized_velocity2_d_8h.html" title=" " alt="" coords="52,167,223,192"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="191,121,158,158,154,154,187,117"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="124,194,72,234,68,229,121,190"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="142,192,149,226,144,227,137,193"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="164,190,259,232,257,237,162,194"/>
+</map>

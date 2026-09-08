@@ -1,0 +1,5 @@
+<map id="VM2D::Velocity::GetWakeInfluenceToRhs" name="VM2D::Velocity::GetWakeInfluenceToRhs">
+<area shape="rect" id="Node000001" title="Генерация вектора влияния вихревого следа на профиль" alt="" coords="224,5,469,45"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="5,13,176,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,28,176,28,176,23,210,23"/>
+</map>

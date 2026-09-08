@@ -1,0 +1,17 @@
+<map id="VMlib::LogStream::assignStream" name="VMlib::LogStream::assignStream">
+<area shape="rect" id="Node000001" title="Связывание потока логов с потоком вывода" alt="" coords="443,47,629,87"/>
+<area shape="rect" id="Node000002" href="$d1/d71/class_v_mlib_1_1_queue.html#a2ae8aee033f6b1577f58024d2c32c4e0" title="Конструктор" alt="" coords="222,5,381,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="429,48,362,33,363,28,430,42"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a458d892d4d9ebb62d8534a97e79902f6" title="Конструктор" alt="" coords="208,55,395,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="429,70,395,70,395,65,429,65"/>
+<area shape="rect" id="Node000004" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a38970908d6109aab35ca752bee3d1331" title="Связывание потока логов с потоком вывода от другого потока логов" alt="" coords="208,105,395,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="441,93,384,107,383,102,439,88"/>
+<area shape="rect" id="Node000005" href="$d9/d9a/class_v_mlib_1_1_passport_gen.html#a703aca8a49605c4e7e3f278c2cdf8ecd" title="Конструктор" alt="" coords="9,9,157,49"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="225,102,207,94,182,78,159,63,134,51,136,46,161,58,185,74,209,89,227,97"/>
+<area shape="rect" id="Node000006" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a3e443ead3072f3955645e6e05dc3312e" title="Конструктор, принимающий один поток" alt="" coords="5,73,160,113"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="194,112,160,107,161,101,195,106"/>
+<area shape="rect" id="Node000007" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a36eac28b6262e596cf20724179b07097" title="Конструктор, принимающий четыре потока" alt="" coords="5,137,160,177"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="195,143,161,148,160,143,194,138"/>
+<area shape="rect" id="Node000008" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a1608fe2a19315c2274b66f16a52fc10a" title="Конструктор, принимающий два потока" alt="" coords="5,201,160,241"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="246,153,161,191,133,203,131,198,159,186,243,148"/>
+</map>

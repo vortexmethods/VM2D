@@ -1,0 +1,14 @@
+<map id="VM2D::Airfoil::Move" name="VM2D::Airfoil::Move">
+<area shape="rect" id="Node000001" title="Перемещение профиля" alt="" coords="5,95,157,121"/>
+<area shape="rect" id="Node000002" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин" alt="" coords="205,70,423,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,97,191,93,192,99,158,102"/>
+<area shape="rect" id="Node000006" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a" title="Вычисляет габаритный прямоугольник профиля" alt="" coords="217,119,411,145"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="158,113,203,118,203,123,157,118"/>
+<area shape="rect" id="Node000003" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="471,5,644,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="368,67,458,46,460,51,369,73"/>
+<area shape="rect" id="Node000004" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="692,95,879,121"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="423,86,679,100,678,105,423,91"/>
+<area shape="rect" id="Node000005" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8974f47ee5cf514aa6ac17b3af4daf62" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному" alt="" coords="472,121,643,146"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="377,93,483,115,482,120,376,98"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="643,121,678,117,679,123,644,126"/>
+</map>

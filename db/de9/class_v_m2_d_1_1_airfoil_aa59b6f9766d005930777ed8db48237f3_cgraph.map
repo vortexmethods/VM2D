@@ -1,0 +1,10 @@
+<map id="VM2D::Airfoil::CalcNrmTauLen" name="VM2D::Airfoil::CalcNrmTauLen">
+<area shape="rect" id="Node000001" title="Вычисление нормалей, касательных и длин панелей по текущему положению вершин" alt="" coords="5,70,223,95"/>
+<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="271,5,444,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,67,258,46,260,51,169,73"/>
+<area shape="rect" id="Node000003" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="492,95,679,121"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,86,479,100,478,105,223,91"/>
+<area shape="rect" id="Node000004" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8974f47ee5cf514aa6ac17b3af4daf62" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному" alt="" coords="272,121,443,146"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="177,93,283,115,282,120,176,98"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="443,121,478,117,479,123,444,126"/>
+</map>

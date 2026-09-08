@@ -1,0 +1,11 @@
+<map id="fmm::velDipole3d" name="fmm::velDipole3d">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,144,80"/>
+<area shape="rect" id="Node000002" href="$db/d0f/namespacefmm.html#a9fe90accb46effc9d1c99a9f9e064b79" title=" " alt="" coords="215,5,299,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,52,201,30,203,35,123,57"/>
+<area shape="rect" id="Node000004" href="$db/d0f/namespacefmm.html#ac762a515925f979d805785df854529cf" title=" " alt="" coords="216,55,299,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="144,65,202,65,202,70,144,70"/>
+<area shape="rect" id="Node000005" href="$db/d0f/namespacefmm.html#aca626842b0e840809a9a271fcd1f27a0" title=" " alt="" coords="192,104,323,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="123,77,197,98,195,103,122,83"/>
+<area shape="rect" id="Node000003" href="$db/d0f/namespacefmm.html#a5d88cfeb8862c5b7d35007cc83e152ca" title=" " alt="" coords="371,5,465,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="299,15,357,15,357,21,299,21"/>
+</map>

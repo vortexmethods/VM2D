@@ -1,0 +1,9 @@
+<map id="VMlib::StreamParser::ParseStream" name="VMlib::StreamParser::ParseStream">
+<area shape="rect" id="Node000001" title="Парсинг заданного потока" alt="" coords="208,69,363,109"/>
+<area shape="rect" id="Node000002" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a3e443ead3072f3955645e6e05dc3312e" title="Конструктор, принимающий один поток" alt="" coords="5,5,160,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,68,146,48,147,43,209,63"/>
+<area shape="rect" id="Node000003" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a36eac28b6262e596cf20724179b07097" title="Конструктор, принимающий четыре потока" alt="" coords="5,69,160,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,92,161,92,161,87,194,87"/>
+<area shape="rect" id="Node000004" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a1608fe2a19315c2274b66f16a52fc10a" title="Конструктор, принимающий два потока" alt="" coords="5,133,160,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="209,116,147,136,146,131,207,111"/>
+</map>

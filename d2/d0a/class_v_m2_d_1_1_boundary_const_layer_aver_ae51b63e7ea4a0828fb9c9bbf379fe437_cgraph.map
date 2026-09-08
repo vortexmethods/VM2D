@@ -1,0 +1,9 @@
+<map id="VM2D::BoundaryConstLayerAver::GetInfluenceFromVorticesToRectPanel" name="VM2D::BoundaryConstLayerAver::GetInfluenceFromVorticesToRectPanel">
+<area shape="rect" id="Node000001" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на прямолинейную панель для правой ч..." alt="" coords="5,20,232,75"/>
+<area shape="rect" id="Node000002" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами" alt="" coords="315,5,419,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,31,301,23,301,28,233,37"/>
+<area shape="rect" id="Node000004" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="280,55,453,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="233,57,267,61,266,67,232,63"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения" alt="" coords="501,5,611,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="419,15,487,15,487,21,419,21"/>
+</map>

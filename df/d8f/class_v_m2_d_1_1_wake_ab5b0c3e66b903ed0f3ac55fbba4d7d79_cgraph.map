@@ -1,0 +1,19 @@
+<map id="VM2D::Wake::Inside" name="VM2D::Wake::Inside">
+<area shape="rect" id="Node000001" title="Проверка пересечения вихрями следа профиля при перемещении" alt="" coords="5,74,156,99"/>
+<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="497,5,671,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,71,204,59,350,41,483,29,484,34,351,46,204,64,138,77"/>
+<area shape="rect" id="Node000003" href="$df/d8f/class_v_m2_d_1_1_wake.html#a400fefddd41761ea02afd8a15fb7764e" title="Проверка проникновения точки через границу профиля" alt="" coords="228,74,415,99"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="156,84,214,84,214,89,156,89"/>
+<area shape="rect" id="Node000006" href="$df/d8f/class_v_m2_d_1_1_wake.html#a7d45c51ef437950292d39efc768ee1ea" title="Проверка проникновения точки через границу профиля" alt="" coords="204,124,439,164"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="135,97,224,118,223,123,134,102"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="376,71,484,46,485,51,377,77"/>
+<area shape="rect" id="Node000004" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="497,69,671,109"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="415,85,483,86,483,91,415,90"/>
+<area shape="rect" id="Node000005" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a5c4d2f8431f7232fbcf7d367501a8bd5" title="Определяет, находится ли точка с радиус&#45;вектором &#160;вне габаритного прямоугольника профиля" alt="" coords="495,133,673,173"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="385,97,439,109,504,127,503,132,438,115,384,102"/>
+<area shape="poly" id="edge7_Node000006_Node000002" title=" " alt="" coords="411,121,437,108,452,96,461,83,470,69,485,55,495,49,498,54,488,59,474,72,465,86,456,99,440,113,413,126"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="417,121,483,107,485,113,419,127"/>
+<area shape="poly" id="edge9_Node000006_Node000005" title=" " alt="" coords="439,146,482,147,482,152,439,151"/>
+<area shape="rect" id="Node000007" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="487,198,681,223"/>
+<area shape="poly" id="edge10_Node000006_Node000007" title=" " alt="" coords="401,161,520,192,519,197,400,167"/>
+</map>

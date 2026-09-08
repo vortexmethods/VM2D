@@ -1,0 +1,5 @@
+<map id="VM2D::Passport::GetReviseParamsFromParser" name="VM2D::Passport::GetReviseParamsFromParser">
+<area shape="rect" id="Node000001" title="Считывание измененных параметров" alt="" coords="5,5,204,45"/>
+<area shape="rect" id="Node000002" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="252,5,407,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,23,238,23,238,28,204,28"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="VMlib::TimersGen::GenerateStatHeader" name="VMlib::TimersGen::GenerateStatHeader">
+<area shape="rect" id="Node000001" title="Формирование заголовка файла временной статистики" alt="" coords="5,47,212,87"/>
+<area shape="rect" id="Node000002" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a3ed84c08ddef7a5d3a4577cd84448cab" title=" " alt="" coords="260,5,500,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,46,296,30,297,36,213,51"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5" title="Формирование подзаголовка в текстовом файле вывода программы VM2D/VM3D." alt="" coords="276,55,484,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,65,262,65,262,70,212,70"/>
+<area shape="rect" id="Node000004" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D." alt="" coords="284,104,476,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="213,84,297,99,296,104,212,89"/>
+<area shape="rect" id="Node000005" href="$dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b" title="Формирование строки с текущем временем и датой" alt="" coords="553,79,732,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="476,105,539,99,540,104,477,110"/>
+<area shape="rect" id="Node000006" href="$dd/d9a/namespace_v_mlib.html#a0a87d58eb362cd4f9b9f2830264579ed" title="Передача в поток вывода шапки программы VM2D/VM3D." alt="" coords="548,128,737,153"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="477,123,534,128,534,133,476,128"/>
+</map>

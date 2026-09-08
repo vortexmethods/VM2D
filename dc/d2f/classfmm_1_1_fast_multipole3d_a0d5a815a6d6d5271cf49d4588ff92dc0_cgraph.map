@@ -1,0 +1,11 @@
+<map id="fmm::FastMultipole3d::Multipole" name="fmm::FastMultipole3d::Multipole">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,169,63"/>
+<area shape="rect" id="Node000002" href="$db/d0f/namespacefmm.html#a11869d9ccba0ca55855ac22d360b3806" title=" " alt="" coords="217,5,367,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,31,203,26,204,32,170,36"/>
+<area shape="rect" id="Node000003" href="$db/d0f/namespacefmm.html#a48b3984201b4624efeee815dc2d7dada" title=" " alt="" coords="230,55,354,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="170,50,216,56,216,61,169,56"/>
+<area shape="rect" id="Node000004" href="$db/d0f/namespacefmm.html#a9fe90accb46effc9d1c99a9f9e064b79" title=" " alt="" coords="415,55,499,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="354,65,401,65,401,70,354,70"/>
+<area shape="rect" id="Node000005" href="$db/d0f/namespacefmm.html#a5d88cfeb8862c5b7d35007cc83e152ca" title=" " alt="" coords="547,55,641,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="499,65,533,65,533,70,499,70"/>
+</map>

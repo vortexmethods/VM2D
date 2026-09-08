@@ -1,0 +1,31 @@
+<map id="VMlib/TimesGen/TimesGen.cpp" name="VMlib/TimesGen/TimesGen.cpp">
+<area shape="rect" id="Node000001" title="Ôàéë êîäà ñ îïèñàíèåì êëàññà TimersGen." alt="" coords="176,5,403,31"/>
+<area shape="rect" id="Node000002" href="$da/d3d/_times_gen_8h.html" title="Заголовочный файл с описанием класса TimesGen." alt="" coords="153,152,253,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="275,33,252,53,230,80,217,110,209,139,204,138,212,108,226,77,248,50,272,29"/>
+<area shape="rect" id="Node000007" href="$d6/d1c/_passport_gen_8h.html" title="Заголовочный файл с описанием класса PasportGen." alt="" coords="387,79,501,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="315,28,407,70,405,75,313,33"/>
+<area shape="rect" id="Node000014" href="$d7/d50/_world_gen_8h.html" title="Заголовочный файл с описанием класса WorldGen." alt="" coords="241,79,338,104"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="292,31,292,65,287,65,287,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,225,72,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="177,180,79,222,77,217,175,175"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="96,225,147,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="191,179,147,218,143,214,188,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="259,225,336,251"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="219,175,272,215,269,219,216,179"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="171,225,234,251"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="205,178,205,212,200,212,200,178"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="398,107,357,125,337,138,321,154,306,182,301,212,296,211,301,180,317,150,334,133,354,120,396,102"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="331,152,411,177"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="434,106,394,144,391,140,430,102"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="435,152,509,177"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="451,103,465,138,460,140,446,105"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="534,152,597,177"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="465,102,535,143,533,147,462,106"/>
+<area shape="rect" id="Node000011" href="$d6/dbd/_log_stream_8h.html" title="Заголовочный файл с описанием класса LogStream." alt="" coords="621,152,725,177"/>
+<area shape="poly" id="edge11_Node000007_Node000011" title=" " alt="" coords="482,101,624,145,622,150,480,107"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="589,225,665,251"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="668,179,644,215,640,212,663,176"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="689,225,748,251"/>
+<area shape="poly" id="edge13_Node000011_Node000013" title=" " alt="" coords="683,176,706,212,702,215,679,179"/>
+<area shape="poly" id="edge15_Node000014_Node000002" title=" " alt="" coords="277,106,229,145,226,141,274,102"/>
+</map>

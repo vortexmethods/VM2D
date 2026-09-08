@@ -1,0 +1,7 @@
+<map id="VM2D::Airfoil::calcMeanEpsOverPanel" name="VM2D::Airfoil::calcMeanEpsOverPanel">
+<area shape="rect" id="Node000001" title="Вычисление средних значений eps на панелях" alt="" coords="493,5,695,45"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a42a48cb3fcf4d65437fd954fae7a03d7" title="Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных),..." alt="" coords="215,13,445,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="479,28,445,28,445,23,479,23"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,13,167,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="201,28,167,28,167,23,201,23"/>
+</map>

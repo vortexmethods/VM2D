@@ -1,0 +1,19 @@
+<map id="VMlib::Queue::LoadTasksList" name="VMlib::Queue::LoadTasksList">
+<area shape="rect" id="Node000001" title="Загрузка списка задач" alt="" coords="5,153,212,179"/>
+<area shape="rect" id="Node000002" href="$d1/d71/class_v_mlib_1_1_queue.html#aa65ca1662e24d2933ea2d2d3063b1bc2" title="Добавление задачи в список" alt="" coords="275,5,445,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,151,176,97,215,66,259,40,275,33,277,38,261,44,218,70,179,101,123,155"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a23aa9866eb62425a522a22882cf81d3a" title="Создание каталога" alt="" coords="260,55,460,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="130,151,188,120,259,89,283,81,285,86,261,94,190,125,133,156"/>
+<area shape="rect" id="Node000004" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a189a69073636a4f93a1de3c7a8e13098" title="Вывод в поток логов пустой строки" alt="" coords="273,104,447,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="174,151,281,129,282,135,175,156"/>
+<area shape="rect" id="Node000005" href="$dd/d9a/namespace_v_mlib.html#a81c8d894928e9ff5468d1bcd857843e6" title="Проверка существования файла" alt="" coords="287,153,433,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="212,163,274,163,274,169,212,169"/>
+<area shape="rect" id="Node000006" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a5b557a9d203fb474d9c2c924e409c54d" title="Разбор строки на пару ключ&#45;значение" alt="" coords="283,203,437,243"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="166,176,270,200,269,205,165,181"/>
+<area shape="rect" id="Node000008" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a2dfcd2239e37cb8bd6e5678408d8a298" title="Pазбор строки, содержащей запятые, на отдельные строки" alt="" coords="283,267,437,307"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="130,176,187,213,261,253,278,260,276,265,259,258,184,218,127,181"/>
+<area shape="rect" id="Node000009" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a7391437b44322ca96eaa34b1ce8f6b21" title="Объединение вектора (списка) из строк в одну строку" alt="" coords="279,331,441,371"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="121,177,176,243,216,283,261,317,273,323,270,328,259,322,212,287,172,247,117,180"/>
+<area shape="rect" id="Node000007" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="508,203,663,243"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="437,221,494,221,494,226,437,226"/>
+</map>

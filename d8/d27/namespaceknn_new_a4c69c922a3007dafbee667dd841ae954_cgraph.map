@@ -1,0 +1,7 @@
+<map id="knnNew::calcCheck" name="knnNew::calcCheck">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,153,56"/>
+<area shape="rect" id="Node000002" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d" title="Функция для доступа к циркуляции вихря" alt="" coords="201,5,344,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,31,187,26,188,32,154,36"/>
+<area shape="rect" id="Node000003" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="203,55,343,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,50,189,54,189,60,154,55"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="VM2D::MechanicsRigidGivenLaw::VeloOfAirfoilRcm" name="VM2D::MechanicsRigidGivenLaw::VeloOfAirfoilRcm">
+<area shape="rect" id="Node000001" title="Вычисление скорости центра масс профиля" alt="" coords="5,5,215,45"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="263,13,471,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,23,249,23,249,28,215,28"/>
+</map>

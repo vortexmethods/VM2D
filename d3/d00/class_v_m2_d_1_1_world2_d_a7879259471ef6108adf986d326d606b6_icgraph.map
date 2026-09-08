@@ -1,0 +1,5 @@
+<map id="VM2D::World2D::getMechanics" name="VM2D::World2D::getMechanics">
+<area shape="rect" id="Node000001" title="Возврат константной ссылки на объект механики" alt="" coords="224,5,447,31"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="5,5,176,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,21,176,21,176,15,210,15"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="VMlib::ModifyE2" name="VMlib::ModifyE2">
+<area shape="rect" id="Node000001" title="Модифицирует массив квадратов расстояний до ближайших вихрей из wake." alt="" coords="331,13,457,38"/>
+<area shape="rect" id="Node000002" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a0643eb95fff58c7587be23bff59d8165" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="5,5,283,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="317,28,283,28,283,23,317,23"/>
+</map>

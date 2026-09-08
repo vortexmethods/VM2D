@@ -1,0 +1,5 @@
+<map id="VM2D::MechanicsRigidGivenLaw::AngularVelocityOfAirfoil" name="VM2D::MechanicsRigidGivenLaw::AngularVelocityOfAirfoil">
+<area shape="rect" id="Node000001" title="Вычисление угловой скорости профиля" alt="" coords="5,5,216,45"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="264,13,472,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,23,250,23,250,28,216,28"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="fmm::FastMultipole3d::RotateY" name="fmm::FastMultipole3d::RotateY">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,59,169,99"/>
+<area shape="rect" id="Node000002" href="$db/d0f/namespacefmm.html#a3b4ad91cfd82f99e5c1636c0b6dac152" title=" " alt="" coords="217,29,312,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,59,204,52,205,57,170,65"/>
+<area shape="rect" id="Node000003" href="$db/d0f/namespacefmm.html#a47708277bff75979b5f929d2f508f92f" title=" " alt="" coords="221,103,308,128"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="170,93,208,101,207,106,169,99"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="235,31,229,21,232,11,245,5,265,3,289,6,299,15,296,19,287,11,265,8,246,10,236,15,234,20,240,28"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="235,104,229,94,232,85,245,78,265,76,289,80,299,88,296,92,287,84,265,81,246,83,236,88,234,94,240,101"/>
+</map>

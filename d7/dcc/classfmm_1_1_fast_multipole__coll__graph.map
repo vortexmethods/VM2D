@@ -1,0 +1,24 @@
+<map id="fmm::FastMultipole" name="fmm::FastMultipole">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1331,87,1479,113"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="635,32,825,72"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="839,31,939,21,1058,16,1184,23,1247,32,1307,47,1351,64,1386,85,1383,90,1348,69,1306,52,1246,38,1183,28,1058,21,940,26,839,37"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="939,51,1164,91"/>
+<area shape="poly" id="edge11_Node000011_Node000002" title=" " alt="" coords="839,56,939,61,938,67,839,61"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="296,39,476,65"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="489,49,634,49,634,55,489,55"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="969,115,1134,141"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1148,126,1225,124,1306,117,1349,110,1350,115,1307,123,1226,129,1148,132"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="969,165,1134,205"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1147,177,1226,166,1306,147,1347,130,1382,111,1384,115,1349,134,1307,152,1227,171,1148,182"/>
+<area shape="rect" id="Node000006" href="$de/d6a/classfmm_1_1_morton_tree.html" title=" " alt="" coords="641,165,819,205"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="833,183,969,183,969,188,833,188"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="299,105,473,145"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="487,133,611,152,658,163,657,168,610,157,487,138"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="307,173,465,198"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="479,183,641,183,641,188,479,188"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="281,222,491,247"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="503,218,610,203,640,198,641,203,611,208,504,223"/>
+<area shape="rect" id="Node000010" href="$db/d0d/structfmm_1_1particle.html" title=" " alt="" coords="5,215,168,255"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="182,232,281,232,281,237,182,237"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1178,78,1331,91,1330,97,1177,84"/>
+</map>

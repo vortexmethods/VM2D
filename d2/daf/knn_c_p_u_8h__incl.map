@@ -1,0 +1,24 @@
+<map id="VM2D/Wake2D/knnCPU.h" name="VM2D/Wake2D/knnCPU.h">
+<area shape="rect" id="Node000001" title="Çàãîëîâî÷íûé ôàéë ñ ôóíêöèÿìè äëÿ ðåàëèçàöèè knn äëÿ CPU." alt="" coords="71,5,256,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,299,68,324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,32,50,287,45,285,156,30"/>
+<area shape="rect" id="Node000003" href="$d8/d19/_vortex2_d_8h.html" title="Заголовочный файл с описанием класса Vortex2D." alt="" coords="160,79,255,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,30,195,66,191,68,168,32"/>
+<area shape="rect" id="Node000004" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="185,152,270,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="213,104,223,138,218,140,208,105"/>
+<area shape="rect" id="Node000005" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="197,225,300,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="233,177,244,211,239,213,228,178"/>
+<area shape="poly" id="edge11_Node000005_Node000002" title=" " alt="" coords="215,253,82,298,80,293,214,248"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="93,299,149,324"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="229,253,155,294,153,289,227,248"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="173,299,236,324"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="244,252,221,288,217,286,239,250"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="261,299,327,324"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="258,250,282,286,277,289,254,252"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="352,299,463,324"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="275,248,370,291,368,295,273,253"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="487,299,563,324"/>
+<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="294,248,474,294,473,299,292,253"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="587,299,630,324"/>
+<area shape="poly" id="edge10_Node000005_Node000011" title=" " alt="" coords="301,244,422,263,575,296,573,301,421,269,300,249"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="VM2D::Airfoil::lightningTest" name="VM2D::Airfoil::lightningTest">
+<area shape="rect" id="Node000001" title="Тест на &quot;отвещенность&quot;." alt="" coords="268,42,467,67"/>
+<area shape="rect" id="Node000002" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a40bf363b8af4fa85b5bfbb8117e156f6" title="Перемещение профиля в соответствии с законом" alt="" coords="5,5,220,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,44,220,40,221,35,255,39"/>
+<area shape="rect" id="Node000003" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afa0496537fb81b12de574b8d4e7f441c" title="Считывание профиля из файла" alt="" coords="10,70,215,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,70,216,74,215,69,254,64"/>
+</map>

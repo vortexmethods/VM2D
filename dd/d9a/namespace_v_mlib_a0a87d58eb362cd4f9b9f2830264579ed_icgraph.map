@@ -1,0 +1,23 @@
+<map id="VMlib::PrintLogoToStream" name="VMlib::PrintLogoToStream">
+<area shape="rect" id="Node000001" title="Передача в поток вывода шапки программы VM2D/VM3D." alt="" coords="841,146,1031,171"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a458d892d4d9ebb62d8534a97e79902f6" title="Конструктор" alt="" coords="604,121,791,146"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="827,150,791,146,791,141,828,145"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a6d5de500176d749e202a1bdd27a69012" title="Формирование заголовка файла программы VM2D/VM3D." alt="" coords="601,170,793,195"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="828,172,794,176,793,170,827,167"/>
+<area shape="rect" id="Node000004" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#af3a8d945b95040f68d26f218446b5a7e" title="Генерация заголовка файла нагрузок" alt="" coords="339,5,545,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="609,166,600,159,588,147,581,134,575,108,569,83,562,71,552,59,534,48,537,43,555,55,567,68,574,81,580,107,586,132,592,144,603,155,612,161"/>
+<area shape="rect" id="Node000005" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a26bda53fc8c550caa29d96f6d9f040de" title="Генерация заголовка файла положения профиля" alt="" coords="339,69,545,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="621,168,600,160,576,142,552,124,524,112,526,107,555,119,579,137,603,155,623,163"/>
+<area shape="rect" id="Node000006" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a7f7e814aa0fd8596f077c89115768857" title="Формирование заголовка файла временной статистики" alt="" coords="339,133,545,173"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="588,173,545,168,546,163,588,167"/>
+<area shape="rect" id="Node000009" href="$df/db0/gamma_circ_8h.html#a9d10c0be3097db5aba3c647479751554" title=" " alt="" coords="423,198,461,223"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="588,197,462,211,461,206,587,192"/>
+<area shape="rect" id="Node000010" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#a1d975b5b255c40264f6784f2646d58db" title="Чтение точек, в которых нужно посчитать давление и скорость" alt="" coords="331,248,553,288"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="651,203,554,237,512,250,511,245,552,232,649,198"/>
+<area shape="rect" id="Node000011" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#aae0da0b275e8ed39dfc747b4dc88a6fc" title=" " alt="" coords="337,313,547,338"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="677,207,624,256,591,281,554,302,520,315,519,310,552,298,588,277,621,252,673,204"/>
+<area shape="rect" id="Node000007" href="$d1/d71/class_v_mlib_1_1_queue.html#ad329e4b98e6336af7f2604c5247074b4" title="Процедура постановка новых задач на отсчет и занятие процессоров" alt="" coords="108,141,283,166"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="325,156,283,156,283,151,325,151"/>
+<area shape="rect" id="Node000008" href="$d1/d0c/_v_m2_d_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,141,60,166"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="95,156,60,156,60,151,95,151"/>
+</map>

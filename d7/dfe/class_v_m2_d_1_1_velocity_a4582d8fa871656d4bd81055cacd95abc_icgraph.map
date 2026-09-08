@@ -1,0 +1,8 @@
+<map id="VM2D::Velocity::CalcConvVeloToSetOfPointsFromWake" name="VM2D::Velocity::CalcConvVeloToSetOfPointsFromWake">
+<area shape="rect" id="Node000001" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="503,5,711,45"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="5,13,223,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="489,25,455,24,271,24,223,25,223,20,271,19,455,19,489,19"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813" title="Вычисление скоростей в точках wakeVP." alt="" coords="271,33,455,73"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="489,41,455,45,454,40,489,36"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="257,44,223,40,223,35,257,39"/>
+</map>

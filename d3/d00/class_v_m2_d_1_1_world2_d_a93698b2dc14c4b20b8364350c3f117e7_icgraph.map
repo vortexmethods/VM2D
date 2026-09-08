@@ -1,0 +1,11 @@
+<map id="VM2D::World2D::getVelocity" name="VM2D::World2D::getVelocity">
+<area shape="rect" id="Node000001" title="Возврат константной ссылки на объект для вычисления скоростей" alt="" coords="776,42,981,67"/>
+<area shape="rect" id="Node000002" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a174780bb8e877b96c05d7f15523deed9" title="Вычисление средних значений eps на панелях" alt="" coords="510,5,711,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="762,45,711,39,712,34,763,39"/>
+<area shape="rect" id="Node000005" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="493,70,728,95"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="763,69,728,73,728,68,762,64"/>
+<area shape="rect" id="Node000003" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a42a48cb3fcf4d65437fd954fae7a03d7" title="Вычисление скоростей (и конвективных, и диффузионных) вихрей (в пелене и виртуальных),..." alt="" coords="215,13,445,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="496,28,445,28,445,23,496,23"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,13,167,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="201,28,167,28,167,23,201,23"/>
+</map>

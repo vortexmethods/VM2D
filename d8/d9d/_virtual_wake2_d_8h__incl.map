@@ -1,0 +1,19 @@
+<map id="VM2D/VirtualWake2D/VirtualWake2D.h" name="VM2D/VirtualWake2D/VirtualWake2D.h">
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса VirtualWake." alt="" coords="111,5,273,45"/>
+<area shape="rect" id="Node000002" href="$db/ddb/_wake_data_base2_d_8h.html" title="Заголовочный файл с описанием класса WakeDataBase." alt="" coords="117,93,267,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,46,195,79,189,79,189,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="114,167,177,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="187,120,163,157,158,154,182,118"/>
+<area shape="rect" id="Node000004" href="$d9/d01/_gpu2_d_8h.html" title="Заголовочный файл с описанием класса Gpu." alt="" coords="201,167,279,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="202,118,227,154,222,157,198,121"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,240,64,265"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="208,195,78,239,76,234,206,189"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="88,240,165,265"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="223,194,158,235,155,230,220,190"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="189,240,291,265"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="243,192,243,226,237,226,237,192"/>
+<area shape="rect" id="Node000008" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="315,240,403,265"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="260,190,329,230,326,235,258,194"/>
+<area shape="rect" id="Node000009" href="$db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="427,240,544,265"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="280,189,433,234,432,239,279,195"/>
+</map>

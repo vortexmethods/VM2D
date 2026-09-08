@@ -1,0 +1,17 @@
+<map id="VMlib::StreamParser::SetDefault" name="VMlib::StreamParser::SetDefault">
+<area shape="rect" id="Node000001" title="Установка значения параметра по умолчанию" alt="" coords="236,146,391,186"/>
+<area shape="rect" id="Node000002" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a2eee041ee87f32745d94b814ddc5ece9" title="Считывание логической переменной из базы данных" alt="" coords="5,5,188,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="287,137,244,89,216,65,187,44,162,33,164,28,189,40,220,60,247,85,291,133"/>
+<area shape="rect" id="Node000003" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a44cb3c724b33fd4bca047450b95ea28e" title="Считывание точки из базы данных" alt="" coords="5,55,188,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="271,140,231,116,187,94,155,83,156,78,189,89,234,111,273,136"/>
+<area shape="rect" id="Node000004" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a4795229c2717dc6de34906c121703689" title="Считывание пары: ((строка, целое число), строка) вида ((str1, int), string) из базы данных" alt="" coords="5,104,188,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="222,148,152,132,154,127,224,143"/>
+<area shape="rect" id="Node000005" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a5239e9108a581b43b546097f0d855331" title="Считывание пары (строка, скаляр) из базы данных" alt="" coords="5,153,188,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="222,169,188,169,188,163,222,163"/>
+<area shape="rect" id="Node000006" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a81422d89399df8c257d898e8b67e6203" title="Считывание вектора из простых типов из базы данных" alt="" coords="5,203,188,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="224,189,154,205,152,200,222,184"/>
+<area shape="rect" id="Node000007" href="$db/d04/class_v_mlib_1_1_stream_parser.html#abbc8f63f6b04992a7040d48a8d63524b" title="Считывание скаляра из базы данных" alt="" coords="5,252,188,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="273,196,233,220,189,242,153,254,151,249,187,237,231,215,270,191"/>
+<area shape="rect" id="Node000008" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a7cda5d0f194cca0a1b209c8ecb5eeaf9" title="Считывание точки из базы данных" alt="" coords="5,301,188,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="290,199,247,246,219,270,189,291,160,304,158,299,187,286,216,266,243,242,287,195"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="VM2D::Velocity::CalcDiffVeloI1I2ToWakeFromWake" name="VM2D::Velocity::CalcDiffVeloI1I2ToWakeFromWake">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,113,196,153"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a9d62ab68ad9f30cb51837040128f5965" title="Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек" alt="" coords="244,113,476,153"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,130,230,130,230,135,196,135"/>
+<area shape="rect" id="Node000003" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d" title="Функция для доступа к циркуляции вихря" alt="" coords="557,5,699,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="391,110,451,75,523,41,550,32,552,37,525,46,453,80,394,115"/>
+<area shape="rect" id="Node000004" href="$db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a1c8981ef6435a9f245ffd4baa16c4d32" title="Функция минимально возможного значения для epsAst." alt="" coords="531,55,725,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="454,110,520,96,521,101,455,115"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="524,120,732,145"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="476,130,510,130,510,135,476,135"/>
+<area shape="rect" id="Node000006" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="535,169,721,195"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="470,150,546,164,545,169,469,155"/>
+<area shape="rect" id="Node000007" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="558,219,698,244"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="402,150,459,177,525,203,555,213,553,218,523,209,457,182,399,155"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="VM2D::AirfoilGeometry" name="VM2D::AirfoilGeometry">
+<area shape="rect" id="Node000001" title="Класс, определяющий форму профиля" alt="" coords="261,81,435,106"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="8,23,180,49"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,49,292,78,290,83,164,54"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,73,183,113"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,91,261,91,261,96,197,96"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="11,138,177,163"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="164,132,290,103,292,109,165,138"/>
+</map>

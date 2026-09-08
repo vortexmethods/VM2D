@@ -1,0 +1,13 @@
+<map id="VMlib/WorldGen/WorldGen.h" name="VMlib/WorldGen/WorldGen.h">
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса WorldGen." alt="" coords="63,5,268,31"/>
+<area shape="rect" id="Node000002" href="$da/d3d/_times_gen_8h.html" title="Заголовочный файл с описанием класса TimesGen." alt="" coords="115,79,215,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,31,168,65,163,65,163,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,72,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="146,106,73,147,70,143,144,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="96,152,147,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="160,106,138,142,133,139,156,103"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="171,152,248,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="175,103,197,139,193,142,170,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="273,152,335,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="189,102,270,143,268,148,186,106"/>
+</map>

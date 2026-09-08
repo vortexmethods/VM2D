@@ -1,0 +1,31 @@
+<map id="VM2D::GmresSolver::PreCalculateCoef" name="VM2D::GmresSolver::PreCalculateCoef">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,302,167,342"/>
+<area shape="rect" id="Node000002" href="$dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587" title="Вспомогательная функция вычисления угла между векторами" alt="" coords="267,5,371,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,301,99,248,121,178,138,140,158,103,183,69,213,40,232,28,252,21,254,26,234,33,216,44,187,73,163,106,143,142,126,179,104,250,93,302"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a4bb03a64c2fa1f064fac02e69c125187" title="Возврат константной ссылки на объект профиля" alt="" coords="223,55,415,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="90,301,104,257,129,200,165,141,187,114,213,91,223,84,226,88,216,95,191,118,169,144,134,202,109,259,95,303"/>
+<area shape="rect" id="Node000005" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="232,105,405,145"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="95,301,140,229,173,189,213,155,223,149,225,153,216,159,177,193,144,233,100,303"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="215,169,423,195"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="102,300,149,252,180,227,213,205,232,197,234,202,216,210,183,231,152,256,106,304"/>
+<area shape="rect" id="Node000007" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="232,219,405,259"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="134,299,214,269,236,261,238,266,216,274,136,304"/>
+<area shape="rect" id="Node000008" href="$db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d" title="Проверка, идет ли вершина i следом за вершиной j." alt="" coords="239,284,398,309"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="167,311,226,304,226,309,167,316"/>
+<area shape="rect" id="Node000009" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6bc3591c405e791a4dd542f53258e115" title="Геометрический поворот двумерного вектора на 90 градусов" alt="" coords="225,333,412,359"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="167,328,212,332,211,338,167,333"/>
+<area shape="rect" id="Node000010" href="$dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177" title="Вспомогательная функция вычисления логарифма отношения норм векторов" alt="" coords="259,383,378,408"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="137,340,215,367,248,377,247,382,214,373,136,345"/>
+<area shape="rect" id="Node000011" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64" title="Вычисление 2&#45;нормы (длины) вектора" alt="" coords="471,556,657,581"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="93,341,105,390,127,454,143,486,163,517,187,544,216,566,251,583,289,594,328,600,368,602,444,595,508,582,509,588,445,601,368,607,328,606,288,600,249,588,213,571,184,548,159,520,139,489,122,456,99,392,88,343"/>
+<area shape="rect" id="Node000012" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="221,481,416,507"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="101,341,146,403,179,438,216,466,231,474,229,479,213,471,175,442,142,407,97,344"/>
+<area shape="rect" id="Node000013" href="$dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f" title="Вспомогательная функция вычисления величины ." alt="" coords="261,432,376,457"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="110,340,156,379,216,417,249,429,247,434,213,422,153,384,106,344"/>
+<area shape="rect" id="Node000014" href="$d6/dd4/class_v_mlib_1_1numvector.html#a8974f47ee5cf514aa6ac17b3af4daf62" title="Вычисление орта вектора или вектора заданной длины, коллинеарного данному" alt="" coords="233,531,404,556"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="97,341,113,379,139,427,173,475,193,497,216,516,228,523,225,528,213,520,190,501,169,479,134,429,108,381,92,343"/>
+<area shape="rect" id="Node000003" href="$dd/d9a/namespace_v_mlib.html#a98540b7a51b343eb622b9bdc4749921d" title="Вычисление третьей компоненты векторного произведения" alt="" coords="509,219,619,244"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="372,20,399,27,424,40,469,78,505,123,534,168,554,205,549,207,529,170,501,126,465,81,421,44,397,32,370,25"/>
+<area shape="poly" id="edge13_Node000013_Node000003" title=" " alt="" coords="375,436,399,428,421,417,465,380,501,336,529,292,549,255,553,258,534,295,505,339,468,384,424,422,401,433,377,441"/>
+<area shape="poly" id="edge15_Node000014_Node000011" title=" " alt="" coords="404,549,457,555,457,560,404,555"/>
+</map>

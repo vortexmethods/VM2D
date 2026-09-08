@@ -1,0 +1,9 @@
+<map id="VM2D::Mechanics::GenerateForcesString" name="VM2D::Mechanics::GenerateForcesString">
+<area shape="rect" id="Node000001" title="Сохранение строки со статистикой в файл нагрузок" alt="" coords="5,47,212,87"/>
+<area shape="rect" id="Node000002" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#aa066a8e863abe903c85f9504f035daa6" title="Возврат константной ссылки на параметры распараллеливания по MPI." alt="" coords="262,5,498,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,46,296,30,297,36,213,51"/>
+<area shape="rect" id="Node000003" href="$d6/d3d/class_v_mlib_1_1_world_gen.html#a88060b1c2979d5766ee53d93ea6120aa" title=" " alt="" coords="260,55,500,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,65,247,65,247,70,212,70"/>
+<area shape="rect" id="Node000004" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="276,104,484,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="213,84,297,99,296,104,212,89"/>
+</map>

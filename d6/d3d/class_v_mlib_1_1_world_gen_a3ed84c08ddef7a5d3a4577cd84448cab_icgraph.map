@@ -1,0 +1,13 @@
+<map id="VMlib::WorldGen::getPassportGen" name="VMlib::WorldGen::getPassportGen">
+<area shape="rect" id="Node000001" title=" " alt="" coords="585,45,825,70"/>
+<area shape="rect" id="Node000002" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a7f7e814aa0fd8596f077c89115768857" title="Формирование заголовка файла временной статистики" alt="" coords="331,5,537,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="584,46,537,40,538,35,584,40"/>
+<area shape="rect" id="Node000005" href="$d5/d12/class_v_mlib_1_1_timers_gen.html#a5c2646b04ca3e2897c6518d7f16d83ab" title="Формирование очередной строки файла временной статистики" alt="" coords="331,69,537,109"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="584,74,538,80,537,75,584,69"/>
+<area shape="rect" id="Node000003" href="$d1/d71/class_v_mlib_1_1_queue.html#ad329e4b98e6336af7f2604c5247074b4" title="Процедура постановка новых задач на отсчет и занятие процессоров" alt="" coords="108,13,283,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="317,28,283,28,283,23,317,23"/>
+<area shape="rect" id="Node000004" href="$d1/d0c/_v_m2_d_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,13,60,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="95,28,60,28,60,23,95,23"/>
+<area shape="rect" id="Node000006" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="115,77,276,102"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="317,92,276,92,276,87,317,87"/>
+</map>

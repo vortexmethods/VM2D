@@ -1,0 +1,19 @@
+<map id="VMlib::StreamParser::StringToVector" name="VMlib::StreamParser::StringToVector">
+<area shape="rect" id="Node000001" title="Pазбор строки, содержащей запятые, на отдельные строки" alt="" coords="495,63,649,103"/>
+<area shape="rect" id="Node000002" href="$d2/d15/class_v_m2_d_1_1_passport.html#a66e3dd8d8de29712c7bf8f3d17d1d9dc" title="Считывание всех параметров расчета из соответствующих потоков" alt="" coords="242,5,445,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="481,63,423,48,424,43,482,57"/>
+<area shape="rect" id="Node000004" href="$d1/d71/class_v_mlib_1_1_queue.html#a49c2777c5c15d373888f074a6450e268" title="Загрузка списка задач" alt="" coords="240,70,447,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="481,85,447,85,447,80,481,80"/>
+<area shape="rect" id="Node000006" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a94b4e184da0c1af5530cab7753181a78" title="Парсинг заданного потока" alt="" coords="266,148,421,188"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="506,110,399,150,397,145,504,105"/>
+<area shape="rect" id="Node000003" href="$d2/d15/class_v_m2_d_1_1_passport.html#ad61c592d8ebe7d2acf70d6eb966ebf52" title="Конструктор" alt="" coords="5,13,192,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="228,28,192,28,192,23,228,23"/>
+<area shape="rect" id="Node000005" href="$d1/d0c/_v_m2_d_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="71,66,126,91"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="226,83,126,82,126,76,226,78"/>
+<area shape="rect" id="Node000007" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a3e443ead3072f3955645e6e05dc3312e" title="Конструктор, принимающий один поток" alt="" coords="21,116,176,156"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="252,159,176,149,176,143,253,153"/>
+<area shape="rect" id="Node000008" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a36eac28b6262e596cf20724179b07097" title="Конструктор, принимающий четыре потока" alt="" coords="21,180,176,220"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="253,183,176,193,176,187,252,177"/>
+<area shape="rect" id="Node000009" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a1608fe2a19315c2274b66f16a52fc10a" title="Конструктор, принимающий два потока" alt="" coords="21,244,176,284"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="286,196,193,234,161,246,159,241,191,230,284,191"/>
+</map>

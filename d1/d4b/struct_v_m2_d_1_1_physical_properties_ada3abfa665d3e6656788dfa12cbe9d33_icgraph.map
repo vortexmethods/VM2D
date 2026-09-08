@@ -1,0 +1,18 @@
+<map id="VM2D::PhysicalProperties::V0" name="VM2D::PhysicalProperties::V0">
+<area shape="rect" id="Node000001" title="Функция скорости набегающего потока с учетом разгона" alt="" coords="796,135,1011,160"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a788b3ba105982ad282142240e70e0172" title="Возврат текущей скорости набегающего потока" alt="" coords="577,135,748,160"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="782,150,748,150,748,145,782,145"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="5,46,223,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="642,126,595,75,564,50,528,31,478,17,425,10,372,8,320,12,225,28,153,48,152,43,224,23,319,7,372,3,426,4,479,12,530,26,566,45,599,71,646,122"/>
+<area shape="rect" id="Node000004" href="$d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad8f6c6e4b4c51916bc8e47a0e7089b6d" title="Расчет поля давления" alt="" coords="283,42,517,67"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="628,130,582,105,528,82,483,70,484,64,530,77,584,100,631,126"/>
+<area shape="rect" id="Node000005" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813" title="Вычисление скоростей в точках wakeVP." alt="" coords="308,92,492,132"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="563,137,492,127,493,122,564,131"/>
+<area shape="rect" id="Node000006" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a99112c1a4fd05113c87391f29d51f349" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части" alt="" coords="293,156,507,211"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="564,164,508,172,507,166,564,158"/>
+<area shape="rect" id="Node000007" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ad5c57f263b9173f70bbb3700eecb21c5" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части" alt="" coords="275,236,525,276"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="632,170,585,198,530,225,491,238,490,233,528,220,583,193,630,165"/>
+<area shape="rect" id="Node000008" href="$df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#a9607a340b9048060d15434c56d527fa2" title="Вычисление влияния набегающего потока на прямолинейную панель для правой части" alt="" coords="271,300,529,340"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="648,173,600,232,567,263,531,290,505,302,503,297,528,285,564,259,596,228,643,170"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="294,95,182,74,183,68,295,89"/>
+</map>

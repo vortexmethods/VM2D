@@ -1,0 +1,7 @@
+<map id="VM2D::Airfoil::GetInfluenceFromVorticesToPanel" name="VM2D::Airfoil::GetInfluenceFromVorticesToPanel">
+<area shape="rect" id="Node000001" title="Вычисление влияния части подряд идущих вихрей из вихревого следа на панель для правой части" alt="" coords="517,5,716,45"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a1ab2bf9266453b4a096dfd432c5a8b87" title="Генерация вектора влияния вихревого следа на профиль" alt="" coords="224,5,469,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="504,28,470,28,470,23,504,23"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="5,13,176,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="210,28,176,28,176,23,210,23"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="VM2D::World2D::getIQ" name="VM2D::World2D::getIQ">
+<area shape="rect" id="Node000001" title="Возврат константной ссылки на объект, связанный с матрицей интегралов от (r&#45;xi)/|r&#45;xi|^2." alt="" coords="487,85,653,110"/>
+<area shape="rect" id="Node000002" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="268,59,439,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="473,89,438,85,439,79,473,83"/>
+<area shape="rect" id="Node000003" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aee4d35ddda33105b5e4d4b21b6f19131" title="Вычисление коэффициентов матрицы A для расчета влияния панели на панель" alt="" coords="280,109,427,134"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="473,111,427,116,426,111,473,105"/>
+<area shape="rect" id="Node000004" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a1d059af397116bbe4bb2e57d4976c5c8" title="Генерация блока матрицы влияния от другого профиля того же типа" alt="" coords="11,5,215,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="285,106,267,98,242,79,219,60,192,48,194,43,221,55,246,75,269,94,287,102"/>
+<area shape="rect" id="Node000005" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#a6668f82a7939a18eb0d8112724c0bdc3" title="Генерация блока матрицы влияния от другого профиля того же типа" alt="" coords="5,69,220,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="266,112,220,106,220,101,267,107"/>
+<area shape="rect" id="Node000006" href="$d2/d0a/class_v_m2_d_1_1_boundary_const_layer_aver.html#a95434e380fa4255f70787ebb37c9f9dd" title="Генерация блока матрицы" alt="" coords="11,133,215,173"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="267,135,215,142,214,137,266,130"/>
+<area shape="rect" id="Node000007" href="$da/da5/class_v_m2_d_1_1_boundary_lin_layer_aver.html#ab093d4d8c2e5f068d6142858d87ab3b0" title="Генерация блока матрицы" alt="" coords="5,197,220,237"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="318,143,221,188,187,200,185,195,219,183,316,138"/>
+</map>

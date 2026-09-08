@@ -1,0 +1,40 @@
+<map id="VMlib::WorldGen" name="VMlib::WorldGen">
+<area shape="rect" id="Node000001" title="Класс, опеделяющий текущую решаемую задачу" alt="" coords="1732,147,1863,173"/>
+<area shape="rect" id="Node000013" href="$d5/d12/class_v_mlib_1_1_timers_gen.html" title="Класс для сбора статистики времени исполнения основных шагов алгоритма и вывода ее в файл" alt="" coords="1928,218,2067,243"/>
+<area shape="poly" id="edge16_Node000013_Node000001" title=" " alt="" coords="1843,175,1888,192,1956,215,1954,220,1886,197,1841,180"/>
+<area shape="rect" id="Node000002" href="$d1/dd8/class_v_mlib_1_1_log_stream.html" title="Класс, определяющий работу с потоком логов" alt="" coords="1020,55,1157,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1171,65,1280,67,1399,76,1487,88,1555,101,1709,136,1746,145,1745,150,1707,141,1554,106,1486,93,1398,81,1279,73,1171,70"/>
+<area shape="rect" id="Node000009" href="$d9/d9a/class_v_mlib_1_1_passport_gen.html" title="Абстрактный класс, опеделяющий паспорт задачи" alt="" coords="1436,143,1584,169"/>
+<area shape="poly" id="edge9_Node000009_Node000002" title=" " alt="" coords="1160,81,1208,91,1304,105,1399,121,1470,141,1469,146,1398,127,1303,110,1208,96,1159,86"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="681,13,785,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="799,30,1020,57,1019,62,799,36"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="381,5,527,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="540,23,681,23,681,28,540,28"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="161,13,332,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="346,23,381,23,381,28,346,28"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="5,13,112,38"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="126,23,161,23,161,28,126,28"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="411,215,497,241"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="467,202,500,157,523,135,549,118,588,104,640,92,768,77,905,69,1020,66,1020,71,905,74,769,82,641,98,590,109,552,122,526,139,504,161,471,205"/>
+<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="510,213,550,205,734,179,878,165,1022,159,1208,155,1436,153,1436,158,1208,160,1023,164,878,171,735,185,551,211,511,218"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="640,215,827,241"/>
+<area shape="poly" id="edge13_Node000011_Node000007" title=" " alt="" coords="511,225,640,225,640,231,511,231"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="1423,302,1597,357"/>
+<area shape="poly" id="edge19_Node000014_Node000007" title=" " alt="" coords="512,235,665,260,851,284,1423,321,1422,327,850,289,664,265,511,240"/>
+<area shape="rect" id="Node000016" href="$d9/d54/class_v_mlib_1_1vm_timer.html" title="Класс засекания времени" alt="" coords="670,343,797,369"/>
+<area shape="poly" id="edge22_Node000016_Node000007" title=" " alt="" coords="471,251,504,296,526,318,552,335,580,346,610,353,670,358,669,363,610,359,579,351,549,340,523,322,500,299,467,254"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="177,208,316,248"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="330,225,410,225,410,231,330,231"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1598,155,1732,156,1732,162,1598,160"/>
+<area shape="rect" id="Node000010" href="$d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени" alt="" coords="993,176,1184,216"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="1197,187,1398,169,1436,165,1436,170,1399,175,1198,192"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="840,216,993,202,993,207,841,221"/>
+<area shape="poly" id="edge17_Node000013_Node000011" title=" " alt="" coords="841,237,959,246,1087,251,1799,251,1865,247,1927,240,1928,245,1865,253,1799,256,1087,256,959,252,840,242"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="2137,172,2308,212"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="2123,187,1863,168,1863,162,2124,182"/>
+<area shape="poly" id="edge15_Node000012_Node000013" title=" " alt="" coords="2080,214,2137,204,2138,209,2080,219"/>
+<area shape="poly" id="edge18_Node000013_Node000014" title=" " alt="" coords="1611,325,1678,320,1752,310,1829,294,1903,270,1968,241,1970,246,1905,274,1830,299,1753,315,1678,325,1611,330"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="1003,341,1174,381"/>
+<area shape="poly" id="edge20_Node000014_Node000015" title=" " alt="" coords="1187,351,1422,333,1423,339,1188,357"/>
+<area shape="poly" id="edge21_Node000015_Node000016" title=" " alt="" coords="811,354,1003,357,1003,363,810,360"/>
+</map>

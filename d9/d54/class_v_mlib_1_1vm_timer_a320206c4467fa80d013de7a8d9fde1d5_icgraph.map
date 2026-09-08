@@ -1,0 +1,49 @@
+<map id="VMlib::vmTimer::stop" name="VMlib::vmTimer::stop">
+<area shape="rect" id="Node000001" title="Останов работающего счетчика времени" alt="" coords="883,433,1045,458"/>
+<area shape="rect" id="Node000002" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a48305b940dfdf549177fea73a071ad58" title=" " alt="" coords="619,75,773,115"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="958,420,948,360,926,281,910,239,890,199,864,161,833,129,805,112,773,102,774,97,807,107,836,125,868,158,894,196,915,237,931,279,953,358,963,419"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a0b291203937525a05b8854f55bc269d8" title="Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wake..." alt="" coords="5,102,223,128"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="952,421,936,380,911,332,877,283,856,262,833,244,804,236,739,224,554,195,270,154,166,130,167,125,271,148,555,189,740,218,805,230,836,239,860,258,881,280,916,329,941,378,957,419"/>
+<area shape="rect" id="Node000005" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ad7e13c2e25b9cc9bc4e25d1dc26ed294" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="557,254,835,294"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="945,423,900,365,869,334,833,308,808,296,811,291,836,303,872,330,904,361,950,420"/>
+<area shape="rect" id="Node000006" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a0643eb95fff58c7587be23bff59d8165" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="557,318,835,358"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="930,428,885,403,834,379,779,360,781,355,836,374,887,398,932,424"/>
+<area shape="rect" id="Node000007" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ab4397193aff5c8a3109e5d0585fcd53c" title="Проверка проникновения вихрей внутрь профиля" alt="" coords="591,433,801,458"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="869,448,801,448,801,443,869,443"/>
+<area shape="rect" id="Node000009" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="33,440,195,465"/>
+<area shape="poly" id="edge21_Node000001_Node000009" title=" " alt="" coords="897,433,834,423,676,409,553,404,429,409,271,423,216,431,165,442,164,437,215,426,270,418,429,404,553,399,677,404,835,418,898,428"/>
+<area shape="rect" id="Node000010" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="616,612,776,637"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="952,472,907,538,874,573,836,601,807,614,777,622,776,617,805,609,833,597,871,569,903,534,947,469"/>
+<area shape="rect" id="Node000011" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="307,637,473,662"/>
+<area shape="poly" id="edge18_Node000001_Node000011" title=" " alt="" coords="958,472,943,514,918,565,883,614,861,635,836,652,784,674,729,688,672,694,616,694,513,683,433,665,434,660,513,677,616,689,672,689,728,683,782,669,833,647,858,631,879,610,914,562,938,512,953,471"/>
+<area shape="rect" id="Node000012" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a414dbf722416a4bce800f97beb0ed1ff" title=" " alt="" coords="579,713,813,768"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="959,472,944,520,919,580,884,642,862,670,836,696,807,715,804,711,833,692,858,667,880,639,915,577,939,518,954,471"/>
+<area shape="rect" id="Node000013" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ada86302cbf92c7dff8124a610ae00e24" title="Заполнение матрицы системы для всех профилей" alt="" coords="599,547,793,587"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="940,469,893,504,836,537,794,552,792,547,834,533,890,500,936,465"/>
+<area shape="rect" id="Node000015" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139" title=" " alt="" coords="611,792,781,817"/>
+<area shape="poly" id="edge17_Node000001_Node000015" title=" " alt="" coords="964,472,955,536,935,621,919,665,897,708,870,748,836,782,811,798,782,806,781,801,809,793,833,778,866,745,893,706,914,663,930,619,950,535,958,471"/>
+<area shape="rect" id="Node000016" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ac0cbac2bb974a2920ff47198c914e13c" title="Решение системы линейных алгебраических уравнений" alt="" coords="592,483,800,523"/>
+<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="891,464,790,486,789,480,890,459"/>
+<area shape="rect" id="Node000017" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a28d495c4dfbe9e15c363503712e9a9de" title=" " alt="" coords="619,139,773,179"/>
+<area shape="poly" id="edge22_Node000001_Node000017" title=" " alt="" coords="954,420,940,373,916,313,880,252,858,224,833,200,805,182,773,171,774,166,807,178,836,196,862,220,885,249,920,311,945,371,959,419"/>
+<area shape="rect" id="Node000018" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a168acfd0f0271f267e0d9cc5388b7681" title=" " alt="" coords="611,842,781,882"/>
+<area shape="poly" id="edge25_Node000001_Node000018" title=" " alt="" coords="965,473,959,544,940,641,924,693,902,744,873,791,836,832,811,849,782,859,780,854,808,844,833,828,869,788,897,741,919,691,935,640,954,544,960,472"/>
+<area shape="rect" id="Node000019" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a57f9209e714d574bfc470659b4f8de83" title=" " alt="" coords="619,11,773,51"/>
+<area shape="poly" id="edge26_Node000001_Node000019" title=" " alt="" coords="959,419,953,348,935,252,919,201,897,151,869,105,833,65,805,47,773,37,774,32,807,42,836,61,873,102,902,149,924,199,940,251,959,347,965,419"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="605,101,223,114,223,109,605,95"/>
+<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813" title="Вычисление скоростей в точках wakeVP." alt="" coords="298,38,482,78"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="605,87,482,72,482,66,605,81"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="285,82,176,105,175,100,284,77"/>
+<area shape="rect" id="Node000008" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a1ed0f93da4932830bf413dc56f19183f" title="Перемещение вихрей и профилей на шаге" alt="" coords="271,432,509,472"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="577,451,510,452,509,447,577,446"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="257,455,195,455,195,450,257,450"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="602,635,474,645,473,640,602,629"/>
+<area shape="rect" id="Node000014" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a5ff24012df7e7caa5bd13cd6552042ab" title="Набор матрицы, правой части и решение СЛАУ" alt="" coords="279,496,501,536"/>
+<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="585,551,500,537,501,532,586,546"/>
+<area shape="poly" id="edge16_Node000014_Node000009" title=" " alt="" coords="289,496,169,468,170,463,290,491"/>
+<area shape="poly" id="edge20_Node000016_Node000014" title=" " alt="" coords="578,511,501,514,501,509,578,505"/>
+<area shape="poly" id="edge23_Node000017_Node000003" title=" " alt="" coords="605,155,223,126,223,121,605,150"/>
+<area shape="poly" id="edge24_Node000017_Node000004" title=" " alt="" coords="604,143,557,130,491,105,433,80,435,75,493,100,558,124,606,138"/>
+<area shape="poly" id="edge27_Node000019_Node000003" title=" " alt="" coords="605,19,532,11,447,8,358,13,271,28,230,43,191,64,132,105,129,100,188,60,228,39,270,23,358,7,447,3,532,6,605,13"/>
+<area shape="poly" id="edge28_Node000019_Node000004" title=" " alt="" coords="605,42,482,52,482,47,605,36"/>
+</map>

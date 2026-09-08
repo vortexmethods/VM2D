@@ -1,0 +1,5 @@
+<map id="VM2D::World2D::isAnyMovable" name="VM2D::World2D::isAnyMovable">
+<area shape="rect" id="Node000001" title="Возврат признака того, что хотя бы один из профилей подвижный" alt="" coords="5,13,229,38"/>
+<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a512f981c7eb6af147422fd8c9ddb7033" title=" " alt="" coords="277,5,500,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,23,264,23,264,28,229,28"/>
+</map>

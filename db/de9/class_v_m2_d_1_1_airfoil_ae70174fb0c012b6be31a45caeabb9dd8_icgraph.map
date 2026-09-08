@@ -1,0 +1,23 @@
+<map id="VM2D::Airfoil::Rotate" name="VM2D::Airfoil::Rotate">
+<area shape="rect" id="Node000001" title="Поворот профиля" alt="" coords="561,262,720,287"/>
+<area shape="rect" id="Node000002" href="$d7/dc9/class_v_m2_d_1_1_mechanics.html#a8c9714bec81673b314a4d339789994e0" title="Задание начального положения и начальной скорости" alt="" coords="305,141,507,166"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="615,255,570,217,512,181,478,169,480,164,514,176,573,212,619,251"/>
+<area shape="rect" id="Node000008" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#a647915f7ce1e3199d06943efa4e9baa7" title="Перемещение профиля в соответствии с законом" alt="" coords="301,191,511,231"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="579,261,479,233,481,228,581,256"/>
+<area shape="rect" id="Node000009" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#ac31474c4062bc76ec6bf97051515b084" title="Перемещение профиля в соответствии с законом" alt="" coords="303,255,509,295"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="547,277,510,277,510,272,547,272"/>
+<area shape="rect" id="Node000010" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a0f04a54700ffd113274d1ebc8f8be895" title="Перемещение профиля в соответствии с законом" alt="" coords="299,319,513,359"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="581,294,481,321,479,316,579,288"/>
+<area shape="rect" id="Node000011" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afa0496537fb81b12de574b8d4e7f441c" title="Считывание профиля из файла" alt="" coords="303,383,509,409"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="619,299,573,337,514,373,480,386,478,381,512,368,570,333,615,295"/>
+<area shape="rect" id="Node000003" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a55aa30948b78236633e26f56a870a120" title="Конструктор" alt="" coords="21,5,235,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="375,135,319,97,250,60,217,48,219,43,252,55,322,92,378,130"/>
+<area shape="rect" id="Node000004" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#acb2bcd9d2c01173b75584afb13a5a15e" title="Конструктор" alt="" coords="17,69,239,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="336,140,215,112,216,107,337,135"/>
+<area shape="rect" id="Node000005" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f" title="Конструктор" alt="" coords="5,133,251,173"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="291,156,251,156,251,151,291,151"/>
+<area shape="rect" id="Node000006" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#af5c415c8acbbb2abcd3ee928fa69d614" title="Конструктор" alt="" coords="19,197,237,237"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="337,172,216,200,215,195,336,167"/>
+<area shape="rect" id="Node000007" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a59183858c817328199f449df792b6b5a" title="Конструктор" alt="" coords="15,261,241,301"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="312,174,300,181,285,197,277,215,269,234,252,251,231,263,229,259,249,247,265,231,272,213,280,194,297,177,310,169"/>
+</map>
