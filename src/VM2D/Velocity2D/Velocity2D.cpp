@@ -775,8 +775,7 @@ void Velocity::GPUFASTGetWakeInfluenceToRhs(const Airfoil & afl, std::vector<dou
 
 			inflTree.DownwardTraversalVorticesToPanels(cntrTree, (double*)dev_ptr_rhs, 
 				linPtr, W.getPassport().numericalSchemes.nbodyTheta, W.getPassport().numericalSchemes.nbodyMultipoleOrder);
-
-
+			
 			std::vector<double> newRhs(nTotPan), newRhsLin(nTotPan);
 
 			W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_rhs, newRhs.data(), 22);
@@ -802,7 +801,6 @@ void Velocity::GPUFASTGetWakeInfluenceToRhs(const Airfoil & afl, std::vector<dou
 		wakeVelo = std::move(afl.tmpRhs);
 	else
 		wakeVelo.resize(afl.getNumberOfPanels() * (W.getPassport().numericalSchemes.boundaryCondition.second), 0.0);
-
 }//GPUGetWakeInfluenceToRhsFAST(...)
 #endif
 
@@ -826,9 +824,12 @@ void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
 
 #ifndef USE_CUDA
 	if (W.getPassport().numericalSchemes.velocityComputation.second == 1) //Быстрый метод на CPU
-		CPUGetFASTWakeInfluenceToRhs(fastWakeRhs, fastWakeRhsLin);	
+		CPUGetFASTWakeInfluenceToRhs(fastWakeRhs, fastWakeRhsLin);
 #endif
+
 	size_t curGlobPnl = 0;
+	
+	W.timerRhs.reset();
 
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 	{
@@ -844,8 +845,7 @@ void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
 
 		double tt1 = omp_get_wtime();
 
-#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_RHS))
-		W.timerRhs.reset();
+#if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_RHS))		
 		W.timerRhs.start();
 		if (W.getPassport().numericalSchemes.velocityComputation.second == 1)		
 			GPUFASTGetWakeInfluenceToRhs(afl, wakeRhs);
@@ -880,6 +880,7 @@ void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
 		//velofile.close();
 		//exit(-124);
 #endif	
+
 		std::vector<double> vInfRhs;
 		afl.GetInfluenceFromVInfToPanel(vInfRhs);
 
@@ -943,6 +944,25 @@ void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
 		currentRow += nVars + 1;
 		currentSkosRow += nVars;
 	}// for bou
+
+
+	////////////////////////// ТЕСТИРУЕМ ПРОИЗВОДИТЕЛЬНОСТЬ //////////////////////////////////
+	/*
+	std::ofstream treeTimeFile;
+	if (W.getCurrentStep() == 0)
+	{
+		treeTimeFile.open(W.getPassport().dir + "/dbg/rhsTime.csv");
+		treeTimeFile << "step,time,Nvtx,Npnl,tDNW,tDNWgpu\n";
+	}
+	else
+		treeTimeFile.open(W.getPassport().dir + "/dbg/rhsTime.csv", std::ios::app);
+
+
+	treeTimeFile << W.getCurrentStep() << ',' << W.getCurrentTime() << ',' << W.getInflTreeWake().object.size() << ',' << W.getCntrTreePnl().object.size() << ',' \
+				<< timerRhsTest.duration() << ',' << W.timerRhs.duration() << '\n';
+
+	treeTimeFile.close();
+	//*/
 }
 
 
@@ -1079,7 +1099,7 @@ void Velocity::CalcConvVelo()
 	}
 
 	treeTimeFile.close();
-	*/
+	//*/
 #else
 	float timeUpd1=0, timeBld1=0, timeUpw1=0, timeUpd2=0, timeBld2=0, timeUpw2=0, timeDnw=0;
 	W.timerConvVelo.reset();

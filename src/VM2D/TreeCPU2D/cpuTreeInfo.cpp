@@ -1309,7 +1309,7 @@ namespace VM2D
 
           const int maxDepth = 32;
 
-#pragma omp parallel for schedule(dynamic, 1)//Временно: обход по панелям как на GPU!!!
+#pragma omp parallel for schedule(dynamic, 5)//Временно: обход по панелям как на GPU!!!
           for (int k = 0; k < npoints; ++k)
           {
               const int indexOfPoint = cntrTree.mortonCodesIdx[k];      //истинный индекс точки наблюдения	

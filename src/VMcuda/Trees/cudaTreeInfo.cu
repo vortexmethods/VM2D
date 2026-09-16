@@ -101,6 +101,7 @@ namespace BHcu
             {
             case 16:
                 p = *(double2*)(&pntD[2 * i]);
+                sgm = 0.0;
                 break;
 
             case 32:
@@ -728,7 +729,6 @@ namespace BHcu
         {
             double itheta2 = 1.0 / (theta * theta);
             cudaEvent_t start, stop;
-            float time;
 
             cudaEventCreate(&start);  cudaEventCreate(&stop);
             cudaEventRecord(start, 0);
