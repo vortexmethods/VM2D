@@ -1216,7 +1216,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno"> 1309</span> </div>
 <div class="line"><span class="lineno"> 1310</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> maxDepth = 32;</div>
 <div class="line"><span class="lineno"> 1311</span> </div>
-<div class="line"><span class="lineno"> 1312</span><span class="preprocessor">#pragma omp parallel for schedule(dynamic, 1)</span><span class="comment">//Временно: обход по панелям как на GPU!!!</span></div>
+<div class="line"><span class="lineno"> 1312</span><span class="preprocessor">#pragma omp parallel for schedule(dynamic, 5)</span><span class="comment">//Временно: обход по панелям как на GPU!!!</span></div>
 <div class="line"><span class="lineno"> 1313</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; npoints; ++k)</div>
 <div class="line"><span class="lineno"> 1314</span>          {</div>
 <div class="line"><span class="lineno"> 1315</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> indexOfPoint = cntrTree.mortonCodesIdx[k];      <span class="comment">//истинный индекс точки наблюдения  </span></div>

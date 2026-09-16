@@ -1443,7 +1443,7 @@ $(document).ready(function(){initNavTree('d3/d9f/cpu_tree_info_8cpp_source.html'
 <div class="line"><a id="l01309" name="l01309"></a><span class="lineno"> 1309</span> </div>
 <div class="line"><a id="l01310" name="l01310"></a><span class="lineno"> 1310</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> maxDepth = 32;</div>
 <div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span> </div>
-<div class="line"><a id="l01312" name="l01312"></a><span class="lineno"> 1312</span><span class="preprocessor">#pragma omp parallel for schedule(dynamic, 1)</span><span class="comment">//Временно: обход по панелям как на GPU!!!</span></div>
+<div class="line"><a id="l01312" name="l01312"></a><span class="lineno"> 1312</span><span class="preprocessor">#pragma omp parallel for schedule(dynamic, 5)</span><span class="comment">//Временно: обход по панелям как на GPU!!!</span></div>
 <div class="line"><a id="l01313" name="l01313"></a><span class="lineno"> 1313</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; npoints; ++k)</div>
 <div class="line"><a id="l01314" name="l01314"></a><span class="lineno"> 1314</span>          {</div>
 <div class="line"><a id="l01315" name="l01315"></a><span class="lineno"> 1315</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> indexOfPoint = cntrTree.<a class="code hl_variable" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a5f61c9f65ccb2eab527c7efb00450acf">mortonCodesIdx</a>[k];      <span class="comment">//истинный индекс точки наблюдения  </span></div>
