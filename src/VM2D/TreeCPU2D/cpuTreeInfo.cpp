@@ -1291,6 +1291,7 @@ namespace VM2D
       if (cntrTree.schemeType == scheme_T::linScheme)
           scheme = true;
 
+
       if(scheme)
           rhsLin.assign(npoints, 0.0); 
       else
@@ -1360,6 +1361,21 @@ namespace VM2D
                           gm = gamma[vortexIndex];                      //циркуляция влияющего вихря
 
                           sumSide2 = 0.0;                               //листовая ячейка (вихрь) размера не имеет, т.к. является точкой
+
+                          if (this->objectType == object_T::panel) 
+                          {
+                              const double4& gab = gabForLeaves[mortonCodesIdx[n]];  //vortexIndex = mortonCodesIdx[n]
+                              double2 infbeg{ gab[0], gab[1] };
+
+                              const double2 pnlVec = { gab[2] - gab[0], gab[3] - gab[1]};
+                              ps = double2{ 0.5 * (gab[0] + gab[2]), 0.5 * (gab[1] + gab[3])};
+
+                              double lj = sqrt(pnlVec[0] * pnlVec[0] + pnlVec[1] * pnlVec[1]);
+
+                              sumSide2 = fabs(pnlVec[0]) + fabs(pnlVec[1]);
+                              sumSide2 *= sumSide2;
+                          }
+
                       }//if (isVortex)
                       else
                       {
@@ -1418,6 +1434,9 @@ namespace VM2D
                                   const double4& infgab = gabForLeaves[mortonCodesIdx[infn]]; //начало и конец влияющей панели
                                   const double2 infbeg{ infgab[0], infgab[1] };      //отдельно начало
                                   const double2 infend{ infgab[2], infgab[3] };      // и конец
+
+                                  //if (indexOfPoint == 121)
+                                  //    printf("cntr = %d, inf = %d\n", indexOfPoint, mortonCodesIdx[infn]);
 
                                   const double2 infpan = infend - infbeg;
 
@@ -1536,6 +1555,10 @@ namespace VM2D
                               }
 
                               val += 2.0 * (-v[1] * rPan[0] + v[0] * rPan[1]);
+
+                              //if (indexOfPoint == 21)
+                              //  printf("cntr = %d, v = {%f, %f}\n", indexOfPoint, -v[1], v[0]);
+
                               if(scheme)
                                   vallin += 2.0 * (-vL[1] * rPan[0] + vL[0] * rPan[1]);
                           }
