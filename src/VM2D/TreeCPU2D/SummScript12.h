@@ -103,6 +103,8 @@
                         cen = center[srt] = double2{ 0.5 * (lowerupper[srt][0] + lowerupper[srt][2]),
                                                      0.5 * (lowerupper[srt][1] + lowerupper[srt][3]) };
 
+
+
                         const double2 zero = { 0.0, 0.0 };
                         double2 momh0 = zero;
                         double2 momh1 = zero;
@@ -138,8 +140,11 @@
                                 if (objectType == object_T::panel)
                                 {
                                     double2 panBegin, panEnd;
-                                    panBegin = { gabForLeaves[ch][0], gabForLeaves[ch][1] };
-                                    panEnd = { gabForLeaves[ch][2], gabForLeaves[ch][3] };
+                                    //panBegin = { gabForLeaves[ch][0], gabForLeaves[ch][1] };
+                                    //panEnd = { gabForLeaves[ch][2], gabForLeaves[ch][3] };
+
+                                    panBegin = { gabForLeaves[sortedBody][0], gabForLeaves[sortedBody][1] };
+                                    panEnd = { gabForLeaves[sortedBody][2], gabForLeaves[sortedBody][3] };
 
                                     double2 rcur, rd2Pow;
                                     rcur = rd2Pow = multz(0.5 * (panEnd - panBegin), 0.5 * (panEnd - panBegin));

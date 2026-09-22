@@ -324,6 +324,15 @@ namespace VM2D
                 gamma[i] = infpan.length() * gamma_[i];      // стало  
             }
         }
+         
+
+
+
+
+
+
+
+
 
         timer.stop();
         return (float)timer.duration();
@@ -611,7 +620,7 @@ namespace VM2D
                     parent[childRight] = i;
 
                     child[i] = { childLeft, childRight };
-                    //printf("i:%d, %d, {%d, %d}\n", indexUnsort[i], levelUnsort[i], childLeft, childRight);
+                    //printf("i:%d, %d, {%d, %d}, parent = %d\n", indexUnsort[i], levelUnsort[i], childLeft, childRight, parent[childLeft]);
                 }
 
                 //if (treeType == tree_T::contr)
@@ -1436,7 +1445,7 @@ namespace VM2D
                                   const double2 infend{ infgab[2], infgab[3] };      // и конец
 
                                   //if (indexOfPoint == 121)
-                                  //    printf("cntr = %d, inf = %d\n", indexOfPoint, mortonCodesIdx[infn]);
+                                    //  printf("cntr = %d, inf = %d\n", indexOfPoint, mortonCodesIdx[infn]);
 
                                   const double2 infpan = infend - infbeg;
 
@@ -1554,7 +1563,8 @@ namespace VM2D
                                     vL += ifac[kk + 3] * multz(Eloc[kk], multzA(multz(taudL, taudLc), multz(mulP, (kk + 1.0) * rPan)));
                               }
 
-                              val += 2.0 * (-v[1] * rPan[0] + v[0] * rPan[1]);
+                              double tmp = 2.0 * (-v[1] * rPan[0] + v[0] * rPan[1]);
+                              val += tmp;
 
                               //if (indexOfPoint == 21)
                               //  printf("cntr = %d, v = {%f, %f}\n", indexOfPoint, -v[1], v[0]);
