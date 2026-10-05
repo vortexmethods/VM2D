@@ -593,17 +593,17 @@ Here is the caller graph for this function:</div>
 
 <p>Способ сглаживания скорости вихря (вихрь Рэнкина или вихрь Ламба) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00569">569</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  570</span>    {</div>
-<div class="line"><span class="lineno">  571</span><span class="preprocessor">#ifndef LAMBVORTEX</span></div>
-<div class="line"><span class="lineno">  572</span>        <span class="keywordflow">return</span> std::max(r2, eps2);</div>
-<div class="line"><span class="lineno">  573</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">  574</span>        <span class="keywordflow">if</span> (r2 &gt; eps2)</div>
-<div class="line"><span class="lineno">  575</span>            <span class="keywordflow">return</span> std::max(r2, eps2);</div>
-<div class="line"><span class="lineno">  576</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  577</span>            <span class="keywordflow">return</span> (r2 &lt; 1e-10) ? 1e-10 : r2 / (1.0 - exp(-6.0*r2 / eps2));</div>
-<div class="line"><span class="lineno">  578</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  579</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00572">572</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  573</span>    {</div>
+<div class="line"><span class="lineno">  574</span><span class="preprocessor">#ifndef LAMBVORTEX</span></div>
+<div class="line"><span class="lineno">  575</span>        <span class="keywordflow">return</span> std::max(r2, eps2);</div>
+<div class="line"><span class="lineno">  576</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  577</span>        <span class="keywordflow">if</span> (r2 &gt; eps2)</div>
+<div class="line"><span class="lineno">  578</span>            <span class="keywordflow">return</span> std::max(r2, eps2);</div>
+<div class="line"><span class="lineno">  579</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  580</span>            <span class="keywordflow">return</span> (r2 &lt; 1e-10) ? 1e-10 : r2 / (1.0 - exp(-6.0*r2 / eps2));</div>
+<div class="line"><span class="lineno">  581</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  582</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -665,29 +665,29 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00410">410</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  411</span>    {</div>
-<div class="line"><span class="lineno">  412</span>        std::string buf;</div>
-<div class="line"><span class="lineno">  413</span>        buf.resize(BUFSIZ);</div>
-<div class="line"><span class="lineno">  414</span> </div>
-<div class="line"><span class="lineno">  415</span>        FILE *in, *out;</div>
-<div class="line"><span class="lineno">  416</span>        <span class="keywordtype">size_t</span> n;</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00413">413</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  414</span>    {</div>
+<div class="line"><span class="lineno">  415</span>        std::string buf;</div>
+<div class="line"><span class="lineno">  416</span>        buf.resize(BUFSIZ);</div>
 <div class="line"><span class="lineno">  417</span> </div>
-<div class="line"><span class="lineno">  418</span>        </div>
-<div class="line"><span class="lineno">  419</span><span class="preprocessor">#pragma warning (push)</span></div>
-<div class="line"><span class="lineno">  420</span><span class="preprocessor">#pragma warning (disable: 4996)</span></div>
-<div class="line"><span class="lineno">  421</span>        in = fopen(fileNameFrom.c_str(), <span class="stringliteral">&quot;rb&quot;</span>);</div>
-<div class="line"><span class="lineno">  422</span>        out = fopen(fileNameTo.c_str(), <span class="stringliteral">&quot;wb&quot;</span>);</div>
-<div class="line"><span class="lineno">  423</span><span class="preprocessor">#pragma warning (pop)</span></div>
-<div class="line"><span class="lineno">  424</span> </div>
-<div class="line"><span class="lineno">  425</span>        <span class="keywordflow">while</span> ((n = fread((<span class="keywordtype">void</span>*)buf.data(), 1, BUFSIZ, in)) != 0) </div>
-<div class="line"><span class="lineno">  426</span>        {</div>
-<div class="line"><span class="lineno">  427</span>            fwrite((<span class="keywordtype">void</span>*)buf.data(), 1, n, out);</div>
-<div class="line"><span class="lineno">  428</span>        }</div>
-<div class="line"><span class="lineno">  429</span> </div>
-<div class="line"><span class="lineno">  430</span>        std::fclose(in);</div>
-<div class="line"><span class="lineno">  431</span>        std::fclose(out);</div>
-<div class="line"><span class="lineno">  432</span>    }<span class="comment">//copyFile</span></div>
+<div class="line"><span class="lineno">  418</span>        FILE *in, *out;</div>
+<div class="line"><span class="lineno">  419</span>        <span class="keywordtype">size_t</span> n;</div>
+<div class="line"><span class="lineno">  420</span> </div>
+<div class="line"><span class="lineno">  421</span>        </div>
+<div class="line"><span class="lineno">  422</span><span class="preprocessor">#pragma warning (push)</span></div>
+<div class="line"><span class="lineno">  423</span><span class="preprocessor">#pragma warning (disable: 4996)</span></div>
+<div class="line"><span class="lineno">  424</span>        in = fopen(fileNameFrom.c_str(), <span class="stringliteral">&quot;rb&quot;</span>);</div>
+<div class="line"><span class="lineno">  425</span>        out = fopen(fileNameTo.c_str(), <span class="stringliteral">&quot;wb&quot;</span>);</div>
+<div class="line"><span class="lineno">  426</span><span class="preprocessor">#pragma warning (pop)</span></div>
+<div class="line"><span class="lineno">  427</span> </div>
+<div class="line"><span class="lineno">  428</span>        <span class="keywordflow">while</span> ((n = fread((<span class="keywordtype">void</span>*)buf.data(), 1, BUFSIZ, in)) != 0) </div>
+<div class="line"><span class="lineno">  429</span>        {</div>
+<div class="line"><span class="lineno">  430</span>            fwrite((<span class="keywordtype">void</span>*)buf.data(), 1, n, out);</div>
+<div class="line"><span class="lineno">  431</span>        }</div>
+<div class="line"><span class="lineno">  432</span> </div>
+<div class="line"><span class="lineno">  433</span>        std::fclose(in);</div>
+<div class="line"><span class="lineno">  434</span>        std::fclose(out);</div>
+<div class="line"><span class="lineno">  435</span>    }<span class="comment">//copyFile</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -734,14 +734,14 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00439">439</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  440</span>    {</div>
-<div class="line"><span class="lineno">  441</span><span class="preprocessor">#if defined(_WIN32)</span></div>
-<div class="line"><span class="lineno">  442</span>        _mkdir((dir + name).c_str());</div>
-<div class="line"><span class="lineno">  443</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">  444</span>        mkdir((dir + name).c_str(), S_IRWXU | S_IRGRP | S_IROTH);</div>
-<div class="line"><span class="lineno">  445</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  446</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00442">442</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  443</span>    {</div>
+<div class="line"><span class="lineno">  444</span><span class="preprocessor">#if defined(_WIN32)</span></div>
+<div class="line"><span class="lineno">  445</span>        _mkdir((dir + name).c_str());</div>
+<div class="line"><span class="lineno">  446</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  447</span>        mkdir((dir + name).c_str(), S_IRWXU | S_IRGRP | S_IROTH);</div>
+<div class="line"><span class="lineno">  448</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  449</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -981,8 +981,8 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>квадрат аргумента \( x^3 \) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00463">463</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  463</span>{ <span class="keywordflow">return</span> x * x * x; }</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00466">466</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  466</span>{ <span class="keywordflow">return</span> x * x * x; }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1287,37 +1287,37 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true, если файл существует; false если файл отсутствует </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00340">340</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  340</span>                                                                                                                               {})</div>
-<div class="line"><span class="lineno">  341</span>    {</div>
-<div class="line"><span class="lineno">  342</span>        std::list&lt;std::string&gt; fullExtList(extList);</div>
-<div class="line"><span class="lineno">  343</span>        fullExtList.insert(fullExtList.begin(), <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><span class="lineno">  344</span> </div>
-<div class="line"><span class="lineno">  345</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; ext : fullExtList)</div>
-<div class="line"><span class="lineno">  346</span>        {</div>
-<div class="line"><span class="lineno">  347</span>            std::string newFileName = ((ext == <span class="stringliteral">&quot;&quot;</span>) ? fileName : (fileName + <span class="stringliteral">&quot;.&quot;</span> + ext));</div>
-<div class="line"><span class="lineno">  348</span>            std::ifstream f(newFileName.c_str());</div>
-<div class="line"><span class="lineno">  349</span>            <span class="keywordflow">if</span> (f.good())</div>
-<div class="line"><span class="lineno">  350</span>            {</div>
-<div class="line"><span class="lineno">  351</span>                f.close();</div>
-<div class="line"><span class="lineno">  352</span>                f.clear();</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>                info(<span class="charliteral">&#39;i&#39;</span>) &lt;&lt; <span class="stringliteral">&quot;file &quot;</span> &lt;&lt; newFileName &lt;&lt; <span class="stringliteral">&quot; is found&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  355</span>                fileName = newFileName;</div>
-<div class="line"><span class="lineno">  356</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  357</span>            }</div>
-<div class="line"><span class="lineno">  358</span>        }</div>
-<div class="line"><span class="lineno">  359</span> </div>
-<div class="line"><span class="lineno">  360</span>        <span class="keywordflow">if</span> (exitKey)</div>
-<div class="line"><span class="lineno">  361</span>        {</div>
-<div class="line"><span class="lineno">  362</span>            info(<span class="charliteral">&#39;e&#39;</span>) &lt;&lt; <span class="stringliteral">&quot;file &quot;</span> &lt;&lt; fileName &lt;&lt; <span class="stringliteral">&quot; is not found&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  363</span>            exit(-1);</div>
-<div class="line"><span class="lineno">  364</span>        }</div>
-<div class="line"><span class="lineno">  365</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  366</span>            info(<span class="charliteral">&#39;i&#39;</span>) &lt;&lt; <span class="stringliteral">&quot;file &quot;</span> &lt;&lt; fileName &lt;&lt; <span class="stringliteral">&quot; is not found&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  367</span> </div>
-<div class="line"><span class="lineno">  368</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  369</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00343">343</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  343</span>                                                                                                                               {})</div>
+<div class="line"><span class="lineno">  344</span>    {</div>
+<div class="line"><span class="lineno">  345</span>        std::list&lt;std::string&gt; fullExtList(extList);</div>
+<div class="line"><span class="lineno">  346</span>        fullExtList.insert(fullExtList.begin(), <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">  347</span> </div>
+<div class="line"><span class="lineno">  348</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; ext : fullExtList)</div>
+<div class="line"><span class="lineno">  349</span>        {</div>
+<div class="line"><span class="lineno">  350</span>            std::string newFileName = ((ext == <span class="stringliteral">&quot;&quot;</span>) ? fileName : (fileName + <span class="stringliteral">&quot;.&quot;</span> + ext));</div>
+<div class="line"><span class="lineno">  351</span>            std::ifstream f(newFileName.c_str());</div>
+<div class="line"><span class="lineno">  352</span>            <span class="keywordflow">if</span> (f.good())</div>
+<div class="line"><span class="lineno">  353</span>            {</div>
+<div class="line"><span class="lineno">  354</span>                f.close();</div>
+<div class="line"><span class="lineno">  355</span>                f.clear();</div>
+<div class="line"><span class="lineno">  356</span> </div>
+<div class="line"><span class="lineno">  357</span>                info(<span class="charliteral">&#39;i&#39;</span>) &lt;&lt; <span class="stringliteral">&quot;file &quot;</span> &lt;&lt; newFileName &lt;&lt; <span class="stringliteral">&quot; is found&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  358</span>                fileName = newFileName;</div>
+<div class="line"><span class="lineno">  359</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  360</span>            }</div>
+<div class="line"><span class="lineno">  361</span>        }</div>
+<div class="line"><span class="lineno">  362</span> </div>
+<div class="line"><span class="lineno">  363</span>        <span class="keywordflow">if</span> (exitKey)</div>
+<div class="line"><span class="lineno">  364</span>        {</div>
+<div class="line"><span class="lineno">  365</span>            info(<span class="charliteral">&#39;e&#39;</span>) &lt;&lt; <span class="stringliteral">&quot;file &quot;</span> &lt;&lt; fileName &lt;&lt; <span class="stringliteral">&quot; is not found&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  366</span>            exit(-1);</div>
+<div class="line"><span class="lineno">  367</span>        }</div>
+<div class="line"><span class="lineno">  368</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  369</span>            info(<span class="charliteral">&#39;i&#39;</span>) &lt;&lt; <span class="stringliteral">&quot;file &quot;</span> &lt;&lt; fileName &lt;&lt; <span class="stringliteral">&quot; is not found&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  370</span> </div>
+<div class="line"><span class="lineno">  371</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  372</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1393,31 +1393,31 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>строку &mdash; имя текстового файла </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00379">379</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  380</span>    {</div>
-<div class="line"><span class="lineno">  381</span>        std::string fname(name);</div>
-<div class="line"><span class="lineno">  382</span> </div>
-<div class="line"><span class="lineno">  383</span>        <span class="keywordtype">size_t</span> dec = 1;</div>
-<div class="line"><span class="lineno">  384</span> </div>
-<div class="line"><span class="lineno">  385</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; length; ++i)</div>
-<div class="line"><span class="lineno">  386</span>        {</div>
-<div class="line"><span class="lineno">  387</span>            dec *= 10;</div>
-<div class="line"><span class="lineno">  388</span>            <span class="keywordflow">if</span> (number &lt; dec)</div>
-<div class="line"><span class="lineno">  389</span>                fname += <span class="stringliteral">&quot;0&quot;</span>;</div>
-<div class="line"><span class="lineno">  390</span>        }</div>
-<div class="line"><span class="lineno">  391</span> </div>
-<div class="line"><span class="lineno">  392</span>        std::ostringstream ss;</div>
-<div class="line"><span class="lineno">  393</span>        ss &lt;&lt; number;</div>
-<div class="line"><span class="lineno">  394</span>        fname += ss.str();</div>
-<div class="line"><span class="lineno">  395</span>        </div>
-<div class="line"><span class="lineno">  396</span>        <span class="keywordflow">if</span> (ext.size() &gt; 0)</div>
-<div class="line"><span class="lineno">  397</span>        {</div>
-<div class="line"><span class="lineno">  398</span>            fname += <span class="stringliteral">&quot;.&quot;</span>;</div>
-<div class="line"><span class="lineno">  399</span>            fname += ext;</div>
-<div class="line"><span class="lineno">  400</span>        }</div>
-<div class="line"><span class="lineno">  401</span> </div>
-<div class="line"><span class="lineno">  402</span>        <span class="keywordflow">return</span> fname;</div>
-<div class="line"><span class="lineno">  403</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00382">382</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  383</span>    {</div>
+<div class="line"><span class="lineno">  384</span>        std::string fname(name);</div>
+<div class="line"><span class="lineno">  385</span> </div>
+<div class="line"><span class="lineno">  386</span>        <span class="keywordtype">size_t</span> dec = 1;</div>
+<div class="line"><span class="lineno">  387</span> </div>
+<div class="line"><span class="lineno">  388</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; length; ++i)</div>
+<div class="line"><span class="lineno">  389</span>        {</div>
+<div class="line"><span class="lineno">  390</span>            dec *= 10;</div>
+<div class="line"><span class="lineno">  391</span>            <span class="keywordflow">if</span> (number &lt; dec)</div>
+<div class="line"><span class="lineno">  392</span>                fname += <span class="stringliteral">&quot;0&quot;</span>;</div>
+<div class="line"><span class="lineno">  393</span>        }</div>
+<div class="line"><span class="lineno">  394</span> </div>
+<div class="line"><span class="lineno">  395</span>        std::ostringstream ss;</div>
+<div class="line"><span class="lineno">  396</span>        ss &lt;&lt; number;</div>
+<div class="line"><span class="lineno">  397</span>        fname += ss.str();</div>
+<div class="line"><span class="lineno">  398</span>        </div>
+<div class="line"><span class="lineno">  399</span>        <span class="keywordflow">if</span> (ext.size() &gt; 0)</div>
+<div class="line"><span class="lineno">  400</span>        {</div>
+<div class="line"><span class="lineno">  401</span>            fname += <span class="stringliteral">&quot;.&quot;</span>;</div>
+<div class="line"><span class="lineno">  402</span>            fname += ext;</div>
+<div class="line"><span class="lineno">  403</span>        }</div>
+<div class="line"><span class="lineno">  404</span> </div>
+<div class="line"><span class="lineno">  405</span>        <span class="keywordflow">return</span> fname;</div>
+<div class="line"><span class="lineno">  406</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1730,7 +1730,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  232</span>    <span class="keywordflow">return</span> (mt &gt; 2.0) ? 0.0 : \</div>
 <div class="line"><span class="lineno">  233</span>        (mt &gt; 1.0) ? 0.5*<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(2.0 - mt)*(1.0 - mt) : 1.0 - 2.5*t2 + 1.5*t2*mt;</div>
 <div class="line"><span class="lineno">  234</span>}<span class="comment">//M4(...)</span></div>
-<div class="ttc" id="anamespace_v_mlib_html_aa9c30c1d592b3896cac80167bb5c9697"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">VMlib::sqr</a></div><div class="ttdeci">T sqr(T x)</div><div class="ttdoc">Возведение числа в квадрат</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00455">defs.h:455</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_aa9c30c1d592b3896cac80167bb5c9697"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">VMlib::sqr</a></div><div class="ttdeci">T sqr(T x)</div><div class="ttdoc">Возведение числа в квадрат</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00458">defs.h:458</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1786,13 +1786,13 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>аркосинус аргумента, если |x|&lt;1, или 0, или Pi, </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00472">472</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  473</span>    {</div>
-<div class="line"><span class="lineno">  474</span>        <span class="keywordtype">double</span> res = abs(x) &gt; 1.0 ? 0.5*<a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a>*(1 - <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ad8c062cbe3e278a78e187e957077d01d">sign</a>(x)) : acos(x);</div>
-<div class="line"><span class="lineno">  475</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  476</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00475">475</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  476</span>    {</div>
+<div class="line"><span class="lineno">  477</span>        <span class="keywordtype">double</span> res = abs(x) &gt; 1.0 ? 0.5*<a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a>*(1 - <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ad8c062cbe3e278a78e187e957077d01d">sign</a>(x)) : acos(x);</div>
+<div class="line"><span class="lineno">  478</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  479</span>    }</div>
 <div class="ttc" id="a_v_mlib_2defs_2defs_8h_html_a952eac791b596a61bba0a133a3bb439f"><div class="ttname"><a href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a></div><div class="ttdeci">const double PI</div><div class="ttdoc">Число .</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00076">defs.h:76</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_ad8c062cbe3e278a78e187e957077d01d"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#ad8c062cbe3e278a78e187e957077d01d">VMlib::sign</a></div><div class="ttdeci">int sign(T x)</div><div class="ttdoc">Усовершенствованный сигнум</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00485">defs.h:485</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_ad8c062cbe3e278a78e187e957077d01d"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#ad8c062cbe3e278a78e187e957077d01d">VMlib::sign</a></div><div class="ttdeci">int sign(T x)</div><div class="ttdoc">Усовершенствованный сигнум</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00488">defs.h:488</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2740,11 +2740,11 @@ template&lt;typename T , typename P , typename R , typename S , size_t n&gt; </d
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ссылка на поток </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00312">312</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  313</span>    {</div>
-<div class="line"><span class="lineno">  314</span>        _stream &lt;&lt; <span class="stringliteral">&quot;( ( &quot;</span> &lt;&lt; _pair.first.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; _pair.first.second &lt;&lt; <span class="stringliteral">&quot; ), &quot;</span> &lt;&lt; _pair.second &lt;&lt; <span class="stringliteral">&quot; )&quot;</span>; </div>
-<div class="line"><span class="lineno">  315</span>        <span class="keywordflow">return</span> _stream;</div>
-<div class="line"><span class="lineno">  316</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00315">315</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  316</span>    {</div>
+<div class="line"><span class="lineno">  317</span>        _stream &lt;&lt; <span class="stringliteral">&quot;( ( &quot;</span> &lt;&lt; _pair.first.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; _pair.first.second &lt;&lt; <span class="stringliteral">&quot; ), &quot;</span> &lt;&lt; _pair.second &lt;&lt; <span class="stringliteral">&quot; )&quot;</span>; </div>
+<div class="line"><span class="lineno">  318</span>        <span class="keywordflow">return</span> _stream;</div>
+<div class="line"><span class="lineno">  319</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2793,11 +2793,11 @@ template&lt;typename T , typename P , typename R , typename S , size_t n&gt; </d
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ссылка на поток </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00326">326</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  327</span>    {</div>
-<div class="line"><span class="lineno">  328</span>        _stream &lt;&lt; <span class="stringliteral">&quot;( &quot;</span> &lt;&lt; _pair.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; _pair.second &lt;&lt; <span class="stringliteral">&quot; )&quot;</span>;</div>
-<div class="line"><span class="lineno">  329</span>        <span class="keywordflow">return</span> _stream;</div>
-<div class="line"><span class="lineno">  330</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00329">329</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  330</span>    {</div>
+<div class="line"><span class="lineno">  331</span>        _stream &lt;&lt; <span class="stringliteral">&quot;( &quot;</span> &lt;&lt; _pair.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; _pair.second &lt;&lt; <span class="stringliteral">&quot; )&quot;</span>;</div>
+<div class="line"><span class="lineno">  332</span>        <span class="keywordflow">return</span> _stream;</div>
+<div class="line"><span class="lineno">  333</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2846,19 +2846,19 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ссылка на поток </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00290">290</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  291</span>    {</div>
-<div class="line"><span class="lineno">  292</span>        <span class="keywordtype">size_t</span> n = _vec.size();</div>
-<div class="line"><span class="lineno">  293</span>        _stream &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span>;</div>
-<div class="line"><span class="lineno">  294</span>        <span class="keywordflow">if</span> (n &gt; 0)</div>
-<div class="line"><span class="lineno">  295</span>        {</div>
-<div class="line"><span class="lineno">  296</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n - 1; ++j)</div>
-<div class="line"><span class="lineno">  297</span>                _stream &lt;&lt; _vec[j] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><span class="lineno">  298</span>            _stream &lt;&lt; _vec[n - 1];</div>
-<div class="line"><span class="lineno">  299</span>        }</div>
-<div class="line"><span class="lineno">  300</span>        _stream &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
-<div class="line"><span class="lineno">  301</span>        <span class="keywordflow">return</span> _stream;</div>
-<div class="line"><span class="lineno">  302</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00293">293</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  294</span>    {</div>
+<div class="line"><span class="lineno">  295</span>        <span class="keywordtype">size_t</span> n = _vec.size();</div>
+<div class="line"><span class="lineno">  296</span>        _stream &lt;&lt; <span class="stringliteral">&quot;{ &quot;</span>;</div>
+<div class="line"><span class="lineno">  297</span>        <span class="keywordflow">if</span> (n &gt; 0)</div>
+<div class="line"><span class="lineno">  298</span>        {</div>
+<div class="line"><span class="lineno">  299</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; n - 1; ++j)</div>
+<div class="line"><span class="lineno">  300</span>                _stream &lt;&lt; _vec[j] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><span class="lineno">  301</span>            _stream &lt;&lt; _vec[n - 1];</div>
+<div class="line"><span class="lineno">  302</span>        }</div>
+<div class="line"><span class="lineno">  303</span>        _stream &lt;&lt; <span class="stringliteral">&quot; }&quot;</span>;</div>
+<div class="line"><span class="lineno">  304</span>        <span class="keywordflow">return</span> _stream;</div>
+<div class="line"><span class="lineno">  305</span>    }<span class="comment">//operator&lt;&lt;(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -3623,13 +3623,13 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>знак числа в обычном математическом смысле, </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00485">485</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  486</span>    {</div>
-<div class="line"><span class="lineno">  487</span>        <span class="keywordtype">double</span> dx = (double)x;</div>
-<div class="line"><span class="lineno">  488</span>        <span class="keywordflow">if</span> (dx &gt; 0) <span class="keywordflow">return</span> 1;</div>
-<div class="line"><span class="lineno">  489</span>        <span class="keywordflow">if</span> ( (dx &lt; 0.0) || (dx &lt; -0.0) ) <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  490</span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  491</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00488">488</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  489</span>    {</div>
+<div class="line"><span class="lineno">  490</span>        <span class="keywordtype">double</span> dx = (double)x;</div>
+<div class="line"><span class="lineno">  491</span>        <span class="keywordflow">if</span> (dx &gt; 0) <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">  492</span>        <span class="keywordflow">if</span> ( (dx &lt; 0.0) || (dx &lt; -0.0) ) <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">  493</span>        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  494</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -3684,8 +3684,8 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>квадрат аргумента \( x^2 \) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00455">455</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  455</span>{ <span class="keywordflow">return</span> x * x; }</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00458">458</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  458</span>{ <span class="keywordflow">return</span> x * x; }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3735,12 +3735,12 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00561">561</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  562</span>    {</div>
-<div class="line"><span class="lineno">  563</span>        <span class="keywordtype">char</span>* varArray = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(&amp;var);</div>
-<div class="line"><span class="lineno">  564</span>        <span class="keywordflow">for</span> (<span class="keywordtype">long</span> i = 0; i &lt; static_cast&lt;long&gt;(<span class="keyword">sizeof</span>(var) / 2); ++i)</div>
-<div class="line"><span class="lineno">  565</span>            std::swap(varArray[<span class="keyword">sizeof</span>(var) - 1 - i], varArray[i]);</div>
-<div class="line"><span class="lineno">  566</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00564">564</a> of file <a class="el" href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html">defs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  565</span>    {</div>
+<div class="line"><span class="lineno">  566</span>        <span class="keywordtype">char</span>* varArray = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(&amp;var);</div>
+<div class="line"><span class="lineno">  567</span>        <span class="keywordflow">for</span> (<span class="keywordtype">long</span> i = 0; i &lt; static_cast&lt;long&gt;(<span class="keyword">sizeof</span>(var) / 2); ++i)</div>
+<div class="line"><span class="lineno">  568</span>            std::swap(varArray[<span class="keyword">sizeof</span>(var) - 1 - i], varArray[i]);</div>
+<div class="line"><span class="lineno">  569</span>    }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

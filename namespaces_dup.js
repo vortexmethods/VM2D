@@ -19,6 +19,7 @@ var namespaces_dup =
       [ "defaultBoundaryCondition", "da/d29/namespacedefaults.html#ac33584be62f7b7aa50d7e5311b5055f6", null ],
       [ "defaultCalcCoefficients", "da/d29/namespacedefaults.html#a1f640b97cb7bc6abf79dd059c0a1f6d3", null ],
       [ "defaultChord", "da/d29/namespacedefaults.html#a6b64f686b287dc2d8666aad2da1e6172", null ],
+      [ "defaultCoefEpsAst", "da/d29/namespacedefaults.html#ac3084b65fa56741005978516e70a7e21", null ],
       [ "defaultCopyPath", "da/d29/namespacedefaults.html#a844b3deecc849628073f89a9494afe3a", null ],
       [ "defaultDelta", "da/d29/namespacedefaults.html#a4d3282534cdc11411470337c95c8b6d3", null ],
       [ "defaultDistFar", "da/d29/namespacedefaults.html#a1a04a8472a9487107315a98aaa2ef1c4", null ],

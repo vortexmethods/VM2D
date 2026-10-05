@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('dd/d7e/class_v_m2_d_1_1_cpu_tree_info.
 </div><!--header-->
 <div class="contents">
 
-<p>Структура, хранящая данные и указатели на массивы на GPU для оптимизации итерационного решения СЛАУ на GPU.  
+<p>Структура, хранящая данные и указатели на массивы на CPU для оптимизации итерационного решения СЛАУ на CPU.  
  <a href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../d7/d56/cpu_tree_info_8h_source.html">cpuTreeInfo.h</a>&gt;</code></p>
@@ -115,7 +115,7 @@ Collaboration diagram for VM2D::CpuTreeInfo:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d0/da8/class_v_m2_d_1_1_cpu_tree_info__coll__graph.png" border="0" usemap="#a_v_m2_d_1_1_cpu_tree_info_coll__map" alt="Collaboration graph"/></div>
 <map name="a_v_m2_d_1_1_cpu_tree_info_coll__map" id="a_v_m2_d_1_1_cpu_tree_info_coll__map">
-<area shape="rect" title="Структура, хранящая данные и указатели на массивы на GPU для оптимизации итерационного решения СЛАУ н..." alt="" coords="1097,263,1244,289"/>
+<area shape="rect" title="Структура, хранящая данные и указатели на массивы на CPU для оптимизации итерационного решения СЛАУ н..." alt="" coords="1097,263,1244,289"/>
 <area shape="rect" title=" " alt="" coords="703,62,875,87"/>
 <area shape="poly" title=" " alt="" coords="888,61,934,61,983,67,1031,80,1075,102,1096,119,1114,139,1141,185,1159,229,1169,263,1164,264,1154,231,1137,187,1109,142,1092,123,1072,106,1029,85,982,72,934,67,888,66"/>
 <area shape="rect" title=" " alt="" coords="706,118,871,143"/>
@@ -163,8 +163,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a48305b940dfdf549177fea73a071ad58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57f9209e714d574bfc470659b4f8de83" id="r_a57f9209e714d574bfc470659b4f8de83"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a57f9209e714d574bfc470659b4f8de83">UpwardTraversal</a> (int order)</td></tr>
 <tr class="separator:a57f9209e714d574bfc470659b4f8de83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa5a0894e4daf58be2a4b462b3ac2318" id="r_afa5a0894e4daf58be2a4b462b3ac2318"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#afa5a0894e4daf58be2a4b462b3ac2318">DownwardTraversalVorticesToPoints</a> (<a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html">CpuTreeInfo</a> &amp;cntrTree, std::vector&lt; <a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> &gt; &amp;vel, std::vector&lt; double &gt; &amp;epsast, double theta, int order, bool calcRadius)</td></tr>
-<tr class="separator:afa5a0894e4daf58be2a4b462b3ac2318"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd0be880cff330f4b29ebb234a3dbd1f" id="r_afd0be880cff330f4b29ebb234a3dbd1f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#afd0be880cff330f4b29ebb234a3dbd1f">DownwardTraversalVorticesToPoints</a> (<a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html">CpuTreeInfo</a> &amp;cntrTree, std::vector&lt; <a class="el" href="../../da/dd5/class_v_mlib_1_1_point2_d.html">Point2D</a> &gt; &amp;vel, std::vector&lt; double &gt; &amp;epsast, double theta, int order, bool calcRadius, double coefEpsAst)</td></tr>
+<tr class="separator:afd0be880cff330f4b29ebb234a3dbd1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a414dbf722416a4bce800f97beb0ed1ff" id="r_a414dbf722416a4bce800f97beb0ed1ff"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a414dbf722416a4bce800f97beb0ed1ff">DownwardTraversalClosestPanelToPoints</a> (<a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html">CpuTreeInfo</a> &amp;cntrTree, std::vector&lt; std::pair&lt; int, double &gt; &gt; &amp;indexPnlDist, bool findOnlyInside, double *pseudonormals)</td></tr>
 <tr class="separator:a414dbf722416a4bce800f97beb0ed1ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c0f5b2b6317c742c2fefbc444afc49c" id="r_a3c0f5b2b6317c742c2fefbc444afc49c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a3c0f5b2b6317c742c2fefbc444afc49c">DownwardTraversalVorticesToPanels</a> (<a class="el" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html">CpuTreeInfo</a> &amp;cntrTree, std::vector&lt; double &gt; &amp;rhs, std::vector&lt; double &gt; &amp;rhsLin, double theta, int order)</td></tr>
@@ -234,7 +234,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8df11a478e44e1043b874a04624c7db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Структура, хранящая данные и указатели на массивы на GPU для оптимизации итерационного решения СЛАУ на GPU. </p>
+<div class="textblock"><p>Структура, хранящая данные и указатели на массивы на CPU для оптимизации итерационного решения СЛАУ на CPU. </p>
 <dl class="section author"><dt>Author</dt><dd>Марчевский Илья Константинович </dd>
 <dd>
 Сокол Ксения Сергеевна </dd>
@@ -1115,7 +1115,7 @@ Here is the caller graph for this function:</div>
 <div class="ttc" id="anamespace_v_m2_d_html_a9b26222e8163b67085c46557a6a6521b"><div class="ttname"><a href="../../d9/dd7/namespace_v_m2_d.html#a9b26222e8163b67085c46557a6a6521b">VM2D::onePlusMachineEps</a></div><div class="ttdeci">const double onePlusMachineEps</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d9f/cpu_tree_info_8cpp_source.html#l00722">cpuTreeInfo.cpp:722</a></div></div>
 <div class="ttc" id="anamespace_v_m2_d_html_ad2a4d7eaac6560a44e5a53d62924df92"><div class="ttname"><a href="../../d9/dd7/namespace_v_m2_d.html#ad2a4d7eaac6560a44e5a53d62924df92">VM2D::MinDist2AABB</a></div><div class="ttdeci">double MinDist2AABB(const Point4D &amp;gabI, const Point4D &amp;gabJ)</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d9f/cpu_tree_info_8cpp_source.html#l00704">cpuTreeInfo.cpp:704</a></div></div>
 <div class="ttc" id="anamespace_v_m2_d_html_aebddc89e1d4929346c06b2114f5637df"><div class="ttname"><a href="../../d9/dd7/namespace_v_m2_d.html#aebddc89e1d4929346c06b2114f5637df">VM2D::mindist2</a></div><div class="ttdeci">double mindist2(const Point4D &amp;lowerUpper, const Point2D &amp;rhs) noexcept</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d9f/cpu_tree_info_8cpp_source.html#l00636">cpuTreeInfo.cpp:636</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_aa9c30c1d592b3896cac80167bb5c9697"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">VMlib::sqr</a></div><div class="ttdeci">T sqr(T x)</div><div class="ttdoc">Возведение числа в квадрат</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00455">defs.h:455</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_aa9c30c1d592b3896cac80167bb5c9697"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">VMlib::sqr</a></div><div class="ttdeci">T sqr(T x)</div><div class="ttdoc">Возведение числа в квадрат</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00458">defs.h:458</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1410,7 +1410,7 @@ Here is the call graph for this function:</div>
 <div class="ttc" id="aclass_v_mlib_1_1numvector_html_aa3d9abd363f214e61551e3c9782306c6"><div class="ttname"><a href="../../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6">VMlib::numvector::data</a></div><div class="ttdeci">T data[n]</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00101">numvector.h:101</a></div></div>
 <div class="ttc" id="anamespace_v_mlib_html_a1ba91a2bf94adabd739cb0739852e7d6"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a1ba91a2bf94adabd739cb0739852e7d6">VMlib::multz</a></div><div class="ttdeci">Point2D multz(const Point2D &amp;a, const Point2D &amp;b)</div><div class="ttdoc">Умножение комплексных чисел</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d27/_point2_d_8h_source.html#l00210">Point2D.h:210</a></div></div>
 <div class="ttc" id="anamespace_v_mlib_html_abc8d53bf94463c0c507ffcf6b69cfece"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#abc8d53bf94463c0c507ffcf6b69cfece">VMlib::multzA</a></div><div class="ttdeci">Point2D multzA(const Point2D &amp;a, const Point2D &amp;b)</div><div class="ttdoc">Умножение a на комплексно сопряженноe к b.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d27/_point2_d_8h_source.html#l00219">Point2D.h:219</a></div></div>
-<div class="ttc" id="anamespace_v_mlib_html_ad8c062cbe3e278a78e187e957077d01d"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#ad8c062cbe3e278a78e187e957077d01d">VMlib::sign</a></div><div class="ttdeci">int sign(T x)</div><div class="ttdoc">Усовершенствованный сигнум</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00485">defs.h:485</a></div></div>
+<div class="ttc" id="anamespace_v_mlib_html_ad8c062cbe3e278a78e187e957077d01d"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#ad8c062cbe3e278a78e187e957077d01d">VMlib::sign</a></div><div class="ttdeci">int sign(T x)</div><div class="ttdoc">Усовершенствованный сигнум</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00488">defs.h:488</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1426,8 +1426,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="afa5a0894e4daf58be2a4b462b3ac2318" name="afa5a0894e4daf58be2a4b462b3ac2318"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa5a0894e4daf58be2a4b462b3ac2318">&#9670;&#160;</a></span>DownwardTraversalVorticesToPoints()</h2>
+<a id="afd0be880cff330f4b29ebb234a3dbd1f" name="afd0be880cff330f4b29ebb234a3dbd1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd0be880cff330f4b29ebb234a3dbd1f">&#9670;&#160;</a></span>DownwardTraversalVorticesToPoints()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1466,7 +1466,13 @@ Here is the caller graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>calcRadius</em>&#160;</td>
+          <td class="paramname"><em>calcRadius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>coefEpsAst</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1725,7 +1731,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno"> 1246</span>                    {</div>
 <div class="line"><span class="lineno"> 1247</span>                        vel[indexOfPoint] = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a> * v.kcross();</div>
 <div class="line"><span class="lineno"> 1248</span>                        <span class="keywordflow">if</span> (calcRadius)</div>
-<div class="line"><span class="lineno"> 1249</span>                            epsast[indexOfPoint] = 1.0 * sqrt((d_1 + d_2 + d_3) / 3.0);</div>
+<div class="line"><span class="lineno"> 1249</span>                            epsast[indexOfPoint] = coefEpsAst * sqrt((d_1 + d_2 + d_3) / 3.0);</div>
 <div class="line"><span class="lineno"> 1250</span>                    }</div>
 <div class="line"><span class="lineno"> 1251</span>                    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno"> 1252</span>                    {</div>
@@ -1744,7 +1750,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno"> 1265</span>                            <span class="keywordflow">if</span> (calcRadius)</div>
 <div class="line"><span class="lineno"> 1266</span>                            {</div>
 <div class="line"><span class="lineno"> 1267</span>                                <span class="keyword">const</span> <span class="keyword">auto</span>&amp; es = epsastParticles[pnt - cntrTree.range[k].first];</div>
-<div class="line"><span class="lineno"> 1268</span>                                epsast[cntrTree.mortonCodesIdx[pnt]] = 1.0 * sqrt((es[0] + es[1] + es[2]) / 3.0);</div>
+<div class="line"><span class="lineno"> 1268</span>                                epsast[cntrTree.mortonCodesIdx[pnt]] = coefEpsAst * sqrt((es[0] + es[1] + es[2]) / 3.0);</div>
 <div class="line"><span class="lineno"> 1269</span>                            }</div>
 <div class="line"><span class="lineno"> 1270</span>                        }</div>
 <div class="line"><span class="lineno"> 1271</span>                    }</div>
@@ -1761,8 +1767,8 @@ Here is the caller graph for this function:</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info_afa5a0894e4daf58be2a4b462b3ac2318_cgraph.png" border="0" usemap="#add/d7e/class_v_m2_d_1_1_cpu_tree_info_afa5a0894e4daf58be2a4b462b3ac2318_cgraph" alt=""/></div>
-<map name="add/d7e/class_v_m2_d_1_1_cpu_tree_info_afa5a0894e4daf58be2a4b462b3ac2318_cgraph" id="add/d7e/class_v_m2_d_1_1_cpu_tree_info_afa5a0894e4daf58be2a4b462b3ac2318_cgraph">
+<div class="center"><img src="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info_afd0be880cff330f4b29ebb234a3dbd1f_cgraph.png" border="0" usemap="#add/d7e/class_v_m2_d_1_1_cpu_tree_info_afd0be880cff330f4b29ebb234a3dbd1f_cgraph" alt=""/></div>
+<map name="add/d7e/class_v_m2_d_1_1_cpu_tree_info_afd0be880cff330f4b29ebb234a3dbd1f_cgraph" id="add/d7e/class_v_m2_d_1_1_cpu_tree_info_afd0be880cff330f4b29ebb234a3dbd1f_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,221,60"/>
 <area shape="rect" href="../../d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="269,20,464,45"/>
 <area shape="poly" title=" " alt="" coords="221,30,255,30,255,35,221,35"/>
@@ -1771,8 +1777,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info_afa5a0894e4daf58be2a4b462b3ac2318_icgraph.png" border="0" usemap="#add/d7e/class_v_m2_d_1_1_cpu_tree_info_afa5a0894e4daf58be2a4b462b3ac2318_icgraph" alt=""/></div>
-<map name="add/d7e/class_v_m2_d_1_1_cpu_tree_info_afa5a0894e4daf58be2a4b462b3ac2318_icgraph" id="add/d7e/class_v_m2_d_1_1_cpu_tree_info_afa5a0894e4daf58be2a4b462b3ac2318_icgraph">
+<div class="center"><img src="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info_afd0be880cff330f4b29ebb234a3dbd1f_icgraph.png" border="0" usemap="#add/d7e/class_v_m2_d_1_1_cpu_tree_info_afd0be880cff330f4b29ebb234a3dbd1f_icgraph" alt=""/></div>
+<map name="add/d7e/class_v_m2_d_1_1_cpu_tree_info_afd0be880cff330f4b29ebb234a3dbd1f_icgraph" id="add/d7e/class_v_m2_d_1_1_cpu_tree_info_afd0be880cff330f4b29ebb234a3dbd1f_icgraph">
 <area shape="rect" title=" " alt="" coords="596,30,812,85"/>
 <area shape="rect" href="../../d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ad7e13c2e25b9cc9bc4e25d1dc26ed294" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="271,5,548,45"/>
 <area shape="poly" title=" " alt="" coords="582,47,548,43,548,38,582,41"/>

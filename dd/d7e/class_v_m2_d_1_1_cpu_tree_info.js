@@ -7,7 +7,7 @@ var class_v_m2_d_1_1_cpu_tree_info =
     [ "Delta", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#af5f300e647d5d1558157bede4ead2411", null ],
     [ "DownwardTraversalClosestPanelToPoints", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a414dbf722416a4bce800f97beb0ed1ff", null ],
     [ "DownwardTraversalVorticesToPanels", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a3c0f5b2b6317c742c2fefbc444afc49c", null ],
-    [ "DownwardTraversalVorticesToPoints", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#afa5a0894e4daf58be2a4b462b3ac2318", null ],
+    [ "DownwardTraversalVorticesToPoints", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#afd0be880cff330f4b29ebb234a3dbd1f", null ],
     [ "RadixSortInternalCells", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a78f004b18b648fb3b2571a209873dcd3", null ],
     [ "RadixSortMortonCodes", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a8bfb33ed9415b53f489e05668c1fb741", null ],
     [ "Update", "dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a28d495c4dfbe9e15c363503712e9a9de", null ],

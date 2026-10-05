@@ -54,6 +54,7 @@ var _v_mlib_2defs_2defs_8h =
     [ "defaultBoundaryCondition", "d1/de2/_v_mlib_2defs_2defs_8h.html#ac33584be62f7b7aa50d7e5311b5055f6", null ],
     [ "defaultCalcCoefficients", "d1/de2/_v_mlib_2defs_2defs_8h.html#a1f640b97cb7bc6abf79dd059c0a1f6d3", null ],
     [ "defaultChord", "d1/de2/_v_mlib_2defs_2defs_8h.html#a6b64f686b287dc2d8666aad2da1e6172", null ],
+    [ "defaultCoefEpsAst", "d1/de2/_v_mlib_2defs_2defs_8h.html#ac3084b65fa56741005978516e70a7e21", null ],
     [ "defaultCopyPath", "d1/de2/_v_mlib_2defs_2defs_8h.html#a844b3deecc849628073f89a9494afe3a", null ],
     [ "defaultDelta", "d1/de2/_v_mlib_2defs_2defs_8h.html#a4d3282534cdc11411470337c95c8b6d3", null ],
     [ "defaultDistFar", "d1/de2/_v_mlib_2defs_2defs_8h.html#a1a04a8472a9487107315a98aaa2ef1c4", null ],

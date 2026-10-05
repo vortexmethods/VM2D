@@ -209,7 +209,7 @@ Collaboration diagram for VM2D::Beam:</div>
 <area shape="rect" href="../../d2/d48/struct_v_m2_d_1_1_vortexes_params.html" title="Структура, определяющая параметры виртуальных вихрей для отдельного профиля" alt="" coords="2139,470,2312,495"/>
 <area shape="poly" title=" " alt="" coords="924,344,1379,360,1488,363,1598,371,1760,392,1920,419,2166,467,2165,473,1919,424,1759,398,1597,376,1488,368,1379,365,924,350"/>
 <area shape="poly" title=" " alt="" coords="862,323,936,290,1036,254,1151,224,1212,215,1271,212,2657,212,2705,215,2764,223,2900,254,2968,275,3030,300,3081,326,3118,356,3134,381,3136,406,3136,432,3143,462,3159,498,3176,524,3194,551,3212,587,3219,611,3222,630,3225,648,3236,669,3257,695,3279,714,3325,738,3369,764,3390,785,3409,813,3426,857,3432,897,3430,933,3425,968,3419,1003,3416,1039,3419,1079,3433,1123,3450,1157,3471,1189,3520,1246,3569,1292,3608,1324,3604,1328,3566,1296,3516,1250,3467,1192,3446,1159,3428,1125,3414,1080,3410,1039,3413,1002,3419,967,3425,933,3427,897,3421,859,3404,816,3386,788,3366,769,3322,743,3276,718,3253,699,3231,672,3220,650,3216,631,3214,612,3207,589,3189,553,3172,527,3155,500,3137,464,3131,433,3131,407,3129,383,3114,359,3078,331,3028,304,2966,280,2899,259,2763,229,2704,220,2657,217,1271,217,1212,221,1153,230,1038,259,938,295,864,328"/>
-<area shape="rect" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html" title="Структура, хранящая данные и указатели на массивы на GPU для оптимизации итерационного решения СЛАУ н..." alt="" coords="1645,861,1792,886"/>
+<area shape="rect" href="../../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html" title="Структура, хранящая данные и указатели на массивы на CPU для оптимизации итерационного решения СЛАУ н..." alt="" coords="1645,861,1792,886"/>
 <area shape="poly" title=" " alt="" coords="925,354,1059,374,1113,385,1144,394,1157,407,1168,419,1197,428,1248,439,1386,463,1523,490,1572,504,1599,518,1612,545,1617,581,1615,670,1611,760,1614,796,1624,823,1645,844,1673,858,1670,863,1642,848,1619,825,1609,797,1605,760,1609,670,1612,581,1607,546,1595,522,1570,509,1522,495,1385,468,1247,444,1195,434,1165,424,1153,410,1141,398,1112,390,1058,380,924,360"/>
 <area shape="rect" title=" " alt="" coords="736,481,913,521"/>
 <area shape="poly" title=" " alt="" coords="927,499,1186,499,1186,504,927,504"/>
@@ -439,24 +439,26 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   57</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac4f3d2d474dea2467e4efb163a235834">W</a>(W_),</div>
 <div class="line"><span class="lineno">   58</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ade4bf58ed1a981f41544f08b159222a0">fsi</a>(fsi_),</div>
 <div class="line"><span class="lineno">   59</span>    <span class="comment">//filament</span></div>
-<div class="line"><span class="lineno">   60</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a351c12cd4c5e5da9e630c768797fb594">rho</a>(10000.0),</div>
-<div class="line"><span class="lineno">   61</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a707b616f8e57d5ba2194d2ddfb4dbe0e">F</a>(0.04),</div>
-<div class="line"><span class="lineno">   62</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae81db7cee7f81ddf67c4a668048d8f06">EJ</a>(1.0 * 1.0),</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>    <span class="comment">//Turek</span></div>
-<div class="line"><span class="lineno">   65</span>    <span class="comment">//rho(10000.0),</span></div>
-<div class="line"><span class="lineno">   66</span>    <span class="comment">//F(0.02),</span></div>
-<div class="line"><span class="lineno">   67</span>    <span class="comment">//EJ(1.1703239289446188),</span></div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>(R_),</div>
-<div class="line"><span class="lineno">   70</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a83dfb73446dba8c56a24440456bba82a">x0</a>(x0_),</div>
-<div class="line"><span class="lineno">   71</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae1a8d9d1e0ee7b27284d3ad1d3f87ea1">L</a>(L_)</div>
-<div class="line"><span class="lineno">   72</span>{</div>
-<div class="line"><span class="lineno">   73</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a0ae9faebbc0ec6d5d6c3a01dbaf8c4be">qCoeff</a>.resize(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>);</div>
-<div class="line"><span class="lineno">   74</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>.resize(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>);</div>
-<div class="line"><span class="lineno">   75</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>.resize(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>);</div>
-<div class="line"><span class="lineno">   76</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a77a102be1cdd8182af27514dc0e90d6c">presLastSteps</a>.reserve(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#adc1b5bea290743ecc241242398528949">nLastSteps</a>);</div>
-<div class="line"><span class="lineno">   77</span>};</div>
+<div class="line"><span class="lineno">   60</span>    <span class="comment">/*</span></div>
+<div class="line"><span class="lineno">   61</span><span class="comment">    rho(10000.0),</span></div>
+<div class="line"><span class="lineno">   62</span><span class="comment">    F(0.04),</span></div>
+<div class="line"><span class="lineno">   63</span><span class="comment">    EJ(1.0 * 1.0),</span></div>
+<div class="line"><span class="lineno">   64</span><span class="comment">    */</span></div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>    <span class="comment">//Turek</span></div>
+<div class="line"><span class="lineno">   67</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a351c12cd4c5e5da9e630c768797fb594">rho</a>(10000.0),</div>
+<div class="line"><span class="lineno">   68</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a707b616f8e57d5ba2194d2ddfb4dbe0e">F</a>(0.02),</div>
+<div class="line"><span class="lineno">   69</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae81db7cee7f81ddf67c4a668048d8f06">EJ</a>(1.17032),</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>(R_),</div>
+<div class="line"><span class="lineno">   72</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a83dfb73446dba8c56a24440456bba82a">x0</a>(x0_),</div>
+<div class="line"><span class="lineno">   73</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae1a8d9d1e0ee7b27284d3ad1d3f87ea1">L</a>(L_)</div>
+<div class="line"><span class="lineno">   74</span>{</div>
+<div class="line"><span class="lineno">   75</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a0ae9faebbc0ec6d5d6c3a01dbaf8c4be">qCoeff</a>.resize(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>);</div>
+<div class="line"><span class="lineno">   76</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>.resize(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>);</div>
+<div class="line"><span class="lineno">   77</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>.resize(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>);</div>
+<div class="line"><span class="lineno">   78</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a77a102be1cdd8182af27514dc0e90d6c">presLastSteps</a>.reserve(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#adc1b5bea290743ecc241242398528949">nLastSteps</a>);</div>
+<div class="line"><span class="lineno">   79</span>};</div>
 <div class="ttc" id="aclass_v_m2_d_1_1_beam_html_a0ae9faebbc0ec6d5d6c3a01dbaf8c4be"><div class="ttname"><a href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a0ae9faebbc0ec6d5d6c3a01dbaf8c4be">VM2D::Beam::qCoeff</a></div><div class="ttdeci">std::vector&lt; double &gt; qCoeff</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de3/_mechanics2_d_deformable_8h_source.html#l00077">Mechanics2DDeformable.h:77</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_beam_html_a351c12cd4c5e5da9e630c768797fb594"><div class="ttname"><a href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a351c12cd4c5e5da9e630c768797fb594">VM2D::Beam::rho</a></div><div class="ttdeci">double rho</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de3/_mechanics2_d_deformable_8h_source.html#l00071">Mechanics2DDeformable.h:71</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_beam_html_a528b54fea8cc31ef6d92f2727465a4bf"><div class="ttname"><a href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">VM2D::Beam::R</a></div><div class="ttdeci">int R</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de3/_mechanics2_d_deformable_8h_source.html#l00073">Mechanics2DDeformable.h:73</a></div></div>
@@ -506,33 +508,33 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00150">150</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  151</span>{</div>
-<div class="line"><span class="lineno">  152</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> c1 = deformParam[3];</div>
-<div class="line"><span class="lineno">  153</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> c2 = deformParam[4];</div>
-<div class="line"><span class="lineno">  154</span>    <span class="keywordtype">double</span> alpha;</div>
-<div class="line"><span class="lineno">  155</span>    </div>
-<div class="line"><span class="lineno">  156</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ade4bf58ed1a981f41544f08b159222a0">fsi</a>) <span class="comment">//Turek</span></div>
-<div class="line"><span class="lineno">  157</span>        alpha = 0.0; <span class="comment">//Turek</span></div>
-<div class="line"><span class="lineno">  158</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  159</span>        alpha = deformParam[1]; <span class="comment">//Fish</span></div>
-<div class="line"><span class="lineno">  160</span>    </div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> lambda = deformParam[2];</div>
-<div class="line"><span class="lineno">  163</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> length = 1.0;</div>
-<div class="line"><span class="lineno">  164</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> f = deformParam[0];</div>
-<div class="line"><span class="lineno">  165</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ade4bf58ed1a981f41544f08b159222a0">fsi</a> &amp;&amp; (f == 0))</div>
-<div class="line"><span class="lineno">  166</span>        alpha = 0.0;</div>
-<div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>    <span class="keyword">auto</span> A = [c1, c2](<span class="keywordtype">double</span> xi) {<span class="keywordflow">return</span> 1.0 + (xi - 1.0) * c1 + (xi * xi - 1.0) * c2;};</div>
+<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00152">152</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  153</span>{</div>
+<div class="line"><span class="lineno">  154</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> c1 = deformParam[3];</div>
+<div class="line"><span class="lineno">  155</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> c2 = deformParam[4];</div>
+<div class="line"><span class="lineno">  156</span>    <span class="keywordtype">double</span> alpha;</div>
+<div class="line"><span class="lineno">  157</span>    </div>
+<div class="line"><span class="lineno">  158</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ade4bf58ed1a981f41544f08b159222a0">fsi</a>) <span class="comment">//Turek</span></div>
+<div class="line"><span class="lineno">  159</span>        alpha = 0.0; <span class="comment">//Turek</span></div>
+<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  161</span>        alpha = deformParam[1]; <span class="comment">//Fish</span></div>
+<div class="line"><span class="lineno">  162</span>    </div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> lambda = deformParam[2];</div>
+<div class="line"><span class="lineno">  165</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> length = 1.0;</div>
+<div class="line"><span class="lineno">  166</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> f = deformParam[0];</div>
+<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ade4bf58ed1a981f41544f08b159222a0">fsi</a> &amp;&amp; (f == 0))</div>
+<div class="line"><span class="lineno">  168</span>        alpha = 0.0;</div>
 <div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>    <span class="comment">//double result = alpha * A(x + 0.5) * sin(DPI * ((x + 0.5) / (length * lambda) - f * t));</span></div>
-<div class="line"><span class="lineno">  171</span>    <span class="keywordtype">double</span> result = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac4f3d2d474dea2467e4efb163a235834">W</a>.<a class="code hl_function" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4">getPassport</a>().<a class="code hl_variable" href="../../d2/d15/class_v_m2_d_1_1_passport.html#a300514dc57b591247834056a0fa92ca4">physicalProperties</a>.<a class="code hl_function" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715">accelCft</a>(t) * alpha * A(x + 0.5) * sin(<a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#af44fd25b63d0688e4373be36c271ab2c">DPI</a> * ((x + 0.5) / (length * lambda) - f * t));</div>
-<div class="line"><span class="lineno">  172</span> </div>
-<div class="line"><span class="lineno">  173</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><span class="lineno">  174</span>}</div>
+<div class="line"><span class="lineno">  170</span>    <span class="keyword">auto</span> A = [c1, c2](<span class="keywordtype">double</span> xi) {<span class="keywordflow">return</span> 1.0 + (xi - 1.0) * c1 + (xi * xi - 1.0) * c2;};</div>
+<div class="line"><span class="lineno">  171</span> </div>
+<div class="line"><span class="lineno">  172</span>    <span class="comment">//double result = alpha * A(x + 0.5) * sin(DPI * ((x + 0.5) / (length * lambda) - f * t));</span></div>
+<div class="line"><span class="lineno">  173</span>    <span class="keywordtype">double</span> result = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac4f3d2d474dea2467e4efb163a235834">W</a>.<a class="code hl_function" href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4">getPassport</a>().<a class="code hl_variable" href="../../d2/d15/class_v_m2_d_1_1_passport.html#a300514dc57b591247834056a0fa92ca4">physicalProperties</a>.<a class="code hl_function" href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715">accelCft</a>(t) * alpha * A(x + 0.5) * sin(<a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#af44fd25b63d0688e4373be36c271ab2c">DPI</a> * ((x + 0.5) / (length * lambda) - f * t));</div>
+<div class="line"><span class="lineno">  174</span> </div>
+<div class="line"><span class="lineno">  175</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">  176</span>}</div>
 <div class="ttc" id="a_v_mlib_2defs_2defs_8h_html_af44fd25b63d0688e4373be36c271ab2c"><div class="ttname"><a href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#af44fd25b63d0688e4373be36c271ab2c">DPI</a></div><div class="ttdeci">const double DPI</div><div class="ttdoc">Число .</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00082">defs.h:82</a></div></div>
-<div class="ttc" id="aclass_v_m2_d_1_1_passport_html_a300514dc57b591247834056a0fa92ca4"><div class="ttname"><a href="../../d2/d15/class_v_m2_d_1_1_passport.html#a300514dc57b591247834056a0fa92ca4">VM2D::Passport::physicalProperties</a></div><div class="ttdeci">PhysicalProperties physicalProperties</div><div class="ttdoc">Структура с физическими свойствами задачи</div><div class="ttdef"><b>Definition</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00301">Passport2D.h:301</a></div></div>
+<div class="ttc" id="aclass_v_m2_d_1_1_passport_html_a300514dc57b591247834056a0fa92ca4"><div class="ttname"><a href="../../d2/d15/class_v_m2_d_1_1_passport.html#a300514dc57b591247834056a0fa92ca4">VM2D::Passport::physicalProperties</a></div><div class="ttdeci">PhysicalProperties physicalProperties</div><div class="ttdoc">Структура с физическими свойствами задачи</div><div class="ttdef"><b>Definition</b> <a href="../../d7/db0/_passport2_d_8h_source.html#l00304">Passport2D.h:304</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_world2_d_html_a95be88dc18a41ba74bf09ab0e47627a4"><div class="ttname"><a href="../../d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4">VM2D::World2D::getPassport</a></div><div class="ttdeci">const Passport &amp; getPassport() const</div><div class="ttdoc">Возврат константной ссылки на паспорт</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d87/_world2_d_8h_source.html#l00263">World2D.h:263</a></div></div>
 <div class="ttc" id="astruct_v_m2_d_1_1_physical_properties_html_a407af4cf407911a9fda35de04c477715"><div class="ttname"><a href="../../d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a407af4cf407911a9fda35de04c477715">VM2D::PhysicalProperties::accelCft</a></div><div class="ttdeci">double accelCft(double currentTime) const</div><div class="ttdoc">Функция-множитель, позволяющая моделировать разгон</div><div class="ttdef"><b>Definition</b> <a href="../../db/d9f/_passport2_d_8cpp_source.html#l00050">Passport2D.cpp:50</a></div></div>
 </div><!-- fragment -->
@@ -564,15 +566,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00139">139</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
-<div class="line"><span class="lineno">  141</span>    <span class="keywordtype">double</span> result = 0.0;</div>
-<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>; ++i)</div>
-<div class="line"><span class="lineno">  143</span>        result += <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a>(i, t) * <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a792fa1297b72c166b71b19de1e33b590">shape</a>(i, x);</div>
-<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><span class="lineno">  145</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00141">141</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
+<div class="line"><span class="lineno">  143</span>    <span class="keywordtype">double</span> result = 0.0;</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf">R</a>; ++i)</div>
+<div class="line"><span class="lineno">  145</span>        result += <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a>(i, t) * <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a792fa1297b72c166b71b19de1e33b590">shape</a>(i, x);</div>
+<div class="line"><span class="lineno">  146</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">  147</span>}</div>
 <div class="ttc" id="aclass_v_m2_d_1_1_beam_html_a792fa1297b72c166b71b19de1e33b590"><div class="ttname"><a href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a792fa1297b72c166b71b19de1e33b590">VM2D::Beam::shape</a></div><div class="ttdeci">double shape(int n, double x) const</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de3/_mechanics2_d_deformable_8h_source.html#l00083">Mechanics2DDeformable.h:83</a></div></div>
-<div class="ttc" id="aclass_v_m2_d_1_1_beam_html_ac5746ff81a5c054f3e58158d398dc133"><div class="ttname"><a href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">VM2D::Beam::phi</a></div><div class="ttdeci">double phi(int n, double t) const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00079">Mechanics2DDeformable.cpp:79</a></div></div>
+<div class="ttc" id="aclass_v_m2_d_1_1_beam_html_ac5746ff81a5c054f3e58158d398dc133"><div class="ttname"><a href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">VM2D::Beam::phi</a></div><div class="ttdeci">double phi(int n, double t) const</div><div class="ttdef"><b>Definition</b> <a href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00081">Mechanics2DDeformable.cpp:81</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -614,10 +616,10 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00079">79</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n];</div>
-<div class="line"><span class="lineno">   82</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00081">81</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>{</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n];</div>
+<div class="line"><span class="lineno">   84</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -714,27 +716,27 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00084">84</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{</div>
-<div class="line"><span class="lineno">   86</span>    <span class="keywordtype">double</span> cm = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a351c12cd4c5e5da9e630c768797fb594">rho</a> * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a707b616f8e57d5ba2194d2ddfb4dbe0e">F</a>;</div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordtype">double</span> ck = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae81db7cee7f81ddf67c4a668048d8f06">EJ</a> * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9496e42a73d860f6a51618766170d4e8">unitLambda</a>[n] / <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae1a8d9d1e0ee7b27284d3ad1d3f87ea1">L</a>));</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordtype">double</span> cq = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a0ae9faebbc0ec6d5d6c3a01dbaf8c4be">qCoeff</a>[n];</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordtype">double</span> omega = sqrt(ck / cm);</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keywordtype">double</span> cDamp = 0.0;</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>    <span class="keywordtype">double</span> phiAst = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] + 0.5 * dt * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n];</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordtype">double</span> psiAst = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n] + 0.5 * dt * (-ck * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] - cDamp * omega * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n] - cq) / cm;</div>
-<div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] += dt * psiAst;</div>
-<div class="line"><span class="lineno">   97</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n] += dt * (-ck * phiAst - cDamp * omega * psiAst - cq) / cm;</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;n = &quot;</span> &lt;&lt; n &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  100</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;ck / cm = &quot;</span> &lt;&lt; ck / cm &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  101</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;cq / cm = &quot;</span> &lt;&lt; cq / cm &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  102</span>    <span class="comment">//std::cout &lt;&lt; &quot;lam = &quot; &lt;&lt; unitLambda[n] / L &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  103</span>}</div>
-<div class="ttc" id="anamespace_v_mlib_html_aa9c30c1d592b3896cac80167bb5c9697"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">VMlib::sqr</a></div><div class="ttdeci">T sqr(T x)</div><div class="ttdoc">Возведение числа в квадрат</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00455">defs.h:455</a></div></div>
+<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00086">86</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordtype">double</span> cm = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a351c12cd4c5e5da9e630c768797fb594">rho</a> * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a707b616f8e57d5ba2194d2ddfb4dbe0e">F</a>;</div>
+<div class="line"><span class="lineno">   89</span>    <span class="keywordtype">double</span> ck = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae81db7cee7f81ddf67c4a668048d8f06">EJ</a> * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9496e42a73d860f6a51618766170d4e8">unitLambda</a>[n] / <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae1a8d9d1e0ee7b27284d3ad1d3f87ea1">L</a>));</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordtype">double</span> cq = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a0ae9faebbc0ec6d5d6c3a01dbaf8c4be">qCoeff</a>[n];</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordtype">double</span> omega = sqrt(ck / cm);</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordtype">double</span> cDamp = 0.0;</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordtype">double</span> phiAst = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] + 0.5 * dt * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n];</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordtype">double</span> psiAst = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n] + 0.5 * dt * (-ck * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] - cDamp * omega * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n] - cq) / cm;</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] += dt * psiAst;</div>
+<div class="line"><span class="lineno">   99</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n] += dt * (-ck * phiAst - cDamp * omega * psiAst - cq) / cm;</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>    <span class="comment">//std::cout &lt;&lt; &quot;n = &quot; &lt;&lt; n &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  102</span>    <span class="comment">//std::cout &lt;&lt; &quot;ck / cm = &quot; &lt;&lt; ck / cm &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  103</span>    <span class="comment">//std::cout &lt;&lt; &quot;cq / cm = &quot; &lt;&lt; cq / cm &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  104</span>    <span class="comment">//std::cout &lt;&lt; &quot;lam = &quot; &lt;&lt; unitLambda[n] / L &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  105</span>}</div>
+<div class="ttc" id="anamespace_v_mlib_html_aa9c30c1d592b3896cac80167bb5c9697"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">VMlib::sqr</a></div><div class="ttdeci">T sqr(T x)</div><div class="ttdoc">Возведение числа в квадрат</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00458">defs.h:458</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -764,39 +766,39 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00105">105</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span>                                      {</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordtype">double</span> cm = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a351c12cd4c5e5da9e630c768797fb594">rho</a> * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a707b616f8e57d5ba2194d2ddfb4dbe0e">F</a>;</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordtype">double</span> ck = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae81db7cee7f81ddf67c4a668048d8f06">EJ</a> * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9496e42a73d860f6a51618766170d4e8">unitLambda</a>[n] / <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae1a8d9d1e0ee7b27284d3ad1d3f87ea1">L</a>));</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordtype">double</span> cq = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a0ae9faebbc0ec6d5d6c3a01dbaf8c4be">qCoeff</a>[n];</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordtype">double</span> omega = sqrt(ck / cm);</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordtype">double</span> cDamp = 0.0;</div>
-<div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>    <span class="keyword">auto</span> acceleration = [&amp;](<span class="keywordtype">double</span> <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a>, <span class="keywordtype">double</span> dphi) {</div>
-<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">return</span> (-ck * <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> - cDamp * omega * dphi - cq) / cm;</div>
-<div class="line"><span class="lineno">  115</span>        };</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n];</div>
-<div class="line"><span class="lineno">  118</span>    <span class="keywordtype">double</span> dphi = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n];</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordtype">double</span> k1_phi = dphi;</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordtype">double</span> k1_dphi = acceleration(<a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a>, dphi);</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>    <span class="keywordtype">double</span> k2_phi = dphi + 0.5 * dt * k1_dphi;</div>
-<div class="line"><span class="lineno">  124</span>    <span class="keywordtype">double</span> k2_dphi = acceleration(<a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> + 0.5 * dt * k1_phi, dphi + 0.5 * dt * k1_dphi);</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>    <span class="keywordtype">double</span> k3_phi = dphi + 0.5 * dt * k2_dphi;</div>
-<div class="line"><span class="lineno">  127</span>    <span class="keywordtype">double</span> k3_dphi = acceleration(<a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> + 0.5 * dt * k2_phi, dphi + 0.5 * dt * k2_dphi);</div>
-<div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordtype">double</span> k4_phi = dphi + dt * k3_dphi;</div>
-<div class="line"><span class="lineno">  130</span>    <span class="keywordtype">double</span> k4_dphi = acceleration(<a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> + dt * k3_phi, dphi + dt * k3_dphi);</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] = <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> + (dt / 6.0) * (k1_phi + 2 * k2_phi + 2 * k3_phi + k4_phi);</div>
-<div class="line"><span class="lineno">  133</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n] = dphi + (dt / 6.0) * (k1_dphi + 2 * k2_dphi + 2 * k3_dphi + k4_dphi);</div>
-<div class="line"><span class="lineno">  134</span>    </div>
-<div class="line"><span class="lineno">  135</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;phi = &quot;</span> &lt;&lt; <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  136</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html#l00107">107</a> of file <a class="el" href="../../d9/ddb/_mechanics2_d_deformable_8cpp_source.html">Mechanics2DDeformable.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>                                      {</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordtype">double</span> cm = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a351c12cd4c5e5da9e630c768797fb594">rho</a> * <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a707b616f8e57d5ba2194d2ddfb4dbe0e">F</a>;</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordtype">double</span> ck = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae81db7cee7f81ddf67c4a668048d8f06">EJ</a> * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(<a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9496e42a73d860f6a51618766170d4e8">unitLambda</a>[n] / <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ae1a8d9d1e0ee7b27284d3ad1d3f87ea1">L</a>));</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordtype">double</span> cq = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a0ae9faebbc0ec6d5d6c3a01dbaf8c4be">qCoeff</a>[n];</div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordtype">double</span> omega = sqrt(ck / cm);</div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordtype">double</span> cDamp = 0.0;</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>    <span class="keyword">auto</span> acceleration = [&amp;](<span class="keywordtype">double</span> <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a>, <span class="keywordtype">double</span> dphi) {</div>
+<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">return</span> (-ck * <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> - cDamp * omega * dphi - cq) / cm;</div>
+<div class="line"><span class="lineno">  117</span>        };</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n];</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordtype">double</span> dphi = <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n];</div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span>    <span class="keywordtype">double</span> k1_phi = dphi;</div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordtype">double</span> k1_dphi = acceleration(<a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a>, dphi);</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordtype">double</span> k2_phi = dphi + 0.5 * dt * k1_dphi;</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keywordtype">double</span> k2_dphi = acceleration(<a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> + 0.5 * dt * k1_phi, dphi + 0.5 * dt * k1_dphi);</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>    <span class="keywordtype">double</span> k3_phi = dphi + 0.5 * dt * k2_dphi;</div>
+<div class="line"><span class="lineno">  129</span>    <span class="keywordtype">double</span> k3_dphi = acceleration(<a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> + 0.5 * dt * k2_phi, dphi + 0.5 * dt * k2_dphi);</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>    <span class="keywordtype">double</span> k4_phi = dphi + dt * k3_dphi;</div>
+<div class="line"><span class="lineno">  132</span>    <span class="keywordtype">double</span> k4_dphi = acceleration(<a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> + dt * k3_phi, dphi + dt * k3_dphi);</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] = <a class="code hl_function" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac5746ff81a5c054f3e58158d398dc133">phi</a> + (dt / 6.0) * (k1_phi + 2 * k2_phi + 2 * k3_phi + k4_phi);</div>
+<div class="line"><span class="lineno">  135</span>    <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d">currentDPhi</a>[n] = dphi + (dt / 6.0) * (k1_dphi + 2 * k2_dphi + 2 * k3_dphi + k4_dphi);</div>
+<div class="line"><span class="lineno">  136</span>    </div>
+<div class="line"><span class="lineno">  137</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;phi = &quot;</span> &lt;&lt; <a class="code hl_variable" href="../../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3">currentPhi</a>[n] &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  138</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

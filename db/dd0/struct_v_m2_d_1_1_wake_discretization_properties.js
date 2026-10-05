@@ -1,6 +1,7 @@
 var struct_v_m2_d_1_1_wake_discretization_properties =
 [
     [ "getMinEpsAst", "db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a1c8981ef6435a9f245ffd4baa16c4d32", null ],
+    [ "coefEpsAst", "db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a7f61923924979c56f9324d9c93bf0ff6", null ],
     [ "delta", "db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a6aacf429559811777b68e18a754fbf65", null ],
     [ "distFar", "db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#ad4ec2955858e2608ff66551c13925977", null ],
     [ "epscol", "db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a95e4ee4a28659dc54a0816f9a21cc11e", null ],

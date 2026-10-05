@@ -9,7 +9,7 @@ var searchData=
   ['afl_6',['afl',['../d7/dc9/class_v_m2_d_1_1_mechanics.html#adf7ba6b7e6f84fcf9ca33c6f43922037',1,'VM2D::Mechanics::afl'],['../df/da2/class_v_m2_d_1_1_boundary.html#a6777089d5cf305d67e4b3961e91e8b54',1,'VM2D::Boundary::afl']]],
   ['aflpan_7',['aflPan',['../d4/d07/class_v_m2_d_1_1_virtual_wake.html#aee74275acfead4729983ecf9eafb8693',1,'VM2D::VirtualWake']]],
   ['afterslashparser_8',['afterSlashParser',['../da/d46/class_v_mlib_1_1_preprocessor.html#a191dd10eaa83c62a9714966bb49c87b4',1,'VMlib::Preprocessor']]],
-  ['airfoil_9',['airfoil',['../db/de9/class_v_m2_d_1_1_airfoil.html',1,'VM2D::Airfoil'],['../d3/d00/class_v_m2_d_1_1_world2_d.html#a231f07d77c536f623cc2b6823c0f4480',1,'VM2D::World2D::airfoil'],['../db/de9/class_v_m2_d_1_1_airfoil.html#ad54f4333338fa09ee993008f9ed0b4da',1,'VM2D::Airfoil::Airfoil()']]],
+  ['airfoil_9',['airfoil',['../db/de9/class_v_m2_d_1_1_airfoil.html',1,'VM2D::Airfoil'],['../db/de9/class_v_m2_d_1_1_airfoil.html#ad54f4333338fa09ee993008f9ed0b4da',1,'VM2D::Airfoil::Airfoil()'],['../d3/d00/class_v_m2_d_1_1_world2_d.html#a231f07d77c536f623cc2b6823c0f4480',1,'VM2D::World2D::airfoil']]],
   ['airfoil2d_2ecpp_10',['Airfoil2D.cpp',['../de/dac/_airfoil2_d_8cpp.html',1,'']]],
   ['airfoil2d_2eh_11',['Airfoil2D.h',['../d0/d75/_airfoil2_d_8h.html',1,'']]],
   ['airfoil2ddeformable_2ecpp_12',['Airfoil2DDeformable.cpp',['../de/deb/_airfoil2_d_deformable_8cpp.html',1,'']]],
