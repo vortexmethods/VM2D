@@ -149,6 +149,9 @@ namespace VM2D
 		/// Имя файла с положениями источников (без полного пути)
 		std::string fileSource;
 
+		/// Коэффициент для вычислекния eps_ast
+		double coefEpsAst;
+
 		/// Функция минимально возможного значения для epsAst
 		double getMinEpsAst() const
 		{

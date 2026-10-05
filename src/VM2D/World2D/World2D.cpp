@@ -511,7 +511,7 @@ void World2D::Step() // ЮИ
 #endif
 
 			 
-//#include "gammaCirc.h"						
+#include "gammaCirc.h"						
 
 			//Расчет и сохранение поля давления
 			if (ifDivisible(passport.timeDiscretizationProperties.saveVPstep))
@@ -1946,9 +1946,9 @@ void World2D::MoveVortexes(std::vector<Point2D>& newPos, std::vector<double>* nu
 //		//else
 //		//{
 //		//	if (dG * getWake().vtx[i].g() > 0)
-//		//		getNonConstWake().vtx[i].g() *= 1.25;
+//		//		getNonConstWake().vtx[i].g() *= xxx;
 //		//	else
-//		//		getNonConstWake().vtx[i].g() /= 1.25;
+//		//		getNonConstWake().vtx[i].g() /= xxx;
 //		//}
 //
 //		getNonConstWake().vtx[i].g() = std::clamp(getWake().vtx[i].g(), -1.5 * getPassport().wakeDiscretizationProperties.maxGamma, 1.5 * getPassport().wakeDiscretizationProperties.maxGamma);

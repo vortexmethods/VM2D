@@ -66,7 +66,8 @@ namespace BHcu
             double2* __restrict veld,					  //массив для результатов вычисления скоростей
 
             bool calcEpsAst,                    //признак вычисления eps*
-            double* __restrict epsast          //массив eps*
+            double* __restrict epsast,          //массив eps*
+            double coefEpsAst
         )
     {
         register int base = threadIdx.x / WARPSIZE; //номер варпа, в который входит данный тред
@@ -314,10 +315,11 @@ namespace BHcu
                 veld[indexOfPoint] = result;
 
                 if (calcEpsAst)
-                    epsast[indexOfPoint] = sqrt((d_1 + d_2 + d_3) / 3);
+                    epsast[indexOfPoint] = coefEpsAst * sqrt((d_1 + d_2 + d_3) / 3);
             }//if (k < ndointsd)
         }//for k
     }//treeVorticesToPointsCalculationKernel(...)
+
 
 
 

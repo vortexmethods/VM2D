@@ -153,7 +153,8 @@ __global__ void CU_calc_conv_epsast(
 	size_t nsr, double* sr,
 	double* vel, double* rad,
 	size_t nAfls, size_t* nVtxs, double** ptrVtxs,
-	bool calcVelo, bool calcRadius)
+	bool calcVelo, bool calcRadius,
+	double coefEpsAst)
 {	
 	__shared__ double shx[CUBLOCK];
 	__shared__ double shy[CUBLOCK];
@@ -329,7 +330,7 @@ __global__ void CU_calc_conv_epsast(
 		if (calcRadius)
 		{
 #ifndef TESTONLYVELO
-			rad[i] =  1.0 * sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
+			rad[i] = coefEpsAst * sqrt((d_1 + d_2 + d_3) * 0.3333333333333333);
 
 			//printf("rad_%d = %f\n", (int)i, rad[i]);
 
@@ -1587,7 +1588,7 @@ void cuDeleteFromDev(void* devPtr, int code)
 }
 
 /////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, bool calcVelo, bool calcRadius)
+void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, bool calcVelo, bool calcRadius, double coefEpsAst)
 {	
 	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
 
@@ -1600,7 +1601,7 @@ void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, siz
 	cudaEventRecord(start, 0); 
 	*/
 
-	CU_calc_conv_epsast <<< blocks, threads >>> (npt, pt, nvt, vt, nsr, sr, vel, rd, nAfls, nVtxs, ptrVtxs, calcVelo, calcRadius);
+	CU_calc_conv_epsast <<< blocks, threads >>> (npt, pt, nvt, vt, nsr, sr, vel, rd, nAfls, nVtxs, ptrVtxs, calcVelo, calcRadius, coefEpsAst);
 
 	/*
 	cudaThreadSynchronize();

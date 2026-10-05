@@ -70,11 +70,12 @@ float VelocityBarnesHut::CalcConvVeloToSetOfPointsFromWake(const WakeDataBase& p
 
 	int order = W.getPassport().numericalSchemes.nbodyMultipoleOrder;
 	double theta = W.getPassport().numericalSchemes.nbodyTheta;
+	double coefEpsAst = W.getPassport().wakeDiscretizationProperties.coefEpsAst;
 
 	if (&pointsDb == &W.getWake())
-		W.getInflTreeWake().DownwardTraversalVorticesToPoints(W.getInflTreeWake(), velo, domainRadius, theta, order, calcRadius);
+		W.getInflTreeWake().DownwardTraversalVorticesToPoints(W.getInflTreeWake(), velo, domainRadius, theta, order, calcRadius, coefEpsAst);
 	else
-		W.getInflTreeWake().DownwardTraversalVorticesToPoints(W.getCntrTreeWake(), velo, domainRadius, theta, order, calcRadius);
+		W.getInflTreeWake().DownwardTraversalVorticesToPoints(W.getCntrTreeWake(), velo, domainRadius, theta, order, calcRadius, coefEpsAst);
 	timer.stop();
 
 	//std::ofstream treeTimeFile;
@@ -210,7 +211,7 @@ void VelocityBarnesHut::CalcConvVPVeloToSetOfPointsFromWake(const WakeDataBase& 
 
 //#ifndef TESTONLYVELO
 //			if (calcRadius)
-//				domainRadius[i] = 1.0 * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
+//				domainRadius[i] = coefEpsAst * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
 //#endif
 		}
 	}
@@ -247,7 +248,7 @@ void VelocityBarnesHut::CalcConvVPVeloToSetOfPointsFromWake(const WakeDataBase& 
 //				}
 //			}
 //
-//			domainRadius[i] = 1.0 * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
+//			domainRadius[i] = coefEpsAst * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
 //		}
 //	} //else
 
@@ -273,6 +274,7 @@ double VelocityBarnesHut::GPUCalcConvVeloToSetOfPointsFromWake(std::unique_ptr<B
 {	
 	const double& theta = W.getPassport().numericalSchemes.nbodyTheta;
 	const int& order = W.getPassport().numericalSchemes.nbodyMultipoleOrder;
+	const double& coefEpsAst = W.getPassport().wakeDiscretizationProperties.coefEpsAst;
 	
 	int npt = cntrTree->nObject;
 
@@ -284,9 +286,9 @@ double VelocityBarnesHut::GPUCalcConvVeloToSetOfPointsFromWake(std::unique_ptr<B
 	VMlib::vmTimer timerA;
 	timerA.start();
 	if (cntrTree->nObject > 1024 * 80)
-		tDNV = inflTree.DownwardTraversalVorticesToPoints<1024>(*cntrTree, (Point2D*)pointsDb.devVelPtr, pointsDb.devRadPtr, theta, order, calcRadius);
+		tDNV = inflTree.DownwardTraversalVorticesToPoints<1024>(*cntrTree, (Point2D*)pointsDb.devVelPtr, pointsDb.devRadPtr, theta, order, calcRadius, coefEpsAst);
 	else
-		tDNV = inflTree.DownwardTraversalVorticesToPoints<32>(*cntrTree, (Point2D*)pointsDb.devVelPtr, pointsDb.devRadPtr, theta, order, calcRadius);
+		tDNV = inflTree.DownwardTraversalVorticesToPoints<32>(*cntrTree, (Point2D*)pointsDb.devVelPtr, pointsDb.devRadPtr, theta, order, calcRadius, coefEpsAst);
 	timerA.stop();
 
 	//std::cout << "nvt = " << npt << std::endl;

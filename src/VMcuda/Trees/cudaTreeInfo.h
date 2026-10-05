@@ -187,7 +187,7 @@ namespace BHcu
         float UpwardTraversal(int order);
 
         template <int NUMBER_OF_THREADS>
-        float DownwardTraversalVorticesToPoints(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double theta, int order, bool calcRadius);
+        float DownwardTraversalVorticesToPoints(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double theta, int order, bool calcRadius, double coefEpsAst);
         
         float DownwardTraversalVorticesToPanels(CudaTreeInfo& cntrTree, double* rhsD, double* rhsLinD, double theta, int order);
         float DownwardTraversalPanelsToPoints(CudaTreeInfo& cntrTree, Point2D* velD, double theta, int order);

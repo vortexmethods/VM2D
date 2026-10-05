@@ -72,7 +72,7 @@ void cuCopyMemFromDev(void* host_ptr, void* dev_ptr, size_t nBytes, int code = 0
 void cuDeleteFromDev(void* devPtr, int code = 0);
 
 ////////////////////////////////////////////////////////////////
-void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, bool calcVelo, bool calcRadius);
+void cuCalculateConvVeloWake(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, size_t nAfls, size_t* nVtxs, double** ptrVtxs, double* vel, double* rd, bool calcVelo, bool calcRadius, double coefEpsAst);
 void cuCalculateConvVeloWakeFromVirtual(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* freegammalin, double* attgamma, double* attgammalin, double* attsource, double* attsourcelin, double* vel);
 
 void cuCalculateDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt, double* i1, double* i2, double* rd, double minRad);

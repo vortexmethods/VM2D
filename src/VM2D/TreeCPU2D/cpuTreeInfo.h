@@ -46,7 +46,7 @@
 namespace VM2D
 { 
     ///*!    
-    //\brief Структура, хранящая данные и указатели на массивы на GPU для оптимизации итерационного решения СЛАУ на GPU
+    //\brief Структура, хранящая данные и указатели на массивы на CPU для оптимизации итерационного решения СЛАУ на CPU
     //
     //\author Марчевский Илья Константинович
     //\author Сокол Ксения Сергеевна
@@ -170,7 +170,7 @@ namespace VM2D
         float Build();
         float UpwardTraversal(int order);
 
-        float DownwardTraversalVorticesToPoints(CpuTreeInfo& cntrTree, std::vector<Point2D>& vel, std::vector<double>& epsast, double theta, int order, bool calcRadius);
+        float DownwardTraversalVorticesToPoints(CpuTreeInfo& cntrTree, std::vector<Point2D>& vel, std::vector<double>& epsast, double theta, int order, bool calcRadius, double coefEpsAst);
         float DownwardTraversalClosestPanelToPoints(CpuTreeInfo& cntrTree, std::vector<std::pair<int, double>>& indexPnlDist, bool findOnlyInside, double* pseudonormals);
 
         float DownwardTraversalVorticesToPanels(CpuTreeInfo& cntrTree, std::vector<double>& rhs, std::vector<double>& rhsLin, double theta, int order);

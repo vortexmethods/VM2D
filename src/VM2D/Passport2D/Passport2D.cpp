@@ -322,6 +322,7 @@ void Passport::GetParamsFromParser
 
 
 		parser->get("sigma0", wakeDiscretizationProperties.sigma0, &defaults::defaultSigma0);
+		parser->get("coefEpsAst", wakeDiscretizationProperties.coefEpsAst, &defaults::defaultCoefEpsAst);
 
 		parser->get("epscol", wakeDiscretizationProperties.epscol, &defaults::defaultEpsCol);
 		parser->get("distFar", wakeDiscretizationProperties.distFar, &defaults::defaultDistFar);
@@ -524,6 +525,12 @@ void Passport::GetReviseParamsFromParser
 		info('i') << "updated vRef = " << physicalProperties.vRef << std::endl;	
 	}
 
+	if (ifUpdate("coefEpsAst") && (wakeDiscretizationProperties.coefEpsAst != newPassport.wakeDiscretizationProperties.coefEpsAst))
+	{
+		wakeDiscretizationProperties.coefEpsAst = newPassport.wakeDiscretizationProperties.coefEpsAst;
+		info('i') << "updated coefEpsAst = " << wakeDiscretizationProperties.coefEpsAst << std::endl;
+	}
+
 
 	if (ifUpdate("saveVtx") &&
 		(timeDiscretizationProperties.fileTypeVtx != newPassport.timeDiscretizationProperties.fileTypeVtx || timeDiscretizationProperties.saveVtxStep != newPassport.timeDiscretizationProperties.saveVtxStep))
@@ -576,6 +583,8 @@ void Passport::PrintAllParams()
 	info('-') << "saveVisStress = " << timeDiscretizationProperties.saveVisStress << std::endl;
 	info('-') << "sigma0 = " << wakeDiscretizationProperties.sigma0 << std::endl;	
 	info('-') << "epscol = " << wakeDiscretizationProperties.epscol << std::endl;
+	info('-') << "coefEpsAst = " << wakeDiscretizationProperties.coefEpsAst << std::endl;
+
 	info('-') << "distFar = " << wakeDiscretizationProperties.distFar << std::endl;
 	info('-') << "delta = " << wakeDiscretizationProperties.delta << std::endl;
 	info('-') << "vortexPerPanel = " << wakeDiscretizationProperties.minVortexPerPanel << std::endl;

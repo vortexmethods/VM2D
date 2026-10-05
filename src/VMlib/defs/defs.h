@@ -112,13 +112,16 @@ namespace defaults
 
 	/// Шаг обновления паспорта и перечень перечитываемых параметров
 	const int defaultRevisePassportStep = 10;
-	const std::vector<std::string> defaultReviseParameters = { "nameLength", "timeStop", "dt", "vInf", "vRef", "saveVtx", "saveVP" };
+	const std::vector<std::string> defaultReviseParameters = { "nameLength", "timeStop", "dt", "vInf", "vRef", "coefEpsAst", "saveVtx", "saveVP" };
 
 	/// Число разрядов в имени файла
 	const int defaultNameLength = 5;
 
 	/// Радиус вихря по умолчанию
 	const double defaultSigma0 = 0.0; //значит, рассчитать его по длине панелей как половину средней длины панелей
+
+	/// Коэффициент при вычислении eps_ast по умолчанию
+	const double defaultCoefEpsAst = 1.25;
 
 	/// Радиус вихря по умолчанию
 	const double defaultEpsCol = 0.0; //значит, рассчитать его как 2/3 eps

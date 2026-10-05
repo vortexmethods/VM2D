@@ -174,7 +174,7 @@ float VelocityBiotSavart::CalcConvVeloToSetOfPointsFromWake(const WakeDataBase& 
 
 #ifndef TESTONLYVELO
 			if (calcRadius)
-				domainRadius[i] = 1.0 * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
+				domainRadius[i] = W.getPassport().wakeDiscretizationProperties.coefEpsAst * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
 #endif
 		}
 	}
@@ -211,7 +211,7 @@ float VelocityBiotSavart::CalcConvVeloToSetOfPointsFromWake(const WakeDataBase& 
 				}
 			}
 
-			domainRadius[i] = 1.0 * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
+			domainRadius[i] = W.getPassport().wakeDiscretizationProperties.coefEpsAst * sqrt((ee2[0] + ee2[1] + ee2[2]) / 3.0);
 		}
 	} //else
 
@@ -271,7 +271,7 @@ double VelocityBiotSavart::GPUCalcConvVeloToSetOfPointsFromWake(std::unique_ptr<
 		if (npt > 0)
 		{
 			timerA.start();
-			cuCalculateConvVeloWake(npt, dev_ptr_pt, nvt, dev_ptr_vt, nsr, dev_ptr_sr, nbou, dev_nVortices, dev_ptr_ptr_vtx, dev_ptr_vel, dev_ptr_rad, calcVelo, calcRadius);
+			cuCalculateConvVeloWake(npt, dev_ptr_pt, nvt, dev_ptr_vt, nsr, dev_ptr_sr, nbou, dev_nVortices, dev_ptr_ptr_vtx, dev_ptr_vel, dev_ptr_rad, calcVelo, calcRadius, W.getPassport().wakeDiscretizationProperties.coefEpsAst);
 			timerA.stop();
 
 			if (calcVelo)

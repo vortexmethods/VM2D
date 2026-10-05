@@ -691,7 +691,7 @@ namespace BHcu
     }
 
     template <int NUMBER_OF_THREADS>
-    float CudaTreeInfo::DownwardTraversalVorticesToPoints(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double theta, int order, bool calcRadius)
+    float CudaTreeInfo::DownwardTraversalVorticesToPoints(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double theta, int order, bool calcRadius, double coefEpsAst)
     {
         float time = 0.0f;
         if (nObject > 0)
@@ -707,7 +707,7 @@ namespace BHcu
                 nNode, nObject, itheta2, (int2*)childD, (double2*)momsD, \
                 (double4*)objectD, mortonCodesIdxD, (double2*)centerD, indexSortD, \
                 indexSortTD, (double4*)lowerupperD, \
-                cntrTree.nObject, (double4*)cntrTree.objectD, cntrTree.mortonCodesIdxD, (double2*)velD, calcRadius, epsastD);
+                cntrTree.nObject, (double4*)cntrTree.objectD, cntrTree.mortonCodesIdxD, (double2*)velD, calcRadius, epsastD, coefEpsAst);
 
             cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
 
@@ -718,8 +718,8 @@ namespace BHcu
         return time;    
     } 
     
-    template float CudaTreeInfo::DownwardTraversalVorticesToPoints<32>(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double theta, int order, bool calcRadius);
-    template float CudaTreeInfo::DownwardTraversalVorticesToPoints<1024>(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double theta, int order, bool calcRadius);
+    template float CudaTreeInfo::DownwardTraversalVorticesToPoints<32>(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double theta, int order, bool calcRadius, double coefEpsAst);
+    template float CudaTreeInfo::DownwardTraversalVorticesToPoints<1024>(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double theta, int order, bool calcRadius, double coefEpsAst);
 
 
     float CudaTreeInfo::DownwardTraversalVorticesToPanels(CudaTreeInfo& cntrTree, double* rhsD, double* rhsLinD, double theta, int order)

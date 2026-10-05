@@ -997,7 +997,7 @@ namespace VM2D
   }
 
       
-    float CpuTreeInfo::DownwardTraversalVorticesToPoints(CpuTreeInfo& cntrTree, std::vector<Point2D>& vel, std::vector<double>& epsast, double theta, int order, bool calcRadius)
+    float CpuTreeInfo::DownwardTraversalVorticesToPoints(CpuTreeInfo& cntrTree, std::vector<Point2D>& vel, std::vector<double>& epsast, double theta, int order, bool calcRadius, double coefEpsAst)
     {
         float t1 = (float)omp_get_wtime();
 
@@ -1246,7 +1246,7 @@ namespace VM2D
                     {
                         vel[indexOfPoint] = IDPI * v.kcross();
                         if (calcRadius)
-                            epsast[indexOfPoint] = 1.0 * sqrt((d_1 + d_2 + d_3) / 3.0);
+                            epsast[indexOfPoint] = coefEpsAst * sqrt((d_1 + d_2 + d_3) / 3.0);
                     }
                     else
                     {
@@ -1265,7 +1265,7 @@ namespace VM2D
                             if (calcRadius)
                             {
                                 const auto& es = epsastParticles[pnt - cntrTree.range[k].first];
-                                epsast[cntrTree.mortonCodesIdx[pnt]] = 1.0 * sqrt((es[0] + es[1] + es[2]) / 3.0);
+                                epsast[cntrTree.mortonCodesIdx[pnt]] = coefEpsAst * sqrt((es[0] + es[1] + es[2]) / 3.0);
                             }
                         }
                     }
