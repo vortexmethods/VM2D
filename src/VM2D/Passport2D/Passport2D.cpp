@@ -294,7 +294,7 @@ void Passport::GetParamsFromParser
 		parser->get("revisePassportStep", timeDiscretizationProperties.revisePassportStep, &defaults::defaultRevisePassportStep);
 		parser->get("reviseParameters", timeDiscretizationProperties.reviseParameters, &defaults::defaultReviseParameters);
 
-		const std::vector<std::string> varParams = { UP("nameLength"), UP("timeStop"), UP("dt"), UP("vInf"), UP("vRef"), UP("saveVtx"), UP("saveVP") };
+		const std::vector<std::string> varParams = { UP("nameLength"), UP("timeStop"), UP("dt"), UP("vInf"), UP("vRef"), UP("coefEpsAst"), UP("saveVtx"), UP("saveVP")};
 		for (const auto& s : timeDiscretizationProperties.reviseParameters)
 			if (std::count(varParams.begin(), varParams.end(), UP(s)) == 0)
 			{
@@ -322,7 +322,7 @@ void Passport::GetParamsFromParser
 
 
 		parser->get("sigma0", wakeDiscretizationProperties.sigma0, &defaults::defaultSigma0);
-		parser->get("coefEpsAst", wakeDiscretizationProperties.coefEpsAst, &defaults::defaultCoefEpsAst);
+		
 
 		parser->get("epscol", wakeDiscretizationProperties.epscol, &defaults::defaultEpsCol);
 		parser->get("distFar", wakeDiscretizationProperties.distFar, &defaults::defaultDistFar);
@@ -332,6 +332,9 @@ void Passport::GetParamsFromParser
 		if (wakeDiscretizationProperties.maxGamma == 0.0)
 			wakeDiscretizationProperties.maxGamma = 1e+10;
 	}
+
+	if (ifUpdate("coefEpsAst"))
+		parser->get("coefEpsAst", wakeDiscretizationProperties.coefEpsAst, &defaults::defaultCoefEpsAst);
 
 	if (readAll)
 	{

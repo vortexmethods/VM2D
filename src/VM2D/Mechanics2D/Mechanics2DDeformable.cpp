@@ -57,14 +57,16 @@ Beam::Beam(const World2D& W_, bool fsi_, double x0_, double L_, int R_) :
 	W(W_),
 	fsi(fsi_),
 	//filament
+	/*
 	rho(10000.0),
 	F(0.04),
 	EJ(1.0 * 1.0),
+	*/
 
 	//Turek
-	//rho(10000.0),
-	//F(0.02),
-	//EJ(1.1703239289446188),
+	rho(10000.0),
+	F(0.02),
+	EJ(1.17032),
 
 	R(R_),
 	x0(x0_),
@@ -96,9 +98,9 @@ void Beam::solveDU(int n, double dt)
 	currentPhi[n] += dt * psiAst;
 	currentDPhi[n] += dt * (-ck * phiAst - cDamp * omega * psiAst - cq) / cm;
 
-	std::cout << "n = " << n << std::endl;
-	std::cout << "ck / cm = " << ck / cm << std::endl;
-	std::cout << "cq / cm = " << cq / cm << std::endl;
+	//std::cout << "n = " << n << std::endl;
+	//std::cout << "ck / cm = " << ck / cm << std::endl;
+	//std::cout << "cq / cm = " << cq / cm << std::endl;
 	//std::cout << "lam = " << unitLambda[n] / L << std::endl;
 }
 
