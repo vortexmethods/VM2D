@@ -263,8 +263,7 @@ namespace VM2D
             gamma.resize(nObject);
             sigma.resize(nObject);
             if (schemeType == scheme_T::linScheme) {
-                gamma.resize(nObject * 2);
-                sigma.resize(nObject * 2);
+                gammaLin.resize(nObject);
             }
         }
 
@@ -335,7 +334,9 @@ namespace VM2D
 
                 gamma[i] = infpan.length() * gamma_[i];      // стало  
                 if(scheme)
-                    gamma[npanels + i] = infpan.length() * gamma_[npanels + i];
+                    gammaLin[i] = infpan.length() * gamma_[npanels + i];
+
+                printf("gam = %f, gamlin = %f \n", gamma[i], gammaLin[i]);
             }
         }
 
@@ -1314,14 +1315,14 @@ namespace VM2D
       if (nbodies <= 0 || npoints <= 0)
           return 0.0f;
 
-//#pragma omp parallel
+#pragma omp parallel
       {
           double itolsq = 1.0 / (theta * theta);
           const int nnodes = 2 * nbodies - 1; //количество узлов дерева вихрей (листья-вихри + внутренние узлы) 
 
           const int maxDepth = 32;
 
-//#pragma omp parallel for schedule(dynamic, 1)//Временно: обход по панелям как на GPU!!!
+#pragma omp parallel for schedule(dynamic, 1)//Временно: обход по панелям как на GPU!!!
           for (int k = 0; k < npoints; ++k)
           {
               const int indexOfPoint = cntrTree.mortonCodesIdx[k];      //истинный индекс точки наблюдения	
@@ -1450,12 +1451,11 @@ namespace VM2D
                                   const double2 infbeg{ infgab[0], infgab[1] };      //отдельно начало
                                   const double2 infend{ infgab[2], infgab[3] };      // и конец
 
+                                  n = chd - nbodies;                            //номер вихря в Мортоновском порядке
+                                  const int vortexIndex = mortonCodesIdx[n];    //истинный номер вихря
                                   double gmlin = 0.0;
                                   if (scheme)
-                                      gmlin = gamma[npoints + indexOfPoint];
-
-                                  //if (indexOfPoint == 121)
-                                    //  printf("cntr = %d, inf = %d\n", indexOfPoint, mortonCodesIdx[infn]);
+                                      gmlin = gammaLin[vortexIndex];
 
                                   const double2 infpan = infend - infbeg;
 
@@ -1508,20 +1508,17 @@ namespace VM2D
                                               ilenj * (alpha[0] * v00_0[1] - alpha[1] * v00_1[1] + alpha[2] * v00_2[1] \
                                                   + (lambda[0] * v00_0[0] - lambda[1] * v00_1[0] + lambda[2] * v00_2[0]));
                                       //}
-                                      //if (indexOfPoint == 500)
-                                        //  printf("inf = %d ", mortonCodesIdx[infn]);
 
                                       double tempVelNew = -gm * (i00 & tau);
                                       val -= tempVelNew;
-                                      ///////////////////////////////////////////////////////////////////////////////////////
-                                      //*
+
                                       if (scheme)
                                       {
                                             double2 i01, i10, i11;
                                             double s1len2 = s1[0] * s1[0] + s1[1] * s1[1];
 
                                             double2 om1 = Omega(s1, tau, tauj);
-                                            double2 om2 = Omega(s1 + p2, tauj, tauj); //Omega(make_double2(s1.x + p2.x, s1.y + p2.y), tauj, tauj);
+                                            double2 om2 = Omega(s1 + p2, tauj, tauj);
                                             double sc = (p1[0] + s1[0]) * tauj[0] + (p1[1] + s1[1]) * tauj[1];
 
                                             const double hLj = 0.5 * ilenj;
@@ -1534,7 +1531,7 @@ namespace VM2D
 
                                             i01[0] =
                                                 ilenj * ((alpha[0] + alpha[2]) * v01_0[0] - (alpha[1] + alpha[2]) * v01_1[0]\
-                                                    - (((lambda[0] + lambda[1]) * v01_0[1] - (lambda[1] + lambda[2]) * v01_1[1]) - 0.5 * dilen * tauj[1]));
+                                                    - (((lambda[0] + lambda[2]) * v01_0[1] - (lambda[1] + lambda[2]) * v01_1[1]) - 0.5 * dilen * tauj[1]));
                                             i01[1] =
                                                 ilenj * ((alpha[0] + alpha[2]) * v01_0[1] - (alpha[1] + alpha[2]) * v01_1[1]\
                                                     + (((lambda[0] + lambda[2]) * v01_0[0] - (lambda[1] + lambda[2]) * v01_1[0]) - 0.5 * dilen * tauj[0]));
@@ -1589,9 +1586,6 @@ namespace VM2D
 
                                           vallin -= (tempVelNewC + tempVelNewD);
                                       }
-                                      //*/
-                                      ////////////////////////////////////////////////////////////////////////////////////////
-
                                   }//dr != 0
 
                               }//objectType == object_T::panel
@@ -1644,9 +1638,6 @@ namespace VM2D
 
                               double tmp = 2.0 * (-v[1] * rPan[0] + v[0] * rPan[1]);
                               val += tmp;
-
-                              //if (indexOfPoint == 21)
-                              //  printf("cntr = %d, v = {%f, %f}\n", indexOfPoint, -v[1], v[0]);
 
                               if(scheme)
                                   vallin += 2.0 * (-vL[1] * rPan[0] + vL[0] * rPan[1]);

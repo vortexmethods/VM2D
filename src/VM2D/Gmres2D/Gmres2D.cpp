@@ -918,11 +918,6 @@ void GmresSolver::GMRES(
 #endif
 		tCG.stop();
 
-		//for (size_t i = 0; i < bufcurrentSol.size(); ++i)
-		//{
-			//std::cout << bufcurrentSol[i] << std::endl;
-		//}
-
 		if (j>0)
 			tWrapper.start();
 		
@@ -935,7 +930,7 @@ void GmresSolver::GMRES(
 		treePnlInfl.UpwardTraversal(order);
 		treePnlInfl.DownwardTraversalVorticesToPanels(treePnlInfl, host_rhs, host_rhsLin, W.getPassport().numericalSchemes.gmresTheta, W.getPassport().numericalSchemes.gmresMultipoleOrder);
 #endif
-		//exit(100000);
+
 		if (j>0)
 			tWrapper.stop();
 

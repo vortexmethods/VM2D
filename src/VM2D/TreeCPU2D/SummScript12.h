@@ -175,20 +175,20 @@
                                     rcur = multz(rcur, rd2Pow);
                                     mom10 = (gam / 11) * rcur;
 
-                                    /*
-                                    if (constOrLin == scheme_T::linScheme)
+                                    //*
+                                    if (schemeType == scheme_T::linScheme)
                                     {
-                                        double gamLin;
+                                        double gamLin = gammaLin[sortedBody];;
 
-                                        switch (fromVortexOrSource)
-                                        {
-                                        case tree_T::vortex:
-                                            gamLin = vtxd[sortedBody * 12 + 9] + vtxd[sortedBody * 12 + 10];
-                                            break;
-                                        case tree_T::source:
-                                            gamLin = vtxd[sortedBody * 12 + 11];
-                                            break;
-                                        };
+                                        //switch (fromVortexOrSource)
+                                        //{
+                                        //case tree_T::vortex:
+                                        //    gamLin = vtxd[sortedBody * 12 + 9] + vtxd[sortedBody * 12 + 10];
+                                        //    break;
+                                        //case tree_T::source:
+                                        //    gamLin = vtxd[sortedBody * 12 + 11];
+                                        //    break;
+                                        //};
 
                                         rcur = 0.5 * (panEnd - panBegin);
                                         mom1 = gamLin * (0.5 / 3) * rcur;
@@ -203,7 +203,7 @@
                                         rcur = multz(rcur, rd2Pow);
                                         mom11 = gamLin * (0.5 / 13) * rcur;
                                     }
-                                    */
+                                   // */
 
                                     double2 pos = object[sortedBody];
                                     dr = pos - cen;

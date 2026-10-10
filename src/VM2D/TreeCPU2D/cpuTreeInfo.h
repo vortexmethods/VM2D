@@ -99,6 +99,7 @@ namespace VM2D
 
         std::vector<Point2D> object;
         std::vector<double> gamma;
+        std::vector<double> gammaLin;
         std::vector<double> sigma;
 
         tree_T treeType;
