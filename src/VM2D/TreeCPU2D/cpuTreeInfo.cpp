@@ -186,6 +186,13 @@ namespace VM2D
             sigma.resize(nObject);
         }
 
+        //if (objectType == object_T::panel /*&& inflTree*/)
+        //{
+        //    gamma.resize(nObject);
+        //    sigma.resize(nObject);
+        //    if(schemeType == linScheme)
+        //}
+
         gabForLeaves.resize(nObject);
         mortonCodesKeyUnsort.resize(nObject);
         mortonCodesIdxUnsort.resize(nObject);
@@ -311,10 +318,12 @@ namespace VM2D
      
         if (treeType != tree_T::aux && treeType != tree_T::contr)
         {
-           
+            const int npanels = (int)object.size(); //количество панелей
+            const bool scheme = (npanels == gamma_.size()) ? false : true;
+
             //gamma = gamma_;    // было   
 
-            for (int i = 0; i < gamma_.size(); ++i)
+            for (int i = 0; i < npanels; ++i)
             {
                 const auto infgab = gabForLeaves[i]; //начало и конец влияющей панели
                 const Point2D infbeg{ infgab[0], infgab[1] };      //отдельно начало
@@ -322,17 +331,10 @@ namespace VM2D
                 const Point2D infpan = infend - infbeg;
 
                 gamma[i] = infpan.length() * gamma_[i];      // стало  
+                if(scheme)
+                    gamma[npanels + i] = infpan.length() * gamma_[npanels + i];
             }
         }
-         
-
-
-
-
-
-
-
-
 
         timer.stop();
         return (float)timer.duration();
@@ -1444,6 +1446,10 @@ namespace VM2D
                                   const double2 infbeg{ infgab[0], infgab[1] };      //отдельно начало
                                   const double2 infend{ infgab[2], infgab[3] };      // и конец
 
+                                  double gmlin = 0.0;
+                                  if (scheme)
+                                      gmlin = gamma[npoints + indexOfPoint];
+
                                   //if (indexOfPoint == 121)
                                     //  printf("cntr = %d, inf = %d\n", indexOfPoint, mortonCodesIdx[infn]);
 
@@ -1513,6 +1519,89 @@ namespace VM2D
 
                                       double tempVelNew = -gm * (i00 & tau);
                                       val -= tempVelNew;
+                                      ///////////////////////////////////////////////////////////////////////////////////////
+                                      /*
+                                      if (scheme)
+                                      {
+                                          double2 i01, i10, i11;
+                                            double s1len2 = s1.x * s1.x + s1.y * s1.y;
+
+                                            double2 om1 = Omega(s1, tau, tauj);
+                                            double2 om2 = Omega(make_double2(s1.x + p2.x, s1.y + p2.y), tauj, tauj);
+                                            double sc = (p1.x + s1.x) * tauj.x + (p1.y + s1.y) * tauj.y;
+
+                                            const double hLj = 0.5 * ilenj;
+                                            const double pA = hLj * sc;
+                                            const double pB = hLj * s1len2;
+                                            const double hLij = hLj * dilen;
+
+                                            double2 v01_0 = make_double2(pA * om1.x - pB * tau.x, pA * om1.y - pB * tau.y);
+                                            double2 v01_1 = make_double2(hLij * om2.x, hLij * om2.y);
+
+                                            i01 = make_double2(\
+                                                ilenj * ((alpha.x + alpha.z) * v01_0.x - (alpha.y + alpha.z) * v01_1.x\
+                                                    - (((lambda.x + lambda.z) * v01_0.y - (lambda.y + lambda.z) * v01_1.y) - 0.5 * dilen * tauj.y)),
+                                                ilenj * ((alpha.x + alpha.z) * v01_0.y - (alpha.y + alpha.z) * v01_1.y\
+                                                    + (((lambda.x + lambda.z) * v01_0.x - (lambda.y + lambda.z) * v01_1.x) - 0.5 * dilen * tauj.x))
+                                            );
+
+                                            double2 om3 = Omega(make_double2(s1.x + p2.x, s1.y + p2.y), tau, tau);
+
+                                            const double hLi = 0.5 * idlen;
+                                            const double pC = hLi * ((s1 + s2) & tau);
+                                            const double pD = hLi * s1len2;
+                                            const double hLji = hLi * djlen;
+
+                                            double2 v10_0 = make_double2(pC * om1.x - pD * tauj.x, pC * om1.y - pD * tauj.y);
+                                            double2 v10_1 = make_double2(hLji * om3.x, hLji * om3.y);
+
+                                            i10 = make_double2(
+                                                ilenj * (-(alpha.x + alpha.z) * v10_0.x + alpha.z * v10_1.x \
+                                                    - ((-(lambda.x + lambda.z) * v10_0.y + lambda.z * v10_1.y) + 0.5 * djlen * tau.y)),
+                                                ilenj * (-(alpha.x + alpha.z) * v10_0.y + alpha.z * v10_1.y \
+                                                    + ((-(lambda.x + lambda.z) * v10_0.x + lambda.z * v10_1.x) + 0.5 * djlen * tau.x))
+                                            );
+
+                                            double2 om4 = Omega(make_double2(s1.x - 3.0 * p2.x, s1.y - 3.0 * p2.y), tau, tauj);
+                                            double2 om5 = Omega(di, tauj, tauj);
+                                            double2 om6 = Omega(dj, tau, tau);
+                                            double sc4 = s1.x * om4.x + s1.y * om4.y;
+
+                                            const double mn = idlen * ilenj / 12.0;
+                                            const double qA = mn * 2.0 * sc4 - 0.25;
+                                            const double qB = mn * s1len2;
+
+                                            double2 v11_0 = make_double2(
+                                                qA * om1.x - qB * (s1.x - 3 * p2.x),
+                                                qA * om1.y - qB * (s1.y - 3 * p2.y)
+                                            );
+
+                                            double qC = hLij / 6.0;
+                                            double qD = hLji / 6.0;
+
+                                            double2 v11_1 = make_double2(qC * om5.x, qC * om5.y);
+                                            double2 v11_2 = make_double2(qD * om6.x, qD * om6.y);
+
+                                            i11 = make_double2(
+                                                ilenj * ((alpha.x + alpha.z) * v11_0.x - (alpha.y + alpha.z) * v11_1.x - alpha.z * v11_2.x\
+                                                    - ((lambda.x + lambda.z) * v11_0.y - (lambda.y + lambda.z) * v11_1.y - lambda.z * v11_2.y \
+                                                        + 1.0 / 12.0 * (djlen * tau.y + dilen * tauj.y - 2.0 * om1.y))),
+                                                ilenj * ((alpha.x + alpha.z) * v11_0.y - (alpha.y + alpha.z) * v11_1.y - alpha.z * v11_2.y\
+                                                    + ((lambda.x + lambda.z) * v11_0.x - (lambda.y + lambda.z) * v11_1.x - lambda.z * v11_2.x \
+                                                        + 1.0 / 12.0 * (djlen * tau.x + dilen * tauj.x - 2.0 * om1.x)))
+                                            );
+
+                                          double tempVelNewB = -gmlin * (i01.x * tau.x + i01.y * tau.y);
+                                          val -= tempVelNewB;
+
+                                          double tempVelNewC = -gm * (i10.x * tau.x + i10.y * tau.y);
+                                          double tempVelNewD = -gmlin * (i11.x * tau.x + i11.y * tau.y);
+
+                                          vallin -= (tempVelNewC + tempVelNewD);
+                                      }
+                                      */
+                                      ////////////////////////////////////////////////////////////////////////////////////////
+
                                   }//dr != 0
 
                               }//objectType == object_T::panel
