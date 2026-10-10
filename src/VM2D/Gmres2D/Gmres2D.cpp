@@ -918,10 +918,10 @@ void GmresSolver::GMRES(
 #endif
 		tCG.stop();
 
-		for (size_t i = 0; i < bufcurrentSol.size(); ++i)
-		{
+		//for (size_t i = 0; i < bufcurrentSol.size(); ++i)
+		//{
 			//std::cout << bufcurrentSol[i] << std::endl;
-		}
+		//}
 
 		if (j>0)
 			tWrapper.start();

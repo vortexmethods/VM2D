@@ -186,13 +186,6 @@ namespace VM2D
             sigma.resize(nObject);
         }
 
-        //if (objectType == object_T::panel /*&& inflTree*/)
-        //{
-        //    gamma.resize(nObject);
-        //    sigma.resize(nObject);
-        //    if(schemeType == linScheme)
-        //}
-
         gabForLeaves.resize(nObject);
         mortonCodesKeyUnsort.resize(nObject);
         mortonCodesIdxUnsort.resize(nObject);
@@ -259,10 +252,20 @@ namespace VM2D
 
         object.resize(nObject);
         
+        //if (treeType != tree_T::aux && treeType != tree_T::contr)
+        //{
+        //    gamma.resize(nObject);
+        //    sigma.resize(nObject);
+        //}
+
         if (treeType != tree_T::aux && treeType != tree_T::contr)
         {
             gamma.resize(nObject);
             sigma.resize(nObject);
+            if (schemeType == scheme_T::linScheme) {
+                gamma.resize(nObject * 2);
+                sigma.resize(nObject * 2);
+            }
         }
 
         gabForLeaves.resize(nObject);
@@ -1327,8 +1330,9 @@ namespace VM2D
               const double2 beg{ pnl[0], pnl[1] };                      //отдельно начало
               const double2 end{ pnl[2], pnl[3] };                      //отдельно конец
               const double2 rPan = end - beg;                           //направляющий вектор панели
+              const double dilen = rPan.length();                       //длина панели
               const double dlen2 = rPan.length2();                      //длина панели в квадрате
-              const double idlen = 1.0 / sqrt(dlen2);                   //обратная длина
+              const double idlen = 1.0 / sqrt(dlen2);                   //обратная длина                   
               const double2 tau = idlen * rPan;                         //вектор касательной к панели, направленный от начала к концу
               double val = 0.0;                                         //обнуление результата (константная составляющая скорости)
               double vallin = 0.0;                                      //обнуление результата (линейная составляющая скорости)
@@ -1466,7 +1470,7 @@ namespace VM2D
                                       double2 p1, s1, p2, s2;
                                       bool condBefore, condAfter;
                                       //if (iter == 0)
-                                      {
+                                      //{
                                           dj = infpan;
 
                                           ilenj = 1.0 / dj.length();
@@ -1495,7 +1499,6 @@ namespace VM2D
 
                                           double2 v00_0 = Omega(s1, tau, tauj);
                                           double2 v00_1 = Omega(di, tau, tauj);
-
                                           double2 v00_2 = Omega(p2, tau, tauj);
 
                                           i00[0] =
@@ -1504,102 +1507,89 @@ namespace VM2D
                                           i00[1] =
                                               ilenj * (alpha[0] * v00_0[1] - alpha[1] * v00_1[1] + alpha[2] * v00_2[1] \
                                                   + (lambda[0] * v00_0[0] - lambda[1] * v00_1[0] + lambda[2] * v00_2[0]));
-
-                                          //printf("cntr = %d, inf = %d, i00 = {%f, %f}\n", indexOfPoint, mortonCodesIdx[infn], i00[0], i00[1]);
-
-                                          //i00save[ClosePrefixSuml[indexOfPoint] + closecntr] = i00;
-                                      }
-                                      //else
-                                      //    i00 = i00save[ClosePrefixSuml[indexOfPoint] + closecntr];
-                                                                            
-                                      //printf("cntr = %d, inf = %d, gm = %f, i00 = {%f, %f}, tau = {%f, %f}\n", indexOfPoint, mortonCodesIdx[infn], gm, i00[0], i00[1], tau[0], tau[1]);
-
+                                      //}
                                       //if (indexOfPoint == 500)
                                         //  printf("inf = %d ", mortonCodesIdx[infn]);
 
                                       double tempVelNew = -gm * (i00 & tau);
                                       val -= tempVelNew;
                                       ///////////////////////////////////////////////////////////////////////////////////////
-                                      /*
+                                      //*
                                       if (scheme)
                                       {
-                                          double2 i01, i10, i11;
-                                            double s1len2 = s1.x * s1.x + s1.y * s1.y;
+                                            double2 i01, i10, i11;
+                                            double s1len2 = s1[0] * s1[0] + s1[1] * s1[1];
 
                                             double2 om1 = Omega(s1, tau, tauj);
-                                            double2 om2 = Omega(make_double2(s1.x + p2.x, s1.y + p2.y), tauj, tauj);
-                                            double sc = (p1.x + s1.x) * tauj.x + (p1.y + s1.y) * tauj.y;
+                                            double2 om2 = Omega(s1 + p2, tauj, tauj); //Omega(make_double2(s1.x + p2.x, s1.y + p2.y), tauj, tauj);
+                                            double sc = (p1[0] + s1[0]) * tauj[0] + (p1[1] + s1[1]) * tauj[1];
 
                                             const double hLj = 0.5 * ilenj;
                                             const double pA = hLj * sc;
                                             const double pB = hLj * s1len2;
                                             const double hLij = hLj * dilen;
 
-                                            double2 v01_0 = make_double2(pA * om1.x - pB * tau.x, pA * om1.y - pB * tau.y);
-                                            double2 v01_1 = make_double2(hLij * om2.x, hLij * om2.y);
+                                            double2 v01_0 = pA * om1 - pB * tau;
+                                            double2 v01_1 = hLij * om2;
 
-                                            i01 = make_double2(\
-                                                ilenj * ((alpha.x + alpha.z) * v01_0.x - (alpha.y + alpha.z) * v01_1.x\
-                                                    - (((lambda.x + lambda.z) * v01_0.y - (lambda.y + lambda.z) * v01_1.y) - 0.5 * dilen * tauj.y)),
-                                                ilenj * ((alpha.x + alpha.z) * v01_0.y - (alpha.y + alpha.z) * v01_1.y\
-                                                    + (((lambda.x + lambda.z) * v01_0.x - (lambda.y + lambda.z) * v01_1.x) - 0.5 * dilen * tauj.x))
-                                            );
+                                            i01[0] =
+                                                ilenj * ((alpha[0] + alpha[2]) * v01_0[0] - (alpha[1] + alpha[2]) * v01_1[0]\
+                                                    - (((lambda[0] + lambda[1]) * v01_0[1] - (lambda[1] + lambda[2]) * v01_1[1]) - 0.5 * dilen * tauj[1]));
+                                            i01[1] =
+                                                ilenj * ((alpha[0] + alpha[2]) * v01_0[1] - (alpha[1] + alpha[2]) * v01_1[1]\
+                                                    + (((lambda[0] + lambda[2]) * v01_0[0] - (lambda[1] + lambda[2]) * v01_1[0]) - 0.5 * dilen * tauj[0]));
 
-                                            double2 om3 = Omega(make_double2(s1.x + p2.x, s1.y + p2.y), tau, tau);
+                                            double2 om3 = Omega(s1 + p2, tau, tau);
 
                                             const double hLi = 0.5 * idlen;
                                             const double pC = hLi * ((s1 + s2) & tau);
                                             const double pD = hLi * s1len2;
                                             const double hLji = hLi * djlen;
 
-                                            double2 v10_0 = make_double2(pC * om1.x - pD * tauj.x, pC * om1.y - pD * tauj.y);
-                                            double2 v10_1 = make_double2(hLji * om3.x, hLji * om3.y);
+                                            double2 v10_0 = pC * om1 - pD * tauj;
+                                            double2 v10_1 = hLji * om3;
 
-                                            i10 = make_double2(
-                                                ilenj * (-(alpha.x + alpha.z) * v10_0.x + alpha.z * v10_1.x \
-                                                    - ((-(lambda.x + lambda.z) * v10_0.y + lambda.z * v10_1.y) + 0.5 * djlen * tau.y)),
-                                                ilenj * (-(alpha.x + alpha.z) * v10_0.y + alpha.z * v10_1.y \
-                                                    + ((-(lambda.x + lambda.z) * v10_0.x + lambda.z * v10_1.x) + 0.5 * djlen * tau.x))
-                                            );
+                                            i10[0] =
+                                                ilenj * (-(alpha[0] + alpha[2]) * v10_0[0] + alpha[2] * v10_1[0] \
+                                                    - ((-(lambda[0] + lambda[2]) * v10_0[1] + lambda[2] * v10_1[1]) + 0.5 * djlen * tau[1]));
+                                            i10[1] = ilenj * (-(alpha[0] + alpha[2]) * v10_0[1] + alpha[2] * v10_1[1] \
+                                                + ((-(lambda[0] + lambda[2]) * v10_0[0] + lambda[2] * v10_1[0]) + 0.5 * djlen * tau[0]));
 
-                                            double2 om4 = Omega(make_double2(s1.x - 3.0 * p2.x, s1.y - 3.0 * p2.y), tau, tauj);
+                                            double2 om4 = Omega(s1 - 3.0 * p2, tau, tauj);
                                             double2 om5 = Omega(di, tauj, tauj);
                                             double2 om6 = Omega(dj, tau, tau);
-                                            double sc4 = s1.x * om4.x + s1.y * om4.y;
+                                            double sc4 = s1[0] * om4[0] + s1[1] * om4[1];
 
                                             const double mn = idlen * ilenj / 12.0;
                                             const double qA = mn * 2.0 * sc4 - 0.25;
                                             const double qB = mn * s1len2;
 
-                                            double2 v11_0 = make_double2(
-                                                qA * om1.x - qB * (s1.x - 3 * p2.x),
-                                                qA * om1.y - qB * (s1.y - 3 * p2.y)
-                                            );
+                                            double2 v11_0 = qA * om1 - qB * (s1 - 3 * p2);
 
                                             double qC = hLij / 6.0;
                                             double qD = hLji / 6.0;
 
-                                            double2 v11_1 = make_double2(qC * om5.x, qC * om5.y);
-                                            double2 v11_2 = make_double2(qD * om6.x, qD * om6.y);
+                                            double2 v11_1 = qC * om5;
+                                            double2 v11_2 = qD * om6;
 
-                                            i11 = make_double2(
-                                                ilenj * ((alpha.x + alpha.z) * v11_0.x - (alpha.y + alpha.z) * v11_1.x - alpha.z * v11_2.x\
-                                                    - ((lambda.x + lambda.z) * v11_0.y - (lambda.y + lambda.z) * v11_1.y - lambda.z * v11_2.y \
-                                                        + 1.0 / 12.0 * (djlen * tau.y + dilen * tauj.y - 2.0 * om1.y))),
-                                                ilenj * ((alpha.x + alpha.z) * v11_0.y - (alpha.y + alpha.z) * v11_1.y - alpha.z * v11_2.y\
-                                                    + ((lambda.x + lambda.z) * v11_0.x - (lambda.y + lambda.z) * v11_1.x - lambda.z * v11_2.x \
-                                                        + 1.0 / 12.0 * (djlen * tau.x + dilen * tauj.x - 2.0 * om1.x)))
-                                            );
+                                            i11[0] =
+                                                ilenj * ((alpha[0] + alpha[2]) * v11_0[0] - (alpha[1] + alpha[2]) * v11_1[0] - alpha[2] * v11_2[0]\
+                                                    - ((lambda[0] + lambda[2]) * v11_0[1] - (lambda[1] + lambda[2]) * v11_1[1] - lambda[2] * v11_2[1] \
+                                                        + 1.0 / 12.0 * (djlen * tau[1] + dilen * tauj[1] - 2.0 * om1[1])));
+                                            i11[1] =
+                                                ilenj * ((alpha[0] + alpha[2]) * v11_0[1] - (alpha[1] + alpha[2]) * v11_1[1] - alpha[2] * v11_2[1]\
+                                                    + ((lambda[0] + lambda[2]) * v11_0[0] - (lambda[1] + lambda[2]) * v11_1[0] - lambda[2] * v11_2[0] \
+                                                        + 1.0 / 12.0 * (djlen * tau[0] + dilen * tauj[0] - 2.0 * om1[0])));
 
-                                          double tempVelNewB = -gmlin * (i01.x * tau.x + i01.y * tau.y);
+                                          double tempVelNewB = -gmlin * (i01[0] * tau[0] + i01[1] * tau[1]);
                                           val -= tempVelNewB;
 
-                                          double tempVelNewC = -gm * (i10.x * tau.x + i10.y * tau.y);
-                                          double tempVelNewD = -gmlin * (i11.x * tau.x + i11.y * tau.y);
+                                          double tempVelNewC = -gm * (i10[0] * tau[0] + i10[1] * tau[1]);
+                                          double tempVelNewD = -gmlin * (i11[0] * tau[0] + i11[1] * tau[1]);
 
                                           vallin -= (tempVelNewC + tempVelNewD);
                                       }
-                                      */
+                                      //*/
                                       ////////////////////////////////////////////////////////////////////////////////////////
 
                                   }//dr != 0

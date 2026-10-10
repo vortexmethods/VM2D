@@ -1086,7 +1086,7 @@ void World2D::SolveLinearSystem()
 		t1 += omp_get_wtime();
 
 		//std::cout << " Time in Gauss = " << t1 << std::endl;
-/*
+//*
 		std::ofstream solFile(getPassport().dir + "/sol" + std::to_string(currentStep) + "-Gauss.txt");
 		solFile.precision(16);
 		for (int i = 0; i < sol.size(); ++i)
@@ -1195,7 +1195,7 @@ void World2D::SolveLinearSystem()
 		for (int i = 0; i < getNumberOfBoundary(); ++i)
 			sol(cntr++) = GR[i];
 
-		/*
+		//*
 		std::ofstream solFile(getPassport().dir + "/sol-cpu" + std::to_string(currentStep) + ".txt");
 		solFile.precision(16);
 		for (int i = 0; i < sol.size(); ++i)
