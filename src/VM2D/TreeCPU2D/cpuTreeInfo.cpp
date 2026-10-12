@@ -323,8 +323,6 @@ namespace VM2D
             const int npanels = (int)object.size(); //количество панелей
             const bool scheme = (npanels == gamma_.size()) ? false : true;
 
-            //gamma = gamma_;    // было   
-
             for (int i = 0; i < npanels; ++i)
             {
                 const auto infgab = gabForLeaves[i]; //начало и конец влияющей панели
@@ -332,11 +330,9 @@ namespace VM2D
                 const Point2D infend{ infgab[2], infgab[3] };      // и конец
                 const Point2D infpan = infend - infbeg;
 
-                gamma[i] = infpan.length() * gamma_[i];      // стало  
+                gamma[i] = infpan.length() * gamma_[i]; 
                 if(scheme)
                     gammaLin[i] = infpan.length() * gamma_[npanels + i];
-
-                printf("gam = %f, gamlin = %f \n", gamma[i], gammaLin[i]);
             }
         }
 
@@ -1333,7 +1329,7 @@ namespace VM2D
               const double2 rPan = end - beg;                           //направляющий вектор панели
               const double dilen = rPan.length();                       //длина панели
               const double dlen2 = rPan.length2();                      //длина панели в квадрате
-              const double idlen = 1.0 / sqrt(dlen2);                   //обратная длина                   
+              const double idlen = 1.0 / dilen;                         //обратная длина                   
               const double2 tau = idlen * rPan;                         //вектор касательной к панели, направленный от начала к концу
               double val = 0.0;                                         //обнуление результата (константная составляющая скорости)
               double vallin = 0.0;                                      //обнуление результата (линейная составляющая скорости)
@@ -1450,9 +1446,8 @@ namespace VM2D
                                   const double4& infgab = gabForLeaves[mortonCodesIdx[infn]]; //начало и конец влияющей панели
                                   const double2 infbeg{ infgab[0], infgab[1] };      //отдельно начало
                                   const double2 infend{ infgab[2], infgab[3] };      // и конец
-
-                                  n = chd - nbodies;                            //номер вихря в Мортоновском порядке
-                                  const int vortexIndex = mortonCodesIdx[n];    //истинный номер вихря
+ 								  n = chd - nbodies;                            //номер вихря в Мортоновском порядке
+                                  const int vortexIndex = mortonCodesIdx[n];    //истинный номер вихря                                  
                                   double gmlin = 0.0;
                                   if (scheme)
                                       gmlin = gammaLin[vortexIndex];
@@ -1472,10 +1467,9 @@ namespace VM2D
                                       //if (iter == 0)
                                       //{
                                           dj = infpan;
-
-                                          ilenj = 1.0 / dj.length();
-                                          djlen = 1.0 / ilenj;
-                                          tauj = dj * ilenj;
+                                          djlen = dj.length();
+                                          ilenj = 1.0 / djlen;
+                                          tauj = ilenj * dj;
 
                                           p1 = end - infend;
                                           s1 = end - infbeg;
@@ -1511,7 +1505,6 @@ namespace VM2D
 
                                       double tempVelNew = -gm * (i00 & tau);
                                       val -= tempVelNew;
-
                                       if (scheme)
                                       {
                                             double2 i01, i10, i11;

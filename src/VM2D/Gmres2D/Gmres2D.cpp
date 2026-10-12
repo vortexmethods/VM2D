@@ -872,8 +872,6 @@ void GmresSolver::GMRES(
 	tPre.stop();
 	tIter.start();
 
-
-
 	//Iterations
 	for (int j = 0; j < totalVsize - 1; ++j) //+ n.size() 
 	{
@@ -974,11 +972,6 @@ void GmresSolver::GMRES(
 				}
 				npred += W.getAirfoil(i).getNumberOfPanels();
 			}
-
-		//for (size_t i = 0; i < w.size(); ++i)
-		//{
-		//	std::cout << w[i] << std::endl;
-		//}
 
 
 		size_t cntr = 0;
