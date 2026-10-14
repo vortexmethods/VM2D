@@ -80,9 +80,9 @@ var NAVTREEINDEX =
 "db/d33/class_v_m2_d_1_1_airfoil_rigid.html#ae4facfc6c1ab6c767cc9e3703b169b48",
 "dc/d2f/classfmm_1_1_fast_multipole3d.html#aef0f4bdf2b9bab490d4564877922469c",
 "dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#ad4e7488969e95378f916cfa8e1dc91f5",
-"dd/d9a/namespace_v_mlib.html#a2e3866d1899487fea01516681adf57a6",
-"df/d8f/class_v_m2_d_1_1_wake.html#a762072f1b77f99c4297364f3567da941",
-"functions_s.html"
+"dd/d9a/namespace_v_mlib.html#a18a9dfa54c765bce668f886e9c0a372e",
+"df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27",
+"functions_q.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

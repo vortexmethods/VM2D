@@ -63,7 +63,7 @@ var searchData=
   ['deformparam_60',['deformParam',['../dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#aaaaa36c2b2c2bef45774d95d768110d3',1,'VM2D::MechanicsDeformable']]],
   ['defs_2ecpp_61',['defs.cpp',['../da/ddd/defs_8cpp.html',1,'']]],
   ['defs_2eh_62',['defs.h',['../d7/dfe/_v_mfmm_2common_2defs_8h.html',1,'(Global Namespace)'],['../d1/de2/_v_mlib_2defs_2defs_8h.html',1,'(Global Namespace)']]],
-  ['delta_63',['delta',['../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abcb397a02078ade462bf14149251cec7',1,'VM2D::sweepVectors::delta'],['../db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a6aacf429559811777b68e18a754fbf65',1,'VM2D::WakeDiscretizationProperties::delta'],['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#af5f300e647d5d1558157bede4ead2411',1,'VM2D::CpuTreeInfo::Delta()']]],
+  ['delta_63',['delta',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#af5f300e647d5d1558157bede4ead2411',1,'VM2D::CpuTreeInfo::Delta()'],['../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abcb397a02078ade462bf14149251cec7',1,'VM2D::sweepVectors::delta'],['../db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a6aacf429559811777b68e18a754fbf65',1,'VM2D::WakeDiscretizationProperties::delta']]],
   ['deprecated_64',['DEPRECATED',['../df/dc5/numvector_8h.html#ac1e8a42306d8e67cb94ca31c3956ee78',1,'numvector.h']]],
   ['dev_5fdm_5fmap_65',['dev_dm_map',['../d7/d6f/namespacefmm_1_1detail.html#a13fdd51d9ce2639ae5fda2081797d463',1,'fmm::detail']]],
   ['dev_5fdmatrix_66',['dev_dmatrix',['../d7/d6f/namespacefmm_1_1detail.html#a23bd80341872e7cab22858b96d0e77f0',1,'fmm::detail']]],

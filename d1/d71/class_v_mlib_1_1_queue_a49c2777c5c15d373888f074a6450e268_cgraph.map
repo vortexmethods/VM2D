@@ -6,7 +6,7 @@
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="130,151,188,120,259,89,283,81,285,86,261,94,190,125,133,156"/>
 <area shape="rect" id="Node000004" href="$d1/dd8/class_v_mlib_1_1_log_stream.html#a189a69073636a4f93a1de3c7a8e13098" title="Вывод в поток логов пустой строки" alt="" coords="273,104,447,129"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="174,151,281,129,282,135,175,156"/>
-<area shape="rect" id="Node000005" href="$dd/d9a/namespace_v_mlib.html#a81c8d894928e9ff5468d1bcd857843e6" title="Проверка существования файла" alt="" coords="287,153,433,179"/>
+<area shape="rect" id="Node000005" href="$dd/d9a/namespace_v_mlib.html#a008e9dfd4880f7035103de8aa97cb32b" title="Проверка существования файла" alt="" coords="287,153,433,179"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="212,163,274,163,274,169,212,169"/>
 <area shape="rect" id="Node000006" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a5b557a9d203fb474d9c2c924e409c54d" title="Разбор строки на пару ключ&#45;значение" alt="" coords="283,203,437,243"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="166,176,270,200,269,205,165,181"/>
