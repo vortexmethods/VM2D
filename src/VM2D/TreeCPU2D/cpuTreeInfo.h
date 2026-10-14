@@ -176,7 +176,7 @@ namespace VM2D
         float DownwardTraversalVorticesToPanels(CpuTreeInfo& cntrTree, std::vector<double>& rhs, std::vector<double>& rhsLin, double theta, int order);
 
 
-
+        void SaveTreeTopology(const std::string& fileName);
 
 //        float DownwardTraversalVorticesToPoints(CudaTreeInfo& cntrTree, Point2D* velD, double* epsastD, double eps2, double theta, int order, bool calcRadius);
 //        float DownwardTraversalVorticesToPanels(CudaTreeInfo& cntrTree, double* rhsD, double* rhsLinD, double theta, int order);

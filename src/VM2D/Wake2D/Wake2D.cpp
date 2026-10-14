@@ -812,7 +812,7 @@ int Wake::RemoveFar()
 
 size_t Wake::RemoveZero()
 {
-	const double porog_g = 1e-10;
+	const double porog_g = 1e-18;
 
 	std::vector<Vortex2D/*, VM2D::MyAlloc<VMlib::Vortex2D>*/> newWake;
 

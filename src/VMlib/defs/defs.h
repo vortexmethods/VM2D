@@ -340,8 +340,10 @@ namespace VMlib
 	/// \param[in, out] info ссылка на поток вывода логов/ошибок
 	/// \param[in] extList константная ссылка на список проверяемых расширений
 	/// \return true, если файл существует; false если файл отсутствует
-	inline bool fileExistTest(std::string& fileName, LogStream& info, bool exitKey = false, const std::list <std::string>& extList = {})
+	inline bool fileExistTest(const std::string& fileName_, LogStream& info, bool exitKey = false, const std::list <std::string>& extList = {})
 	{
+		std::string fileName = fileName_;
+
 		std::list<std::string> fullExtList(extList);
 		fullExtList.insert(fullExtList.begin(), "");
 

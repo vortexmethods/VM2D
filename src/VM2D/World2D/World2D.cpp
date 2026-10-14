@@ -87,8 +87,18 @@ World2D::World2D(const VMlib::PassportGen& passport_) :
 		
 	wake.reset(new Wake(*this));
 	// загрузка пелены из файла
-	if (passport.wakeDiscretizationProperties.fileWake != "") 
-		wake->ReadFromFile(passport.wakesDir, passport.wakeDiscretizationProperties.fileWake); //Считываем из каталога с пеленой
+	if (passport.wakeDiscretizationProperties.fileWake != "")
+	{
+		if (VMlib::fileExistTest(passport.wakesDir + passport.wakeDiscretizationProperties.fileWake, getInfo(), false, { "txt", "TXT" }))
+			wake->ReadFromFile(passport.wakesDir, passport.wakeDiscretizationProperties.fileWake); //Считываем из каталога с пеленой
+		else
+		{
+			if (VMlib::fileExistTest(passport.dir + passport.wakeDiscretizationProperties.fileWake, getInfo(), true, { "txt", "TXT" }))			
+				wake->ReadFromFile(passport.dir, passport.wakeDiscretizationProperties.fileWake); //Считываем из каталога с пеленой			
+		}
+	
+
+	}
 	
 	source.reset(new WakeDataBase(*this));
 	// загрузка положений источников из файла
@@ -399,6 +409,19 @@ void World2D::Step() // ЮИ
 
 					treePnlVrt.UpdatePanelAttachedVortexIntensity(afl.devAttachedVortexSheetPtr, afl.devAttachedVortexSheetLinPtr);
 					treePnlVrt.UpwardTraversal(getPassport().numericalSchemes.nbodyMultipoleOrder);
+
+
+					//временное дерево для отладки процедуры сохранения
+					/*
+					if (getWake().vtx.size() > 2)
+					{
+						CpuTreeInfo testTree(tree_T::vortex, object_T::point4, scheme_T::noScheme);
+						testTree.Update(getWake().vtx);
+						testTree.Build();
+						testTree.UpwardTraversal(getPassport().numericalSchemes.nbodyMultipoleOrder);
+						testTree.SaveTreeTopology(getPassport().dir + "testTree-" + std::to_string(currentStep) + ".tree");
+					}
+					*/
 				}
 #else
 				if (getWake().vtx.size() > 0)
@@ -511,7 +534,7 @@ void World2D::Step() // ЮИ
 #endif
 
 			 
-#include "gammaCirc.h"						
+//#include "gammaCirc.h"						
 
 			//Расчет и сохранение поля давления
 			if (ifDivisible(passport.timeDiscretizationProperties.saveVPstep))
@@ -673,8 +696,6 @@ void World2D::Step() // ЮИ
 			//Движение вихрей (сброс вихрей + передвижение пелены)
 #ifdef TURB
 			WakeAndAirfoilsMotion(true, &nut);
-			
-
 #else
 			WakeAndAirfoilsMotion(true);
 #endif

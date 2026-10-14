@@ -1495,4 +1495,40 @@ namespace VM2D
       return (t2 - t1);
   }//DownwardTraversalVorticesToPanels(...)
 
+
+  void CpuTreeInfo::SaveTreeTopology(const std::string& fileName)
+  {
+      std::ofstream treeFile(fileName);
+
+      treeFile << "*leafs_point*\n";
+      treeFile << "//mortonOrder id x y\n";
+
+      for (size_t i = 0; i < object.size(); ++i)
+      {
+          int realIdx = mortonCodesIdx[i];
+          treeFile << i << " " << realIdx << " " << object[realIdx][0] << " " << object[realIdx][1] << '\n';
+      }
+
+      treeFile << "*internal_nodes*\n";
+      treeFile << "//mortonOrder burtscherOrder level xmin ymin xmax ymax childL childR parent leafMin leafMax\n";
+      for (size_t i = 0; i < object.size() - 1; ++i)
+      {
+          int burtscherIdx = indexSort[i];
+          auto lu = lowerupper[i];
+          treeFile << i << " " << burtscherIdx << " " << levelUnsort[i] << " " << lu[0] << " " << lu[1] << " " << lu[2] << " " << lu[3] \
+              << " " << child[i].first << " " << child[i].second << " " << parent[i] << " " << range[i].first << " " << range[i].second << '\n';
+
+      }
+
+      treeFile << "*leafs_panels*\n";
+      treeFile << "//id mortonOrder x y\n";
+
+      for (size_t i = 0; i < object.size(); ++i)
+          treeFile << i << " " << object[i][0] << " " << object[i][1] << '\n';
+
+      treeFile << "*end*\n";
+
+      treeFile.close();
+  }
+
 }//namespace VM2D
