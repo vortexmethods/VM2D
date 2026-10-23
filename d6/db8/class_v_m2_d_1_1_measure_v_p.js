@@ -16,6 +16,7 @@ var class_v_m2_d_1_1_measure_v_p =
     [ "SetPoints", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#aae0da0b275e8ed39dfc747b4dc88a6fc", null ],
     [ "domainRadius", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a6ae6a87ea3f5e244e513a5fe07c7012e", null ],
     [ "elasticPoints", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a5558814a058b32e3e4e519b8bfe86ecb", null ],
+    [ "historyFrequency", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a26f983b7d3754ed2ef8d779e3248b42b", null ],
     [ "historyPoints", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a291467cf1c4ac178bbf9d165d4fbe92e", null ],
     [ "initialPoints", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a03282398d9ce85985959254e354441d0", null ],
     [ "pressure", "d6/db8/class_v_m2_d_1_1_measure_v_p.html#a190e430f5999ec09e897ca405ab37bfc", null ],

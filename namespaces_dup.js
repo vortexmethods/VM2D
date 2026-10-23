@@ -24,6 +24,7 @@ var namespaces_dup =
       [ "defaultDelta", "da/d29/namespacedefaults.html#a4d3282534cdc11411470337c95c8b6d3", null ],
       [ "defaultDistFar", "da/d29/namespacedefaults.html#a1a04a8472a9487107315a98aaa2ef1c4", null ],
       [ "defaultEpsCol", "da/d29/namespacedefaults.html#a663244222f513abd0b07557c30e1c31c", null ],
+      [ "defaultHistoryFrequency", "da/d29/namespacedefaults.html#a76c7a9951171eb06338734249599ac0d", null ],
       [ "defaultInitAngularDisplacement", "da/d29/namespacedefaults.html#a7c79f8bccc4a5a4ac7d2d1439db1abf4", null ],
       [ "defaultInitAngularVelocity", "da/d29/namespacedefaults.html#a611b4d5409f81e3b9085682cea666aca", null ],
       [ "defaultInitDisplacement", "da/d29/namespacedefaults.html#aff66567a4f0607a50b2359b82978a292", null ],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['r_0',['r',['../d0/de1/class_v_mlib_1_1_vortex2_d.html#adf59f23cadf61dfadd9e36d4cf0181a5',1,'VMlib::Vortex2D::r()'],['../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf',1,'VM2D::Beam::R'],['../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2',1,'VMlib::Vortex2D::r()']]],
+  ['r_0',['r',['../d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2',1,'VMlib::Vortex2D::r()'],['../d0/de1/class_v_mlib_1_1_vortex2_d.html#adf59f23cadf61dfadd9e36d4cf0181a5',1,'VMlib::Vortex2D::r() const'],['../d2/dc5/class_v_m2_d_1_1_beam.html#a528b54fea8cc31ef6d92f2727465a4bf',1,'VM2D::Beam::R']]],
   ['r_5f_1',['r_',['../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca',1,'VM2D::AirfoilGeometry']]],
   ['radiuses_2',['radiuses',['../df/db0/gamma_circ_8h.html#a20bd3240ebe02f2925ff20ea982c3218',1,'gammaCirc.h']]],
   ['radix_3',['RADIX',['../d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#adade1e82f06c9adc1cd4d1dceb9faf65',1,'VM2D::OptimizedRadixSorter']]],
@@ -8,7 +8,7 @@ var searchData=
   ['radixsortmortoncodes_5',['RadixSortMortonCodes',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a8bfb33ed9415b53f489e05668c1fb741',1,'VM2D::CpuTreeInfo']]],
   ['range_6',['range',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a029a09733bcb0b7141671af389f85e64',1,'VM2D::CpuTreeInfo']]],
   ['rbound_7',['rbound',['../d5/dde/_gpudefs_8h.html#a354384d36cf396f7a6ff2c4b2cae1281',1,'Gpudefs.h']]],
-  ['rcm_8',['rcm',['../d7/dc9/class_v_m2_d_1_1_mechanics.html#a95c2d2997af542624374dc05e4d9133f',1,'VM2D::Mechanics::Rcm'],['../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48',1,'VM2D::AirfoilGeometry::rcm']]],
+  ['rcm_8',['rcm',['../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48',1,'VM2D::AirfoilGeometry::rcm'],['../d7/dc9/class_v_m2_d_1_1_mechanics.html#a95c2d2997af542624374dc05e4d9133f',1,'VM2D::Mechanics::Rcm']]],
   ['rcm0_9',['Rcm0',['../d7/dc9/class_v_m2_d_1_1_mechanics.html#aa937cf3e80b53d6aa421eb259657656f',1,'VM2D::Mechanics']]],
   ['rcmold_10',['RcmOld',['../d7/dc9/class_v_m2_d_1_1_mechanics.html#a31f69d05c8defac397da1c62133bf132',1,'VM2D::Mechanics']]],
   ['readerror_11',['ReadError',['../db/d0f/namespacefmm.html#a3c0c7b505d96470e6a290dc1964acc4d',1,'fmm']]],
