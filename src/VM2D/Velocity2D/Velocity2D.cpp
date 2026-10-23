@@ -1348,7 +1348,7 @@ void Velocity::CalcVeloToWakeVP()
 		W.getCntrTreeVP().Update(W.getMeasureVP().getWakeVP().vtx);
 		W.getCntrTreeVP().Build();
 		W.getCntrTreeVP().UpwardTraversal(W.getPassport().numericalSchemes.nbodyMultipoleOrder);
-		W.getInflTreeWake().DownwardTraversalVorticesToPoints(W.getCntrTreeVP(), velConvWake, W.getNonConstMeasureVP().getNonConstDomainRadius(), theta, order, false);
+		W.getInflTreeWake().DownwardTraversalVorticesToPoints(W.getCntrTreeVP(), velConvWake, W.getNonConstMeasureVP().getNonConstDomainRadius(), theta, order, false, W.getPassport().wakeDiscretizationProperties.coefEpsAst);
 	}
 #endif	
 

@@ -110,6 +110,9 @@ namespace defaults
 	/// Шаг подсчета поля скорости и давления
 	const int defaultSaveVisStress = 0;
 
+	/// Шаг сохранения буферов истории скорости и давления к контрольных точках в файл
+	const int defaultHistoryFrequency = 100;
+
 	/// Шаг обновления паспорта и перечень перечитываемых параметров
 	const int defaultRevisePassportStep = 10;
 	const std::vector<std::string> defaultReviseParameters = { "nameLength", "timeStop", "dt", "vInf", "vRef", "coefEpsAst", "saveVtx", "saveVP" };

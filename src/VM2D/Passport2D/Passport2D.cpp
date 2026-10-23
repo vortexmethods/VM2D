@@ -334,7 +334,7 @@ void Passport::GetParamsFromParser
 	}
 
 	if (ifUpdate("coefEpsAst"))
-		parser->get("coefEpsAst", wakeDiscretizationProperties.coefEpsAst, &defaults::defaultCoefEpsAst);
+		parser->get("coefEpsAst", wakeDiscretizationProperties.coefEpsAst, &defaults::defaultCoefEpsAst, readAll);
 
 	if (readAll)
 	{

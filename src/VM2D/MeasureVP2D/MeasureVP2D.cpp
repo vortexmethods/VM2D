@@ -79,6 +79,7 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 		
 		VPParser.get("points", initialPoints);
 		VPParser.get("history", historyPoints);
+		VPParser.get("historyFrequency", historyFrequency, &defaults::defaultHistoryFrequency, false);
 
 		for (auto& pt : initialPoints)
 			pt = pt.rotated(-W.getPassport().rotateAngleVpPoints * PI / 180.0);
@@ -876,7 +877,7 @@ void MeasureVP::SaveVP()
 			std::string VPFileNameCsv;
 			VPFileNameCsv = W.getPassport().dir + "velPres/" + VMlib::fileNameStep("VP-atPoint-", 2, q, "csv");
 
-			std::ofstream VPFileCsv(VPFileNameCsv.c_str(), W.getCurrentStep() ? std::ios::app : std::ios::out);
+			std::ofstream VPFileCsv(VPFileNameCsv.c_str(), std::ios::out);
 
 			if (!W.getPassport().calcCoefficients)
 				VPFileCsv << "point,time,Vx,Vy,P\n";
@@ -892,10 +893,11 @@ void MeasureVP::SaveVP()
 			<< pressure[initialPoints.size() + q] * scaleP << '\n';
 	
 		if (q == 0)
-			++sstrCounter;
+			sstrCounter += W.getPassport().timeDiscretizationProperties.saveVPstep;
 	}
-		
-	if (sstrCounter == 100)
+			
+	//Сохраняем буфера в файл рас в historyFrequency шагов
+	if (sstrCounter >= historyFrequency)
 	{
 		#pragma omp parallel for
 		for (int q = 0; q < (int)historyPoints.size(); ++q)
@@ -903,7 +905,7 @@ void MeasureVP::SaveVP()
 			std::string VPFileNameCsv;
 			VPFileNameCsv = W.getPassport().dir + "velPres/" + VMlib::fileNameStep("VP-atPoint-", 2, q, "csv");
 
-			std::ofstream VPFileCsv(VPFileNameCsv.c_str(), W.getCurrentStep() ? std::ios::app : std::ios::out);
+			std::ofstream VPFileCsv(VPFileNameCsv.c_str(), std::ios::app);
 
 			VPFileCsv << sstr[q].str();
 

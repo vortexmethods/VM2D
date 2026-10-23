@@ -70,8 +70,10 @@ namespace VM2D
 		/// Точки, которые считываются из файла (давление пишется в vtk и csv-файлы)
 		std::vector<Point2D> historyPoints;
 		
+		/// Буферы для накопления временнОй истории сил в соответствующих точках
 		std::vector<std::ostringstream> sstr;
 		int sstrCounter;
+		int historyFrequency;
 
 
 	public:
