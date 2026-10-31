@@ -1,0 +1,6 @@
+<map id="VMlib::vmTimer::start" name="VMlib::vmTimer::start">
+<area shape="rect" id="Node000001" title="Запуск (первый или повторный) счетчика времени" alt="" coords="5,29,169,57"/>
+<area shape="rect" id="Node000002" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a66ab074918381d084d6bb49fd66474ed" title=" " alt="" coords="217,29,409,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,41,204,43,198,43,169,46"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="274,28,268,20,273,11,288,5,313,3,339,5,355,14,350,14,338,10,313,8,289,10,276,15,273,20,279,30"/>
+</map>

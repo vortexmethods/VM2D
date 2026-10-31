@@ -6,7 +6,7 @@ var searchData=
   ['savevtxstep_3',['saveVtxStep',['../d8/da2/struct_v_mlib_1_1_time_discretization_properties.html#a89af058541e566c8078c650f2be038bd',1,'VMlib::TimeDiscretizationProperties']]],
   ['scale_4',['scale',['../d7/deb/struct_v_m2_d_1_1_airfoil_params.html#a9e5c918152100d035d6c60b3e2c994cd',1,'VM2D::AirfoilParams::scale'],['../de/d6a/classfmm_1_1_morton_tree.html#a6a50c3fbd6448a26f4608cc421e290ce',1,'fmm::MortonTree::scale']]],
   ['schemetype_5',['schemeType',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#aad05eeb24349d335c99a948c10f7e287',1,'VM2D::CpuTreeInfo']]],
-  ['sgm_6',['sgm',['../d0/de1/class_v_mlib_1_1_vortex2_d.html#a425c37abacda4ed6d04e6d64a433b31b',1,'VMlib::Vortex2D']]],
+  ['sgm_6',['sgm',['../d0/de1/class_v_mlib_1_1_vortex2_d.html#a425c37abacda4ed6d04e6d64a433b31b',1,'VMlib::Vortex2D::sgm'],['../db/d36/class_vortex2_d.html#a425c37abacda4ed6d04e6d64a433b31b',1,'Vortex2D::sgm']]],
   ['sheetdim_7',['sheetDim',['../df/da2/class_v_m2_d_1_1_boundary.html#a5d9662d3678343256a3dc9511c23bd40',1,'VM2D::Boundary']]],
   ['sheets_8',['sheets',['../df/da2/class_v_m2_d_1_1_boundary.html#a6c34b742507a8a5b235a449396ab2be3',1,'VM2D::Boundary']]],
   ['shift_9',['shift',['../de/d6a/classfmm_1_1_morton_tree.html#afdcda7da8abc53f06221e4a92259e7ac',1,'fmm::MortonTree']]],

@@ -1,0 +1,7 @@
+<map id="VM2D::WakeDataBase::WakeDataBase" name="VM2D::WakeDataBase::WakeDataBase">
+<area shape="rect" id="Node000001" title="Конструктор инициализации" alt="" coords="208,36,374,81"/>
+<area shape="rect" id="Node000002" href="$d4/d07/class_v_m2_d_1_1_virtual_wake.html#a1169ae891122ef31a67d3e8a8ae41b92" title="Конструктор инициализации" alt="" coords="5,5,160,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,44,160,42,160,36,195,43"/>
+<area shape="rect" id="Node000003" href="$df/d8f/class_v_m2_d_1_1_wake.html#a194bb2f6afb9a55c6858b318e2f7f15e" title="Конструктор инициализации" alt="" coords="9,74,156,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,73,156,80,155,75,195,72"/>
+</map>

@@ -1,0 +1,29 @@
+<map id="VM2D::Velocity::CalcDiffVeloI1I2ToWakeFromWakeFast" name="VM2D::Velocity::CalcDiffVeloI1I2ToWakeFromWakeFast">
+<area shape="rect" id="Node000001" title="Быстрый (с деревом поиска соседей) расчет I1 и I2 от вихрей следа в точках этого же следа" alt="" coords="5,275,222,319"/>
+<area shape="rect" id="Node000002" href="$d3/d36/class_v_m2_d_1_1_neighbor_tree.html#a5f3dae780ebcc6252c9002deb4abe459" title="Построение дерева; getPos(i) возвращает координаты i&#45;й точки" alt="" coords="270,120,424,165"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,272,268,185,295,171,291,175,271,190,148,276"/>
+<area shape="rect" id="Node000004" href="$d3/d36/class_v_m2_d_1_1_neighbor_tree.html#a547377b07e6d1bf59ad9383a4d308aa7" title=" " alt="" coords="486,5,640,50"/>
+<area shape="poly" id="edge10_Node000001_Node000004" title=" " alt="" coords="125,273,147,236,179,191,220,145,268,105,317,79,369,59,422,45,473,37,468,39,423,50,371,64,319,84,271,110,224,149,183,194,151,239,129,276"/>
+<area shape="rect" id="Node000005" href="$d3/d36/class_v_m2_d_1_1_neighbor_tree.html#a5dae4f616793c48c8be73a6caff241cd" title=" " alt="" coords="486,247,640,291"/>
+<area shape="poly" id="edge12_Node000001_Node000005" title=" " alt="" coords="155,272,208,248,269,229,312,222,347,221,424,229,480,242,474,243,424,234,346,226,313,227,270,234,210,253,158,276"/>
+<area shape="rect" id="Node000008" href="$d3/d36/class_v_m2_d_1_1_neighbor_tree.html#aa41d667d4d20c49b4d228dddbdb4d394" title="Список листьев, прямоугольники которых находятся на расстоянии меньше R от прямоугольника q." alt="" coords="270,244,424,289"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="221,280,256,277,252,280,223,285"/>
+<area shape="rect" id="Node000009" href="$de/dfb/struct_v_m2_d_1_1_nb_box.html#a6c72349be60b428e4dd4b029da323b37" title="Квадрат расстояния до другого прямоугольника (для пустого — бесконечность)." alt="" coords="270,312,424,340"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="221,308,257,314,252,316,223,313"/>
+<area shape="rect" id="Node000011" href="$d3/d36/class_v_m2_d_1_1_neighbor_tree.html#abff45058f64c3f3d3175ee2c609a1f87" title=" " alt="" coords="270,364,424,409"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="174,317,275,357,270,359,174,322"/>
+<area shape="rect" id="Node000012" href="$d0/d88/classnumvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="273,432,421,460"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="138,317,197,368,233,395,271,419,283,426,277,426,268,423,230,399,193,372,137,322"/>
+<area shape="rect" id="Node000013" href="$d1/de2/_v_mlib_2defs_2defs_8h.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат" alt="" coords="326,484,368,512"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="130,317,187,392,227,433,271,469,314,490,308,490,268,474,223,437,183,395,128,322"/>
+<area shape="rect" id="Node000003" href="$de/dfb/struct_v_m2_d_1_1_nb_box.html#a4f51f886fa988a3742219e02d24a9f4f" title=" " alt="" coords="491,74,635,102"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="423,121,493,104,489,107,425,125"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="378,117,421,88,471,60,486,55,482,58,473,65,424,93,381,121"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="390,162,426,186,449,210,474,232,483,239,478,239,470,236,446,214,422,190,390,168"/>
+<area shape="rect" id="Node000006" href="$de/dfb/struct_v_m2_d_1_1_nb_box.html#aa68b2dc97267759821cbbd4c96c933c8" title=" " alt="" coords="472,126,654,154"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="423,139,459,140,454,142,425,144"/>
+<area shape="rect" id="Node000007" href="$d3/d36/class_v_m2_d_1_1_neighbor_tree.html#abeae1878926d5a4b30c941093adc7acf" title=" " alt="" coords="486,177,640,222"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="424,160,473,175,468,176,425,165"/>
+<area shape="rect" id="Node000010" href="$de/dfb/struct_v_m2_d_1_1_nb_box.html#a65f0f73458b6054850267e6af50ad2f0" title=" " alt="" coords="477,315,649,343"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="424,325,464,327,459,328,425,330"/>
+</map>

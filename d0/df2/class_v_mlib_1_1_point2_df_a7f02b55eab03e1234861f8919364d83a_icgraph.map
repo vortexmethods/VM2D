@@ -1,0 +1,7 @@
+<map id="VMlib::Point2Df::Point2Df" name="VMlib::Point2Df::Point2Df">
+<area shape="rect" id="Node000001" title=" " alt="" coords="239,32,424,60"/>
+<area shape="rect" id="Node000002" href="$d0/df2/class_v_mlib_1_1_point2_df.html#aaddfa6e9370c155469238285e51c9f86" title="Конструктор копирования" alt="" coords="5,5,191,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,34,191,32,191,27,226,33"/>
+<area shape="rect" id="Node000003" href="$d0/df2/class_v_mlib_1_1_point2_df.html#a191716b93b51b05bc201ec57c244e962" title="Поворот вектора на произвольный угол против часовой стрелки (по умолчанию 90 градусов)." alt="" coords="10,57,186,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,58,187,64,186,59,226,57"/>
+</map>

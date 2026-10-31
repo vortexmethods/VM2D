@@ -1,11 +1,15 @@
 <map id="VMlib::StreamParser::SplitString" name="VMlib::StreamParser::SplitString">
-<area shape="rect" id="Node000001" title="Разбор строки на пару ключ&#45;значение" alt="" coords="495,35,649,75"/>
-<area shape="rect" id="Node000002" href="$d2/d15/class_v_m2_d_1_1_passport.html#a66e3dd8d8de29712c7bf8f3d17d1d9dc" title="Считывание всех параметров расчета из соответствующих потоков" alt="" coords="242,5,445,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="481,46,444,41,445,36,481,40"/>
-<area shape="rect" id="Node000004" href="$d1/d71/class_v_mlib_1_1_queue.html#a49c2777c5c15d373888f074a6450e268" title="Загрузка списка задач" alt="" coords="240,70,447,95"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="481,68,447,73,446,67,480,63"/>
-<area shape="rect" id="Node000003" href="$d2/d15/class_v_m2_d_1_1_passport.html#ad61c592d8ebe7d2acf70d6eb966ebf52" title="Конструктор" alt="" coords="5,13,192,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="228,28,192,28,192,23,228,23"/>
-<area shape="rect" id="Node000005" href="$d1/d0c/_v_m2_d_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="71,70,126,95"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="226,85,126,85,126,80,226,80"/>
+<area shape="rect" id="Node000001" title="Разбор строки на пару ключ&#45;значение" alt="" coords="949,36,1102,81"/>
+<area shape="rect" id="Node000002" href="$d2/d15/class_v_m2_d_1_1_passport.html#a66e3dd8d8de29712c7bf8f3d17d1d9dc" title="Считывание всех параметров расчета из соответствующих потоков" alt="" coords="696,5,899,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="931,46,899,44,899,39,936,46"/>
+<area shape="rect" id="Node000006" href="$d1/d71/class_v_mlib_1_1_queue.html#a49c2777c5c15d373888f074a6450e268" title="Загрузка списка задач" alt="" coords="694,74,901,102"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="936,70,901,77,901,72,931,70"/>
+<area shape="rect" id="Node000003" href="$d2/d15/class_v_m2_d_1_1_passport.html#ad61c592d8ebe7d2acf70d6eb966ebf52" title="Конструктор" alt="" coords="460,14,646,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="678,28,647,30,647,25,683,28"/>
+<area shape="rect" id="Node000004" href="$d2/d15/class_v_m2_d_1_1_passport.html#ab9a444f79bd0754611d87fe37d5d2c62" title="Считывание измененных параметров" alt="" coords="214,5,412,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="442,28,413,30,412,25,447,27"/>
+<area shape="rect" id="Node000005" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#ae5d92a48583dc7236a14a16be5650858" title="Функция выполнения предварительного шага" alt="" coords="5,14,166,42"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="196,28,167,30,166,25,201,27"/>
+<area shape="rect" id="Node000007" href="$d1/d0c/_v_m2_d_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="526,74,580,102"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="676,88,581,90,581,85,681,88"/>
 </map>

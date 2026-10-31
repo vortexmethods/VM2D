@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$da/d4d/struct_v_m2_d_1_1_complex_data.html" title=" " alt="" coords="5,5,164,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,100,127,128"/>
+<area shape="rect" id="Node000001" href="$d4/dfb/classfmm_1_1_vector3.html" title=" " alt="" coords="175,5,358,33"/>
+<area shape="poly" id="edge3_Node000000_Node000001" title=" " alt="" coords="96,89,132,64,174,42,206,32,202,35,176,47,135,69,99,93"/>
+<area shape="rect" id="Node000002" href="$d4/dfb/classfmm_1_1_vector3.html" title=" " alt="" coords="183,57,350,102"/>
+<area shape="poly" id="edge4_Node000000_Node000002" title=" " alt="" coords="141,98,185,92,180,95,143,103"/>
+<area shape="rect" id="Node000003" href="$da/d3c/class_v_mlib_1_1nummatrix.html" title="Шаблонный класс, определяющий матрицу фиксированного размера &#160;&#160;Фактически представляет собой массив,..." alt="" coords="184,126,349,171"/>
+<area shape="poly" id="edge5_Node000000_Node000003" title=" " alt="" coords="142,124,186,133,181,135,142,130"/>
+<area shape="rect" id="Node000004" href="$d4/dfb/classfmm_1_1_vector3.html" title=" " alt="" coords="193,195,340,222"/>
+<area shape="poly" id="edge6_Node000000_Node000004" title=" " alt="" coords="98,134,135,159,176,181,207,194,201,194,174,186,132,163,97,139"/>
 </map>

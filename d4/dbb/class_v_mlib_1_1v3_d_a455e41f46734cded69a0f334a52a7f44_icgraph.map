@@ -1,0 +1,7 @@
+<map id="VMlib::v3D::v3D" name="VMlib::v3D::v3D">
+<area shape="rect" id="Node000001" title="Пустой конструктор" alt="" coords="201,32,327,60"/>
+<area shape="rect" id="Node000002" href="$d4/dbb/class_v_mlib_1_1v3_d.html#a6d5b276f952bed563b5b25cdf2353415" title="Конструктор копирования" alt="" coords="16,5,142,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,35,142,31,142,26,188,34"/>
+<area shape="rect" id="Node000003" href="$d4/dbb/class_v_mlib_1_1v3_d.html#a11b89aed5983c11af315e14fe6dac322" title="Поворот вектора на произвольный угол против часовой стрелки (по умолчанию 90 градусов)." alt="" coords="5,57,153,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="183,57,153,64,153,58,188,56"/>
+</map>

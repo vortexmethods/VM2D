@@ -1,0 +1,11 @@
+<map id="GeomPoint" name="GeomPoint">
+<area shape="rect" id="Node000001" title="Класс, опеделяющий двумерный вектор" alt="" coords="154,200,248,228"/>
+<area shape="rect" id="Node000002" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title=" " alt="" coords="81,99,198,127"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,138,196,199,190,199,154,142"/>
+<area shape="rect" id="Node000003" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="5,14,232,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="127,54,139,99,134,98,125,59"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="262,99,348,127"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="283,137,217,202,214,197,278,138"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="256,5,394,50"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="318,63,310,100,306,97,315,67"/>
+</map>

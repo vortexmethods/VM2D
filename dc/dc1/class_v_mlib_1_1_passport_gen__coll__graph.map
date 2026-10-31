@@ -1,23 +1,26 @@
 <map id="VMlib::PassportGen" name="VMlib::PassportGen">
-<area shape="rect" id="Node000001" title="Абстрактный класс, опеделяющий паспорт задачи" alt="" coords="201,477,349,503"/>
-<area shape="rect" id="Node000002" href="$d1/dd8/class_v_mlib_1_1_log_stream.html" title="Класс, определяющий работу с потоком логов" alt="" coords="79,382,217,407"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,413,261,475,257,479,173,417"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="39,272,143,297"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="106,309,144,380,139,383,101,311"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="18,169,163,209"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="93,223,93,272,88,272,88,223"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="5,87,176,113"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="93,127,93,169,88,169,88,127"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="37,5,144,31"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="93,44,93,87,88,87,88,44"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="302,177,389,202"/>
-<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="386,206,423,232,440,250,453,271,477,322,493,366,496,388,493,410,485,432,469,455,450,468,420,477,349,487,348,482,419,472,447,463,465,451,480,429,488,409,490,388,488,368,472,324,448,273,436,253,420,236,383,211"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="302,210,251,236,227,253,205,274,192,294,178,324,155,383,150,381,173,322,187,291,201,270,223,249,249,231,299,205"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="252,272,439,297"/>
-<area shape="poly" id="edge11_Node000010_Node000007" title=" " alt="" coords="348,216,348,272,343,272,343,216"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="276,80,415,120"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="348,134,348,176,343,176,343,134"/>
-<area shape="rect" id="Node000009" href="$d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени" alt="" coords="241,375,431,415"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="290,425,278,440,274,459,275,477,270,477,268,458,274,438,285,422"/>
-<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="342,311,340,322,338,374,333,374,335,321,336,311"/>
+<area shape="rect" id="Node000001" title="Абстрактный класс, опеделяющий паспорт задачи" alt="" coords="338,552,485,579"/>
+<area shape="rect" id="Node000002" href="$d1/dd8/class_v_mlib_1_1_log_stream.html" title="Класс, определяющий работу с потоком логов" alt="" coords="122,442,258,470"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,475,386,550,381,552,230,480"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="38,302,142,330"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,342,118,376,139,408,174,441,169,442,135,412,114,378,100,347"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="18,176,162,221"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="91,234,93,302,87,302,89,239"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,91,175,118"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="90,132,93,176,87,176,90,137"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="37,5,143,33"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="90,46,93,90,87,90,90,51"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="426,185,512,212"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="526,211,559,223,590,240,618,263,636,293,654,345,662,405,660,436,652,468,637,499,613,530,592,542,561,551,486,562,485,557,560,546,590,537,610,526,632,496,647,466,655,435,657,405,649,346,632,295,613,266,587,244,557,227,527,216"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="408,204,359,213,302,229,248,256,224,274,204,296,194,313,187,332,182,374,184,412,189,443,184,441,179,413,176,374,182,331,189,311,200,292,221,270,245,251,300,224,358,208,413,201"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="255,302,440,330"/>
+<area shape="poly" id="edge11_Node000010_Node000007" title=" " alt="" coords="446,222,363,304,359,300,442,225"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="464,294,622,339"/>
+<area shape="poly" id="edge13_Node000011_Node000007" title=" " alt="" coords="486,223,532,294,527,293,484,228"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="400,82,538,127"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="470,140,471,186,466,184,467,145"/>
+<area shape="rect" id="Node000009" href="$d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени" alt="" coords="317,434,506,479"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="413,492,414,553,409,550,409,496"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="352,343,360,376,373,409,391,434,386,433,368,411,355,378,350,348"/>
+<area shape="poly" id="edge12_Node000009_Node000011" title=" " alt="" coords="532,352,516,384,495,412,462,436,460,431,491,408,512,381,528,355"/>
 </map>

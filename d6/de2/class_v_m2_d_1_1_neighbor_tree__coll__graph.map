@@ -1,0 +1,11 @@
+<map id="VM2D::NeighborTree" name="VM2D::NeighborTree">
+<area shape="rect" id="Node000001" title=" " alt="" coords="176,224,330,251"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,114,143,142"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,148,233,222,228,224,108,153"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="167,114,338,142"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,156,255,224,250,222,251,160"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="362,106,514,151"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="390,158,277,225,274,221,385,159"/>
+<area shape="rect" id="Node000005" href="$de/dfb/struct_v_m2_d_1_1_nb_box.html" title="Габаритный прямоугольник" alt="" coords="382,5,494,33"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="440,47,440,107,436,104,436,51"/>
+</map>

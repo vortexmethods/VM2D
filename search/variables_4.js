@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['data',['../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6',1,'VMlib::numvector']]],
+  ['data_0',['data',['../d6/dd4/class_v_mlib_1_1numvector.html#aa3d9abd363f214e61551e3c9782306c6',1,'VMlib::numvector::data'],['../d0/d88/classnumvector.html#aa3d9abd363f214e61551e3c9782306c6',1,'numvector::data']]],
   ['database_1',['database',['../db/d04/class_v_mlib_1_1_stream_parser.html#a81f80b88ef75bdd6550b63225d38f91d',1,'VMlib::StreamParser']]],
   ['defaultaddedmass_2',['defaultAddedMass',['../da/d29/namespacedefaults.html#a5887a0c6a93d9acd27bae86cfc45b9ae',1,'defaults']]],
   ['defaultaddmass_3',['defaultAddMass',['../da/d29/namespacedefaults.html#af1c5b8dd85a31a809956f30ec8914689',1,'defaults']]],
@@ -55,7 +55,7 @@ var searchData=
   ['defaultwakesdir_52',['defaultWakesDir',['../da/d29/namespacedefaults.html#a2f7ef76a601d9bbf8557fddf46c3c6cc',1,'defaults']]],
   ['defaultworld2dlogstream_53',['defaultWorld2DLogStream',['../da/d29/namespacedefaults.html#aa70cdcdde25ee65a0f790f1b80140ab1',1,'defaults']]],
   ['deformparam_54',['deformParam',['../dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#aaaaa36c2b2c2bef45774d95d768110d3',1,'VM2D::MechanicsDeformable']]],
-  ['delta_55',['delta',['../db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a6aacf429559811777b68e18a754fbf65',1,'VM2D::WakeDiscretizationProperties::delta'],['../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abcb397a02078ade462bf14149251cec7',1,'VM2D::sweepVectors::delta']]],
+  ['delta_55',['delta',['../df/ddb/struct_v_m2_d_1_1sweep_vectors.html#abcb397a02078ade462bf14149251cec7',1,'VM2D::sweepVectors::delta'],['../db/dd0/struct_v_m2_d_1_1_wake_discretization_properties.html#a6aacf429559811777b68e18a754fbf65',1,'VM2D::WakeDiscretizationProperties::delta']]],
   ['dev_5fdm_5fmap_56',['dev_dm_map',['../d7/d6f/namespacefmm_1_1detail.html#a13fdd51d9ce2639ae5fda2081797d463',1,'fmm::detail']]],
   ['dev_5fdmatrix_57',['dev_dmatrix',['../d7/d6f/namespacefmm_1_1detail.html#a23bd80341872e7cab22858b96d0e77f0',1,'fmm::detail']]],
   ['diag_58',['diag',['../d6/d76/class_v_m2_d_1_1_gmres_solver.html#ad66f034fc8301e71a1826e01ec333c17',1,'VM2D::GmresSolver']]],

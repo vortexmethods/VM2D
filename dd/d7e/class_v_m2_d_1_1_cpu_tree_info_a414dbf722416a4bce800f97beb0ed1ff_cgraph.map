@@ -1,17 +1,28 @@
 <map id="VM2D::CpuTreeInfo::DownwardTraversalClosestPanelToPoints" name="VM2D::CpuTreeInfo::DownwardTraversalClosestPanelToPoints">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,154,239,209"/>
-<area shape="rect" id="Node000002" href="$d9/dd7/namespace_v_m2_d.html#a7c9bbdb2298ed9a9c3e53f874405f5ea" title=" " alt="" coords="287,5,481,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,152,211,103,285,55,300,48,302,53,288,60,214,107,155,156"/>
-<area shape="rect" id="Node000003" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a09ded2e7982e35af46d4899e2a31d359" title=" " alt="" coords="290,70,478,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="176,151,228,127,286,104,310,96,312,102,288,109,230,132,178,156"/>
-<area shape="rect" id="Node000004" href="$d9/dd7/namespace_v_m2_d.html#aebddc89e1d4929346c06b2114f5637df" title=" " alt="" coords="321,119,447,145"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="238,157,306,144,307,149,239,162"/>
-<area shape="rect" id="Node000005" href="$d9/dd7/namespace_v_m2_d.html#ad2a4d7eaac6560a44e5a53d62924df92" title=" " alt="" coords="303,169,465,194"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="239,179,289,179,289,184,239,184"/>
-<area shape="rect" id="Node000006" href="$d9/dd7/namespace_v_m2_d.html#a54efeecf2c48054b4a2f11cc5ca758d8" title=" " alt="" coords="307,218,461,243"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="239,201,303,213,302,218,238,206"/>
-<area shape="rect" id="Node000007" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9a2edffcbf01cfab7f70422ce60391be" title="Запуск (первый или повторный) счетчика времени" alt="" coords="302,267,466,293"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="179,206,288,252,316,261,314,266,286,257,177,211"/>
-<area shape="rect" id="Node000008" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a320206c4467fa80d013de7a8d9fde1d5" title="Останов работающего счетчика времени" alt="" coords="303,317,465,342"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="154,207,213,255,250,280,288,302,308,310,306,315,286,306,247,285,210,260,151,211"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,229,238,290"/>
+<area shape="rect" id="Node000002" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a18a4b87347a76796b5f37df59e47bfbb" title=" " alt="" coords="306,5,460,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,227,197,144,238,99,284,60,295,56,291,59,287,64,242,103,201,148,143,230"/>
+<area shape="rect" id="Node000003" href="$d9/dd7/namespace_v_m2_d.html#a7c9bbdb2298ed9a9c3e53f874405f5ea" title=" " alt="" coords="286,75,480,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="157,227,216,181,284,136,311,124,307,128,287,141,219,186,161,231"/>
+<area shape="rect" id="Node000005" href="$d1/de2/_v_mlib_2defs_2defs_8h.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат" alt="" coords="604,139,645,167"/>
+<area shape="poly" id="edge9_Node000001_Node000005" title=" " alt="" coords="175,226,227,201,285,180,369,163,454,153,590,151,585,153,454,159,370,168,286,185,229,205,178,230"/>
+<area shape="rect" id="Node000006" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a09ded2e7982e35af46d4899e2a31d359" title=" " alt="" coords="289,194,476,222"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="237,234,297,224,292,227,239,239"/>
+<area shape="rect" id="Node000007" href="$d9/dd7/namespace_v_m2_d.html#aebddc89e1d4929346c06b2114f5637df" title=" " alt="" coords="320,246,446,274"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="237,257,307,258,302,261,239,262"/>
+<area shape="rect" id="Node000008" href="$d9/dd7/namespace_v_m2_d.html#ad2a4d7eaac6560a44e5a53d62924df92" title=" " alt="" coords="302,298,464,326"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="238,280,297,293,292,295,239,285"/>
+<area shape="rect" id="Node000009" href="$d9/dd7/namespace_v_m2_d.html#a54efeecf2c48054b4a2f11cc5ca758d8" title=" " alt="" coords="306,350,460,378"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="183,288,287,335,312,345,306,345,285,339,182,294"/>
+<area shape="rect" id="Node000010" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9a2edffcbf01cfab7f70422ce60391be" title="Запуск (первый или повторный) счетчика времени" alt="" coords="301,402,464,430"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="154,288,214,339,249,365,287,387,305,396,299,396,284,391,247,369,211,343,153,293"/>
+<area shape="rect" id="Node000012" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a320206c4467fa80d013de7a8d9fde1d5" title="Останов работающего счетчика времени" alt="" coords="302,454,464,482"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="144,288,203,365,242,405,287,439,300,448,295,447,284,443,239,409,199,368,142,293"/>
+<area shape="rect" id="Node000004" href="$df/dc5/numvector_8h.html#ac194ed285a79bbaf94d6215ca77cca27" title="Вычисление квадрата расстояния между двумя точками" alt="" coords="598,83,651,111"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="480,94,584,96,579,98,481,100"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="480,117,591,144,586,146,481,122"/>
+<area shape="rect" id="Node000011" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a66ab074918381d084d6bb49fd66474ed" title=" " alt="" coords="528,427,720,455"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="465,422,515,429,510,429,465,427"/>
+<area shape="poly" id="edge12_Node000011_Node000011" title=" " alt="" coords="583,426,576,418,582,409,598,403,624,401,652,403,669,412,664,411,651,408,624,406,599,408,585,413,582,418,588,428"/>
+<area shape="poly" id="edge14_Node000012_Node000011" title=" " alt="" coords="463,456,510,454,515,453,464,461"/>
 </map>

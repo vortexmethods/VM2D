@@ -1,5 +1,28 @@
 <map id="VM2D::Passport::GetReviseParamsFromParser" name="VM2D::Passport::GetReviseParamsFromParser">
-<area shape="rect" id="Node000001" title="Считывание измененных параметров" alt="" coords="5,5,204,45"/>
-<area shape="rect" id="Node000002" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="252,5,407,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,23,238,23,238,28,204,28"/>
+<area shape="rect" id="Node000001" title="Считывание измененных параметров" alt="" coords="5,346,204,391"/>
+<area shape="rect" id="Node000002" href="$d2/d15/class_v_m2_d_1_1_passport.html#ad61c592d8ebe7d2acf70d6eb966ebf52" title="Конструктор" alt="" coords="252,293,438,321"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,343,275,324,270,327,196,348"/>
+<area shape="rect" id="Node000009" href="$db/d04/class_v_mlib_1_1_stream_parser.html#aee30c7fe9079cd6d99bf9197fcfbf47d" title="Перевод строки в верхний регистр" alt="" coords="980,221,1133,266"/>
+<area shape="poly" id="edge14_Node000001_Node000009" title=" " alt="" coords="170,389,314,430,407,449,509,463,616,469,724,463,778,455,830,443,881,426,930,405,967,380,996,347,1020,311,1038,281,1042,278,1025,314,1001,350,970,384,933,409,883,431,832,448,779,460,725,468,616,474,508,468,406,454,313,435,169,394"/>
+<area shape="rect" id="Node000003" href="$d9/d9a/class_v_mlib_1_1_passport_gen.html#a703aca8a49605c4e7e3f278c2cdf8ecd" title="Конструктор" alt="" coords="514,152,661,196"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="362,290,415,250,485,206,501,201,496,204,487,211,418,254,365,295"/>
+<area shape="rect" id="Node000004" href="$d2/d15/class_v_m2_d_1_1_passport.html#a66e3dd8d8de29712c7bf8f3d17d1d9dc" title="Считывание всех параметров расчета из соответствующих потоков" alt="" coords="486,221,688,266"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="399,290,488,269,483,271,401,295"/>
+<area shape="rect" id="Node000011" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a7391437b44322ca96eaa34b1ce8f6b21" title="Объединение вектора (списка) из строк в одну строку" alt="" coords="754,350,914,395"/>
+<area shape="poly" id="edge13_Node000002_Node000011" title=" " alt="" coords="438,306,558,314,689,330,749,346,744,346,688,335,558,319,439,312"/>
+<area shape="rect" id="Node000012" href="$d2/d15/class_v_m2_d_1_1_passport.html#a6a154873c850a249694be89d1e4e5571" title="Печать всех параметров расчета в поток логов" alt="" coords="498,345,676,390"/>
+<area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="404,319,486,341,480,342,404,324"/>
+<area shape="rect" id="Node000005" href="$da/d29/namespacedefaults.html#a836e6a09c06d0e8466fef0a70d1551bd" title="Список профилей" alt="" coords="750,5,918,33"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="672,218,686,207,701,187,708,167,709,126,711,85,719,64,734,44,739,43,743,40,738,48,723,67,716,86,714,127,713,168,705,189,690,210,675,223"/>
+<area shape="rect" id="Node000006" href="$da/d29/namespacedefaults.html#a82e65de97621e5f606204e0513a4c6bc" title="Файл с источниками" alt="" coords="736,57,932,85"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="671,218,687,207,698,193,704,180,709,152,715,124,722,110,735,96,740,95,745,92,738,100,726,113,720,126,715,153,709,182,702,196,690,210,674,223"/>
+<area shape="rect" id="Node000007" href="$da/d29/namespacedefaults.html#afd28f76a7725defbe8893d46402c3409" title="Файл со следом" alt="" coords="741,109,927,137"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="667,218,687,206,701,192,710,177,719,161,735,146,742,145,746,143,738,151,723,165,714,179,706,195,690,211,669,223"/>
+<area shape="rect" id="Node000008" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a5b557a9d203fb474d9c2c924e409c54d" title="Разбор строки на пару ключ&#45;значение" alt="" coords="757,161,911,206"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="681,218,745,205,739,206,683,223"/>
+<area shape="poly" id="edge10_Node000004_Node000009" title=" " alt="" coords="688,241,966,242,961,244,689,246"/>
+<area shape="rect" id="Node000010" href="$db/d04/class_v_mlib_1_1_stream_parser.html#a2dfcd2239e37cb8bd6e5678408d8a298" title="Pазбор строки, содержащей запятые, на отдельные строки" alt="" coords="757,281,911,326"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="682,263,745,281,739,281,682,269"/>
+<area shape="poly" id="edge11_Node000004_Node000011" title=" " alt="" coords="649,263,690,286,705,299,714,312,723,324,738,336,748,343,742,343,735,340,720,327,710,315,701,303,687,291,648,269"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="911,201,967,218,962,219,911,206"/>
 </map>

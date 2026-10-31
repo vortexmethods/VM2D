@@ -23,7 +23,7 @@ var class_v_mlib_1_1_queue =
     [ "myProcStateVar", "d1/d71/class_v_mlib_1_1_queue.html#a4baf60f1c2f601143b48d570f2d6ac99", null ],
     [ "nextKvant", "d1/d71/class_v_mlib_1_1_queue.html#afe455e0586d02d87cec8dd7360717072", null ],
     [ "nProcAll", "d1/d71/class_v_mlib_1_1_queue.html#a6bbf775b0dae77bb201d8f5962d2cb79", null ],
-    [ "numberOfTask", "d1/d71/class_v_mlib_1_1_queue.html#a991dd72138a113038169a3c30d146f4f", null ],
+    [ "numberOfTask", "d1/d71/class_v_mlib_1_1_queue.html#a1dc9f86dec842e5c9a525ec6534b5b84", null ],
     [ "parallel", "d1/d71/class_v_mlib_1_1_queue.html#aa184e2c481e7e849f36513916295eca3", null ],
     [ "prepared", "d1/d71/class_v_mlib_1_1_queue.html#a26aaeb5a7254d7b5dca92897e5d88e49", null ],
     [ "procState", "d1/d71/class_v_mlib_1_1_queue.html#ad690f15aefbe43e36ac7bc31ded77c75", null ],

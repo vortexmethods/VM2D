@@ -1,0 +1,15 @@
+<map id="VMlib::Point2D::Point2D" name="VMlib::Point2D::Point2D">
+<area shape="rect" id="Node000001" title="Пустой конструктор" alt="" coords="524,84,700,112"/>
+<area shape="rect" id="Node000002" href="$dc/d31/struct_v_mlib_1_1_geom_point.html#a6082c54645715b2aa8f794217a657d3c" title=" " alt="" coords="258,5,476,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="560,78,475,48,432,36,432,31,477,43,565,77"/>
+<area shape="rect" id="Node000003" href="$da/dd5/class_v_mlib_1_1_point2_d.html#a12a7dff7a28e0d567281c1cc8ba24af6" title="Конструктор копирования" alt="" coords="279,57,455,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="506,87,456,83,455,78,511,86"/>
+<area shape="rect" id="Node000004" href="$da/dd5/class_v_mlib_1_1_point2_d.html#a4c2ff0542f21b2998d677de5bc95cc55" title=" " alt="" coords="290,109,444,137"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="506,109,444,118,443,113,511,108"/>
+<area shape="rect" id="Node000007" href="$da/dd5/class_v_mlib_1_1_point2_d.html#aeba21dad30a9d3942fa2e5f26c26bd99" title="Поворот вектора на произвольный угол против часовой стрелки (по умолчанию 90 градусов)." alt="" coords="281,161,453,189"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="564,117,477,151,432,163,431,158,475,146,559,118"/>
+<area shape="rect" id="Node000005" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a48305b940dfdf549177fea73a071ad58" title=" " alt="" coords="31,72,184,116"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="272,114,185,105,185,100,277,112"/>
+<area shape="rect" id="Node000006" href="$db/de9/class_v_m2_d_1_1_airfoil.html#afa0496537fb81b12de574b8d4e7f441c" title="Считывание профиля из файла" alt="" coords="5,140,210,168"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="272,135,211,144,210,139,277,133"/>
+</map>

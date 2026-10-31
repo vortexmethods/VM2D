@@ -1,15 +1,19 @@
 <map id="VM2D::PhysicalProperties" name="VM2D::PhysicalProperties">
-<area shape="rect" id="Node000001" title="Структура, задающая физические свойства задачи" alt="" coords="112,373,301,399"/>
-<area shape="rect" id="Node000002" href="$d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени" alt="" coords="23,271,214,311"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,319,197,371,194,375,144,322"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,183,192,208"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,221,117,270,112,271,101,222"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="55,95,142,120"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="101,134,101,182,96,182,96,134"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="29,5,168,45"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="101,59,101,94,96,94,96,59"/>
-<area shape="rect" id="Node000006" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title=" " alt="" coords="263,278,382,303"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="300,314,223,375,219,371,296,310"/>
-<area shape="rect" id="Node000007" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="216,183,443,208"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="330,222,326,278,321,278,325,222"/>
+<area shape="rect" id="Node000001" title="Структура, задающая физические свойства задачи" alt="" coords="261,458,450,485"/>
+<area shape="rect" id="Node000002" href="$d8/da2/struct_v_mlib_1_1_time_discretization_properties.html" title="Структура, задающая параметры процесса интегрирования по времени" alt="" coords="118,340,307,385"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,395,253,415,271,431,316,457,311,457,268,436,249,418,234,400"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,208,191,236"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="93,249,95,284,99,300,106,314,118,327,134,339,129,340,114,331,102,318,94,302,90,284,92,254"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="152,99,238,127"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="172,141,112,209,108,206,175,136"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="215,200,373,245"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="222,135,237,149,280,199,275,200,233,153,222,140"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="126,5,264,50"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="196,63,198,99,193,98,195,68"/>
+<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="330,254,339,268,355,321,362,375,362,423,359,459,355,455,357,423,357,375,350,322,334,270,329,259"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="267,255,259,270,239,307,223,341,219,338,234,304,254,267,263,259"/>
+<area shape="rect" id="Node000007" href="$da/dd5/class_v_mlib_1_1_point2_d.html" title=" " alt="" coords="451,348,569,376"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="481,385,376,459,373,455,476,386"/>
+<area shape="rect" id="Node000008" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="397,208,623,236"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="512,250,512,349,508,347,508,254"/>
 </map>

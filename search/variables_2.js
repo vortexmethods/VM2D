@@ -9,7 +9,8 @@ var searchData=
   ['bnd_6',['bnd',['../d4/d07/class_v_m2_d_1_1_virtual_wake.html#ade3c4006f57764b7b2872892d9362fd6',1,'VM2D::VirtualWake']]],
   ['boundary_7',['boundary',['../d7/dc9/class_v_m2_d_1_1_mechanics.html#af8aa0f0b6e3ce0e35252edfa92c79017',1,'VM2D::Mechanics::boundary'],['../d3/d00/class_v_m2_d_1_1_world2_d.html#a955ba19961f9b8620aa3f309251032f0',1,'VM2D::World2D::boundary']]],
   ['boundarycondition_8',['boundaryCondition',['../d2/d76/struct_v_m2_d_1_1_numerical_schemes.html#a1feb3839b4110daa17fb1bb8ba57b4ac',1,'VM2D::NumericalSchemes']]],
-  ['bufcurrentsol_9',['bufcurrentSol',['../d6/d76/class_v_m2_d_1_1_gmres_solver.html#a10fdfc22844dabae195763ad66fcebeb',1,'VM2D::GmresSolver']]],
-  ['bufnewsol_10',['bufnewSol',['../d6/d76/class_v_m2_d_1_1_gmres_solver.html#a8c84eddbabd21732fc4cb416b0fd0787',1,'VM2D::GmresSolver']]],
-  ['bw_11',['bw',['../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#ae0cc4aecda12c08321cefcef428c57da',1,'VM2D::MechanicsRigidOscillPart']]]
+  ['box_9',['box',['../d3/d36/class_v_m2_d_1_1_neighbor_tree.html#a49b87c3912d717ee34dd7d375c3ae7bb',1,'VM2D::NeighborTree']]],
+  ['bufcurrentsol_10',['bufcurrentSol',['../d6/d76/class_v_m2_d_1_1_gmres_solver.html#a10fdfc22844dabae195763ad66fcebeb',1,'VM2D::GmresSolver']]],
+  ['bufnewsol_11',['bufnewSol',['../d6/d76/class_v_m2_d_1_1_gmres_solver.html#a8c84eddbabd21732fc4cb416b0fd0787',1,'VM2D::GmresSolver']]],
+  ['bw_12',['bw',['../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#ae0cc4aecda12c08321cefcef428c57da',1,'VM2D::MechanicsRigidOscillPart']]]
 ];

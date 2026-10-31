@@ -1,0 +1,7 @@
+<map id="VM2D::Velocity::Velocity" name="VM2D::Velocity::Velocity">
+<area shape="rect" id="Node000001" title="Конструктор" alt="" coords="242,48,421,76"/>
+<area shape="rect" id="Node000002" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a3719e60db6791eadcee9dcc62704d355" title="Конструктор" alt="" coords="5,5,194,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,47,194,44,194,39,229,46"/>
+<area shape="rect" id="Node000003" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a9c594f94ac2bd11081c661bf3a3b5a48" title="Конструктор" alt="" coords="5,75,194,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="224,78,195,86,194,80,229,78"/>
+</map>

@@ -1,0 +1,55 @@
+<map id="fmm::FastMultipole3d::FastMultipole3d" name="fmm::FastMultipole3d::FastMultipole3d">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,150,169,195"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="46,150,45,140,52,131,66,126,87,124,110,126,125,134,120,136,109,131,87,129,67,131,55,135,50,141,52,150"/>
+<area shape="rect" id="Node000002" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#a2779c0a7c0917c79868321e6b730b4ef" title=" " alt="" coords="217,150,380,195"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="168,170,204,171,199,174,170,175"/>
+<area shape="poly" id="edge24_Node000002_Node000002" title=" " alt="" coords="258,149,257,140,263,131,277,126,298,124,321,126,336,135,331,135,320,131,298,129,279,131,267,135,262,141,263,151"/>
+<area shape="rect" id="Node000003" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#a7311f10b10381ffc661c0965972ca7c7" title=" " alt="" coords="428,46,591,91"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="338,147,427,101,442,96,437,99,429,106,341,152"/>
+<area shape="rect" id="Node000004" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#a73ee6c68c0dbca1e069a49d3b00193a8" title=" " alt="" coords="428,116,591,160"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="380,157,415,153,410,155,381,162"/>
+<area shape="rect" id="Node000016" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#a52d560b88aab5d20be574975c02d415e" title=" " alt="" coords="428,278,591,323"/>
+<area shape="poly" id="edge22_Node000002_Node000016" title=" " alt="" coords="338,193,461,270,456,270,336,198"/>
+<area shape="rect" id="Node000017" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#af5fef257c35aaa3a3767f057e34b808e" title=" " alt="" coords="428,185,591,230"/>
+<area shape="poly" id="edge25_Node000002_Node000017" title=" " alt="" coords="380,183,415,191,410,192,381,189"/>
+<area shape="rect" id="Node000005" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#a45ad208fa5ab89f0e685a3e8f2578da1" title=" " alt="" coords="644,81,838,109"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="591,120,650,112,645,113,592,125"/>
+<area shape="rect" id="Node000015" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#a2dd39c4f70b14777c140b19fdbcb66d8" title=" " alt="" coords="642,133,840,161"/>
+<area shape="poly" id="edge17_Node000004_Node000015" title=" " alt="" coords="591,138,629,142,623,143,592,144"/>
+<area shape="rect" id="Node000006" href="$db/d0f/namespacefmm.html#a48b3984201b4624efeee815dc2d7dada" title=" " alt="" coords="911,245,1034,273"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="824,107,844,120,857,134,864,148,870,177,875,205,881,219,893,232,899,239,894,238,889,236,877,222,869,207,864,178,859,150,853,137,841,124,823,112"/>
+<area shape="rect" id="Node000009" href="$db/d0f/namespacefmm.html#ac62e9f2a181b96c91a2151e6c732d4f6" title=" " alt="" coords="905,125,1040,153"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="817,107,892,123,886,124,817,112"/>
+<area shape="rect" id="Node000010" href="$db/d0f/namespacefmm.html#a3b6414f4fe816b82e468ff7c2b73b375" title=" " alt="" coords="936,5,1008,33"/>
+<area shape="poly" id="edge10_Node000005_Node000010" title=" " alt="" coords="783,78,890,42,919,35,924,34,892,47,785,83"/>
+<area shape="rect" id="Node000011" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#afd91ccdd2e877cb4b976fa1e5122474a" title=" " alt="" coords="891,177,1054,222"/>
+<area shape="poly" id="edge11_Node000005_Node000011" title=" " alt="" coords="814,107,844,119,859,130,869,141,892,162,901,170,896,169,889,167,865,144,856,134,841,124,813,112"/>
+<area shape="rect" id="Node000014" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#a64c1d04fbddecf2d8a8c7c27a962ff9b" title=" " alt="" coords="891,57,1054,102"/>
+<area shape="poly" id="edge16_Node000005_Node000014" title=" " alt="" coords="838,86,878,85,872,86,838,91"/>
+<area shape="rect" id="Node000007" href="$db/d0f/namespacefmm.html#a9fe90accb46effc9d1c99a9f9e064b79" title=" " alt="" coords="1107,245,1190,273"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="1034,257,1094,259,1089,259,1034,262"/>
+<area shape="rect" id="Node000008" href="$db/d0f/namespacefmm.html#a5d88cfeb8862c5b7d35007cc83e152ca" title=" " alt="" coords="1243,245,1338,273"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="1191,257,1230,259,1225,259,1191,262"/>
+<area shape="rect" id="Node000012" href="$db/d0f/namespacefmm.html#a3b4ad91cfd82f99e5c1636c0b6dac152" title=" " alt="" coords="1102,189,1195,217"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="1054,198,1089,202,1084,202,1055,204"/>
+<area shape="rect" id="Node000013" href="$db/d0f/namespacefmm.html#a47708277bff75979b5f929d2f508f92f" title=" " alt="" coords="1106,113,1191,141"/>
+<area shape="poly" id="edge14_Node000011_Node000013" title=" " alt="" coords="1028,174,1096,148,1102,147,1030,179"/>
+<area shape="poly" id="edge13_Node000012_Node000012" title=" " alt="" coords="1123,187,1119,180,1123,171,1133,165,1149,163,1166,165,1176,174,1171,173,1164,170,1149,168,1134,170,1127,174,1125,180,1128,190"/>
+<area shape="poly" id="edge15_Node000013_Node000013" title=" " alt="" coords="1123,112,1119,104,1123,95,1133,89,1149,87,1166,89,1176,98,1171,97,1164,94,1149,92,1134,94,1127,98,1125,104,1128,114"/>
+<area shape="poly" id="edge18_Node000015_Node000006" title=" " alt="" coords="818,159,844,172,860,187,869,202,877,217,892,232,901,239,895,238,889,236,873,221,864,205,856,190,841,176,818,164"/>
+<area shape="poly" id="edge19_Node000015_Node000009" title=" " alt="" coords="840,141,891,142,886,142,841,146"/>
+<area shape="poly" id="edge20_Node000015_Node000011" title=" " alt="" coords="806,159,878,177,873,178,806,164"/>
+<area shape="poly" id="edge21_Node000015_Node000014" title=" " alt="" coords="798,130,842,118,885,108,890,106,843,123,799,135"/>
+<area shape="poly" id="edge23_Node000016_Node000016" title=" " alt="" coords="470,276,468,268,475,259,489,254,510,252,533,254,548,263,543,263,531,259,510,257,490,259,478,263,473,269,474,279"/>
+<area shape="rect" id="Node000018" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#ab343ea4f36920fa611dcb7dd20975c12" title=" " alt="" coords="639,185,843,213"/>
+<area shape="poly" id="edge26_Node000017_Node000018" title=" " alt="" coords="591,202,626,203,621,204,592,207"/>
+<area shape="rect" id="Node000019" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#a0d5a815a6d6d5271cf49d4588ff92dc0" title=" " alt="" coords="659,237,823,282"/>
+<area shape="poly" id="edge31_Node000017_Node000019" title=" " alt="" coords="592,223,647,238,642,237,591,228"/>
+<area shape="poly" id="edge27_Node000018_Node000006" title=" " alt="" coords="800,211,843,222,907,241,901,241,842,227,800,216"/>
+<area shape="poly" id="edge28_Node000018_Node000009" title=" " alt="" coords="797,182,899,158,904,157,798,187"/>
+<area shape="poly" id="edge29_Node000018_Node000011" title=" " alt="" coords="843,197,878,199,872,199,843,202"/>
+<area shape="poly" id="edge30_Node000018_Node000014" title=" " alt="" coords="817,182,841,170,856,157,865,143,874,127,889,112,894,111,899,109,892,116,878,131,869,145,860,160,844,175,818,187"/>
+<area shape="poly" id="edge33_Node000019_Node000006" title=" " alt="" coords="823,257,898,259,893,259,823,262"/>
+<area shape="rect" id="Node000020" href="$db/d0f/namespacefmm.html#a11869d9ccba0ca55855ac22d360b3806" title=" " alt="" coords="898,297,1046,325"/>
+<area shape="poly" id="edge32_Node000019_Node000020" title=" " alt="" coords="823,275,895,294,890,293,823,280"/>
+</map>

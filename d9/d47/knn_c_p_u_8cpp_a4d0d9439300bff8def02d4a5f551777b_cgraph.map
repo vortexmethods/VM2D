@@ -1,0 +1,21 @@
+<map id="WakekNNnewForCollaps" name="WakekNNnewForCollaps">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,161,185,189"/>
+<area shape="rect" id="Node000002" href="$d8/d27/namespaceknn_new.html#a4c69c922a3007dafbee667dd841ae954" title=" " alt="" coords="245,57,392,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,159,168,128,232,95,254,89,249,92,234,100,171,132,120,163"/>
+<area shape="rect" id="Node000005" href="$d8/d27/namespaceknn_new.html#a3d52293efe06d4edd5a7595a3ce90fbe" title=" " alt="" coords="246,109,391,137"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="157,158,243,140,239,143,159,163"/>
+<area shape="rect" id="Node000007" href="$d8/d27/namespaceknn_new.html#a266d937f00cdc02f1b3ebb459198d31f" title=" " alt="" coords="244,161,393,189"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="184,173,230,174,225,176,185,178"/>
+<area shape="rect" id="Node000009" href="$d8/d27/namespaceknn_new.html#a7479682181b04ebd31dc1790b22ade7b" title=" " alt="" coords="251,213,386,241"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="158,187,243,208,238,210,158,192"/>
+<area shape="rect" id="Node000010" href="$d8/d27/namespaceknn_new.html#a27dde53adbbd808d368822d0c6db049a" title="Сортировка массива из мортоновский кодов" alt="" coords="233,265,404,293"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="119,187,171,218,234,250,254,260,249,260,232,255,168,223,118,192"/>
+<area shape="rect" id="Node000003" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d" title="Функция для доступа к циркуляции вихря" alt="" coords="458,5,600,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="377,54,458,36,453,38,379,59"/>
+<area shape="rect" id="Node000004" href="$d0/de1/class_v_mlib_1_1_vortex2_d.html#abeef4aba275fe1bd270a360ee86e99a2" title="Функция для доступа к радиус&#45;вектору вихря" alt="" coords="460,57,599,85"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="392,69,446,70,441,72,393,74"/>
+<area shape="rect" id="Node000006" href="$d8/d27/namespaceknn_new.html#a0bf8e62139c217666356115b33bce74f" title=" " alt="" coords="452,109,606,137"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="391,121,439,123,434,124,392,126"/>
+<area shape="rect" id="Node000008" href="$d8/d27/namespaceknn_new.html#aaf06cff51f1bd1aac2fabd2351d1b2fd" title=" " alt="" coords="456,161,602,189"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="393,173,443,175,438,176,394,178"/>
+</map>

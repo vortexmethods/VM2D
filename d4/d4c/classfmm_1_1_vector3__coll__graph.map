@@ -1,7 +1,7 @@
 <map id="fmm::Vector3&lt; T &gt;" name="fmm::Vector3&lt; T &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,168,153,193"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="18,93,141,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,133,82,168,77,168,77,133"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="60,5,99,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="82,45,82,93,77,93,77,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,183,153,211"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="18,106,140,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,147,82,184,76,182,77,151"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="60,5,98,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="80,46,82,106,76,105,78,51"/>
 </map>

@@ -1,0 +1,18 @@
+<map id="VM2D::NbBox::IsEmpty" name="VM2D::NbBox::IsEmpty">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1240,74,1412,102"/>
+<area shape="rect" id="Node000002" href="$de/dfb/struct_v_m2_d_1_1_nb_box.html#a6c72349be60b428e4dd4b029da323b37" title="Квадрат расстояния до другого прямоугольника (для пустого — бесконечность)." alt="" coords="1039,47,1192,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1222,75,1192,73,1192,68,1227,75"/>
+<area shape="rect" id="Node000008" href="$de/dfb/struct_v_m2_d_1_1_nb_box.html#a07d4acafe9faab293da6e0c30f7b7700" title="Квадрат расстояния до точки" alt="" coords="1039,99,1192,127"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="1227,100,1192,106,1192,101,1222,100"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ab6875b58f381978e20135c90f77abfa3" title=" " alt="" coords="750,8,991,53"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1020,49,991,48,991,43,1026,50"/>
+<area shape="rect" id="Node000007" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a2e63fcf3137a3ba3e76281cf957f17df" title="Быстрый (с деревом поиска соседей) расчет I1 и I2 от вихрей следа в точках этого же следа" alt="" coords="486,75,702,119"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="1026,67,703,92,703,87,1020,67"/>
+<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a2a6a6e63b271c286e4225e20c590bf13" title=" " alt="" coords="494,5,694,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="732,29,694,31,694,26,737,29"/>
+<area shape="rect" id="Node000005" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе" alt="" coords="260,40,438,85"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="476,44,439,52,438,47,482,44"/>
+<area shape="rect" id="Node000006" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="5,48,212,76"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="241,63,212,65,212,60,246,62"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="468,79,438,78,438,72,473,79"/>
+</map>

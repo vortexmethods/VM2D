@@ -10,5 +10,5 @@ var searchData=
   ['boundaryvortexcollocn_7',['BoundaryVortexCollocN',['../df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#ab4b2812f30f5919f52d154a3ce21722c',1,'VM2D::BoundaryVortexCollocN']]],
   ['bounddenom_8',['boundDenom',['../dd/d9a/namespace_v_mlib.html#ab2f8c946d498827f7f4827b538690fa3',1,'VMlib']]],
   ['box_5fextent_9',['box_extent',['../db/d0f/namespacefmm.html#a12b46965bad4abfbdaa23151827b0b47',1,'fmm::box_extent(const std::vector&lt; particle&lt; point, value &gt; &gt; &amp;particles)'],['../db/d0f/namespacefmm.html#a722031042d609d30b89d029bd45723d8',1,'fmm::box_extent(const std::vector&lt; particle&lt; point2d, value &gt; &gt; &amp;particles)'],['../db/d0f/namespacefmm.html#afc4f3f84052e7a0728144f9770828a11',1,'fmm::box_extent(const std::vector&lt; particle&lt; point3d, value &gt; &gt; &amp;particles)']]],
-  ['build_10',['Build',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a48305b940dfdf549177fea73a071ad58',1,'VM2D::CpuTreeInfo']]]
+  ['build_10',['Build',['../d3/d36/class_v_m2_d_1_1_neighbor_tree.html#a5f3dae780ebcc6252c9002deb4abe459',1,'VM2D::NeighborTree::Build()'],['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a48305b940dfdf549177fea73a071ad58',1,'VM2D::CpuTreeInfo::Build()']]]
 ];

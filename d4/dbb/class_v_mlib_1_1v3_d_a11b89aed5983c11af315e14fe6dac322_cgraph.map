@@ -1,0 +1,5 @@
+<map id="VMlib::v3D::rotated" name="VMlib::v3D::rotated">
+<area shape="rect" id="Node000001" title="Поворот вектора на произвольный угол против часовой стрелки (по умолчанию 90 градусов)." alt="" coords="5,5,153,33"/>
+<area shape="rect" id="Node000002" href="$d4/dbb/class_v_mlib_1_1v3_d.html#a455e41f46734cded69a0f334a52a7f44" title="Пустой конструктор" alt="" coords="201,5,327,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,17,188,19,182,19,153,22"/>
+</map>

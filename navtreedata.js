@@ -65,25 +65,27 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d1/d71/class_v_mlib_1_1_queue.html#a4baf60f1c2f601143b48d570f2d6ac99",
-"d2/d15/class_v_m2_d_1_1_passport.html#a300514dc57b591247834056a0fa92ca4",
-"d3/d00/class_v_m2_d_1_1_world2_d.html#a979ca974e687082f5b9e33ae9dd14177",
-"d4/dbb/class_v_mlib_1_1v3_d.html#a814bfff790b482ba3e70dc3f48674858",
-"d6/d3d/class_v_mlib_1_1_world_gen.html#a8d27727684226a2b0d17f94c40859f2f",
-"d6/dd4/class_v_mlib_1_1numvector.html#a70c07d1b3d53524ea664615f1d28879f",
-"d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#afbd4195a0e64487f0e15fc5a0386356e",
-"d7/dc9/class_v_m2_d_1_1_mechanics.html#a31f69d05c8defac397da1c62133bf132",
-"d8/de6/class_v_mlib_1_1_times_gen.html#aa9c2fdde64923b34ce7a88035010d7e7",
-"da/d3c/class_v_mlib_1_1nummatrix.html#a31aa6c3dd6d2e60cd616c686579f19ee",
-"da/dd5/class_v_mlib_1_1_point2_d.html#a13fb6aea18feaf5141288b7cbbba30a1",
-"db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#adf7ba6b7e6f84fcf9ca33c6f43922037",
-"db/d33/class_v_m2_d_1_1_airfoil_rigid.html#ae1d4713bf020e296d534c10177b0633f",
-"dc/d2f/classfmm_1_1_fast_multipole3d.html#acad26cc3b3b29179ef9a7f3dd1118397",
-"dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#acf87dcd3c6e375b7b05c8942590ad53e",
-"dd/d9a/namespace_v_mlib.html#a05a24bae6de0af192aad40b3ee238cf5",
-"df/d8f/class_v_m2_d_1_1_wake.html#a62dc430b218af4d2532a1b54ce35dc13",
-"functions_m.html"
+"d1/d4b/struct_v_m2_d_1_1_physical_properties.html#a8cd506205f7fbfe5bac0840fb5754988",
+"d2/d15/class_v_m2_d_1_1_passport.html#a4b70ee7e560a50f4eff2d83a60bc52e8",
+"d3/d00/class_v_m2_d_1_1_world2_d.html#a76ca71da59452ac1670c228a6a8b3f09",
+"d4/dbb/class_v_mlib_1_1v3_d.html#a11b89aed5983c11af315e14fe6dac322",
+"d5/dde/_gpudefs_8h.html#a4398e75ff51abc7948c6d7c2d6a5d905",
+"d6/db8/class_v_m2_d_1_1_measure_v_p.html#aa593344f530de5b17e2b74e87ebc01de",
+"d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a4bfd3c2c190d324cfde4e4e95e863f5f",
+"d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a619dd530471032d51ffc730e708b11f1",
+"d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139",
+"d9/dd7/namespace_v_m2_d.html",
+"da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#ac11619e267d87505be152e3bf79767fc",
+"db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a20f9a2a116613f4f4ea545050e3aa96a",
+"db/d1e/classnummatrix.html#ab1d9c29c00554c40e9c26a383775b8b7",
+"db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a",
+"dc/d31/struct_v_mlib_1_1_geom_point.html#a29f9648a046eef8e3b6e7d7032f1f0e8",
+"dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6282e55c3b170b9dfff5e532cd3f7564",
+"de/d2e/class_point2_df.html#ab22b15f21d1af087286e6456c096c3e7",
+"df/da2/class_v_m2_d_1_1_boundary.html#acf656639cdf47709c78697a87710d80d",
+"namespaces.html"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';

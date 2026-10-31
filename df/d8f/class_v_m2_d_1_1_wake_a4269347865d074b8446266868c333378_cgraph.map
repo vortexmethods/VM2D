@@ -1,5 +1,7 @@
 <map id="VM2D::Wake::RemoveFar" name="VM2D::Wake::RemoveFar">
-<area shape="rect" id="Node000001" title="Зануление далеко улетевших вихрей" alt="" coords="5,5,191,31"/>
-<area shape="rect" id="Node000002" href="$d3/d00/class_v_m2_d_1_1_world2_d.html#a95be88dc18a41ba74bf09ab0e47627a4" title="Возврат константной ссылки на паспорт" alt="" coords="239,5,447,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,15,225,15,225,21,191,21"/>
+<area shape="rect" id="Node000001" title="Зануление далеко улетевших вихрей" alt="" coords="5,32,190,60"/>
+<area shape="rect" id="Node000002" href="$df/dc5/numvector_8h.html#ac194ed285a79bbaf94d6215ca77cca27" title="Вычисление квадрата расстояния между двумя точками" alt="" coords="238,5,291,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,29,225,25,220,26,188,34"/>
+<area shape="rect" id="Node000003" href="$d1/de2/_v_mlib_2defs_2defs_8h.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат" alt="" coords="244,57,285,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,57,231,66,225,66,190,63"/>
 </map>

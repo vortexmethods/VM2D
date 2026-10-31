@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['c_0',['c',['../d6/d76/class_v_m2_d_1_1_gmres_solver.html#a5dcf67f7b5b8784e9cb672c927bce6cb',1,'VM2D::GmresSolver::c'],['../df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#af05f565b0a9d6b834c6dbd2aa0086e42',1,'VM2D::BoundaryVortexCollocN::c']]],
+  ['c_0',['c',['../df/dde/class_v_m2_d_1_1_boundary_vortex_colloc_n.html#af05f565b0a9d6b834c6dbd2aa0086e42',1,'VM2D::BoundaryVortexCollocN::c'],['../d6/d76/class_v_m2_d_1_1_gmres_solver.html#a5dcf67f7b5b8784e9cb672c927bce6cb',1,'VM2D::GmresSolver::c']]],
   ['calccoefficients_1',['calcCoefficients',['../d2/d15/class_v_m2_d_1_1_passport.html#a3a2efb3311fe275413a191b7c0c2b342',1,'VM2D::Passport']]],
   ['center_2',['center',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a7ad4346645174e2935ee473deb49d977',1,'VM2D::CpuTreeInfo::center'],['../db/d0d/structfmm_1_1particle.html#a3bc8b850d9c66dc408bd76272c65e849',1,'fmm::particle::center'],['../d8/d17/structfmm_1_1_tree_cell.html#a2949841b786e18aa26b1581123d27b80',1,'fmm::TreeCell::center']]],
   ['cft_3',['cft',['../df/d51/structfmm_1_1detail_1_1_binom_newton__wrapper.html#a40db828ce777fb544655b000d92908d8',1,'fmm::detail::BinomNewton_wrapper::cft'],['../d7/dcc/classfmm_1_1_binom_newton.html#a63206239aa39d8f96bc6d99a20b578d8',1,'fmm::BinomNewton::cft']]],
@@ -22,15 +22,16 @@ var searchData=
   ['commsolving_19',['commSolving',['../d1/d71/class_v_mlib_1_1_queue.html#a9a6a38d2e8d0f3b49ce1eea5d5289db2',1,'VMlib::Queue']]],
   ['commstarting_20',['commStarting',['../d1/d71/class_v_mlib_1_1_queue.html#ad31870280e6e919c3fd02088245cb70d',1,'VMlib::Queue']]],
   ['commwork_21',['commWork',['../dd/de1/class_v_mlib_1_1_parallel.html#ac0e0c70a9906fd5d6990bec1dbbebc56',1,'VMlib::Parallel']]],
-  ['controllevel_22',['controlLevel',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a4e2e091bce5e5986649d05b52acdd1da',1,'VM2D::CpuTreeInfo']]],
-  ['convvelo_23',['convVelo',['../d2/d48/struct_v_m2_d_1_1_vortexes_params.html#a001011a6b80a6f14edbc06949c9af7f8',1,'VM2D::VortexesParams']]],
-  ['coords_24',['coords',['../d4/d0c/structfmm_1_1small__particle.html#ad729a397231ac9d92f9037460fa5618b',1,'fmm::small_particle']]],
-  ['cuda_25',['cuda',['../d3/d00/class_v_m2_d_1_1_world2_d.html#a0693425cddd79c4ef7ce776ebf601479',1,'VM2D::World2D']]],
-  ['currentcapacity_26',['currentCapacity',['../d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a33f235721f01c8226f810c48013a9bdc',1,'VM2D::OptimizedRadixSorter']]],
-  ['currentdphi_27',['currentDPhi',['../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d',1,'VM2D::Beam']]],
-  ['currentkvant_28',['currentKvant',['../d1/d71/class_v_mlib_1_1_queue.html#aa4b6233c014d4a8f9e9f24079efcf808',1,'VMlib::Queue']]],
-  ['currentparser_29',['currentParser',['../da/d46/class_v_mlib_1_1_preprocessor.html#a41a66f6b5773c38bc96272fa063c70e9',1,'VMlib::Preprocessor']]],
-  ['currentphi_30',['currentPhi',['../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3',1,'VM2D::Beam']]],
-  ['currentstep_31',['currentStep',['../d6/d3d/class_v_mlib_1_1_world_gen.html#a92251a783a3ca4ff3a1382fd0955f5d7',1,'VMlib::WorldGen']]],
-  ['currenttime_32',['currentTime',['../d6/d3d/class_v_mlib_1_1_world_gen.html#a67a1e3ade47b1f4921e63a3c60e426d1',1,'VMlib::WorldGen']]]
+  ['controlcellsize_22',['controlCellSize',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a78cd9c1d0b30dd7407a673dfa2b4d511',1,'VM2D::CpuTreeInfo']]],
+  ['controllevel_23',['controlLevel',['../dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a4e2e091bce5e5986649d05b52acdd1da',1,'VM2D::CpuTreeInfo']]],
+  ['convvelo_24',['convVelo',['../d2/d48/struct_v_m2_d_1_1_vortexes_params.html#a001011a6b80a6f14edbc06949c9af7f8',1,'VM2D::VortexesParams']]],
+  ['coords_25',['coords',['../d4/d0c/structfmm_1_1small__particle.html#ad729a397231ac9d92f9037460fa5618b',1,'fmm::small_particle']]],
+  ['cuda_26',['cuda',['../d3/d00/class_v_m2_d_1_1_world2_d.html#a0693425cddd79c4ef7ce776ebf601479',1,'VM2D::World2D']]],
+  ['currentcapacity_27',['currentCapacity',['../d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a33f235721f01c8226f810c48013a9bdc',1,'VM2D::OptimizedRadixSorter::currentCapacity'],['../d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a33f235721f01c8226f810c48013a9bdc',1,'VM2D::OptimizedRadixSorter&lt; ValueType * &gt;::currentCapacity']]],
+  ['currentdphi_28',['currentDPhi',['../d2/dc5/class_v_m2_d_1_1_beam.html#ac0cb48bafc0fea83f35778050c99aa5d',1,'VM2D::Beam']]],
+  ['currentkvant_29',['currentKvant',['../d1/d71/class_v_mlib_1_1_queue.html#aa4b6233c014d4a8f9e9f24079efcf808',1,'VMlib::Queue']]],
+  ['currentparser_30',['currentParser',['../da/d46/class_v_mlib_1_1_preprocessor.html#a41a66f6b5773c38bc96272fa063c70e9',1,'VMlib::Preprocessor']]],
+  ['currentphi_31',['currentPhi',['../d2/dc5/class_v_m2_d_1_1_beam.html#a9dd5906892455f7cc60cf5229c7c6ff3',1,'VM2D::Beam']]],
+  ['currentstep_32',['currentStep',['../d6/d3d/class_v_mlib_1_1_world_gen.html#a92251a783a3ca4ff3a1382fd0955f5d7',1,'VMlib::WorldGen']]],
+  ['currenttime_33',['currentTime',['../d6/d3d/class_v_mlib_1_1_world_gen.html#a67a1e3ade47b1f4921e63a3c60e426d1',1,'VMlib::WorldGen']]]
 ];

@@ -1,7 +1,7 @@
 <map id="VM2D::BoundaryVortexCollocN::GetInfluenceFromSourcesToRectPanel" name="VM2D::BoundaryVortexCollocN::GetInfluenceFromSourcesToRectPanel">
-<area shape="rect" id="Node000001" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="5,35,289,75"/>
-<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="348,5,521,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="289,37,334,33,335,38,290,43"/>
-<area shape="rect" id="Node000003" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="337,70,532,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="290,66,324,69,324,75,289,71"/>
+<area shape="rect" id="Node000001" title="Вычисление влияния части подряд источников из области течения на прямолинейную панель для правой част..." alt="" coords="5,24,289,68"/>
+<area shape="rect" id="Node000002" href="$d0/d88/classnumvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="337,5,485,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="289,29,323,28,318,29,290,34"/>
+<area shape="rect" id="Node000003" href="$d1/de2/_v_mlib_2defs_2defs_8h.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат" alt="" coords="390,57,432,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="289,57,378,68,372,68,289,62"/>
 </map>

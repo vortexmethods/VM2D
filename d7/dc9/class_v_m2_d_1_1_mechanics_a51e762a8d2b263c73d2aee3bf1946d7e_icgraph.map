@@ -1,0 +1,13 @@
+<map id="VM2D::Mechanics::Mechanics" name="VM2D::Mechanics::Mechanics">
+<area shape="rect" id="Node000001" title="Конструктор" alt="" coords="298,152,512,180"/>
+<area shape="rect" id="Node000002" href="$dc/d54/class_v_m2_d_1_1_mechanics_deformable.html#a55aa30948b78236633e26f56a870a120" title="Конструктор" alt="" coords="20,5,235,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="372,143,317,104,249,65,221,53,220,48,251,60,320,100,377,142"/>
+<area shape="rect" id="Node000003" href="$d6/de3/class_v_m2_d_1_1_mechanics_rigid_given_law.html#acb2bcd9d2c01173b75584afb13a5a15e" title="Конструктор" alt="" coords="17,75,238,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="329,149,220,123,219,117,334,147"/>
+<area shape="rect" id="Node000004" href="$da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f" title="Конструктор" alt="" coords="5,144,250,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="279,167,251,169,250,164,285,165"/>
+<area shape="rect" id="Node000005" href="$db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#af5c415c8acbbb2abcd3ee928fa69d614" title="Конструктор" alt="" coords="19,213,236,258"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="329,186,220,215,219,210,334,183"/>
+<area shape="rect" id="Node000006" href="$d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a59183858c817328199f449df792b6b5a" title="Конструктор" alt="" coords="15,283,240,327"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="377,189,320,233,251,273,221,285,220,280,249,268,317,229,372,191"/>
+</map>

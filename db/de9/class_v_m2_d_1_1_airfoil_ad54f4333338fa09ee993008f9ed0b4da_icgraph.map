@@ -1,0 +1,15 @@
+<map id="VM2D::Airfoil::Airfoil" name="VM2D::Airfoil::Airfoil">
+<area shape="rect" id="Node000001" title=" " alt="" coords="238,187,392,215"/>
+<area shape="rect" id="Node000002" href="$d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a8814d3d037c6e108c5efc420d712e5b9" title=" " alt="" coords="5,5,190,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="293,175,249,120,220,91,188,65,170,53,168,48,191,60,224,87,253,117,299,174"/>
+<area shape="rect" id="Node000003" href="$d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a44a6fe39509b98adb33da236ae4fe93b" title="Конструктор" alt="" coords="5,75,190,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="275,180,189,134,163,123,162,117,191,129,280,178"/>
+<area shape="rect" id="Node000004" href="$db/d33/class_v_m2_d_1_1_airfoil_rigid.html#ae58972a73742a137164630ea94b118ab" title=" " alt="" coords="27,144,168,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="220,187,169,180,168,175,225,185"/>
+<area shape="rect" id="Node000005" href="$db/d33/class_v_m2_d_1_1_airfoil_rigid.html#aa3f87a2f1d2a133964e8a9b054c4e786" title="Конструктор" alt="" coords="27,213,168,258"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="220,217,169,227,167,222,225,214"/>
+<area shape="rect" id="Node000006" href="$db/de9/class_v_m2_d_1_1_airfoil.html#abe3a4daab0a87f5967be9d9cd153bd05" title="Вычисление коэффициентов матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2." alt="" coords="20,282,175,310"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="281,222,238,250,191,273,160,284,158,279,189,268,236,245,276,225"/>
+<area shape="rect" id="Node000007" href="$db/de9/class_v_m2_d_1_1_airfoil.html#aee4d35ddda33105b5e4d4b21b6f19131" title="Вычисление коэффициентов матрицы A для расчета влияния панели на панель" alt="" coords="25,334,170,362"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="296,225,251,277,222,302,191,323,163,336,162,331,188,319,219,298,247,273,291,228"/>
+</map>

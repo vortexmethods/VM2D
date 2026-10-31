@@ -1,7 +1,9 @@
 <map id="VM2D::BoundaryVortexCollocN::FillMatrixFromOther" name="VM2D::BoundaryVortexCollocN::FillMatrixFromOther">
-<area shape="rect" id="Node000001" title="Генерация блока матрицы влияния от другого профиля того же типа" alt="" coords="5,37,219,77"/>
-<area shape="rect" id="Node000002" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="267,5,440,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,41,253,36,254,41,219,46"/>
-<area shape="rect" id="Node000003" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="267,69,440,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="219,69,254,73,253,79,218,74"/>
+<area shape="rect" id="Node000001" title="Генерация блока матрицы влияния от другого профиля того же типа" alt="" coords="5,57,218,102"/>
+<area shape="rect" id="Node000002" href="$df/da2/class_v_m2_d_1_1_boundary.html#aee6b852d79dd1afbe3bfc26389644877" title="Конструктор" alt="" coords="266,5,465,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,54,291,36,286,38,210,59"/>
+<area shape="rect" id="Node000003" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e" title="Возврат количества панелей на профиле" alt="" coords="279,57,452,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,77,266,79,261,80,219,82"/>
+<area shape="rect" id="Node000004" href="$dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54" title="Возврат константной ссылки на вершину профиля" alt="" coords="279,126,452,171"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="196,100,269,121,264,122,196,105"/>
 </map>

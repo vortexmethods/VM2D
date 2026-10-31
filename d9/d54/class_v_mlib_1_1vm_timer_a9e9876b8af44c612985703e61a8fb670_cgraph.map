@@ -1,0 +1,6 @@
+<map id="VMlib::vmTimer::reset" name="VMlib::vmTimer::reset">
+<area shape="rect" id="Node000001" title="Сброс счетчика времени" alt="" coords="5,29,172,57"/>
+<area shape="rect" id="Node000002" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a66ab074918381d084d6bb49fd66474ed" title=" " alt="" coords="220,29,412,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,41,207,43,201,43,172,46"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="277,28,271,20,276,11,291,5,316,3,343,5,358,14,353,14,341,10,316,8,292,10,279,15,276,20,282,30"/>
+</map>

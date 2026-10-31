@@ -1,17 +1,17 @@
 <map id="VM2D/WakeDataBase2D/WakeDataBase2D.h" name="VM2D/WakeDataBase2D/WakeDataBase2D.h">
-<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса WakeDataBase." alt="" coords="101,5,283,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="114,93,177,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,47,162,83,157,80,178,44"/>
-<area shape="rect" id="Node000003" href="$d9/d01/_gpu2_d_8h.html" title="Заголовочный файл с описанием класса Gpu." alt="" coords="201,93,279,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,44,228,80,223,83,201,47"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,167,64,192"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="208,121,78,166,76,161,206,116"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="88,167,165,192"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="223,121,158,162,155,157,220,116"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="189,167,291,192"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="243,119,243,153,237,153,237,119"/>
-<area shape="rect" id="Node000007" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="315,167,403,192"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="260,116,329,157,326,162,258,121"/>
-<area shape="rect" id="Node000008" href="$db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="427,167,544,192"/>
-<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="280,116,433,160,432,165,279,121"/>
+<area shape="rect" id="Node000001" title="Заголовочный файл с описанием класса WakeDataBase." alt="" coords="102,5,282,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="114,98,176,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,48,162,86,158,83,178,52"/>
+<area shape="rect" id="Node000003" href="$d9/d01/_gpu2_d_8h.html" title="Заголовочный файл с описанием класса Gpu." alt="" coords="200,98,277,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="205,48,226,85,221,84,203,53"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,174,64,201"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="203,129,79,173,77,168,201,124"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="88,174,165,201"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="221,125,160,167,158,163,216,127"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="188,174,289,201"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="240,124,241,159,236,157,237,128"/>
+<area shape="rect" id="Node000007" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="312,174,400,201"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="260,124,325,165,320,165,259,129"/>
+<area shape="rect" id="Node000008" href="$db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="423,174,539,201"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="278,122,426,168,421,169,277,128"/>
 </map>

@@ -1,13 +1,23 @@
 <map id="fmm::FastMultipole3d::L2L" name="fmm::FastMultipole3d::L2L">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,200,80"/>
-<area shape="rect" id="Node000002" href="$db/d0f/namespacefmm.html#a48b3984201b4624efeee815dc2d7dada" title=" " alt="" coords="254,5,378,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,52,246,31,248,36,159,57"/>
-<area shape="rect" id="Node000005" href="$db/d0f/namespacefmm.html#ac62e9f2a181b96c91a2151e6c732d4f6" title=" " alt="" coords="248,55,384,80"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="200,65,234,65,234,70,200,70"/>
-<area shape="rect" id="Node000006" href="$db/d0f/namespacefmm.html#a3b6414f4fe816b82e468ff7c2b73b375" title=" " alt="" coords="279,104,353,129"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="159,77,267,103,265,108,158,83"/>
-<area shape="rect" id="Node000003" href="$db/d0f/namespacefmm.html#a9fe90accb46effc9d1c99a9f9e064b79" title=" " alt="" coords="432,5,516,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="378,15,418,15,418,21,378,21"/>
-<area shape="rect" id="Node000004" href="$db/d0f/namespacefmm.html#a5d88cfeb8862c5b7d35007cc83e152ca" title=" " alt="" coords="564,5,659,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="516,15,550,15,550,21,516,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,109,199,137"/>
+<area shape="rect" id="Node000002" href="$db/d0f/namespacefmm.html#a48b3984201b4624efeee815dc2d7dada" title=" " alt="" coords="267,5,390,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,107,180,76,246,43,267,37,262,40,248,48,182,80,129,111"/>
+<area shape="rect" id="Node000005" href="$db/d0f/namespacefmm.html#ac62e9f2a181b96c91a2151e6c732d4f6" title=" " alt="" coords="261,57,396,85"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="165,106,252,87,248,91,167,111"/>
+<area shape="rect" id="Node000006" href="$db/d0f/namespacefmm.html#a3b6414f4fe816b82e468ff7c2b73b375" title=" " alt="" coords="292,109,364,137"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="198,121,279,122,274,124,199,126"/>
+<area shape="rect" id="Node000007" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#afd91ccdd2e877cb4b976fa1e5122474a" title=" " alt="" coords="247,161,410,206"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="157,135,234,157,229,159,157,140"/>
+<area shape="rect" id="Node000010" href="$dc/d2f/classfmm_1_1_fast_multipole3d.html#a64c1d04fbddecf2d8a8c7c27a962ff9b" title=" " alt="" coords="247,230,410,275"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="123,135,179,173,248,216,260,223,254,223,245,220,176,178,122,140"/>
+<area shape="rect" id="Node000003" href="$db/d0f/namespacefmm.html#a9fe90accb46effc9d1c99a9f9e064b79" title=" " alt="" coords="463,5,546,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="390,17,450,18,445,20,391,22"/>
+<area shape="rect" id="Node000004" href="$db/d0f/namespacefmm.html#a5d88cfeb8862c5b7d35007cc83e152ca" title=" " alt="" coords="599,5,694,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="546,17,586,19,581,20,547,22"/>
+<area shape="rect" id="Node000008" href="$db/d0f/namespacefmm.html#a3b4ad91cfd82f99e5c1636c0b6dac152" title=" " alt="" coords="458,132,551,160"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="410,163,445,158,440,160,411,168"/>
+<area shape="rect" id="Node000009" href="$db/d0f/namespacefmm.html#a47708277bff75979b5f929d2f508f92f" title=" " alt="" coords="462,208,547,236"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="411,198,450,209,444,209,410,204"/>
+<area shape="poly" id="edge8_Node000008_Node000008" title=" " alt="" coords="479,130,475,123,479,114,489,108,505,105,522,108,532,117,527,116,520,113,505,111,490,113,483,117,481,123,484,133"/>
+<area shape="poly" id="edge10_Node000009_Node000009" title=" " alt="" coords="479,206,475,199,479,190,489,184,505,181,522,184,532,193,527,192,520,189,505,187,490,189,483,193,481,199,484,209"/>
 </map>

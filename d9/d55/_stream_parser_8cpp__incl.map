@@ -1,25 +1,25 @@
 <map id="VMlib/StreamParser/StreamParser.cpp" name="VMlib/StreamParser/StreamParser.cpp">
-<area shape="rect" id="Node000001" title="Файл кода с описанием класса StreamParser." alt="" coords="201,5,351,45"/>
-<area shape="rect" id="Node000002" href="$d6/d75/_stream_parser_8h.html" title="Заголовочный файл с описанием класса StreamParser." alt="" coords="216,93,336,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="279,46,279,79,273,79,273,46"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,91,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="240,121,99,165,97,160,239,116"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="115,167,189,192"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="257,121,185,162,183,157,255,116"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="214,167,338,192"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="279,119,279,153,273,153,273,119"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="362,167,425,192"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="296,116,364,157,361,162,293,121"/>
-<area shape="rect" id="Node000007" href="$d9/d01/_gpu2_d_8h.html" title="Заголовочный файл с описанием класса Gpu." alt="" coords="449,167,527,192"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="311,116,442,160,440,165,309,121"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="253,240,312,265"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="456,195,326,239,324,234,454,189"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="336,240,413,265"/>
-<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="471,194,406,235,403,230,468,190"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="437,240,539,265"/>
-<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="491,192,491,226,485,226,485,192"/>
-<area shape="rect" id="Node000011" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="563,240,651,265"/>
-<area shape="poly" id="edge10_Node000007_Node000011" title=" " alt="" coords="508,190,577,230,574,235,506,194"/>
-<area shape="rect" id="Node000012" href="$db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="675,240,792,265"/>
-<area shape="poly" id="edge11_Node000007_Node000012" title=" " alt="" coords="528,189,681,234,680,239,527,195"/>
+<area shape="rect" id="Node000001" title="Файл кода с описанием класса StreamParser." alt="" coords="200,5,349,50"/>
+<area shape="rect" id="Node000002" href="$d6/d75/_stream_parser_8h.html" title="Заголовочный файл с описанием класса StreamParser." alt="" coords="214,98,334,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="275,48,277,83,272,81,273,53"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,174,90,201"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="233,129,103,171,101,166,235,124"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="114,174,189,201"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="250,128,188,168,185,163,255,125"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="212,174,336,201"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="276,124,277,159,272,157,273,128"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="360,174,421,201"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="295,124,359,165,354,165,294,129"/>
+<area shape="rect" id="Node000007" href="$d9/d01/_gpu2_d_8h.html" title="Заголовочный файл с описанием класса Gpu." alt="" coords="445,174,522,201"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="312,124,435,168,429,169,311,129"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="250,249,309,277"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="450,202,324,249,323,244,444,202"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="333,249,410,277"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="466,201,405,243,403,238,461,203"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="433,249,534,277"/>
+<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="485,200,486,235,481,232,482,204"/>
+<area shape="rect" id="Node000011" href="$d5/dde/_gpudefs_8h.html" title="Описание констант и параметров для взаимодействия с графическим ускорителем" alt="" coords="557,249,644,277"/>
+<area shape="poly" id="edge10_Node000007_Node000011" title=" " alt="" coords="505,199,570,242,565,241,504,204"/>
+<area shape="rect" id="Node000012" href="$db/d32/cuda_tree_info_8h.html" title="Çàãîëîâîê êëàññà äåðåâà äëÿ ðåàëèçàöèè áûñòðûõ àëãîðèòìîâ íà CUDA." alt="" coords="668,249,784,277"/>
+<area shape="poly" id="edge11_Node000007_Node000012" title=" " alt="" coords="523,198,671,244,665,244,522,203"/>
 </map>

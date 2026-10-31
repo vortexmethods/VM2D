@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$d6/dd4/class_v_mlib_1_1numvector.html" title=" " alt="" coords="5,5,217,31"/>
-<area shape="rect" id="Node000001" href="$d0/df2/class_v_mlib_1_1_point2_df.html" title="Класс, опеделяющий двумерный вектор" alt="" coords="265,5,388,31"/>
-<area shape="poly" id="edge23_Node000000_Node000001" title=" " alt="" coords="231,15,265,15,265,21,231,21"/>
+<area shape="rect" id="Node000000" href="$d7/dfe/class_v_m2_d_1_1_velocity.html" title="Абстрактный класс, определяющий способ вычисления скоростей" alt="" coords="5,32,126,60"/>
+<area shape="rect" id="Node000001" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html" title="Класс, определяющий способ вычисления скоростей" alt="" coords="174,5,362,33"/>
+<area shape="poly" id="edge18_Node000000_Node000001" title=" " alt="" coords="141,33,176,31,171,32,142,39"/>
+<area shape="rect" id="Node000002" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html" title="Класс, определяющий способ вычисления скоростей" alt="" coords="174,57,362,85"/>
+<area shape="poly" id="edge19_Node000000_Node000002" title=" " alt="" coords="141,53,176,59,171,60,141,58"/>
 </map>

@@ -1,0 +1,28 @@
+<map id="dist2" name="dist2">
+<area shape="rect" id="Node000001" title="Вычисление квадрата расстояния между двумя точками" alt="" coords="1056,228,1109,256"/>
+<area shape="rect" id="Node000002" href="$d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#a0643eb95fff58c7587be23bff59d8165" title="Вычисление конвективных скоростей и радиусов вихревых доменов в заданном наборе точек от следа" alt="" coords="731,5,1008,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1075,212,1067,179,1054,138,1034,98,1006,64,990,53,991,48,1009,60,1039,95,1059,136,1073,178,1080,214"/>
+<area shape="rect" id="Node000003" href="$d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ab8d90fe8a6f6d0b6661c5f0e3db453b9" title=" " alt="" coords="757,74,982,136"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1063,214,1039,181,1006,150,982,136,983,131,1009,146,1043,178,1068,215"/>
+<area shape="rect" id="Node000004" href="$d9/dd7/namespace_v_m2_d.html#a7c9bbdb2298ed9a9c3e53f874405f5ea" title=" " alt="" coords="772,160,967,205"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1038,228,1007,220,966,208,966,203,1008,214,1043,228"/>
+<area shape="rect" id="Node000006" href="$df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e" title=" " alt="" coords="778,228,961,256"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1037,243,961,245,961,240,1043,242"/>
+<area shape="rect" id="Node000010" href="$df/d8f/class_v_m2_d_1_1_wake.html#a4ec29e0f2e59e3d823ade996549cec84" title=" " alt="" coords="748,280,991,308"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1043,257,1008,270,955,283,954,277,1007,265,1038,258"/>
+<area shape="rect" id="Node000011" href="$df/d8f/class_v_m2_d_1_1_wake.html#a7d45c51ef437950292d39efc768ee1ea" title="Проверка проникновения точки через границу профиля" alt="" coords="752,332,987,377"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1065,267,1040,298,1009,322,984,334,983,329,1006,317,1036,294,1060,270"/>
+<area shape="rect" id="Node000013" href="$df/d8f/class_v_m2_d_1_1_wake.html#a4269347865d074b8446266868c333378" title="Зануление далеко улетевших вихрей" alt="" coords="219,346,403,374"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1078,269,1070,302,1057,335,1037,366,1009,391,967,414,922,431,876,444,828,452,732,457,637,450,546,435,465,415,347,377,348,371,467,410,548,430,637,445,732,452,828,447,875,439,920,426,964,409,1006,387,1033,363,1052,332,1065,300,1074,273"/>
+<area shape="rect" id="Node000005" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a414dbf722416a4bce800f97beb0ed1ff" title=" " alt="" coords="451,152,683,213"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="754,183,684,185,683,180,759,182"/>
+<area shape="rect" id="Node000007" href="$df/d8f/class_v_m2_d_1_1_wake.html#a6610eabc9f5efa59ea697b5c89ac2f27" title="Поиск ближайшего соседа" alt="" coords="484,251,650,279"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="760,251,651,261,650,256,765,250"/>
+<area shape="rect" id="Node000008" href="$df/d8f/class_v_m2_d_1_1_wake.html#a82e08c6cec5ff1085af4a5ce8362dce7" title="Коллапс вихрей" alt="" coords="231,266,390,294"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="466,271,392,278,391,272,471,270"/>
+<area shape="rect" id="Node000009" href="$df/d8f/class_v_m2_d_1_1_wake.html#a80d90185d437e1691ef3e827a830b3b3" title="Реструктуризация вихревого следа" alt="" coords="5,320,171,348"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="235,299,149,322,147,317,239,296"/>
+<area shape="rect" id="Node000012" href="$df/d8f/class_v_m2_d_1_1_wake.html#ab5b0c3e66b903ed0f3ac55fbba4d7d79" title="Проверка пересечения вихрями следа профиля при перемещении" alt="" coords="492,340,642,368"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="734,355,643,357,643,352,739,354"/>
+<area shape="poly" id="edge13_Node000013_Node000009" title=" " alt="" coords="200,348,171,346,171,341,205,347"/>
+</map>

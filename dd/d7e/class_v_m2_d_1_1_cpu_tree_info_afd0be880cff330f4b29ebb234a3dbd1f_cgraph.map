@@ -1,5 +1,9 @@
 <map id="VM2D::CpuTreeInfo::DownwardTraversalVorticesToPoints" name="VM2D::CpuTreeInfo::DownwardTraversalVorticesToPoints">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,221,60"/>
-<area shape="rect" id="Node000002" href="$d6/dd4/class_v_mlib_1_1numvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="269,20,464,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,30,255,30,255,35,221,35"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,57,221,118"/>
+<area shape="rect" id="Node000002" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a18a4b87347a76796b5f37df59e47bfbb" title=" " alt="" coords="269,5,422,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,57,256,50,251,52,222,62"/>
+<area shape="rect" id="Node000003" href="$d0/d88/classnumvector.html#a6f68eb11e99a7215635d90b410eec857" title="Вычисление квадрата нормы (длины) вектора" alt="" coords="271,74,420,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="221,85,258,87,253,88,221,90"/>
+<area shape="rect" id="Node000004" href="$d1/de2/_v_mlib_2defs_2defs_8h.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат" alt="" coords="325,126,366,154"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="221,109,312,132,307,132,221,114"/>
 </map>

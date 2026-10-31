@@ -1,8 +1,8 @@
 var namespacefmm_1_1detail =
 [
-    [ "anm_wrapper", "dc/d00/structfmm_1_1detail_1_1anm__wrapper.html", "dc/d00/structfmm_1_1detail_1_1anm__wrapper" ],
     [ "BinomNewton_wrapper", "df/d51/structfmm_1_1detail_1_1_binom_newton__wrapper.html", "df/d51/structfmm_1_1detail_1_1_binom_newton__wrapper" ],
     [ "knm_wrapper", "d1/d03/structfmm_1_1detail_1_1knm__wrapper.html", "d1/d03/structfmm_1_1detail_1_1knm__wrapper" ],
+    [ "anm_wrapper", "dc/d00/structfmm_1_1detail_1_1anm__wrapper.html", "dc/d00/structfmm_1_1detail_1_1anm__wrapper" ],
     [ "m2lcoef_wrapper", "d8/dc1/structfmm_1_1detail_1_1m2lcoef__wrapper.html", "d8/dc1/structfmm_1_1detail_1_1m2lcoef__wrapper" ],
     [ "constexpr_sqrt", "d7/d6f/namespacefmm_1_1detail.html#abd70bb6b7a3e8ca8c5833b581d77c12e", null ],
     [ "cudaClearMathConstants", "d7/d6f/namespacefmm_1_1detail.html#aca2da4faf34356ca482d4678c15de808", null ],

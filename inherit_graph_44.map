@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$d6/dd4/class_v_mlib_1_1numvector.html" title="Шаблонный класс, определяющий вектор фиксированной длины &#160;&#160;Фактически представляет собой массив,..." alt="" coords="5,5,196,31"/>
+<area shape="rect" id="Node000000" href="$d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей" alt="" coords="5,32,172,60"/>
+<area shape="rect" id="Node000001" href="$d4/d07/class_v_m2_d_1_1_virtual_wake.html" title="Класс, опеделяющий вихревой след (пелену)." alt="" coords="220,5,366,33"/>
+<area shape="poly" id="edge20_Node000000_Node000001" title=" " alt="" coords="186,30,222,28,217,29,187,36"/>
+<area shape="rect" id="Node000002" href="$df/d8f/class_v_m2_d_1_1_wake.html" title="Класс, опеделяющий вихревой след (пелену)." alt="" coords="241,57,344,85"/>
+<area shape="poly" id="edge21_Node000000_Node000002" title=" " alt="" coords="187,55,243,65,238,65,187,61"/>
 </map>

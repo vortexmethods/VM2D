@@ -1,7 +1,14 @@
 <map id="fmm::IAmRoot" name="fmm::IAmRoot">
-<area shape="rect" id="Node000001" title=" " alt="" coords="268,35,385,60"/>
-<area shape="rect" id="Node000002" href="$de/d6a/classfmm_1_1_morton_tree.html#a034a0aa5c2b5b720c77b64dd41c1fbef" title=" " alt="" coords="5,5,220,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,40,205,33,206,28,255,35"/>
-<area shape="rect" id="Node000003" href="$de/d4c/classfmm_1_1_fast_multipole.html#aad4910746f9bc64ca810ac38ab2e752b" title=" " alt="" coords="39,55,187,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,59,187,68,186,63,253,54"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="463,60,579,88"/>
+<area shape="rect" id="Node000002" href="$de/d6a/classfmm_1_1_morton_tree.html#a034a0aa5c2b5b720c77b64dd41c1fbef" title=" " alt="" coords="201,29,415,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="445,64,409,60,408,55,450,63"/>
+<area shape="rect" id="Node000003" href="$de/d4c/classfmm_1_1_fast_multipole.html#aad4910746f9bc64ca810ac38ab2e752b" title=" " alt="" coords="234,81,382,126"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="445,84,383,96,382,90,450,83"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="343,14,332,10,308,8,286,10,274,15,271,20,276,29,271,28,265,20,270,11,284,5,308,3,333,5,348,14"/>
+<area shape="rect" id="Node000004" href="$de/d4c/classfmm_1_1_fast_multipole.html#a571eeda77db881b610d3525bab2c999b" title=" " alt="" coords="5,12,153,56"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="217,78,153,59,153,53,222,75"/>
+<area shape="rect" id="Node000005" href="$de/d4c/classfmm_1_1_fast_multipole.html#a8b1ac9730d755da5cc6f6c592b21b80c" title=" " alt="" coords="5,81,153,126"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="216,104,153,106,153,101,221,102"/>
+<area shape="rect" id="Node000006" href="$de/d4c/classfmm_1_1_fast_multipole.html#aefab2e6878d395390766becf7c050311" title=" " alt="" coords="5,150,153,195"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="222,129,154,153,152,148,217,131"/>
 </map>

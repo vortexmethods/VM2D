@@ -1,0 +1,5 @@
+<map id="VM2D::BoundaryVortexCollocN::FillIQFromOther" name="VM2D::BoundaryVortexCollocN::FillIQFromOther">
+<area shape="rect" id="Node000001" title="Генерация блока матрицы, состоящей из интегралов от (r&#45;xi)/|r&#45;xi|^2, влияние одного профиля на другой" alt="" coords="5,5,218,50"/>
+<area shape="rect" id="Node000002" href="$df/da2/class_v_m2_d_1_1_boundary.html#aee6b852d79dd1afbe3bfc26389644877" title="Конструктор" alt="" coords="266,14,465,42"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,25,253,28,247,28,218,30"/>
+</map>

@@ -1,0 +1,28 @@
+<map id="VM2D/TreeCPU2D/cpuNeighborTree.h" name="VM2D/TreeCPU2D/cpuNeighborTree.h">
+<area shape="rect" id="Node000001" title="Простое дерево для точного поиска соседей в заданном радиусе на CPU." alt="" coords="120,5,343,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,98,90,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,53,92,93,89,89,184,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="114,98,179,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,52,173,89,169,85,211,48"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="202,98,261,126"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="233,48,234,83,229,81,230,53"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="184,249,247,277"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="249,48,265,71,275,97,278,112,275,126,256,187,232,237,228,234,251,185,270,125,272,112,270,99,260,74,248,53"/>
+<area shape="rect" id="Node000006" href="$d9/d27/_point2_d_8h.html" title="Заголовочный файл с описанием класса Point2D." alt="" coords="360,98,444,126"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="277,48,364,90,359,92,277,53"/>
+<area shape="rect" id="Node000007" href="$df/dc5/numvector_8h.html" title="Описание класса numvector." alt="" coords="374,174,476,201"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="408,124,419,160,414,158,405,129"/>
+<area shape="poly" id="edge13_Node000007_Node000005" title=" " alt="" coords="390,202,262,248,261,243,385,202"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="270,249,326,277"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="405,201,334,244,332,239,400,203"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="350,249,412,277"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="419,201,398,238,395,234,415,203"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="436,249,502,277"/>
+<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="434,200,456,237,451,235,431,204"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="526,249,636,277"/>
+<area shape="poly" id="edge10_Node000007_Node000011" title=" " alt="" coords="453,199,542,243,537,242,452,204"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="659,249,734,277"/>
+<area shape="poly" id="edge11_Node000007_Node000012" title=" " alt="" coords="474,199,647,248,642,248,473,205"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="759,249,800,277"/>
+<area shape="poly" id="edge12_Node000007_Node000013" title=" " alt="" coords="477,193,596,213,747,249,742,249,595,218,477,198"/>
+</map>
