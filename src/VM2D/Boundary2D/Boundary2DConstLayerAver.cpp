@@ -50,6 +50,8 @@
 #include "World2D.h"
 #include "Gmres2D.h"
 
+#include <complex>
+
 using namespace VM2D;
 
 
@@ -154,6 +156,8 @@ void BoundaryConstLayerAver::FillIQFromOther(const Boundary& otherBoundary, std:
 }//FillIQFromOther(...)
 
 
+
+/*
 //Вычисление скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на профиле
 void BoundaryConstLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
 {	
@@ -206,6 +210,196 @@ void BoundaryConstLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeD
 		selfVelo[i] = velI;
 	}//for i
 		
+	for (size_t i = 0; i < velo.size(); ++i)
+		velo[i] += selfVelo[i];
+}//CalcConvVelocityToSetOfPointsFromSheets(...)
+*/
+
+//KFU
+//Вклад одной панели в скорость (без множителя 1/(2 pi))
+static inline Point2D ConstLayerPanelVelo(const Point2D& posI, const Point2D& rj, const Point2D& rj1, double gFree, double gAtt, double qAtt)
+{
+	Point2D dj = rj1 - rj;
+	Point2D tauj = dj.unit();
+
+	Point2D s = posI - rj;
+	Point2D p = posI - rj1;
+
+	double a = VMlib::Alpha(p, s);
+
+	double lambda;
+	if ((s.length2() > 1e-16) && (p.length2() > 1e-16))
+		lambda = VMlib::Lambda(p, s);
+	else
+		lambda = 0.0;
+
+	Point2D skos = -a * tauj.kcross() + lambda * tauj;
+
+	Point2D velI = gFree * skos.kcross();
+	velI += gAtt * skos.kcross();
+	velI += qAtt * skos;
+	return velI;
+}
+
+//KFU
+namespace
+{
+	/// Порядок мультипольных разложений для слоев на профиле
+	const int sheetMpOrder = 20;
+
+	/// Разложение используется для точек, удаленных от центра более чем на sheetMpRatio радиусов группы панелей;
+	/// погрешность порядка sheetMpRatio^-(sheetMpOrder+1) ~ 5e-9
+	const double sheetMpRatio = 2.5;
+
+	/// Число панелей в группе
+	const size_t sheetMpGroupSize = 8;
+
+	/// Мультипольное разложение слоев на группе панелей [jBegin, jEnd):
+	/// u - i v = 1/(2 pi) * sum_m mom[m] / (z - c)^(m+1)
+	struct SheetMultipole
+	{
+		std::complex<double> c;
+		double r2Far; //квадрат радиуса, вне которого применяется разложение
+		size_t jBegin, jEnd;
+		std::complex<double> mom[sheetMpOrder + 1];
+
+		std::complex<double> Eval(const std::complex<double>& z) const
+		{
+			const std::complex<double> t = 1.0 / (z - c);
+			std::complex<double> w = mom[sheetMpOrder];
+			for (int m = sheetMpOrder - 1; m >= 0; --m)
+				w = w * t + mom[m];
+			return w * t;
+		}
+	};
+
+	/// Вычисление моментов: для панели от A до B (относительно центра) с плотностью (q - i gamma)
+	/// интеграл (zeta - c)^m ds = L * S_m / (m+1), где S_m = sum_{k=0..m} A^(m-k) B^k
+	template<typename GetR, typename GetDens>
+	SheetMultipole MakeSheetMultipole(size_t jBegin, size_t jEnd, GetR getR, GetDens getDens)
+	{
+		SheetMultipole mp;
+		mp.jBegin = jBegin;
+		mp.jEnd = jEnd;
+
+		Point2D cnt = { 0.0, 0.0 };
+		for (size_t j = jBegin; j <= jEnd; ++j)
+			cnt += getR(j);
+		cnt *= 1.0 / (jEnd - jBegin + 1);
+		mp.c = { cnt[0], cnt[1] };
+
+		double r2 = 0.0;
+		for (size_t j = jBegin; j <= jEnd; ++j)
+			r2 = std::max(r2, (getR(j) - cnt).length2());
+		mp.r2Far = sheetMpRatio * sheetMpRatio * r2;
+
+		for (int m = 0; m <= sheetMpOrder; ++m)
+			mp.mom[m] = 0.0;
+
+		for (size_t j = jBegin; j < jEnd; ++j)
+		{
+			const Point2D& ra = getR(j);
+			const Point2D& rb = getR(j + 1);
+			const std::complex<double> A(ra[0] - cnt[0], ra[1] - cnt[1]);
+			const std::complex<double> B(rb[0] - cnt[0], rb[1] - cnt[1]);
+			const std::complex<double> dens = getDens(j) * (rb - ra).length();
+
+			std::complex<double> S = 1.0, Bm = 1.0;
+			for (int m = 0; m <= sheetMpOrder; ++m)
+			{
+				mp.mom[m] += dens * S * (1.0 / (m + 1));
+				Bm *= B;
+				S = A * S + Bm;
+			}
+		}
+		return mp;
+	}
+}
+
+//KFU
+//Вычисление скоростей в наборе точек, вызываемых наличием слоев вихрей и источников на профиле
+void BoundaryConstLayerAver::CalcConvVelocityToSetOfPointsFromSheets(const WakeDataBase& pointsDb, std::vector<Point2D>& velo) const
+{	
+	std::vector<Point2D> selfVelo(pointsDb.vtx.size());
+	
+	double cft = IDPI;
+
+	const size_t nPnl = sheets.getSheetSize();
+
+	//В быстром режиме влияние удаленных групп панелей учитывается через мультипольные разложения
+	const bool useMultipoles = (W.getPassport().numericalSchemes.velocityComputation.second == 1) && (nPnl > 0);
+
+	auto getR = [this](size_t j) -> const Point2D& { return afl.getR(j); };
+	auto getDens = [this](size_t j) -> std::complex<double> 
+	{ 
+		return std::complex<double>(sheets.attachedSourceSheet(j, 0), -(sheets.freeVortexSheet(j, 0) + sheets.attachedVortexSheet(j, 0)));
+	};
+
+	SheetMultipole mpAll;
+	std::vector<SheetMultipole> mpGroups;
+	if (useMultipoles)
+	{
+		mpAll = MakeSheetMultipole(0, nPnl, getR, getDens);
+		for (size_t jb = 0; jb < nPnl; jb += sheetMpGroupSize)
+			mpGroups.push_back(MakeSheetMultipole(jb, std::min(jb + sheetMpGroupSize, nPnl), getR, getDens));
+	}
+
+#pragma omp parallel for default(none) shared(selfVelo, cft, pointsDb, mpAll, mpGroups, useMultipoles, nPnl) schedule(dynamic, 256)
+	for (int i = 0; i < (int)pointsDb.vtx.size(); ++i)
+	{
+		/// \todo сделать вызов функции GetInfluenceFromVortexSheetAtRectPanelToVortex
+		Point2D velI = { 0.0, 0.0 };
+
+		const Point2D& posI = pointsDb.vtx[i].r();
+		const std::complex<double> z(posI[0], posI[1]);
+
+		/// \todo Тут надо разобраться, как должно быть...
+		/// \todo сделать  if(move || deform)
+		if (!useMultipoles)
+		{
+			for (size_t j = 0; j < nPnl; ++j)
+				velI += ConstLayerPanelVelo(posI, afl.getR(j), afl.getR(j + 1), sheets.freeVortexSheet(j, 0), sheets.attachedVortexSheet(j, 0), sheets.attachedSourceSheet(j, 0));
+		}
+		else if (std::norm(z - mpAll.c) > mpAll.r2Far)
+		{
+			const std::complex<double> w = mpAll.Eval(z);
+			velI = { w.real(), -w.imag() };
+		}
+		else
+		{
+			std::complex<double> w = 0.0;
+			for (const SheetMultipole& mp : mpGroups)
+			{
+				if (std::norm(z - mp.c) > mp.r2Far)
+					w += mp.Eval(z);
+				else
+					for (size_t j = mp.jBegin; j < mp.jEnd; ++j)
+						velI += ConstLayerPanelVelo(posI, afl.getR(j), afl.getR(j + 1), sheets.freeVortexSheet(j, 0), sheets.attachedVortexSheet(j, 0), sheets.attachedSourceSheet(j, 0));
+			}
+			velI += Point2D({ w.real(), -w.imag() });
+		}
+		
+		velI *= cft;
+		selfVelo[i] = velI;
+	}//for i
+		
+#ifdef VM_CHECK_FAST
+	if (useMultipoles && (W.getCurrentStep() % 25 == 0))
+	{
+		double err = 0.0, mx = 0.0;
+		for (int i = 0; i < (int)pointsDb.vtx.size(); ++i)
+		{
+			Point2D v = { 0.0, 0.0 };
+			for (size_t j = 0; j < nPnl; ++j)
+				v += ConstLayerPanelVelo(pointsDb.vtx[i].r(), afl.getR(j), afl.getR(j + 1), sheets.freeVortexSheet(j, 0), sheets.attachedVortexSheet(j, 0), sheets.attachedSourceSheet(j, 0));
+			v *= cft;
+			err = std::max(err, (v - selfVelo[i]).length());
+			mx = std::max(mx, v.length());
+		}
+		std::cout << "CHECK_FAST step " << W.getCurrentStep() << " sheets->points (n=" << pointsDb.vtx.size() << "): maxErr/maxVel = " << err / mx << std::endl;
+	}
+#endif
+
 	for (size_t i = 0; i < velo.size(); ++i)
 		velo[i] += selfVelo[i];
 }//CalcConvVelocityToSetOfPointsFromSheets(...)

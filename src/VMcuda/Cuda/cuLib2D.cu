@@ -769,7 +769,7 @@ __global__ void  CU_calc_I0I3(
 	double xi_mx, xi_my, lxi_m;
 	double mnog1;
 	double vs;
-	double meanepsj2;
+	double meanepsj, iDDomRadVS;
 
 	if (i < npt) //Здесь так делать можно, т.к. shared memory не используется
 	{
@@ -798,10 +798,11 @@ __global__ void  CU_calc_I0I3(
 					   
 			d = fabs(qx*normx + qy * normy);
 			
-			meanepsj2 = sqr(myMax(meanEps[j], minRd));    // commented 30-05
+			meanepsj = myMax(meanEps[j], minRd);  
+			iDDomRadVS = 1.0 / meanepsj;
 			//meanepsj2 = sqr(meanEps[j]);
 
-			if ( (d < 50.0 * lenj) && (fabs(s) < 50.0 * lenj) )	//Почему зависит от длины панели???
+			if ( (d < 50.0 * lenj) && (fabs(s) < 50.0 * lenj) )	
 			{
 				v0x = taux * lenj;
 				v0y = tauy * lenj;
@@ -816,14 +817,16 @@ __global__ void  CU_calc_I0I3(
 					mnx = normx * expon;
 					mny = normy * expon;
 
-					//if (val0 != -pi * rdi)
-					//{
-						val0 += (xix * mnx + xiy * mny) * (lxi + 1.0) / (lxi * lxi);
-						val3x += mnx;
-						val3y += mny;
-					//}
+					val0 += (xix * mnx + xiy * mny) * (lxi + 1.0) / (lxi * lxi);
+					val3x += mnx;
+					val3y += mny;
 
-					vs = ptg * expon / (valPi * meanepsj2);
+					xix = qx * iDDomRadVS;
+					xiy = qy * iDDomRadVS;
+					lxi = sqrt(xix * xix + xiy * xiy);
+					expon = exp(-lxi) * lenj;
+
+					vs = ptg * expon / (valPi * sqr(meanepsj));
 
 				}					
 				//else if ( (d >= 0 * lenj) || (fabs(s) >= 0 * lenj) )
@@ -837,58 +840,31 @@ __global__ void  CU_calc_I0I3(
 
 					hx = v0x / new_n;
 					hy = v0y / new_n;
+					lenj_m = lenj / new_n;
 
 					for (int m = 0; m < new_n; ++m)
-					{	
-						//double midx = ptx - d * normx;
-						//double midy = pty - d * normy;
-						//double midintx = begx + hx * (m + 0.5);
-						//double midinty = begx + hy * (m + 0.5);
-						//int dopnew_n = 1;
+					{							
+						xi_mx = (ptx - (begx + hx * (m + 0.5))) * iDDomRad;
+						xi_my = (pty - (begy + hy * (m + 0.5))) * iDDomRad;
+						lxi_m = sqrt(xi_mx * xi_mx + xi_my * xi_my);						
+						expon = exp(-lxi_m) * lenj_m;
 
-						//if(((midintx - midx)* (midintx - midx) + (midinty - midy) * (midinty - midy)) < 100*d*d)
-						//	dopnew_n = (int)myMin((int)myMax(ceil(1000.0 * lenj / den), 1.0), 2000);
-						
+						mnx = normx * expon;
+						mny = normy * expon;
 
-						//for (int mm = 0; mm < dopnew_n; ++mm)
-						//{
-							xi_mx = (ptx - (begx + hx * (m + 0.5))) * iDDomRad;
-							xi_my = (pty - (begy + hy * (m + 0.5))) * iDDomRad;
+						val0 += (xi_mx * mnx + xi_my * mny) * (lxi_m + 1.0) / (lxi_m * lxi_m);
+						val3x += mnx;
+						val3y += mny;
 
-							lxi_m = sqrt(xi_mx * xi_mx + xi_my * xi_my);
 
-							lenj_m = lenj / new_n;
-							expon = exp(-lxi_m) * lenj_m;
+						xi_mx = (ptx - (begx + hx * (m + 0.5))) * iDDomRadVS;
+						xi_my = (pty - (begy + hy * (m + 0.5))) * iDDomRadVS;
+						lxi_m = sqrt(xi_mx * xi_mx + xi_my * xi_my);
+						expon = exp(-lxi_m) * lenj_m;
 
-							mnx = normx * expon;
-							mny = normy * expon;
-
-							//if (val0 != -pi * rdi)
-							//{
-								val0 += (xi_mx * mnx + xi_my * mny) * (lxi_m + 1.0) / (lxi_m * lxi_m);
-								val3x += mnx;
-								val3y += mny;
-							//}
-
-							vs += expon;
-						//}//for mm
+						vs += expon;
 					}//for m
-					vs *= ptg / (valPi * meanepsj2);
-
-					/*
-					if ((d <= 0.001 * lenj) && (fabs(s) < 0.45 * lenj))
-					{
-						double Rval0 = -pi * rdi;
-
-						double Rmnog1 = 2.0 * rdi * (1.0 - exp(-lenj * 0.5 * iDDomRad) * cosh(fabs(s) * iDDomRad));
-						double Rval3x = Rmnog1 * normx;
-						double Rval3y = Rmnog1 * normy;
-						double Rvs = Rmnog1 * ptg / (pi * meanepsj2);
-
-						printf("v0: %f <-> %f, v3: (%f, %f) <-> (%f, %f), vs: %f <-> %f\n", val0, Rval0, val3x, val3y, Rval3x, Rval3y, vs, Rvs);
-					}
-					//*/
-
+					vs *= ptg / (valPi * sqr(meanepsj));
 				}  				
 				else
 				{
@@ -897,13 +873,14 @@ __global__ void  CU_calc_I0I3(
 					mnog1 = 2.0 * rdi * (1.0 - exp(-lenj * 0.5 * iDDomRad) * cosh(fabs(s) * iDDomRad));
 					val3x += mnog1 * normx;
 					val3y += mnog1 * normy;
-					vs = mnog1 * ptg / (valPi * meanepsj2);
 
+					mnog1 = 2.0 * meanepsj * (1.0 - exp(-lenj * 0.5 * iDDomRadVS) * cosh(fabs(s) * iDDomRadVS));
+
+					vs = mnog1 * ptg / (valPi * sqr(meanepsj));
 				}
 				
 			}//if d<50 len 
-			//if (i == 12)
-			//	printf("j = %d, val3: %f, %f\n", (int)j, val3x, val3y);
+			
 #ifdef  __CUDA_ARCH__
 #if __CUDA_ARCH__ <= 600
 			myAtomicAdd(visstr + j, vs);

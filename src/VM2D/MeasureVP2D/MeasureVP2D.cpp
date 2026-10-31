@@ -328,25 +328,40 @@ void MeasureVP::CalcPressure()
 	double dst2eps;
 #pragma warning (pop)
 
+	//Данные вихрей следа, нужные для слагаемого 3, собираются в один массив (не пересчитываются для каждой точки)
+	struct WakePressData
+	{
+		Point2D r, V;
+		double g, sigma2;
+	};
+
+	std::vector<WakePressData> wakeData(W.getWake().vtx.size());
+#pragma omp parallel for
+	for (int j = 0; j < (int)wakeData.size(); ++j)
+	{
+		wakeData[j].r = W.getWake().vtx[j].r();
+		wakeData[j].V = W.getVelocity().wakeVortexesParams.convVelo[j] + W.getVelocity().wakeVortexesParams.diffVelo[j] + V0;
+		wakeData[j].g = W.getWake().vtx[j].g();
+		wakeData[j].sigma2 = sqr(W.getWake().vtx[j].sigma());
+	}
+
 #pragma omp parallel for default(none) private(alpha, lambda, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, V0, addWSize, std::cout, IDPI) 
 	for (int i = 0; i < addWSize; ++i)
 	{
-		const Point2D& pt = wakeVP->vtx[i].r();
-				
+		
 		pressure[i] = P0;
 		pressure[i] -= 0.5 * velocity[i].length2(); //2
-
+		Point2D pt = wakeVP->vtx[i].r();
 		
-		for (size_t j = 0; j < W.getWake().vtx.size(); ++j)
+		for (size_t j = 0; j < wakeData.size(); ++j)
 		{
-			dri = pt - W.getWake().vtx[j].r();
-			Vi = W.getVelocity().wakeVortexesParams.convVelo[j] + W.getVelocity().wakeVortexesParams.diffVelo[j] + V0;
+			const WakePressData& wd = wakeData[j];
 
-			const double sigma2 = sqr(W.getWake().vtx[j].sigma());
-			dst2eps = VMlib::boundDenom(dri.length2(), sigma2);
+			dri = pt - wd.r;
+			dst2eps = VMlib::boundDenom(dri.length2(), wd.sigma2);
 
-			vi = IDPI * W.getWake().vtx[j].g() / dst2eps * dri.kcross();
-			pressure[i] += vi & Vi; //3
+			vi = IDPI * wd.g / dst2eps * dri.kcross();
+			pressure[i] += vi & wd.V; //3
 		}
 
 

@@ -1389,6 +1389,171 @@ namespace BHcu
     }
 
 
+        __global__
+        __launch_bounds__(THREADSnear, FACTORnear)
+        void treeClosestPointToPointsCalculationKernel(
+            const int nnodesd, const int nbodiesd, // число всех узлов и листьев дерева облака точек (т.е. среди которых ищем соседей)
+            const int2* __restrict Mchildd,        // его топология
+            const double* __restrict dev_ptr_r,    // координаты листьев
+            const int* __restrict MmortonCodesIdxd,// порядок их сортировки
+            const double4* __restrict Mlowerupperd,// габариты внутренних узлов
+
+            const int npointsd, const double* __restrict pointsd, //точки наблюдения (для кого ищем соседей) 
+            //int sizeOfElement,
+            const int* __restrict MmortonCodesIdxPointsd, //порядок их сортировки
+            int* __restrict near)
+    {
+        int k = threadIdx.x + blockIdx.x * blockDim.x;
+        {
+            if (k >= npointsd)
+                return;
+
+            int idx = MmortonCodesIdxPointsd[k];
+            double2 query;
+
+            //switch (sizeOfElement)
+            //{
+            //case 16:
+                query = *(double2*)(pointsd + idx * 4);
+                //query = ((const double2*)pointsd)[idx];
+            //    break;
+            //case 32:
+            //    query = *(double2*)(pointsd + idx * 4);
+            //    break;
+            //default:
+            //    printf("Error in treeClosestPanelToPointsCalculationKernel!\n");
+            //}
+
+            double2 stack[32];
+            double2* stack_ptr = stack;
+
+            double4 gab0 = Mlowerupperd[0];
+
+            double md2 = 0;
+            int nearestLocation = -1;
+            *stack_ptr++ = make_double2(__longlong_as_double(0), md2);
+
+            double dist_to_nearest_object = 1e+100;
+            //double4 pnlLeftGab, pnlRightGab;
+
+            do
+            {
+                const double2 node = *--stack_ptr;
+
+                //счетчик
+                //atomicAdd(&d_totalNodeChecks, 1ULL);
+
+                if (node.y > dist_to_nearest_object)
+                {
+                    // if aabb mindist > already_found_mindist, it cannot have a nearest
+                    continue;
+                }
+
+                const int2 LR_idx = Mchildd[__double_as_longlong(node.x)];
+
+                bool isLeftLeaf = (LR_idx.x >= nbodiesd);
+                bool isRightLeaf = (LR_idx.y >= nbodiesd);
+
+                double4 L_box, R_box;
+                if (!isLeftLeaf)
+                    L_box = Mlowerupperd[LR_idx.x];
+                else
+                {
+                    int nL = LR_idx.x - nbodiesd;
+                    double4 pos = *(double4*)(dev_ptr_r + MmortonCodesIdxd[nL] * 4);
+                    //double4 pos = ((const double4*)dev_ptr_r)[MmortonCodesIdxd[nL]];
+                    L_box = make_double4(pos.x, pos.y, pos.z, pos.w); 
+                }
+                
+
+                if (!isRightLeaf)
+                    R_box = Mlowerupperd[LR_idx.y];
+                else
+                {
+                    int nR = LR_idx.y - nbodiesd;
+                    double4 pos = *(double4*)(dev_ptr_r + MmortonCodesIdxd[nR] * 4);
+                    //double4 pos = ((const double4*)dev_ptr_r)[MmortonCodesIdxd[nR]];
+                    R_box = make_double4(pos.x, pos.y, pos.z, pos.w);
+                }                
+
+                const double L_mindist2 = mindist2(L_box, query);
+                const double R_mindist2 = mindist2(R_box, query);
+
+                const double L_minmaxdist2 = minmaxdist2(L_box, query);
+                const double R_minmaxdist2 = minmaxdist2(R_box, query);
+
+                bool pushLeft = false;
+                bool pushRight = false;
+
+                if (L_mindist2 <= R_minmaxdist2 * onePlusMachineEps) // L is worth considering
+                {
+                    if (isLeftLeaf) // leaf node
+                    {
+                        int nL = LR_idx.x - nbodiesd;
+                        double4 pos = *(double4*)(dev_ptr_r + MmortonCodesIdxd[nL] * 4);
+                        double dist2 = (pos.x - query.x) * (pos.x - query.x) + (pos.y - query.y) * (pos.y - query.y);
+
+                        if (dist2 <= dist_to_nearest_object)
+                        {
+                            dist_to_nearest_object = dist2;
+                            nearestLocation = MmortonCodesIdxd[nL];
+                        }
+                    }
+                    else
+                        pushLeft = true;
+                }
+               
+
+                if (R_mindist2 <= L_minmaxdist2 * onePlusMachineEps) // R is worth considering
+                {
+                    if (isRightLeaf) // leaf node
+                    {
+                        int nR = LR_idx.y - nbodiesd;
+                        double4 pos = *(double4*)(dev_ptr_r + MmortonCodesIdxd[nR] * 4);
+                        double dist2 = (pos.x - query.x) * (pos.x - query.x) + (pos.y - query.y) * (pos.y - query.y);
+
+                        if (dist2 <= dist_to_nearest_object)
+                        {
+                            dist_to_nearest_object = dist2;
+                            nearestLocation = MmortonCodesIdxd[nR];
+                        }
+                    }
+                    else
+                        pushRight = true;
+                }
+                
+
+                if (pushLeft && !pushRight)
+                {
+                    *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
+                }
+                else if (!pushLeft && pushRight)
+                {
+                    *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.y), R_mindist2);
+                }
+                else if (pushLeft && pushRight)
+                {
+                    if (L_mindist2 < R_mindist2)
+                    {
+                        // Сначала добавляем правый (дальний) вниз стека
+                        *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.y), R_mindist2);
+                        // Потом левый (ближний) наверх --- будет обработан первым
+                        *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
+                    }
+                    else
+                    {
+                        // Сначала добавляем левый (дальний) вниз стека
+                        *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.x), L_mindist2);
+                        // Потом правый (ближний) наверх --- будет обработан первым
+                        *stack_ptr++ = make_double2(__longlong_as_double(LR_idx.y), R_mindist2);
+                    }
+                }
+            } while (stack < stack_ptr);
+
+            near[idx] = nearestLocation;
+        }
+    }
+
     __host__ __device__
     bool ifAabbContainsSegment(const double2 start, const double2 finish, const double4& object) noexcept
     {
@@ -1959,7 +2124,7 @@ namespace BHcu
         float s;
         float2 norm;
         float vs, vsm;
-        float meanepsj2;
+        float iDDomRadVS, meanepsj2;
 
         float v0x, v0y;
         float hx, hy;
@@ -1986,6 +2151,7 @@ namespace BHcu
             end.y = (float)pansd[k * 4 + 3];
 
             vs = 0.0f;
+            iDDomRadVS = 1.0f / myMax((float)meanEpsd[k], (float)minRd);
             meanepsj2 = sqrf(myMax((float)meanEpsd[k], (float)minRd));
 
             lenj = length(end - beg);
@@ -2107,6 +2273,11 @@ namespace BHcu
                             i3.x = mnx;
                             i3.y = mny;
 
+                            xix = q.x * iDDomRadVS;
+                            xiy = q.y * iDDomRadVS;
+                            lxi = sqrtf(xix * xix + xiy * xiy);
+                            expon = expf(-lxi) * lenj;
+
                             vs += gm * expon / (valPif * meanepsj2);
                         }
                         else if ((d > 0.01f * lenj) || (fabsf(s) > 0.45f * lenj))
@@ -2117,14 +2288,12 @@ namespace BHcu
                             hx = v0x / new_n;
                             hy = v0y / new_n;
                             vsm = 0;
+                            lenj_m = lenj / new_n;
                             for (int m = 0; m < new_n; ++m)
                             {
                                 xi_mx = (ps.x - (beg.x + hx * (m + 0.5f))) * iDDomRad;
                                 xi_my = (ps.y - (beg.y + hy * (m + 0.5f))) * iDDomRad;
-
-                                lxi_m = sqrtf(xi_mx * xi_mx + xi_my * xi_my);
-
-                                lenj_m = lenj / new_n;
+                                lxi_m = sqrtf(xi_mx * xi_mx + xi_my * xi_my);                                
                                 expon = expf(-lxi_m) * lenj_m;
 
                                 mnx = norm.x * expon;
@@ -2134,6 +2303,12 @@ namespace BHcu
                                 i0 += (xi_mx * mnx + xi_my * mny) * (lxi_m + 1.0) / (lxi_m * lxi_m);
                                 i3.x += mnx;
                                 i3.y += mny;
+
+
+                                xi_mx = (ps.x - (beg.x + hx * (m + 0.5f))) * iDDomRadVS;
+                                xi_my = (ps.y - (beg.y + hy * (m + 0.5f))) * iDDomRadVS;
+                                lxi_m = sqrtf(xi_mx * xi_mx + xi_my * xi_my);
+                                expon = expf(-lxi_m) * lenj_m;
 
                                 vsm += expon;
                             }//for m
@@ -2154,6 +2329,10 @@ namespace BHcu
                             i3.x += mnog1 * norm.x;
                             i3.y += mnog1 * norm.y;
 
+                            argcosh = fabsf(s) * iDDomRadVS;
+                            prod = (argcosh < 50.0f) ? expf(-lenj * 0.5f * iDDomRadVS) * coshf(fabsf(s) * iDDomRadVS) :
+                                0.5f * expf((s - 0.5f * lenj) * iDDomRadVS);
+                            mnog1 = 2.0f / iDDomRadVS * (1.0f - prod);
                             vs += mnog1 * gm / (valPif * meanepsj2);
                         }
 
@@ -2428,6 +2607,39 @@ namespace BHcu
     }//treePanelsToPointsCalculationWrapper(...)
 
 
+    float treeClosestPointToPointsCalculationWrapper(const CudaTreeInfo& treeCloudPointsInfo, const CudaTreeInfo& treeObservPointsInfo, \
+        int* __restrict closeIdxD)
+    {
+        cudaEvent_t start, stop;
+        float time;
+
+        cudaEventCreate(&start);  cudaEventCreate(&stop);
+        cudaEventRecord(start, 0);
+
+        cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
+
+        treeClosestPointToPointsCalculationKernel << <(treeObservPointsInfo.nObject + THREADSnear - 1) / THREADSnear, THREADSnear >> > (
+            treeCloudPointsInfo.nNode, treeCloudPointsInfo.nObject,
+            (int2*)treeCloudPointsInfo.childD,
+            (double*)treeCloudPointsInfo.gabForLeavesD,
+            treeCloudPointsInfo.mortonCodesIdxD,
+            (double4*)treeCloudPointsInfo.lowerupperD,
+
+            treeObservPointsInfo.nObject,
+            (double*)treeObservPointsInfo.objectD,
+            treeObservPointsInfo.mortonCodesIdxD,
+            closeIdxD
+            );
+
+        //cudaDeviceSynchronize();
+        //unsigned long long h_total = 0;
+        //cudaError_t err = cudaMemcpyFromSymbol(&h_total, d_totalNodeChecks, sizeof(unsigned long));
+
+        CudaTestError("treeClosestPointToPointsCalculationKernel launch failed");
+
+        cudaEventDestroy(start);  cudaEventDestroy(stop);
+        return time;
+    }//treePointsToPointsCalculationWrapper(...)
 
     float treePanelsSegmentsIntersectionCalculationWrapper(
         const CudaTreeInfo& treePanelsInfo, const CudaTreeInfo& controlTreeInfo,

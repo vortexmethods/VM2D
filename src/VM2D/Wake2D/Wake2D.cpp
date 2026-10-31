@@ -45,7 +45,6 @@
 
 #include "knnCPU.h"
 #include "cuKnn.cuh"
-
 #include "treeKernels.cuh"
 
 #include "Airfoil2D.h"
@@ -71,7 +70,6 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 	
 	if (afl.isOutsideGabarits(newPos) && afl.isOutsideGabarits(oldPos))
 	{ 
-		++W.gabb;
 		return false;
 	}
 
@@ -84,8 +82,6 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 		const Point2D& aflRj = afl.getR(j);
 		const Point2D& aflRj1 = afl.getR(j + 1);
 
-		++W.checkPan;
-
 		if ((((aflRj - oldPos) ^ (newPos - oldPos)) * ((aflRj1 - oldPos) ^ (newPos - oldPos)) <= 0) && \
 			(((oldPos - aflRj) ^ (aflRj1 - aflRj)) * ((newPos - aflRj) ^ (aflRj1 - aflRj)) <= 0))
 		{
@@ -97,11 +93,6 @@ bool Wake::MoveInside(const Point2D& newPos, const Point2D& oldPos, const Airfoi
 
 
 	
-	if (hit)
-		++W.check01;
-	else
-		++W.check02;
-
 	return hit;
 }//MoveInside(...)
 
@@ -188,11 +179,43 @@ bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos
 
 	bool hit = false;
 
-	double angle = 0;
-	double cs, sn;
-
 	double dist2 = 1000000000.0;
 
+	//KFU
+	//Индекс точки относительно контура считается без тригонометрии (алгоритм D. Sunday);
+	//для точек не на контуре он равен сумме углов atan2(v1 ^ v2, v1 & v2), деленной на 2 pi
+	int windingNumber = 0;
+
+	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
+	{
+		const Point2D v1 = afl.getR(i) - newPos;
+		const Point2D v2 = afl.getR(i + 1) - newPos;
+
+		double dst = v1.length2() + v2.length2();
+		if (dst < dist2)
+		{
+			dist2 = dst;
+			panThrough = i;
+		}
+
+		const double sn = v1 ^ v2;
+		if (v1[1] <= 0.0)
+		{
+			if ((v2[1] > 0.0) && (sn > 0.0))
+				++windingNumber;
+		}
+		else
+		{
+			if ((v2[1] <= 0.0) && (sn < 0.0))
+				--windingNumber;
+		}
+	}//for i
+
+	hit = (windingNumber != 0);
+//Самый "лобовой" алгоритм
+/*
+	double angle = 0;
+        double sn, cs;
 	for (size_t i = 0; i < afl.getNumberOfPanels(); ++i)
 	{
 		Point2D v1, v2, vv;
@@ -216,6 +239,8 @@ bool Wake::MoveInsideMovingBoundary(const Point2D& newPos, const Point2D& oldPos
 	}//for i
 
 	hit = ((angle > 3.14) || (angle < -3.14));
+*/
+
 	
 	if (afl.inverse)
 		hit = !hit;
@@ -279,7 +304,7 @@ void Wake::Inside(const std::vector<Point2D>& newPos, Airfoil& afl, bool isMoves
 	std::vector<int> through;
 	through.resize(vtx.size(), -1);
 
-//#pragma omp parallel for default(none) shared(afl, oldAfl, isMoves, through, newPos) 
+#pragma omp parallel for default(none) shared(afl, oldAfl, isMoves, through, newPos) schedule(dynamic, 100) 
 	for (int i = 0; i < (int)vtx.size(); ++i)
 	{		
 		size_t minN;
@@ -874,12 +899,38 @@ void Wake::Restruct()
 
 		/////////////////////////////////////////////////////////////
 
+		//Тренируемся работать с древом частиц для поиска (k)NN
+		/*
+		BHcu::CudaTreeInfo nnTree(W.getCuda().blocks, tree_T::aux, object_T::point4, scheme_T::noScheme, false);
+		nnTree.MemoryAllocate((int)W.getCuda().n_CUDA_wake);
+		nnTree.Update((int)W.getWake().vtx.size(), W.getWake().devVtxPtr);
+		nnTree.Build();
+		nnTree.UpwardTraversal(0);
+		
+		int size = (int)W.getCuda().n_CUDA_wake;
 
-		bool useFastCollapseAlgorithm = false;
-#if defined(__CUDACC__) || defined(USE_CUDA)		
-		if (W.getPassport().numericalSchemes.velocityComputation.second == 1)
-			useFastCollapseAlgorithm = true;
-#endif 
+		int* closestD;
+		cudaMalloc(&closestD, size);
+
+		BHcu::treeClosestPointToPointsCalculationWrapper(nnTree, nnTree, closestD);
+
+		std::vector<int> closestH(size);
+		cudaMemcpy(closestH.data(), closestD, size, cudaMemcpyDeviceToHost);		
+		cudaFree(closestD);
+		*/
+
+
+
+
+// KFU
+//		bool useFastCollapseAlgorithm = false;
+//#if defined(__CUDACC__) || defined(USE_CUDA)		
+//		if (W.getPassport().numericalSchemes.velocityComputation.second == 1)
+//			useFastCollapseAlgorithm = true;
+//#endif 
+
+		//быстрый алгоритм (kNN) используется вместе с быстрым методом расчета скоростей как на GPU, так и на CPU
+		bool useFastCollapseAlgorithm = (W.getPassport().numericalSchemes.velocityComputation.second == 1);
 
 		if (!useFastCollapseAlgorithm)
 		{
@@ -915,7 +966,8 @@ void Wake::Restruct()
 				for (auto& d : initdist)
 					d.resize(2 * knbForRestruct, { -1.0, -1 });
 				double timeKnn = -omp_get_wtime();
-				WakekNNnewForCollaps(vtx, knbForRestruct, initdist, cSP, cRBP, maxG, epsCol, collapsStep);//CPU
+				WakekNNnewForCollaps(vtx, knbForRestruct, initdist, cSP, cRBP, maxG, epsCol, collapsStep);//CPU			
+				
 				timeKnn += omp_get_wtime();
 				//std::cout << "Time_Knn_CPU = " << timeKnn * 1000 << " ms" << std::endl;
 #else			
@@ -941,7 +993,35 @@ void Wake::Restruct()
 				cudaMemcpy(&maxr, knnTree.maxrD, sizeof(Point2D), cudaMemcpyDeviceToHost);
 
 
-				kNNcuda<knbForRestruct>(minr, maxr, W.getCuda().blocks, vtx, initdistcuda, vecForKnn, cSP, cRBP, maxG, epsCol, collapsStep);                             //CUDA
+				kNNcuda<knbForRestruct>(minr, maxr, W.getCuda().blocks, vtx, initdistcuda, vecForKnn, cSP, cRBP, maxG, epsCol, collapsStep);    //CUDA
+
+				///////////////////////////////////////
+				//CPU
+				//сравнение knn-cpu и knn-gpu
+				//std::vector<std::vector<std::pair<double, size_t>>> initdistcpu(vtx.size());
+				//for (auto& d : initdistcpu)
+				//	d.resize(2 * knbForRestruct, { -1.0, -1 });
+				//WakekNNnewForCollaps(vtx, knbForRestruct, initdistcpu, cSP, cRBP, maxG, epsCol, collapsStep);//CPU		
+				//std::ofstream knnCPUFile("knnCPU");
+				//std::ofstream knnGPUFile("knnGPU");
+				//for (int w = 0; w < vtx.size(); ++w)
+				//{
+				//	knnCPUFile << w << " " << vtx[w].r()[0] << " " << vtx[w].r()[1] << " ";
+				//	for (int z = 0; z < knbForRestruct; ++z)
+				//		knnCPUFile << initdistcpu[w][z].first << " " << initdistcpu[w][z].second << " ";
+				//	knnCPUFile << '\n';
+
+				//	knnGPUFile << w << " " << vtx[w].r()[0] << " " << vtx[w].r()[1] << " ";
+				//	for (int z = 0; z < knbForRestruct; ++z)
+				//		knnGPUFile << initdistcuda[w + z].first << " " << initdistcuda[w + z].second << " ";
+				//	knnGPUFile << '\n';
+				//}
+				//knnCPUFile.close();
+				//knnGPUFile.close();
+				//if (W.getCurrentStep() == 0)
+				//	exit(-1);
+				///////////////////////////////////////
+				
 				W.timerMerging.stop();
 				timeKnn += omp_get_wtime();
 				//std::cout << "Time_Knn_GPU = " << timeKnn * 1000 << " ms" << std::endl;
@@ -959,6 +1039,37 @@ void Wake::Restruct()
 						neighbNew[i * knbForRestruct + j] = (int)initdistcuda[i * knbForRestruct + j].second;
 #endif
 				}
+
+				//////////////////////////////////
+				//CPU
+				//std::vector<int> neighbNewCPU(neighbNew.size());
+				//for (int i = 0; i < vtx.size(); ++i)
+				//{
+				//	for (int j = 0; j < knbForRestruct; ++j)
+				//		neighbNewCPU[i * knbForRestruct + j] = (int)initdistcpu[i][j].second;
+				//}
+				//
+				//std::ofstream knnCPUFileNB("knnCPUnb");
+				//std::ofstream knnGPUFileNB("knnGPUnb");
+				//for (int w = 0; w < vtx.size(); ++w)
+				//{
+				//	knnCPUFileNB << w << " " << vtx[w].r()[0] << " " << vtx[w].r()[1] << " ";
+				//	for (int z = 0; z < knbForRestruct; ++z)
+				//		knnCPUFileNB << neighbNewCPU[w * knbForRestruct + z] << " ";
+				//	knnCPUFileNB << '\n';
+				//
+				//	knnGPUFileNB << w << " " << vtx[w].r()[0] << " " << vtx[w].r()[1] << " ";
+				//	for (int z = 0; z < knbForRestruct; ++z)
+				//		knnGPUFileNB << neighbNew[w * knbForRestruct + z] << " ";
+				//	knnGPUFileNB << '\n';
+				//}
+				//knnCPUFileNB.close();
+				//knnGPUFileNB.close();
+				//if (W.getCurrentStep() == 0)
+				//	exit(-1);
+				//////////////////////////////////
+
+
 				timeCopy += omp_get_wtime();
 				//std::cout << "timeCopy = " << timeCopy * 1000 << " ms" << std::endl;
 
@@ -992,7 +1103,7 @@ void Wake::Restruct()
 				//std::cout << "timeReserve = " << timeReserve * 1000 << " ms" << std::endl;
 
 
-#ifdef	USE_CUDA
+#ifdef USE_CUDA
 			//поиск пар для объединения			
 				int nHlop = CollapsNewFast(0, 1, ri, rj, rnew, rindex); //тут заполняются ri, rj, rnew, rindex
 

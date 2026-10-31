@@ -156,6 +156,12 @@ namespace VM2D
 		/// \param[out] I1 ссылка на вектор величин I1 (знаменателей в диффузионных скоростях) в требуемых точках
 		/// \param[out] I2 ссылка на вектор величин I2 (числителей в диффузионных скоростях) в требуемых точках
 		void CalcDiffVeloI1I2ToSetOfPointsFromWake(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2);
+
+		//KFU
+		/// \brief Быстрый (с деревом поиска соседей) расчет I1 и I2 от вихрей следа в точках этого же следа
+		///
+		/// Дает тот же результат, что и CalcDiffVeloI1I2ToSetOfPointsFromWake, с точностью до порядка суммирования
+		void CalcDiffVeloI1I2ToWakeFromWakeFast(const WakeDataBase& wakeDb, const std::vector<double>& domainRadius, std::vector<double>& I1, std::vector<Point2D>& I2);
 		void CalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2);
 		
 		void CalcDiffVeloI1I2ToWakeFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2);

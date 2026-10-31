@@ -702,14 +702,18 @@ void World2D::Step() // ЮИ
 			wake->Restruct();
 			wake->SaveKadrVtk();
 
-			//std::string fname = getPassport().dir + "/airfoil-" + std::to_string(getAirfoil(0).numberInPassport) + "-" + std::to_string(currentStep) + ".pfl";
-			////if (!fileExistTest(fname, W.getInfo()))
-			//{
-			//	std::ofstream of(fname);
-			//	for (size_t i = 0; i < getAirfoil(0).getNumberOfPanels(); ++i)
-			//		of << getAirfoil(0).getR(i)[0] << " " << getAirfoil(0).getR(i)[1] << std::endl;
-			//	of.close();
-			//}
+			//KFU
+			//Сохранение текущей формы профилей вместе с кадрами вихревого следа (для деформируемых и движущихся тел)
+			if (ifDivisible(passport.timeDiscretizationProperties.saveVtxStep))
+				for (size_t q = 0; q < getNumberOfAirfoil(); ++q)
+					if ((currentStep == 0) || (mechanics[q]->isDeform || mechanics[q]->isMoves))
+					{
+						VMlib::CreateUserDirectory(passport.dir, "snapshots");
+						std::ofstream of(passport.dir + "snapshots/" + VMlib::fileNameStep("Airfoil" + std::to_string(q) + "-", passport.timeDiscretizationProperties.nameLength, currentStep, "pfl"));
+						for (size_t i = 0; i < getAirfoil(q).getNumberOfPanels(); ++i)
+							of << getAirfoil(q).getR(i)[0] << " " << getAirfoil(q).getR(i)[1] << '\n';
+						of.close();
+					}
 
 		}//if (!semiImplicitStrategy)
 

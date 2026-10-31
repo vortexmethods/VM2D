@@ -329,6 +329,7 @@ void Passport::GetParamsFromParser
 		parser->get("delta", wakeDiscretizationProperties.delta, &defaults::defaultDelta);
 		parser->get("vortexPerPanel", wakeDiscretizationProperties.minVortexPerPanel, &defaults::defaultVortexPerPanel);
 		parser->get("maxGamma", wakeDiscretizationProperties.maxGamma, &defaults::defaultMaxGamma);
+
 		if (wakeDiscretizationProperties.maxGamma == 0.0)
 			wakeDiscretizationProperties.maxGamma = 1e+10;
 	}
@@ -592,6 +593,7 @@ void Passport::PrintAllParams()
 	info('-') << "delta = " << wakeDiscretizationProperties.delta << std::endl;
 	info('-') << "vortexPerPanel = " << wakeDiscretizationProperties.minVortexPerPanel << std::endl;
 	info('-') << "maxGamma = " << ((wakeDiscretizationProperties.maxGamma == 1e+10) ? 0.0 : wakeDiscretizationProperties.maxGamma) << std::endl;
+	
 	info('-') << "linearSystemSolver = " << numericalSchemes.linearSystemSolver.first << std::endl;
 	if (numericalSchemes.linearSystemSolver.second == 1 || numericalSchemes.linearSystemSolver.second == 2)
 	{

@@ -589,6 +589,28 @@ namespace VM2D
                 }
 
                 //if (treeType == tree_T::contr)
+                if (controlCellSize > 0)
+                {
+                    //KFU
+                    //контрольные ячейки --- наибольшие ячейки, содержащие не более controlCellSize объектов
+                    //(их размер подстраивается под локальную плотность, а не определяется габаритом всего облака)
+                    auto count = [this, nObject](int node) -> int
+                    {
+                        return (node == 0) ? nObject : (range[node].second - range[node].first + 1);
+                    };
+
+                    for (int i = 0; i < nObject - 1; ++i)
+                    {
+                        if (count(i) <= controlCellSize && (i == 0 || count(parent[i]) > controlCellSize))
+                            indexControlCells.push_back(i);
+                    }
+                    for (int i = 0; i < nObject; ++i)
+                    {
+                        if (nObject == 1 || count(parent[nObject + i]) > controlCellSize)
+                            indexControlCells.push_back(nObject + i);
+                    }
+                }
+                else
                 {
                     for (int i = 0; i < nObject - 1; ++i)
                     {

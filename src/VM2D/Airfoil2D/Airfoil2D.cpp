@@ -49,6 +49,7 @@
 #include "World2D.h"
 #include "Wake2D.h"
 #include "Gmres2D.h"
+#include "cpuNeighborTree.h"
 
 #include "spline/spline.h"
 #ifdef USE_CUDA
@@ -521,19 +522,42 @@ void Airfoil::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataB
 	double iDDomRad, domRad, expon;
 #pragma warning (pop)
 
-#pragma omp parallel for \
+	//Вклад панели j отличен от нуля только при d < 50 len[j] и |s| < 50 len[j],
+	//поэтому точки вне габаритного прямоугольника, расширенного на 50*sqrt(2)*max(len), можно пропустить
+	const double cutoff = 50.0 * sqrt(2.0) * (*std::max_element(len.begin(), len.end())) * (1.0 + 1e-12);
+	const Point2D cutLowLeft = lowLeft - Point2D({ cutoff, cutoff });
+	const Point2D cutUpRight = upRight + Point2D({ cutoff, cutoff });
+
+	//пороги ближней зоны и разбиение панели (см. описание параметра surfDiffScheme в паспорте)
+	const double nearD = 0.01;
+	const double nearS = 0.45;
+	const double splitCoef = 10.0;
+	const int maxSplit = 20;
+
+#pragma omp parallel \
 	default(none) \
 	shared(domainRadius, pointsDb, selfI0, selfI3, currViscousStress, PI) \
-	private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, domRad, iDDomRad) schedule(dynamic, DYN_SCHEDULE)
+	private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, domRad, iDDomRad)
+	{
+	//у каждого потока свой массив для вязких напряжений (вместо omp atomic на каждую пару)
+	std::vector<double> locViscousStress(r_.size(), 0.0);
+
+#pragma omp for schedule(dynamic, 100)
 	for (int i = 0; i < pointsDb.vtx.size(); ++i)
 	{
 		const Vortex2D& vtxI = pointsDb.vtx[i];
+
+		if ((vtxI.r()[0] < cutLowLeft[0]) || (vtxI.r()[0] > cutUpRight[0]) || (vtxI.r()[1] < cutLowLeft[1]) || (vtxI.r()[1] > cutUpRight[1]))
+			continue;
 
 		domRad = std::max(domainRadius[i], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
 		iDDomRad = 1.0 / domRad;
 
 		for (size_t j = 0; j < r_.size(); ++j)
 		{
+			double iDDomRadVS = 1.0 / meanEpsOverPanel[j];
+			double DomRadVS2 = sqr(meanEpsOverPanel[j]);
+
 			vs = 0.0;
 			q = vtxI.r() - 0.5 * (getR(j) + getR(j + 1));
 			vec = tau[j];
@@ -553,29 +577,28 @@ void Airfoil::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataB
 					expon = exp(-lxi) * len[j];
 					mn = nrm[j] * expon;
 
-					//if (selfI0[i] != -PI * domRad)
-					//{
-						selfI0[i] += (xi & mn) * (lxi + 1.0) / (lxi * lxi);
-						selfI3[i] += mn;
-					//}
+					selfI0[i] += (xi & mn) * (lxi + 1.0) / (lxi * lxi);
+					selfI3[i] += mn;
 
-					vs = vtxI.g() * expon / (PI * sqr(meanEpsOverPanel[j]));
+					
+					xi = q * iDDomRadVS;
+					lxi = xi.length();
+					expon = exp(-lxi) * len[j];
+					vs = vtxI.g() * expon / (PI * DomRadVS2);
 				}
-				else if ((d >= 0.1 * len[j]) || (fabs(s) > 0.5 * len[j]))
+				else if ((d >= nearD * len[j]) || (fabs(s) > nearS * len[j]))
 				{
 					vs = 0.0;
 					double den = (fabs(s) < 0.5 * len[j]) ? d : (fabs(s) + d - 0.5 * len[j]);
 
-					new_n = std::max(1, static_cast<int>(ceil(5.0 * len[j] / den)));
-					//new_n = 100;
-					h = v0 * (1.0 / new_n);
+					new_n = (int)(std::min((double)maxSplit, std::max(1.0, ceil(splitCoef * len[j] / den))));
+					h = v0 * (1.0 / new_n);					
+					lenj_m = len[j] / new_n;
 
 					for (int m = 0; m < new_n; ++m)
-					{
+					{						
 						xi_m = (vtxI.r() - (getR(j) + h * (m + 0.5))) * iDDomRad;
-						lxi_m = xi_m.length();
-
-						lenj_m = len[j] / new_n;
+						lxi_m = xi_m.length();						
 						expon = exp(-lxi_m) * lenj_m;
 
 						mn = nrm[j] * expon;
@@ -584,31 +607,35 @@ void Airfoil::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataB
 							selfI0[i] += (xi_m & mn) * (lxi_m + 1.0) / (lxi_m * lxi_m);
 							selfI3[i] += mn;
 						}
+
+						xi_m = (vtxI.r() - (getR(j) + h * (m + 0.5))) * iDDomRadVS;
+						lxi_m = xi_m.length();
+						expon = exp(-lxi_m) * lenj_m;
+
 						vs += expon;
 					}//for m
-					vs *= vtxI.g() / (PI * sqr(meanEpsOverPanel[j]));
+					vs *= vtxI.g() / (PI * DomRadVS2);
 				}
 				else
 				{
-
 					selfI0[i] += -PI * domRad;
 					double mnog = 2.0 * domRad * (1.0 - exp(-len[j] * iDDomRad / 2.0) * cosh(fabs(s) * iDDomRad));
 					selfI3[i] += nrm[j] * mnog;
-					vs = mnog * vtxI.g() / (PI * sqr(meanEpsOverPanel[j]));
+					
+					mnog = 2.0 / iDDomRadVS * (1.0 - exp(-len[j] * iDDomRadVS / 2.0) * cosh(fabs(s) * iDDomRadVS));					
+					vs = mnog* vtxI.g() / (PI * DomRadVS2);
 				}
 			}//if d<50 len 
 
-#pragma omp atomic
-			currViscousStress[j] += vs;
+			locViscousStress[j] += vs;
 		}//for j
 	}//for i
 
+#pragma omp critical
+	for (size_t j = 0; j < currViscousStress.size(); ++j)
+		currViscousStress[j] += locViscousStress[j];	
+	}//omp parallel
 
-	if (&pointsDb == &(W.getWake()))
-		for (size_t i = 0; i < viscousStress.size(); ++i)
-		{
-			viscousStress[i] += currViscousStress[i];
-		}
 
 	for (size_t i = 0; i < I0.size(); ++i)
 	{
@@ -690,6 +717,16 @@ void Airfoil::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(std::vector<
 						I0[q] += newI0[q];
 						I3[q] += newI3[q];
 					}
+				}
+
+				size_t curGlobPnl = 0;
+				for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)
+				{
+					std::vector<double>& tmpVisStress = W.getNonConstAirfoil(s).tmpViscousStresses;
+					const size_t& np = W.getAirfoil(s).getNumberOfPanels();
+					tmpVisStress.resize(0);
+					tmpVisStress.insert(tmpVisStress.end(), newViscousStress.begin() + curGlobPnl, newViscousStress.begin() + curGlobPnl + np);
+					curGlobPnl += np;
 				}
 			}
 			else

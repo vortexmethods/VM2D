@@ -48,6 +48,8 @@
 #include "World2D.h"
 #include "Gmres2D.h"
 
+#include "cpuNeighborTree.h"
+
 
 // Fast Multipole Method
 #ifdef USE_FMM
@@ -68,7 +70,14 @@ void Velocity::CalcDiffVeloI1I2()
 	else
 		GPUDiffVeloFAST(wakeVortexesParams.epsastWake, wakeVortexesParams.I1, wakeVortexesParams.I2);		
 #else
-	CalcDiffVeloI1I2ToWakeFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);	
+
+	//CalcDiffVeloI1I2ToWakeFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);	
+    //
+    // KFU
+	if (W.getPassport().numericalSchemes.velocityComputation.second == 0)
+		CalcDiffVeloI1I2ToWakeFromWake(W.getWake(), wakeVortexesParams.epsastWake, W.getWake(), wakeVortexesParams.I1, wakeVortexesParams.I2);	
+	else
+		CalcDiffVeloI1I2ToWakeFromWakeFast(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I1, wakeVortexesParams.I2);
 #endif
 
 	 
@@ -113,7 +122,16 @@ void Velocity::CalcDiffVeloI0I3()
 		W.getNonConstAirfoil(afl).GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);
 #endif
 	}	
+	
 
+	//Слагаемое, связанное с движением стенки: t_tau = mu * (omega_w + 2 n * dU_w/ds),
+	//dU_w/ds на панели j --- (V_{j+1} - V_j) / len[j]; для вращения тела как целого оно дает поправку -2 mu Omega
+	for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
+	{
+		auto& A = W.getNonConstAirfoil(afl);
+		for (size_t j = 0; j < A.getNumberOfPanels(); ++j)		
+			A.viscousStress[j] += 2.0 * (A.nrm[j] & (A.getV(j + 1) - A.getV(j)));		
+	}
 
 	//влияние поверхности
 	Point2D I3;
@@ -181,7 +199,7 @@ void Velocity::CalcDiffVelo()
 			for (size_t i = 0; i < W.getAirfoil(afl).viscousStress.size(); ++i)
 				W.getNonConstAirfoil(afl).viscousStress[i] *= W.getPassport().physicalProperties.nu;
 
-		//SaveVisStress();
+		SaveVisStress();
 		
 
 		//Заполнение структуры данных виртуальных вихрей
@@ -267,6 +285,75 @@ void Velocity::CalcDiffVeloI1I2ToSetOfPointsFromWake(const WakeDataBase& pointsD
 }//CalcDiffVeloI1I2ToSetOfPointsFromWake(...)
 
 
+//KFU
+//Быстрый расчет числителей и знаменателей диффузионных скоростей вихрей следа от вихрей этого же следа
+void Velocity::CalcDiffVeloI1I2ToWakeFromWakeFast(const WakeDataBase& wakeDb, const std::vector<double>& domainRadius, std::vector<double>& I1, std::vector<Point2D>& I2)
+{
+	const std::vector<Vortex2D>& vtx = wakeDb.vtx;
+	const int n = (int)vtx.size();
+	const double minEpsAst = W.getPassport().wakeDiscretizationProperties.getMinEpsAst();
+
+	NeighborTree tree;
+	tree.Build(n, [&vtx](int i) -> const Point2D& { return vtx[i].r(); });
+
+	std::vector<double> gSorted(n);
+#pragma omp parallel for
+	for (int k = 0; k < n; ++k)
+		gSorted[k] = vtx[tree.idx[k]].g();
+
+#pragma omp parallel
+	{
+		std::vector<int> cand;
+		cand.reserve(256);
+
+#pragma omp for schedule(dynamic, 4)
+		for (int leaf = 0; leaf < tree.nLeaves; ++leaf)
+		{
+			/// \todo Понять природу магической константы 8.0 и синхронизировать с GPU (см. CalcDiffVeloI1I2ToSetOfPointsFromWake)
+			double maxDiffRadius = 0.0;
+			for (int k = tree.LeafBegin(leaf); k < tree.LeafEnd(leaf); ++k)
+				maxDiffRadius = std::max(maxDiffRadius, 8.0 * std::max(domainRadius[tree.idx[k]], minEpsAst));
+
+			tree.CollectLeaves(tree.LeafBox(leaf), maxDiffRadius, cand);
+
+			for (int k = tree.LeafBegin(leaf); k < tree.LeafEnd(leaf); ++k)
+			{
+				const int i = tree.idx[k];
+				const Point2D& posI = tree.pos[k];
+				const double domRad = std::max(domainRadius[i], minEpsAst);
+				const double iDomRad = 1.0 / domRad;
+				const double diffRadius2 = sqr(8.0 * domRad);
+
+				double selfI1 = 0.0;
+				Point2D selfI2 = { 0.0, 0.0 };
+
+				for (int c : cand)
+				{
+					if (tree.LeafBox(c).Dist2(posI) >= diffRadius2)
+						continue;
+
+					for (int m = tree.LeafBegin(c); m < tree.LeafEnd(c); ++m)
+					{
+						const Point2D Rij = posI - tree.pos[m];
+						const double rij2 = Rij.length2();
+						if (rij2 < diffRadius2 && rij2 > 1.e-20)
+						{
+							const double rij = sqrt(rij2);
+							const double expr = gSorted[m] * exp(-rij * iDomRad);
+							selfI2 += (expr / rij) * Rij;
+							selfI1 += expr;
+						}
+					}
+				}
+
+				I1[i] += selfI1;
+				I2[i] += selfI2;
+			}
+		}
+	}
+}//CalcDiffVeloI1I2ToWakeFromWakeFast(...)
+
+
 //Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек
 void Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2)
 {
@@ -290,6 +377,69 @@ void Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& point
 #pragma warning (pop)
 
 
+//Оптимизированный алгоритм
+//KFU
+	/// \todo Сделать переменной и синхронизировать с GPU
+	const int nQuadPt = 3;
+
+	//квадратурные точки на панелях и их интенсивности вычисляются один раз
+	const size_t nPnl = bnd.afl.getNumberOfPanels();
+	std::vector<Point2D> quadPt(nPnl * nQuadPt);
+	std::vector<double> quadG(nPnl * nQuadPt);
+	NbBox quadBox;
+	quadBox.SetEmpty();
+	for (size_t j = 0; j < nPnl; ++j)
+	{
+		/// \todo Учитываем пока только нулевой момент решения
+		const double ptG = bnd.sheets.freeVortexSheet(j, 0) * bnd.afl.len[j] / nQuadPt;
+		for (int q = 0; q < nQuadPt; ++q)
+		{
+			quadPt[j * nQuadPt + q] = bnd.afl.getR(j) + bnd.afl.tau[j] * (q + 0.5) * bnd.afl.len[j] * (1.0 / nQuadPt);
+			quadG[j * nQuadPt + q] = ptG;
+			quadBox.Add(quadPt[j * nQuadPt + q]);
+		}
+	}
+
+#pragma omp parallel for default(none) shared(selfI1, selfI2, domainRadius, pointsDb, quadPt, quadG, quadBox) private(Rij, rij, expr, domRad, diffRadius, left, right, posJx)
+	for (int i = 0; i < pointsDb.vtx.size(); ++i)
+	{
+		const Vortex2D& vtxI = pointsDb.vtx[i];
+
+		domRad = std::max(domainRadius[i], W.getPassport().wakeDiscretizationProperties.getMinEpsAst());
+
+		/// \todo Понять природу магической константы 8.0 и синхронизировать с GPU
+		diffRadius = 8.0 * domRad;
+
+		//точки, удаленные от всех квадратурных точек более чем на diffRadius, вклада не получают
+		if (quadBox.Dist2(vtxI.r()) >= diffRadius * diffRadius)
+			continue;
+
+		left = vtxI.r()[0] - diffRadius;
+		right = vtxI.r()[0] + diffRadius;
+
+		for (size_t jq = 0; jq < quadPt.size(); ++jq)
+		{
+			const Point2D& ptJ = quadPt[jq];
+			posJx = ptJ[0];
+
+			if ((left < posJx) && (posJx < right))
+			{
+				Rij = vtxI.r() - ptJ;
+				rij = Rij.length();
+				if (rij < diffRadius && rij > 1.e-10)
+				{
+					expr = exp(-rij / domRad);
+					selfI2[i] += (quadG[jq] * expr / rij) * Rij;
+					selfI1[i] += quadG[jq] * expr;
+				}
+			}//if (rij>1e-6)
+		}//for jq
+	} // for r
+
+
+
+// Старый "лобовой" алгоритм
+/* 
 #pragma omp parallel for default(none) shared(selfI1, selfI2, domainRadius, bnd, pointsDb, std::cout) private(Rij, rij, expr, domRad, diffRadius, left, right, posJx)
 	for (int i = 0; i < pointsDb.vtx.size(); ++i)
 	{
@@ -330,6 +480,9 @@ void Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& point
 			}
 		}//for j
 	} // for r
+*/
+
+
 
 	for (size_t i = 0; i < I1.size(); ++i)
 	{
@@ -605,7 +758,9 @@ void Velocity::SaveVisStress()
 			for (size_t i = 0; i < W.getAirfoil(q).viscousStress.size(); ++i)
 			{
 				const Point2D& r = 0.5 * (W.getAirfoil(q).getR(i + 1) + W.getAirfoil(q).getR(i));
-				double gi = W.getAirfoil(q).viscousStress[i];
+				
+				//Делим обратно на длину панели, чтобы получить размерность напряжения
+				double gi = W.getAirfoil(q).viscousStress[i] / W.getAirfoil(q).len[i];
 				outfile << static_cast<int>(i) << " " << r[0] << " " << r[1] << " " << gi << std::endl;
 			}//for i	
 			outfile.close();
@@ -1113,7 +1268,12 @@ void Velocity::CalcConvVelo()
 	{
 		if (W.getPassport().numericalSchemes.velocityComputation.second == 1)
 		{
-			int estOptLevel = std::max(4, (int)(log2(W.getWake().vtx.size())) - 2);
+			//KFU
+			//более глубокий уровень контрольных ячеек заметно ускоряет обход дерева на CPU при той же точности
+			int estOptLevel = std::max(4, (int)(log2(W.getWake().vtx.size())));
+			//контрольные ячейки по числу вихрей (не более 128), а не по уровню: иначе по мере удлинения следа
+			//ячейки в плотной области у тела укрупняются и обход дерева сильно замедляется
+			W.getInflTreeWake().controlCellSize = 128;
 
 			timeUpd1 = W.getInflTreeWake().Update(W.getWake().vtx, estOptLevel);
 			timeBld1 = W.getInflTreeWake().Build();

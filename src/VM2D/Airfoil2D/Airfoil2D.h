@@ -381,6 +381,7 @@ namespace VM2D
 		/// 
 		/// \warning Векторы I0, I3 --- накапливаются!
 		virtual void GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataBase& pointsDb, std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
+
 #if defined(USE_CUDA)
 		virtual void GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(std::vector<double>& domainRadius, std::vector<double>& I0, std::vector<Point2D>& I3);
 #endif

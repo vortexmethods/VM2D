@@ -42,6 +42,7 @@
 #include "Gpudefs.h"
 #include <algorithm>
 #include <omp.h>
+#include <iostream>
 
 namespace knnNew
 {
@@ -196,14 +197,10 @@ namespace knnNew
 			double elem = mass[i].first;
 
 			cnt = 0;
-			for (size_t j = 0; j < k; ++j) 
-				cnt += (mass[j].first < elem);
-			
-			//Это для того, чтобы сортировка была устойчивой? Без этого никак?
-			//&&&
-			//for (size_t j = 0; j < i; ++j)
-			//	cnt += (mass[j].first == elem);
-			
+			for (size_t j = 0; j < k; ++j)
+				//cnt += (mass[j].first < elem);
+				cnt += (mass[j].first < elem) || (mass[j].first == elem && j < i);
+		
 			dstKeys[cnt] = mass[i];
 		}
 		mass.swap(dstKeys);
@@ -436,13 +433,16 @@ void WakekNNnewForCollaps(const std::vector<Vortex2D>& vtx, const size_t k, std:
 
 			if (sdvig == 0)
 			{
+				dstKeys1.assign(2 * k, { 0.0, 0 });
 				newSort(initdist[mcdata[i].originNumber], dstKeys1);
 				initdist[mcdata[i].originNumber].resize(k);
 			}
 			else
 			{
+				dstKeys1.assign(2 * k, { 0.0, 0 });
 				newSort(dist, dstKeys1);
 				newMerge(mcdata[i].originNumber, initdist[mcdata[i].originNumber], dist, loc, counter, offset, counterScan, updateNN);
+				dstKeys.assign(k, { 0.0, 0 });
 				newSort(initdist[mcdata[i].originNumber], dstKeys);
 			}
 		}
@@ -453,142 +453,3 @@ void WakekNNnewForCollaps(const std::vector<Vortex2D>& vtx, const size_t k, std:
 
 	}//for sdvig
 } // WakekNNnewForCollaps
-
-
-/*
-void WakekNNnewForEpsast(const std::vector<BH::PointsCopy>& vtx, const size_t k, std::vector<std::vector<std::pair<double, size_t>>>& initdist)
-{
-	using namespace knnNew;
-
-	double preTime = -omp_get_wtime();
-
-	const size_t n = vtx.size();
-
-	/// Поиск границ габаритного прямоугольника (левый нижний и правый верхний) 
-	auto xx = std::minmax_element(vtx.begin(), vtx.end(), [](const Vortex2D& P1, const Vortex2D& P2) {return P1.r()[0] < P2.r()[0]; });
-	auto yy = std::minmax_element(vtx.begin(), vtx.end(), [](const Vortex2D& P1, const Vortex2D& P2) {return P1.r()[1] < P2.r()[1]; });
-
-	double scale = std::max(xx.second->r()[0] - xx.first->r()[0], yy.second->r()[1] - yy.first->r()[1]);
-
-	//сортировка массива (data) по мортоновским кодам
-	std::vector<unsigned int> s(256 * omp_get_max_threads());
-
-	std::vector<TParticleCode> mcdata(vtx.size());
-	std::vector<TParticleCode> mcdata_temp(vtx.size());
-
-	//std::vector<unsigned int> iq;
-
-	//Сдвигаем все точки
-	const int nSdvig = 5;
-	double tStart[nSdvig], tFinish[nSdvig];
-	double tm[nSdvig][5];
-
-	preTime += omp_get_wtime();
-
-	std::pair<double, size_t> zeroPair = std::make_pair<double, size_t>(0.0, 0);
-	std::pair<double, size_t> minusOnePair = std::make_pair<double, size_t>(-1.0, 0);
-
-	std::vector<std::pair<double, size_t>> dist(2 * k, { -1.0, 0 });
-	std::vector<size_t> loc(2 * k);
-	std::vector<size_t> counter(2 * k, 0);
-	std::vector<size_t> offset(2 * k, 0);
-	std::vector<size_t> counterScan(2 * k, 0);
-	std::vector<std::pair<double, size_t>> dstKeys1(2 * k, zeroPair);
-
-	std::vector<std::pair<double, size_t>> updateNN(k, zeroPair);
-	std::vector<std::pair<double, size_t>> dstKeys(k, zeroPair);
-
-	//14-05-2024
-	for (size_t sdvig = 0; sdvig < nSdvig; ++sdvig)
-	{
-		tStart[sdvig] = omp_get_wtime();
-
-		const Point2D& lowLeft = { xx.first->r()[0], yy.first->r()[1] };
-		double* time = tm[sdvig];
-
-		//масштабирование координат вихрей в [0;0.75)^2, поиск их мортоновских кодов 
-
-		time[0] = omp_get_wtime();
-#pragma omp parallel for
-		for (int i = 0; i < vtx.size(); ++i)
-		{
-			Point2D sh = (vtx[i].r() - lowLeft) * (0.75 / scale) + sdvig * Point2D{ 0.05, 0.05 };
-			mcdata[i].key = Morton2D(sh);
-			mcdata[i].originNumber = i;
-		}
-
-		time[1] = omp_get_wtime();
-
-		//сортировка единого массива (data и query) по мортоновским кодам			
-		RSort_Parallel(mcdata.data(), mcdata_temp.data(), (int)mcdata.size(), s.data());
-
-		time[2] = omp_get_wtime();
-
-		for (size_t idx = 0; idx < 2 * k; ++idx)
-		{
-			dist[idx] = minusOnePair;
-			dstKeys1[idx] = zeroPair;
-			loc[idx] = counter[idx] = offset[idx] = counterScan[idx] = 0;
-		}
-
-		for (size_t idx = 0; idx < k; ++idx)
-			updateNN[idx] = dstKeys[idx] = zeroPair;
-
-		time[3] = omp_get_wtime();
-
-#pragma omp parallel for firstprivate(dist, loc, counter, offset, counterScan, updateNN, dstKeys, dstKeys1)
-		for (int i = 0; i < initdist.size(); ++i)
-		{
-			const Vortex2D& vtxi = vtx[mcdata[i].originNumber];
-
-			int cntr = 0;
-			int search = i - 1; // iq[i];
-			std::vector<std::pair<double, size_t>>& fillPosition = ((sdvig == 0) ? initdist[mcdata[i].originNumber] : dist);
-
-			while ((cntr < k) && (search >= 0))
-			{
-				const Vortex2D& vtxk = vtx[mcdata[search].originNumber];
-				double d2 = (vtxi.r()-vtxk.r()).length2();
-				fillPosition[cntr++] = { d2, mcdata[search].originNumber };
-				--search;
-			}
-
-			for (int w = cntr; w < k; ++w)
-				fillPosition[cntr++] = { 100000000.0, 0 };
-
-			search = i + 1;
-
-			while ((cntr < 2 * k) && (search < mcdata.size()))
-			{
-				const Vortex2D& vtxk = vtx[mcdata[search].originNumber];
-				double d2 = (vtxi.r() - vtxk.r()).length2();
-				fillPosition[cntr++] = { d2,  mcdata[search].originNumber };
-				++search;
-			}
-			for (int w = cntr; w < 2 * k; ++w)
-				fillPosition[cntr++] = { 100000000.0, 0 };
-
-			if (sdvig == 0)
-			{
-				newSort(initdist[mcdata[i].originNumber], dstKeys1);
-				initdist[mcdata[i].originNumber].resize(k);
-			}
-			else
-			{
-				newSort(dist, dstKeys1);
-				newMerge(mcdata[i].originNumber, initdist[mcdata[i].originNumber], dist, loc, counter, offset, counterScan, updateNN);
-				newSort(initdist[mcdata[i].originNumber], dstKeys);
-			}
-		}
-
-		time[4] = omp_get_wtime();
-
-		tFinish[sdvig] = omp_get_wtime();
-
-	}//for sdvig
-
-	//for (size_t sd = 0; sd < nSdvig; ++sd)
-	//	std::cout << "knn[" << sd << "] = " << tFinish[sd] - tStart[sd] << "sec. " << std::endl;
-
-} // WakekNNnewForEpsast
-*/

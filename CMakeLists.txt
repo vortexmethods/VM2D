@@ -4,10 +4,11 @@ project(VM)
 
 ##############################################
 
-set(ENABLE_CUDA ON)
+option(ENABLE_CUDA "Build GPU (CUDA) version" ON)
 set(CUDA_ARCHITECTURE "70")
 set(ENABLE_CUDNN OFF)
 set(ENABLE_FMM OFF)
+option(VM_NATIVE "Optimize for the host CPU (-O3 -march=native)" ON)
 
 ##############################################
 
@@ -41,7 +42,11 @@ else()
 	if (WIN32)
 	   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 	else()
-	   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wno-deprecated-declarations")
+	   if (VM_NATIVE)
+	      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native -Wno-deprecated-declarations")
+	   else()
+	      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wno-deprecated-declarations")
+	   endif()
 	endif()
 
 endif()

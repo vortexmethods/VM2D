@@ -97,6 +97,9 @@ namespace VM2D
     public:
         int controlLevel;
 
+        /// Если больше нуля, контрольные ячейки выбираются не по уровню controlLevel, а как наибольшие ячейки, содержащие не более controlCellSize объектов
+        //KFU
+        int controlCellSize = 0;
         std::vector<Point2D> object;
         std::vector<double> gamma;
         std::vector<double> sigma;

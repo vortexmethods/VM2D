@@ -366,7 +366,7 @@ void MechanicsDeformable::GetHydroDynamForce()
 		double gAttOld = 0.0;
 		if (W.getCurrentStep() > 0)
 		{
-			auto oldAfl = W.getOldAirfoil(numberInPassport);
+			const AirfoilGeometry& oldAfl = W.getOldAirfoil(numberInPassport);
 			gAttOld = ((0.5 * (oldAfl.getV(i) + oldAfl.getV(i + 1))) & oldAfl.tau[i]);
 		}
 
