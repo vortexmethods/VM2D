@@ -636,6 +636,7 @@ void Airfoil::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataB
 		currViscousStress[j] += locViscousStress[j];	
 	}//omp parallel
 
+	viscousStress = currViscousStress;
 
 	for (size_t i = 0; i < I0.size(); ++i)
 	{
