@@ -536,7 +536,7 @@ void Airfoil::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataB
 
 #pragma omp parallel \
 	default(none) \
-	shared(domainRadius, pointsDb, selfI0, selfI3, currViscousStress, PI) \
+	shared(domainRadius, pointsDb, selfI0, selfI3, currViscousStress, cutLowLeft, cutUpRight, PI, nearD, nearS, splitCoef, maxSplit) \
 	private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, domRad, iDDomRad)
 	{
 	//у каждого потока свой массив для вязких напряжений (вместо omp atomic на каждую пару)

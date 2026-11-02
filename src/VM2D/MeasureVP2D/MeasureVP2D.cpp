@@ -345,7 +345,7 @@ void MeasureVP::CalcPressure()
 		wakeData[j].sigma2 = sqr(W.getWake().vtx[j].sigma());
 	}
 
-#pragma omp parallel for default(none) private(alpha, lambda, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, V0, addWSize, std::cout, IDPI) 
+#pragma omp parallel for default(none) private(alpha, lambda, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, V0, addWSize, wakeData, std::cout, IDPI) 
 	for (int i = 0; i < addWSize; ++i)
 	{
 		

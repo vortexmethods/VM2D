@@ -1427,7 +1427,7 @@ namespace BHcu
             double2 stack[32];
             double2* stack_ptr = stack;
 
-            double4 gab0 = Mlowerupperd[0];
+            //double4 gab0 = Mlowerupperd[0];
 
             double md2 = 0;
             int nearestLocation = -1;

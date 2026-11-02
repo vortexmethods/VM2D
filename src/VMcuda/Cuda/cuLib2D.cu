@@ -1228,7 +1228,7 @@ __global__ void CU_calc_pres(
 	__shared__ double shattgamold[CUBLOCK];
 	__shared__ double shattsrc[CUBLOCK];
 	__shared__ double shattsrcold[CUBLOCK];
-	__shared__ double shgamthroughintensity[CUBLOCK];
+	//__shared__ double shgamthroughintensity[CUBLOCK];
 
 	double ipx, ipy;
 
@@ -1299,7 +1299,7 @@ __global__ void CU_calc_pres(
 
 			shattsrc[threadIdx.x] = attsource[pn + threadIdx.x];
 			shattsrcold[threadIdx.x] = devOldSourceSheet[pn + threadIdx.x];
-			shgamthroughintensity[threadIdx.x] = devGammaThroughIntensity[pn + threadIdx.x];
+			//shgamthroughintensity[threadIdx.x] = devGammaThroughIntensity[pn + threadIdx.x];
 		}
 
 		__syncthreads();
