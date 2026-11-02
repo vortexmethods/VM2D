@@ -525,7 +525,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  345</span>        wakeData[j].sigma2 = <a class="code hl_function" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getWake().vtx[j].sigma());</div>
 <div class="line"><span class="lineno">  346</span>    }</div>
 <div class="line"><span class="lineno">  347</span> </div>
-<div class="line"><span class="lineno">  348</span><span class="preprocessor">#pragma omp parallel for default(none) private(alpha, lambda, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, V0, addWSize, std::cout, IDPI) </span></div>
+<div class="line"><span class="lineno">  348</span><span class="preprocessor">#pragma omp parallel for default(none) private(alpha, lambda, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, V0, addWSize, wakeData, std::cout, IDPI) </span></div>
 <div class="line"><span class="lineno">  349</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; addWSize; ++i)</div>
 <div class="line"><span class="lineno">  350</span>    {</div>
 <div class="line"><span class="lineno">  351</span>        </div>

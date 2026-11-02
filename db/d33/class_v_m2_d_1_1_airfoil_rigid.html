@@ -1201,7 +1201,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  536</span> </div>
 <div class="line"><span class="lineno">  537</span><span class="preprocessor">#pragma omp parallel \</span></div>
 <div class="line"><span class="lineno">  538</span><span class="preprocessor">    default(none) \</span></div>
-<div class="line"><span class="lineno">  539</span><span class="preprocessor">    shared(domainRadius, pointsDb, selfI0, selfI3, currViscousStress, PI) \</span></div>
+<div class="line"><span class="lineno">  539</span><span class="preprocessor">    shared(domainRadius, pointsDb, selfI0, selfI3, currViscousStress, cutLowLeft, cutUpRight, PI, nearD, nearS, splitCoef, maxSplit) \</span></div>
 <div class="line"><span class="lineno">  540</span><span class="preprocessor">    private(xi, xi_m, lxi, lxi_m, lenj_m, v0, q, new_n, mn, h, d, s, vec, vs, expon, domRad, iDDomRad)</span></div>
 <div class="line"><span class="lineno">  541</span>    {</div>
 <div class="line"><span class="lineno">  542</span>    <span class="comment">//у каждого потока свой массив для вязких напряжений (вместо omp atomic на каждую пару)</span></div>
