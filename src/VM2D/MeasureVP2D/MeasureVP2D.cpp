@@ -400,6 +400,7 @@ void MeasureVP::CalcPressure()
 		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 		{
 			const Point2D& rcm = W.getAirfoil(bou).rcm;
+			const Point2D& startOfWays = W.getAirfoil(bou).startOfWays;
 
 
 			//
@@ -451,13 +452,14 @@ void MeasureVP::CalcPressure()
 				//	W.getInfo('i') << "Pressure computation is incorrect, way inside airfoil is undefined" << std::endl;				
 
 				if (way == 0)
-					alpha = atan2((cPan - pt) ^ (rcm - pt), (cPan - pt) & (rcm - pt));
+					//alpha = atan2((cPan - pt) ^ (rcm - pt), (cPan - pt) & (rcm - pt));
+					alpha = atan2((cPan - pt) ^ (startOfWays - pt), (cPan - pt) & (startOfWays - pt));
 				else
 					if (way > 0)
 					{
 						for (int q = 0; q < W.getAirfoil(bou).possibleWays[way - 1].size() + 1; ++q)
 						{
-							Point2D start = ((q == 0) ? rcm : W.getAirfoil(bou).possibleWays[way - 1][q - 1]);
+							Point2D start = ((q == 0) ? startOfWays : W.getAirfoil(bou).possibleWays[way - 1][q - 1]);
 							Point2D finish = ((q == W.getAirfoil(bou).possibleWays[way - 1].size()) ? cPan : W.getAirfoil(bou).possibleWays[way - 1][q]);
 							alpha += atan2((finish - pt) ^ (start - pt), (finish - pt) & (start - pt));
 						}
@@ -633,13 +635,13 @@ void MeasureVP::GPUCalcPressure()
 				//	W.getInfo('i') << "Pressure computation is incorrect, way inside airfoil is undefined" << std::endl;				
 
 				if (way == 0)
-					alpha = atan2((cPan - pt) ^ (rcm - pt), (cPan - pt) & (rcm - pt));
+					alpha = atan2((cPan - pt) ^ (W.getAirfoil(bou).startOfWays - pt), (cPan - pt) & (W.getAirfoil(bou).startOfWays - pt));
 				else
 					if (way > 0)
 					{
 						for (int q = 0; q < W.getAirfoil(bou).possibleWays[way - 1].size() + 1; ++q)
 						{
-							Point2D start = ((q == 0) ? rcm : W.getAirfoil(bou).possibleWays[way - 1][q - 1]);
+							Point2D start = ((q == 0) ? W.getAirfoil(bou).startOfWays : W.getAirfoil(bou).possibleWays[way - 1][q - 1]);
 							Point2D finish = ((q == W.getAirfoil(bou).possibleWays[way - 1].size()) ? cPan : W.getAirfoil(bou).possibleWays[way - 1][q]);
 							alpha += atan2((finish - pt) ^ (start - pt), (finish - pt) & (start - pt));
 						}

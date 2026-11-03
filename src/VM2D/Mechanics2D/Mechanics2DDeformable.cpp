@@ -571,6 +571,12 @@ void MechanicsDeformable::Move()
 		}	
 	}
 
+	if (!fsi) //fish
+	{
+		//точка начала путей
+		afl.startOfWays = Point2D{ 0, beam->getGivenLaw(0, t, deformParam) };
+	}
+
 	afl.lightningTest();
 }//Move()
 

@@ -156,7 +156,7 @@ void Airfoil::lightningTest()
 
 					for (size_t q = 0; (!flag) && (q < ((wayNumber == 0) ? 1 : possibleWays[wayNumber - 1].size() + 1)); ++q)
 					{
-						Point2D start = ((q == 0) ? rcm : possibleWays[wayNumber - 1][q - 1]);
+						Point2D start = ((q == 0) ? startOfWays : possibleWays[wayNumber - 1][q - 1]);
 						Point2D finish = (wayNumber == 0 || q == possibleWays[wayNumber - 1].size()) ? dest : possibleWays[wayNumber - 1][q];
 
 						flag = (/*flag ||*/ check(start, finish));
@@ -436,6 +436,8 @@ void Airfoil::ReadFromFile(const std::string& dir) //загрузка профи
 		for (size_t q = 0; q < r_.size(); ++q)
 			v_.push_back({ 0.0, 0.0 });
 
+
+		startOfWays = rcm;
 
 		int nPossibleWays;
 		int defaultNPossibleWays = 0;
@@ -1176,6 +1178,8 @@ void Airfoil::Move(const Point2D& dr)	//перемещение профиля к
 		for (Point2D& pts : possibleWays[q])
 			pts += dr;
 
+	startOfWays += dr;
+
 	CalcNrmTauLen();
 	GetGabarits();
 }//Move(...)
@@ -1196,6 +1200,9 @@ void Airfoil::Rotate(double alpha)	//поворот профиля на угол
 			pts = rcm + (rotMatrix & (oldPts - rcm));
 		}
 
+	Point2D oldStartOfWays = startOfWays;
+	startOfWays = rcm + (rotMatrix & (oldStartOfWays - rcm));
+
 	CalcNrmTauLen();
 	GetGabarits();
 }//Rotate(...)
@@ -1213,6 +1220,9 @@ void Airfoil::Scale(const Point2D& factor)	//масштабирование пр
 			Point2D oldPts = pts;
 			pts = rcm + Point2D{ factor[0] * (oldPts - rcm)[0], factor[1] * (oldPts - rcm)[1] };
 		}
+
+	Point2D oldStartOfWays = startOfWays;
+	startOfWays = rcm + Point2D{ factor[0] * (oldStartOfWays - rcm)[0], factor[1] * (oldStartOfWays - rcm)[1] };
 
 	CalcNrmTauLen();
 	GetGabarits();
