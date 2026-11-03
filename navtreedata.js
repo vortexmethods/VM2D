@@ -73,17 +73,17 @@ var NAVTREEINDEX =
 "d6/db8/class_v_m2_d_1_1_measure_v_p.html#aa593344f530de5b17e2b74e87ebc01de",
 "d6/dec/class_v_m2_d_1_1_mechanics_rigid_rotate_part.html#a4bfd3c2c190d324cfde4e4e95e863f5f",
 "d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a619dd530471032d51ffc730e708b11f1",
-"d7/dfe/class_v_m2_d_1_1_velocity.html#a8e027316baed640996e3f6eee9892139",
-"d9/dd7/namespace_v_m2_d.html",
-"da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#ac11619e267d87505be152e3bf79767fc",
-"db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a20f9a2a116613f4f4ea545050e3aa96a",
-"db/d1e/classnummatrix.html#ab1d9c29c00554c40e9c26a383775b8b7",
-"db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a",
-"dc/d31/struct_v_mlib_1_1_geom_point.html#a29f9648a046eef8e3b6e7d7032f1f0e8",
-"dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6282e55c3b170b9dfff5e532cd3f7564",
-"de/d2e/class_point2_df.html#ab22b15f21d1af087286e6456c096c3e7",
-"df/da2/class_v_m2_d_1_1_boundary.html#acf656639cdf47709c78697a87710d80d",
-"namespaces.html"
+"d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813",
+"d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ade0ec792b319d0b83768837d45a4721e",
+"da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa937cf3e80b53d6aa421eb259657656f",
+"db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a1b5a496b28043625bbe819e4be1448c9",
+"db/d1e/classnummatrix.html#a83548ff59cbced89f46cfa6f1cf56364",
+"db/de9/class_v_m2_d_1_1_airfoil.html#a776aa68f70b04bf12a524e4f6378f913",
+"dc/d31/struct_v_mlib_1_1_geom_point.html#a1ce0f23ef27d21ac915421bcf45d0fd0",
+"dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a4d664f7a53ee6c328998cbe505ab0ad1",
+"de/d2e/class_point2_df.html#a8c8bd3c1e2a478e8b0b203c95dbefc64",
+"df/da2/class_v_m2_d_1_1_boundary.html#ab4ec732b58016f77d568fcf96131e736",
+"namespacemembers_t.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

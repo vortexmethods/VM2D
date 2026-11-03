@@ -1604,8 +1604,14 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  571</span>        }   </div>
 <div class="line"><span class="lineno">  572</span>    }</div>
 <div class="line"><span class="lineno">  573</span> </div>
-<div class="line"><span class="lineno">  574</span>    <a class="code hl_variable" href="../../d7/dc9/class_v_m2_d_1_1_mechanics.html#adf7ba6b7e6f84fcf9ca33c6f43922037">afl</a>.lightningTest();</div>
-<div class="line"><span class="lineno">  575</span>}<span class="comment">//Move()</span></div>
+<div class="line"><span class="lineno">  574</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a79b5d0e5ec723fb603fb26660074e473">fsi</a>) <span class="comment">//fish</span></div>
+<div class="line"><span class="lineno">  575</span>    {</div>
+<div class="line"><span class="lineno">  576</span>        <span class="comment">//точка начала путей</span></div>
+<div class="line"><span class="lineno">  577</span>        <a class="code hl_variable" href="../../d7/dc9/class_v_m2_d_1_1_mechanics.html#adf7ba6b7e6f84fcf9ca33c6f43922037">afl</a>.startOfWays = Point2D{ 0, <a class="code hl_variable" href="#af440a3893894a8fb40a74e1ac94ab220">beam</a>-&gt;getGivenLaw(0, t, <a class="code hl_variable" href="#aaaaa36c2b2c2bef45774d95d768110d3">deformParam</a>) };</div>
+<div class="line"><span class="lineno">  578</span>    }</div>
+<div class="line"><span class="lineno">  579</span> </div>
+<div class="line"><span class="lineno">  580</span>    <a class="code hl_variable" href="../../d7/dc9/class_v_m2_d_1_1_mechanics.html#adf7ba6b7e6f84fcf9ca33c6f43922037">afl</a>.lightningTest();</div>
+<div class="line"><span class="lineno">  581</span>}<span class="comment">//Move()</span></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_mechanics_deformable_html_aaaaa36c2b2c2bef45774d95d768110d3"><div class="ttname"><a href="#aaaaa36c2b2c2bef45774d95d768110d3">VM2D::MechanicsDeformable::deformParam</a></div><div class="ttdeci">std::vector&lt; double &gt; deformParam</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de3/_mechanics2_d_deformable_8h_source.html#l00133">Mechanics2DDeformable.h:133</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a619dd530471032d51ffc730e708b11f1":[2,0,3,29,20],
+"d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a619dd530471032d51ffc730e708b11f1":[2,0,3,30,16],
 "d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a619dd530471032d51ffc730e708b11f1":[3,0,1,29,20],
 "d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a619dd530471032d51ffc730e708b11f1":[3,0,1,30,16],
 "d7/d47/class_v_m2_d_1_1_optimized_radix_sorter.html#a75e5eb51ebaf35c2dff4da94eeba358d":[2,0,3,29,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX8 =
 "d7/dfe/class_v_m2_d_1_1_velocity.html#a590cbb674c4152dd372ebfd3f678476f":[2,0,3,34,21],
 "d7/dfe/class_v_m2_d_1_1_velocity.html#a590cbb674c4152dd372ebfd3f678476f":[3,0,1,34,21],
 "d7/dfe/class_v_m2_d_1_1_velocity.html#a7a0a2b25985f519a61eaa22f322e70cf":[2,0,3,34,23],
-"d7/dfe/class_v_m2_d_1_1_velocity.html#a7a0a2b25985f519a61eaa22f322e70cf":[3,0,1,34,23],
-"d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813":[2,0,3,34,13],
-"d7/dfe/class_v_m2_d_1_1_velocity.html#a7db1bf6a854f696d853cce0111063813":[3,0,1,34,13]
+"d7/dfe/class_v_m2_d_1_1_velocity.html#a7a0a2b25985f519a61eaa22f322e70cf":[3,0,1,34,23]
 };

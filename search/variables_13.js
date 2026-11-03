@@ -21,9 +21,10 @@ var searchData=
   ['sstrcounter_18',['sstrCounter',['../d6/db8/class_v_m2_d_1_1_measure_v_p.html#ad77a560fd136c0c621a7a43a610008c5',1,'VM2D::MeasureVP']]],
   ['start_5f_19',['start_',['../d9/d54/class_v_mlib_1_1vm_timer.html#a1e075be1dee287fc09737fd179e09414',1,'VMlib::vmTimer']]],
   ['startendkvant_20',['startEndKvant',['../d7/db3/class_v_mlib_1_1_task.html#a2b37e85d28d8d1ad14d86da06a04c464',1,'VMlib::Task']]],
-  ['state_21',['state',['../d7/db3/class_v_mlib_1_1_task.html#aec86b80b9283020ad2dc2fd8158caccf',1,'VMlib::Task']]],
-  ['stop_5f_22',['stop_',['../d9/d54/class_v_mlib_1_1vm_timer.html#a7d66c4223f8cb83b1a6490f51036e83c',1,'VMlib::vmTimer']]],
-  ['strongcoupling_23',['strongCoupling',['../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a20f9a2a116613f4f4ea545050e3aa96a',1,'VM2D::MechanicsRigidOscillPart']]],
-  ['switchers_24',['switchers',['../db/d04/class_v_mlib_1_1_stream_parser.html#a15900948d93c65f3f2e354589586722c',1,'VMlib::StreamParser']]],
-  ['switchersfilefullname_25',['switchersFileFullName',['../d2/d15/class_v_m2_d_1_1_passport.html#a7c38db5cd43ab94caabb2befdec2aef4',1,'VM2D::Passport']]]
+  ['startofways_21',['startOfWays',['../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1',1,'VM2D::Airfoil']]],
+  ['state_22',['state',['../d7/db3/class_v_mlib_1_1_task.html#aec86b80b9283020ad2dc2fd8158caccf',1,'VMlib::Task']]],
+  ['stop_5f_23',['stop_',['../d9/d54/class_v_mlib_1_1vm_timer.html#a7d66c4223f8cb83b1a6490f51036e83c',1,'VMlib::vmTimer']]],
+  ['strongcoupling_24',['strongCoupling',['../db/d0e/class_v_m2_d_1_1_mechanics_rigid_oscill_part.html#a20f9a2a116613f4f4ea545050e3aa96a',1,'VM2D::MechanicsRigidOscillPart']]],
+  ['switchers_25',['switchers',['../db/d04/class_v_mlib_1_1_stream_parser.html#a15900948d93c65f3f2e354589586722c',1,'VMlib::StreamParser']]],
+  ['switchersfilefullname_26',['switchersFileFullName',['../d2/d15/class_v_m2_d_1_1_passport.html#a7c38db5cd43ab94caabb2befdec2aef4',1,'VM2D::Passport']]]
 ];

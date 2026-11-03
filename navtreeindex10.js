@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ade0ec792b319d0b83768837d45a4721e":[2,0,3,36,14],
+"d9/dcc/class_v_m2_d_1_1_velocity_biot_savart.html#ade0ec792b319d0b83768837d45a4721e":[3,0,1,36,14],
 "d9/dd7/namespace_v_m2_d.html":[2,0,3],
 "d9/dd7/namespace_v_m2_d.html#a542c22d12fd209fd1fcdfc6aa163aeb4":[2,0,3,50],
 "d9/dd7/namespace_v_m2_d.html#a54efeecf2c48054b4a2f11cc5ca758d8":[2,0,3,49],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f":[2,0,3,18,0],
 "da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa2e086c595ae95cc4d9e20896d77ff6f":[3,0,1,18,0],
 "da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa64443bbef224a143fa2aa658bcd3b4f":[2,0,3,18,22],
-"da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa64443bbef224a143fa2aa658bcd3b4f":[3,0,1,18,22],
-"da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa937cf3e80b53d6aa421eb259657656f":[2,0,3,18,30],
-"da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa937cf3e80b53d6aa421eb259657656f":[3,0,1,18,30]
+"da/d93/class_v_m2_d_1_1_mechanics_rigid_immovable.html#aa64443bbef224a143fa2aa658bcd3b4f":[3,0,1,18,22]
 };

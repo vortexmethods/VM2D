@@ -58,6 +58,7 @@ var class_v_m2_d_1_1_airfoil_deformable =
     [ "psn", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a6282e55c3b170b9dfff5e532cd3f7564", null ],
     [ "r_", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a0f4159d7929f40fcf07eb347464a6cca", null ],
     [ "rcm", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#ae4facfc6c1ab6c767cc9e3703b169b48", null ],
+    [ "startOfWays", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a51738cdb1d9f22be85e9723beba718c1", null ],
     [ "tau", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#ace742750ec3eb3caea574982f510a86d", null ],
     [ "upRight", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a5fccb680ebf6e42fbe7cece25ee998a9", null ],
     [ "v_", "d7/d0e/class_v_m2_d_1_1_airfoil_deformable.html#a4d664f7a53ee6c328998cbe505ab0ad1", null ],
