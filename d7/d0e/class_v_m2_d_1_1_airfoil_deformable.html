@@ -653,138 +653,138 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01273">1273</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1274</span>{</div>
-<div class="line"><span class="lineno"> 1275</span>    <span class="keywordtype">bool</span> self = (&amp;otherAirfoil == <span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno"> 1276</span> </div>
-<div class="line"><span class="lineno"> 1277</span>    <span class="keywordtype">size_t</span> aflNSelf = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>;</div>
-<div class="line"><span class="lineno"> 1278</span>    <span class="keywordtype">size_t</span> aflNOther = otherAirfoil.<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>;</div>
-<div class="line"><span class="lineno"> 1279</span> </div>
-<div class="line"><span class="lineno"> 1280</span>    <span class="keywordtype">size_t</span> npI;</div>
-<div class="line"><span class="lineno"> 1281</span>    <span class="keywordtype">size_t</span> npJ;</div>
-<div class="line"><span class="lineno"> 1282</span> </div>
-<div class="line"><span class="lineno"> 1283</span>    numvector&lt;double, 3&gt; alpha, lambda;</div>
-<div class="line"><span class="lineno"> 1284</span> </div>
-<div class="line"><span class="lineno"> 1285</span>    <span class="comment">//auxillary vectors</span></div>
-<div class="line"><span class="lineno"> 1286</span>    Point2D p1, s1, p2, s2, di, dj, i00, i01, i10, i11;</div>
-<div class="line"><span class="lineno"> 1287</span>    numvector&lt;Point2D, 3&gt; v00, v11;</div>
-<div class="line"><span class="lineno"> 1288</span>    numvector&lt;Point2D, 2&gt; v01, v10;</div>
-<div class="line"><span class="lineno"> 1289</span> </div>
-<div class="line"><span class="lineno"> 1290</span><span class="preprocessor">#pragma omp parallel for \</span></div>
-<div class="line"><span class="lineno"> 1291</span><span class="preprocessor">    default(none) \</span></div>
-<div class="line"><span class="lineno"> 1292</span><span class="preprocessor">    shared(otherAirfoil, self, aflNSelf, aflNOther, matrPair, p, IDPI, IQPI) \</span></div>
-<div class="line"><span class="lineno"> 1293</span><span class="preprocessor">    private(npI, npJ, alpha, lambda, p1, s1, p2, s2, di, dj, i00, i01, i10, i11, v00, v11, v01, v10) schedule(dynamic, DYN_SCHEDULE)</span></div>
-<div class="line"><span class="lineno"> 1294</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int)<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>(); ++i)</div>
-<div class="line"><span class="lineno"> 1295</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; (int)otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>(); ++j)</div>
-<div class="line"><span class="lineno"> 1296</span>        {</div>
-<div class="line"><span class="lineno"> 1297</span>            npI = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>();</div>
-<div class="line"><span class="lineno"> 1298</span>            npJ = otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>();</div>
-<div class="line"><span class="lineno"> 1299</span> </div>
-<div class="line"><span class="lineno"> 1300</span>            <span class="keywordflow">if</span> ((i == j) &amp;&amp; self)</div>
-<div class="line"><span class="lineno"> 1301</span>            {</div>
-<div class="line"><span class="lineno"> 1302</span> </div>
-<div class="line"><span class="lineno"> 1303</span>                matrPair.first(i, j) = 0.0;</div>
-<div class="line"><span class="lineno"> 1304</span>                matrPair.second(i, j) = 0.0;</div>
-<div class="line"><span class="lineno"> 1305</span> </div>
-<div class="line"><span class="lineno"> 1306</span>                <span class="keywordflow">if</span> (p == 2)</div>
-<div class="line"><span class="lineno"> 1307</span>                {</div>
-<div class="line"><span class="lineno"> 1308</span>                    matrPair.first(i, npJ + j) = 0.0;</div>
-<div class="line"><span class="lineno"> 1309</span>                    matrPair.first(npI + i, j) = 0.0;</div>
-<div class="line"><span class="lineno"> 1310</span> </div>
-<div class="line"><span class="lineno"> 1311</span>                    matrPair.second(i, npJ + j) = -<a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#abcb20b19e78dadbf666eea048783d96f">IQPI</a>;</div>
-<div class="line"><span class="lineno"> 1312</span>                    matrPair.second(npI + i, j) = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#abcb20b19e78dadbf666eea048783d96f">IQPI</a>;</div>
-<div class="line"><span class="lineno"> 1313</span> </div>
-<div class="line"><span class="lineno"> 1314</span>                    matrPair.first(npI + i, npJ + j) = 0.0;</div>
-<div class="line"><span class="lineno"> 1315</span>                    matrPair.second(npI + i, npJ + j) = 0.0;</div>
-<div class="line"><span class="lineno"> 1316</span> </div>
-<div class="line"><span class="lineno"> 1317</span>                }</div>
-<div class="line"><span class="lineno"> 1318</span>                <span class="keywordflow">if</span> (p &gt; 2)</div>
-<div class="line"><span class="lineno"> 1319</span>                    <span class="keywordflow">throw</span> (-42);</div>
-<div class="line"><span class="lineno"> 1320</span>            }<span class="comment">//if i==j</span></div>
-<div class="line"><span class="lineno"> 1321</span>            <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1322</span>            {</div>
-<div class="line"><span class="lineno"> 1323</span>                <span class="keyword">const</span> Point2D&amp; taui = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i];</div>
-<div class="line"><span class="lineno"> 1324</span>                <span class="keyword">const</span> Point2D&amp; tauj = otherAirfoil.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[j];</div>
-<div class="line"><span class="lineno"> 1325</span> </div>
-<div class="line"><span class="lineno"> 1326</span>                p1 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j + 1);</div>
-<div class="line"><span class="lineno"> 1327</span>                s1 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j);</div>
-<div class="line"><span class="lineno"> 1328</span>                p2 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j + 1);</div>
-<div class="line"><span class="lineno"> 1329</span>                s2 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j);</div>
-<div class="line"><span class="lineno"> 1330</span>                di = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i);</div>
-<div class="line"><span class="lineno"> 1331</span>                dj = otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j + 1) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j);</div>
-<div class="line"><span class="lineno"> 1332</span> </div>
-<div class="line"><span class="lineno"> 1333</span>                alpha = { \</div>
-<div class="line"><span class="lineno"> 1334</span>                    (self &amp;&amp; <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d">isAfter</a>(j, i)) ? 0.0 : VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587">Alpha</a>(s2, s1), \</div>
-<div class="line"><span class="lineno"> 1335</span>                    VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587">Alpha</a>(s2, p1), \</div>
-<div class="line"><span class="lineno"> 1336</span>                    (self &amp;&amp; <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d">isAfter</a>(i, j)) ? 0.0 : VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587">Alpha</a>(p1, p2) \</div>
-<div class="line"><span class="lineno"> 1337</span>                };</div>
-<div class="line"><span class="lineno"> 1338</span> </div>
-<div class="line"><span class="lineno"> 1339</span>                lambda = { \</div>
-<div class="line"><span class="lineno"> 1340</span>                    (self &amp;&amp; <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d">isAfter</a>(j, i)) ? 0.0 : VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177">Lambda</a>(s2, s1), \</div>
-<div class="line"><span class="lineno"> 1341</span>                    VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177">Lambda</a>(s2, p1), \</div>
-<div class="line"><span class="lineno"> 1342</span>                    (self &amp;&amp; <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d">isAfter</a>(i, j)) ? 0.0 : VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177">Lambda</a>(p1, p2) \</div>
-<div class="line"><span class="lineno"> 1343</span>                };</div>
-<div class="line"><span class="lineno"> 1344</span> </div>
-<div class="line"><span class="lineno"> 1345</span>                v00 = {</div>
-<div class="line"><span class="lineno"> 1346</span>                    <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj),</div>
-<div class="line"><span class="lineno"> 1347</span>                    -<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(di, taui, tauj),</div>
-<div class="line"><span class="lineno"> 1348</span>                    <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(p2, taui, tauj)</div>
-<div class="line"><span class="lineno"> 1349</span>                };</div>
-<div class="line"><span class="lineno"> 1350</span> </div>
-<div class="line"><span class="lineno"> 1351</span>                i00 = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a> / <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] * (-(alpha[0] * v00[0] + alpha[1] * v00[1] + alpha[2] * v00[2]).kcross() \</div>
-<div class="line"><span class="lineno"> 1352</span>                    + (lambda[0] * v00[0] + lambda[1] * v00[1] + lambda[2] * v00[2]));</div>
-<div class="line"><span class="lineno"> 1353</span> </div>
-<div class="line"><span class="lineno"> 1354</span>                matrPair.first(i, j) = i00 &amp; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i];</div>
-<div class="line"><span class="lineno"> 1355</span>                matrPair.second(i, j) = i00 &amp; taui;</div>
-<div class="line"><span class="lineno"> 1356</span> </div>
-<div class="line"><span class="lineno"> 1357</span> </div>
-<div class="line"><span class="lineno"> 1358</span>                <span class="keywordflow">if</span> (p == 2)</div>
-<div class="line"><span class="lineno"> 1359</span>                {</div>
-<div class="line"><span class="lineno"> 1360</span>                    v01 = {</div>
-<div class="line"><span class="lineno"> 1361</span>                        0.5 / (dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>()) * (((p1 + s1) &amp; tauj) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj) - s1.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>() * taui),</div>
-<div class="line"><span class="lineno"> 1362</span>                        -0.5 * di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() / dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1 + p2, tauj, tauj)</div>
-<div class="line"><span class="lineno"> 1363</span>                    };</div>
-<div class="line"><span class="lineno"> 1364</span> </div>
-<div class="line"><span class="lineno"> 1365</span>                    i01 = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a> / <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] * (-((alpha[0] + alpha[2]) * v01[0] + (alpha[1] + alpha[2]) * v01[1]).kcross() \</div>
-<div class="line"><span class="lineno"> 1366</span>                        + ((lambda[0] + lambda[2]) * v01[0] + (lambda[1] + lambda[2]) * v01[1]) - 0.5 * di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * tauj);</div>
-<div class="line"><span class="lineno"> 1367</span> </div>
-<div class="line"><span class="lineno"> 1368</span>                    matrPair.first(i, npJ + j) = i01 &amp; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i];</div>
-<div class="line"><span class="lineno"> 1369</span>                    matrPair.second(i, npJ + j) = i01 &amp; taui;</div>
-<div class="line"><span class="lineno"> 1370</span> </div>
-<div class="line"><span class="lineno"> 1371</span> </div>
-<div class="line"><span class="lineno"> 1372</span>                    v10 = {</div>
-<div class="line"><span class="lineno"> 1373</span>                        -0.5 / di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * (((s1 + s2) &amp; taui) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj) - s1.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>() * tauj),</div>
-<div class="line"><span class="lineno"> 1374</span>                        0.5 * dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() / di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1 + p2, taui, taui)</div>
-<div class="line"><span class="lineno"> 1375</span>                    };</div>
-<div class="line"><span class="lineno"> 1376</span> </div>
-<div class="line"><span class="lineno"> 1377</span>                    i10 = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a> / <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] * (-((alpha[0] + alpha[2]) * v10[0] + alpha[2] * v10[1]).kcross() \</div>
-<div class="line"><span class="lineno"> 1378</span>                        + ((lambda[0] + lambda[2]) * v10[0] + lambda[2] * v10[1]) + 0.5 * dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * taui);</div>
-<div class="line"><span class="lineno"> 1379</span> </div>
-<div class="line"><span class="lineno"> 1380</span>                    matrPair.first(npI + i, j) = i10 &amp; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i];</div>
-<div class="line"><span class="lineno"> 1381</span>                    matrPair.second(npI + i, j) = i10 &amp; taui;</div>
-<div class="line"><span class="lineno"> 1382</span> </div>
-<div class="line"><span class="lineno"> 1383</span> </div>
-<div class="line"><span class="lineno"> 1384</span>                    v11 = {</div>
-<div class="line"><span class="lineno"> 1385</span>                        1.0 / (12.0 * di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>()) * (2.0 * (s1 &amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1 - 3.0 * p2, taui, tauj)) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj) - s1.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>() * (s1 - 3.0 * p2)) - 0.25 * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj),</div>
-<div class="line"><span class="lineno"> 1386</span>                        -di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() / (12.0 * dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>()) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(di, tauj, tauj),</div>
-<div class="line"><span class="lineno"> 1387</span>                        -dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() / (12.0 * di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>()) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(dj, taui, taui)</div>
-<div class="line"><span class="lineno"> 1388</span>                    };</div>
-<div class="line"><span class="lineno"> 1389</span> </div>
-<div class="line"><span class="lineno"> 1390</span>                    i11 = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a> / <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] * (-((alpha[0] + alpha[2]) * v11[0] + (alpha[1] + alpha[2]) * v11[1] + alpha[2] * v11[2]).kcross()\</div>
-<div class="line"><span class="lineno"> 1391</span>                        + (lambda[0] + lambda[2]) * v11[0] + (lambda[1] + lambda[2]) * v11[1] + lambda[2] * v11[2] \</div>
-<div class="line"><span class="lineno"> 1392</span>                        + 1.0 / 12.0 * (dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * taui + di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * tauj - 2.0 * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj)));</div>
-<div class="line"><span class="lineno"> 1393</span> </div>
-<div class="line"><span class="lineno"> 1394</span>                    matrPair.first(npI + i, npJ + j) = i11 &amp; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i];</div>
-<div class="line"><span class="lineno"> 1395</span>                    matrPair.second(npI + i, npJ + j) = i11 &amp; taui;</div>
-<div class="line"><span class="lineno"> 1396</span>                }</div>
-<div class="line"><span class="lineno"> 1397</span> </div>
-<div class="line"><span class="lineno"> 1398</span> </div>
-<div class="line"><span class="lineno"> 1399</span>                <span class="keywordflow">if</span> (p &gt; 2)</div>
-<div class="line"><span class="lineno"> 1400</span>                    <span class="keywordflow">throw</span> (-42);</div>
-<div class="line"><span class="lineno"> 1401</span>            }<span class="comment">//else(i == j)</span></div>
-<div class="line"><span class="lineno"> 1402</span> </div>
-<div class="line"><span class="lineno"> 1403</span>        }<span class="comment">//for(...)</span></div>
-<div class="line"><span class="lineno"> 1404</span>}<span class="comment">//getIQ(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01400">1400</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1401</span>{</div>
+<div class="line"><span class="lineno"> 1402</span>    <span class="keywordtype">bool</span> self = (&amp;otherAirfoil == <span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno"> 1403</span> </div>
+<div class="line"><span class="lineno"> 1404</span>    <span class="keywordtype">size_t</span> aflNSelf = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>;</div>
+<div class="line"><span class="lineno"> 1405</span>    <span class="keywordtype">size_t</span> aflNOther = otherAirfoil.<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>;</div>
+<div class="line"><span class="lineno"> 1406</span> </div>
+<div class="line"><span class="lineno"> 1407</span>    <span class="keywordtype">size_t</span> npI;</div>
+<div class="line"><span class="lineno"> 1408</span>    <span class="keywordtype">size_t</span> npJ;</div>
+<div class="line"><span class="lineno"> 1409</span> </div>
+<div class="line"><span class="lineno"> 1410</span>    numvector&lt;double, 3&gt; alpha, lambda;</div>
+<div class="line"><span class="lineno"> 1411</span> </div>
+<div class="line"><span class="lineno"> 1412</span>    <span class="comment">//auxillary vectors</span></div>
+<div class="line"><span class="lineno"> 1413</span>    Point2D p1, s1, p2, s2, di, dj, i00, i01, i10, i11;</div>
+<div class="line"><span class="lineno"> 1414</span>    numvector&lt;Point2D, 3&gt; v00, v11;</div>
+<div class="line"><span class="lineno"> 1415</span>    numvector&lt;Point2D, 2&gt; v01, v10;</div>
+<div class="line"><span class="lineno"> 1416</span> </div>
+<div class="line"><span class="lineno"> 1417</span><span class="preprocessor">#pragma omp parallel for \</span></div>
+<div class="line"><span class="lineno"> 1418</span><span class="preprocessor">    default(none) \</span></div>
+<div class="line"><span class="lineno"> 1419</span><span class="preprocessor">    shared(otherAirfoil, self, aflNSelf, aflNOther, matrPair, p, IDPI, IQPI) \</span></div>
+<div class="line"><span class="lineno"> 1420</span><span class="preprocessor">    private(npI, npJ, alpha, lambda, p1, s1, p2, s2, di, dj, i00, i01, i10, i11, v00, v11, v01, v10) schedule(dynamic, DYN_SCHEDULE)</span></div>
+<div class="line"><span class="lineno"> 1421</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int)<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>(); ++i)</div>
+<div class="line"><span class="lineno"> 1422</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; (int)otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>(); ++j)</div>
+<div class="line"><span class="lineno"> 1423</span>        {</div>
+<div class="line"><span class="lineno"> 1424</span>            npI = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>();</div>
+<div class="line"><span class="lineno"> 1425</span>            npJ = otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>();</div>
+<div class="line"><span class="lineno"> 1426</span> </div>
+<div class="line"><span class="lineno"> 1427</span>            <span class="keywordflow">if</span> ((i == j) &amp;&amp; self)</div>
+<div class="line"><span class="lineno"> 1428</span>            {</div>
+<div class="line"><span class="lineno"> 1429</span> </div>
+<div class="line"><span class="lineno"> 1430</span>                matrPair.first(i, j) = 0.0;</div>
+<div class="line"><span class="lineno"> 1431</span>                matrPair.second(i, j) = 0.0;</div>
+<div class="line"><span class="lineno"> 1432</span> </div>
+<div class="line"><span class="lineno"> 1433</span>                <span class="keywordflow">if</span> (p == 2)</div>
+<div class="line"><span class="lineno"> 1434</span>                {</div>
+<div class="line"><span class="lineno"> 1435</span>                    matrPair.first(i, npJ + j) = 0.0;</div>
+<div class="line"><span class="lineno"> 1436</span>                    matrPair.first(npI + i, j) = 0.0;</div>
+<div class="line"><span class="lineno"> 1437</span> </div>
+<div class="line"><span class="lineno"> 1438</span>                    matrPair.second(i, npJ + j) = -<a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#abcb20b19e78dadbf666eea048783d96f">IQPI</a>;</div>
+<div class="line"><span class="lineno"> 1439</span>                    matrPair.second(npI + i, j) = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#abcb20b19e78dadbf666eea048783d96f">IQPI</a>;</div>
+<div class="line"><span class="lineno"> 1440</span> </div>
+<div class="line"><span class="lineno"> 1441</span>                    matrPair.first(npI + i, npJ + j) = 0.0;</div>
+<div class="line"><span class="lineno"> 1442</span>                    matrPair.second(npI + i, npJ + j) = 0.0;</div>
+<div class="line"><span class="lineno"> 1443</span> </div>
+<div class="line"><span class="lineno"> 1444</span>                }</div>
+<div class="line"><span class="lineno"> 1445</span>                <span class="keywordflow">if</span> (p &gt; 2)</div>
+<div class="line"><span class="lineno"> 1446</span>                    <span class="keywordflow">throw</span> (-42);</div>
+<div class="line"><span class="lineno"> 1447</span>            }<span class="comment">//if i==j</span></div>
+<div class="line"><span class="lineno"> 1448</span>            <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1449</span>            {</div>
+<div class="line"><span class="lineno"> 1450</span>                <span class="keyword">const</span> Point2D&amp; taui = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i];</div>
+<div class="line"><span class="lineno"> 1451</span>                <span class="keyword">const</span> Point2D&amp; tauj = otherAirfoil.<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[j];</div>
+<div class="line"><span class="lineno"> 1452</span> </div>
+<div class="line"><span class="lineno"> 1453</span>                p1 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j + 1);</div>
+<div class="line"><span class="lineno"> 1454</span>                s1 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j);</div>
+<div class="line"><span class="lineno"> 1455</span>                p2 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j + 1);</div>
+<div class="line"><span class="lineno"> 1456</span>                s2 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j);</div>
+<div class="line"><span class="lineno"> 1457</span>                di = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i);</div>
+<div class="line"><span class="lineno"> 1458</span>                dj = otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j + 1) - otherAirfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(j);</div>
+<div class="line"><span class="lineno"> 1459</span> </div>
+<div class="line"><span class="lineno"> 1460</span>                alpha = { \</div>
+<div class="line"><span class="lineno"> 1461</span>                    (self &amp;&amp; <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d">isAfter</a>(j, i)) ? 0.0 : VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587">Alpha</a>(s2, s1), \</div>
+<div class="line"><span class="lineno"> 1462</span>                    VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587">Alpha</a>(s2, p1), \</div>
+<div class="line"><span class="lineno"> 1463</span>                    (self &amp;&amp; <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d">isAfter</a>(i, j)) ? 0.0 : VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac0d8bad43faeeb030657e096b22aa587">Alpha</a>(p1, p2) \</div>
+<div class="line"><span class="lineno"> 1464</span>                };</div>
+<div class="line"><span class="lineno"> 1465</span> </div>
+<div class="line"><span class="lineno"> 1466</span>                lambda = { \</div>
+<div class="line"><span class="lineno"> 1467</span>                    (self &amp;&amp; <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d">isAfter</a>(j, i)) ? 0.0 : VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177">Lambda</a>(s2, s1), \</div>
+<div class="line"><span class="lineno"> 1468</span>                    VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177">Lambda</a>(s2, p1), \</div>
+<div class="line"><span class="lineno"> 1469</span>                    (self &amp;&amp; <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a4784af2d43bf0754c8e2f2748047062d">isAfter</a>(i, j)) ? 0.0 : VMlib::<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a4e941e31cd9aab62fe675e2bb5f20177">Lambda</a>(p1, p2) \</div>
+<div class="line"><span class="lineno"> 1470</span>                };</div>
+<div class="line"><span class="lineno"> 1471</span> </div>
+<div class="line"><span class="lineno"> 1472</span>                v00 = {</div>
+<div class="line"><span class="lineno"> 1473</span>                    <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj),</div>
+<div class="line"><span class="lineno"> 1474</span>                    -<a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(di, taui, tauj),</div>
+<div class="line"><span class="lineno"> 1475</span>                    <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(p2, taui, tauj)</div>
+<div class="line"><span class="lineno"> 1476</span>                };</div>
+<div class="line"><span class="lineno"> 1477</span> </div>
+<div class="line"><span class="lineno"> 1478</span>                i00 = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a> / <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] * (-(alpha[0] * v00[0] + alpha[1] * v00[1] + alpha[2] * v00[2]).kcross() \</div>
+<div class="line"><span class="lineno"> 1479</span>                    + (lambda[0] * v00[0] + lambda[1] * v00[1] + lambda[2] * v00[2]));</div>
+<div class="line"><span class="lineno"> 1480</span> </div>
+<div class="line"><span class="lineno"> 1481</span>                matrPair.first(i, j) = i00 &amp; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i];</div>
+<div class="line"><span class="lineno"> 1482</span>                matrPair.second(i, j) = i00 &amp; taui;</div>
+<div class="line"><span class="lineno"> 1483</span> </div>
+<div class="line"><span class="lineno"> 1484</span> </div>
+<div class="line"><span class="lineno"> 1485</span>                <span class="keywordflow">if</span> (p == 2)</div>
+<div class="line"><span class="lineno"> 1486</span>                {</div>
+<div class="line"><span class="lineno"> 1487</span>                    v01 = {</div>
+<div class="line"><span class="lineno"> 1488</span>                        0.5 / (dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>()) * (((p1 + s1) &amp; tauj) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj) - s1.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>() * taui),</div>
+<div class="line"><span class="lineno"> 1489</span>                        -0.5 * di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() / dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1 + p2, tauj, tauj)</div>
+<div class="line"><span class="lineno"> 1490</span>                    };</div>
+<div class="line"><span class="lineno"> 1491</span> </div>
+<div class="line"><span class="lineno"> 1492</span>                    i01 = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a> / <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] * (-((alpha[0] + alpha[2]) * v01[0] + (alpha[1] + alpha[2]) * v01[1]).kcross() \</div>
+<div class="line"><span class="lineno"> 1493</span>                        + ((lambda[0] + lambda[2]) * v01[0] + (lambda[1] + lambda[2]) * v01[1]) - 0.5 * di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * tauj);</div>
+<div class="line"><span class="lineno"> 1494</span> </div>
+<div class="line"><span class="lineno"> 1495</span>                    matrPair.first(i, npJ + j) = i01 &amp; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i];</div>
+<div class="line"><span class="lineno"> 1496</span>                    matrPair.second(i, npJ + j) = i01 &amp; taui;</div>
+<div class="line"><span class="lineno"> 1497</span> </div>
+<div class="line"><span class="lineno"> 1498</span> </div>
+<div class="line"><span class="lineno"> 1499</span>                    v10 = {</div>
+<div class="line"><span class="lineno"> 1500</span>                        -0.5 / di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * (((s1 + s2) &amp; taui) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj) - s1.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>() * tauj),</div>
+<div class="line"><span class="lineno"> 1501</span>                        0.5 * dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() / di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1 + p2, taui, taui)</div>
+<div class="line"><span class="lineno"> 1502</span>                    };</div>
+<div class="line"><span class="lineno"> 1503</span> </div>
+<div class="line"><span class="lineno"> 1504</span>                    i10 = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a> / <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] * (-((alpha[0] + alpha[2]) * v10[0] + alpha[2] * v10[1]).kcross() \</div>
+<div class="line"><span class="lineno"> 1505</span>                        + ((lambda[0] + lambda[2]) * v10[0] + lambda[2] * v10[1]) + 0.5 * dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * taui);</div>
+<div class="line"><span class="lineno"> 1506</span> </div>
+<div class="line"><span class="lineno"> 1507</span>                    matrPair.first(npI + i, j) = i10 &amp; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i];</div>
+<div class="line"><span class="lineno"> 1508</span>                    matrPair.second(npI + i, j) = i10 &amp; taui;</div>
+<div class="line"><span class="lineno"> 1509</span> </div>
+<div class="line"><span class="lineno"> 1510</span> </div>
+<div class="line"><span class="lineno"> 1511</span>                    v11 = {</div>
+<div class="line"><span class="lineno"> 1512</span>                        1.0 / (12.0 * di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>()) * (2.0 * (s1 &amp; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1 - 3.0 * p2, taui, tauj)) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj) - s1.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a6f68eb11e99a7215635d90b410eec857">length2</a>() * (s1 - 3.0 * p2)) - 0.25 * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj),</div>
+<div class="line"><span class="lineno"> 1513</span>                        -di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() / (12.0 * dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>()) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(di, tauj, tauj),</div>
+<div class="line"><span class="lineno"> 1514</span>                        -dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() / (12.0 * di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>()) * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(dj, taui, taui)</div>
+<div class="line"><span class="lineno"> 1515</span>                    };</div>
+<div class="line"><span class="lineno"> 1516</span> </div>
+<div class="line"><span class="lineno"> 1517</span>                    i11 = <a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a> / <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] * (-((alpha[0] + alpha[2]) * v11[0] + (alpha[1] + alpha[2]) * v11[1] + alpha[2] * v11[2]).kcross()\</div>
+<div class="line"><span class="lineno"> 1518</span>                        + (lambda[0] + lambda[2]) * v11[0] + (lambda[1] + lambda[2]) * v11[1] + lambda[2] * v11[2] \</div>
+<div class="line"><span class="lineno"> 1519</span>                        + 1.0 / 12.0 * (dj.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * taui + di.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>() * tauj - 2.0 * <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ae84f073460aa989e218760a09e2be53f">VMlib::Omega</a>(s1, taui, tauj)));</div>
+<div class="line"><span class="lineno"> 1520</span> </div>
+<div class="line"><span class="lineno"> 1521</span>                    matrPair.first(npI + i, npJ + j) = i11 &amp; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i];</div>
+<div class="line"><span class="lineno"> 1522</span>                    matrPair.second(npI + i, npJ + j) = i11 &amp; taui;</div>
+<div class="line"><span class="lineno"> 1523</span>                }</div>
+<div class="line"><span class="lineno"> 1524</span> </div>
+<div class="line"><span class="lineno"> 1525</span> </div>
+<div class="line"><span class="lineno"> 1526</span>                <span class="keywordflow">if</span> (p &gt; 2)</div>
+<div class="line"><span class="lineno"> 1527</span>                    <span class="keywordflow">throw</span> (-42);</div>
+<div class="line"><span class="lineno"> 1528</span>            }<span class="comment">//else(i == j)</span></div>
+<div class="line"><span class="lineno"> 1529</span> </div>
+<div class="line"><span class="lineno"> 1530</span>        }<span class="comment">//for(...)</span></div>
+<div class="line"><span class="lineno"> 1531</span>}<span class="comment">//getIQ(...)</span></div>
 <div class="ttc" id="a_v_mlib_2defs_2defs_8h_html_abcb20b19e78dadbf666eea048783d96f"><div class="ttname"><a href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#abcb20b19e78dadbf666eea048783d96f">IQPI</a></div><div class="ttdeci">const double IQPI</div><div class="ttdoc">Число .</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00085">defs.h:85</a></div></div>
 <div class="ttc" id="a_v_mlib_2defs_2defs_8h_html_ae37ec568e8d769b091f7189eb91191f4"><div class="ttname"><a href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#ae37ec568e8d769b091f7189eb91191f4">IDPI</a></div><div class="ttdeci">const double IDPI</div><div class="ttdoc">Число .</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00079">defs.h:79</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_geometry_html_a5bd4edab4726a4c4d14a6003f0b26dc4"><div class="ttname"><a href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">VM2D::AirfoilGeometry::len</a></div><div class="ttdeci">std::vector&lt; double &gt; len</div><div class="ttdoc">Длины панелей профиля</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00094">Airfoil2D.h:94</a></div></div>
@@ -932,43 +932,43 @@ Here is the caller graph for this function:</div>
 
 <p>Вычисление нормалей, касательных и длин панелей по текущему положению вершин </p>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01132">1132</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1133</span>{</div>
-<div class="line"><span class="lineno"> 1134</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>.size() != <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size())</div>
-<div class="line"><span class="lineno"> 1135</span>    {</div>
-<div class="line"><span class="lineno"> 1136</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>.resize(<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size());</div>
-<div class="line"><span class="lineno"> 1137</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6282e55c3b170b9dfff5e532cd3f7564">psn</a>.resize(<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size());</div>
-<div class="line"><span class="lineno"> 1138</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>.resize(<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size());</div>
-<div class="line"><span class="lineno"> 1139</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>.resize(<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size());</div>
-<div class="line"><span class="lineno"> 1140</span>    }</div>
-<div class="line"><span class="lineno"> 1141</span> </div>
-<div class="line"><span class="lineno"> 1142</span>    Point2D rpan;</div>
-<div class="line"><span class="lineno"> 1143</span> </div>
-<div class="line"><span class="lineno"> 1144</span>    <span class="comment">//считаем длины, касательные и нормали</span></div>
-<div class="line"><span class="lineno"> 1145</span><span class="preprocessor">#pragma omp parallel for private(rpan)</span></div>
-<div class="line"><span class="lineno"> 1146</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int)<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
-<div class="line"><span class="lineno"> 1147</span>    {</div>
-<div class="line"><span class="lineno"> 1148</span>        rpan = (<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i));</div>
-<div class="line"><span class="lineno"> 1149</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] = rpan.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>();</div>
-<div class="line"><span class="lineno"> 1150</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] = rpan.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8974f47ee5cf514aa6ac17b3af4daf62">unit</a>();</div>
-<div class="line"><span class="lineno"> 1151</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i] = { <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i][1], -<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i][0] };</div>
-<div class="line"><span class="lineno"> 1152</span>    }</div>
-<div class="line"><span class="lineno"> 1153</span> </div>
-<div class="line"><span class="lineno"> 1154</span>    <span class="comment">//считаем псевдонормали</span></div>
-<div class="line"><span class="lineno"> 1155</span><span class="preprocessor">#pragma omp parallel for</span></div>
-<div class="line"><span class="lineno"> 1156</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int)<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
-<div class="line"><span class="lineno"> 1157</span>    {</div>
-<div class="line"><span class="lineno"> 1158</span>        <span class="keywordtype">int</span> next = (i == (int)<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size() - 1 ? 0 : i + 1);</div>
-<div class="line"><span class="lineno"> 1159</span>        <span class="keywordtype">int</span> prev = (i == 0 ? (int)<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size() - 1 : i - 1);</div>
-<div class="line"><span class="lineno"> 1160</span> </div>
-<div class="line"><span class="lineno"> 1161</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6282e55c3b170b9dfff5e532cd3f7564">psn</a>[i] = std::make_pair( (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[prev] + <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i]).unit(), (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i] + <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[next]).unit() );</div>
-<div class="line"><span class="lineno"> 1162</span>    }</div>
-<div class="line"><span class="lineno"> 1163</span> </div>
-<div class="line"><span class="lineno"> 1164</span>    <span class="comment">//закольцовываем</span></div>
-<div class="line"><span class="lineno"> 1165</span>    <span class="comment">//nrm.push_back(nrm[0]);</span></div>
-<div class="line"><span class="lineno"> 1166</span>    <span class="comment">//tau.push_back(tau[0]);</span></div>
-<div class="line"><span class="lineno"> 1167</span>    <span class="comment">//len.push_back(len[0]);</span></div>
-<div class="line"><span class="lineno"> 1168</span>}<span class="comment">//CalcNrmTauLen()</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01259">1259</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1260</span>{</div>
+<div class="line"><span class="lineno"> 1261</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>.size() != <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size())</div>
+<div class="line"><span class="lineno"> 1262</span>    {</div>
+<div class="line"><span class="lineno"> 1263</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>.resize(<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size());</div>
+<div class="line"><span class="lineno"> 1264</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6282e55c3b170b9dfff5e532cd3f7564">psn</a>.resize(<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size());</div>
+<div class="line"><span class="lineno"> 1265</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>.resize(<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size());</div>
+<div class="line"><span class="lineno"> 1266</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>.resize(<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size());</div>
+<div class="line"><span class="lineno"> 1267</span>    }</div>
+<div class="line"><span class="lineno"> 1268</span> </div>
+<div class="line"><span class="lineno"> 1269</span>    Point2D rpan;</div>
+<div class="line"><span class="lineno"> 1270</span> </div>
+<div class="line"><span class="lineno"> 1271</span>    <span class="comment">//считаем длины, касательные и нормали</span></div>
+<div class="line"><span class="lineno"> 1272</span><span class="preprocessor">#pragma omp parallel for private(rpan)</span></div>
+<div class="line"><span class="lineno"> 1273</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int)<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
+<div class="line"><span class="lineno"> 1274</span>    {</div>
+<div class="line"><span class="lineno"> 1275</span>        rpan = (<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i));</div>
+<div class="line"><span class="lineno"> 1276</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[i] = rpan.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8c8bd3c1e2a478e8b0b203c95dbefc64">length</a>();</div>
+<div class="line"><span class="lineno"> 1277</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] = rpan.<a class="code hl_function" href="../../d0/d88/classnumvector.html#a8974f47ee5cf514aa6ac17b3af4daf62">unit</a>();</div>
+<div class="line"><span class="lineno"> 1278</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i] = { <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i][1], -<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i][0] };</div>
+<div class="line"><span class="lineno"> 1279</span>    }</div>
+<div class="line"><span class="lineno"> 1280</span> </div>
+<div class="line"><span class="lineno"> 1281</span>    <span class="comment">//считаем псевдонормали</span></div>
+<div class="line"><span class="lineno"> 1282</span><span class="preprocessor">#pragma omp parallel for</span></div>
+<div class="line"><span class="lineno"> 1283</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int)<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
+<div class="line"><span class="lineno"> 1284</span>    {</div>
+<div class="line"><span class="lineno"> 1285</span>        <span class="keywordtype">int</span> next = (i == (int)<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size() - 1 ? 0 : i + 1);</div>
+<div class="line"><span class="lineno"> 1286</span>        <span class="keywordtype">int</span> prev = (i == 0 ? (int)<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size() - 1 : i - 1);</div>
+<div class="line"><span class="lineno"> 1287</span> </div>
+<div class="line"><span class="lineno"> 1288</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6282e55c3b170b9dfff5e532cd3f7564">psn</a>[i] = std::make_pair( (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[prev] + <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i]).unit(), (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i] + <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[next]).unit() );</div>
+<div class="line"><span class="lineno"> 1289</span>    }</div>
+<div class="line"><span class="lineno"> 1290</span> </div>
+<div class="line"><span class="lineno"> 1291</span>    <span class="comment">//закольцовываем</span></div>
+<div class="line"><span class="lineno"> 1292</span>    <span class="comment">//nrm.push_back(nrm[0]);</span></div>
+<div class="line"><span class="lineno"> 1293</span>    <span class="comment">//tau.push_back(tau[0]);</span></div>
+<div class="line"><span class="lineno"> 1294</span>    <span class="comment">//len.push_back(len[0]);</span></div>
+<div class="line"><span class="lineno"> 1295</span>}<span class="comment">//CalcNrmTauLen()</span></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_geometry_html_a0f4159d7929f40fcf07eb347464a6cca"><div class="ttname"><a href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">VM2D::AirfoilGeometry::r_</a></div><div class="ttdeci">std::vector&lt; Point2D &gt; r_</div><div class="ttdoc">Координаты начал панелей</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00069">Airfoil2D.h:69</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_geometry_html_a6282e55c3b170b9dfff5e532cd3f7564"><div class="ttname"><a href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6282e55c3b170b9dfff5e532cd3f7564">VM2D::AirfoilGeometry::psn</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; Point2D, Point2D &gt; &gt; psn</div><div class="ttdoc">Псевдонормали к панелям профиля</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00086">Airfoil2D.h:86</a></div></div>
 <div class="ttc" id="aclassnumvector_html_a8974f47ee5cf514aa6ac17b3af4daf62"><div class="ttname"><a href="../../d0/d88/classnumvector.html#a8974f47ee5cf514aa6ac17b3af4daf62">numvector::unit</a></div><div class="ttdeci">auto unit(P newlen=1) const -&gt; numvector&lt; typename std::remove_const&lt; decltype(this-&gt;data[0] *newlen)&gt;::type, n &gt;</div><div class="ttdoc">Вычисление орта вектора или вектора заданной длины, коллинеарного данному</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/numvector_8h_source.html#l00402">numvector.h:402</a></div></div>
@@ -1055,45 +1055,45 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01232">1232</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1233</span>{</div>
-<div class="line"><span class="lineno"> 1234</span>    std::vector&lt;double&gt; res(p * p, 0.0);</div>
-<div class="line"><span class="lineno"> 1235</span> </div>
-<div class="line"><span class="lineno"> 1236</span>    <span class="keywordflow">if</span> ((i == j) &amp;&amp; (&amp;airfoil == <span class="keyword">this</span>))</div>
-<div class="line"><span class="lineno"> 1237</span>    {</div>
-<div class="line"><span class="lineno"> 1238</span>        res[0] = 0.5 * (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] ^ <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i]);</div>
-<div class="line"><span class="lineno"> 1239</span>        <span class="keywordflow">if</span> (p == 1)</div>
-<div class="line"><span class="lineno"> 1240</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno"> 1241</span> </div>
-<div class="line"><span class="lineno"> 1242</span>        res[3] = (1.0 / 12.0) * res[0];</div>
-<div class="line"><span class="lineno"> 1243</span>        <span class="keywordflow">if</span> (p == 2)</div>
-<div class="line"><span class="lineno"> 1244</span>            <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno"> 1245</span> </div>
-<div class="line"><span class="lineno"> 1246</span>        <span class="keywordflow">if</span> (p &gt; 2)</div>
-<div class="line"><span class="lineno"> 1247</span>            <span class="keywordflow">throw</span> (-42);</div>
-<div class="line"><span class="lineno"> 1248</span> </div>
-<div class="line"><span class="lineno"> 1249</span>    }<span class="comment">//if i==j</span></div>
-<div class="line"><span class="lineno"> 1250</span> </div>
-<div class="line"><span class="lineno"> 1251</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; miq = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getIQ(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>, airfoil.<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>);</div>
-<div class="line"><span class="lineno"> 1252</span> </div>
-<div class="line"><span class="lineno"> 1253</span>    res[0] = miq.first(i, j);</div>
-<div class="line"><span class="lineno"> 1254</span> </div>
-<div class="line"><span class="lineno"> 1255</span>    <span class="keywordflow">if</span> (p == 1)</div>
-<div class="line"><span class="lineno"> 1256</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno"> 1257</span> </div>
-<div class="line"><span class="lineno"> 1258</span>    res[1] = miq.first(i, airfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>() + j);</div>
-<div class="line"><span class="lineno"> 1259</span>    res[2] = miq.first(<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>() + i, j);</div>
-<div class="line"><span class="lineno"> 1260</span>    res[3] = miq.first(<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>() + i, airfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>() + j);</div>
-<div class="line"><span class="lineno"> 1261</span> </div>
-<div class="line"><span class="lineno"> 1262</span>    <span class="keywordflow">if</span> (p == 2)</div>
-<div class="line"><span class="lineno"> 1263</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno"> 1264</span> </div>
-<div class="line"><span class="lineno"> 1265</span>    <span class="keywordflow">if</span> (p &gt; 2)</div>
-<div class="line"><span class="lineno"> 1266</span>        <span class="keywordflow">throw</span> (-42);</div>
-<div class="line"><span class="lineno"> 1267</span> </div>
-<div class="line"><span class="lineno"> 1268</span>    <span class="comment">//Хотя сюда никогда и не попадем</span></div>
-<div class="line"><span class="lineno"> 1269</span>    <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno"> 1270</span>}<span class="comment">//getA(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01359">1359</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1360</span>{</div>
+<div class="line"><span class="lineno"> 1361</span>    std::vector&lt;double&gt; res(p * p, 0.0);</div>
+<div class="line"><span class="lineno"> 1362</span> </div>
+<div class="line"><span class="lineno"> 1363</span>    <span class="keywordflow">if</span> ((i == j) &amp;&amp; (&amp;airfoil == <span class="keyword">this</span>))</div>
+<div class="line"><span class="lineno"> 1364</span>    {</div>
+<div class="line"><span class="lineno"> 1365</span>        res[0] = 0.5 * (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ace742750ec3eb3caea574982f510a86d">tau</a>[i] ^ <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[i]);</div>
+<div class="line"><span class="lineno"> 1366</span>        <span class="keywordflow">if</span> (p == 1)</div>
+<div class="line"><span class="lineno"> 1367</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno"> 1368</span> </div>
+<div class="line"><span class="lineno"> 1369</span>        res[3] = (1.0 / 12.0) * res[0];</div>
+<div class="line"><span class="lineno"> 1370</span>        <span class="keywordflow">if</span> (p == 2)</div>
+<div class="line"><span class="lineno"> 1371</span>            <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno"> 1372</span> </div>
+<div class="line"><span class="lineno"> 1373</span>        <span class="keywordflow">if</span> (p &gt; 2)</div>
+<div class="line"><span class="lineno"> 1374</span>            <span class="keywordflow">throw</span> (-42);</div>
+<div class="line"><span class="lineno"> 1375</span> </div>
+<div class="line"><span class="lineno"> 1376</span>    }<span class="comment">//if i==j</span></div>
+<div class="line"><span class="lineno"> 1377</span> </div>
+<div class="line"><span class="lineno"> 1378</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; miq = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getIQ(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>, airfoil.<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>);</div>
+<div class="line"><span class="lineno"> 1379</span> </div>
+<div class="line"><span class="lineno"> 1380</span>    res[0] = miq.first(i, j);</div>
+<div class="line"><span class="lineno"> 1381</span> </div>
+<div class="line"><span class="lineno"> 1382</span>    <span class="keywordflow">if</span> (p == 1)</div>
+<div class="line"><span class="lineno"> 1383</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno"> 1384</span> </div>
+<div class="line"><span class="lineno"> 1385</span>    res[1] = miq.first(i, airfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>() + j);</div>
+<div class="line"><span class="lineno"> 1386</span>    res[2] = miq.first(<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>() + i, j);</div>
+<div class="line"><span class="lineno"> 1387</span>    res[3] = miq.first(<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>() + i, airfoil.<a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#af28cbb15d0708a577c265307d7de752e">getNumberOfPanels</a>() + j);</div>
+<div class="line"><span class="lineno"> 1388</span> </div>
+<div class="line"><span class="lineno"> 1389</span>    <span class="keywordflow">if</span> (p == 2)</div>
+<div class="line"><span class="lineno"> 1390</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno"> 1391</span> </div>
+<div class="line"><span class="lineno"> 1392</span>    <span class="keywordflow">if</span> (p &gt; 2)</div>
+<div class="line"><span class="lineno"> 1393</span>        <span class="keywordflow">throw</span> (-42);</div>
+<div class="line"><span class="lineno"> 1394</span> </div>
+<div class="line"><span class="lineno"> 1395</span>    <span class="comment">//Хотя сюда никогда и не попадем</span></div>
+<div class="line"><span class="lineno"> 1396</span>    <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno"> 1397</span>}<span class="comment">//getA(...)</span></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1285,10 +1285,10 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  621</span>                <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  622</span>                {</div>
 <div class="line"><span class="lineno">  623</span>                    selfI0[i] += -<a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a> * domRad;</div>
-<div class="line"><span class="lineno">  624</span>                    <span class="keywordtype">double</span> mnog = 2.0 * domRad * (1.0 - exp(-<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[j] * iDDomRad / 2.0) * cosh(fabs(s) * iDDomRad));</div>
+<div class="line"><span class="lineno">  624</span>                    <span class="keywordtype">double</span> mnog = 2.0 * domRad * (1.0 - exp(-<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[j] * iDDomRad / 2.0) * cosh(fabs(s) * <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[j] * iDDomRad));</div>
 <div class="line"><span class="lineno">  625</span>                    selfI3[i] += <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#aa9a101d91f22e00f1f850f8437c64dba">nrm</a>[j] * mnog;</div>
 <div class="line"><span class="lineno">  626</span>                    </div>
-<div class="line"><span class="lineno">  627</span>                    mnog = 2.0 / iDDomRadVS * (1.0 - exp(-<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[j] * iDDomRadVS / 2.0) * cosh(fabs(s) * iDDomRadVS));                 </div>
+<div class="line"><span class="lineno">  627</span>                    mnog = 2.0 / iDDomRadVS * (1.0 - exp(-<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[j] * iDDomRadVS / 2.0) * cosh(fabs(s) * <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5bd4edab4726a4c4d14a6003f0b26dc4">len</a>[j] * iDDomRadVS));</div>
 <div class="line"><span class="lineno">  628</span>                    vs = mnog* vtxI.<a class="code hl_function" href="../../d0/de1/class_v_mlib_1_1_vortex2_d.html#ae1f7b56f481da304639163a0365a7c6d">g</a>() / (<a class="code hl_variable" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#a952eac791b596a61bba0a133a3bb439f">PI</a> * DomRadVS2);</div>
 <div class="line"><span class="lineno">  629</span>                }</div>
 <div class="line"><span class="lineno">  630</span>            }<span class="comment">//if d&lt;50 len </span></div>
@@ -1385,24 +1385,24 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01112">1112</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1113</span>{</div>
-<div class="line"><span class="lineno"> 1114</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a> = { 1E+10, 1E+10 };</div>
-<div class="line"><span class="lineno"> 1115</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a> = { -1E+10, -1E+10 };</div>
-<div class="line"><span class="lineno"> 1116</span> </div>
-<div class="line"><span class="lineno"> 1117</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
-<div class="line"><span class="lineno"> 1118</span>    {</div>
-<div class="line"><span class="lineno"> 1119</span>        <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>[0] = std::min(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>[0], <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i][0]);</div>
-<div class="line"><span class="lineno"> 1120</span>        <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>[1] = std::min(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>[1], <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i][1]);</div>
-<div class="line"><span class="lineno"> 1121</span> </div>
-<div class="line"><span class="lineno"> 1122</span>        <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a>[0] = std::max(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a>[0], <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i][0]);</div>
-<div class="line"><span class="lineno"> 1123</span>        <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a>[1] = std::max(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a>[1], <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i][1]);</div>
-<div class="line"><span class="lineno"> 1124</span>    }</div>
-<div class="line"><span class="lineno"> 1125</span> </div>
-<div class="line"><span class="lineno"> 1126</span>    Point2D size = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a> - <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>;</div>
-<div class="line"><span class="lineno"> 1127</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a> -= size * gap;</div>
-<div class="line"><span class="lineno"> 1128</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a> += size * gap;</div>
-<div class="line"><span class="lineno"> 1129</span>}<span class="comment">//GetGabarits(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01239">1239</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1240</span>{</div>
+<div class="line"><span class="lineno"> 1241</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a> = { 1E+10, 1E+10 };</div>
+<div class="line"><span class="lineno"> 1242</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a> = { -1E+10, -1E+10 };</div>
+<div class="line"><span class="lineno"> 1243</span> </div>
+<div class="line"><span class="lineno"> 1244</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
+<div class="line"><span class="lineno"> 1245</span>    {</div>
+<div class="line"><span class="lineno"> 1246</span>        <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>[0] = std::min(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>[0], <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i][0]);</div>
+<div class="line"><span class="lineno"> 1247</span>        <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>[1] = std::min(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>[1], <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i][1]);</div>
+<div class="line"><span class="lineno"> 1248</span> </div>
+<div class="line"><span class="lineno"> 1249</span>        <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a>[0] = std::max(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a>[0], <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i][0]);</div>
+<div class="line"><span class="lineno"> 1250</span>        <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a>[1] = std::max(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a>[1], <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i][1]);</div>
+<div class="line"><span class="lineno"> 1251</span>    }</div>
+<div class="line"><span class="lineno"> 1252</span> </div>
+<div class="line"><span class="lineno"> 1253</span>    Point2D size = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a> - <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a>;</div>
+<div class="line"><span class="lineno"> 1254</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ab08709c04dfbc1025870673d021b9da4">lowLeft</a> -= size * gap;</div>
+<div class="line"><span class="lineno"> 1255</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a5fccb680ebf6e42fbe7cece25ee998a9">upRight</a> += size * gap;</div>
+<div class="line"><span class="lineno"> 1256</span>}<span class="comment">//GetGabarits(...)</span></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1466,10 +1466,10 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01419">1419</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1420</span>{</div>
-<div class="line"><span class="lineno"> 1421</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromSourceSheetAtRectPanelToVortex(<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a>, vtx, vel);</div>
-<div class="line"><span class="lineno"> 1422</span>}<span class="comment">//GetInfluenceFromSourceSheetToVortex(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01546">1546</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1547</span>{</div>
+<div class="line"><span class="lineno"> 1548</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromSourceSheetAtRectPanelToVortex(<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a>, vtx, vel);</div>
+<div class="line"><span class="lineno"> 1549</span>}<span class="comment">//GetInfluenceFromSourceSheetToVortex(...)</span></div>
 <div class="ttc" id="a_gpudefs_8h_html_a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8"><div class="ttname"><a href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">object_T::panel</a></div><div class="ttdeci">@ panel</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dde/_gpudefs_8h_source.html#l00154">Gpudefs.h:154</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1523,10 +1523,10 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01413">1413</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1414</span>{</div>
-<div class="line"><span class="lineno"> 1415</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromSourcesToRectPanel(<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a>, ptr, count, panelRhs);</div>
-<div class="line"><span class="lineno"> 1416</span>}<span class="comment">//GetInfluenceFromSourcesToPanel(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01540">1540</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1541</span>{</div>
+<div class="line"><span class="lineno"> 1542</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromSourcesToRectPanel(<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a>, ptr, count, panelRhs);</div>
+<div class="line"><span class="lineno"> 1543</span>}<span class="comment">//GetInfluenceFromSourcesToPanel(...)</span></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1574,10 +1574,10 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01430">1430</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1431</span>{</div>
-<div class="line"><span class="lineno"> 1432</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromVInfToRectPanel(vInfRhs);</div>
-<div class="line"><span class="lineno"> 1433</span>}<span class="comment">//GetInfluenceFromVInfToPanel(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01557">1557</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1558</span>{</div>
+<div class="line"><span class="lineno"> 1559</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromVInfToRectPanel(vInfRhs);</div>
+<div class="line"><span class="lineno"> 1560</span>}<span class="comment">//GetInfluenceFromVInfToPanel(...)</span></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1633,10 +1633,10 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01425">1425</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1426</span>{</div>
-<div class="line"><span class="lineno"> 1427</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromVortexSheetAtRectPanelToVortex(<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a>, vtx, vel);</div>
-<div class="line"><span class="lineno"> 1428</span>}<span class="comment">//GetInfluenceFromVortexSheetToVortex(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01552">1552</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1553</span>{</div>
+<div class="line"><span class="lineno"> 1554</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromVortexSheetAtRectPanelToVortex(<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a>, vtx, vel);</div>
+<div class="line"><span class="lineno"> 1555</span>}<span class="comment">//GetInfluenceFromVortexSheetToVortex(...)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1689,10 +1689,10 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01406">1406</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1407</span>{</div>
-<div class="line"><span class="lineno"> 1408</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromVorticesToRectPanel(<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a>, ptr, count, panelRhs);</div>
-<div class="line"><span class="lineno"> 1409</span>}<span class="comment">//GetInfluenceFromVorticesToPanel(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01533">1533</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1534</span>{</div>
+<div class="line"><span class="lineno"> 1535</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a0f72f273459551e8a4cbdc6ea282631f">W</a>.getBoundary(<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ad5726e56f80235c63e321ba1e49fea4b">numberInPassport</a>).GetInfluenceFromVorticesToRectPanel(<a class="code hl_enumvalue" href="../../d5/dde/_gpudefs_8h.html#a429b0c11c513590fb14baa35249be8cdaf1e5d7a5fe13498abbdeb0f1f19136a8">panel</a>, ptr, count, panelRhs);</div>
+<div class="line"><span class="lineno"> 1536</span>}<span class="comment">//GetInfluenceFromVorticesToPanel(...)</span></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -2527,24 +2527,24 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true, если точка внутри профиля </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01092">1092</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1093</span>{</div>
-<div class="line"><span class="lineno"> 1094</span>    <span class="keywordtype">double</span> sumAngle = 0.0;</div>
-<div class="line"><span class="lineno"> 1095</span> </div>
-<div class="line"><span class="lineno"> 1096</span>    Point2D v1, v2;</div>
-<div class="line"><span class="lineno"> 1097</span> </div>
-<div class="line"><span class="lineno"> 1098</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
-<div class="line"><span class="lineno"> 1099</span>    {</div>
-<div class="line"><span class="lineno"> 1100</span>        v1 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i) - point;</div>
-<div class="line"><span class="lineno"> 1101</span>        v2 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - point;</div>
-<div class="line"><span class="lineno"> 1102</span>        sumAngle += atan2(v1 ^ v2, v1 &amp; v2);</div>
-<div class="line"><span class="lineno"> 1103</span>    }</div>
-<div class="line"><span class="lineno"> 1104</span> </div>
-<div class="line"><span class="lineno"> 1105</span>    <span class="keywordflow">if</span> (fabs(sumAngle) &lt; 0.1)</div>
-<div class="line"><span class="lineno"> 1106</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno"> 1107</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1108</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno"> 1109</span>}<span class="comment">//IsPointInAirfoil(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01219">1219</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1220</span>{</div>
+<div class="line"><span class="lineno"> 1221</span>    <span class="keywordtype">double</span> sumAngle = 0.0;</div>
+<div class="line"><span class="lineno"> 1222</span> </div>
+<div class="line"><span class="lineno"> 1223</span>    Point2D v1, v2;</div>
+<div class="line"><span class="lineno"> 1224</span> </div>
+<div class="line"><span class="lineno"> 1225</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
+<div class="line"><span class="lineno"> 1226</span>    {</div>
+<div class="line"><span class="lineno"> 1227</span>        v1 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i) - point;</div>
+<div class="line"><span class="lineno"> 1228</span>        v2 = <a class="code hl_function" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6a15dfcd1ed92fb3f91a5252b49eff54">getR</a>(i + 1) - point;</div>
+<div class="line"><span class="lineno"> 1229</span>        sumAngle += atan2(v1 ^ v2, v1 &amp; v2);</div>
+<div class="line"><span class="lineno"> 1230</span>    }</div>
+<div class="line"><span class="lineno"> 1231</span> </div>
+<div class="line"><span class="lineno"> 1232</span>    <span class="keywordflow">if</span> (fabs(sumAngle) &lt; 0.1)</div>
+<div class="line"><span class="lineno"> 1233</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno"> 1234</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1235</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno"> 1236</span>}<span class="comment">//IsPointInAirfoil(...)</span></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2731,23 +2731,23 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01171">1171</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1172</span>{</div>
-<div class="line"><span class="lineno"> 1173</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
-<div class="line"><span class="lineno"> 1174</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] += dr;</div>
-<div class="line"><span class="lineno"> 1175</span>    <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> += dr;</div>
-<div class="line"><span class="lineno"> 1176</span> </div>
-<div class="line"><span class="lineno"> 1177</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>.size(); ++q)</div>
-<div class="line"><span class="lineno"> 1178</span>        <span class="keywordflow">for</span> (Point2D&amp; pts : <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>[q])</div>
-<div class="line"><span class="lineno"> 1179</span>            pts += dr;</div>
-<div class="line"><span class="lineno"> 1180</span> </div>
-<div class="line"><span class="lineno"> 1181</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a> += dr;</div>
-<div class="line"><span class="lineno"> 1182</span> </div>
-<div class="line"><span class="lineno"> 1183</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3">CalcNrmTauLen</a>();</div>
-<div class="line"><span class="lineno"> 1184</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a">GetGabarits</a>();</div>
-<div class="line"><span class="lineno"> 1185</span>}<span class="comment">//Move(...)</span></div>
-<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_a88094b78a7911a9ea326b20cb27dfc9a"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a">VM2D::Airfoil::GetGabarits</a></div><div class="ttdeci">virtual void GetGabarits(double gap=0.02)</div><div class="ttdoc">Вычисляет габаритный прямоугольник профиля</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01112">Airfoil2D.cpp:1112</a></div></div>
-<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_aa59b6f9766d005930777ed8db48237f3"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3">VM2D::Airfoil::CalcNrmTauLen</a></div><div class="ttdeci">void CalcNrmTauLen()</div><div class="ttdoc">Вычисление нормалей, касательных и длин панелей по текущему положению вершин</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01132">Airfoil2D.cpp:1132</a></div></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01298">1298</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1299</span>{</div>
+<div class="line"><span class="lineno"> 1300</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
+<div class="line"><span class="lineno"> 1301</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] += dr;</div>
+<div class="line"><span class="lineno"> 1302</span>    <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> += dr;</div>
+<div class="line"><span class="lineno"> 1303</span> </div>
+<div class="line"><span class="lineno"> 1304</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>.size(); ++q)</div>
+<div class="line"><span class="lineno"> 1305</span>        <span class="keywordflow">for</span> (Point2D&amp; pts : <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>[q])</div>
+<div class="line"><span class="lineno"> 1306</span>            pts += dr;</div>
+<div class="line"><span class="lineno"> 1307</span> </div>
+<div class="line"><span class="lineno"> 1308</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a> += dr;</div>
+<div class="line"><span class="lineno"> 1309</span> </div>
+<div class="line"><span class="lineno"> 1310</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3">CalcNrmTauLen</a>();</div>
+<div class="line"><span class="lineno"> 1311</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a">GetGabarits</a>();</div>
+<div class="line"><span class="lineno"> 1312</span>}<span class="comment">//Move(...)</span></div>
+<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_a88094b78a7911a9ea326b20cb27dfc9a"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a">VM2D::Airfoil::GetGabarits</a></div><div class="ttdeci">virtual void GetGabarits(double gap=0.02)</div><div class="ttdoc">Вычисляет габаритный прямоугольник профиля</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01239">Airfoil2D.cpp:1239</a></div></div>
+<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_aa59b6f9766d005930777ed8db48237f3"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3">VM2D::Airfoil::CalcNrmTauLen</a></div><div class="ttdeci">void CalcNrmTauLen()</div><div class="ttdoc">Вычисление нормалей, касательных и длин панелей по текущему положению вершин</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01259">Airfoil2D.cpp:1259</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3097,12 +3097,12 @@ Here is the caller graph for this function:</div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_geometry_html_a5a6a1066ea6e1011c137e496946dff66"><div class="ttname"><a href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5a6a1066ea6e1011c137e496946dff66">VM2D::AirfoilGeometry::phiAfl</a></div><div class="ttdeci">double phiAfl</div><div class="ttdoc">Поворот профиля</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00100">Airfoil2D.h:100</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_geometry_html_a6bb23111b507c2a3192dffb0f47116f0"><div class="ttname"><a href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a6bb23111b507c2a3192dffb0f47116f0">VM2D::AirfoilGeometry::area</a></div><div class="ttdeci">double area</div><div class="ttdoc">Площадь профиля</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00103">Airfoil2D.h:103</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_geometry_html_ae1d4713bf020e296d534c10177b0633f"><div class="ttname"><a href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae1d4713bf020e296d534c10177b0633f">VM2D::AirfoilGeometry::inverse</a></div><div class="ttdeci">bool inverse</div><div class="ttdoc">Признак разворота нормалей (для расчета внутренних течений).</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00076">Airfoil2D.h:76</a></div></div>
-<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_a355ead9b4cc8f815d6b815adbe1fa131"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a355ead9b4cc8f815d6b815adbe1fa131">VM2D::Airfoil::Scale</a></div><div class="ttdeci">virtual void Scale(const Point2D &amp;)</div><div class="ttdoc">Масштабирование профиля</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01212">Airfoil2D.cpp:1212</a></div></div>
+<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_a355ead9b4cc8f815d6b815adbe1fa131"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a355ead9b4cc8f815d6b815adbe1fa131">VM2D::Airfoil::Scale</a></div><div class="ttdeci">virtual void Scale(const Point2D &amp;)</div><div class="ttdoc">Масштабирование профиля</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01339">Airfoil2D.cpp:1339</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_a77620774c15850cde8962167384abac0"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a77620774c15850cde8962167384abac0">VM2D::Airfoil::gammaThrough</a></div><div class="ttdeci">std::vector&lt; double &gt; gammaThrough</div><div class="ttdoc">Суммарные циркуляции вихрей, пересекших панели профиля на прошлом шаге</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00277">Airfoil2D.h:277</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_a8f57688629962792a635c42fafefac53"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a8f57688629962792a635c42fafefac53">VM2D::Airfoil::J</a></div><div class="ttdeci">double J</div><div class="ttdoc">Полярный момент инерции профиля относительно центра масс</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d75/_airfoil2_d_8h_source.html#l00196">Airfoil2D.h:196</a></div></div>
-<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_a927ff9232411db3200aadea640281e6b"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a927ff9232411db3200aadea640281e6b">VM2D::Airfoil::Move</a></div><div class="ttdeci">virtual void Move(const Point2D &amp;dr)</div><div class="ttdoc">Перемещение профиля</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01171">Airfoil2D.cpp:1171</a></div></div>
+<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_a927ff9232411db3200aadea640281e6b"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a927ff9232411db3200aadea640281e6b">VM2D::Airfoil::Move</a></div><div class="ttdeci">virtual void Move(const Point2D &amp;dr)</div><div class="ttdoc">Перемещение профиля</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01298">Airfoil2D.cpp:1298</a></div></div>
 <div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_aac90f107a96ec84b794c180a3e5283ab"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#aac90f107a96ec84b794c180a3e5283ab">VM2D::Airfoil::lightningTest</a></div><div class="ttdeci">void lightningTest()</div><div class="ttdoc">Тест на &quot;отвещенность&quot;.</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l00121">Airfoil2D.cpp:121</a></div></div>
-<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_ae70174fb0c012b6be31a45caeabb9dd8"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ae70174fb0c012b6be31a45caeabb9dd8">VM2D::Airfoil::Rotate</a></div><div class="ttdeci">virtual void Rotate(double alpha)</div><div class="ttdoc">Поворот профиля</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01188">Airfoil2D.cpp:1188</a></div></div>
+<div class="ttc" id="aclass_v_m2_d_1_1_airfoil_html_ae70174fb0c012b6be31a45caeabb9dd8"><div class="ttname"><a href="../../db/de9/class_v_m2_d_1_1_airfoil.html#ae70174fb0c012b6be31a45caeabb9dd8">VM2D::Airfoil::Rotate</a></div><div class="ttdeci">virtual void Rotate(double alpha)</div><div class="ttdoc">Поворот профиля</div><div class="ttdef"><b>Definition</b> <a href="../../de/dac/_airfoil2_d_8cpp_source.html#l01315">Airfoil2D.cpp:1315</a></div></div>
 <div class="ttc" id="aclass_v_mlib_1_1_point2_d_html_a4c2ff0542f21b2998d677de5bc95cc55"><div class="ttname"><a href="../../da/dd5/class_v_mlib_1_1_point2_d.html#a4c2ff0542f21b2998d677de5bc95cc55">VMlib::Point2D::cmp</a></div><div class="ttdeci">static bool cmp(const Point2D &amp;ptA, const Point2D &amp;ptB)</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d27/_point2_d_8h_source.html#l00187">Point2D.h:187</a></div></div>
 <div class="ttc" id="anamespace_v_mlib_html_a008e9dfd4880f7035103de8aa97cb32b"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#a008e9dfd4880f7035103de8aa97cb32b">VMlib::fileExistTest</a></div><div class="ttdeci">bool fileExistTest(const std::string &amp;fileName_, LogStream &amp;info, bool exitKey=false, const std::list&lt; std::string &gt; &amp;extList={})</div><div class="ttdoc">Проверка существования файла</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00346">defs.h:346</a></div></div>
 <div class="ttc" id="anamespacefmm_html_a3b6414f4fe816b82e468ff7c2b73b375"><div class="ttname"><a href="../../db/d0f/namespacefmm.html#a3b6414f4fe816b82e468ff7c2b73b375">fmm::ni</a></div><div class="ttdeci">constexpr double ni(int n)</div><div class="ttdef"><b>Definition</b> <a href="../../dc/db4/simple__math_8h_source.html#l00099">simple_math.h:99</a></div></div>
@@ -3190,27 +3190,27 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01188">1188</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1189</span>{</div>
-<div class="line"><span class="lineno"> 1190</span>    <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5a6a1066ea6e1011c137e496946dff66">phiAfl</a> += alpha;</div>
-<div class="line"><span class="lineno"> 1191</span>    nummatrix&lt;double, 2, 2&gt; rotMatrix = { { cos(alpha), -sin(alpha) }, { sin(alpha), cos(alpha) } };</div>
-<div class="line"><span class="lineno"> 1192</span> </div>
-<div class="line"><span class="lineno"> 1193</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
-<div class="line"><span class="lineno"> 1194</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + (rotMatrix &amp; (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>));</div>
-<div class="line"><span class="lineno"> 1195</span> </div>
-<div class="line"><span class="lineno"> 1196</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>.size(); ++q)</div>
-<div class="line"><span class="lineno"> 1197</span>        <span class="keywordflow">for</span> (Point2D&amp; pts : <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>[q])</div>
-<div class="line"><span class="lineno"> 1198</span>        {</div>
-<div class="line"><span class="lineno"> 1199</span>            Point2D oldPts = pts;</div>
-<div class="line"><span class="lineno"> 1200</span>            pts = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + (rotMatrix &amp; (oldPts - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>));</div>
-<div class="line"><span class="lineno"> 1201</span>        }</div>
-<div class="line"><span class="lineno"> 1202</span> </div>
-<div class="line"><span class="lineno"> 1203</span>    Point2D oldStartOfWays = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a>;</div>
-<div class="line"><span class="lineno"> 1204</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a> = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + (rotMatrix &amp; (oldStartOfWays - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>));</div>
-<div class="line"><span class="lineno"> 1205</span> </div>
-<div class="line"><span class="lineno"> 1206</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3">CalcNrmTauLen</a>();</div>
-<div class="line"><span class="lineno"> 1207</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a">GetGabarits</a>();</div>
-<div class="line"><span class="lineno"> 1208</span>}<span class="comment">//Rotate(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01315">1315</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1316</span>{</div>
+<div class="line"><span class="lineno"> 1317</span>    <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a5a6a1066ea6e1011c137e496946dff66">phiAfl</a> += alpha;</div>
+<div class="line"><span class="lineno"> 1318</span>    nummatrix&lt;double, 2, 2&gt; rotMatrix = { { cos(alpha), -sin(alpha) }, { sin(alpha), cos(alpha) } };</div>
+<div class="line"><span class="lineno"> 1319</span> </div>
+<div class="line"><span class="lineno"> 1320</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
+<div class="line"><span class="lineno"> 1321</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + (rotMatrix &amp; (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>));</div>
+<div class="line"><span class="lineno"> 1322</span> </div>
+<div class="line"><span class="lineno"> 1323</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>.size(); ++q)</div>
+<div class="line"><span class="lineno"> 1324</span>        <span class="keywordflow">for</span> (Point2D&amp; pts : <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>[q])</div>
+<div class="line"><span class="lineno"> 1325</span>        {</div>
+<div class="line"><span class="lineno"> 1326</span>            Point2D oldPts = pts;</div>
+<div class="line"><span class="lineno"> 1327</span>            pts = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + (rotMatrix &amp; (oldPts - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>));</div>
+<div class="line"><span class="lineno"> 1328</span>        }</div>
+<div class="line"><span class="lineno"> 1329</span> </div>
+<div class="line"><span class="lineno"> 1330</span>    Point2D oldStartOfWays = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a>;</div>
+<div class="line"><span class="lineno"> 1331</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a> = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + (rotMatrix &amp; (oldStartOfWays - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>));</div>
+<div class="line"><span class="lineno"> 1332</span> </div>
+<div class="line"><span class="lineno"> 1333</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3">CalcNrmTauLen</a>();</div>
+<div class="line"><span class="lineno"> 1334</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a">GetGabarits</a>();</div>
+<div class="line"><span class="lineno"> 1335</span>}<span class="comment">//Rotate(...)</span></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3273,24 +3273,24 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01212">1212</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1213</span>{</div>
-<div class="line"><span class="lineno"> 1214</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
-<div class="line"><span class="lineno"> 1215</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + Point2D{ factor[0] * (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[0], factor[1] * (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[1] };</div>
-<div class="line"><span class="lineno"> 1216</span> </div>
-<div class="line"><span class="lineno"> 1217</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>.size(); ++q)</div>
-<div class="line"><span class="lineno"> 1218</span>        <span class="keywordflow">for</span> (Point2D&amp; pts : <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>[q])</div>
-<div class="line"><span class="lineno"> 1219</span>        {</div>
-<div class="line"><span class="lineno"> 1220</span>            Point2D oldPts = pts;</div>
-<div class="line"><span class="lineno"> 1221</span>            pts = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + Point2D{ factor[0] * (oldPts - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[0], factor[1] * (oldPts - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[1] };</div>
-<div class="line"><span class="lineno"> 1222</span>        }</div>
-<div class="line"><span class="lineno"> 1223</span> </div>
-<div class="line"><span class="lineno"> 1224</span>    Point2D oldStartOfWays = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a>;</div>
-<div class="line"><span class="lineno"> 1225</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a> = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + Point2D{ factor[0] * (oldStartOfWays - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[0], factor[1] * (oldStartOfWays - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[1] };</div>
-<div class="line"><span class="lineno"> 1226</span> </div>
-<div class="line"><span class="lineno"> 1227</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3">CalcNrmTauLen</a>();</div>
-<div class="line"><span class="lineno"> 1228</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a">GetGabarits</a>();</div>
-<div class="line"><span class="lineno"> 1229</span>}<span class="comment">//Scale(...)</span></div>
+<p class="definition">Definition at line <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html#l01339">1339</a> of file <a class="el" href="../../de/dac/_airfoil2_d_8cpp_source.html">Airfoil2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1340</span>{</div>
+<div class="line"><span class="lineno"> 1341</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>.size(); ++i)</div>
+<div class="line"><span class="lineno"> 1342</span>        <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + Point2D{ factor[0] * (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[0], factor[1] * (<a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#a0f4159d7929f40fcf07eb347464a6cca">r_</a>[i] - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[1] };</div>
+<div class="line"><span class="lineno"> 1343</span> </div>
+<div class="line"><span class="lineno"> 1344</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>.size(); ++q)</div>
+<div class="line"><span class="lineno"> 1345</span>        <span class="keywordflow">for</span> (Point2D&amp; pts : <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#adf76da5423f7d132e667b32a4dbec189">possibleWays</a>[q])</div>
+<div class="line"><span class="lineno"> 1346</span>        {</div>
+<div class="line"><span class="lineno"> 1347</span>            Point2D oldPts = pts;</div>
+<div class="line"><span class="lineno"> 1348</span>            pts = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + Point2D{ factor[0] * (oldPts - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[0], factor[1] * (oldPts - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[1] };</div>
+<div class="line"><span class="lineno"> 1349</span>        }</div>
+<div class="line"><span class="lineno"> 1350</span> </div>
+<div class="line"><span class="lineno"> 1351</span>    Point2D oldStartOfWays = <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a>;</div>
+<div class="line"><span class="lineno"> 1352</span>    <a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a51738cdb1d9f22be85e9723beba718c1">startOfWays</a> = <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a> + Point2D{ factor[0] * (oldStartOfWays - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[0], factor[1] * (oldStartOfWays - <a class="code hl_variable" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html#ae4facfc6c1ab6c767cc9e3703b169b48">rcm</a>)[1] };</div>
+<div class="line"><span class="lineno"> 1353</span> </div>
+<div class="line"><span class="lineno"> 1354</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#aa59b6f9766d005930777ed8db48237f3">CalcNrmTauLen</a>();</div>
+<div class="line"><span class="lineno"> 1355</span>    <a class="code hl_function" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a88094b78a7911a9ea326b20cb27dfc9a">GetGabarits</a>();</div>
+<div class="line"><span class="lineno"> 1356</span>}<span class="comment">//Scale(...)</span></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

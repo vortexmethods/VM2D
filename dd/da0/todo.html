@@ -140,26 +140,28 @@ $(function(){initNavTree('dd/da0/todo.html','../../',''); });
 <dt>Member <a class="el" href="../../d2/d15/class_v_m2_d_1_1_passport.html#a66e3dd8d8de29712c7bf8f3d17d1d9dc">VM2D::Passport::GetParamsFromParser</a>  (std::istream &amp;mainStream, std::istream &amp;mechanicsStream, std::istream &amp;defaultStream, std::istream &amp;switcherStream, std::istream &amp;varsStream, const std::vector&lt; std::string &gt; paramList) override</dt>
 <dd><a class="anchor" id="_todo000021"></a>Удалить в следующих версиях. Добавлено для совместимости со старым синтаксисом задания разгона потока  </dd>
 <dt>Member <a class="el" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#ab6875b58f381978e20135c90f77abfa3">VM2D::Velocity::CalcDiffVeloI1I2ToSetOfPointsFromSheets</a>  (const <a class="el" href="../../d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей">WakeDataBase</a> &amp;pointsDb, const std::vector&lt; double &gt; &amp;domainRadius, const <a class="el" href="../../df/da2/class_v_m2_d_1_1_boundary.html" title="Абстрактный класс, определяющий способ удовлетворения граничного условия на обтекаемом профиле">Boundary</a> &amp;bnd, std::vector&lt; double &gt; &amp;I1, std::vector&lt; Point2D &gt; &amp;I2)</dt>
-<dd><p class="startdd"><a class="anchor" id="_todo000024"></a>Сделать переменной и синхронизировать с GPU </p>
-<p class="interdd"><a class="anchor" id="_todo000025"></a>Учитываем пока только нулевой момент решения </p>
-<p class="enddd"><a class="anchor" id="_todo000026"></a>Понять природу магической константы 8.0 и синхронизировать с GPU  </p>
+<dd><p class="startdd"><a class="anchor" id="_todo000025"></a>Сделать переменной и синхронизировать с GPU </p>
+<p class="interdd"><a class="anchor" id="_todo000026"></a>Учитываем пока только нулевой момент решения </p>
+<p class="enddd"><a class="anchor" id="_todo000027"></a>Понять природу магической константы 8.0 и синхронизировать с GPU  </p>
 </dd>
 <dt>Member <a class="el" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#a9d62ab68ad9f30cb51837040128f5965">VM2D::Velocity::CalcDiffVeloI1I2ToSetOfPointsFromWake</a>  (const <a class="el" href="../../d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей">WakeDataBase</a> &amp;pointsDb, const std::vector&lt; double &gt; &amp;domainRadius, const <a class="el" href="../../d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей">WakeDataBase</a> &amp;vorticesDb, std::vector&lt; double &gt; &amp;I1, std::vector&lt; Point2D &gt; &amp;I2)</dt>
 <dd><a class="anchor" id="_todo000022"></a>Понять природу магической константы 8.0 и синхронизировать с GPU  </dd>
 <dt>Member <a class="el" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#a2e63fcf3137a3ba3e76281cf957f17df">VM2D::Velocity::CalcDiffVeloI1I2ToWakeFromWakeFast</a>  (const <a class="el" href="../../d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей">WakeDataBase</a> &amp;wakeDb, const std::vector&lt; double &gt; &amp;domainRadius, std::vector&lt; double &gt; &amp;I1, std::vector&lt; Point2D &gt; &amp;I2)</dt>
 <dd><a class="anchor" id="_todo000023"></a>Понять природу магической константы 8.0 и синхронизировать с GPU (см. CalcDiffVeloI1I2ToSetOfPointsFromWake)  </dd>
+<dt>Member <a class="el" href="../../d7/dfe/class_v_m2_d_1_1_velocity.html#a618a6b0a835b7af4b939a9fb4509bec6">VM2D::Velocity::CalcOmegaFromWakeFast</a>  (const <a class="el" href="../../d1/daf/class_v_m2_d_1_1_wake_data_base.html" title="Класс, опеделяющий набор вихрей">WakeDataBase</a> &amp;wakeDb, std::vector&lt; double &gt; &amp;Omega)</dt>
+<dd><a class="anchor" id="_todo000024"></a>Понять природу магической константы 8.0 и синхронизировать с GPU  </dd>
 <dt>Member <a class="el" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a2586b4329fea5137d89c7921566be48e">VM2D::Wake::GetPairsBS</a>  (int type)</dt>
-<dd><a class="anchor" id="_todo000029"></a>Доделать  </dd>
+<dd><a class="anchor" id="_todo000030"></a>Доделать  </dd>
 <dt>Member <a class="el" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a7d45c51ef437950292d39efc768ee1ea">VM2D::Wake::MoveInsideMovingBoundary</a>  (const <a class="el" href="../../d1/d1d/class_point2_d.html">Point2D</a> &amp;newPos, const <a class="el" href="../../d1/d1d/class_point2_d.html">Point2D</a> &amp;oldPos, const <a class="el" href="../../dd/d6e/class_v_m2_d_1_1_airfoil_geometry.html" title="Класс, определяющий форму профиля">AirfoilGeometry</a> &amp;oldAfl, const <a class="el" href="../../db/de9/class_v_m2_d_1_1_airfoil.html" title="Абстрактный класс, определяющий обтекаемый профиль">Airfoil</a> &amp;afl, size_t &amp;panThrough) const</dt>
-<dd><a class="anchor" id="_todo000027"></a>сравнить производительности двух inside-ов  </dd>
+<dd><a class="anchor" id="_todo000028"></a>сравнить производительности двух inside-ов  </dd>
 <dt>Member <a class="el" href="../../df/d8f/class_v_m2_d_1_1_wake.html#a4269347865d074b8446266868c333378">VM2D::Wake::RemoveFar</a>  ()</dt>
-<dd><a class="anchor" id="_todo000028"></a>Пока профиль 1, расстояние от его центра; сделать от самого правого профиля  </dd>
+<dd><a class="anchor" id="_todo000029"></a>Пока профиль 1, расстояние от его центра; сделать от самого правого профиля  </dd>
 <dt>Member <a class="el" href="../../da/d3c/class_v_mlib_1_1nummatrix.html#a31aa6c3dd6d2e60cd616c686579f19ee">VMlib::nummatrix&lt; T, n, m &gt;::operator&amp;</a>  (const <a class="el" href="../../db/d1e/classnummatrix.html" title="Шаблонный класс, определяющий матрицу фиксированного размера   Фактически представляет собой массив,...">nummatrix&lt; P, m, p &gt;</a> &amp;B) const -&gt; nummatrix&lt; typename std::remove_const&lt; decltype(this-&gt;data()[0] *B.data()[0])&gt;::type, n, p &gt;</dt>
-<dd><a class="anchor" id="_todo000030"></a>напрашивается сразу инициализация нулем, а не последующее зануление всей матрицы  </dd>
+<dd><a class="anchor" id="_todo000031"></a>напрашивается сразу инициализация нулем, а не последующее зануление всей матрицы  </dd>
 <dt>Member <a class="el" href="../../dd/d9a/namespace_v_mlib.html#a7f07e2703655f76a14fd64aab312d19b">VMlib::operator*</a>  (double c, const <a class="el" href="../../d4/dbb/class_v_mlib_1_1v3_d.html" title="Класс, опеделяющий двумерный вектор">v3D</a> &amp;x)</dt>
-<dd><a class="anchor" id="_todo000031"></a>Исследовать целесообразность наличия явной перегрузки оператора умножения  </dd>
+<dd><a class="anchor" id="_todo000032"></a>Исследовать целесообразность наличия явной перегрузки оператора умножения  </dd>
 <dt>Member <a class="el" href="../../d4/dbb/class_v_mlib_1_1v3_d.html#a11b89aed5983c11af315e14fe6dac322">VMlib::v3D::rotated</a>  (const double angle, const <a class="el" href="../../d4/dbb/class_v_mlib_1_1v3_d.html" title="Класс, опеделяющий двумерный вектор">v3D</a> &amp;axis) const</dt>
-<dd><a class="anchor" id="_todo000032"></a>Реализовать! </dd>
+<dd><a class="anchor" id="_todo000033"></a>Реализовать! </dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

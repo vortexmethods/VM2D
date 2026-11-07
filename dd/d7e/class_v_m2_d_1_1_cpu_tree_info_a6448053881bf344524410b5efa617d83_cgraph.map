@@ -1,0 +1,25 @@
+<map id="VM2D::CpuTreeInfo::DownwardTraversalClosestPointToPoints" name="VM2D::CpuTreeInfo::DownwardTraversalClosestPointToPoints">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,213,236,274"/>
+<area shape="rect" id="Node000002" href="$dd/d7e/class_v_m2_d_1_1_cpu_tree_info.html#a18a4b87347a76796b5f37df59e47bfbb" title=" " alt="" coords="301,5,454,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,211,199,136,238,96,282,60,293,56,289,59,285,64,242,100,203,140,145,214"/>
+<area shape="rect" id="Node000003" href="$df/dc5/numvector_8h.html#ac194ed285a79bbaf94d6215ca77cca27" title="Вычисление квадрата расстояния между двумя точками" alt="" coords="351,74,404,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,210,210,160,245,134,283,112,338,94,334,97,285,117,248,139,213,164,155,214"/>
+<area shape="rect" id="Node000004" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a09ded2e7982e35af46d4899e2a31d359" title=" " alt="" coords="284,126,471,154"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="180,210,283,164,308,157,304,160,285,169,183,214"/>
+<area shape="rect" id="Node000005" href="$d9/dd7/namespace_v_m2_d.html#aebddc89e1d4929346c06b2114f5637df" title=" " alt="" coords="315,178,440,206"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="235,218,302,206,297,209,237,223"/>
+<area shape="rect" id="Node000006" href="$d9/dd7/namespace_v_m2_d.html#ad2a4d7eaac6560a44e5a53d62924df92" title=" " alt="" coords="296,230,458,258"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="235,241,283,243,278,245,237,246"/>
+<area shape="rect" id="Node000007" href="$d9/dd7/namespace_v_m2_d.html#a54efeecf2c48054b4a2f11cc5ca758d8" title=" " alt="" coords="300,282,454,310"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="236,264,293,277,288,279,237,270"/>
+<area shape="rect" id="Node000008" href="$d1/de2/_v_mlib_2defs_2defs_8h.html#aa9c30c1d592b3896cac80167bb5c9697" title="Возведение числа в квадрат" alt="" coords="357,334,398,362"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="182,272,285,319,344,339,339,340,283,323,181,278"/>
+<area shape="rect" id="Node000009" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a9a2edffcbf01cfab7f70422ce60391be" title="Запуск (первый или повторный) счетчика времени" alt="" coords="296,386,459,414"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="154,272,213,323,248,349,285,371,302,380,297,380,282,375,245,353,210,327,153,278"/>
+<area shape="rect" id="Node000011" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a320206c4467fa80d013de7a8d9fde1d5" title="Останов работающего счетчика времени" alt="" coords="297,438,458,466"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="142,272,201,349,241,389,285,423,298,432,292,431,282,427,237,393,197,352,140,277"/>
+<area shape="rect" id="Node000010" href="$d9/d54/class_v_mlib_1_1vm_timer.html#a66ab074918381d084d6bb49fd66474ed" title=" " alt="" coords="519,412,711,440"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="460,406,506,414,501,414,460,412"/>
+<area shape="poly" id="edge10_Node000010_Node000010" title=" " alt="" coords="574,411,568,404,573,394,589,388,615,386,643,388,660,398,654,397,642,394,615,391,590,393,577,398,573,403,579,413"/>
+<area shape="poly" id="edge12_Node000011_Node000010" title=" " alt="" coords="458,440,501,438,506,438,459,446"/>
+</map>

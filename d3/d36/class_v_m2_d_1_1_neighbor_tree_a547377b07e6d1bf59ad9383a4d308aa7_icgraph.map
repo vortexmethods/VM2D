@@ -1,12 +1,15 @@
 <map id="VM2D::NeighborTree::LeafBegin" name="VM2D::NeighborTree::LeafBegin">
-<area shape="rect" id="Node000001" title=" " alt="" coords="953,36,1107,81"/>
-<area shape="rect" id="Node000002" href="$d3/d36/class_v_m2_d_1_1_neighbor_tree.html#a5f3dae780ebcc6252c9002deb4abe459" title="Построение дерева; getPos(i) возвращает координаты i&#45;й точки" alt="" coords="750,5,905,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="935,44,905,42,905,37,940,45"/>
-<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a2e63fcf3137a3ba3e76281cf957f17df" title="Быстрый (с деревом поиска соседей) расчет I1 и I2 от вихрей следа в точках этого же следа" alt="" coords="486,36,702,81"/>
-<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="940,62,905,65,750,65,703,64,703,59,750,60,905,60,935,62"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="738,40,703,47,703,41,732,40"/>
-<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе" alt="" coords="260,36,438,81"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="468,58,438,61,438,56,473,58"/>
-<area shape="rect" id="Node000005" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="5,44,212,72"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="241,59,212,61,212,56,246,58"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="953,52,1107,97"/>
+<area shape="rect" id="Node000002" href="$d3/d36/class_v_m2_d_1_1_neighbor_tree.html#a5f3dae780ebcc6252c9002deb4abe459" title="Построение дерева; getPos(i) возвращает координаты i&#45;й точки" alt="" coords="750,52,905,97"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="935,74,905,77,905,72,940,74"/>
+<area shape="rect" id="Node000003" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a2e63fcf3137a3ba3e76281cf957f17df" title="Быстрый (с деревом поиска соседей) расчет I1 и I2 от вихрей следа в точках этого же следа" alt="" coords="486,5,702,50"/>
+<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="940,47,904,42,801,32,703,28,703,23,801,26,905,37,946,48"/>
+<area shape="rect" id="Node000006" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a618a6b0a835b7af4b939a9fb4509bec6" title=" " alt="" coords="493,87,695,131"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="948,101,905,112,797,120,696,119,696,113,797,114,904,106,942,101"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="733,56,703,52,703,47,738,56"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="738,88,696,97,696,91,732,88"/>
+<area shape="rect" id="Node000004" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#ad1e05d212fae8a06bd9cf6775b6bf575" title="Вычисление диффузионных скоростей вихрей и виртуальных вихрей в вихревом следе" alt="" coords="260,5,438,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="468,28,439,30,438,25,473,27"/>
+<area shape="rect" id="Node000005" href="$d7/dfe/class_v_m2_d_1_1_velocity.html#a12cf72877405eed5b5e671cf2d4f4d7e" title="Вычисление диффузионных скоростей" alt="" coords="5,14,212,42"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="241,28,213,30,212,25,246,27"/>
 </map>

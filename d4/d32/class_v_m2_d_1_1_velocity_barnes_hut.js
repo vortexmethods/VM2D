@@ -13,6 +13,7 @@ var class_v_m2_d_1_1_velocity_barnes_hut =
     [ "CalcDiffVeloI1I2ToWakeFromSheets", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a2a6a6e63b271c286e4225e20c590bf13", null ],
     [ "CalcDiffVeloI1I2ToWakeFromWake", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a4299b095858b5cebd641fd4c61e2395a", null ],
     [ "CalcDiffVeloI1I2ToWakeFromWakeFast", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a2e63fcf3137a3ba3e76281cf957f17df", null ],
+    [ "CalcOmegaFromWakeFast", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a618a6b0a835b7af4b939a9fb4509bec6", null ],
     [ "CalcVeloToWakeVP", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a7db1bf6a854f696d853cce0111063813", null ],
     [ "CPUGetFASTWakeInfluenceToRhs", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#ade0ec792b319d0b83768837d45a4721e", null ],
     [ "FillRhs", "d4/d32/class_v_m2_d_1_1_velocity_barnes_hut.html#a8e027316baed640996e3f6eee9892139", null ],
