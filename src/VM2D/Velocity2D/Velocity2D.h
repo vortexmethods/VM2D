@@ -163,7 +163,9 @@ namespace VM2D
 		/// Дает тот же результат, что и CalcDiffVeloI1I2ToSetOfPointsFromWake, с точностью до порядка суммирования
 		void CalcDiffVeloI1I2ToWakeFromWakeFast(const WakeDataBase& wakeDb, const std::vector<double>& domainRadius, std::vector<double>& I1, std::vector<Point2D>& I2);
 		void CalcDiffVeloI1I2ToSetOfPointsFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2);
-		
+		void CalcOmegaFromWakeFast(const WakeDataBase& wakeDb, std::vector<double>& Omega);
+
+
 		void CalcDiffVeloI1I2ToWakeFromSheets(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const Boundary& bnd, std::vector<double>& I1, std::vector<Point2D>& I2);
 		void CalcDiffVeloI1I2ToWakeFromWake(const WakeDataBase& pointsDb, const std::vector<double>& domainRadius, const WakeDataBase& vorticesDb, std::vector<double>& I1, std::vector<Point2D>& I2);
 #if defined(USE_CUDA)

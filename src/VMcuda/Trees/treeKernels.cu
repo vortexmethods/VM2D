@@ -771,6 +771,397 @@ namespace BHcu
 
     __global__
         __launch_bounds__(THREADSupward, FACTORupward)
+        void treeSummarizationKernel1(
+            const int nnodesd, const int nbodiesd,
+            const int2* __restrict Mchildd,
+            volatile int* __restrict massd,
+            const int order, double2* __restrict momsd,  //momsd  - без volatile
+            const double* __restrict vtxd,
+            object_T objectType, tree_T treeType,
+            const int* __restrict MmortonCodesIdxd,
+            double2* __restrict Mposd, const int* __restrict MindexSortd, const int* __restrict MindexSortTd,
+            bool calcAABB,
+            int sizeOfElement,
+            double4* __restrict Mlowerupperd,
+            const double4* __restrict XYXY,
+            tree_T fromVortexOrSource,
+            scheme_T constOrLin
+        )
+    {
+        register int i, j, k, ch, inc, flag;
+
+        register double4 lowerupper[2];
+
+        register double2 mom0;
+        //register double2 mom1;
+        //register double2 mom2;
+        //register double2 mom3;
+        //register double2 mom4;
+        //register double2 mom5;
+        //register double2 mom6;
+        //register double2 mom7;
+        //register double2 mom8;
+        //register double2 mom9;
+        //register double2 mom10;
+        //register double2 mom11;
+
+        //register double2 cen, dr;
+
+        register int cm;
+        int m[2];
+
+
+        inc = blockDim.x * gridDim.x;
+        k = ((nnodesd - (nbodiesd - 1)) & (-WARPSIZE)) + threadIdx.x + blockIdx.x * blockDim.x;  // align to warp size
+
+
+        if (k < (nnodesd - (nbodiesd - 1)))
+            k += inc;
+
+        //MortonTree:
+        // 0 1 2 ... (nb-2) x (nb+0) (nb+1) (nb+2) ... (nb+(nb-1))
+        // ----------------   -----------------------------------
+        //      cells                         bodies
+
+        //Martin's tree:
+        // 0 1 2 ... (nb-1) x x x x (nn-(nb-1)) ... (nn-2) (nn-1)
+        // ----------------          ----------------------------
+        //      bodies                 sorted and reversed cells
+
+        flag = 0;
+        j = 0;
+        // iterate over all cells assigned to thread
+        while (k < nnodesd)
+        {
+            if (massd[nnodesd - 1 - k] >= 0)
+            {
+                k += inc;
+            }
+            else
+            {
+                j = 2;
+                register int srt = MindexSortd[(nnodesd - 1) - k];
+                register int2 chdPair = Mchildd[srt];
+
+                int chdSorted[2];
+
+#pragma unroll
+                for (i = 0; i < 2; i++) {
+                    int chd = i * chdPair.y + (1 - i) * chdPair.x;   // i==0 => .x;  i==1 => .y
+
+                    ch = (chd >= nbodiesd) ? chd - nbodiesd : (chdSorted[i] = (nnodesd - 1) - MindexSortTd[chd]);
+
+                    if ((chd >= nbodiesd) || (massd[nnodesd - 1 - ch] >= 0))
+                        j--;
+                }
+
+                if (j == 0)
+                {
+                    // all children are ready
+                    const int kch = ((nnodesd - 1) - k) * orderAlignment;
+                    //cm = 0;
+#pragma unroll
+                    for (i = 0; i < 2; i++)
+                    {
+                        const int chd = i * chdPair.y + (1 - i) * chdPair.x;
+                        if (chd >= nbodiesd)
+                        {
+                            ch = chd - nbodiesd;
+                            const register int sortedBody = MmortonCodesIdxd[ch];
+
+                            double4 xyAB = XYXY[sortedBody];
+                            lowerupper[i] = make_double4(
+                                ::fmin(xyAB.x, xyAB.z), ::fmin(xyAB.y, xyAB.w),
+                                ::fmax(xyAB.x, xyAB.z), ::fmax(xyAB.y, xyAB.w)
+                            );
+                        }
+                        else
+                        {
+                            ch = (nnodesd - 1) - chdSorted[i];
+                            lowerupper[i] = Mlowerupperd[chd];
+                        }
+                    }//for i
+
+                    const double4 loup = make_double4(
+                        ::fmin(lowerupper[0].x, lowerupper[1].x), ::fmin(lowerupper[0].y, lowerupper[1].y),
+                        ::fmax(lowerupper[0].z, lowerupper[1].z), ::fmax(lowerupper[0].w, lowerupper[1].w)
+                    );
+
+
+                    Mlowerupperd[srt] = loup;
+                    //cen = Mposd[srt] = make_double2(0.5 * (loup.x + loup.z), 0.5 * (loup.y + loup.w));
+
+                    const double2 zero = make_double2(0.0, 0.0);
+                    register double2 momh0 = zero;
+                    //register double2 momh1 = zero;
+                    //register double2 momh2 = zero;
+                    //register double2 momh3 = zero;
+                    //register double2 momh4 = zero;
+                    //register double2 momh5 = zero;
+                    //register double2 momh6 = zero;
+                    //register double2 momh7 = zero;
+                    //register double2 momh8 = zero;
+                    //register double2 momh9 = zero;
+                    //register double2 momh10 = zero;
+                    //register double2 momh11 = zero;
+
+                    for (i = 0; i < 2; i++)
+                    {
+                        //computation of ch = child[k*2+i]
+                        const int chd = i * chdPair.y + (1 - i) * chdPair.x;
+                        if (chd >= nbodiesd)
+                        {
+                            ch = chd - nbodiesd;
+                            const register int sortedBody = MmortonCodesIdxd[ch];
+
+                            if (objectType == object_T::point4)
+                            {
+                                mom0 = double2{ vtxd[sortedBody * 4 + 2], 0.0 };
+                                //mom1 = mom2 = mom3 = mom4 = mom5 = mom6 = mom7 = mom8 = mom9 = mom10 = mom11 = double2{ 0.0, 0.0 };
+                                //double4 pos = *(double4*)(&vtxd[sortedBody * 4]);
+                                //dr = make_double2(pos.x, pos.y) - cen;
+                                m[i] = 1;
+                            } //objectType==0
+
+                            if (objectType == object_T::panel)
+                            {
+                                //double2 panBegin, panEnd;
+                                //panBegin = *(double2*)(&vtxd[sortedBody * 12 + 2]);
+                                //panEnd = *(double2*)(&vtxd[sortedBody * 12 + 4]);
+
+                                //double2 rcur, rd2Pow;
+                                //rcur = rd2Pow = multz(0.5 * (panEnd - panBegin), 0.5 * (panEnd - panBegin));
+                                double gam;
+                                double2 gammVort;
+                                switch (fromVortexOrSource)
+                                {
+                                case tree_T::vortex:
+                                    gammVort = *(double2*)(&vtxd[sortedBody * 12 + 6]);
+                                    gam = gammVort.x + gammVort.y;
+                                    break;
+
+                                case tree_T::source:
+                                    gam = vtxd[sortedBody * 12 + 8];
+                                    break;
+                                };
+
+                                //mom1 = mom3 = mom5 = mom7 = mom9 = mom11 = zero;
+                                mom0 = double2{ gam, 0.0 };
+
+                                //mom2 = (gam / 3) * rcur;
+                                //rcur = multz(rcur, rd2Pow);
+                                //mom4 = (gam / 5) * rcur;
+                                //rcur = multz(rcur, rd2Pow);
+                                //mom6 = (gam / 7) * rcur;
+                                //rcur = multz(rcur, rd2Pow);
+                                //mom8 = (gam / 9) * rcur;
+                                //rcur = multz(rcur, rd2Pow);
+                                //mom10 = (gam / 11) * rcur;
+
+                                //if (constOrLin == scheme_T::linScheme)
+                                //{
+                                //    double gamLin;
+                                //
+                                //    switch (fromVortexOrSource)
+                                //    {
+                                //    case tree_T::vortex:
+                                //        gamLin = vtxd[sortedBody * 12 + 9] + vtxd[sortedBody * 12 + 10];
+                                //        break;
+                                //    case tree_T::source:
+                                //        gamLin = vtxd[sortedBody * 12 + 11];
+                                //        break;
+                                //    };
+                                //
+                                //    rcur = 0.5 * (panEnd - panBegin);
+                                //    mom1 = gamLin * (0.5 / 3) * rcur;
+                                //    rcur = multz(rcur, rd2Pow);
+                                //    mom3 = gamLin * (0.5 / 5) * rcur;
+                                //    rcur = multz(rcur, rd2Pow);
+                                //    mom5 = gamLin * (0.5 / 7) * rcur;
+                                //    rcur = multz(rcur, rd2Pow);
+                                //    mom7 = gamLin * (0.5 / 9) * rcur;
+                                //    rcur = multz(rcur, rd2Pow);
+                                //    mom9 = gamLin * (0.5 / 11) * rcur;
+                                //    rcur = multz(rcur, rd2Pow);
+                                //    mom11 = gamLin * (0.5 / 13) * rcur;
+                                //}
+
+                                //double2 pos = *(double2*)(&vtxd[sortedBody * 12 + 0]);
+                                //dr = pos - cen;
+                                m[i] = 1;
+                            } //objectType == panel
+                        }
+                        else
+                        {
+                            register const int srtT = MindexSortTd[chd];
+                            ch = (nnodesd - 1) - srtT;
+
+                            const int nch = srtT * orderAlignment;
+
+                            mom0 = double2{ momsd[nch + 0].x, (double)0 };
+                            //mom1 = momsd[nch + 1];
+                            //mom2 = momsd[nch + 2];
+                            //mom3 = momsd[nch + 3];
+                            //mom4 = momsd[nch + 4];
+                            //mom5 = momsd[nch + 5];
+                            //mom6 = momsd[nch + 6];
+                            //mom7 = momsd[nch + 7];
+                            //mom8 = momsd[nch + 8];
+                            //mom9 = momsd[nch + 9];
+                            //mom10 = momsd[nch + 10];
+                            //mom11 = momsd[nch + 11];
+
+                            //dr = Mposd[chd] - cen;
+                            m[i] = massd[nnodesd - 1 - ch];
+                        }
+                        // add child's contribution
+
+                        momh0 += mom0;
+                        //momh1 += mom1;
+                        //momh2 += mom2;
+                        //momh3 += mom3;
+                        //momh4 += mom4;
+                        //momh5 += mom5;
+                        //momh6 += mom6;
+                        //momh7 += mom7;
+                        //momh8 += mom8;
+                        //momh9 += mom9;
+                        //momh10 += mom10;
+                        //momh11 += mom11;
+
+                        //double2 z = dr;
+                        //
+                        //momh1 += multz(mom0, z);
+                        //momh2 += 2 * multz(mom1, z);
+                        //momh3 += 3 * multz(mom2, z);
+                        //momh4 += 4 * multz(mom3, z);
+                        //momh5 += 5 * multz(mom4, z);
+                        //momh6 += 6 * multz(mom5, z);
+                        //momh7 += 7 * multz(mom6, z);
+                        //momh8 += 8 * multz(mom7, z);
+                        //momh9 += 9 * multz(mom8, z);
+                        //momh10 += 10 * multz(mom9, z);
+                        //momh11 += 11 * multz(mom10, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh2 += multz(mom0, z);
+                        //momh3 += 3 * multz(mom1, z);
+                        //momh4 += 6.0 * multz(mom2, z);
+                        //momh5 += 10.0 * multz(mom3, z);
+                        //momh6 += 15.0 * multz(mom4, z);
+                        //momh7 += 21.0 * multz(mom5, z);
+                        //momh8 += 28.0 * multz(mom6, z);
+                        //momh9 += 36.0 * multz(mom7, z);
+                        //momh10 += 45.0 * multz(mom8, z);
+                        //momh11 += 55.0 * multz(mom9, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh3 += multz(mom0, z);
+                        //momh4 += 4 * multz(mom1, z);
+                        //momh5 += 10.0 * multz(mom2, z);
+                        //momh6 += 20.0 * multz(mom3, z);
+                        //momh7 += 35.0 * multz(mom4, z);
+                        //momh8 += 56.0 * multz(mom5, z);
+                        //momh9 += 84.0 * multz(mom6, z);
+                        //momh10 += 120.0 * multz(mom7, z);
+                        //momh11 += 165.0 * multz(mom8, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh4 += multz(mom0, z);
+                        //momh5 += 5 * multz(mom1, z);
+                        //momh6 += 15.0 * multz(mom2, z);
+                        //momh7 += 35.0 * multz(mom3, z);
+                        //momh8 += 70.0 * multz(mom4, z);
+                        //momh9 += 126.0 * multz(mom5, z);
+                        //momh10 += 210.0 * multz(mom6, z);
+                        //momh11 += 330.0 * multz(mom7, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh5 += multz(mom0, z);
+                        //momh6 += 6 * multz(mom1, z);
+                        //momh7 += 21.0 * multz(mom2, z);
+                        //momh8 += 56.0 * multz(mom3, z);
+                        //momh9 += 126.0 * multz(mom4, z);
+                        //momh10 += 252.0 * multz(mom5, z);
+                        //momh11 += 462.0 * multz(mom6, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh6 += multz(mom0, z);
+                        //momh7 += 7 * multz(mom1, z);
+                        //momh8 += 28.0 * multz(mom2, z);
+                        //momh9 += 84.0 * multz(mom3, z);
+                        //momh10 += 210.0 * multz(mom4, z);
+                        //momh11 += 462.0 * multz(mom5, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh7 += multz(mom0, z);
+                        //momh8 += 8 * multz(mom1, z);
+                        //momh9 += 36.0 * multz(mom2, z);
+                        //momh10 += 120.0 * multz(mom3, z);
+                        //momh11 += 330.0 * multz(mom4, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh8 += multz(mom0, z);
+                        //momh9 += 9 * multz(mom1, z);
+                        //momh10 += 45.0 * multz(mom2, z);
+                        //momh11 += 165.0 * multz(mom3, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh9 += multz(mom0, z);
+                        //momh10 += 10 * multz(mom1, z);
+                        //momh11 += 55.0 * multz(mom2, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh10 += multz(mom0, z);
+                        //momh11 += 11 * multz(mom1, z);
+                        //
+                        //z = multz(z, dr);
+                        //
+                        //momh11 += multz(mom0, z);
+                    }
+
+                    momh0.y = 0;
+                    momsd[kch + 0] = momh0;
+                    //momsd[kch + 1] = momh1;
+                    //momsd[kch + 2] = momh2;
+                    //momsd[kch + 3] = momh3;
+                    //momsd[kch + 4] = momh4;
+                    //momsd[kch + 5] = momh5;
+                    //momsd[kch + 6] = momh6;
+                    //momsd[kch + 7] = momh7;
+                    //momsd[kch + 8] = momh8;
+                    //momsd[kch + 9] = momh9;
+                    //momsd[kch + 10] = momh10;
+                    //momsd[kch + 11] = momh11;
+
+                    cm = m[0] + m[1];
+
+                    flag = 1;
+                }
+            }
+            __threadfence();
+
+            if (flag != 0) {
+                massd[nnodesd - 1 - k] = cm;
+                k += inc;
+                flag = 0;
+            }
+        }
+    }//treeSummarizationKernel1(...)
+
+
+
+    __global__
+        __launch_bounds__(THREADSupward, FACTORupward)
         void treeCalcAABBKernel(
             const int nnodesd, const int nbodiesd,
             const int2* __restrict Mchildd,
@@ -1399,7 +1790,7 @@ namespace BHcu
             const double4* __restrict Mlowerupperd,// габариты внутренних узлов
 
             const int npointsd, const double* __restrict pointsd, //точки наблюдения (для кого ищем соседей) 
-            //int sizeOfElement,
+            int sizeOfElement,
             const int* __restrict MmortonCodesIdxPointsd, //порядок их сортировки
             int* __restrict near)
     {
@@ -1411,18 +1802,17 @@ namespace BHcu
             int idx = MmortonCodesIdxPointsd[k];
             double2 query;
 
-            //switch (sizeOfElement)
-            //{
-            //case 16:
+            switch (sizeOfElement)
+            {
+            case 16:
+                query = ((const double2*)pointsd)[idx];
+                break;
+            case 32:
                 query = *(double2*)(pointsd + idx * 4);
-                //query = ((const double2*)pointsd)[idx];
-            //    break;
-            //case 32:
-            //    query = *(double2*)(pointsd + idx * 4);
-            //    break;
-            //default:
-            //    printf("Error in treeClosestPanelToPointsCalculationKernel!\n");
-            //}
+                break;
+            default:
+                printf("Error in treeClosestPointToPointsCalculationKernel!\n");
+            }
 
             double2 stack[32];
             double2* stack_ptr = stack;
@@ -2320,17 +2710,17 @@ namespace BHcu
                         {
                             i0 += -valPif * rdi;
 
-                            float argcosh = fabsf(s) * iDDomRad;
+                            float argcosh = fabsf(s) * lenj * iDDomRad;
 
-                            float prod = (argcosh < 50.0f) ? expf(-lenj * 0.5f * iDDomRad) * coshf(fabsf(s) * iDDomRad) :
+                            float prod = (argcosh < 10.0f) ? expf(-lenj * 0.5f * iDDomRad) * coshf(argcosh) :
                                 0.5f * expf((s - 0.5f * lenj) * iDDomRad);
 
                             mnog1 = 2.0f * rdi * (1.0f - prod);
                             i3.x += mnog1 * norm.x;
                             i3.y += mnog1 * norm.y;
 
-                            argcosh = fabsf(s) * iDDomRadVS;
-                            prod = (argcosh < 50.0f) ? expf(-lenj * 0.5f * iDDomRadVS) * coshf(fabsf(s) * iDDomRadVS) :
+                            argcosh = fabsf(s) * lenj * iDDomRadVS;
+                            prod = (argcosh < 10.0f) ? expf(-lenj * 0.5f * iDDomRadVS) * coshf(argcosh) :
                                 0.5f * expf((s - 0.5f * lenj) * iDDomRadVS);
                             mnog1 = 2.0f / iDDomRadVS * (1.0f - prod);
                             vs += mnog1 * gm / (valPif * meanepsj2);
@@ -2505,12 +2895,26 @@ namespace BHcu
         cudaEventCreate(&start);  cudaEventCreate(&stop);
         cudaEventRecord(start, 0);
 
-        //case 12:
-        treeSummarizationKernel12 << <treeInfo.nBlock * FACTORupward, THREADSupward >> > (\
-            treeInfo.nNode, treeInfo.nObject, (int2*)treeInfo.childD, treeInfo.massD, order, (double2*)treeInfo.momsD, (double*)treeInfo.objectD, \
-            treeInfo.objectType, treeInfo.treeType, treeInfo.mortonCodesIdxD, (double2*)treeInfo.centerD, treeInfo.indexSortD, treeInfo.indexSortTD, \
-            true, treeInfo.sizeOfElement, (double4*)treeInfo.lowerupperD, (double4*)treeInfo.gabForLeavesD, treeInfo.treeType, treeInfo.schemeType);
+        switch (order)
+        {
+        case 1:
+            treeSummarizationKernel1 << <treeInfo.nBlock * FACTORupward, THREADSupward >> > (\
+                treeInfo.nNode, treeInfo.nObject, (int2*)treeInfo.childD, treeInfo.massD, order, (double2*)treeInfo.momsD, (double*)treeInfo.objectD, \
+                treeInfo.objectType, treeInfo.treeType, treeInfo.mortonCodesIdxD, (double2*)treeInfo.centerD, treeInfo.indexSortD, treeInfo.indexSortTD, \
+                true, treeInfo.sizeOfElement, (double4*)treeInfo.lowerupperD, (double4*)treeInfo.gabForLeavesD, treeInfo.treeType, treeInfo.schemeType);
+            break;
 
+        case 12:
+            treeSummarizationKernel12 << <treeInfo.nBlock * FACTORupward, THREADSupward >> > (\
+                treeInfo.nNode, treeInfo.nObject, (int2*)treeInfo.childD, treeInfo.massD, order, (double2*)treeInfo.momsD, (double*)treeInfo.objectD, \
+                treeInfo.objectType, treeInfo.treeType, treeInfo.mortonCodesIdxD, (double2*)treeInfo.centerD, treeInfo.indexSortD, treeInfo.indexSortTD, \
+                true, treeInfo.sizeOfElement, (double4*)treeInfo.lowerupperD, (double4*)treeInfo.gabForLeavesD, treeInfo.treeType, treeInfo.schemeType);
+            break;
+
+        default:
+            printf("Error! Order in fastMethod for GPU is specified incorrectly\n");
+            exit(-10);
+        }
         cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
 
         CudaTestError("treeSummarizationKernel12 launch failed");
@@ -2608,7 +3012,7 @@ namespace BHcu
 
 
     float treeClosestPointToPointsCalculationWrapper(const CudaTreeInfo& treeCloudPointsInfo, const CudaTreeInfo& treeObservPointsInfo, \
-        int* __restrict closeIdxD)
+        int elementSize, int* __restrict closeIdxD)
     {
         cudaEvent_t start, stop;
         float time;
@@ -2627,6 +3031,7 @@ namespace BHcu
 
             treeObservPointsInfo.nObject,
             (double*)treeObservPointsInfo.objectD,
+            elementSize,
             treeObservPointsInfo.mortonCodesIdxD,
             closeIdxD
             );

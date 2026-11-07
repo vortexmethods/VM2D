@@ -173,8 +173,9 @@ namespace VM2D
         float Build();
         float UpwardTraversal(int order);
 
-        float DownwardTraversalVorticesToPoints(CpuTreeInfo& cntrTree, std::vector<Point2D>& vel, std::vector<double>& epsast, double theta, int order, bool calcRadius, double coefEpsAst);
-        float DownwardTraversalClosestPanelToPoints(CpuTreeInfo& cntrTree, std::vector<std::pair<int, double>>& indexPnlDist, bool findOnlyInside, double* pseudonormals);
+        float DownwardTraversalVorticesToPoints(CpuTreeInfo& cntrTree, std::vector<Point2D>& vel, std::vector<double>& epsast, double theta, int order, bool calcRadius, double coefEpsAst) const;
+        float DownwardTraversalClosestPanelToPoints(CpuTreeInfo& cntrTree, std::vector<std::pair<int, double>>& indexPnlDist, bool findOnlyInside, double* pseudonormals) const;
+        float DownwardTraversalClosestPointToPoints(CpuTreeInfo& cntrTree, std::vector<int>& near) const;
 
         float DownwardTraversalVorticesToPanels(CpuTreeInfo& cntrTree, std::vector<double>& rhs, std::vector<double>& rhsLin, double theta, int order);
 

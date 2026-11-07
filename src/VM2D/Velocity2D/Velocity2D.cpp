@@ -114,6 +114,10 @@ void Velocity::CalcDiffVeloI1I2()
 
 void Velocity::CalcDiffVeloI0I3()
 {
+	//VMlib::vmTimer T03_1, T03_2, T03_3;
+
+	//T03_1.start();
+
 	for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
 	{
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_I0I3))
@@ -122,18 +126,23 @@ void Velocity::CalcDiffVeloI0I3()
 		W.getNonConstAirfoil(afl).GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(W.getWake(), wakeVortexesParams.epsastWake, wakeVortexesParams.I0, wakeVortexesParams.I3);
 #endif
 	}	
+
+	//T03_1.stop();
 	
 
 	//Слагаемое, связанное с движением стенки: t_tau = mu * (omega_w + 2 n * dU_w/ds),
 	//dU_w/ds на панели j --- (V_{j+1} - V_j) / len[j]; для вращения тела как целого оно дает поправку -2 mu Omega
+	//T03_2.start();
 	for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
 	{
 		auto& A = W.getNonConstAirfoil(afl);
 		for (size_t j = 0; j < A.getNumberOfPanels(); ++j)		
 			A.viscousStress[j] += 2.0 * (A.nrm[j] & (A.getV(j + 1) - A.getV(j)));		
 	}
+	//T03_2.stop();
 
 	//влияние поверхности
+	//T03_3.start();
 	Point2D I3;
 	double I0;
 
@@ -155,6 +164,9 @@ void Velocity::CalcDiffVeloI0I3()
 		if (fabs(I0) > 1.e-8)
 			wakeVortexesParams.diffVelo[vt] += I3 * (1.0 / I0);		
 	}
+	//T03_3.stop();
+
+	//std::cout << "Diff03: " << T03_1.duration() << " " << T03_2.duration() << " " << T03_3.duration() << "\n";
 }//CalcDiffVeloI0I3()
 
 
@@ -174,34 +186,35 @@ void Velocity::CalcDiffVelo()
 {
 	W.getTimers().start("DiffVel");
 
-	double t12start, t12finish;
-	double t03start, t03finish;
-	double tOtherstart, tOtherfinish;
-
 	if (W.getPassport().physicalProperties.nu > 0.0)
 	{
-		t12start = omp_get_wtime();
+		//VMlib::vmTimer D1, D2, D3, D4, D5;
+		
+		//D1.start();
 		CalcDiffVeloI1I2();
-		t12finish = omp_get_wtime();
+		//D1.stop();
 
-		t03start = omp_get_wtime();
+		//D2.start();
 		CalcDiffVeloI0I3();
-		t03finish = omp_get_wtime();
-  
-		tOtherstart = omp_get_wtime();
+		//D2.stop();
+
+		//D3.start();
 		for (Point2D& diffV : wakeVortexesParams.diffVelo)
 			diffV *= W.getPassport().physicalProperties.nu;
 
 		//контроль застрелов диффузионной скорости		
 		LimitDiffVelo(wakeVortexesParams.diffVelo);
+		//D3.stop();
 
+		//D4.start();
 		for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
 			for (size_t i = 0; i < W.getAirfoil(afl).viscousStress.size(); ++i)
 				W.getNonConstAirfoil(afl).viscousStress[i] *= W.getPassport().physicalProperties.nu;
 
 		SaveVisStress();
-		
+		//D4.stop();
 
+		//D5.start();
 		//Заполнение структуры данных виртуальных вихрей
 		size_t nVirtVortices = 0;
 		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
@@ -218,9 +231,12 @@ void Velocity::CalcDiffVelo()
 				virtualVortexesParams[bou].I2[v] = wakeVortexesParams.I2[counter];
 				virtualVortexesParams[bou].I3[v] = wakeVortexesParams.I3[counter];				
 				++counter;
-			}
+			}	
+		//D5.stop();
 
-		tOtherfinish = omp_get_wtime();		
+		//std::cout << "Diff: " << D1.duration() << " " << D2.duration() << " " << D3.duration() << " " 
+		//	<< D4.duration() << " " << D5.duration() << "\n";
+
 	}
 	W.getTimers().stop("DiffVel");
 
@@ -352,6 +368,81 @@ void Velocity::CalcDiffVeloI1I2ToWakeFromWakeFast(const WakeDataBase& wakeDb, co
 		}
 	}
 }//CalcDiffVeloI1I2ToWakeFromWakeFast(...)
+
+
+
+//KFU
+//Быстрый расчет завихренности в точках расположения вихрей 
+void Velocity::CalcOmegaFromWakeFast(const WakeDataBase& wakeDb, std::vector<double>& Omega)
+{
+	const std::vector<Vortex2D>& vtx = wakeDb.vtx;
+	const int n = (int)vtx.size();
+	const double minEpsAst = W.getPassport().wakeDiscretizationProperties.getMinEpsAst();
+
+	NeighborTree tree;
+	tree.Build(n, [&vtx](int i) -> const Point2D& { return vtx[i].r(); });
+
+	std::vector<double> gSorted(n), sigma(n);
+#pragma omp parallel for
+	for (int k = 0; k < n; ++k)
+	{
+		gSorted[k] = vtx[tree.idx[k]].g();
+		sigma[k] = vtx[tree.idx[k]].sigma();
+		Omega[k] = 0.0;
+	}
+
+#pragma omp parallel
+	{
+		std::vector<int> cand;
+		cand.reserve(256);
+
+#pragma omp for schedule(dynamic, 4)
+		for (int leaf = 0; leaf < tree.nLeaves; ++leaf)
+		{
+			/// \todo Понять природу магической константы 8.0 и синхронизировать с GPU
+			double maxDiffRadius = 0.0;
+			for (int k = tree.LeafBegin(leaf); k < tree.LeafEnd(leaf); ++k)
+				maxDiffRadius = std::max(maxDiffRadius, 8.0 * std::max(sigma[k], minEpsAst));
+
+			tree.CollectLeaves(tree.LeafBox(leaf), maxDiffRadius, cand);
+
+			for (int k = tree.LeafBegin(leaf); k < tree.LeafEnd(leaf); ++k)
+			{
+				const int i = tree.idx[k];
+				const Point2D& posI = tree.pos[k];
+				const double domRad = std::max(sigma[k], minEpsAst);
+				const double iDomRad = 1.0 / domRad;
+				const double diffRadius2 = sqr(8.0 * domRad);
+
+				double selfOmega = 0.0;
+
+				for (int c : cand)
+				{
+					if (tree.LeafBox(c).Dist2(posI) >= diffRadius2)
+						continue;
+
+					for (int m = tree.LeafBegin(c); m < tree.LeafEnd(c); ++m)
+					{
+						const Point2D Rij = posI - tree.pos[m];
+						const double rij2 = Rij.length2();
+						if (rij2 < diffRadius2)
+						{
+							const double rij = sqrt(rij2);
+							const double expr = gSorted[m] * exp(-rij * iDomRad);
+							selfOmega += expr;
+						}
+					}
+				}
+
+				Omega[i] = selfOmega * IDPI * sqr(iDomRad);
+			}
+		}
+	}
+}//CalcOmegaFromWakeFast(...)
+
+
+
+
 
 
 //Вычисление числителей и знаменателей диффузионных скоростей в заданном наборе точек
@@ -1126,6 +1217,8 @@ void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
 //Вычисление конвективных скоростей вихрей и виртуальных вихрей в вихревом следе, а также в точках wakeVP
 void Velocity::CalcConvVelo()
 {
+	//VMlib::vmTimer Tmr1("a"), Tmr2("b"), Tmr3("c"), Tmr4("d"), Tmr5("e"), Tmr6("f");
+	
 	W.getTimers().start("ConvVel");
 	
 	//Влияние следа на след
@@ -1137,6 +1230,7 @@ void Velocity::CalcConvVelo()
 
 	VMlib::vmTimer timerAgpu, timerBgpu;
 
+	//Tmr1.start();
 	std::unique_ptr<BHcu::CudaTreeInfo>& cntrTree = W.getNonConstCuda().cntrTreeWake;
 	auto& treeWake = *W.getNonConstCuda().inflTreeWake;
 	if (W.getPassport().numericalSchemes.velocityComputation.second == 1)
@@ -1156,9 +1250,11 @@ void Velocity::CalcConvVelo()
 		treeWake.UpwardTraversal(W.getPassport().numericalSchemes.nbodyMultipoleOrder);
 		timerBgpu.stop();
 	}
-		
+	//Tmr1.stop();
+
+	//Tmr2.start();
 	double timerCgpuduration = GPUCalcConvVeloToSetOfPointsFromWake(W.getNonConstCuda().cntrTreeWake, W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
-	
+	//Tmr2.stop();
 
 	W.timerConvVelo.stop();
 
@@ -1252,47 +1348,36 @@ void Velocity::CalcConvVelo()
 				<< timerAgpu.duration() << ',' << timerBgpu.duration() << ',' << timerCgpuduration << '\n';
 		}
 	}
-
 	treeTimeFile.close();
 	//*/
 #else
-	float timeUpd1=0, timeBld1=0, timeUpw1=0, timeUpd2=0, timeBld2=0, timeUpw2=0, timeDnw=0;
+
 	W.timerConvVelo.reset();
 	W.timerConvVelo.start();
-
-	VMlib::vmTimer fullTimer;
-	fullTimer.reset();
-	fullTimer.start();
-
 	if (W.getWake().vtx.size() > 0)
 	{
 		if (W.getPassport().numericalSchemes.velocityComputation.second == 1)
 		{
-			//KFU
+			
+			//KFU			
 			//более глубокий уровень контрольных ячеек заметно ускоряет обход дерева на CPU при той же точности
 			int estOptLevel = std::max(4, (int)(log2(W.getWake().vtx.size())));
 			//контрольные ячейки по числу вихрей (не более 128), а не по уровню: иначе по мере удлинения следа
 			//ячейки в плотной области у тела укрупняются и обход дерева сильно замедляется
 			W.getInflTreeWake().controlCellSize = 128;
 
-			timeUpd1 = W.getInflTreeWake().Update(W.getWake().vtx, estOptLevel);
-			timeBld1 = W.getInflTreeWake().Build();
-			timeUpw1 = W.getInflTreeWake().UpwardTraversal(W.getPassport().numericalSchemes.nbodyMultipoleOrder);
-
-			//timeUpd2 = W.getCntrTreeWake().Update(W.getWake().vtx, estOptLevel);
-			//timeBld2 = W.getCntrTreeWake().Build();
-			//timeUpw2 = W.getCntrTreeWake().UpwardTraversal(W.getPassport().numericalSchemes.nbodyMultipoleOrder);
-			
-			//std::cout << "timeUpd = " << timeUpd1 << " " << timeUpd2 << '\n';
-			//std::cout << "timeBld = " << timeBld1 << " " << timeBld2 << '\n';
-			//std::cout << "timeUpw = " << timeUpw1 << " " << timeUpw2 << '\n';
-		
+			//Tmr1.start();
+			W.getInflTreeWake().Update(W.getWake().vtx, estOptLevel);
+			W.getInflTreeWake().Build();
+			W.getInflTreeWake().UpwardTraversal(W.getPassport().numericalSchemes.nbodyMultipoleOrder);
+			//Tmr1.stop();
 		}
 		
 		//Вызов виртуальной функции	
-		
-		timeDnw = CalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
-		
+		//Tmr2.start();
+		CalcConvVeloToSetOfPointsFromWake(W.getWake(), wakeVortexesParams.convVelo, wakeVortexesParams.epsastWake, true, true);
+		//Tmr2.stop();
+
 		//std::string vname = VMlib::fileNameStep("VeloBH", 0, wakeVortexesParams.convVelo.size(), "txt");
 		//std::ofstream velofile;
 		//velofile.open(W.getPassport().dir + vname);
@@ -1300,14 +1385,9 @@ void Velocity::CalcConvVelo()
 		//for (int i = 0; i < wakeVortexesParams.convVelo.size(); ++i)
 		//	velofile << wakeVortexesParams.convVelo[i][0] << " " << wakeVortexesParams.convVelo[i][1] << "\n";
 		//velofile.close();
-		//exit(-124);
-
-		//std::cout << "timeDnw = " << timeDnw << '\n';
 	}
-	fullTimer.stop();
-	
 	W.timerConvVelo.stop();
-	//std::cout << "theta = " << W.getPassport().numericalSchemes.nbodyTheta << "\n";
+	
 	
 	/// FMM ///
 	/*
@@ -1357,6 +1437,8 @@ void Velocity::CalcConvVelo()
 
 #endif
 
+	//Tmr3.start();
+
 	std::vector<Point2D> nullVector(0);
 	//вычисление конвективных скоростей по закону Био-Савара от виртуальных вихрей (точнее, от слоев)
 	for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
@@ -1380,8 +1462,10 @@ void Velocity::CalcConvVelo()
 		W.getBoundary(bou).CalcConvVelocityToSetOfPointsFromSheets(W.getWake(), wakeVortexesParams.convVelo);
 #endif
 	}
-
+	//Tmr3.stop();
+		
 	//Скорости только что рожденных вихрей
+	//Tmr4.start();
 	{
 		size_t nVirtVortices = 0;
 		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
@@ -1398,8 +1482,10 @@ void Velocity::CalcConvVelo()
 				++counter;
 			}
 	}
+	//Tmr4.stop();
 
 	//Заполнение структур данных виртуальных вихрей
+	//Tmr5.start();
 	{
 		size_t nVirtVortices = 0;
 		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
@@ -1415,22 +1501,21 @@ void Velocity::CalcConvVelo()
 				++counter;
 			}
 	}
+	//Tmr5.stop();
 
 	W.getTimers().stop("ConvVel");
 	W.getTimers().start("VelPres");
 
+	//Tmr6.start();
 	//вычисление скоростей в заданных точках только на соответствующем шаге по времени
 	if ((W.getPassport().timeDiscretizationProperties.saveVPstep > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVPstep)))
 #ifdef OPTIMIZER	
 		if ((W.getCurrentStep() >= OPTIMIZER_START_STEP && W.getCurrentStep() <= OPTIMIZER_STOP_STEP) || W.getCurrentStep() == 0)
 			CalcVeloToWakeVP();
-#else
-
-	//t1 = -omp_get_wtime();
-	CalcVeloToWakeVP();
-	//t1 += omp_get_wtime();
-	//std::cout << "time ConvVelo VP = " << t1 << std::endl;
+#else		
+		CalcVeloToWakeVP();
 #endif
+	//Tmr6.stop();
 
 	//////////////////////////////////////////
 	/*if ((W.getPassport().timeDiscretizationProperties.saveVPstep > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVPstep)))
@@ -1449,6 +1534,9 @@ void Velocity::CalcConvVelo()
 	}*/
 	/////////////////////////////////////////
 
+	//std::cout << "ConvVelo: " << Tmr1.duration() << " " << Tmr2.duration() << " " << Tmr3.duration() << " "
+	//	<< Tmr4.duration() << " " << Tmr5.duration() << " " << Tmr6.duration() << "\n";
+
 	W.getTimers().stop("VelPres");
 }//CalcConvVelo()
 
@@ -1457,6 +1545,9 @@ void Velocity::CalcConvVelo()
 //Вычисление конвективных скоростей вихрей в точках wakeVP
 void Velocity::CalcVeloToWakeVP()
 {
+	//VMlib::vmTimer T1, T2, T3, T4, T5, T6;
+
+	//T1.start();
 	std::vector<Point2D> velConvWake;
 	std::vector<std::vector<Point2D>> velConvBou;
 
@@ -1471,9 +1562,14 @@ void Velocity::CalcVeloToWakeVP()
 	std::vector<Point2D>& velocityRef = W.getNonConstMeasureVP().getNonConstVelocity();
 	velocityRef.assign(addWSize, W.getV0());
 
+	//T1.stop();
+
+	//T2.start();
+
 #if (defined(USE_CUDA))
 	W.getNonConstCuda().RefreshVP();
 #endif	
+	//T2.stop();
 
 #if (defined(__CUDACC__) || defined(USE_CUDA)) && (defined(CU_VP))
 	std::unique_ptr<BHcu::CudaTreeInfo>& cntrTree = W.getNonConstCuda().cntrTreeVP;
@@ -1481,16 +1577,21 @@ void Velocity::CalcVeloToWakeVP()
 	switch(W.getPassport().numericalSchemes.velocityComputation.second)
 	{
 	case 1:
+		
 		if (W.getCurrentStep() == 0 || W.isAnyMovableOrDeformable())
-		{			
-			cntrTree->MemoryAllocate((int)W.getCuda().n_CUDA_velVP);			
+		{
+			cntrTree->MemoryAllocate((int)W.getCuda().n_CUDA_velVP);
 			cntrTree->Update((int)W.getMeasureVP().getWakeVP().vtx.size(), W.getMeasureVP().getWakeVP().devVtxPtr);
-			cntrTree->Build();	
-			GPUCalcConvVeloToSetOfPointsFromWake(cntrTree, W.getMeasureVP().getWakeVP(), velocityRef, W.getNonConstMeasureVP().getNonConstDomainRadius(), true, false);
+			cntrTree->Build();
 		}
+		//T3.start();
+		GPUCalcConvVeloToSetOfPointsFromWake(cntrTree, W.getMeasureVP().getWakeVP(), velocityRef, W.getNonConstMeasureVP().getNonConstDomainRadius(), true, false);
+		//T3.stop();
 		break;
 	case 0:
+		//T4.start();
 		GPUCalcConvVeloToSetOfPointsFromWake(cntrTree, W.getMeasureVP().getWakeVP(), velocityRef, W.getNonConstMeasureVP().getNonConstDomainRadius(), true, false);
+		//T4.stop();
 		break;
 	}
 	
@@ -1518,6 +1619,7 @@ void Velocity::CalcVeloToWakeVP()
 		switch (W.getPassport().numericalSchemes.velocityComputation.second)
 		{
 		case 0:
+			//T5.start();
 			W.getNonConstBoundary(i).GPUCalcConvVelocityToSetOfPointsFromSheets(W.getMeasureVP().getWakeVP(), velConvBou[i]);
 
 			for (int s = 0; s < addWSize; ++s)
@@ -1526,10 +1628,15 @@ void Velocity::CalcVeloToWakeVP()
 			for (size_t bou = 0; bou < velConvBou.size(); ++bou)
 				for (int j = 0; j < addWSize; ++j)
 					velocityRef[j] += velConvBou[bou][j];
+			//T5.stop();
 			break;
 		case 1:
 			if (i == 0)
+			{
+				//T6.start();
 				GPUCalcConvVelocityToSetOfPointsFromSheets(cntrTree, W.getMeasureVP().getWakeVP(), velocityRef);
+				//T6.stop();
+			}
 			break;
 		}
 #else
@@ -1541,6 +1648,11 @@ void Velocity::CalcVeloToWakeVP()
 			for (int j = 0; j < addWSize; ++j)
 				velocityRef[j] += velConvBou[bou][j];
 #endif
+
+		//std::cout << "calcV: " << T1.duration() << " " << T2.duration() << " " << T3.duration() << " " 
+		//	<< T4.duration() << " " << T5.duration() << " " << T6.duration() << "\n";
+
+
 }// CalcVeloToWakeVP()
 
 

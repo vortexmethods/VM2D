@@ -272,6 +272,9 @@ void VelocityBarnesHut::CalcConvVPVeloToSetOfPointsFromWake(const WakeDataBase& 
 #if defined(USE_CUDA)
 double VelocityBarnesHut::GPUCalcConvVeloToSetOfPointsFromWake(std::unique_ptr<BHcu::CudaTreeInfo>& cntrTree, const WakeDataBase& pointsDb, std::vector<Point2D>& velo, std::vector<double>& domainRadius, bool calcVelo, bool calcRadius)
 {	
+	//VMlib::vmTimer T1, T2, T3, T4;
+
+	//T1.start();
 	const double& theta = W.getPassport().numericalSchemes.nbodyTheta;
 	const int& order = W.getPassport().numericalSchemes.nbodyMultipoleOrder;
 	const double& coefEpsAst = W.getPassport().wakeDiscretizationProperties.coefEpsAst;
@@ -282,19 +285,27 @@ double VelocityBarnesHut::GPUCalcConvVeloToSetOfPointsFromWake(std::unique_ptr<B
 
 	auto& inflTree = *W.getCuda().inflTreeWake;		
 
+	//T1.stop();
 
 	VMlib::vmTimer timerA;
 	timerA.start();
+
+	//T2.start();
+
 	if (cntrTree->nObject > 1024 * 80)
 		tDNV = inflTree.DownwardTraversalVorticesToPoints<1024>(*cntrTree, (Point2D*)pointsDb.devVelPtr, pointsDb.devRadPtr, theta, order, calcRadius, coefEpsAst);
 	else
 		tDNV = inflTree.DownwardTraversalVorticesToPoints<32>(*cntrTree, (Point2D*)pointsDb.devVelPtr, pointsDb.devRadPtr, theta, order, calcRadius, coefEpsAst);
+	//T2.stop();
+	
 	timerA.stop();
 
 	//std::cout << "nvt = " << npt << std::endl;
 	//std::cout << "tBLD = " << tBLD << std::endl;
 	//std::cout << "tUPW = " << tUPW << std::endl;
 	//std::cout << "tDNV = " << tDNV << std::endl;
+
+	//T3.start();
 
 	std::vector<Point2D> Vel;
 	if (calcVelo)
@@ -306,8 +317,14 @@ double VelocityBarnesHut::GPUCalcConvVeloToSetOfPointsFromWake(std::unique_ptr<B
 			velo[q] += Vel[q];
 	}
 
+	//T3.stop();
+
+	//T4.start();
 	if (calcRadius)
 		W.getCuda().CopyMemFromDev<double, 1>(npt, pointsDb.devRadPtr, domainRadius.data(), 212);
+	//T4.stop();
+
+	//std::cout << "GPU_calc: " << T1.duration() << " " << T2.duration() << " " << T3.duration() << " " << T4.duration() << "\n";
 
 	return timerA.duration();
 }

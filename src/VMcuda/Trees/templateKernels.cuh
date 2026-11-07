@@ -261,7 +261,6 @@ namespace BHcu
                             register double f = gm / ::fmax(r2, sgm2); //влияние точечного вихря или нулевого момента кластера						
                             v += f * dr;
 
-
                             if ((!isVortex) && (order > 1)) //если ячейка, то рассчитываем влияние высших моментов
                             {
                                 register double2 cftr; //для расчета коэффициентов theta
@@ -274,8 +273,9 @@ namespace BHcu
                                     th = multz(th, cftr);
                                     v += multzA(th, momSh[base * orderAlignment + s]);
                                 }//for s
-
                             }//if ((!isVortex...)
+
+
 
                         }//if (k < npointsd)
                         //конец кода для "непустых тредов"
@@ -320,10 +320,7 @@ namespace BHcu
         }//for k
     }//treeVorticesToPointsCalculationKernel(...)
 
-
-
-
-
+    
 
     template <int order>
     __global__

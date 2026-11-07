@@ -44,6 +44,10 @@
 
 #include "defs.h"
 
+#ifdef USE_CUDA
+	#include "cudaTreeInfo.h"
+#endif
+
 namespace VM2D
 {
 	class WakeDataBase;
@@ -75,6 +79,10 @@ namespace VM2D
 		int sstrCounter;
 		int historyFrequency;
 
+#ifdef USE_CUDA
+		BHcu::CudaTreeInfo treeWakeX;
+		BHcu::CudaTreeInfo treeWakeY;
+#endif
 
 	public:
 		/// Точки, в которых давление нужно вычислять в служебных целях (для задач гидроупругости), формируются программно

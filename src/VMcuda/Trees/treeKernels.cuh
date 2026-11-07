@@ -68,7 +68,7 @@ namespace BHcu
 													 bool findOnlyInside = false, double* pseudoNormals = nullptr);
 
 	float treeClosestPointToPointsCalculationWrapper(const CudaTreeInfo& treeCloudPointsInfo, const CudaTreeInfo& treeObservPointsInfo, \
-													 int* __restrict closeIdxD);
+													 int elementSize, int* __restrict closeIdxD);
 
 	float treePanelsSegmentsIntersectionCalculationWrapper(const CudaTreeInfo& treePanelsInfo, const CudaTreeInfo& controlTreeInfo, \
 														   int* __restrict closePnlD);

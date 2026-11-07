@@ -80,13 +80,19 @@ void cuCalculateDiffVeloWakeMesh(size_t npt, double* pt, size_t nvt, double* vt,
 void cuCalculateDiffVeloWakeFromPanels(size_t npt, double* pt, size_t npnl, double* r, double* freegamma, double* freegammalin, double* i1, double* i2, double* rd, double minRad);
 
 void cuCalculateSurfDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr);
+void cuCalculateSurfDiffVeloWakeOptimized(size_t npt, double* pt, int nIndex, int* indexForI0I3_dev, int nClosestPan, int * range1_dev, int * range2_dev, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr);
+
+
 void cuCalculateRhs(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double* rhs, double* rhsLin);
 void cuCalculatePairs(size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 void cuCalculatePairsClosestNeib(size_t npt, double* pt, int* mesh, int* nei, double meshStep, double epsCol2, int type);
 
 void cuCalculatePressure(size_t npt, double* pt, size_t nvt, double* vt, double V0x, double V0y, double* vtxVel, double* vtxDiffVel, \
 	size_t npnl, double* rpnl, double* freegamma, double* attgamma, double* attsource, double* devOldVortexSheet, double* devOldSourceSheet, \
-	double* devGammaThroughIntensity, double* pressure);
+	double* devGammaThroughIntensity, double* pressure, bool contributionWake, bool contributionPnls);
+
+
+void cuCalcMulGammaVel(size_t nvt, double* vt, double V0x, double V0y, double* vtxVel, double* vtxDiffVel, double* gVx, double* gVy);
 
 //void cuTEST(const std::string& str);
 

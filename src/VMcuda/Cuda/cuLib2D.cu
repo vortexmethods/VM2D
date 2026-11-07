@@ -869,13 +869,20 @@ __global__ void  CU_calc_I0I3(
 				else
 				{
 					val0 += -valPi * rdi;
-										
-					mnog1 = 2.0 * rdi * (1.0 - exp(-lenj * 0.5 * iDDomRad) * cosh(fabs(s) * iDDomRad));
+					
+					double argcosh = fabs(s) * lenj * iDDomRad;
+					double prod = (argcosh < 10.0) ? exp(-lenj * 0.5 * iDDomRad) * cosh(argcosh) :
+						0.5 * exp((s - 0.5 * lenj) * iDDomRad);
+
+					mnog1 = 2.0 * rdi * (1.0 - prod);
 					val3x += mnog1 * normx;
 					val3y += mnog1 * normy;
 
-					mnog1 = 2.0 * meanepsj * (1.0 - exp(-lenj * 0.5 * iDDomRadVS) * cosh(fabs(s) * iDDomRadVS));
+					argcosh = fabs(s) * lenj * iDDomRadVS;
+					prod = (argcosh < 10.0) ? exp(-lenj * 0.5 * iDDomRadVS) * cosh(argcosh) :
+						0.5 * exp((s - 0.5 * lenj) * iDDomRadVS);
 
+					mnog1 = 2.0 * meanepsj * (1.0 - prod);
 					vs = mnog1 * ptg / (valPi * sqr(meanepsj));
 				}
 				
@@ -903,6 +910,220 @@ __global__ void  CU_calc_I0I3(
 		i3[2 * i + 1] = val3y;
 	}
 }
+
+
+
+__global__ void  CU_calc_I0I3_optimized(
+	size_t npt, double* pt, //вихри
+	int nIndex, int* indexForI0I3_dev, int nClosestPan, int* range1_dev, int* range2_dev,
+
+	size_t nvt, double* vt, //панели
+	double* i0, double* i3,
+	double* rd, double* meanEps,
+	double minRd,
+	double* visstr)
+{
+	size_t baseI = blockIdx.x * blockDim.x + threadIdx.x;
+
+	if (baseI >= nIndex)
+		return;
+
+	int i = indexForI0I3_dev[baseI];
+
+	double ptx = pt[i * sizeVort + posR + 0];
+	double pty = pt[i * sizeVort + posR + 1];
+	double ptg = pt[i * sizeVort + posG + 0];
+
+	double rdi = myMax(rd[i], minRd);   // commented 30-05
+	//double rdi = rd[i];
+
+	double val0 = 0.0;
+	double val3x = 0.0;
+	double val3y = 0.0;
+
+	double iDDomRad = 1.0 / rdi;
+
+	double qx, qy, d/*, q*/;
+	double begx, begy, endx, endy;
+	double lenj, lenj_m;
+	double taux, tauy;
+	double s;
+	double normx, normy;
+	double v0x, v0y;
+	double hx, hy;
+	double xix, xiy, lxi;
+	double expon;
+	double mnx, mny;
+	int new_n;
+	double den;
+	double xi_mx, xi_my, lxi_m;
+	double mnog1;
+	double vs;
+	double meanepsj, iDDomRadVS;
+
+	int r1a = range1_dev[2 * i + 0], r1b = range1_dev[2 * i + 1];
+	int r2a = range2_dev[2 * i + 0]/*, r2b = range1_dev[2 * i + 1]*/;
+	int counter = 0;
+	bool secondRange = false;
+
+	if (i < npt) //Здесь так делать можно, т.к. shared memory не используется
+	{
+		for (int baseJ = 0; baseJ <= 2 * nClosestPan; ++baseJ)		
+		//for (size_t j = 0; j < nvt; ++j)
+		{
+			int j = r1a + counter;
+			if (j > r1b)
+			{
+				secondRange = true;
+				counter = 0;
+			}
+
+			if (secondRange)		
+				j = r2a + counter;			
+
+			//if (i == 0)
+			//	printf("j = %d\n", j);
+
+			++counter;
+			
+			begx = vt[j * 4 + 0];
+			begy = vt[j * 4 + 1];
+			endx = vt[j * 4 + 2];
+			endy = vt[j * 4 + 3];
+
+			vs = 0.0;
+
+			qx = ptx - 0.5 * (begx + endx);
+			qy = pty - 0.5 * (begy + endy);
+			//q = sqrt(qx * qx + qy * qy);
+
+			lenj = sqrt((endx - begx) * (endx - begx) + (endy - begy) * (endy - begy));
+
+			taux = (endx - begx) / lenj;
+			tauy = (endy - begy) / lenj;
+
+			s = qx * taux + qy * tauy;
+
+			normx = tauy;
+			normy = -taux;
+
+			d = fabs(qx * normx + qy * normy);
+
+			meanepsj = myMax(meanEps[j], minRd);
+			iDDomRadVS = 1.0 / meanepsj;
+			//meanepsj2 = sqr(meanEps[j]);
+
+			if ((d < 50.0 * lenj) && (fabs(s) < 50.0 * lenj))
+			{
+				v0x = taux * lenj;
+				v0y = tauy * lenj;
+
+				if ((d > 5.0 * lenj) || (fabs(s) > 5.0 * lenj))
+				{
+					xix = qx * iDDomRad;
+					xiy = qy * iDDomRad;
+					lxi = sqrt(xix * xix + xiy * xiy);
+
+					expon = exp(-lxi) * lenj;
+					mnx = normx * expon;
+					mny = normy * expon;
+
+					val0 += (xix * mnx + xiy * mny) * (lxi + 1.0) / (lxi * lxi);
+					val3x += mnx;
+					val3y += mny;
+
+					xix = qx * iDDomRadVS;
+					xiy = qy * iDDomRadVS;
+					lxi = sqrt(xix * xix + xiy * xiy);
+					expon = exp(-lxi) * lenj;
+
+					vs = ptg * expon / (valPi * sqr(meanepsj));
+
+				}
+				//else if ( (d >= 0 * lenj) || (fabs(s) >= 0 * lenj) )
+				else if ((d >= 0.01 * lenj) || (fabs(s) > 0.45 * lenj))
+				{
+					//new_n = 100;
+					//new_n = (int)(ceil(5.0 * lenj / q));
+
+					den = (fabs(s) < 0.5 * lenj) ? d : (fabs(s) + d - 0.5 * lenj);
+					new_n = (int)myMin((int)myMax(ceil(10.0 * lenj / den), 1.0), 20);
+
+					hx = v0x / new_n;
+					hy = v0y / new_n;
+					lenj_m = lenj / new_n;
+
+					for (int m = 0; m < new_n; ++m)
+					{
+						xi_mx = (ptx - (begx + hx * (m + 0.5))) * iDDomRad;
+						xi_my = (pty - (begy + hy * (m + 0.5))) * iDDomRad;
+						lxi_m = sqrt(xi_mx * xi_mx + xi_my * xi_my);
+						expon = exp(-lxi_m) * lenj_m;
+
+						mnx = normx * expon;
+						mny = normy * expon;
+
+						val0 += (xi_mx * mnx + xi_my * mny) * (lxi_m + 1.0) / (lxi_m * lxi_m);
+						val3x += mnx;
+						val3y += mny;
+
+
+						xi_mx = (ptx - (begx + hx * (m + 0.5))) * iDDomRadVS;
+						xi_my = (pty - (begy + hy * (m + 0.5))) * iDDomRadVS;
+						lxi_m = sqrt(xi_mx * xi_mx + xi_my * xi_my);
+						expon = exp(-lxi_m) * lenj_m;
+
+						vs += expon;
+					}//for m
+					vs *= ptg / (valPi * sqr(meanepsj));
+				}
+				else
+				{
+					val0 += -valPi * rdi;
+
+					double argcosh = fabs(s) * lenj * iDDomRad;
+					double prod = (argcosh < 10.0) ? exp(-lenj * 0.5 * iDDomRad) * cosh(argcosh) :
+						0.5 * exp((s - 0.5 * lenj) * iDDomRad);
+
+					mnog1 = 2.0 * rdi * (1.0 - prod);
+					val3x += mnog1 * normx;
+					val3y += mnog1 * normy;
+
+					argcosh = fabs(s) * lenj * iDDomRadVS;
+					prod = (argcosh < 10.0) ? exp(-lenj * 0.5 * iDDomRadVS) * cosh(argcosh) :
+						0.5 * exp((s - 0.5 * lenj) * iDDomRadVS);
+
+					mnog1 = 2.0 * meanepsj * (1.0 - prod);
+					vs = mnog1 * ptg / (valPi * sqr(meanepsj));
+				}
+
+			}//if d<50 len 
+
+#ifdef  __CUDA_ARCH__
+#if __CUDA_ARCH__ <= 600
+			myAtomicAdd(visstr + j, vs);
+			//printf("MY: __CUDA_ARCH__ = %d\n", __CUDA_ARCH__);
+#else
+			atomicAdd(visstr + j, vs);
+			//printf("CUDA: __CUDA_ARCH__ = %d\n", __CUDA_ARCH__);
+#endif
+#endif //  __CUDA_ARCH__			
+
+		}//for j
+
+
+	}
+
+	if (i < npt)
+	{
+		i0[i] = val0;
+		i3[2 * i + 0] = val3x;
+		i3[2 * i + 1] = val3y;
+	}
+}
+
+
+
 
 
 __global__ void CU_calc_RHS(	
@@ -1199,13 +1420,16 @@ __global__ void CU_calc_pres(
 
 	size_t npnl, double* rpnl,
 	double* freegamma, //double* freegammalin, 
-	double* attgamma, //double* attgammalin, 
+	double* attgamma,  //double* attgammalin, 
 	double* attsource, //double* attsourcelin
 	double* devOldVortexSheet,
 	double* devOldSourceSheet,
 	double* devGammaThroughIntensity,
 
-	double* pressure)
+	double* pressure,
+	bool contributionWake,
+	bool contributionPnls
+	)
 {
 	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -1240,101 +1464,142 @@ __global__ void CU_calc_pres(
 
 	double prs = 0.0;
 
-	for (int j = 0; j < nvt; j += CUBLOCK)
+	if (contributionWake)
 	{
-		if (j + threadIdx.x < nvt)
+		for (int j = 0; j < nvt; j += CUBLOCK)
 		{
-			shx[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posR + 0];
-			shy[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posR + 1];
-			shg[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posG + 0];
-			shs[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posS + 0];
-
-			shVx[threadIdx.x] = vtxVel[2 * (j + threadIdx.x) + 0];
-			shVy[threadIdx.x] = vtxVel[2 * (j + threadIdx.x) + 1];
-			shDiffVx[threadIdx.x] = vtxDiffVel[2 * (j + threadIdx.x) + 0];
-			shDiffVy[threadIdx.x] = vtxDiffVel[2 * (j + threadIdx.x) + 1];
-		}
-
-		__syncthreads();
-
-		for (int q = 0; q < CUBLOCK; ++q)
-		{
-			if (j + q < nvt)
+			if (j + threadIdx.x < nvt)
 			{
-				double dx = ipx - shx[q];
-				double dy = ipy - shy[q];
+				shx[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posR + 0];
+				shy[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posR + 1];
+				shg[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posG + 0];
+				shs[threadIdx.x] = vt[(j + threadIdx.x) * sizeVort + posS + 0];
 
-				double dr2 = dx * dx + dy * dy;
-
-				double Vjx = shVx[q] + shDiffVx[q] + V0.x;
-				double Vjy = shVy[q] + shDiffVy[q] + V0.y;
-
-				double izn = idpid * shg[q] / myMax(dr2, sqr(shs[q]));
-
-				double Wjx = izn * (-dy);
-				double Wjy = izn * (dx);
-
-				if (i < npt)
-					prs += Vjx * Wjx + Vjy * Wjy;
+				shVx[threadIdx.x] = vtxVel[2 * (j + threadIdx.x) + 0];
+				shVy[threadIdx.x] = vtxVel[2 * (j + threadIdx.x) + 1];
+				shDiffVx[threadIdx.x] = vtxDiffVel[2 * (j + threadIdx.x) + 0];
+				shDiffVy[threadIdx.x] = vtxDiffVel[2 * (j + threadIdx.x) + 1];
 			}
-		}
 
-		__syncthreads();
+			__syncthreads();
+
+			for (int q = 0; q < CUBLOCK; ++q)
+			{
+				if (j + q < nvt)
+				{
+					double dx = ipx - shx[q];
+					double dy = ipy - shy[q];
+
+					double dr2 = dx * dx + dy * dy;
+
+					double Vjx = shVx[q] + shDiffVx[q] + V0.x;
+					double Vjy = shVy[q] + shDiffVy[q] + V0.y;
+
+					double izn = idpid * shg[q] / myMax(dr2, sqr(shs[q]));
+
+					double Wjx = izn * (-dy);
+					double Wjy = izn * (dx);
+
+					if (i < npt)
+						prs += Vjx * Wjx + Vjy * Wjy;
+				}
+			}
+
+			__syncthreads();
+		}
 	}
 
 
-	for (int pn = 0; pn < npnl; pn+= CUBLOCK)
+	if (contributionPnls)
 	{
-		if (pn + threadIdx.x < npnl)
+		for (int pn = 0; pn < npnl; pn += CUBLOCK)
 		{
-			shbegx[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 0];
-			shbegy[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 1];
-			shendx[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 2];
-			shendy[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 3];
-
-			shfreegam[threadIdx.x] = freegamma[pn + threadIdx.x];
-
-			shattgam[threadIdx.x] = attgamma[pn + threadIdx.x];
-			shattgamold[threadIdx.x] = devOldVortexSheet[pn + threadIdx.x];
-
-			shattsrc[threadIdx.x] = attsource[pn + threadIdx.x];
-			shattsrcold[threadIdx.x] = devOldSourceSheet[pn + threadIdx.x];
-			//shgamthroughintensity[threadIdx.x] = devGammaThroughIntensity[pn + threadIdx.x];
-		}
-
-		__syncthreads();
-
-		for (int q = 0; q < CUBLOCK; ++q)
-		{
-			if (pn + q < npnl)
+			if (pn + threadIdx.x < npnl)
 			{
-				double2 s = { ipx - shbegx[q], ipy - shbegy[q]};
-				double2 p = { ipx - shendx[q], ipy - shendy[q]};	
-				double2 u0 = { shendx[q] - shbegx[q], shendy[q] - shbegy[q]};
-				double lenu0 = sqrt(u0.x * u0.x + u0.y * u0.y);
-				u0.x /= lenu0; u0.y /= lenu0;
+				shbegx[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 0];
+				shbegy[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 1];
+				shendx[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 2];
+				shendy[threadIdx.x] = rpnl[(pn + threadIdx.x) * 4 + 3];
 
-				double alpha = atan2(p.x * s.y - p.y * s.x, p.x * s.x + p.y * s.y);
-				double lambda = 0.5 * log((s.x * s.x + s.y * s.y) / (p.x * p.x + p.y * p.y));
+				shfreegam[threadIdx.x] = freegamma[pn + threadIdx.x];
 
-				double2 skos = { idpid * (-alpha * u0.y + lambda * u0.x), idpid * (alpha * u0.x + lambda * u0.y) };
+				shattgam[threadIdx.x] = attgamma[pn + threadIdx.x];
+				shattgamold[threadIdx.x] = devOldVortexSheet[pn + threadIdx.x];
 
-				prs += 0.5 * shfreegam[q] * (shfreegam[q] /* -shgamthroughintensity[q]*/) * (u0.x * skos.y - u0.y * skos.x);
-
-				double2 Vi = { 0.5 * (shbegx[q] + shendx[q]), 0.5 * (shbegy[q] + shendy[q])};
-				prs += (shattgam[q] - shattgamold[q]) * (Vi.x * skos.y - Vi.y * skos.x);
-				prs += (shattsrc[q] - shattsrcold[q]) * (Vi.x * skos.x + Vi.y * skos.y);
+				shattsrc[threadIdx.x] = attsource[pn + threadIdx.x];
+				shattsrcold[threadIdx.x] = devOldSourceSheet[pn + threadIdx.x];
+				//shgamthroughintensity[threadIdx.x] = devGammaThroughIntensity[pn + threadIdx.x];
 			}
+
+			__syncthreads();
+
+			for (int q = 0; q < CUBLOCK; ++q)
+			{
+				if (pn + q < npnl)
+				{
+					double2 s = { ipx - shbegx[q], ipy - shbegy[q] };
+					double2 p = { ipx - shendx[q], ipy - shendy[q] };
+					double2 u0 = { shendx[q] - shbegx[q], shendy[q] - shbegy[q] };
+					double lenu0 = sqrt(u0.x * u0.x + u0.y * u0.y);
+					u0.x /= lenu0; u0.y /= lenu0;
+
+					double alpha = atan2(p.x * s.y - p.y * s.x, p.x * s.x + p.y * s.y);
+					double lambda = 0.5 * log((s.x * s.x + s.y * s.y) / (p.x * p.x + p.y * p.y));
+
+					double2 skos = { idpid * (-alpha * u0.y + lambda * u0.x), idpid * (alpha * u0.x + lambda * u0.y) };
+
+					//prs += 0.5 * shfreegam[q] * (shfreegam[q] - shgamthroughintensity[q]) * (u0.x * skos.y - u0.y * skos.x);
+					prs += 0.5 * shfreegam[q] * (shfreegam[q]) * (u0.x * skos.y - u0.y * skos.x);
+
+					double2 Vi = { 0.5 * (shbegx[q] + shendx[q]), 0.5 * (shbegy[q] + shendy[q]) };
+					prs += (shattgam[q] - shattgamold[q]) * (Vi.x * skos.y - Vi.y * skos.x);
+					prs += (shattsrc[q] - shattsrcold[q]) * (Vi.x * skos.x + Vi.y * skos.y);
+				}
+			}
+
+			__syncthreads();
 		}
-
-		__syncthreads();
-	}
-
+	}	
 
 	if (i < npt)
 		pressure[i] = prs;
 }
 
+
+
+
+
+__global__ void CU_mul_gamVel(
+	size_t nvt, double* vt,
+	double2 V0, double* vtxVel, double* vtxDiffVel,
+		
+	double* gVx,
+	double* gVy
+	)
+{
+	size_t i = blockIdx.x * blockDim.x + threadIdx.x;
+
+	if (i < nvt)
+	{
+		double x = vt[i * sizeVort + posR + 0];
+		double y = vt[i * sizeVort + posR + 1];
+
+		double g = vt[i * sizeVort + posG + 0];
+
+		double vx = V0.x + vtxVel[i * 2 + 0] + vtxDiffVel[i * 2 + 0];
+		double vy = V0.y + vtxVel[i * 2 + 1] + vtxDiffVel[i * 2 + 1];
+		
+		gVx[i * sizeVort + posR + 0] = x;
+		gVx[i * sizeVort + posR + 1] = y;
+		gVx[i * sizeVort + posG + 0] = g * vx;
+		gVx[i * sizeVort + posS + 0] = 0.0;
+
+		gVy[i * sizeVort + posR + 0] = x;
+		gVy[i * sizeVort + posR + 1] = y;
+		gVy[i * sizeVort + posG + 0] = g * vy;
+		gVy[i * sizeVort + posS + 0] = 0.0;
+	}
+}
 
 
 
@@ -1658,6 +1923,22 @@ void cuCalculateSurfDiffVeloWake(size_t npt, double* pt, size_t nvt, double* vt,
 		std::cout << cudaGetErrorString(err1) << " (erCU_calc_I0I31)" << std::endl;
 }
 
+void cuCalculateSurfDiffVeloWakeOptimized(size_t npt, double* pt, int nIndex, int* indexForI0I3_dev, int nClosestPan, int* range1_dev, int* range2_dev, size_t nvt, double* vt, double* i0, double* i3, double* rd, double* meanEps, double minRd, double* visstr)
+{
+	dim3 blocks(cuCalcBlocks(nIndex)), threads(CUBLOCK);
+
+	cudaMemset(i0, 0, npt * sizeof(double));
+	cudaMemset(i3, 0, npt * 2 * sizeof(double));
+	cudaMemset(i3, 0, npt * 2 * sizeof(double));
+	cudaMemset(visstr, 0, nvt * sizeof(double));
+
+	CU_calc_I0I3_optimized << <blocks, threads >> > (npt, pt, nIndex, indexForI0I3_dev, nClosestPan, range1_dev, range2_dev, nvt, vt, i0, i3, rd, meanEps, minRd, visstr);
+
+	cudaError_t err1 = cudaGetLastError();
+	if (err1 != cudaSuccess)
+		std::cout << cudaGetErrorString(err1) << " (erCU_calc_I0I31)" << std::endl;
+}
+
 
 void cuCalculateRhs(size_t npt, double* pt, size_t nvt, double* vt, size_t nsr, double* sr, double* rhs, double* rhsLin)
 {
@@ -1707,6 +1988,20 @@ void cuCalculatePairsClosestNeib(size_t npt, double* pt, int* mesh, int* nei, do
 }
 
 
+void cuCalcMulGammaVel(size_t nvt, double* vt, double V0x, double V0y, double* vtxVel, double* vtxDiffVel, double* gVx, double* gVy)
+{
+	dim3 blocks(cuCalcBlocks(nvt)), threads(CUBLOCK);
+
+	double2 V0{ V0x, V0y };
+	CU_mul_gamVel << < blocks, threads >> > (nvt, vt, V0, vtxVel, vtxDiffVel, gVx, gVy);
+
+	cudaError_t err1 = cudaGetLastError();
+	if (err1 != cudaSuccess)
+		std::cout << cudaGetErrorString(err1) << " (erCU_mul_gamVel01)" << std::endl;
+
+	cudaDeviceSynchronize();
+}
+
 void cuCalculatePressure(size_t npt, double* pt, size_t nvt, double* vt, double V0x, double V0y, double* vtxVel, double* vtxDiffVel,
 	size_t npnl, double* rpnl,
 	double* freegamma, //double* freegammalin, 
@@ -1715,7 +2010,10 @@ void cuCalculatePressure(size_t npt, double* pt, size_t nvt, double* vt, double 
 	double* devOldVortexSheet, 
 	double* devOldSourceSheet,
 	double* devGammaThroughIntensity,
-	double* pressure)
+	double* pressure,
+	bool contributionWake,
+	bool contributionPnls
+	)
 {
 	dim3 blocks(cuCalcBlocks(npt)), threads(CUBLOCK);
 
@@ -1729,7 +2027,7 @@ void cuCalculatePressure(size_t npt, double* pt, size_t nvt, double* vt, double 
 	*/
 
 	double2 V0{ V0x, V0y };
-	CU_calc_pres << < blocks, threads >> > (npt, pt, nvt, vt, V0, vtxVel, vtxDiffVel, npnl, rpnl, freegamma, attgamma, attsource, devOldVortexSheet, devOldSourceSheet, devGammaThroughIntensity, pressure);
+	CU_calc_pres << < blocks, threads >> > (npt, pt, nvt, vt, V0, vtxVel, vtxDiffVel, npnl, rpnl, freegamma, attgamma, attsource, devOldVortexSheet, devOldSourceSheet, devGammaThroughIntensity, pressure, contributionWake, contributionPnls);
 
 	/*
 	cudaThreadSynchronize();

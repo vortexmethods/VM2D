@@ -621,10 +621,10 @@ void Airfoil::GetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(const WakeDataB
 				else
 				{
 					selfI0[i] += -PI * domRad;
-					double mnog = 2.0 * domRad * (1.0 - exp(-len[j] * iDDomRad / 2.0) * cosh(fabs(s) * iDDomRad));
+					double mnog = 2.0 * domRad * (1.0 - exp(-len[j] * iDDomRad / 2.0) * cosh(fabs(s) * len[j] * iDDomRad));
 					selfI3[i] += nrm[j] * mnog;
 					
-					mnog = 2.0 / iDDomRadVS * (1.0 - exp(-len[j] * iDDomRadVS / 2.0) * cosh(fabs(s) * iDDomRadVS));					
+					mnog = 2.0 / iDDomRadVS * (1.0 - exp(-len[j] * iDDomRadVS / 2.0) * cosh(fabs(s) * len[j] * iDDomRadVS));
 					vs = mnog* vtxI.g() / (PI * DomRadVS2);
 				}
 			}//if d<50 len 
@@ -738,17 +738,144 @@ void Airfoil::GPUGetDiffVelocityI0I3ToSetOfPointsAndViscousStresses(std::vector<
 				//*
 				auto& treeWake = *W.getCuda().inflTreeWake;
 
-				double time = treeWake.I0I3CalculationWrapper(W.getPassport().wakeDiscretizationProperties.getMinEpsAst(), dev_ptr_i0f, (Point2Df*)dev_ptr_i3f, W.getWake().devRadPtr, devMeanEpsOverPanelPtr, (int)nTotPan, devRPtr, dev_ptr_visstr);
+				std::vector<int> nearestPanIdx(npt);
+				int* nearestPanIdx_dev;
+				cudaMalloc(&nearestPanIdx_dev, npt * sizeof(int));
+				BHcu::treeClosestPanelToPointsCalculationWrapper(*W.getCuda().auxTreePnl, *W.getCuda().cntrTreeWake, nearestPanIdx_dev, false);
+				cudaMemcpy(nearestPanIdx.data(), nearestPanIdx_dev, npt * sizeof(int), cudaMemcpyDeviceToHost);
+				cudaFree(nearestPanIdx_dev);
 
-				W.getCuda().CopyMemFromDev<float, 2>(npt, dev_ptr_i3f, (float*)newI3f.data());
-				W.getCuda().CopyMemFromDev<float, 1>(npt, dev_ptr_i0f, newI0f.data());
+				std::vector<std::pair<int, int>> nearestAflPan(npt);
+				std::vector<std::pair<int, int>> range1(npt);
+				std::vector<std::pair<int, int>> range2(npt);
+
+				const int nClosestPan = 10;
+
+				int panCounter = 0;
+				for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
+				{
+					const size_t np = W.getAirfoil(afl).getNumberOfPanels();
+					for (int i = 0; i < nearestPanIdx.size(); ++i)
+					{
+						if (nearestPanIdx[i] != -1)
+						{
+							
+							if ((nearestPanIdx[i] >= panCounter) && (nearestPanIdx[i] < panCounter + np))
+							{
+								int pnlIdx = (int)(nearestPanIdx[i] - panCounter);
+								nearestAflPan[i] = { (int)afl,  pnlIdx };
+
+								int s1 = pnlIdx - nClosestPan;
+								int s2 = pnlIdx + nClosestPan;
+
+								if (s1 >= 0 && s2 < np)
+									range1[i] = { panCounter + s1, panCounter + s2 };
+								else if (s1 < 0 && s2 < np)
+								{
+									range1[i] = { panCounter + 0, panCounter + s2 };
+									range2[i] = { int(panCounter + np + s1), int(panCounter + np - 1) };
+								}
+								else if (s1 >= 0 && s2 >= np)
+								{
+									range1[i] = { panCounter + s1, int(panCounter + np - 1) };
+									range2[i] = { panCounter + 0, int(panCounter + np - s2) };
+								}
+								else
+									std::cout << "Number of panels < 2 * nClosestPan!" << std::endl;
+							}
+						}
+					}
+					panCounter += (int)np;
+				}//for afl
+
+				std::vector<double> dist2ToNearestPan(npt);
+				#pragma omp parallel for
+				for (int i = 0; i < (int)npt; ++i)
+				{
+					auto [afl, pnl] = nearestAflPan[i];
+
+					const Point2D pnlCen = 0.5 * (W.getAirfoil(afl).getR(pnl) + W.getAirfoil(afl).getR(pnl + 1));
+					
+					const Point2D vortex = W.getWake().vtx[i].r();
+					
+					const double prod = (vortex - pnlCen) & W.getAirfoil(afl).tau[pnl];
+
+					const double hlen = 0.5 * W.getAirfoil(afl).len[pnl];
+
+					if (fabs(prod) <= hlen)
+						dist2ToNearestPan[i] = sqr((vortex - pnlCen) & W.getAirfoil(afl).nrm[pnl]);
+					else if (prod < -hlen)
+						dist2ToNearestPan[i] = (vortex - W.getAirfoil(afl).getR(pnl)).length2();
+					else // (prod > +hlen)
+						dist2ToNearestPan[i] = (vortex - W.getAirfoil(afl).getR(pnl + 1)).length2();
+				}
+
+
+				double maxPanLength = 0.0;
+				for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)				
+					maxPanLength = std::max(maxPanLength, *std::max_element(W.getAirfoil(afl).len.begin(), W.getAirfoil(afl).len.end()));
+				double maxPanLength2 = sqr(maxPanLength);
+
+				std::vector<int> indexForI0I3;
+				indexForI0I3.reserve(npt);
+				for (int i = 0; i < npt; ++i)
+					if (dist2ToNearestPan[i] < sqr(nClosestPan) * maxPanLength2)
+						indexForI0I3.push_back(i);
+
+				//std::cout << "STAT: " << indexForI0I3.size() << " / " << npt << '\n';
+
+				int* indexForI0I3_dev;
+				cudaMalloc(&indexForI0I3_dev, indexForI0I3.size() * sizeof(int));
+				cudaMemcpy(indexForI0I3_dev, indexForI0I3.data(), indexForI0I3.size() * sizeof(int), cudaMemcpyHostToDevice);
+								
+				int* range1_dev, *range2_dev;
+				cudaMalloc(&range1_dev, npt * 2 * sizeof(int));
+				cudaMemcpy(range1_dev, range1.data(), npt * 2 * sizeof(int), cudaMemcpyHostToDevice);
+				cudaMalloc(&range2_dev, npt * 2 * sizeof(int));
+				cudaMemcpy(range2_dev, range2.data(), npt * 2 * sizeof(int), cudaMemcpyHostToDevice);
+
+				double* dev_ptr_pt = W.getWake().devVtxPtr;
+				double* dev_ptr_i0 = W.getWake().devI0Ptr;
+				double* dev_ptr_i3 = W.getWake().devI3Ptr;
+				double* dev_ptr_rad = W.getWake().devRadPtr;
+
+				cuCalculateSurfDiffVeloWakeOptimized(npt, dev_ptr_pt, 
+					(int)indexForI0I3.size(), indexForI0I3_dev, nClosestPan, range1_dev, range2_dev,
+					nTotPan, devRPtr, dev_ptr_i0, dev_ptr_i3, dev_ptr_rad, devMeanEpsOverPanelPtr, W.getPassport().wakeDiscretizationProperties.getMinEpsAst(), dev_ptr_visstr);
+
+				//cuCalculateSurfDiffVeloWake(npt, dev_ptr_pt, nTotPan, devRPtr, dev_ptr_i0, dev_ptr_i3, dev_ptr_rad, devMeanEpsOverPanelPtr, W.getPassport().wakeDiscretizationProperties.getMinEpsAst(), dev_ptr_visstr);
+
+
+				cudaFree(indexForI0I3_dev);
+				cudaFree(range1_dev);
+				cudaFree(range2_dev);
+
+				W.getCuda().CopyMemFromDev<double, 2>(npt, dev_ptr_i3, (double*)newI3.data());
+				W.getCuda().CopyMemFromDev<double, 1>(npt, dev_ptr_i0, newI0.data());
 				W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_visstr, newViscousStress.data());
 
 				for (size_t q = 0; q < I3.size(); ++q)
 				{
-					I0[q] += newI0f[q];
-					I3[q] += newI3f[q];
+					I0[q] += newI0[q];
+					I3[q] += newI3[q];
 				}
+
+
+				//VMlib::vmTimer timer03;
+				//timer03.start();
+				//double time = treeWake.I0I3CalculationWrapper(W.getPassport().wakeDiscretizationProperties.getMinEpsAst(), dev_ptr_i0f, (Point2Df*)dev_ptr_i3f, W.getWake().devRadPtr, devMeanEpsOverPanelPtr, (int)nTotPan, devRPtr, dev_ptr_visstr);
+				//timer03.stop();				
+				//std::cout << "time_03: " << timer03.duration() << '\n';
+				//
+				//W.getCuda().CopyMemFromDev<float, 2>(npt, dev_ptr_i3f, (float*)newI3f.data());
+				//W.getCuda().CopyMemFromDev<float, 1>(npt, dev_ptr_i0f, newI0f.data());
+				//W.getCuda().CopyMemFromDev<double, 1>(nTotPan, dev_ptr_visstr, newViscousStress.data());
+				//
+				//for (size_t q = 0; q < I3.size(); ++q)
+				//{
+				//	I0[q] += newI0f[q];
+				//	I3[q] += newI3f[q];
+				//}
 
 				size_t curGlobPnl = 0;
 				for (size_t s = 0; s < W.getNumberOfAirfoil(); ++s)

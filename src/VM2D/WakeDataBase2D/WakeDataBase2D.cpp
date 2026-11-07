@@ -412,12 +412,12 @@ void WakeDataBase::SaveKadrVtk(const std::string& filePrefix) const
 
 #ifdef TURB
 void WakeDataBase::SaveScalarFields(const std::string& filePrefix,
-	const std::vector<double>& VIP,
+	//const std::vector<double>& VIP,
 	const std::vector<double>& OIP,
-	const std::vector<double>& nut,
-	const std::vector<Point2D>& grNu,
-	const std::vector<double>& RIP,
-	const std::vector<double>& DELTAG
+	const std::vector<double>& nut
+	//const std::vector<Point2D>& grNu,
+	//const std::vector<double>& RIP,
+	//const std::vector<double>& DELTAG
 ) const
 {
 	//W.getTimestat().timeSaveKadr.first += omp_get_wtime();
@@ -470,11 +470,13 @@ void WakeDataBase::SaveScalarFields(const std::string& filePrefix,
 			for (auto& v : W.getWake().vtx)
 				outfile << v.sigma() << '\n';
 
+			/*
 			outfile << "SCALARS VIP float 1\n";
 			outfile << "LOOKUP_TABLE default\n";
 
 			for (auto& v : VIP)
 				outfile << v << '\n';
+			*/
 
 			outfile << "SCALARS OIP float 1\n";
 			outfile << "LOOKUP_TABLE default\n";
@@ -490,6 +492,7 @@ void WakeDataBase::SaveScalarFields(const std::string& filePrefix,
 			for (auto& v : nut)
 				outfile << v << '\n';
 
+			/*
 			outfile << "SCALARS RIP float 1\n";
 			outfile << "LOOKUP_TABLE default\n";
 
@@ -507,7 +510,7 @@ void WakeDataBase::SaveScalarFields(const std::string& filePrefix,
 			outfile << "VECTORS grNu float\n";
 			for (auto& v : grNu)
 				outfile << v[0] << " " << v[1] << " 0.0\n";
-
+			*/
 			outfile.close();
 		}//if fileType = text
 	}

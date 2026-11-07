@@ -743,7 +743,8 @@ namespace VM2D
 
   const double onePlusMachineEps = 1.0f + 2.0e-7f;
 
-  float CpuTreeInfo::DownwardTraversalClosestPanelToPoints(CpuTreeInfo& cntrTree, std::vector<std::pair<int, double>>& indexPnlDist, bool findOnlyInside, double* pseudonormals)
+  float CpuTreeInfo::DownwardTraversalClosestPanelToPoints(CpuTreeInfo& cntrTree, 
+      std::vector<std::pair<int, double>>& indexPnlDist, bool findOnlyInside, double* pseudonormals) const
   {      
       using double4 = Point4D;
       const int nbodies = (int)object.size(); //количество вихрей
@@ -756,7 +757,7 @@ namespace VM2D
       VMlib::vmTimer timer;
       timer.start();
       
-#pragma omp parallel for schedule(dynamic, 1)
+#pragma omp parallel for schedule(dynamic, 100)
       for (int indexK = 0; indexK < (int)cntrTree.indexControlCells.size(); ++indexK)
       {
           Point2D query;
@@ -1019,7 +1020,257 @@ namespace VM2D
   }
 
       
-    float CpuTreeInfo::DownwardTraversalVorticesToPoints(CpuTreeInfo& cntrTree, std::vector<Point2D>& vel, std::vector<double>& epsast, double theta, int order, bool calcRadius, double coefEpsAst)
+  float CpuTreeInfo::DownwardTraversalClosestPointToPoints(CpuTreeInfo& cntrTree, std::vector<int>& near) const
+  {
+      using double4 = Point4D;
+      const int nbodies = (int)object.size(); // количество искомых точек (листьев дерева)
+      const int nnodes = 2 * nbodies - 1; // количество узлов дерева
+      const int npoints = (int)cntrTree.object.size(); // количество точек наблюдения
+
+      int indexOfPoint;
+      const int maxDepth = 32;
+
+      VMlib::vmTimer timer;
+      timer.start();
+
+#pragma omp parallel for schedule(dynamic, 100)
+      for (int indexK = 0; indexK < (int)cntrTree.indexControlCells.size(); ++indexK)
+      {
+          Point2D query;
+
+          const int k = cntrTree.indexControlCells[indexK];
+
+          Point4D gabCntrl;
+          bool isCntrLeaf = (k >= cntrTree.object.size());
+
+          if (isCntrLeaf)
+          {
+              const int leafIndex = cntrTree.mortonCodesIdx[k - npoints];
+              indexOfPoint = leafIndex;
+              query = cntrTree.object[leafIndex];
+              Point4D pnlCntrGab = cntrTree.gabForLeaves[cntrTree.mortonCodesIdx[leafIndex]];
+              gabCntrl = {
+                  fmin(pnlCntrGab[0], pnlCntrGab[2]), fmin(pnlCntrGab[1], pnlCntrGab[3]),
+                  fmax(pnlCntrGab[0], pnlCntrGab[2]), fmax(pnlCntrGab[1], pnlCntrGab[3])
+              };
+          }
+          else
+          {
+              query = cntrTree.center[k];
+              gabCntrl = cntrTree.lowerupper[k];
+          }
+
+          std::pair<int, double> stack[maxDepth];
+          int depth;
+
+          //начальное расстояние
+          double md2 = 0;
+          int nearestLocation = -1;
+
+          depth = 0;
+          stack[0] = { 0, md2 };
+
+          double dist_to_nearest_object = 1e+100;
+
+          while (depth >= 0)
+          {
+              std::pair<int, double> nd = stack[depth];
+              --depth;
+
+              if (nd.second > dist_to_nearest_object)
+                  continue;
+
+              std::pair<int, int> chBoth = child[nd.first];
+
+              bool isLeftLeaf = (chBoth.first >= object.size());
+              bool isRightLeaf = (chBoth.second >= object.size());
+
+              double4 L_box, R_box;
+
+              if (!isLeftLeaf)
+                  L_box = lowerupper[chBoth.first];
+              else
+              {
+                  int n = chBoth.first - (int)object.size();
+                  L_box = gabForLeaves[mortonCodesIdx[n]];
+              }
+
+              if (!isRightLeaf)
+                  R_box = lowerupper[chBoth.second];
+              else
+              {
+                  int n = chBoth.second - (int)object.size();
+                  R_box = gabForLeaves[mortonCodesIdx[n]];
+              }
+
+              double L_mindist2 = mindist2(L_box, query);
+              double R_mindist2 = mindist2(R_box, query);
+
+              double L_minmaxdist2 = minmaxdist2(L_box, query);
+              double R_minmaxdist2 = minmaxdist2(R_box, query);
+
+              bool pushLeft = false;
+              bool pushRight = false;
+
+              if (L_mindist2 <= R_minmaxdist2 * onePlusMachineEps) // L is worth considering
+              {
+                  if (isLeftLeaf) // leaf node
+                  {
+                      int n = chBoth.first - (int)object.size();
+
+                      // Вместо distance_calculator_point2segment считаем расстояние между точками
+                      double dist2 = (L_box[0] - query[0]) * (L_box[0] - query[0]) + (L_box[1] - query[1]) * (L_box[1] - query[1]);
+                      if (dist2 <= dist_to_nearest_object)
+                      {
+                          dist_to_nearest_object = dist2;
+                          nearestLocation = mortonCodesIdx[n];
+                      }
+                  }
+                  else
+                      pushLeft = true;
+              }
+
+              if (R_mindist2 <= L_minmaxdist2 * onePlusMachineEps) // R is worth considering
+              {
+                  if (isRightLeaf) // leaf node
+                  {
+                      int n = chBoth.second - (int)object.size();
+
+                      // Вместо distance_calculator_point2segment считаем расстояние между точками
+                      double dist2 = (R_box[0] - query[0]) * (R_box[0] - query[0]) + (R_box[1] - query[1]) * (R_box[1] - query[1]);
+                      if (dist2 <= dist_to_nearest_object)
+                      {
+                          dist_to_nearest_object = dist2;
+                          nearestLocation = mortonCodesIdx[n];
+                      }
+                  }
+                  else
+                      pushRight = true;
+              }
+
+              if (pushLeft && !pushRight)
+              {
+                  ++depth;
+                  stack[depth] = { chBoth.first, L_mindist2 };
+              }
+              else if (!pushLeft && pushRight)
+              {
+                  ++depth;
+                  stack[depth] = { chBoth.second, R_mindist2 };
+              }
+              else if (pushLeft && pushRight)
+              {
+                  if (L_mindist2 < R_mindist2)
+                  {
+                      ++depth;
+                      stack[depth] = { chBoth.second, R_mindist2 };
+                      ++depth;
+                      stack[depth] = { chBoth.first, L_mindist2 };
+                  }
+                  else
+                  {
+                      ++depth;
+                      stack[depth] = { chBoth.first, L_mindist2 };
+                      ++depth;
+                      stack[depth] = { chBoth.second, R_mindist2 };
+                  }
+              }
+          }//while depth
+
+
+          if (isCntrLeaf)
+          {
+              near[cntrTree.mortonCodesIdx[k - npoints]] = nearestLocation;
+              continue;
+          }
+
+          double radius = sqrt(dist_to_nearest_object) + 0.5 * sqrt(sqr(gabCntrl[2] - gabCntrl[0]) + sqr(gabCntrl[3] - gabCntrl[1]));
+
+          int stackCandidates[maxDepth];
+          depth = 0;
+          stackCandidates[0] = 0;
+
+          std::vector<int> candidates;
+          candidates.reserve(100);
+
+          while (depth >= 0)
+          {
+              int nd = stackCandidates[depth];
+              --depth;
+
+              std::pair<int, int> chBoth = child[nd];
+
+              bool isLeftLeaf = (chBoth.first >= object.size());
+              bool isRightLeaf = (chBoth.second >= object.size());
+
+              Point4D gabL, gabR;
+
+              if (isLeftLeaf)
+              {
+                  int n = chBoth.first - (int)object.size();
+                  gabL = gabForLeaves[mortonCodesIdx[n]];
+              }
+              else
+                  gabL = lowerupper[chBoth.first];
+
+
+              if (isRightLeaf)
+              {
+                  int n = chBoth.second - (int)object.size();
+                  gabR = gabForLeaves[mortonCodesIdx[n]];
+              }
+              else
+                  gabR = lowerupper[chBoth.second];
+
+
+              double dist2L = MinDist2AABB(gabCntrl, gabL);
+              double dist2R = MinDist2AABB(gabCntrl, gabR);
+
+              if (dist2L < sqr(radius))
+              {
+                  if (isLeftLeaf)
+                      candidates.push_back(mortonCodesIdx[chBoth.first - object.size()]);
+                  else
+                      stackCandidates[++depth] = chBoth.first;
+              }
+
+              if (dist2R < sqr(radius))
+              {
+                  if (isRightLeaf)
+                      candidates.push_back(mortonCodesIdx[chBoth.second - object.size()]);
+                  else
+                      stackCandidates[++depth] = chBoth.second;
+              }
+
+          }//while depth
+
+          for (int particle = cntrTree.range[k].first; particle <= cntrTree.range[k].second; ++particle)
+          {
+              Point2D observPoint = cntrTree.object[cntrTree.mortonCodesIdx[particle]];
+
+              double currentMinDist2 = 1e+100;
+              int indexMinDist = -1;
+              for (int i = 0; i < candidates.size(); ++i)
+              {
+                  Point4D pos = gabForLeaves[candidates[i]];
+                  double dst2 = (pos[0] - observPoint[0]) * (pos[0] - observPoint[0]) + (pos[1] - observPoint[1]) * (pos[1] - observPoint[1]);
+                  if (dst2 < currentMinDist2)
+                  {
+                      currentMinDist2 = dst2;
+                      indexMinDist = candidates[i];
+                  }
+              }
+              near[cntrTree.mortonCodesIdx[particle]] = indexMinDist;
+          }
+      }//for k
+
+      timer.stop();
+      return (float)timer.duration();
+  }
+
+
+
+    float CpuTreeInfo::DownwardTraversalVorticesToPoints(CpuTreeInfo& cntrTree, std::vector<Point2D>& vel, std::vector<double>& epsast, double theta, int order, bool calcRadius, double coefEpsAst) const
     {
         float t1 = (float)omp_get_wtime();
 

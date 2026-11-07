@@ -60,9 +60,16 @@ using namespace VM2D;
 //Конструктор
 MeasureVP::MeasureVP(const World2D& W_)
 	: W(W_)
+#ifdef USE_CUDA
+	, treeWakeX(W_.getCuda().blocks, tree_T::vortex, object_T::point4, scheme_T::noScheme, false)
+	, treeWakeY(W_.getCuda().blocks, tree_T::vortex, object_T::point4, scheme_T::noScheme, false)
+#endif
 {
 	sstrCounter = 0;
 	wakeVP.reset(new WakeDataBase(W_));
+
+
+
 };//MeasureVP(...)
 
 //Чтение точек, в которых нужно посчитать давление и скорость
@@ -86,7 +93,6 @@ void MeasureVP::ReadPointsFromFile(const std::string& dir)
 		
 		for (auto& pt : historyPoints)
 			pt = pt.rotated(-W.getPassport().rotateAngleVpPoints * PI / 180.0);
-
 
 		if (historyPoints.size() > 0)
 		{
@@ -180,8 +186,13 @@ void MeasureVP::Initialization()
 {
 	W.getTimers().start("VelPres");
 
+	//VMlib::vmTimer T1, T2, T3;
+
+
 	if ((W.getPassport().timeDiscretizationProperties.saveVPstep > 0) && (!(W.getCurrentStep() % W.getPassport().timeDiscretizationProperties.saveVPstep)))
 	{
+		//T1.start();
+
 		//W.getInfo('i') << "Preparing VP points" << std::endl;
 
 		wakeVP->vtx.clear();
@@ -221,7 +232,7 @@ void MeasureVP::Initialization()
 		{
 			addvtx.r() = initialPoints[i];
 			addvtx.g() = 0.0;
-			addvtx.sigma() = -1.0;
+			addvtx.sigma() = 0.0;
 			wakeVP->vtx.push_back(addvtx);
 			
 		}//for i
@@ -230,54 +241,63 @@ void MeasureVP::Initialization()
 		{
 			addvtx.r() = historyPoints[i];
 			addvtx.g() = 0.0;
-			addvtx.sigma() = -1.0;
+			addvtx.sigma() = 0.0;
 			wakeVP->vtx.push_back(addvtx);
 		}//for i
 
+		//T1.stop();
 
 		elasticPoints.clear();
+
+		//T2.start();
 				
 		for (size_t afl = 0; afl < W.getNumberOfAirfoil(); ++afl)
 		{
 			MechanicsDeformable* ptr = dynamic_cast<MechanicsDeformable*>(&(W.getNonConstMechanics(afl)));
-			if ((ptr != nullptr) && (ptr->beam->fsi))
+			if (ptr != nullptr)
 			{
-				if (afl > 0)
-				{
-					W.getInfo('e') << "Only airfoil 0 can be elastic!" << std::endl;
-					exit(-345);
-				}				
 
-				//if (ptr->beam->fsi) //turek
+				if (ptr->beam->fsi)
 				{
-					elasticPoints.reserve(ptr->chord.size() * 2);
-					for (size_t q = 0; q < ptr->chord.size(); ++q)
+					if (afl > 0)
 					{
-						std::pair<size_t, size_t> pnls = ptr->chord[q].infPanels;
-						elasticPoints.push_back(
-							0.5 * (W.getAirfoil(afl).getR(pnls.first) + W.getAirfoil(afl).getR(pnls.first + 1))
-							+ 0.01 * W.getAirfoil(afl).len[pnls.first] * W.getAirfoil(afl).nrm[pnls.first]
-						);
-
-						elasticPoints.push_back(
-							0.5 * (W.getAirfoil(afl).getR(pnls.second) + W.getAirfoil(afl).getR(pnls.second + 1))
-							+ 0.01 * W.getAirfoil(afl).len[pnls.second] * W.getAirfoil(afl).nrm[pnls.second]
-						);
+						W.getInfo('e') << "Only airfoil 0 can be elastic!" << std::endl;
+						exit(-345);
 					}
 
-					//std::ofstream elastPointsPositionsFile(W.getPassport().dir + "elastPointsPos-" + std::to_string(W.getCurrentStep()) + ".txt");
-					//for (size_t q = 0; q < elasticPoints.size(); ++q)
-					//	elastPointsPositionsFile << elasticPoints[q][0] << " " << elasticPoints[q][1] << std::endl;
-					//elastPointsPositionsFile.close();
-				}							
-			}
-			else //fish and other types
-			{
-				elasticPoints.reserve(W.getAirfoil(afl).getNumberOfPanels());
-				for (size_t q = 0; q < W.getAirfoil(afl).getNumberOfPanels(); ++q)
-					elasticPoints.push_back(0.5 * (W.getAirfoil(afl).getR(q) + W.getAirfoil(afl).getR(q + 1)) + W.getAirfoil(afl).nrm[q] * 1e-10);
+					//if (ptr->beam->fsi) //turek
+					{
+						elasticPoints.reserve(ptr->chord.size() * 2);
+						for (size_t q = 0; q < ptr->chord.size(); ++q)
+						{
+							std::pair<size_t, size_t> pnls = ptr->chord[q].infPanels;
+							elasticPoints.push_back(
+								0.5 * (W.getAirfoil(afl).getR(pnls.first) + W.getAirfoil(afl).getR(pnls.first + 1))
+								+ 0.01 * W.getAirfoil(afl).len[pnls.first] * W.getAirfoil(afl).nrm[pnls.first]
+							);
+
+							elasticPoints.push_back(
+								0.5 * (W.getAirfoil(afl).getR(pnls.second) + W.getAirfoil(afl).getR(pnls.second + 1))
+								+ 0.01 * W.getAirfoil(afl).len[pnls.second] * W.getAirfoil(afl).nrm[pnls.second]
+							);
+						}
+
+						//std::ofstream elastPointsPositionsFile(W.getPassport().dir + "elastPointsPos-" + std::to_string(W.getCurrentStep()) + ".txt");
+						//for (size_t q = 0; q < elasticPoints.size(); ++q)
+						//	elastPointsPositionsFile << elasticPoints[q][0] << " " << elasticPoints[q][1] << std::endl;
+						//elastPointsPositionsFile.close();
+					}
+				}
+				else //fish and other types
+				{
+					elasticPoints.reserve(W.getAirfoil(afl).getNumberOfPanels());
+					for (size_t q = 0; q < W.getAirfoil(afl).getNumberOfPanels(); ++q)
+						elasticPoints.push_back(0.5 * (W.getAirfoil(afl).getR(q) + W.getAirfoil(afl).getR(q + 1)) + W.getAirfoil(afl).nrm[q] * 1e-10);
+				}
 			}
 		}
+
+		//T2.stop();
 
 		/*
 		std::cout << "Elast_points added!\n";
@@ -289,6 +309,8 @@ void MeasureVP::Initialization()
 		}
 		*/
 
+		//T3.start();
+
 		for (size_t i = 0; i < elasticPoints.size(); ++i)
 		{
 			addvtx.r() = elasticPoints[i];
@@ -296,6 +318,10 @@ void MeasureVP::Initialization()
 			addvtx.sigma() = -1.0;
 			wakeVP->vtx.push_back(addvtx);
 		}//for i
+
+		//T3.stop();
+
+		//std::cout << "init: " << T1.duration() << " " << T2.duration() << " " << T3.duration() << "\n";
 
 	}
 	W.getTimers().stop("VelPres");
@@ -480,6 +506,8 @@ void MeasureVP::CalcPressure()
 	for (size_t i = 0; i < pressure.size(); ++i)
 		pressure[i] *= W.getPassport().physicalProperties.rho;
 
+	//std::cout << "!!!!!!!!!!\n";
+
 	W.getTimers().stop("VelPres");
 }//CalcPressure()
 
@@ -489,17 +517,20 @@ void MeasureVP::CalcPressure()
 void MeasureVP::GPUCalcPressure()
 {
 	W.getTimers().start("VelPres");
+	
+	//VMlib::vmTimer T1, T2, T3, T4, T5, T6, T7, T8;
 
+
+	//T1.start();
 	int addWSize = (int)wakeVP->vtx.size();
 	const Point2D& V0 = W.getV0();
 
-#if (defined(USE_CUDA))
-	{
-		cuCopyFixedArray(W.getWake().devVelPtr, W.getNonConstVelocity().wakeVortexesParams.convVelo.data(), 2 * sizeof(double) * W.getWake().vtx.size());
-		//W.getNonConstCuda().RefreshWake();
-	}
-#endif
+	cuCopyFixedArray(W.getWake().devVelPtr, W.getNonConstVelocity().wakeVortexesParams.convVelo.data(), 2 * sizeof(double) * W.getWake().vtx.size());
+	//W.getNonConstCuda().RefreshWake();
 
+	//T1.stop();
+
+	//T2.start();
 	size_t npnl = 0;
 	for (size_t q = 0; q < W.getNumberOfAirfoil(); ++q)
 		npnl += W.getAirfoil(q).getNumberOfPanels();
@@ -516,7 +547,10 @@ void MeasureVP::GPUCalcPressure()
 			oldAttSourceSheet.push_back(W.getBoundary(bou).oldSheets.attachedSourceSheet(p, 0));
 			gammaThroughIntensity.push_back(W.getAirfoil(bou).gammaThrough[p] / W.getAirfoil(bou).len[p]);
 		}
+	//T2.stop();
 
+
+	//T3.start();
 	double* devOldVortexSheet;
 	cudaMalloc(&devOldVortexSheet, npnl * sizeof(double));
 	cudaMemcpy(devOldVortexSheet, oldAttVortexSheet.data(), npnl * sizeof(double), cudaMemcpyHostToDevice);
@@ -532,14 +566,106 @@ void MeasureVP::GPUCalcPressure()
 	double* devDiffVelo;
 	cudaMalloc(&devDiffVelo, W.getWake().vtx.size() * 2 * sizeof(double));
 	cudaMemcpy(devDiffVelo, W.getVelocity().wakeVortexesParams.diffVelo.data(), W.getWake().vtx.size() * 2 * sizeof(double), cudaMemcpyHostToDevice);
+	//T3.stop();
+
+	//T4.start();
+	std::vector<double> UVfast;
+	if (W.getPassport().numericalSchemes.velocityComputation.second == 0) //direct
+	{
+		cuCalculatePressure(addWSize, wakeVP->devVtxPtr,
+			W.getWake().vtx.size(), W.getWake().devVtxPtr, V0[0], V0[1], W.getWake().devVelPtr, devDiffVelo,
+			npnl, W.getAirfoil(0).devRPtr, W.getAirfoil(0).devFreeVortexSheetPtr, W.getAirfoil(0).devAttachedVortexSheetPtr, W.getAirfoil(0).devAttachedSourceSheetPtr,
+			devOldVortexSheet, devOldSourceSheet, devGammaThroughIntensity,
+			this->devPressurePtr, true, true);
+	}
+	else //fast
+	{
+		//VMlib::vmTimer F1, F2, F3, F4;
+
+		//F1.start();
+		cuCalculatePressure(addWSize, wakeVP->devVtxPtr,
+			W.getWake().vtx.size(), W.getWake().devVtxPtr, V0[0], V0[1], W.getWake().devVelPtr, devDiffVelo,
+			npnl, W.getAirfoil(0).devRPtr, W.getAirfoil(0).devFreeVortexSheetPtr, W.getAirfoil(0).devAttachedVortexSheetPtr, W.getAirfoil(0).devAttachedSourceSheetPtr,
+			devOldVortexSheet, devOldSourceSheet, devGammaThroughIntensity,
+			this->devPressurePtr, false, true);
+		//F1.stop();
+
+		UVfast.resize(addWSize);
+		if (W.getWake().vtx.size() > 0)
+		{
+			//F2.start();
+
+			double* gVx_dev;
+			double* gVy_dev;
+
+			cudaMalloc(&gVx_dev, W.getWake().vtx.size() * 4 * sizeof(double));
+			cudaMalloc(&gVy_dev, W.getWake().vtx.size() * 4 * sizeof(double));
+			cuCalcMulGammaVel(W.getWake().vtx.size(), W.getWake().devVtxPtr, V0[0], V0[1], W.getWake().devVelPtr, devDiffVelo, gVx_dev, gVy_dev);
+			
+//			std::vector<Vortex2D> gVx(W.getWake().vtx.size()), gVy(W.getWake().vtx.size());
+//
+//#pragma omp parallel for
+//			for (int i = 0; i < (int)W.getWake().vtx.size(); ++i)
+//			{
+//				Point2D veloI = V0 + W.getVelocity().wakeVortexesParams.diffVelo[i] + W.getNonConstVelocity().wakeVortexesParams.convVelo[i];
+//				gVx[i].r() = gVy[i].r() = W.getWake().vtx[i].r();
+//				gVx[i].g() = W.getWake().vtx[i].g() * veloI[0];
+//				gVy[i].g() = W.getWake().vtx[i].g() * veloI[1];
+//				gVx[i].sigma() = gVy[i].sigma() = 0.0;
+//			}
+//			double* gVx_dev;
+//			double* gVy_dev;
+//
+//			cudaMalloc(&gVx_dev, W.getWake().vtx.size() * 4 * sizeof(double));
+//			cudaMalloc(&gVy_dev, W.getWake().vtx.size() * 4 * sizeof(double));
+//			cudaMemcpy(gVx_dev, gVx.data(), W.getWake().vtx.size() * 4 * sizeof(double), cudaMemcpyHostToDevice);
+//			cudaMemcpy(gVy_dev, gVy.data(), W.getWake().vtx.size() * 4 * sizeof(double), cudaMemcpyHostToDevice);
+			
+			//F2.stop();
+
+			//F3.start();
+			treeWakeX.MemoryAllocate((int)W.getCuda().n_CUDA_wake);
+			treeWakeY.MemoryAllocate((int)W.getCuda().n_CUDA_wake);
+			treeWakeX.Update((int)W.getWake().vtx.size(), gVx_dev);
+			treeWakeY.Update((int)W.getWake().vtx.size(), gVy_dev);
+
+			treeWakeX.Build();
+			treeWakeY.Build();
+
+			treeWakeX.UpwardTraversal(1);
+			treeWakeY.UpwardTraversal(1);
+
+			double* UVx_dev;
+			double* UVy_dev;
+			cudaMalloc(&UVx_dev, addWSize * 2 * sizeof(double));
+			cudaMalloc(&UVy_dev, addWSize * 2 * sizeof(double));
+			//F3.stop();
+
+			//F4.start();
+			treeWakeX.DownwardTraversalVorticesToPoints<32>(*W.getCuda().cntrTreeVP, (Point2D*)UVx_dev, nullptr, 1.0, 1, false, false);
+			treeWakeY.DownwardTraversalVorticesToPoints<32>(*W.getCuda().cntrTreeVP, (Point2D*)UVy_dev, nullptr, 1.0, 1, false, false);
+
+			std::vector<Point2D> UVx(addWSize), UVy(addWSize);
+			cudaMemcpy(UVx.data(), UVx_dev, addWSize * 2 * sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(UVy.data(), UVy_dev, addWSize * 2 * sizeof(double), cudaMemcpyDeviceToHost);
+
+#pragma omp parallel for
+			for (int i = 0; i < (int)addWSize; ++i)
+				UVfast[i] = UVx[i][0] + UVy[i][1];
+
+			cudaFree(gVx_dev);
+			cudaFree(gVy_dev);
+			cudaFree(UVx_dev);
+			cudaFree(UVy_dev);
+			//F4.stop();
+
+			//std::cout << "Trees: " << F1.duration() << " " << F2.duration() << " " << F3.duration() << " " << F4.duration() << "\n";
+		}
+	}
+	//T4.stop();
 
 
-	cuCalculatePressure(addWSize, wakeVP->devVtxPtr, 
-		W.getWake().vtx.size(), W.getWake().devVtxPtr, V0[0], V0[1], W.getWake().devVelPtr, devDiffVelo,
-		npnl, W.getAirfoil(0).devRPtr, W.getAirfoil(0).devFreeVortexSheetPtr, W.getAirfoil(0).devAttachedVortexSheetPtr, W.getAirfoil(0).devAttachedSourceSheetPtr,
-		devOldVortexSheet, devOldSourceSheet, devGammaThroughIntensity,
-		this->devPressurePtr);
-	
+	//T5.start();
 	cudaFree(devOldVortexSheet);
 	cudaFree(devOldSourceSheet);
 	cudaFree(devGammaThroughIntensity);
@@ -547,9 +673,18 @@ void MeasureVP::GPUCalcPressure()
 
 	std::vector<double> presGPU(addWSize);
 	cuCopyMemFromDev(presGPU.data(), this->devPressurePtr, addWSize * sizeof(double), 18);
+	if (UVfast.size() > 0)
+	{
+#pragma omp parallel for
+		for (int i = 0; i < (int)addWSize; ++i)
+			presGPU[i] += UVfast[i];
+	}
+
+	//T5.stop();
 
 	//printf("-------------------\n");
 
+	//T6.start();
 	pressure.resize(addWSize);
 
 	Point2D dri;
@@ -576,7 +711,9 @@ void MeasureVP::GPUCalcPressure()
 		//	printf("different pressure: %d, %f, %f\n", i, pressure[i], presGPU[i]);
 		pressure[i] = presGPU[i];
 	}
+	//T6.stop();
 
+	//T7.start();
 #pragma omp parallel for default(none) private(alpha, lambda, dri, Vi, vi, dst2eps, cPan) shared(P0, dt, V0, addWSize, std::cout, IDPI) 
 	for (int i = 0; i < addWSize; ++i)
 	{
@@ -584,45 +721,6 @@ void MeasureVP::GPUCalcPressure()
 		for (size_t bou = 0; bou < W.getNumberOfBoundary(); ++bou)
 		{
 			const Point2D& rcm = W.getAirfoil(bou).rcm;
-
-
-			/*
-			if ((i==0) && (bou == 2))
-			{
-				for (int q = 0; q < W.getAirfoil(bou).possibleWays.size(); ++q)
-				{
-					std::cout << "Possible way #" << q << ": " << std::endl;
-					for (size_t s = 0; s < W.getAirfoil(bou).possibleWays[q].size(); ++s)
-						std::cout << W.getAirfoil(bou).possibleWays[q][s] << " ";
-					std::cout << std::endl;
-				}
-
-				std::ofstream of(W.getPassport().dir + "ways2.txt");
-				for (size_t q = 0; q < W.getAirfoil(bou).getNumberOfPanels(); ++q)
-				{
-					cPan = 0.5 * (W.getAirfoil(bou).getR(q) + W.getAirfoil(bou).getR(q + 1));
-
-					alpha = 0.0;
-
-					int way = W.getAirfoil(bou).wayToVertex[q];
-					if (way == 0)
-						of << q << " " << rcm[0] << " " << rcm[1] << " " << cPan[0] << " " << cPan[1] << std::endl;
-					else
-					{
-						of << q << " " << rcm[0] << " " << rcm[1];
-						for (int q = 0; q < W.getAirfoil(bou).possibleWays[way - 1].size() + 1; ++q)
-						{
-							Point2D start = ((q == 0) ? rcm : W.getAirfoil(bou).possibleWays[way - 1][q - 1]);
-							Point2D finish = ((q == W.getAirfoil(bou).possibleWays[way - 1].size()) ? cPan : W.getAirfoil(bou).possibleWays[way - 1][q]);
-							of << " " << finish[0] << " " << finish[1];
-						}
-						of << std::endl;
-					}
-				}
-				of.close();
-			}
-			*/
-
 
 			for (size_t j = 0; j < W.getAirfoil(bou).getNumberOfPanels(); ++j)
 			{
@@ -657,12 +755,18 @@ void MeasureVP::GPUCalcPressure()
 			}
 		}//for bou
 	}//for i
+	//T7.stop();
 
+	//T8.start();
 	for (size_t i = 0; i < pressure.size(); ++i)
 	{
 		pressure[i] += P0 - 0.5 * velocity[i].length2(); //2;
 		pressure[i] *= W.getPassport().physicalProperties.rho;
 	}
+	//T8.stop();
+
+	//std::cout << "Calc: " << T1.duration() << " " << T2.duration() << " " << T3.duration() << " " << T4.duration() << " " 
+	//	<< T5.duration() << " " << T6.duration() << " " << T7.duration() << " " << T8.duration() << "\n";
 
 	W.getTimers().stop("VelPres");
 }//GPUCalcPressure()

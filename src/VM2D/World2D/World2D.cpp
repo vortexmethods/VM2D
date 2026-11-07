@@ -396,6 +396,12 @@ void World2D::Step() // ЮИ
 						//Построение контрольного дерева панелей
 						treePnl.UpdatePanelGeometry((int)nTotPan, (double4*)afl.devRPtr);
 						treePnl.Build();
+						
+						//Построение вспомогательного дерева панелей
+						treePnlAux.UpdatePanelGeometry((int)nTotPan, (double4*)afl.devRPtr);
+						treePnlAux.Build();
+						treePnlAux.UpwardTraversal(0);
+
 
 						//Построение дерева для влияющих панелей (источников)
 						if (isAnyMovableOrDeformable())
@@ -526,7 +532,8 @@ void World2D::Step() // ЮИ
 #ifdef TURB
 			getTimers().start("Nut");
 			std::vector<double> nut;
-			CalcVeloDifference(nut);		
+			CalcVeloDifference(nut);	
+			
 			getTimers().stop("Nut");
 
 			for (size_t q = 0; q < getWake().vtx.size(); ++q)			
@@ -860,11 +867,21 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 
 	std::vector<std::pair<int,double>> closeIndexDist(cntrTreePnt->object.size());
 
+	//////////////////////////////////////////////////
+	std::vector<int> near(cntrTreePnt->object.size());
+	//////////////////////////////////////////////////
 	
 	VMlib::vmTimer timerA;
 	timerA.start();
 	double tDownward = auxTreePnl->DownwardTraversalClosestPanelToPoints(*cntrTreePnt, closeIndexDist, false, nullptr);
 	timerA.stop();
+
+	//////////////////////////////////////////////////
+	VMlib::vmTimer timerB;
+	timerB.start();
+	double tDownward = НЕauxTreePnl->DownwardTraversalClosestPointToPoints(*cntrTreePnt, near, false);
+	timerB.stop();
+	//////////////////////////////////////////////////
 
 	std::ofstream treeTimeFile;
 	if (getCurrentStep() == 0)
@@ -992,6 +1009,72 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 	}
 	timerInside.stop();
 
+
+	//Тестирование поиска ближайшего соседа для множества частиц
+	/*
+	if (wake->vtx.size() > 0)
+	{		
+		//GPU-variant
+		BHcu::CudaTreeInfo cntrTreePnt(getCuda().blocks, tree_T::aux, object_T::point4, scheme_T::noScheme, false);
+		cntrTreePnt.MemoryAllocate(newPos.size());
+		cntrTreePnt.Update(wake->vtx.size(), wake->devVtxPtr);
+		cntrTreePnt.Build();
+
+		BHcu::CudaTreeInfo observTree(getCuda().blocks, tree_T::aux, object_T::point4, scheme_T::noScheme, false);
+		int nObsPoints = 10;
+		
+		std::vector<Vortex2D> obsPoints(nObsPoints * nObsPoints);
+		for (int i=0; i < nObsPoints; ++i)
+			for (int j = 0; j < nObsPoints; ++j)			
+				obsPoints[i * nObsPoints + j].r() = {-1.0 + 2.0 * j / nObsPoints, 1.0 - 2.0 * i / nObsPoints};
+
+		double* devObsPoints_ptr;
+		cudaMalloc(&devObsPoints_ptr, nObsPoints * nObsPoints * sizeof(double) * 4);
+		cudaMemcpy(devObsPoints_ptr, obsPoints.data(), nObsPoints * nObsPoints * sizeof(double) * 4, cudaMemcpyHostToDevice);
+
+		observTree.MemoryAllocate(nObsPoints * nObsPoints);
+		observTree.Update((int)obsPoints.size(), devObsPoints_ptr);
+		observTree.Build();
+
+		int* devClosestPoints_ptr;
+		cudaMalloc(&devClosestPoints_ptr, nObsPoints * nObsPoints * sizeof(int));
+		std::vector<int> closestPoints(nObsPoints* nObsPoints);
+
+		BHcu::treeClosestPointToPointsCalculationWrapper(cntrTreePnt, observTree, 32, devClosestPoints_ptr);
+		cudaMemcpy(closestPoints.data(), devClosestPoints_ptr, nObsPoints* nObsPoints * sizeof(int), cudaMemcpyDeviceToHost);
+				
+		cudaFree(devObsPoints_ptr);
+		cudaFree(devClosestPoints_ptr);
+
+
+		//CPU-variant
+		CpuTreeInfo wakeTreeTest(tree_T::aux, object_T::point4, scheme_T::noScheme);
+		wakeTreeTest.Update(wake->vtx, 0);
+		wakeTreeTest.Build();
+		wakeTreeTest.UpwardTraversal(0);
+		CpuTreeInfo auxTreePt(tree_T::aux, object_T::point2, scheme_T::noScheme);		
+						
+		auxTreePt.Update(obsPoints, 0);
+		auxTreePt.Build();
+		auxTreePt.UpwardTraversal(0);
+
+		std::unique_ptr<CpuTreeInfo> cntrTreePnt1;
+		
+		std::vector<int> near(obsPoints.size());
+
+		wakeTreeTest.DownwardTraversalClosestPointToPoints(auxTreePt, near);
+		
+		std::ofstream nearFile(getPassport().dir + "nearFile-" + std::to_string(getCurrentStep())+".txt");
+		for (size_t i = 0; i < obsPoints.size(); ++i)
+			nearFile << obsPoints[i].r()[0] << " " << obsPoints[i].r()[1] << " " << closestPoints[i] << " " << near[i] << '\n';
+		nearFile.close();
+
+		std::ofstream coordFile(getPassport().dir + "coords.txt");
+		for (size_t i = 0; i < wake->vtx.size(); ++i)
+			coordFile << wake->vtx[i].r()[0] << " " << wake->vtx[i].r()[1] << '\n';
+		coordFile.close();
+	}
+	*/
 #endif
 
 	getTimers().stop("Inside");
@@ -1623,15 +1706,30 @@ void World2D::CalcVeloDifference(std::vector<double>& nut) const
 	cuDeleteFromDev((void*&)controlPoints.devVtxPtr, 777);
 	cuDeleteFromDev((void*&)controlPoints.devVelPtr, 888);
 
+	std::vector<double> Omega(wake->vtx.size());
+	velocity->CalcOmegaFromWakeFast(*wake, Omega);
+
 	for (size_t q = 0; q < getWake().vtx.size(); ++q)
 	{
-		double dv2 = 0.0;
+		double F2 = 0.0;
 		for (size_t i = 1; i < basePoints.size(); ++i)
-			dv2 += (veloVar[q * basePoints.size()] - veloVar[q * basePoints.size() + i]).length2() * pow(getWake().vtx[q].sigma() / (controlPoints.vtx[q * basePoints.size() + i].r() - getWake().vtx[q].r()).length(), 0.6666667);
-		
-		dv2 *= 1.0 / (basePoints.size() - 1);
-		nut[q] = 0.105 * 0.604 * wake->vtx[q].sigma() * sqrt(dv2);
+			//F2 += (veloVar[q * basePoints.size()] - veloVar[q * basePoints.size() + i]).length2() * pow(getWake().vtx[q].sigma() / (controlPoints.vtx[q * basePoints.size() + i].r() - getWake().vtx[q].r()).length(), 0.6666667);
+			F2 += (veloVar[q * basePoints.size()] - veloVar[q * basePoints.size() + i]).length2();
+
+		F2 *= 1.0 / (basePoints.size());
+
+		F2 *= 8.0 / sqr(wake->vtx[q].sigma());
+
+		double S2 = std::max(F2 - sqr(Omega[q]), 0.0);
+				
+
+		nut[q] = sqr(0.2 * wake->vtx[q].sigma()) * sqrt(S2);
+
+		//dv2 *= 1.0 / (basePoints.size() - 1);
+		//nut[q] = 0.105 * 0.604 * wake->vtx[q].sigma() * sqrt(dv2);
 	}
+
+	wake->SaveScalarFields("Fields", Omega, nut);
 }
 #endif 
 

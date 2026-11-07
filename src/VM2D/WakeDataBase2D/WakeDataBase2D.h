@@ -122,12 +122,12 @@ namespace VM2D
 #ifdef TURB
 		void SaveScalarFields(
 			const std::string& filePrefix,
-			const std::vector<double>& VIP,
+			//const std::vector<double>& VIP,
 			const std::vector<double>& OIP,
-			const std::vector<double>& nut,
-			const std::vector<Point2D>& grNu,
-			const std::vector<double>& RIP,
-			const std::vector<double>& DELTAG
+			const std::vector<double>& nut
+			//const std::vector<Point2D>& grNu,
+			//const std::vector<double>& RIP,
+			//const std::vector<double>& DELTAG
 		) const;
 #endif
 	};
