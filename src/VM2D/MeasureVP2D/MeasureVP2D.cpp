@@ -602,24 +602,21 @@ void MeasureVP::GPUCalcPressure()
 			cudaMalloc(&gVy_dev, W.getWake().vtx.size() * 4 * sizeof(double));
 			cuCalcMulGammaVel(W.getWake().vtx.size(), W.getWake().devVtxPtr, V0[0], V0[1], W.getWake().devVelPtr, devDiffVelo, gVx_dev, gVy_dev);
 			
-//			std::vector<Vortex2D> gVx(W.getWake().vtx.size()), gVy(W.getWake().vtx.size());
-//
-//#pragma omp parallel for
-//			for (int i = 0; i < (int)W.getWake().vtx.size(); ++i)
-//			{
-//				Point2D veloI = V0 + W.getVelocity().wakeVortexesParams.diffVelo[i] + W.getNonConstVelocity().wakeVortexesParams.convVelo[i];
-//				gVx[i].r() = gVy[i].r() = W.getWake().vtx[i].r();
-//				gVx[i].g() = W.getWake().vtx[i].g() * veloI[0];
-//				gVy[i].g() = W.getWake().vtx[i].g() * veloI[1];
-//				gVx[i].sigma() = gVy[i].sigma() = 0.0;
-//			}
-//			double* gVx_dev;
-//			double* gVy_dev;
-//
-//			cudaMalloc(&gVx_dev, W.getWake().vtx.size() * 4 * sizeof(double));
-//			cudaMalloc(&gVy_dev, W.getWake().vtx.size() * 4 * sizeof(double));
-//			cudaMemcpy(gVx_dev, gVx.data(), W.getWake().vtx.size() * 4 * sizeof(double), cudaMemcpyHostToDevice);
-//			cudaMemcpy(gVy_dev, gVy.data(), W.getWake().vtx.size() * 4 * sizeof(double), cudaMemcpyHostToDevice);
+			//std::vector<Vortex2D> gVx(W.getWake().vtx.size()), gVy(W.getWake().vtx.size());
+			//#pragma omp parallel for
+			//for (int i = 0; i < (int)W.getWake().vtx.size(); ++i)
+			//{
+			//	Point2D veloI = V0 + W.getVelocity().wakeVortexesParams.diffVelo[i] + W.getNonConstVelocity().wakeVortexesParams.convVelo[i];
+			//	gVx[i].r() = gVy[i].r() = W.getWake().vtx[i].r();
+			//	gVx[i].g() = W.getWake().vtx[i].g() * veloI[0];
+			//	gVy[i].g() = W.getWake().vtx[i].g() * veloI[1];
+			//	gVx[i].sigma() = gVy[i].sigma() = 0.0;
+			//}
+			//
+			//cudaMalloc(&gVx_dev, W.getWake().vtx.size() * 4 * sizeof(double));
+			//cudaMalloc(&gVy_dev, W.getWake().vtx.size() * 4 * sizeof(double));
+			//cudaMemcpy(gVx_dev, gVx.data(), W.getWake().vtx.size() * 4 * sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(gVy_dev, gVy.data(), W.getWake().vtx.size() * 4 * sizeof(double), cudaMemcpyHostToDevice);
 			
 			//F2.stop();
 
@@ -632,8 +629,8 @@ void MeasureVP::GPUCalcPressure()
 			treeWakeX.Build();
 			treeWakeY.Build();
 
-			treeWakeX.UpwardTraversal(1);
-			treeWakeY.UpwardTraversal(1);
+			treeWakeX.UpwardTraversal(12);
+			treeWakeY.UpwardTraversal(12);
 
 			double* UVx_dev;
 			double* UVy_dev;
@@ -642,8 +639,8 @@ void MeasureVP::GPUCalcPressure()
 			//F3.stop();
 
 			//F4.start();
-			treeWakeX.DownwardTraversalVorticesToPoints<32>(*W.getCuda().cntrTreeVP, (Point2D*)UVx_dev, nullptr, 1.0, 1, false, false);
-			treeWakeY.DownwardTraversalVorticesToPoints<32>(*W.getCuda().cntrTreeVP, (Point2D*)UVy_dev, nullptr, 1.0, 1, false, false);
+			treeWakeX.DownwardTraversalVorticesToPoints<32>(*W.getCuda().cntrTreeVP, (Point2D*)UVx_dev, nullptr, 1.0, 12, false, false);
+			treeWakeY.DownwardTraversalVorticesToPoints<32>(*W.getCuda().cntrTreeVP, (Point2D*)UVy_dev, nullptr, 1.0, 12, false, false);
 
 			std::vector<Point2D> UVx(addWSize), UVy(addWSize);
 			cudaMemcpy(UVx.data(), UVx_dev, addWSize * 2 * sizeof(double), cudaMemcpyDeviceToHost);

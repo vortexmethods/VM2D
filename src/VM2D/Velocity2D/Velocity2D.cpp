@@ -1168,7 +1168,7 @@ void Velocity::FillRhs(Eigen::VectorXd& rhsReord) const
 
 		lastRhs[bou] = 0.0;
 
-#pragma omp for
+#pragma omp parallel for
 		for (int q = 0; q < (int)afl.gammaThrough.size(); ++q)
 			lastRhs[bou] += afl.gammaThrough[q];
 

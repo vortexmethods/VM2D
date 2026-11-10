@@ -703,12 +703,28 @@ namespace BHcu
             cudaEventCreate(&start);  cudaEventCreate(&stop);
             cudaEventRecord(start, 0);
 
-            BHcu::treeVorticesToPointsCalculationKernel<12, NUMBER_OF_THREADS> << <nBlock * FACTORforces, NUMBER_OF_THREADS >> > (
-                nNode, nObject, itheta2, (int2*)childD, (double2*)momsD, \
-                (double4*)objectD, mortonCodesIdxD, (double2*)centerD, indexSortD, \
-                indexSortTD, (double4*)lowerupperD, \
-                cntrTree.nObject, (double4*)cntrTree.objectD, cntrTree.mortonCodesIdxD, (double2*)velD, calcRadius, epsastD, coefEpsAst);
+            switch (order)
+            {
+            case 1:
+                BHcu::treeVorticesToPointsCalculationKernel<1, NUMBER_OF_THREADS> << <nBlock * FACTORforces, NUMBER_OF_THREADS >> > (
+                    nNode, nObject, itheta2, (int2*)childD, (double2*)momsD, \
+                    (double4*)objectD, mortonCodesIdxD, (double2*)centerD, indexSortD, \
+                    indexSortTD, (double4*)lowerupperD, \
+                    cntrTree.nObject, (double4*)cntrTree.objectD, cntrTree.mortonCodesIdxD, (double2*)velD, calcRadius, epsastD, coefEpsAst);
+                break;
 
+            case 12:
+                BHcu::treeVorticesToPointsCalculationKernel<12, NUMBER_OF_THREADS> << <nBlock * FACTORforces, NUMBER_OF_THREADS >> > (
+                    nNode, nObject, itheta2, (int2*)childD, (double2*)momsD, \
+                    (double4*)objectD, mortonCodesIdxD, (double2*)centerD, indexSortD, \
+                    indexSortTD, (double4*)lowerupperD, \
+                    cntrTree.nObject, (double4*)cntrTree.objectD, cntrTree.mortonCodesIdxD, (double2*)velD, calcRadius, epsastD, coefEpsAst);
+                break;
+
+            default:
+                printf("Downward Traversal for order = %d is not implemented!\n", order);
+                exit(-10);
+            }
             cudaEventRecord(stop, 0);  cudaEventSynchronize(stop);  cudaEventElapsedTime(&time, start, stop);
 
             CudaTestError("treeVorticesInfluenceCalculationKernel launch failed");

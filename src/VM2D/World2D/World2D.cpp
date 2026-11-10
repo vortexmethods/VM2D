@@ -914,6 +914,8 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 	
 	if ((newPos.size() > 0) && (getNumberOfAirfoil() > 0))
 	{
+		std::vector<std::pair<int, int>> hitAflPnl;
+		
 		int nTotPanels = 0;
 		for (size_t afl = 0; afl < airfoil.size(); ++afl)
 			nTotPanels += (int)airfoil[afl]->getNumberOfPanels();
@@ -931,7 +933,7 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 		}
 
 		std::vector<int> hit(newPos.size());
-		
+
 		if (isAnyMovableOrDeformable()) //Если профили подвижны - метод псевдонормалей
 		{
 			double* devNewpos_ptr;
@@ -983,29 +985,72 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 			BHcu::treePanelsSegmentsIntersectionCalculationWrapper(auxTree, cntrTreeSeg, getWake().devNearestPanelPtr);
 			cudaMemcpy(hit.data(), getWake().devNearestPanelPtr, newPos.size() * sizeof(int), cudaMemcpyDeviceToHost);
 			cudaFree(devSegments_ptr);
-		}
 
-		size_t panCounter = 0;
-		for (size_t afl = 0; afl < airfoil.size(); ++afl)
-		{
-			std::vector<double> gamma(airfoil[afl]->getNumberOfPanels(), 0.0);
-			for (int i = 0; i < newPos.size(); ++i)
+			hitAflPnl.resize(newPos.size(), { -1, -1 });
+	
+
+			//std::ofstream tikFile(passport.dir + "/dbg/hit-" + std::to_string(currentStep) + ".txt");
+			for (int w = 0; w < newPos.size(); ++w)
 			{
-				if (hit[i] != -1)
+				if (hit[w] > -1)
 				{
-					if ((hit[i] >= panCounter) && (hit[i] < panCounter + airfoil[afl]->getNumberOfPanels()))
+					size_t panCounter = 0;
+					for (size_t afl = 0; afl < airfoil.size(); ++afl)
 					{
-						if (fabs(wake->vtx[i].g()) > 1.0)
-							std::cout << "Too large gamma is through: i = " << i << ", " << hit[i] << ", " << "gamma[hit[i] - panCounter] += " << wake->vtx[i].g() << std::endl;
-
-						gamma[hit[i] - panCounter] += wake->vtx[i].g();
-						wake->vtx[i].g() = 0.0;
+						if ((hit[w] >= panCounter) && (hit[w] < panCounter + airfoil[afl]->getNumberOfPanels()))
+						{
+							hitAflPnl[w] = { (int)afl, hit[w] - (int)panCounter };
+							//tikFile << w << " " << wake->vtx[w].r()[0] << " " << wake->vtx[w].r()[1] <<
+							//	" " << newPos[w][0] << " " << newPos[w][1] << " " <<
+							//	" " << airfoil[afl]->getR(hit[w] - panCounter)[0] << " " << airfoil[afl]->getR(hit[w] - panCounter)[1] <<
+							//	" " << airfoil[afl]->getR(hit[w] - panCounter + 1)[0] << " " << airfoil[afl]->getR(hit[w] - panCounter + 1)[1] <<
+							//	'\n';
+						}
+						panCounter += airfoil[afl]->getNumberOfPanels();
 					}
 				}
 			}
-			airfoil[afl]->gammaThrough = gamma;
-			panCounter += airfoil[afl]->getNumberOfPanels();
-		}//for afl
+			//tikFile.close();
+
+		}
+				
+		if (getNumberOfAirfoil() == 1)
+		{
+			//Убийство вихрей об профиль
+			for (size_t afl = 0; afl < airfoil.size(); ++afl)
+			{
+				std::vector<double> gamma(airfoil[afl]->getNumberOfPanels(), 0.0);
+				for (int i = 0; i < hitAflPnl.size(); ++i)
+				{
+					if (hitAflPnl[i].first == afl)
+					{
+						gamma[hitAflPnl[i].second] = wake->vtx[i].g();
+						wake->vtx[i].g() = 0.0;
+					}
+				}
+				airfoil[afl]->gammaThrough = gamma;
+			}
+		}
+		else
+		{
+			//Установка в точку рождения для коллапса на будущих шагах
+			for (size_t afl = 0; afl < airfoil.size(); ++afl)
+			{
+				std::vector<double> gamma(airfoil[afl]->getNumberOfPanels(), 0.0);
+				for (int i = 0; i < hitAflPnl.size(); ++i)
+				{
+					if (hitAflPnl[i].first == afl)
+					{
+						int pnl = hitAflPnl[i].second;
+						//gamma[hitAflPnl[i].second] = wake->vtx[i].g();
+						//wake->vtx[i].g() = 0.0;
+						newPos[i] = 0.5 * (airfoil[afl]->getR(pnl) + airfoil[afl]->getR(pnl + 1)) + airfoil[afl]->nrm[pnl] * passport.wakeDiscretizationProperties.delta;
+					}
+				}
+				airfoil[afl]->gammaThrough = gamma;
+			}
+		}
+
 	}
 	timerInside.stop();
 
@@ -2283,8 +2328,9 @@ void World2D::CalcAndSolveLinearSystem()
 				of << std::endl;
 			}
 			of.close();
-		}
-
+		}//*/
+		
+		/*
 		{
 			std::stringstream ss;
 			ss << "rhs-" << currentStep;
