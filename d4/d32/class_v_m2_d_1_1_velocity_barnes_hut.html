@@ -2808,7 +2808,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno"> 1168</span> </div>
 <div class="line"><span class="lineno"> 1169</span>        lastRhs[bou] = 0.0;</div>
 <div class="line"><span class="lineno"> 1170</span> </div>
-<div class="line"><span class="lineno"> 1171</span><span class="preprocessor">#pragma omp for</span></div>
+<div class="line"><span class="lineno"> 1171</span><span class="preprocessor">#pragma omp parallel for</span></div>
 <div class="line"><span class="lineno"> 1172</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> q = 0; q &lt; (int)afl.<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a77620774c15850cde8962167384abac0">gammaThrough</a>.size(); ++q)</div>
 <div class="line"><span class="lineno"> 1173</span>            lastRhs[bou] += afl.<a class="code hl_variable" href="../../db/de9/class_v_m2_d_1_1_airfoil.html#a77620774c15850cde8962167384abac0">gammaThrough</a>[q];</div>
 <div class="line"><span class="lineno"> 1174</span></div>

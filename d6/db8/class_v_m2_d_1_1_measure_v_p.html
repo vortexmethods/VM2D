@@ -901,18 +901,18 @@ Here is the call graph for this function:</div>
 
 <p>Возврат давления в "гидроупругих" точках </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d96/_measure_v_p2_d_8cpp_source.html#l01047">1047</a> of file <a class="el" href="../../d5/d96/_measure_v_p2_d_8cpp_source.html">MeasureVP2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1048</span>{</div>
-<div class="line"><span class="lineno"> 1049</span>    std::vector&lt;std::pair&lt;Point2D, double&gt;&gt; result;</div>
-<div class="line"><span class="lineno"> 1050</span>    result.reserve(<a class="code hl_variable" href="#a5558814a058b32e3e4e519b8bfe86ecb">elasticPoints</a>.size());</div>
-<div class="line"><span class="lineno"> 1051</span>    </div>
-<div class="line"><span class="lineno"> 1052</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> nRealPressurePoints = <a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + <a class="code hl_variable" href="#a291467cf1c4ac178bbf9d165d4fbe92e">historyPoints</a>.size(); <span class="comment">//число реальных точек - без учета тех, что для гидроупругости</span></div>
-<div class="line"><span class="lineno"> 1053</span> </div>
-<div class="line"><span class="lineno"> 1054</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; <a class="code hl_variable" href="#a5558814a058b32e3e4e519b8bfe86ecb">elasticPoints</a>.size(); ++q)</div>
-<div class="line"><span class="lineno"> 1055</span>        result.push_back({ velocity[nRealPressurePoints + q], pressure[nRealPressurePoints + q] });</div>
-<div class="line"><span class="lineno"> 1056</span>    </div>
-<div class="line"><span class="lineno"> 1057</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><span class="lineno"> 1058</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d5/d96/_measure_v_p2_d_8cpp_source.html#l01044">1044</a> of file <a class="el" href="../../d5/d96/_measure_v_p2_d_8cpp_source.html">MeasureVP2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1045</span>{</div>
+<div class="line"><span class="lineno"> 1046</span>    std::vector&lt;std::pair&lt;Point2D, double&gt;&gt; result;</div>
+<div class="line"><span class="lineno"> 1047</span>    result.reserve(<a class="code hl_variable" href="#a5558814a058b32e3e4e519b8bfe86ecb">elasticPoints</a>.size());</div>
+<div class="line"><span class="lineno"> 1048</span>    </div>
+<div class="line"><span class="lineno"> 1049</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> nRealPressurePoints = <a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + <a class="code hl_variable" href="#a291467cf1c4ac178bbf9d165d4fbe92e">historyPoints</a>.size(); <span class="comment">//число реальных точек - без учета тех, что для гидроупругости</span></div>
+<div class="line"><span class="lineno"> 1050</span> </div>
+<div class="line"><span class="lineno"> 1051</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; <a class="code hl_variable" href="#a5558814a058b32e3e4e519b8bfe86ecb">elasticPoints</a>.size(); ++q)</div>
+<div class="line"><span class="lineno"> 1052</span>        result.push_back({ velocity[nRealPressurePoints + q], pressure[nRealPressurePoints + q] });</div>
+<div class="line"><span class="lineno"> 1053</span>    </div>
+<div class="line"><span class="lineno"> 1054</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno"> 1055</span>}</div>
 <div class="ttc" id="aclass_v_m2_d_1_1_measure_v_p_html_a5558814a058b32e3e4e519b8bfe86ecb"><div class="ttname"><a href="#a5558814a058b32e3e4e519b8bfe86ecb">VM2D::MeasureVP::elasticPoints</a></div><div class="ttdeci">std::vector&lt; Point2D &gt; elasticPoints</div><div class="ttdoc">Точки, в которых давление нужно вычислять в служебных целях (для задач гидроупругости),...</div><div class="ttdef"><b>Definition</b> <a href="../../d3/dc0/_measure_v_p2_d_8h_source.html#l00089">MeasureVP2D.h:89</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1267,276 +1267,276 @@ Here is the call graph for this function:</div>
 
 <p>Сохранение в файл вычисленных скоростей и давлений </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d96/_measure_v_p2_d_8cpp_source.html#l00776">776</a> of file <a class="el" href="../../d5/d96/_measure_v_p2_d_8cpp_source.html">MeasureVP2D.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  777</span>{</div>
-<div class="line"><span class="lineno">  778</span>    <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getTimers().start(<span class="stringliteral">&quot;Save&quot;</span>);</div>
-<div class="line"><span class="lineno">  779</span> </div>
-<div class="line"><span class="lineno">  780</span>    <span class="keywordtype">double</span> scaleV = 1.0, scaleP = 1.0;</div>
-<div class="line"><span class="lineno">  781</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
-<div class="line"><span class="lineno">  782</span>    {</div>
-<div class="line"><span class="lineno">  783</span>        <span class="keyword">const</span> <span class="keywordtype">double</span>&amp; vRef = <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().physicalProperties.vRef;</div>
-<div class="line"><span class="lineno">  784</span>        scaleV = 1.0 / vRef;</div>
-<div class="line"><span class="lineno">  785</span>        scaleP = 1.0 / (0.5 * <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().physicalProperties.rho * <a class="code hl_function" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(vRef));</div>
-<div class="line"><span class="lineno">  786</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d5/d96/_measure_v_p2_d_8cpp_source.html#l00773">773</a> of file <a class="el" href="../../d5/d96/_measure_v_p2_d_8cpp_source.html">MeasureVP2D.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  774</span>{</div>
+<div class="line"><span class="lineno">  775</span>    <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getTimers().start(<span class="stringliteral">&quot;Save&quot;</span>);</div>
+<div class="line"><span class="lineno">  776</span> </div>
+<div class="line"><span class="lineno">  777</span>    <span class="keywordtype">double</span> scaleV = 1.0, scaleP = 1.0;</div>
+<div class="line"><span class="lineno">  778</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
+<div class="line"><span class="lineno">  779</span>    {</div>
+<div class="line"><span class="lineno">  780</span>        <span class="keyword">const</span> <span class="keywordtype">double</span>&amp; vRef = <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().physicalProperties.vRef;</div>
+<div class="line"><span class="lineno">  781</span>        scaleV = 1.0 / vRef;</div>
+<div class="line"><span class="lineno">  782</span>        scaleP = 1.0 / (0.5 * <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().physicalProperties.rho * <a class="code hl_function" href="../../d1/de2/_v_mlib_2defs_2defs_8h.html#aa9c30c1d592b3896cac80167bb5c9697">sqr</a>(vRef));</div>
+<div class="line"><span class="lineno">  783</span>    }</div>
+<div class="line"><span class="lineno">  784</span> </div>
+<div class="line"><span class="lineno">  785</span> </div>
+<div class="line"><span class="lineno">  786</span>    std::ofstream outfile;</div>
 <div class="line"><span class="lineno">  787</span> </div>
-<div class="line"><span class="lineno">  788</span> </div>
-<div class="line"><span class="lineno">  789</span>    std::ofstream outfile;</div>
+<div class="line"><span class="lineno">  788</span>    <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a23aa9866eb62425a522a22882cf81d3a">VMlib::CreateUserDirectory</a>(<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir, <span class="stringliteral">&quot;velPres&quot;</span>);</div>
+<div class="line"><span class="lineno">  789</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> nRealPressurePoints = <a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + <a class="code hl_variable" href="#a291467cf1c4ac178bbf9d165d4fbe92e">historyPoints</a>.size(); <span class="comment">//число реальных точек - без учета тех, что для гидроупругости</span></div>
 <div class="line"><span class="lineno">  790</span> </div>
-<div class="line"><span class="lineno">  791</span>    <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a23aa9866eb62425a522a22882cf81d3a">VMlib::CreateUserDirectory</a>(<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir, <span class="stringliteral">&quot;velPres&quot;</span>);</div>
-<div class="line"><span class="lineno">  792</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> nRealPressurePoints = <a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + <a class="code hl_variable" href="#a291467cf1c4ac178bbf9d165d4fbe92e">historyPoints</a>.size(); <span class="comment">//число реальных точек - без учета тех, что для гидроупругости</span></div>
-<div class="line"><span class="lineno">  793</span> </div>
-<div class="line"><span class="lineno">  794</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.fileTypeVP.second == 0) <span class="comment">//text format VTK</span></div>
-<div class="line"><span class="lineno">  795</span>    {</div>
-<div class="line"><span class="lineno">  796</span>        std::string fname = <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VelPres&quot;</span>, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.nameLength, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep(), <span class="stringliteral">&quot;vtk&quot;</span>);</div>
-<div class="line"><span class="lineno">  797</span>        outfile.open(<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname);</div>
-<div class="line"><span class="lineno">  798</span> </div>
-<div class="line"><span class="lineno">  799</span>        outfile &lt;&lt; <span class="stringliteral">&quot;# vtk DataFile Version 2.0\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  800</span>        outfile &lt;&lt; <span class="stringliteral">&quot;VM2D VTK result: &quot;</span> &lt;&lt; (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname).c_str() &lt;&lt; <span class="stringliteral">&quot; saved &quot;</span> &lt;&lt; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b">VMlib::CurrentDataTime</a>() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  801</span>        outfile &lt;&lt; <span class="stringliteral">&quot;ASCII\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  802</span>        outfile &lt;&lt; <span class="stringliteral">&quot;DATASET UNSTRUCTURED_GRID\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  803</span>        outfile &lt;&lt; <span class="stringliteral">&quot;POINTS &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="stringliteral">&quot; float\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  804</span> </div>
-<div class="line"><span class="lineno">  805</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  806</span>        {</div>
-<div class="line"><span class="lineno">  807</span>            <span class="keywordtype">double</span> xi = (<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[0];</div>
-<div class="line"><span class="lineno">  808</span>            <span class="keywordtype">double</span> yi = (<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[1];</div>
-<div class="line"><span class="lineno">  809</span>            outfile &lt;&lt; xi &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; yi &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;0.0\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  810</span>        }<span class="comment">//for i</span></div>
-<div class="line"><span class="lineno">  811</span> </div>
-<div class="line"><span class="lineno">  812</span>        outfile &lt;&lt; <span class="stringliteral">&quot;CELLS &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; 2 * nRealPressurePoints &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  813</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  814</span>            outfile &lt;&lt; <span class="stringliteral">&quot;1 &quot;</span> &lt;&lt; i &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  815</span> </div>
-<div class="line"><span class="lineno">  816</span>        outfile &lt;&lt; <span class="stringliteral">&quot;CELL_TYPES &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  817</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  818</span>            outfile &lt;&lt; <span class="stringliteral">&quot;1\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  791</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.fileTypeVP.second == 0) <span class="comment">//text format VTK</span></div>
+<div class="line"><span class="lineno">  792</span>    {</div>
+<div class="line"><span class="lineno">  793</span>        std::string fname = <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VelPres&quot;</span>, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.nameLength, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep(), <span class="stringliteral">&quot;vtk&quot;</span>);</div>
+<div class="line"><span class="lineno">  794</span>        outfile.open(<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname);</div>
+<div class="line"><span class="lineno">  795</span> </div>
+<div class="line"><span class="lineno">  796</span>        outfile &lt;&lt; <span class="stringliteral">&quot;# vtk DataFile Version 2.0\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  797</span>        outfile &lt;&lt; <span class="stringliteral">&quot;VM2D VTK result: &quot;</span> &lt;&lt; (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname).c_str() &lt;&lt; <span class="stringliteral">&quot; saved &quot;</span> &lt;&lt; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b">VMlib::CurrentDataTime</a>() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  798</span>        outfile &lt;&lt; <span class="stringliteral">&quot;ASCII\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  799</span>        outfile &lt;&lt; <span class="stringliteral">&quot;DATASET UNSTRUCTURED_GRID\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  800</span>        outfile &lt;&lt; <span class="stringliteral">&quot;POINTS &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="stringliteral">&quot; float\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  801</span> </div>
+<div class="line"><span class="lineno">  802</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  803</span>        {</div>
+<div class="line"><span class="lineno">  804</span>            <span class="keywordtype">double</span> xi = (<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[0];</div>
+<div class="line"><span class="lineno">  805</span>            <span class="keywordtype">double</span> yi = (<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[1];</div>
+<div class="line"><span class="lineno">  806</span>            outfile &lt;&lt; xi &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; yi &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;0.0\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  807</span>        }<span class="comment">//for i</span></div>
+<div class="line"><span class="lineno">  808</span> </div>
+<div class="line"><span class="lineno">  809</span>        outfile &lt;&lt; <span class="stringliteral">&quot;CELLS &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; 2 * nRealPressurePoints &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  810</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  811</span>            outfile &lt;&lt; <span class="stringliteral">&quot;1 &quot;</span> &lt;&lt; i &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  812</span> </div>
+<div class="line"><span class="lineno">  813</span>        outfile &lt;&lt; <span class="stringliteral">&quot;CELL_TYPES &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  814</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  815</span>            outfile &lt;&lt; <span class="stringliteral">&quot;1\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  816</span> </div>
+<div class="line"><span class="lineno">  817</span>        outfile &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  818</span>        outfile &lt;&lt; <span class="stringliteral">&quot;POINT_DATA &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><span class="lineno">  819</span> </div>
-<div class="line"><span class="lineno">  820</span>        outfile &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  821</span>        outfile &lt;&lt; <span class="stringliteral">&quot;POINT_DATA &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  822</span> </div>
-<div class="line"><span class="lineno">  823</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
-<div class="line"><span class="lineno">  824</span>            outfile &lt;&lt; <span class="stringliteral">&quot;VECTORS V float\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  825</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  826</span>            outfile &lt;&lt; <span class="stringliteral">&quot;VECTORS CV float\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  827</span> </div>
-<div class="line"><span class="lineno">  828</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  829</span>        {</div>
-<div class="line"><span class="lineno">  830</span>            outfile &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][0] * scaleV &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][1] * scaleV &lt;&lt; <span class="stringliteral">&quot; 0.0\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  831</span>        }<span class="comment">//for i</span></div>
-<div class="line"><span class="lineno">  832</span> </div>
-<div class="line"><span class="lineno">  833</span>        outfile &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  834</span> </div>
-<div class="line"><span class="lineno">  835</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
-<div class="line"><span class="lineno">  836</span>            outfile &lt;&lt; <span class="stringliteral">&quot;SCALARS P float 1\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  837</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  838</span>            outfile &lt;&lt; <span class="stringliteral">&quot;SCALARS CP float 1\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  839</span> </div>
-<div class="line"><span class="lineno">  840</span>        outfile &lt;&lt; <span class="stringliteral">&quot;LOOKUP_TABLE default\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  841</span> </div>
-<div class="line"><span class="lineno">  842</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  843</span>        {</div>
-<div class="line"><span class="lineno">  844</span>            outfile &lt;&lt; <a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[i] * scaleP &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  845</span>        }<span class="comment">//for i</span></div>
-<div class="line"><span class="lineno">  846</span> </div>
-<div class="line"><span class="lineno">  847</span>        outfile.close();</div>
-<div class="line"><span class="lineno">  848</span>    }</div>
-<div class="line"><span class="lineno">  849</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.fileTypeVP.second == 1) <span class="comment">//binary format VTK</span></div>
-<div class="line"><span class="lineno">  850</span>    {</div>
-<div class="line"><span class="lineno">  851</span>        <span class="comment">//Тест способа хранения чисел</span></div>
-<div class="line"><span class="lineno">  852</span>        uint16_t x = 0x0001;</div>
-<div class="line"><span class="lineno">  853</span>        <span class="keywordtype">bool</span> littleEndian = (*((uint8_t*)&amp;x));</div>
-<div class="line"><span class="lineno">  854</span>        <span class="keyword">const</span> <span class="keywordtype">char</span> eolnBIN[] = <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  820</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
+<div class="line"><span class="lineno">  821</span>            outfile &lt;&lt; <span class="stringliteral">&quot;VECTORS V float\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  822</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  823</span>            outfile &lt;&lt; <span class="stringliteral">&quot;VECTORS CV float\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  824</span> </div>
+<div class="line"><span class="lineno">  825</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  826</span>        {</div>
+<div class="line"><span class="lineno">  827</span>            outfile &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][0] * scaleV &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][1] * scaleV &lt;&lt; <span class="stringliteral">&quot; 0.0\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  828</span>        }<span class="comment">//for i</span></div>
+<div class="line"><span class="lineno">  829</span> </div>
+<div class="line"><span class="lineno">  830</span>        outfile &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  831</span> </div>
+<div class="line"><span class="lineno">  832</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
+<div class="line"><span class="lineno">  833</span>            outfile &lt;&lt; <span class="stringliteral">&quot;SCALARS P float 1\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  834</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  835</span>            outfile &lt;&lt; <span class="stringliteral">&quot;SCALARS CP float 1\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  836</span> </div>
+<div class="line"><span class="lineno">  837</span>        outfile &lt;&lt; <span class="stringliteral">&quot;LOOKUP_TABLE default\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  838</span> </div>
+<div class="line"><span class="lineno">  839</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  840</span>        {</div>
+<div class="line"><span class="lineno">  841</span>            outfile &lt;&lt; <a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[i] * scaleP &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  842</span>        }<span class="comment">//for i</span></div>
+<div class="line"><span class="lineno">  843</span> </div>
+<div class="line"><span class="lineno">  844</span>        outfile.close();</div>
+<div class="line"><span class="lineno">  845</span>    }</div>
+<div class="line"><span class="lineno">  846</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.fileTypeVP.second == 1) <span class="comment">//binary format VTK</span></div>
+<div class="line"><span class="lineno">  847</span>    {</div>
+<div class="line"><span class="lineno">  848</span>        <span class="comment">//Тест способа хранения чисел</span></div>
+<div class="line"><span class="lineno">  849</span>        uint16_t x = 0x0001;</div>
+<div class="line"><span class="lineno">  850</span>        <span class="keywordtype">bool</span> littleEndian = (*((uint8_t*)&amp;x));</div>
+<div class="line"><span class="lineno">  851</span>        <span class="keyword">const</span> <span class="keywordtype">char</span> eolnBIN[] = <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  852</span> </div>
+<div class="line"><span class="lineno">  853</span>        std::string fname = <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VelPres&quot;</span>, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.nameLength, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep(), <span class="stringliteral">&quot;vtk&quot;</span>);</div>
+<div class="line"><span class="lineno">  854</span>        outfile.open(<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname, std::ios::out | std::ios::binary);</div>
 <div class="line"><span class="lineno">  855</span> </div>
-<div class="line"><span class="lineno">  856</span>        std::string fname = <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VelPres&quot;</span>, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.nameLength, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep(), <span class="stringliteral">&quot;vtk&quot;</span>);</div>
-<div class="line"><span class="lineno">  857</span>        outfile.open(<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname, std::ios::out | std::ios::binary);</div>
-<div class="line"><span class="lineno">  858</span> </div>
-<div class="line"><span class="lineno">  859</span>        outfile &lt;&lt; <span class="stringliteral">&quot;# vtk DataFile Version 3.0&quot;</span> &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span> &lt;&lt; <span class="stringliteral">&quot;VM2D VTK result: &quot;</span> &lt;&lt; (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname).c_str() &lt;&lt; <span class="stringliteral">&quot; saved &quot;</span> &lt;&lt; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b">VMlib::CurrentDataTime</a>() &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  860</span>        outfile &lt;&lt; <span class="stringliteral">&quot;BINARY&quot;</span> &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  861</span>        outfile &lt;&lt; <span class="stringliteral">&quot;DATASET UNSTRUCTURED_GRID&quot;</span> &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;POINTS &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  862</span> </div>
-<div class="line"><span class="lineno">  863</span> </div>
-<div class="line"><span class="lineno">  864</span>        Eigen::VectorXf pData = Eigen::VectorXf::Zero(nRealPressurePoints);</div>
-<div class="line"><span class="lineno">  865</span>        Eigen::VectorXf vData = Eigen::VectorXf::Zero(nRealPressurePoints * 3);</div>
-<div class="line"><span class="lineno">  866</span>        Eigen::VectorXf rData = Eigen::VectorXf::Zero(nRealPressurePoints * 3);</div>
-<div class="line"><span class="lineno">  867</span> </div>
-<div class="line"><span class="lineno">  868</span> </div>
-<div class="line"><span class="lineno">  869</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  870</span>        {</div>
-<div class="line"><span class="lineno">  871</span>            rData(3 * i + 0) = (float)(<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[0];</div>
-<div class="line"><span class="lineno">  872</span>            rData(3 * i + 1) = (float)(<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[1];</div>
-<div class="line"><span class="lineno">  873</span>        }<span class="comment">//for i</span></div>
-<div class="line"><span class="lineno">  874</span> </div>
-<div class="line"><span class="lineno">  875</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  876</span>        {</div>
-<div class="line"><span class="lineno">  877</span>            vData(3 * i + 0) = (float)(<a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][0] * scaleV);</div>
-<div class="line"><span class="lineno">  878</span>            vData(3 * i + 1) = (float)(<a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][1] * scaleV);</div>
-<div class="line"><span class="lineno">  879</span>        }<span class="comment">//for i</span></div>
-<div class="line"><span class="lineno">  880</span> </div>
-<div class="line"><span class="lineno">  881</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  882</span>        {</div>
-<div class="line"><span class="lineno">  883</span>            pData(i) = (float)(<a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[i] * scaleP);</div>
-<div class="line"><span class="lineno">  884</span>        }<span class="comment">//for i</span></div>
-<div class="line"><span class="lineno">  885</span> </div>
-<div class="line"><span class="lineno">  886</span>        <span class="comment">//POINTS</span></div>
-<div class="line"><span class="lineno">  887</span>        <span class="keywordflow">if</span> (littleEndian)</div>
-<div class="line"><span class="lineno">  888</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints * 3; ++i)</div>
-<div class="line"><span class="lineno">  889</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(rData(i));</div>
-<div class="line"><span class="lineno">  890</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(rData.data()), nRealPressurePoints * 3 * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));</div>
-<div class="line"><span class="lineno">  891</span> </div>
-<div class="line"><span class="lineno">  892</span>        <span class="comment">// CELLS</span></div>
-<div class="line"><span class="lineno">  893</span>        std::vector&lt;int&gt; cells(2 * nRealPressurePoints);</div>
-<div class="line"><span class="lineno">  894</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  895</span>        {</div>
-<div class="line"><span class="lineno">  896</span>            cells[2 * i + 0] = 1;</div>
-<div class="line"><span class="lineno">  897</span>            cells[2 * i + 1] = (int)i;</div>
-<div class="line"><span class="lineno">  898</span>        }</div>
+<div class="line"><span class="lineno">  856</span>        outfile &lt;&lt; <span class="stringliteral">&quot;# vtk DataFile Version 3.0&quot;</span> &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span> &lt;&lt; <span class="stringliteral">&quot;VM2D VTK result: &quot;</span> &lt;&lt; (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname).c_str() &lt;&lt; <span class="stringliteral">&quot; saved &quot;</span> &lt;&lt; <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b">VMlib::CurrentDataTime</a>() &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  857</span>        outfile &lt;&lt; <span class="stringliteral">&quot;BINARY&quot;</span> &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  858</span>        outfile &lt;&lt; <span class="stringliteral">&quot;DATASET UNSTRUCTURED_GRID&quot;</span> &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;POINTS &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  859</span> </div>
+<div class="line"><span class="lineno">  860</span> </div>
+<div class="line"><span class="lineno">  861</span>        Eigen::VectorXf pData = Eigen::VectorXf::Zero(nRealPressurePoints);</div>
+<div class="line"><span class="lineno">  862</span>        Eigen::VectorXf vData = Eigen::VectorXf::Zero(nRealPressurePoints * 3);</div>
+<div class="line"><span class="lineno">  863</span>        Eigen::VectorXf rData = Eigen::VectorXf::Zero(nRealPressurePoints * 3);</div>
+<div class="line"><span class="lineno">  864</span> </div>
+<div class="line"><span class="lineno">  865</span> </div>
+<div class="line"><span class="lineno">  866</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  867</span>        {</div>
+<div class="line"><span class="lineno">  868</span>            rData(3 * i + 0) = (float)(<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[0];</div>
+<div class="line"><span class="lineno">  869</span>            rData(3 * i + 1) = (float)(<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[1];</div>
+<div class="line"><span class="lineno">  870</span>        }<span class="comment">//for i</span></div>
+<div class="line"><span class="lineno">  871</span> </div>
+<div class="line"><span class="lineno">  872</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  873</span>        {</div>
+<div class="line"><span class="lineno">  874</span>            vData(3 * i + 0) = (float)(<a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][0] * scaleV);</div>
+<div class="line"><span class="lineno">  875</span>            vData(3 * i + 1) = (float)(<a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][1] * scaleV);</div>
+<div class="line"><span class="lineno">  876</span>        }<span class="comment">//for i</span></div>
+<div class="line"><span class="lineno">  877</span> </div>
+<div class="line"><span class="lineno">  878</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  879</span>        {</div>
+<div class="line"><span class="lineno">  880</span>            pData(i) = (float)(<a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[i] * scaleP);</div>
+<div class="line"><span class="lineno">  881</span>        }<span class="comment">//for i</span></div>
+<div class="line"><span class="lineno">  882</span> </div>
+<div class="line"><span class="lineno">  883</span>        <span class="comment">//POINTS</span></div>
+<div class="line"><span class="lineno">  884</span>        <span class="keywordflow">if</span> (littleEndian)</div>
+<div class="line"><span class="lineno">  885</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints * 3; ++i)</div>
+<div class="line"><span class="lineno">  886</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(rData(i));</div>
+<div class="line"><span class="lineno">  887</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(rData.data()), nRealPressurePoints * 3 * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));</div>
+<div class="line"><span class="lineno">  888</span> </div>
+<div class="line"><span class="lineno">  889</span>        <span class="comment">// CELLS</span></div>
+<div class="line"><span class="lineno">  890</span>        std::vector&lt;int&gt; cells(2 * nRealPressurePoints);</div>
+<div class="line"><span class="lineno">  891</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  892</span>        {</div>
+<div class="line"><span class="lineno">  893</span>            cells[2 * i + 0] = 1;</div>
+<div class="line"><span class="lineno">  894</span>            cells[2 * i + 1] = (int)i;</div>
+<div class="line"><span class="lineno">  895</span>        }</div>
+<div class="line"><span class="lineno">  896</span> </div>
+<div class="line"><span class="lineno">  897</span>        std::vector&lt;int&gt; cellsTypes;</div>
+<div class="line"><span class="lineno">  898</span>        cellsTypes.resize(nRealPressurePoints, 1);</div>
 <div class="line"><span class="lineno">  899</span> </div>
-<div class="line"><span class="lineno">  900</span>        std::vector&lt;int&gt; cellsTypes;</div>
-<div class="line"><span class="lineno">  901</span>        cellsTypes.resize(nRealPressurePoints, 1);</div>
-<div class="line"><span class="lineno">  902</span> </div>
-<div class="line"><span class="lineno">  903</span>        <span class="keywordflow">if</span> (littleEndian)</div>
-<div class="line"><span class="lineno">  904</span>        {</div>
-<div class="line"><span class="lineno">  905</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints * 2; ++i)</div>
-<div class="line"><span class="lineno">  906</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(cells[i]);</div>
-<div class="line"><span class="lineno">  907</span> </div>
-<div class="line"><span class="lineno">  908</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  909</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(cellsTypes[i]);</div>
-<div class="line"><span class="lineno">  910</span>        }</div>
-<div class="line"><span class="lineno">  911</span> </div>
-<div class="line"><span class="lineno">  912</span>        outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;CELLS &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; nRealPressurePoints * 2 &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  913</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(cells.data()), nRealPressurePoints * 2 * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
-<div class="line"><span class="lineno">  914</span>        outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;CELL_TYPES &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  915</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(cellsTypes.data()), nRealPressurePoints * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
-<div class="line"><span class="lineno">  916</span> </div>
-<div class="line"><span class="lineno">  917</span>        <span class="comment">//VECTORS V</span></div>
-<div class="line"><span class="lineno">  918</span>        <span class="keywordflow">if</span> (littleEndian)</div>
-<div class="line"><span class="lineno">  919</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints * 3; ++i)</div>
-<div class="line"><span class="lineno">  920</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(vData(i));</div>
-<div class="line"><span class="lineno">  921</span> </div>
-<div class="line"><span class="lineno">  922</span>        outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;POINT_DATA &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  923</span> </div>
-<div class="line"><span class="lineno">  924</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
-<div class="line"><span class="lineno">  925</span>            outfile &lt;&lt; <span class="stringliteral">&quot;VECTORS V &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  926</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  927</span>            outfile &lt;&lt; <span class="stringliteral">&quot;VECTORS CV &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  928</span> </div>
-<div class="line"><span class="lineno">  929</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(vData.data()), nRealPressurePoints * 3 * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));</div>
-<div class="line"><span class="lineno">  930</span> </div>
-<div class="line"><span class="lineno">  931</span>        <span class="comment">//SCALARS P </span></div>
-<div class="line"><span class="lineno">  932</span>        <span class="keywordflow">if</span> (littleEndian)</div>
-<div class="line"><span class="lineno">  933</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  934</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(pData(i));</div>
-<div class="line"><span class="lineno">  935</span> </div>
-<div class="line"><span class="lineno">  936</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
-<div class="line"><span class="lineno">  937</span>            outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;SCALARS P &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; <span class="stringliteral">&quot; 1&quot;</span> &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  938</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  939</span>            outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;SCALARS CP &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; <span class="stringliteral">&quot; 1&quot;</span> &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  900</span>        <span class="keywordflow">if</span> (littleEndian)</div>
+<div class="line"><span class="lineno">  901</span>        {</div>
+<div class="line"><span class="lineno">  902</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints * 2; ++i)</div>
+<div class="line"><span class="lineno">  903</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(cells[i]);</div>
+<div class="line"><span class="lineno">  904</span> </div>
+<div class="line"><span class="lineno">  905</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  906</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(cellsTypes[i]);</div>
+<div class="line"><span class="lineno">  907</span>        }</div>
+<div class="line"><span class="lineno">  908</span> </div>
+<div class="line"><span class="lineno">  909</span>        outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;CELLS &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; nRealPressurePoints * 2 &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  910</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(cells.data()), nRealPressurePoints * 2 * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
+<div class="line"><span class="lineno">  911</span>        outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;CELL_TYPES &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  912</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(cellsTypes.data()), nRealPressurePoints * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
+<div class="line"><span class="lineno">  913</span> </div>
+<div class="line"><span class="lineno">  914</span>        <span class="comment">//VECTORS V</span></div>
+<div class="line"><span class="lineno">  915</span>        <span class="keywordflow">if</span> (littleEndian)</div>
+<div class="line"><span class="lineno">  916</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints * 3; ++i)</div>
+<div class="line"><span class="lineno">  917</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(vData(i));</div>
+<div class="line"><span class="lineno">  918</span> </div>
+<div class="line"><span class="lineno">  919</span>        outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;POINT_DATA &quot;</span> &lt;&lt; nRealPressurePoints &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  920</span> </div>
+<div class="line"><span class="lineno">  921</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
+<div class="line"><span class="lineno">  922</span>            outfile &lt;&lt; <span class="stringliteral">&quot;VECTORS V &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  923</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  924</span>            outfile &lt;&lt; <span class="stringliteral">&quot;VECTORS CV &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  925</span> </div>
+<div class="line"><span class="lineno">  926</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(vData.data()), nRealPressurePoints * 3 * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));</div>
+<div class="line"><span class="lineno">  927</span> </div>
+<div class="line"><span class="lineno">  928</span>        <span class="comment">//SCALARS P </span></div>
+<div class="line"><span class="lineno">  929</span>        <span class="keywordflow">if</span> (littleEndian)</div>
+<div class="line"><span class="lineno">  930</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  931</span>                <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a>(pData(i));</div>
+<div class="line"><span class="lineno">  932</span> </div>
+<div class="line"><span class="lineno">  933</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
+<div class="line"><span class="lineno">  934</span>            outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;SCALARS P &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; <span class="stringliteral">&quot; 1&quot;</span> &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  935</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  936</span>            outfile &lt;&lt; eolnBIN &lt;&lt; <span class="stringliteral">&quot;SCALARS CP &quot;</span> &lt;&lt; <span class="stringliteral">&quot;float&quot;</span> &lt;&lt; <span class="stringliteral">&quot; 1&quot;</span> &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  937</span> </div>
+<div class="line"><span class="lineno">  938</span>        outfile &lt;&lt; <span class="stringliteral">&quot;LOOKUP_TABLE default&quot;</span> &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  939</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(pData.data()), nRealPressurePoints * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));</div>
 <div class="line"><span class="lineno">  940</span> </div>
-<div class="line"><span class="lineno">  941</span>        outfile &lt;&lt; <span class="stringliteral">&quot;LOOKUP_TABLE default&quot;</span> &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  942</span>        outfile.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(pData.data()), nRealPressurePoints * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));</div>
-<div class="line"><span class="lineno">  943</span> </div>
-<div class="line"><span class="lineno">  944</span>        outfile &lt;&lt; eolnBIN;</div>
-<div class="line"><span class="lineno">  945</span> </div>
-<div class="line"><span class="lineno">  946</span>        outfile.close();</div>
-<div class="line"><span class="lineno">  947</span>    }</div>
-<div class="line"><span class="lineno">  948</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.fileTypeVP.second == 2) <span class="comment">//csv</span></div>
-<div class="line"><span class="lineno">  949</span>    {</div>
-<div class="line"><span class="lineno">  950</span>        std::string fname = <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VelPres&quot;</span>, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.nameLength, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep(), <span class="stringliteral">&quot;csv&quot;</span>);</div>
-<div class="line"><span class="lineno">  951</span>        outfile.open(<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname);</div>
-<div class="line"><span class="lineno">  952</span> </div>
-<div class="line"><span class="lineno">  953</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
-<div class="line"><span class="lineno">  954</span>            outfile &lt;&lt; <span class="stringliteral">&quot;point,x,y,Vx,Vy,P\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  955</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  956</span>            outfile &lt;&lt; <span class="stringliteral">&quot;point,x,y,CVx,CVy,CP\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  957</span> </div>
-<div class="line"><span class="lineno">  958</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
-<div class="line"><span class="lineno">  959</span>        {</div>
-<div class="line"><span class="lineno">  960</span>            <span class="keywordtype">double</span> xi = (<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[0];</div>
-<div class="line"><span class="lineno">  961</span>            <span class="keywordtype">double</span> yi = (<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[1];</div>
-<div class="line"><span class="lineno">  962</span>            outfile &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; xi &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; yi \</div>
-<div class="line"><span class="lineno">  963</span>                &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][0] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][1] * scaleV \</div>
-<div class="line"><span class="lineno">  964</span>                &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[i] * scaleP &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  965</span>        }<span class="comment">//for i</span></div>
-<div class="line"><span class="lineno">  966</span>        outfile.close();</div>
-<div class="line"><span class="lineno">  967</span>    }</div>
-<div class="line"><span class="lineno">  968</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.fileTypeVP.second == 3) <span class="comment">//csvBundle</span></div>
-<div class="line"><span class="lineno">  969</span>    {</div>
-<div class="line"><span class="lineno">  970</span>        std::string fnameBunCsv = <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + <span class="stringliteral">&quot;velPresBundle.csv&quot;</span>;</div>
-<div class="line"><span class="lineno">  971</span>        std::ofstream VPFileBunCsv(fnameBunCsv.c_str(), <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep() ? std::ios::app : std::ios::out);</div>
-<div class="line"><span class="lineno">  972</span>        {</div>
-<div class="line"><span class="lineno">  973</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep() == 0)</div>
-<div class="line"><span class="lineno">  974</span>                VPFileBunCsv &lt;&lt; nRealPressurePoints &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  975</span> </div>
-<div class="line"><span class="lineno">  976</span> </div>
-<div class="line"><span class="lineno">  977</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; nRealPressurePoints; ++q)</div>
-<div class="line"><span class="lineno">  978</span>            {</div>
-<div class="line"><span class="lineno">  979</span>                VPFileBunCsv &lt;&lt; <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep() &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
-<div class="line"><span class="lineno">  980</span>                    &lt;&lt; <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentTime() &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
-<div class="line"><span class="lineno">  981</span>                    &lt;&lt; q &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
-<div class="line"><span class="lineno">  982</span>                    &lt;&lt; <a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[q].r()[0] &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[q].r()[1] &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
-<div class="line"><span class="lineno">  983</span>                    &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[q][0] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[q][1] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
-<div class="line"><span class="lineno">  984</span>                    &lt;&lt; <a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[q] * scaleP &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  985</span>            }</div>
-<div class="line"><span class="lineno">  986</span>        }</div>
+<div class="line"><span class="lineno">  941</span>        outfile &lt;&lt; eolnBIN;</div>
+<div class="line"><span class="lineno">  942</span> </div>
+<div class="line"><span class="lineno">  943</span>        outfile.close();</div>
+<div class="line"><span class="lineno">  944</span>    }</div>
+<div class="line"><span class="lineno">  945</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.fileTypeVP.second == 2) <span class="comment">//csv</span></div>
+<div class="line"><span class="lineno">  946</span>    {</div>
+<div class="line"><span class="lineno">  947</span>        std::string fname = <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VelPres&quot;</span>, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.nameLength, <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep(), <span class="stringliteral">&quot;csv&quot;</span>);</div>
+<div class="line"><span class="lineno">  948</span>        outfile.open(<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + fname);</div>
+<div class="line"><span class="lineno">  949</span> </div>
+<div class="line"><span class="lineno">  950</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
+<div class="line"><span class="lineno">  951</span>            outfile &lt;&lt; <span class="stringliteral">&quot;point,x,y,Vx,Vy,P\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  952</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  953</span>            outfile &lt;&lt; <span class="stringliteral">&quot;point,x,y,CVx,CVy,CP\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  954</span> </div>
+<div class="line"><span class="lineno">  955</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; nRealPressurePoints; ++i)</div>
+<div class="line"><span class="lineno">  956</span>        {</div>
+<div class="line"><span class="lineno">  957</span>            <span class="keywordtype">double</span> xi = (<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[0];</div>
+<div class="line"><span class="lineno">  958</span>            <span class="keywordtype">double</span> yi = (<a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[i].r())[1];</div>
+<div class="line"><span class="lineno">  959</span>            outfile &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; xi &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; yi \</div>
+<div class="line"><span class="lineno">  960</span>                &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][0] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[i][1] * scaleV \</div>
+<div class="line"><span class="lineno">  961</span>                &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[i] * scaleP &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  962</span>        }<span class="comment">//for i</span></div>
+<div class="line"><span class="lineno">  963</span>        outfile.close();</div>
+<div class="line"><span class="lineno">  964</span>    }</div>
+<div class="line"><span class="lineno">  965</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.fileTypeVP.second == 3) <span class="comment">//csvBundle</span></div>
+<div class="line"><span class="lineno">  966</span>    {</div>
+<div class="line"><span class="lineno">  967</span>        std::string fnameBunCsv = <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + <span class="stringliteral">&quot;velPresBundle.csv&quot;</span>;</div>
+<div class="line"><span class="lineno">  968</span>        std::ofstream VPFileBunCsv(fnameBunCsv.c_str(), <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep() ? std::ios::app : std::ios::out);</div>
+<div class="line"><span class="lineno">  969</span>        {</div>
+<div class="line"><span class="lineno">  970</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep() == 0)</div>
+<div class="line"><span class="lineno">  971</span>                VPFileBunCsv &lt;&lt; nRealPressurePoints &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  972</span> </div>
+<div class="line"><span class="lineno">  973</span> </div>
+<div class="line"><span class="lineno">  974</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> q = 0; q &lt; nRealPressurePoints; ++q)</div>
+<div class="line"><span class="lineno">  975</span>            {</div>
+<div class="line"><span class="lineno">  976</span>                VPFileBunCsv &lt;&lt; <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep() &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
+<div class="line"><span class="lineno">  977</span>                    &lt;&lt; <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentTime() &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
+<div class="line"><span class="lineno">  978</span>                    &lt;&lt; q &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
+<div class="line"><span class="lineno">  979</span>                    &lt;&lt; <a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[q].r()[0] &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#a4e4d1cfec2922a9eb5a2b3f8f3aaa4e4">wakeVP</a>-&gt;vtx[q].r()[1] &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
+<div class="line"><span class="lineno">  980</span>                    &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[q][0] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[q][1] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> \</div>
+<div class="line"><span class="lineno">  981</span>                    &lt;&lt; <a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[q] * scaleP &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  982</span>            }</div>
+<div class="line"><span class="lineno">  983</span>        }</div>
+<div class="line"><span class="lineno">  984</span> </div>
+<div class="line"><span class="lineno">  985</span>    }</div>
+<div class="line"><span class="lineno">  986</span> </div>
 <div class="line"><span class="lineno">  987</span> </div>
-<div class="line"><span class="lineno">  988</span>    }</div>
-<div class="line"><span class="lineno">  989</span> </div>
-<div class="line"><span class="lineno">  990</span> </div>
-<div class="line"><span class="lineno">  991</span>    <span class="comment">//Вывод в csv-файлы точек &quot;historyPoints&quot;</span></div>
-<div class="line"><span class="lineno">  992</span><span class="preprocessor">    #pragma omp parallel for</span></div>
-<div class="line"><span class="lineno">  993</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> q = 0; q &lt; (int)<a class="code hl_variable" href="#a291467cf1c4ac178bbf9d165d4fbe92e">historyPoints</a>.size(); ++q)</div>
-<div class="line"><span class="lineno">  994</span>    {</div>
-<div class="line"><span class="lineno">  995</span> </div>
-<div class="line"><span class="lineno">  996</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep() == 0)</div>
-<div class="line"><span class="lineno">  997</span>        {</div>
-<div class="line"><span class="lineno">  998</span>            std::string VPFileNameCsv;</div>
-<div class="line"><span class="lineno">  999</span>            VPFileNameCsv = <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VP-atPoint-&quot;</span>, 2, q, <span class="stringliteral">&quot;csv&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1000</span> </div>
-<div class="line"><span class="lineno"> 1001</span>            std::ofstream VPFileCsv(VPFileNameCsv.c_str(), std::ios::out);</div>
-<div class="line"><span class="lineno"> 1002</span> </div>
-<div class="line"><span class="lineno"> 1003</span>            <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
-<div class="line"><span class="lineno"> 1004</span>                VPFileCsv &lt;&lt; <span class="stringliteral">&quot;point,time,Vx,Vy,P\n&quot;</span>;</div>
-<div class="line"><span class="lineno"> 1005</span>            <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1006</span>                VPFileCsv &lt;&lt; <span class="stringliteral">&quot;point,time,CVx,CVy,CP\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  988</span>    <span class="comment">//Вывод в csv-файлы точек &quot;historyPoints&quot;</span></div>
+<div class="line"><span class="lineno">  989</span><span class="preprocessor">    #pragma omp parallel for</span></div>
+<div class="line"><span class="lineno">  990</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> q = 0; q &lt; (int)<a class="code hl_variable" href="#a291467cf1c4ac178bbf9d165d4fbe92e">historyPoints</a>.size(); ++q)</div>
+<div class="line"><span class="lineno">  991</span>    {</div>
+<div class="line"><span class="lineno">  992</span> </div>
+<div class="line"><span class="lineno">  993</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentStep() == 0)</div>
+<div class="line"><span class="lineno">  994</span>        {</div>
+<div class="line"><span class="lineno">  995</span>            std::string VPFileNameCsv;</div>
+<div class="line"><span class="lineno">  996</span>            VPFileNameCsv = <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VP-atPoint-&quot;</span>, 2, q, <span class="stringliteral">&quot;csv&quot;</span>);</div>
+<div class="line"><span class="lineno">  997</span> </div>
+<div class="line"><span class="lineno">  998</span>            std::ofstream VPFileCsv(VPFileNameCsv.c_str(), std::ios::out);</div>
+<div class="line"><span class="lineno">  999</span> </div>
+<div class="line"><span class="lineno"> 1000</span>            <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().calcCoefficients)</div>
+<div class="line"><span class="lineno"> 1001</span>                VPFileCsv &lt;&lt; <span class="stringliteral">&quot;point,time,Vx,Vy,P\n&quot;</span>;</div>
+<div class="line"><span class="lineno"> 1002</span>            <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1003</span>                VPFileCsv &lt;&lt; <span class="stringliteral">&quot;point,time,CVx,CVy,CP\n&quot;</span>;</div>
+<div class="line"><span class="lineno"> 1004</span> </div>
+<div class="line"><span class="lineno"> 1005</span>            VPFileCsv.close();</div>
+<div class="line"><span class="lineno"> 1006</span>        }</div>
 <div class="line"><span class="lineno"> 1007</span> </div>
-<div class="line"><span class="lineno"> 1008</span>            VPFileCsv.close();</div>
-<div class="line"><span class="lineno"> 1009</span>        }</div>
-<div class="line"><span class="lineno"> 1010</span> </div>
-<div class="line"><span class="lineno"> 1011</span>        <a class="code hl_variable" href="#afa5a34d5b4656e5ac871bcbcd5a64f8c">sstr</a>[q] &lt;&lt; q &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentTime() &lt;&lt; <span class="stringliteral">&quot;,&quot;</span></div>
-<div class="line"><span class="lineno"> 1012</span>            &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[<a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + q][0] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span></div>
-<div class="line"><span class="lineno"> 1013</span>            &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[<a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + q][1] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span></div>
-<div class="line"><span class="lineno"> 1014</span>            &lt;&lt; <a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[<a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + q] * scaleP &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno"> 1015</span>    </div>
-<div class="line"><span class="lineno"> 1016</span>        <span class="keywordflow">if</span> (q == 0)</div>
-<div class="line"><span class="lineno"> 1017</span>            <a class="code hl_variable" href="#ad77a560fd136c0c621a7a43a610008c5">sstrCounter</a> += <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.saveVPstep;</div>
-<div class="line"><span class="lineno"> 1018</span>    }</div>
-<div class="line"><span class="lineno"> 1019</span>            </div>
-<div class="line"><span class="lineno"> 1020</span>    <span class="comment">//Сохраняем буфера в файл рас в historyFrequency шагов</span></div>
-<div class="line"><span class="lineno"> 1021</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ad77a560fd136c0c621a7a43a610008c5">sstrCounter</a> &gt;= <a class="code hl_variable" href="#a26f983b7d3754ed2ef8d779e3248b42b">historyFrequency</a>)</div>
-<div class="line"><span class="lineno"> 1022</span>    {</div>
-<div class="line"><span class="lineno"> 1023</span><span class="preprocessor">        #pragma omp parallel for</span></div>
-<div class="line"><span class="lineno"> 1024</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> q = 0; q &lt; (int)<a class="code hl_variable" href="#a291467cf1c4ac178bbf9d165d4fbe92e">historyPoints</a>.size(); ++q)</div>
-<div class="line"><span class="lineno"> 1025</span>        {</div>
-<div class="line"><span class="lineno"> 1026</span>            std::string VPFileNameCsv;</div>
-<div class="line"><span class="lineno"> 1027</span>            VPFileNameCsv = <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VP-atPoint-&quot;</span>, 2, q, <span class="stringliteral">&quot;csv&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1028</span> </div>
-<div class="line"><span class="lineno"> 1029</span>            std::ofstream VPFileCsv(VPFileNameCsv.c_str(), std::ios::app);</div>
-<div class="line"><span class="lineno"> 1030</span> </div>
-<div class="line"><span class="lineno"> 1031</span>            VPFileCsv &lt;&lt; <a class="code hl_variable" href="#afa5a34d5b4656e5ac871bcbcd5a64f8c">sstr</a>[q].str();</div>
-<div class="line"><span class="lineno"> 1032</span> </div>
-<div class="line"><span class="lineno"> 1033</span>            VPFileCsv.close();</div>
+<div class="line"><span class="lineno"> 1008</span>        <a class="code hl_variable" href="#afa5a34d5b4656e5ac871bcbcd5a64f8c">sstr</a>[q] &lt;&lt; q &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getCurrentTime() &lt;&lt; <span class="stringliteral">&quot;,&quot;</span></div>
+<div class="line"><span class="lineno"> 1009</span>            &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[<a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + q][0] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span></div>
+<div class="line"><span class="lineno"> 1010</span>            &lt;&lt; <a class="code hl_variable" href="#af4ea2481e596c4605c52720cfa52a3a9">velocity</a>[<a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + q][1] * scaleV &lt;&lt; <span class="stringliteral">&quot;,&quot;</span></div>
+<div class="line"><span class="lineno"> 1011</span>            &lt;&lt; <a class="code hl_variable" href="#a190e430f5999ec09e897ca405ab37bfc">pressure</a>[<a class="code hl_variable" href="#a03282398d9ce85985959254e354441d0">initialPoints</a>.size() + q] * scaleP &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno"> 1012</span>    </div>
+<div class="line"><span class="lineno"> 1013</span>        <span class="keywordflow">if</span> (q == 0)</div>
+<div class="line"><span class="lineno"> 1014</span>            <a class="code hl_variable" href="#ad77a560fd136c0c621a7a43a610008c5">sstrCounter</a> += <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().timeDiscretizationProperties.saveVPstep;</div>
+<div class="line"><span class="lineno"> 1015</span>    }</div>
+<div class="line"><span class="lineno"> 1016</span>            </div>
+<div class="line"><span class="lineno"> 1017</span>    <span class="comment">//Сохраняем буфера в файл рас в historyFrequency шагов</span></div>
+<div class="line"><span class="lineno"> 1018</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ad77a560fd136c0c621a7a43a610008c5">sstrCounter</a> &gt;= <a class="code hl_variable" href="#a26f983b7d3754ed2ef8d779e3248b42b">historyFrequency</a>)</div>
+<div class="line"><span class="lineno"> 1019</span>    {</div>
+<div class="line"><span class="lineno"> 1020</span><span class="preprocessor">        #pragma omp parallel for</span></div>
+<div class="line"><span class="lineno"> 1021</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> q = 0; q &lt; (int)<a class="code hl_variable" href="#a291467cf1c4ac178bbf9d165d4fbe92e">historyPoints</a>.size(); ++q)</div>
+<div class="line"><span class="lineno"> 1022</span>        {</div>
+<div class="line"><span class="lineno"> 1023</span>            std::string VPFileNameCsv;</div>
+<div class="line"><span class="lineno"> 1024</span>            VPFileNameCsv = <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getPassport().dir + <span class="stringliteral">&quot;velPres/&quot;</span> + <a class="code hl_function" href="../../dd/d9a/namespace_v_mlib.html#a720cc161d82a17663aa98c7ba819cd7a">VMlib::fileNameStep</a>(<span class="stringliteral">&quot;VP-atPoint-&quot;</span>, 2, q, <span class="stringliteral">&quot;csv&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1025</span> </div>
+<div class="line"><span class="lineno"> 1026</span>            std::ofstream VPFileCsv(VPFileNameCsv.c_str(), std::ios::app);</div>
+<div class="line"><span class="lineno"> 1027</span> </div>
+<div class="line"><span class="lineno"> 1028</span>            VPFileCsv &lt;&lt; <a class="code hl_variable" href="#afa5a34d5b4656e5ac871bcbcd5a64f8c">sstr</a>[q].str();</div>
+<div class="line"><span class="lineno"> 1029</span> </div>
+<div class="line"><span class="lineno"> 1030</span>            VPFileCsv.close();</div>
+<div class="line"><span class="lineno"> 1031</span> </div>
+<div class="line"><span class="lineno"> 1032</span>            <a class="code hl_variable" href="#afa5a34d5b4656e5ac871bcbcd5a64f8c">sstr</a>[q].str(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1033</span>            <a class="code hl_variable" href="#afa5a34d5b4656e5ac871bcbcd5a64f8c">sstr</a>[q].clear();</div>
 <div class="line"><span class="lineno"> 1034</span> </div>
-<div class="line"><span class="lineno"> 1035</span>            <a class="code hl_variable" href="#afa5a34d5b4656e5ac871bcbcd5a64f8c">sstr</a>[q].str(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1036</span>            <a class="code hl_variable" href="#afa5a34d5b4656e5ac871bcbcd5a64f8c">sstr</a>[q].clear();</div>
-<div class="line"><span class="lineno"> 1037</span> </div>
-<div class="line"><span class="lineno"> 1038</span>            </div>
-<div class="line"><span class="lineno"> 1039</span>            <span class="keywordflow">if</span> (q == 0)</div>
-<div class="line"><span class="lineno"> 1040</span>                <a class="code hl_variable" href="#ad77a560fd136c0c621a7a43a610008c5">sstrCounter</a> = 0;</div>
-<div class="line"><span class="lineno"> 1041</span>        }</div>
-<div class="line"><span class="lineno"> 1042</span>    }</div>
-<div class="line"><span class="lineno"> 1043</span>        </div>
-<div class="line"><span class="lineno"> 1044</span>    <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getTimers().stop(<span class="stringliteral">&quot;Save&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1045</span>}<span class="comment">//SaveVP()</span></div>
+<div class="line"><span class="lineno"> 1035</span>            </div>
+<div class="line"><span class="lineno"> 1036</span>            <span class="keywordflow">if</span> (q == 0)</div>
+<div class="line"><span class="lineno"> 1037</span>                <a class="code hl_variable" href="#ad77a560fd136c0c621a7a43a610008c5">sstrCounter</a> = 0;</div>
+<div class="line"><span class="lineno"> 1038</span>        }</div>
+<div class="line"><span class="lineno"> 1039</span>    }</div>
+<div class="line"><span class="lineno"> 1040</span>        </div>
+<div class="line"><span class="lineno"> 1041</span>    <a class="code hl_variable" href="#a26af4e1561205b280786d41cb1f10ab6">W</a>.getTimers().stop(<span class="stringliteral">&quot;Save&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1042</span>}<span class="comment">//SaveVP()</span></div>
 <div class="ttc" id="anamespace_v_mlib_html_ac4c20a671ac2eb51374ea15e62fd5b2b"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#ac4c20a671ac2eb51374ea15e62fd5b2b">VMlib::CurrentDataTime</a></div><div class="ttdeci">std::string CurrentDataTime()</div><div class="ttdoc">Формирование строки с текущем временем и датой</div><div class="ttdef"><b>Definition</b> <a href="../../da/ddd/defs_8cpp_source.html#l00047">defs.cpp:47</a></div></div>
 <div class="ttc" id="anamespace_v_mlib_html_adf1dbee861ac3cecc3b772bbd009ed3f"><div class="ttname"><a href="../../dd/d9a/namespace_v_mlib.html#adf1dbee861ac3cecc3b772bbd009ed3f">VMlib::SwapEnd</a></div><div class="ttdeci">void SwapEnd(T &amp;var)</div><div class="ttdoc">Вспомогательная функция перестановки байт местами (нужно для сохранения бинарных VTK).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/de2/_v_mlib_2defs_2defs_8h_source.html#l00569">defs.h:569</a></div></div>
 </div><!-- fragment --><div class="dynheader">
