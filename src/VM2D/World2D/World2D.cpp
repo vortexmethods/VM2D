@@ -961,8 +961,6 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 			//	panelFile << getAirfoil(0).getR(i)[0] << " " << getAirfoil(0).getR(i)[1] << " " << \
 			//		getAirfoil(0).getR(i + 1)[0] << " " << getAirfoil(0).getR(i + 1)[1] << " " << '\n';
 			//panelFile.close();
-
-
 		}
 		else //иначе (для неподвижного профиля - метод трассировки лучей
 		{
@@ -985,34 +983,35 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 			BHcu::treePanelsSegmentsIntersectionCalculationWrapper(auxTree, cntrTreeSeg, getWake().devNearestPanelPtr);
 			cudaMemcpy(hit.data(), getWake().devNearestPanelPtr, newPos.size() * sizeof(int), cudaMemcpyDeviceToHost);
 			cudaFree(devSegments_ptr);
-
-			hitAflPnl.resize(newPos.size(), { -1, -1 });
+		}
+			
+		hitAflPnl.resize(newPos.size(), { -1, -1 });
 	
 
-			//std::ofstream tikFile(passport.dir + "/dbg/hit-" + std::to_string(currentStep) + ".txt");
-			for (int w = 0; w < newPos.size(); ++w)
+		//std::ofstream tikFile(passport.dir + "/dbg/hit-" + std::to_string(currentStep) + ".txt");
+		for (int w = 0; w < newPos.size(); ++w)
+		{
+			if (hit[w] > -1)
 			{
-				if (hit[w] > -1)
+				size_t panCounter = 0;
+				for (size_t afl = 0; afl < airfoil.size(); ++afl)
 				{
-					size_t panCounter = 0;
-					for (size_t afl = 0; afl < airfoil.size(); ++afl)
+					if ((hit[w] >= panCounter) && (hit[w] < panCounter + airfoil[afl]->getNumberOfPanels()))
 					{
-						if ((hit[w] >= panCounter) && (hit[w] < panCounter + airfoil[afl]->getNumberOfPanels()))
-						{
-							hitAflPnl[w] = { (int)afl, hit[w] - (int)panCounter };
-							//tikFile << w << " " << wake->vtx[w].r()[0] << " " << wake->vtx[w].r()[1] <<
-							//	" " << newPos[w][0] << " " << newPos[w][1] << " " <<
-							//	" " << airfoil[afl]->getR(hit[w] - panCounter)[0] << " " << airfoil[afl]->getR(hit[w] - panCounter)[1] <<
-							//	" " << airfoil[afl]->getR(hit[w] - panCounter + 1)[0] << " " << airfoil[afl]->getR(hit[w] - panCounter + 1)[1] <<
-							//	'\n';
-						}
-						panCounter += airfoil[afl]->getNumberOfPanels();
+						hitAflPnl[w] = { (int)afl, hit[w] - (int)panCounter };
+						//tikFile << w << " " << wake->vtx[w].r()[0] << " " << wake->vtx[w].r()[1] <<
+						//	" " << newPos[w][0] << " " << newPos[w][1] << " " <<
+						//	" " << airfoil[afl]->getR(hit[w] - panCounter)[0] << " " << airfoil[afl]->getR(hit[w] - panCounter)[1] <<
+						//	" " << airfoil[afl]->getR(hit[w] - panCounter + 1)[0] << " " << airfoil[afl]->getR(hit[w] - panCounter + 1)[1] <<
+						//	'\n';
 					}
+					panCounter += airfoil[afl]->getNumberOfPanels();
 				}
 			}
-			//tikFile.close();
-
 		}
+		//tikFile.close();
+
+		
 				
 		if (getNumberOfAirfoil() == 1)
 		{
@@ -1020,7 +1019,7 @@ void World2D::CheckInside(std::vector<Point2D>& newPos, const std::vector<std::u
 			for (size_t afl = 0; afl < airfoil.size(); ++afl)
 			{
 				std::vector<double> gamma(airfoil[afl]->getNumberOfPanels(), 0.0);
-				for (int i = 0; i < hitAflPnl.size(); ++i)
+				for (int i = 0; i < wake->vtx.size(); ++i)
 				{
 					if (hitAflPnl[i].first == afl)
 					{
